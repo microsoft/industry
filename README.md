@@ -1,16 +1,14 @@
-# Project
+# Introduction
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+This repository provides holistic architecture design and reference implementation for industry cloud based on proven success of
+large scale deployments and at-scale adoption with customers and partners. This guidance is built by active inner-source community
+inside Microsoft to help customers and partners by providing prescriptive and actionable guidance and implementation to accelerate
+deployment and adoption of industry cloud.
 
-As the maintainer of this project, please make a few updates:
+## Industry Cloud Reference Architecture
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
-
-## Contributing
+- [Healthcare](./healthcare/readme.md)
+- [Telecommunications](./telco/readme.md)
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
