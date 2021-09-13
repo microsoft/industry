@@ -1,5 +1,6 @@
 # Industry Reference Architecture
 
-To do: End to end architecture reference
+![Healthcare Industry Reference Architecture](./docs/mc4h-reference-architecture.png)
 
-## Azure
+## Azure API for FHIR
+
