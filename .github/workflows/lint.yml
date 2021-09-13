@@ -1,0 +1,30 @@
+name: Lint Code Base
+
+on:
+  push:
+    branches-ignore: [master]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Lint Code Base
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Check Out Repository
+        id: checkout_repository
+        uses: actions/checkout@v2
+
+      # Lint ARM templates
+      - name: Lint
+        id: arm_lint
+        uses: github/super-linter@v3
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_JSCPD: false
+          VALIDATE_JSON: false
+          FILTER_REGEX_EXCLUDE: (/.devcontainer/|/reference/)
