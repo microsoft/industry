@@ -6,7 +6,7 @@ This is a sample template for Azure Healthcare APIs. More details about the serv
 
 Please use the following button to deploy the service into your resource group:
 
-[![Deploy To Azure](https://aka.ms/deploytoazurebutton)]()
+[![Deploy To Azure](https://aka.ms/deploytoazurebutton)](#TODO)
 
 ## Policies
 
