@@ -1,0 +1,28 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "healthCareApiName": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "dicomServiceName": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "apiName": "[toLower(parameters('healthCareApiName'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.HealthcareApis/workspaces/dicomservices",
+            "apiVersion": "2021-06-01-preview",
+            "name": "[concat(variables('apiName'), '/', parameters('dicomServiceName'))]",
+            "location": "[parameters('location')]",
+            "properties": {}
+        }
+    ]
+}
