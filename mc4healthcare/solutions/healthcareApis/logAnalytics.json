@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string"
+        },
+        "workspaceName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "sku": {
+            "type": "string",
+            "defaultValue": "PerGB2018"
+        },
+        "enableLogAccessUsingOnlyResourcePermissions": {
+            "type": "bool",
+            "defaultValue": true,
+            "allowedValues": [
+                true,
+                false
+            ]
+        },
+        "retentionIndDays": {
+            "type": "int",
+            "defaultValue": 30
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.OperationalInsights/workspaces",
+            "apiVersion": "2020-10-01",
+            "name": "[parameters('workspaceName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "sku": {
+                    "name": "[parameters('sku')]"
+                },
+                "features": {
+                    "enableLogAccessUsingOnlyResourcePermissions": "[parameters('enableLogAccessUsingOnlyResourcePermissions')]"
+                },
+                "retentionInDays": "[parameters('retentionIndDays')]"
+            }
+        }
+    ],
+    "outputs": {
+        "workspaceResourceId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))]"
+        }
+    }
+}

@@ -1,0 +1,630 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rgName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "healthCareApiName": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "enableFhirService": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
+        },
+        "fhirName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "fhirAccessPolicies": {
+            "type": "array",
+            "defaultValue": []
+        },
+        "fhirVersion": {
+            "type": "string",
+            "defaultValue": "fhir-R4"
+        },
+        "enableSmartProxyForFhir": {
+            "type": "bool",
+            "allowedValues": [
+                false,
+                true
+            ],
+            "defaultValue": false
+        },
+        "enableDicomService": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
+        },
+        "dicomServiceName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "enableStorageAccount": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
+        },
+        "enableMonitoring": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
+        },
+        "existingWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "enableManagedIdentity": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
+        },
+        "enableEventHub": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
+        },
+        "enableIotConnector": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
+        },
+        "iotConnectorName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "userPrincipalId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "healthBotName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "healthBotSku": {
+            "type": "string",
+            "defaultValue": "F0"
+        },
+        "enableHealthBot": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
+        }
+    },
+    "variables": {
+        "apiName": "[toLower(parameters('healthCareApiName'))]",
+        "deploymentName": "[concat('MC4H-HealthCare-', parameters('location'))]",
+        "fhirDeploymentName": "[concat('MC4H-FHIR-', parameters('location'))]",
+        "dicomDeploymentName": "[concat('MC4H-DICOM-', parameters('location'))]",
+        "iotConnectorDeploymentName": "[concat('MC4H-IoT-', parameters('location'))]",
+        "storageDeploymentName": "[concat('MC4H-Storage-', parameters('location'))]",
+        "workspaceDeploymentName": "[concat('MC4H-Workspace-', parameters('location'))]",
+        "eventHubDeploymentName": "[concat('MC4H-EventHub-', parameters('location'))]",
+        "healthBotDeploymentName": "[concat('MC4H-HealthBot-', parameters('location'))]",
+        "fhirRbacDeploymentName": "[concat('MC4H-Fhir-RBAC-', parameters('location'))]",
+        "fhirRbacDataDeploymentName": "[concat('MC4H-Data-RBAC-', parameters('location'))]",
+        "userRbacDataDeploymentName": "[concat('MC4H-User-RBAC-', parameters('location'))]",
+        "userDicomRbacDataDeploymentName": "[concat('MC4H-User-RBAC-DICOM-', parameters('location'))]",
+        "fhirDiagnosticsDeploymentName": "[concat('MC4H-FHIR-Diagnostics-', parameters('location'))]",
+        "eventHubDiagnosticsDeploymentName": "[concat('MC4H-EH-Diagnostics-', parameters('location'))]",
+        "healthCareDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/healthCareApis.json')]",
+        "fhirDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/fhirService.json')]",
+        "dicomDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/dicomService.json')]",
+        "iotConnectorDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/iotConnector.json')]",
+        "storageDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/storageAccount.json')]",
+        "workspaceDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/logAnalytics.json')]",
+        "eventHubDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/eventHub.json')]",
+        "healthBotDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/healthBot.json')]",
+        "fhirRbacDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/roleAssignments.json')]",
+        "fhirDiagnosticsDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/fhirDiagnostics.json')]",
+        "eventHubDiagnosticsDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/eventHubDiagnostics.json')]",
+        "roleDefinitions": {
+            "storageBlobDataContributor": "/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+            "fhirDataContributor": "/providers/Microsoft.Authorization/roleDefinitions/5a1fc7df-4bf1-4951-a576-89034ee01acd",
+            "dicomDataOwner": "/providers/Microsoft.Authorization/roleDefinitions/58a3b984-7adf-4c20-983a-32417c86fbc8"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2021-01-01",
+            "name": "[parameters('rgName')]",
+            "location": "[parameters('location')]"
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('healthCareDeployment')]"
+                },
+                "parameters": {
+                    "healthCareApiName": {
+                        "value": "[parameters('healthCareApiName')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('enableFhirService'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('fhirDeploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]",
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentName'))]",
+                "[concat('Microsoft.Resources/deployments/', variables('storageDeploymentName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('fhirDeployment')]"
+                },
+                "parameters": {
+                    "fhirName": {
+                        "value": "[parameters('fhirName')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "healthCareApiName": {
+                        "value": "[parameters('healthCareApiName')]"
+                    },
+                    "fhirAccessPolicies": {
+                        "value": "[parameters('fhirAccessPolicies')]"
+                    },
+                    "storageAccountName": {
+                        "value": "[if(not(equals(parameters('enableStorageAccount'), 'No')), reference(variables('storageDeploymentName'), '2021-04-01').outputs.storageAccountName.value, json('null'))]"
+                    },
+                    "fhirVersion": {
+                        "value": "[parameters('fhirVersion')]"
+                    },
+                    "enableSmartProxyForFhir": {
+                        "value": "[parameters('enableSmartProxyForFhir')]"
+                    },
+                    "enableManagedIdentity": {
+                        "value": "[parameters('enableManagedIdentity')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[and(equals(parameters('enableManagedIdentity'), 'Yes'), equals(parameters('enableFhirService'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('fhirRbacDeploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]",
+                "[concat('Microsoft.Resources/deployments/', variables('fhirDeploymentName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('fhirRbacDeployment')]"
+                },
+                "parameters": {
+                    "principalId": {
+                        "value": "[if(and(equals(parameters('enableFhirService'), 'Yes'), equals(parameters('enableManagedIdentity'), 'Yes')), reference(variables('fhirDeploymentName'), '2020-10-01').outputs.principalId.value, 'na')]"
+                    },
+                    "builtInRoleDefinitionId": {
+                        "value": "[variables('roleDefinitions').storageBlobDataContributor]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[and(equals(parameters('enableManagedIdentity'), 'Yes'), equals(parameters('enableIotConnector'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('fhirRbacDataDeploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]",
+                "[concat('Microsoft.Resources/deployments/', variables('iotConnectorDeploymentName'))]",
+                "[concat('Microsoft.Resources/deployments/', variables('fhirDeploymentName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('fhirRbacDeployment')]"
+                },
+                "parameters": {
+                    "principalId": {
+                        "value": "[if(and(equals(parameters('enableFhirService'), 'Yes'), equals(parameters('enableManagedIdentity'), 'Yes')), reference(variables('iotConnectorDeploymentName'), '2020-10-01').outputs.principalId.value, 'na')]"
+                    },
+                    "builtInRoleDefinitionId": {
+                        "value": "[variables('roleDefinitions').fhirDataContributor]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[and(not(empty(parameters('userPrincipalId'))), equals(parameters('enableIotConnector'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('userRbacDataDeploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]",
+                "[concat('Microsoft.Resources/deployments/', variables('iotConnectorDeploymentName'))]",
+                "[concat('Microsoft.Resources/deployments/', variables('fhirDeploymentName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('fhirRbacDeployment')]"
+                },
+                "parameters": {
+                    "principalId": {
+                        "value": "[parameters('userPrincipalId')]"
+                    },
+                    "builtInRoleDefinitionId": {
+                        "value": "[variables('roleDefinitions').fhirDataContributor]"
+                    },
+                    "principalType": {
+                        "value": "User"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[and(not(empty(parameters('userPrincipalId'))), equals(parameters('enableDicomService'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('userDicomRbacDataDeploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]",
+                "[concat('Microsoft.Resources/deployments/', variables('dicomDeploymentName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('fhirRbacDeployment')]"
+                },
+                "parameters": {
+                    "principalId": {
+                        "value": "[parameters('userPrincipalId')]"
+                    },
+                    "builtInRoleDefinitionId": {
+                        "value": "[variables('roleDefinitions').dicomDataOwner]"
+                    },
+                    "principalType": {
+                        "value": "User"
+                    }
+                }
+            }
+        },        
+        {
+            "condition": "[equals(parameters('enableDicomService'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('dicomDeploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]",
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('dicomDeployment')]"
+                },
+                "parameters": {
+                    "dicomServiceName": {
+                        "value": "[parameters('dicomServiceName')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "healthCareApiName": {
+                        "value": "[parameters('healthCareApiName')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('enableIotConnector'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('iotConnectorDeploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]",
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentName'))]",
+                "[concat('Microsoft.Resources/deployments/', variables('eventHubDeploymentName'))]",
+                "[concat('Microsoft.Resources/deployments/', variables('fhirDeploymentName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('iotConnectorDeployment')]"
+                },
+                "parameters": {
+                    "iotConnectorName": {
+                        "value": "[parameters('iotConnectorName')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "healthCareApiName": {
+                        "value": "[parameters('healthCareApiName')]"
+                    },
+                    "enableManagedIdentity": {
+                        "value": "[parameters('enableManagedIdentity')]"
+                    },
+                    "fhirName": {
+                        "value": "[parameters('fhirName')]"
+                    },
+                    "destinationName": {
+                        "value": "[concat(parameters('iotConnectorName'), '-dest')]"
+                    },
+                    "fullyQualifiedEventHubNameSpace": {
+                        "value": "[if(equals(parameters('enableEventHub'), 'Yes'), reference(variables('eventHubDeploymentName'), '2020-10-01').outputs.fqdnServiceEndpoint.value, json('null'))]"
+                    },
+                    "consumerGroupName": {
+                        "value": "[if(equals(parameters('enableEventHub'), 'Yes'), reference(variables('eventHubDeploymentName'), '2020-10-01').outputs.consumerGroupName.value, json('null'))]"
+                    },
+                    "eventHubName": {
+                        "value": "[if(equals(parameters('enableEventHub'), 'Yes'), reference(variables('eventHubDeploymentName'), '2020-10-01').outputs.eventHubName.value, json('null'))]"
+                    }
+                }
+            }
+        },                    
+        {
+            "condition": "[equals(parameters('enableStorageAccount'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('storageDeploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('storageDeployment')]"
+                },
+                "parameters": {
+                    "storageAccountName": {
+                        "value": "[concat(variables('apiName'),uniqueString(variables('apiName')))]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[and(equals(parameters('enableMonitoring'), 'Yes'), empty(parameters('existingWorkspaceId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('workspaceDeploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('workspaceDeployment')]"
+                },
+                "parameters": {
+                    "workspaceName": {
+                        "value": "[concat(variables('apiName'), '-ws')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('enableEventHub'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('eventHubDeploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('eventHubDeployment')]"
+                },
+                "parameters": {
+                    "eventHubNamespaceName": {
+                        "value": "[concat(variables('apiName'), '-eh')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[and(equals(parameters('enableMonitoring'), 'Yes'), equals(parameters('enableFhirService'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('fhirDiagnosticsDeploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('workspaceDeploymentName'))]",
+                "[concat('Microsoft.Resources/deployments/', variables('fhirDeploymentName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('fhirDiagnosticsDeployment')]"
+                },
+                "parameters": {
+                    "logAnalyticsWorkspaceId": {
+                        "value": "[if(and(empty(parameters('existingWorkspaceId')), not(equals(parameters('enableMonitoring'), 'No'))), reference(variables('workspaceDeploymentName'), '2021-04-01').outputs.workspaceResourceId.value, json('null'))]"
+                    },
+                    "healthCareApiName": {
+                        "value": "[parameters('healthCareApiName')]"
+                    },
+                    "fhirName": {
+                        "value": "[parameters('fhirName')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[and(equals(parameters('enableMonitoring'), 'Yes'), equals(parameters('enableEventHub'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('eventHubDiagnosticsDeploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('workspaceDeploymentName'))]",
+                "[concat('Microsoft.Resources/deployments/', variables('eventHubDeploymentName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('eventHubDiagnosticsDeployment')]"
+                },
+                "parameters": {
+                    "logAnalyticsWorkspaceId": {
+                        "value": "[if(and(empty(parameters('existingWorkspaceId')), not(equals(parameters('enableMonitoring'), 'No'))), reference(variables('workspaceDeploymentName'), '2021-04-01').outputs.workspaceResourceId.value, json('null'))]"
+                    },
+                    "eventHubNamespaceName": {
+                        "value": "[concat(variables('apiName'), '-eh')]"
+                    }
+                }
+            }
+        },            
+        {
+            "condition": "[equals(parameters('enableMonitoring'), 'Yes')]",
+            "type": "microsoft.insights/diagnosticSettings",
+            "apiVersion": "2017-05-01-preview",
+            "name": "[concat(variables('apiName'), '-subdiag')]",
+            "location": "Global",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('storageDeploymentName'))]",
+                "[concat('Microsoft.Resources/deployments/', variables('workspaceDeploymentName'))]"
+            ],
+            "properties": {
+                "workspaceId": "[if(and(empty(parameters('existingWorkspaceId')), not(equals(parameters('enableMonitoring'), 'No'))), reference(variables('workspaceDeploymentName'), '2021-04-01').outputs.workspaceResourceId.value, json('null'))]",
+                "logs": [
+                    {
+                        "category": "Administrative",
+                        "enabled": true
+                    },
+                    {
+                        "category": "Security",
+                        "enabled": true
+                    },
+                    {
+                        "category": "ServiceHealth",
+                        "enabled": true
+                    },
+                    {
+                        "category": "Alert",
+                        "enabled": true
+                    },
+                    {
+                        "category": "Recommendation",
+                        "enabled": true
+                    },
+                    {
+                        "category": "Policy",
+                        "enabled": true
+                    },
+                    {
+                        "category": "Autoscale",
+                        "enabled": true
+                    },
+                    {
+                        "category": "ResourceHealth",
+                        "enabled": true
+                    }
+                ]
+            }
+        },
+        {
+            "condition": "[equals(parameters('enableHealthBot'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('healthBotDeploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('healthBotDeployment')]"
+                },
+                "parameters": {
+                    "healthbotname": {
+                        "value": "[concat(variables('apiName'), '-bot')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "sku": {
+                        "value": "[parameters('healthBotSku')]"
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,95 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "healthCareApiName": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "fhirName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "fhirAccessPolicies": {
+            "type": "array",
+            "defaultValue": []
+        },
+        "fhirVersion": {
+            "type": "string",
+            "defaultValue": "fhir-R4"
+        },
+        "enableSmartProxyForFhir": {
+            "type": "bool",
+            "allowedValues": [
+                false,
+                true
+            ],
+            "defaultValue": false
+        },
+        "enableManagedIdentity": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "storageAccountName": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "apiName": "[toLower(parameters('healthCareApiName'))]",
+        "managedIdentity": {
+            "type": "SystemAssigned"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.HealthCareApis/workspaces/fhirservices",
+            "kind": "[parameters('fhirVersion')]",
+            "apiVersion": "2021-06-01-preview",
+            "name": "[concat(variables('apiName'), '/', parameters('fhirName'))]",
+            "location": "[parameters('location')]",
+            "identity": "[if(equals(parameters('enableManagedIdentity'), 'Yes'), variables('managedIdentity'), json('null'))]",
+            "properties": {
+                "accessPolicies": "[parameters('fhirAccessPolicies')]",
+                "authenticationConfiguration": {
+                    "audience": "[concat('https://', variables('apiName'), '-', parameters('fhirName'), '.fhir.azurehealthcareapis.com')]",
+                    "authority": "[concat('https://login.microsoftonline.com/', subscription().tenantId)]",
+                    "smartProxyEnabled": "[parameters('enableSmartProxyForFhir')]"
+                },
+                "corsConfiguration": {
+                    "allowCredentials": false,
+                    "headers": [
+                        "*"
+                    ],
+                    "maxAge": 1440,
+                    "methods": [
+                        "DELETE",
+                        "GET",
+                        "OPTIONS",
+                        "PATCH",
+                        "POST",
+                        "PUT"
+                    ],
+                    "origins": [
+                        "https://localhost:6001"
+                    ]
+                },
+                "exportConfiguration": {
+                    "storageAccountName": "[if(not(empty(parameters('storageAccountName'))), parameters('storageAccountName'), json('null'))]"
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "principalId": {
+            "type": "string",
+            "value": "[if(equals(parameters('enableManagedIdentity'), 'Yes'), reference(parameters('fhirName'), '2021-06-01-preview', 'Full').identity.principalId, 'na')]"
+        }
+    }
+}

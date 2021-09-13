@@ -1,0 +1,35 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "logAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "healthCareApiName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "fhirName": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.HealthCareApis/workspaces/fhirservices/providers/diagnosticSettings",
+            "apiVersion": "2021-05-01-preview",
+            "name": "[concat(parameters('healthCareApiName'), '/', parameters('fhirName'), '/', 'Microsoft.Insights/setByYou')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
+                "logs": [
+                    {
+                        "category": "AuditLogs",
+                        "enabled": true
+                    }
+                ]
+            }
+        }
+    ]
+}
