@@ -1,0 +1,131 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "healthCareApiName": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "fhirName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "enableManagedIdentity": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
+        },
+        "iotConnectorName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "destinationName": {
+            "type": "string"
+        },
+        "fullyQualifiedEventHubNameSpace": {
+            "type": "string"
+        },
+        "consumerGroupName": {
+            "type": "string"
+        },
+        "eventHubName": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "apiName": "[toLower(parameters('healthCareApiName'))]",
+        "managedIdentity": {
+            "type": "SystemAssigned"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.HealthCareApis/workspaces/iotconnectors",
+            "apiVersion": "2021-06-01-preview",
+            "name": "[concat(variables('apiName'), '/', parameters('iotConnectorName'))]",
+            "location": "[parameters('location')]",
+            "identity": "[if(equals(parameters('enableManagedIdentity'), 'Yes'), variables('managedIdentity'), json('null'))]",
+            "properties": {
+                "ingestionEndpointConfiguration": {
+                    "eventHubName": "[parameters('eventHubName')]",
+                    "consumerGroup": "[parameters('consumerGroupName')]",
+                    "fullyQualifiedEventHubNamespace": "[parameters('fullyQualifiedEventHubNamespace')]"
+                },
+                "deviceMapping": {
+                    "content": {
+                        "templateType": "CollectionContent",
+                        "template": [
+                            {
+                                "templateType": "JsonPathContent",
+                                "template": {
+                                    "typeName": "heartrate",
+                                    "typeMatchExpression": "$..[?(@heartrate)]",
+                                    "deviceIdExpression": "$.deviceid",
+                                    "timestampExpression": "$.measurementdatetime",
+                                    "values": [
+                                        {
+                                            "required": "true",
+                                            "valueExpression": "$.heartrate",
+                                            "valueName": "Heart rate"
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.HealthcareApis/workspaces/iotconnectors/fhirdestinations",
+            "apiVersion": "2021-06-01-preview",
+            "name": "[concat(variables('apiName'), '/' , parameters('iotConnectorName'),'/', parameters('destinationName'))]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.HealthcareApis/workspaces/iotconnectors', variables('apiName'), parameters('iotConnectorName'))]"
+            ],
+            "properties": {
+                "resourceIdentityResolutionType": "Create",
+                "fhirServiceResourceId": "[resourceId('Microsoft.HealthCareApis/workspaces/fhirservices/', variables('apiName'), parameters('fhirName'))]",
+                "fhirMapping": {
+                    "content": {
+                        "templateType": "CollectionFhirTemplate",
+                        "template": [
+                            {
+                                "templateType": "CodeValueFhir",
+                                "template": {
+                                    "codes": [
+                                        {
+                                            "code": "8867-4",
+                                            "system": "http://loinc.org",
+                                            "display": "Heart rate"
+                                        }
+                                    ],
+                                    "periodInterval": 60,
+                                    "typeName": "heartrate",
+                                    "value": {
+                                        "defaultPeriod": 5000,
+                                        "unit": "count/min",
+                                        "valueName": "hr",
+                                        "valueType": "SampledData"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "principalId": {
+            "type": "string",
+            "value": "[if(equals(parameters('enableManagedIdentity'), 'Yes'), reference(parameters('iotConnectorName'), '2021-06-01-preview', 'Full').identity.principalId, 'na')]"
+        }
+    }
+}

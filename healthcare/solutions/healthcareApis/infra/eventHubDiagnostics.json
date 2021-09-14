@@ -1,0 +1,65 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "logAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "eventHubNamespaceName": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.EventHub/namespaces/providers/diagnosticSettings",
+            "apiVersion": "2021-05-01-preview",
+            "name": "[concat(parameters('eventHubNamespaceName'), '/', 'Microsoft.Insights/setByYou')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
+                "logs": [
+                    {
+                        "category": "ArchiveLogs",
+                        "enabled": true
+                    },
+                    {
+                        "category": "OperationalLogs",
+                        "enabled": true
+                    },
+                    {
+                        "category": "AutoScaleLogs",
+                        "enabled": true
+                    },
+                    {
+                        "category": "KafkaCoordinatorLogs",
+                        "enabled": true
+                    },
+                    {
+                        "category": "KafkaUserErrorLogs",
+                        "enabled": true
+                    },
+                    {
+                        "category": "EventHubVNetConnectionEvent",
+                        "enabled": true
+                    },
+                    {
+                        "category": "CustomerManagedKeyUserLogs",
+                        "enabled": true
+                    }
+                ],
+                "metrics": [
+                    {
+                        "timeGrain": "PT1M",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "enabled": false,
+                            "days": 0
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

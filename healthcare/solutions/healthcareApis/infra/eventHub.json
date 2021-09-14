@@ -1,0 +1,74 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "eventHubNamespaceName": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "eventHubName": "[concat(parameters('eventHubNamespaceName'), '-ehub')]",
+        "consumerName": "[concat(parameters('eventHubNamespaceName'), '-con')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.EventHub/namespaces",
+            "apiVersion": "2021-01-01-preview",
+            "name": "[parameters('eventHubNamespaceName')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "Standard",
+                "tier": "Standard",
+                "capacity": 1
+            },
+            "properties": {
+                "isAutoInflateEnabled": false,
+                "maximumThroughputUnits": 0
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs",
+            "apiVersion": "2021-01-01-preview",
+            "name": "[concat(parameters('eventHubNamespaceName'), '/', variables('eventHubName'))]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('eventHubNamespaceName'))]"
+            ],
+            "properties": {
+                "messageRetentionInDays": 7,
+                "partitionCount": 1
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2021-01-01-preview",
+            "name": "[concat(parameters('eventHubNamespaceName'), '/', variables('eventHubName'), '/', variables('consumerName'))]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('eventHubNamespaceName'), variables('eventHubName'))]"
+            ],
+            "properties": {}
+        }
+    ],
+    "outputs": {
+        "namespaceName": {
+            "type": "string",
+            "value": "[parameters('eventHubNamespaceName')]"
+        },
+        "eventHubName": {
+            "type": "string",
+            "value": "[variables('eventHubName')]"
+        },
+        "consumerGroupName": {
+            "type": "string",
+            "value": "[variables('consumerName')]"
+        },
+        "fqdnServiceEndpoint": {
+            "type": "string",
+            "value": "[concat(parameters('eventHubNamespaceName'), '.servicebus.windows.net')]"
+        }
+    }
+}

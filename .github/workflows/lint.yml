@@ -16,11 +16,13 @@ jobs:
       - name: Check Out Repository
         id: checkout_repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       # Lint ARM templates
       - name: Lint
         id: arm_lint
-        uses: github/super-linter@v3
+        uses: github/super-linter@v4
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: main
