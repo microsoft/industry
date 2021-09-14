@@ -25,8 +25,8 @@ param tags object = {}
 param enableRoleAssignments bool = false
 @description('Specifies whether the Azure Healthbot should be enabled.')
 param enableHealthBot bool = true
-@description('Specifies the storage account file system resource id used for FHIR.')
-param fhirStorageAccountId string
+@description('Specifies the storage account file system resource id used for FHIR exports.')
+param fhirExportStorageAccountFileSystemId string
 @description('Specifies the iot device mapping.')
 param iotDeviceMapping object = {}
 @description('Specifies the fhir mapping.')
@@ -50,9 +50,9 @@ var eventhubNamespace001Name = '${name}-eventhub001'
 var containerRegistry001Name = '${name}-containerregistry001'
 var healthcareApi001Name = '${name}-hapi001'
 var healthcareBot001Name = '${name}-hbot001'
-var fhirStorageAccountSubscriptionId = length(split(fhirStorageAccountId, '/')) >= 9 ? split(fhirStorageAccountId, '/')[2] : subscription().subscriptionId
-var fhirStorageAccountResourceGroupName = length(split(fhirStorageAccountId, '/')) >= 9 ? split(fhirStorageAccountId, '/')[4] : resourceGroup().name
-var fhirStorageAccountName = length(split(fhirStorageAccountId, '/')) >= 9 ? last(split(fhirStorageAccountId, '/')) : 'incorrectSegmentLength'
+var fhirStorageAccountSubscriptionId = length(split(fhirExportStorageAccountFileSystemId, '/')) >= 13 ? split(fhirExportStorageAccountFileSystemId, '/')[2] : subscription().subscriptionId
+var fhirStorageAccountResourceGroupName = length(split(fhirExportStorageAccountFileSystemId, '/')) >= 13 ? split(fhirExportStorageAccountFileSystemId, '/')[4] : resourceGroup().name
+var fhirStorageAccountName = length(split(fhirExportStorageAccountFileSystemId, '/')) >= 13 ? split(fhirExportStorageAccountFileSystemId, '/')[8] : 'incorrectSegmentLength'
 
 // Resources
 module eventhubNamespace001 'modules/services/eventhubnamespace.bicep' = {
@@ -108,7 +108,7 @@ module healthcareApi001RoleAssignmentStorage 'modules/auxiliary/healthcareapiFhi
   scope: resourceGroup(fhirStorageAccountSubscriptionId, fhirStorageAccountResourceGroupName)
   params: {
     healthcareapiFhirId: healthcareApi001.outputs.healthcareapiFhirId
-    storageAccountId: fhirStorageAccountId
+    storageAccountFileSystemId: fhirExportStorageAccountFileSystemId
   }
 }
 

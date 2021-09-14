@@ -20,8 +20,8 @@
         "enableHealthBot": {
             "value": true
         },
-        "fhirStorageAccountId": {
-            "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/healthcare/providers/Microsoft.Storage/storageAccounts/mabusshealthstorage"
+        "fhirExportStorageAccountFileSystemId": {
+            "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/healthcare/providers/Microsoft.Storage/storageAccounts/mabusshealthstorage/blobServices/default/containers/healthcare"
         },
         "iotDeviceMapping": {
             "value": {

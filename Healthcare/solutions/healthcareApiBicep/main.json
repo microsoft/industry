@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "17875577160836821097"
+      "templateHash": "18153395474460784637"
     }
   },
   "parameters": {
@@ -56,10 +56,10 @@
         "description": "Specifies whether the Azure Healthbot should be enabled."
       }
     },
-    "fhirStorageAccountId": {
+    "fhirExportStorageAccountFileSystemId": {
       "type": "string",
       "metadata": {
-        "description": "Specifies the storage account file system resource id used for FHIR."
+        "description": "Specifies the storage account file system resource id used for FHIR exports."
       }
     },
     "iotDeviceMapping": {
@@ -111,9 +111,9 @@
     "containerRegistry001Name": "[format('{0}-containerregistry001', variables('name'))]",
     "healthcareApi001Name": "[format('{0}-hapi001', variables('name'))]",
     "healthcareBot001Name": "[format('{0}-hbot001', variables('name'))]",
-    "fhirStorageAccountSubscriptionId": "[if(greaterOrEquals(length(split(parameters('fhirStorageAccountId'), '/')), 9), split(parameters('fhirStorageAccountId'), '/')[2], subscription().subscriptionId)]",
-    "fhirStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('fhirStorageAccountId'), '/')), 9), split(parameters('fhirStorageAccountId'), '/')[4], resourceGroup().name)]",
-    "fhirStorageAccountName": "[if(greaterOrEquals(length(split(parameters('fhirStorageAccountId'), '/')), 9), last(split(parameters('fhirStorageAccountId'), '/')), 'incorrectSegmentLength')]"
+    "fhirStorageAccountSubscriptionId": "[if(greaterOrEquals(length(split(parameters('fhirExportStorageAccountFileSystemId'), '/')), 13), split(parameters('fhirExportStorageAccountFileSystemId'), '/')[2], subscription().subscriptionId)]",
+    "fhirStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('fhirExportStorageAccountFileSystemId'), '/')), 13), split(parameters('fhirExportStorageAccountFileSystemId'), '/')[4], resourceGroup().name)]",
+    "fhirStorageAccountName": "[if(greaterOrEquals(length(split(parameters('fhirExportStorageAccountFileSystemId'), '/')), 13), split(parameters('fhirExportStorageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]"
   },
   "resources": [
     {
@@ -789,8 +789,8 @@
           "healthcareapiFhirId": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'healthcareApi001'), '2019-10-01').outputs.healthcareapiFhirId.value]"
           },
-          "storageAccountId": {
-            "value": "[parameters('fhirStorageAccountId')]"
+          "storageAccountFileSystemId": {
+            "value": "[parameters('fhirExportStorageAccountFileSystemId')]"
           }
         },
         "template": {
@@ -800,11 +800,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "2986010124291481587"
+              "templateHash": "9813881695213099000"
             }
           },
           "parameters": {
-            "storageAccountId": {
+            "storageAccountFileSystemId": {
               "type": "string"
             },
             "healthcareapiFhirId": {
@@ -813,7 +813,8 @@
           },
           "functions": [],
           "variables": {
-            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountId'), '/')), 9), last(split(parameters('storageAccountId'), '/')), 'incorrectSegmentLength')]",
+            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), split(parameters('storageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]",
+            "storageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), last(split(parameters('storageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
             "healthcareapiSubscriptionId": "[if(greaterOrEquals(length(split(parameters('healthcareapiFhirId'), '/')), 11), split(parameters('healthcareapiFhirId'), '/')[2], subscription().subscriptionId)]",
             "healthcareapiResourceGroupName": "[if(greaterOrEquals(length(split(parameters('healthcareapiFhirId'), '/')), 11), split(parameters('healthcareapiFhirId'), '/')[4], resourceGroup().name)]",
             "healthcareapiName": "[if(greaterOrEquals(length(split(parameters('healthcareapiFhirId'), '/')), 11), split(parameters('healthcareapiFhirId'), '/')[8], 'incorrectSegmentLength')]",
@@ -823,8 +824,8 @@
             {
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2020-04-01-preview",
-              "scope": "[format('Microsoft.Storage/storageAccounts/{0}', variables('storageAccountName'))]",
-              "name": "[guid(uniqueString(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('healthcareapiSubscriptionId'), variables('healthcareapiResourceGroupName')), 'Microsoft.HealthcareApis/workspaces/fhirservices', variables('healthcareapiName'), variables('healthcareapiFhirName'))))]",
+              "scope": "[format('Microsoft.Storage/storageAccounts/{0}/blobServices/{1}/containers/{2}', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName'))]",
+              "name": "[guid(uniqueString(resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName')), extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('healthcareapiSubscriptionId'), variables('healthcareapiResourceGroupName')), 'Microsoft.HealthcareApis/workspaces/fhirservices', variables('healthcareapiName'), variables('healthcareapiFhirName'))))]",
               "properties": {
                 "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
                 "principalId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('healthcareapiSubscriptionId'), variables('healthcareapiResourceGroupName')), 'Microsoft.HealthcareApis/workspaces/fhirservices', variables('healthcareapiName'), variables('healthcareapiFhirName')), '2021-06-01-preview', 'full').identity.principalId]"
