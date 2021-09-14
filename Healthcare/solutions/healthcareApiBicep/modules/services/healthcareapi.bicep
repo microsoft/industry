@@ -18,6 +18,7 @@ param privateDnsZoneIdHealthcareApi string = ''
 ])
 param healthcareapiFhirVersion string = 'fhir-R4'
 param healthcareapiFhirStorageAccountName string = ''
+param healthcareapiFhirContainerRegistryLoginServers array = []
 
 // IoTConnector Parameters
 param healthcareapiIotDeviceMapping object  // Sample: '{ "templateType": "CollectionContent", "template": [] }'
@@ -97,7 +98,7 @@ resource healthcareapiFhir 'Microsoft.HealthcareApis/workspaces/fhirservices@202
       smartProxyEnabled: false
     }
     acrConfiguration: {
-      loginServers: []
+      loginServers: healthcareapiFhirContainerRegistryLoginServers
     }
     corsConfiguration: {
       allowCredentials: false

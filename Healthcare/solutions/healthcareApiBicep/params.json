@@ -17,6 +17,9 @@
         "enableRoleAssignments": {
             "value": true
         },
+        "enableHealthBot": {
+            "value": true
+        },
         "fhirStorageAccountId": {
             "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/healthcare/providers/Microsoft.Storage/storageAccounts/mabusshealthstorage"
         },
@@ -36,6 +39,9 @@
             "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/healthcare-bicep/providers/Microsoft.Network/virtualNetworks/testvnet/subnets/default"
         },
         "privateDnsZoneIdEventhubNamespace": {
+            "value": ""
+        },
+        "privateDnsZoneIdContainerRegistry": {
             "value": ""
         },
         "privateDnsZoneIdHealthcareApi": {

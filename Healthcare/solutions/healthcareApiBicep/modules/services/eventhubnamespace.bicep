@@ -23,7 +23,7 @@ var eventHub001ConsumerGroupName = 'healthcareapiiot'
 var eventhubNamespacePrivateEndpointName = '${eventhubNamespace.name}-private-endpoint'
 
 // Resources
-resource eventhubNamespace 'Microsoft.EventHub/namespaces@2021-01-01-preview' = {
+resource eventhubNamespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' = {
   name: eventhubnamespaceName
   location: location
   tags: tags
@@ -40,10 +40,23 @@ resource eventhubNamespace 'Microsoft.EventHub/namespaces@2021-01-01-preview' = 
     kafkaEnabled: true
     maximumThroughputUnits: eventhubnamespaceMaxThroughput
     zoneRedundant: true
+    disableLocalAuth: false
   }
 }
 
-resource eventhub001 'Microsoft.EventHub/namespaces/eventhubs@2021-01-01-preview' = {  // Uncomment to deploy an Event Hub in the namespace
+resource eventhubNamespaceNetworkRuleSets 'Microsoft.EventHub/namespaces/networkRuleSets@2021-06-01-preview' = {
+  name: 'default'
+  parent: eventhubNamespace
+  properties: {
+    defaultAction: 'Deny'
+    ipRules: []
+    virtualNetworkRules: []
+    publicNetworkAccess: 'Enabled'
+    trustedServiceAccessEnabled: true
+  }
+}
+
+resource eventhub001 'Microsoft.EventHub/namespaces/eventhubs@2021-06-01-preview' = {  // Uncomment to deploy an Event Hub in the namespace
   parent: eventhubNamespace
   name: eventhub001Name
   properties: {

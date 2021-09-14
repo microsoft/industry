@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "8052746599742551528"
+      "templateHash": "17875577160836821097"
     }
   },
   "parameters": {
@@ -49,6 +49,13 @@
         "description": "Specifies whether role assignments should be enabled."
       }
     },
+    "enableHealthBot": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Specifies whether the Azure Healthbot should be enabled."
+      }
+    },
     "fhirStorageAccountId": {
       "type": "string",
       "metadata": {
@@ -82,6 +89,13 @@
         "description": "Specifies the resource ID of the private DNS zone for EventHub Namespaces."
       }
     },
+    "privateDnsZoneIdContainerRegistry": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the resource ID of the private DNS zone for Container Registry."
+      }
+    },
     "privateDnsZoneIdHealthcareApi": {
       "type": "string",
       "defaultValue": "",
@@ -94,7 +108,9 @@
   "variables": {
     "name": "[toLower(format('{0}-{1}', parameters('prefix'), parameters('environment')))]",
     "eventhubNamespace001Name": "[format('{0}-eventhub001', variables('name'))]",
+    "containerRegistry001Name": "[format('{0}-containerregistry001', variables('name'))]",
     "healthcareApi001Name": "[format('{0}-hapi001', variables('name'))]",
+    "healthcareBot001Name": "[format('{0}-hbot001', variables('name'))]",
     "fhirStorageAccountSubscriptionId": "[if(greaterOrEquals(length(split(parameters('fhirStorageAccountId'), '/')), 9), split(parameters('fhirStorageAccountId'), '/')[2], subscription().subscriptionId)]",
     "fhirStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('fhirStorageAccountId'), '/')), 9), split(parameters('fhirStorageAccountId'), '/')[4], resourceGroup().name)]",
     "fhirStorageAccountName": "[if(greaterOrEquals(length(split(parameters('fhirStorageAccountId'), '/')), 9), last(split(parameters('fhirStorageAccountId'), '/')), 'incorrectSegmentLength')]"
@@ -139,7 +155,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "9796843697030289654"
+              "templateHash": "6414156545579612860"
             }
           },
           "parameters": {
@@ -179,7 +195,7 @@
           "resources": [
             {
               "type": "Microsoft.EventHub/namespaces",
-              "apiVersion": "2021-01-01-preview",
+              "apiVersion": "2021-06-01-preview",
               "name": "[parameters('eventhubnamespaceName')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -195,12 +211,28 @@
                 "isAutoInflateEnabled": true,
                 "kafkaEnabled": true,
                 "maximumThroughputUnits": "[parameters('eventhubnamespaceMaxThroughput')]",
-                "zoneRedundant": true
+                "zoneRedundant": true,
+                "disableLocalAuth": false
               }
             },
             {
+              "type": "Microsoft.EventHub/namespaces/networkRuleSets",
+              "apiVersion": "2021-06-01-preview",
+              "name": "[format('{0}/{1}', parameters('eventhubnamespaceName'), 'default')]",
+              "properties": {
+                "defaultAction": "Deny",
+                "ipRules": [],
+                "virtualNetworkRules": [],
+                "publicNetworkAccess": "Enabled",
+                "trustedServiceAccessEnabled": true
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('eventhubnamespaceName'))]"
+              ]
+            },
+            {
               "type": "Microsoft.EventHub/namespaces/eventhubs",
-              "apiVersion": "2021-01-01-preview",
+              "apiVersion": "2021-06-01-preview",
               "name": "[format('{0}/{1}', parameters('eventhubnamespaceName'), variables('eventhub001Name'))]",
               "properties": {
                 "messageRetentionInDays": 3,
@@ -293,6 +325,165 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
+      "name": "containerRegistry001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
+          "privateDnsZoneIdContainerRegistry": {
+            "value": "[parameters('privateDnsZoneIdContainerRegistry')]"
+          },
+          "containerRegistryName": {
+            "value": "[variables('containerRegistry001Name')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "15090062037117521675"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "subnetId": {
+              "type": "string"
+            },
+            "containerRegistryName": {
+              "type": "string"
+            },
+            "privateDnsZoneIdContainerRegistry": {
+              "type": "string",
+              "defaultValue": ""
+            }
+          },
+          "functions": [],
+          "variables": {
+            "containerRegistryNameCleaned": "[replace(parameters('containerRegistryName'), '-', '')]",
+            "containerRegistryPrivateEndpointName": "[format('{0}-private-endpoint', variables('containerRegistryNameCleaned'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.ContainerRegistry/registries",
+              "apiVersion": "2021-06-01-preview",
+              "name": "[variables('containerRegistryNameCleaned')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "sku": {
+                "name": "Premium"
+              },
+              "properties": {
+                "adminUserEnabled": true,
+                "anonymousPullEnabled": false,
+                "dataEndpointEnabled": false,
+                "networkRuleBypassOptions": "AzureServices",
+                "networkRuleSet": {
+                  "defaultAction": "Deny",
+                  "ipRules": [],
+                  "virtualNetworkRules": []
+                },
+                "policies": {
+                  "quarantinePolicy": {
+                    "status": "enabled"
+                  },
+                  "retentionPolicy": {
+                    "status": "enabled",
+                    "days": 7
+                  },
+                  "trustPolicy": {
+                    "status": "disabled",
+                    "type": "Notary"
+                  }
+                },
+                "publicNetworkAccess": "Enabled"
+              }
+            },
+            {
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2020-11-01",
+              "name": "[variables('containerRegistryPrivateEndpointName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "manualPrivateLinkServiceConnections": [],
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "[variables('containerRegistryPrivateEndpointName')]",
+                    "properties": {
+                      "groupIds": [
+                        "registry"
+                      ],
+                      "privateLinkServiceId": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryNameCleaned'))]",
+                      "requestMessage": ""
+                    }
+                  }
+                ],
+                "subnet": {
+                  "id": "[parameters('subnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryNameCleaned'))]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('privateDnsZoneIdContainerRegistry')))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2020-11-01",
+              "name": "[format('{0}/{1}', variables('containerRegistryPrivateEndpointName'), 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "[format('{0}-arecord', variables('containerRegistryPrivateEndpointName'))]",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('privateDnsZoneIdContainerRegistry')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('containerRegistryPrivateEndpointName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "containerRegistryId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryNameCleaned'))]"
+            },
+            "containerRegistryLoginServer": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryNameCleaned'))).loginServer]"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "healthcareApi001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -309,17 +500,22 @@
           "subnetId": {
             "value": "[parameters('subnetId')]"
           },
-          "healthcareapiFhirVersion": {
-            "value": "fhir-R4"
-          },
           "privateDnsZoneIdHealthcareApi": {
             "value": "[parameters('privateDnsZoneIdHealthcareApi')]"
           },
           "healthcareapiName": {
             "value": "[variables('healthcareApi001Name')]"
           },
+          "healthcareapiFhirVersion": {
+            "value": "fhir-R4"
+          },
           "healthcareapiFhirStorageAccountName": {
             "value": "[variables('fhirStorageAccountName')]"
+          },
+          "healthcareapiFhirContainerRegistryLoginServers": {
+            "value": [
+              "[reference(resourceId('Microsoft.Resources/deployments', 'containerRegistry001'), '2019-10-01').outputs.containerRegistryLoginServer.value]"
+            ]
           },
           "healthcareapiIotEventhubName": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001'), '2019-10-01').outputs.eventhub001Name.value]"
@@ -344,7 +540,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "5919009700492757365"
+              "templateHash": "2795051290783660244"
             }
           },
           "parameters": {
@@ -375,6 +571,10 @@
             "healthcareapiFhirStorageAccountName": {
               "type": "string",
               "defaultValue": ""
+            },
+            "healthcareapiFhirContainerRegistryLoginServers": {
+              "type": "array",
+              "defaultValue": []
             },
             "healthcareapiIotDeviceMapping": {
               "type": "object"
@@ -475,7 +675,7 @@
                   "smartProxyEnabled": false
                 },
                 "acrConfiguration": {
-                  "loginServers": []
+                  "loginServers": "[parameters('healthcareapiFhirContainerRegistryLoginServers')]"
                 },
                 "corsConfiguration": {
                   "allowCredentials": false,
@@ -569,6 +769,7 @@
         }
       },
       "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'containerRegistry001')]",
         "[resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001')]"
       ]
     },
@@ -635,6 +836,74 @@
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', 'healthcareApi001')]"
       ]
+    },
+    {
+      "condition": "[parameters('enableHealthBot')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "healthcareBot001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "healthcarebotName": {
+            "value": "[variables('healthcareBot001Name')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "4830777896735165618"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "healthcarebotName": {
+              "type": "string"
+            },
+            "healthcarebotSku": {
+              "type": "string",
+              "defaultValue": "S1",
+              "allowedValues": [
+                "F0",
+                "C0",
+                "S1"
+              ]
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.HealthBot/healthBots",
+              "apiVersion": "2020-12-08",
+              "name": "[parameters('healthcarebotName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "sku": {
+                "name": "[parameters('healthcarebotSku')]"
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
     }
   ]
 }

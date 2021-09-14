@@ -23,6 +23,8 @@ param tags object = {}
 // Resource parameters
 @description('Specifies whether role assignments should be enabled.')
 param enableRoleAssignments bool = false
+@description('Specifies whether the Azure Healthbot should be enabled.')
+param enableHealthBot bool = true
 @description('Specifies the storage account file system resource id used for FHIR.')
 param fhirStorageAccountId string
 @description('Specifies the iot device mapping.')
@@ -37,13 +39,17 @@ param subnetId string
 // Private DNS Zone parameters
 @description('Specifies the resource ID of the private DNS zone for EventHub Namespaces.')
 param privateDnsZoneIdEventhubNamespace string = ''
+@description('Specifies the resource ID of the private DNS zone for Container Registry.')
+param privateDnsZoneIdContainerRegistry string = ''
 @description('Specifies the resource ID of the private DNS zone for healthcare API workspaces.')
 param privateDnsZoneIdHealthcareApi string = ''
 
 // Variables
 var name = toLower('${prefix}-${environment}')
 var eventhubNamespace001Name = '${name}-eventhub001'
+var containerRegistry001Name = '${name}-containerregistry001'
 var healthcareApi001Name = '${name}-hapi001'
+var healthcareBot001Name = '${name}-hbot001'
 var fhirStorageAccountSubscriptionId = length(split(fhirStorageAccountId, '/')) >= 9 ? split(fhirStorageAccountId, '/')[2] : subscription().subscriptionId
 var fhirStorageAccountResourceGroupName = length(split(fhirStorageAccountId, '/')) >= 9 ? split(fhirStorageAccountId, '/')[4] : resourceGroup().name
 var fhirStorageAccountName = length(split(fhirStorageAccountId, '/')) >= 9 ? last(split(fhirStorageAccountId, '/')) : 'incorrectSegmentLength'
@@ -63,6 +69,18 @@ module eventhubNamespace001 'modules/services/eventhubnamespace.bicep' = {
   }
 }
 
+module containerRegistry001 'modules/services/containerregistry.bicep' = {
+  name: 'containerRegistry001'
+  scope: resourceGroup()
+  params: {
+    location: location
+    tags: tags
+    subnetId: subnetId
+    privateDnsZoneIdContainerRegistry: privateDnsZoneIdContainerRegistry
+    containerRegistryName: containerRegistry001Name
+  }  
+}
+
 module healthcareApi001 'modules/services/healthcareapi.bicep' = {
   name: 'healthcareApi001'
   scope: resourceGroup()
@@ -70,10 +88,13 @@ module healthcareApi001 'modules/services/healthcareapi.bicep' = {
     location: location
     tags: tags
     subnetId: subnetId
-    healthcareapiFhirVersion: 'fhir-R4'
     privateDnsZoneIdHealthcareApi: privateDnsZoneIdHealthcareApi
     healthcareapiName: healthcareApi001Name
+    healthcareapiFhirVersion: 'fhir-R4'
     healthcareapiFhirStorageAccountName: fhirStorageAccountName
+    healthcareapiFhirContainerRegistryLoginServers: [
+      containerRegistry001.outputs.containerRegistryLoginServer
+    ]
     healthcareapiIotEventhubName: eventhubNamespace001.outputs.eventhub001Name
     healthcareapiIotEventhubConsumerGroupName: eventhubNamespace001.outputs.eventhub001ConsumerGroupName
     healthcareapiIotEventhubNamespaceFqdn: eventhubNamespace001.outputs.eventhubNamespaceFqdn
@@ -91,5 +112,14 @@ module healthcareApi001RoleAssignmentStorage 'modules/auxiliary/healthcareapiFhi
   }
 }
 
-// Outputs
+module healthcareBot001 'modules/services/healthcarebot.bicep' = if(enableHealthBot) {
+  name: 'healthcareBot001'
+  scope: resourceGroup()
+  params: {
+    location: location
+    tags: tags
+    healthcarebotName: healthcareBot001Name
+  }
+}
 
+// Outputs
