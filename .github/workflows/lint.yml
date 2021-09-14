@@ -16,6 +16,8 @@ jobs:
       - name: Check Out Repository
         id: checkout_repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       # Lint ARM templates
       - name: Lint
