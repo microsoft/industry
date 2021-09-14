@@ -18,8 +18,8 @@ The following reference architectures and reference implementations can be used 
 
 | Industry Architecture | Description | Deploy |
 |:----------------------|:------------|--------|
-| Microsoft Cloud for Healthcare Industry | Cloud Foundation that spans across Azure, Power Platform, and Microsoft 365 for Telco|[![Deploy To Azure](https://docs.microsoft.com/en-us/azure/templates/media/deploy-to-azure.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealth%2Fri%2FhealthArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealth%2Fri%2Fhealth-portal.json)|
-| Healthcare APIs | Healthcare APIs solution including FHIR, Dicom, IoT, and sync agent with D365 | [![Deploy To Azure](https://docs.microsoft.com/en-us/azure/templates/media/deploy-to-azure.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealth%2Fsolutions%2FhealthcareApis%2Fmc4h.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealth%2Fsolutions%2FhealthcareApis%2Fmc4hAzure.json)|
+| Microsoft Cloud for Healthcare Industry | Cloud Foundation that spans across Azure, Power Platform, and Microsoft 365 for Telco|[![Deploy To Microsoft Cloud](./docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealth%2Fri%2FhealthArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealth%2Fri%2Fhealth-portal.json)|
+| Healthcare APIs | Healthcare APIs solution including FHIR, Dicom, IoT, and sync agent with D365 | [![Deploy To Microsoft Cloud](./docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealth%2Fsolutions%2FhealthcareApis%2Fmc4h.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealth%2Fsolutions%2FhealthcareApis%2Fmc4hAzure.json)|
 
 ![Healthcare Industry Reference Architecture](./healthcare/docs/mc4h-reference-architecture.png)
 
@@ -29,7 +29,7 @@ The following reference architectures and reference implementations can be used 
 
 | Industry Architecture | Description | Deploy |
 |:----------------------|:------------|--------|
-| Microsoft Cloud for Telco Industry | Cloud Foundation that spans across Azure, Power Platform, and Microsoft 365 for Telco industry and workloads |[![Deploy To Azure](https://docs.microsoft.com/en-us/azure/templates/media/deploy-to-azure.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Ftelco%2Fri%2FtelcoArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Ftelco%2Fri%2Ftelco-portal.json)
+| Microsoft Cloud for Telco Industry | Cloud Foundation that spans across Azure, Power Platform, and Microsoft 365 for Telco industry and workloads |[![Deploy To Microsoft Cloud](./docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Ftelco%2Fri%2FtelcoArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Ftelco%2Fri%2Ftelco-portal.json)
 
 ## Contributing
 
