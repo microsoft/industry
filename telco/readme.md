@@ -1,6 +1,6 @@
 # Telecommunications Industry Reference Architecture
 
-Customers in the Telecoomunications (or Telco) industry have a unique set of requirements compared to enterprises or customers in other industries. Such requirements include:
+Customers in the Telecommunications (or Telco) industry have a unique set of requirements compared to enterprises or customers in other industries. Such requirements include:
 
 * Delivery of networking services that consume large amounts of bandwidth and are sensitive to latency and jitter on the network (for example, video or streaming).
 * Provide networking and end-user services to consumers (for example, firewall or storage capacity as added value services on top of an internet line at home).
