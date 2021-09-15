@@ -25,7 +25,7 @@ The following reference architectures and reference implementations can be used 
 
 ### Telecommunications
 
-The following reference architectures and reference implementations can be used to accelerate your journey on Microsoft Cloud for Telco industry, enabling your Microsoft tenant with the core foundations across the cloud platforms, and instantiate proven architectures for Healthcare specific solutions.
+The following reference architectures and reference implementations can be used to accelerate your journey on Microsoft Cloud for Telco industry, enabling your Microsoft tenant with the core foundations across the cloud platforms, and instantiate proven architectures for Telco specific solutions.
 
 | Industry Architecture | Description | Deploy |
 |:----------------------|:------------|--------|
