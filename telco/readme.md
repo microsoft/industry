@@ -1,5 +1,9 @@
 # Telecommunications Industry Reference Architecture
 
+| Industry Architecture | Description | Deploy |
+|:----------------------|:------------|--------|
+| Microsoft Cloud for Telco Industry | Cloud Foundation that spans across Azure, Power Platform, and Microsoft 365 for Telco industry and workloads |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Ftelco%2Fri%2FtelcoArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Ftelco%2Fri%2Ftelco-portal.json)
+
 Customers in the Telecommunications (or Telco) industry have a unique set of requirements compared to enterprises or customers in other industries. Such requirements include:
 
 * Delivery of networking services that consume large amounts of bandwidth and are sensitive to latency and jitter on the network (for example, video or streaming).
