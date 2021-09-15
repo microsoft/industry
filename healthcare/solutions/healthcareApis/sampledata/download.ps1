@@ -12,17 +12,14 @@ function DownloadFilesFromRepo {
         [string]$Path,
         [string]$fhirservice
         )
-    
         $baseUri = "https://api.github.com/"
         $wr = Invoke-WebRequest -Uri $($baseuri+$args)
         $objects = $wr.Content | ConvertFrom-Json
         $files = $objects | Where-Object {$_.type -eq "file"} | Select-Object -exp download_url
         $directories = $objects | Where-Object {$_.type -eq "dir"}
-        
         $directories | ForEach-Object {
             DownloadFilesFromRepo -Owner $Owner -Repository $Repository -Path $_.path -DestinationPath $($DestinationPath+$_.name)
         }
-
         foreach ($file in $files[0]) {
             $dlfile = Invoke-WebRequest -Uri $file
             try {
@@ -38,5 +35,4 @@ function DownloadFilesFromRepo {
             }
         }
     }
-
     DownloadFilesFromRepo -Owner 'esbran' -Repository 'CatHealthAPI' -Path 'sampledata/fhir/' -fhirservice 'https://eshealthapi-espenhealthfhir.fhir.azurehealthcareapis.com'
