@@ -1,4 +1,3 @@
-
 #Connect-AzAccount -Tenant "<Tenant ID >" -Subscription "<subscription ID>"
 
 $token = (Get-AzAccessToken -ResourceUrl $fhirservice).token
@@ -20,7 +19,7 @@ function DownloadFilesFromRepo {
         $files = $objects | Where-Object {$_.type -eq "file"} | Select-Object -exp download_url
         $directories = $objects | Where-Object {$_.type -eq "dir"}
         
-        $directories | ForEach-Object { 
+        $directories | ForEach-Object {
             DownloadFilesFromRepo -Owner $Owner -Repository $Repository -Path $_.path -DestinationPath $($DestinationPath+$_.name)
         }
 
@@ -31,7 +30,7 @@ function DownloadFilesFromRepo {
                 $FhirGetPatient = Invoke-RestMethod "$fhirservice/" `
                 -Method 'POST' `
                 -Headers $headers `
-                -Body $dlfile  
+                -Body $dlfile
 
                 Write-Host $file
             } catch {

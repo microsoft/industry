@@ -8,5 +8,5 @@ $headers.Add("Content-Type", "application/dicom")
 
 $dicomimage = Invoke-RestMethod 'https://<<your dicom service>>.dicom.azurehealthcareapis.com/2021-06-01-preview/studies' `
     -Method 'GET' `
-    -Headers $headers 
+    -Headers $headers
 Write-Verbose  $dicomimage | ConvertTo-Json

@@ -9,11 +9,9 @@ $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.Add("Authorization", "Bearer $($token)")
 $headers.Add("Content-Type", "application/json")
 
-
 $FhirGetPatient = Invoke-RestMethod "$fhirservice/" `
     -Method 'POST' `
     -Headers $headers `
     -Body $filecontent
 
     Write-Verbose $FhirGetPatient | ConvertTo-Json
-
