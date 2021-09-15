@@ -9,9 +9,9 @@ Customers in the Telecoomunications (or Telco) industry have a unique set of req
 
 This article provides a reference architecture with prescriptive guidance and recommendations for the Telco industry across the Microsoft Cloud (Power Platform, Dynamics, Microsoft 365 and Microsoft Azure).
 
-## Microsoft Azure
+## Telco Industry Architecture reference in Microsoft Azure
 
-This article describes a reference architecture in Microsoft Azure to enable the delivery of Telco specialized workloads on Microsoft Azure and at the edge.
+This article describes Telco industry reference architecture in Microsoft Azure to enable the delivery of Telco specialized workloads on Microsoft Azure and at the edge.
 
 ### High-level architecture
 
