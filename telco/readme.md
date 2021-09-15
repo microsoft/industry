@@ -9,13 +9,13 @@ Customers in the Telecommunications (or Telco) industry have a unique set of req
 
 This article provides a reference architecture with prescriptive guidance and recommendations for the Telco industry across the Microsoft Cloud (Power Platform, Dynamics, Microsoft 365 and Microsoft Azure).
 
-## Telco Industry Architecture reference in Microsoft Azure
+## Telco Industry Reference Architecture on Microsoft Azure
 
-This article describes Telco industry reference architecture in Microsoft Azure to enable the delivery of Telco specialized workloads on Microsoft Azure and at the edge.
+This article describes Telco industry reference architecture on Microsoft Azure to enable the delivery of Telco specialized workloads on Microsoft Azure and at the edge.
 
 ### High-level architecture
 
-The Telco industry reference architecture on Azure is based on an [Enterprise-Scale Landing Zone](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/architecture) foundation for the construction and operationalization of landing zones on Azure, at scale, and then it provides a specific set of recommendations to accommodate for the Telco industry requirements and scenarios as described previously on this article. The reference architecture for Telco industry on Microsoft Azure is depicted on figure 1 below:
+The Telco industry reference architecture on Microsoft Azure is based on an [Enterprise-Scale Landing Zone](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/architecture) foundation for the construction and operationalization of landing zones on Azure, at scale, and then it provides a specific set of recommendations to accommodate for the Telco industry requirements and scenarios as described previously on this article. The reference architecture for Telco industry on Microsoft Azure is depicted on figure 1 below:
 
 ![Telco industry reference architecture](./docs/telco-industry-reference-architecture.png)
 _Figure 1: Reference architecture for the telco industry on Microsoft Azure._
