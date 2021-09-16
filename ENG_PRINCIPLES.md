@@ -5,7 +5,7 @@
 ## Intro
 
 Microsoft Cloud for industries are a set of solutions tailored to specific industries and where the resource composition spans across Azure, M365, Power Platform – including D365.
-From a layering perspective, the industry specific solutions are at the top of the stack, making core assumptions that the foundational infrastructure, security, compliance, connectivity, identity and more, is present across the various Microsoft clouds for the organization. 
+From a layering perspective, the industry specific solutions are at the top of the stack, making core assumptions that the foundational infrastructure, security, compliance, connectivity, identity and more, is present across the various Microsoft clouds for the organization.
 However, there’s no such thing as a reference implementation that 1) spans across the Microsoft clouds, and 2) that have been validated with and by customers, and 3) vetted by engineering teams.
 
 This gap ultimately slows down the field, and our customers in order to realize value faster, and there’s a very high risk that customers are left with something that is bespoke and are facing a cliff as we continue to develop our clouds and offerings in the industry space.
