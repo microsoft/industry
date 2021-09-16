@@ -29,7 +29,7 @@ function DownloadFilesFromRepo {
                 -Headers $headers `
                 -Body $dlfile
 
-                Write-Host $file
+                Write-Verbose $file
             } catch {
                 throw "Unable to download '$($file)' Patient: '$($FhirGetPatient)'"
             }
