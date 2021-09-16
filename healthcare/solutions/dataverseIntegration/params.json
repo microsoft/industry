@@ -9,7 +9,7 @@
             "value": "dev"
         },
         "prefix": {
-            "value": "dataverse"
+            "value": "mydverse"
         },
         "tags": {
             "value": {}
@@ -18,25 +18,25 @@
             "value": "<your-secure-password>"
         },
         "synapseDefaultStorageAccountFileSystemId": {
-            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/dataverse-rg/providers/Microsoft.Storage/storageAccounts/dataversedl/blobServices/default/containers/synapse"
+            "value": "/subscriptions/1f6c9a98-a387-420d-853c-9d27cfda0f33/resourceGroups/mabuss-dataverse/providers/Microsoft.Storage/storageAccounts/mydversedevstorage/blobServices/default/containers/synapse"
         },
         "purviewId": {
-            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-rg/providers/Microsoft.Purview/accounts/marvtest"
+            "value": ""
         },
         "enableRoleAssignments": {
             "value": true
         },
         "subnetId": {
-            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/dataverse-rg/providers/Microsoft.Network/virtualNetworks/dataverse-vnet/subnets/default"
+            "value": "/subscriptions/1f6c9a98-a387-420d-853c-9d27cfda0f33/resourceGroups/mabuss-dataverse/providers/Microsoft.Network/virtualNetworks/mydverse-dev-vnet/subnets/default"
         },
         "privateDnsZoneIdKeyVault": {
-            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/dataverse-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
+            "value": "/subscriptions/1f6c9a98-a387-420d-853c-9d27cfda0f33/resourceGroups/mabuss-dataverse/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
         },
         "privateDnsZoneIdSynapseDev": {
-            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/dataverse-rg/providers/Microsoft.Network/privateDnsZones/privatelink.dev.azuresynapse.net"
+            "value": "/subscriptions/1f6c9a98-a387-420d-853c-9d27cfda0f33/resourceGroups/mabuss-dataverse/providers/Microsoft.Network/privateDnsZones/privatelink.dev.azuresynapse.net"
         },
         "privateDnsZoneIdSynapseSql": {
-            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/dataverse-rg/providers/Microsoft.Network/privateDnsZones/privatelink.sql.azuresynapse.net"
+            "value": "/subscriptions/1f6c9a98-a387-420d-853c-9d27cfda0f33/resourceGroups/mabuss-dataverse/providers/Microsoft.Network/privateDnsZones/privatelink.sql.azuresynapse.net"
         }
     }
 }
