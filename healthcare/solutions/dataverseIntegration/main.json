@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "7708067349362611098"
+      "templateHash": "15609941857550792068"
     }
   },
   "parameters": {
@@ -317,7 +317,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "18364487249710460520"
+              "templateHash": "13804182594025419947"
             }
           },
           "parameters": {
@@ -408,24 +408,6 @@
                   "computeSubnetId": "[parameters('synapseComputeSubnetId')]"
                 }
               }
-            },
-            {
-              "type": "Microsoft.Synapse/workspaces/sqlPools",
-              "apiVersion": "2021-03-01",
-              "name": "[format('{0}/{1}', parameters('synapseName'), 'sqlPool001')]",
-              "location": "[parameters('location')]",
-              "tags": "[parameters('tags')]",
-              "sku": {
-                "name": "DW100c"
-              },
-              "properties": {
-                "collation": "SQL_Latin1_General_CP1_CI_AS",
-                "createMode": "Default",
-                "storageAccountType": "GRS"
-              },
-              "dependsOn": [
-                "[resourceId('Microsoft.Synapse/workspaces', parameters('synapseName'))]"
-              ]
             },
             {
               "type": "Microsoft.Synapse/workspaces/bigDataPools",

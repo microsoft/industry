@@ -59,21 +59,6 @@ resource synapse 'Microsoft.Synapse/workspaces@2021-03-01' = {
   }
 }
 
-resource synapseSqlPool001 'Microsoft.Synapse/workspaces/sqlPools@2021-03-01' = {
-  parent: synapse
-  name: 'sqlPool001'
-  location: location
-  tags: tags
-  sku: {
-    name: 'DW100c'
-  }
-  properties: {
-    collation: 'SQL_Latin1_General_CP1_CI_AS'
-    createMode: 'Default'
-    storageAccountType: 'GRS'
-  }
-}
-
 resource synapseBigDataPool001 'Microsoft.Synapse/workspaces/bigDataPools@2021-03-01' = {
   parent: synapse
   name: 'bigDataPool001'
