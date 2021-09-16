@@ -60,8 +60,9 @@ Thus, a network topology that can cater for keeping such network isolation from 
 
 However, if the Telco customer cannot consolidate their VRFs and requires isolation between on-premises and Microsoft Azure, then this reference architecture provides design considerations and recommendations to ensure isolation is maintained either by using IPSec tunnels, or by using multiple ExpressRoute circuits and a network topology with multiple hub virtual networks and multi-homed spoke VNets as depicted in figure 4 below.
 
-![Dual-homed VNet](./docs/dual-homed-topology-expressroute.png)
-_Figure 4 – Dual-homed virtual network with Azure Route Server and ExpressRoute_
+![Figure 4: Dual-homed VNet](./docs/dual-homed-topology-expressroute.png)
+
+_Figure 4: Dual-homed virtual network with Azure Route Server and ExpressRoute_
 
 ---
 ***NOTE***
@@ -75,6 +76,7 @@ While figure 4 depicts a dual-homed network architecture with Azure Route Server
 Telcos operate a distributed edge network to provide services (such as Radio Access Networks (RAN) or Wi-Fi) closer to where their customers are. The Microsoft Cloud for Telco industry reference implementation provides prescriptive guidance to leverage the Telco’s distributed edge infrastructure to provide Azure services at the edge via [Azure Stack Edge](https://docs.microsoft.com/en-us/azure/databox-online/) and [Azure private multi-access edge compute (MEC)](https://docs.microsoft.com/en-us/azure/private-multi-access-edge-compute-mec/overview), which among other benefits provides a low-latency experience to users, as services are provided directly at the edge instead of having to provide the services from the Azure region. Such services typically include 5G, CDN, gaming or augmented/virtual reality. This is depicted in figure 5 below.
 
 ![Figure 5: Distributed edge](./docs/telco-industry-edge.png)
+_Figure 5: Operators distributed edge_
 
 ## Dynamics 365
 
