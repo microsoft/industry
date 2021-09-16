@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "eastus"
+        },
+        "environment": {
+            "value": "dev"
+        },
+        "prefix": {
+            "value": "dataverse"
+        },
+        "tags": {
+            "value": {}
+        },
+        "administratorPassword": {
+            "value": "<your-secure-password>"
+        },
+        "synapseDefaultStorageAccountFileSystemId": {
+            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/dataverse-rg/providers/Microsoft.Storage/storageAccounts/dataversedl/blobServices/default/containers/synapse"
+        },
+        "purviewId": {
+            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-rg/providers/Microsoft.Purview/accounts/marvtest"
+        },
+        "enableRoleAssignments": {
+            "value": true
+        },
+        "subnetId": {
+            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/dataverse-rg/providers/Microsoft.Network/virtualNetworks/dataverse-vnet/subnets/default"
+        },
+        "privateDnsZoneIdKeyVault": {
+            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/dataverse-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
+        },
+        "privateDnsZoneIdSynapseDev": {
+            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/dataverse-rg/providers/Microsoft.Network/privateDnsZones/privatelink.dev.azuresynapse.net"
+        },
+        "privateDnsZoneIdSynapseSql": {
+            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/dataverse-rg/providers/Microsoft.Network/privateDnsZones/privatelink.sql.azuresynapse.net"
+        }
+    }
+}
