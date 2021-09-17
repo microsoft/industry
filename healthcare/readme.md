@@ -31,7 +31,7 @@ Device data is normalized, grouped, and mapped to FHIR that can be sent via FHIR
 ### Post deployment
 
 Get the FHIR endpoint:
-![FHIR screenshot of the endpoint](docs/fhir_url_screenshot.jpg "FHIR Endpoint")
+![FHIR screenshot of the endpoint](docs/fhir_url_screenshot.png "FHIR Endpoint")
 
 ### Validate the deployment
 
