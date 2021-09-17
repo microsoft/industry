@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "12774744576834381130"
+      "templateHash": "4460349583431339856"
     }
   },
   "parameters": {
@@ -366,7 +366,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "9504715822784841372"
+              "templateHash": "17357216803221314829"
             }
           },
           "parameters": {
@@ -389,6 +389,7 @@
             "iothubSkuCapacity": {
               "type": "int",
               "defaultValue": 1,
+              "maxValue": 200,
               "minValue": 1
             },
             "privateDnsZoneIdIothub": {

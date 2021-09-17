@@ -11,6 +11,7 @@ param subnetId string
 param iothubName string
 param iothubSkuName string = 'S1'
 @minValue(1)
+@maxValue(200)
 param iothubSkuCapacity int = 1
 param privateDnsZoneIdIothub string = ''
 param privateDnsZoneIdEventhubNamespace string = ''
