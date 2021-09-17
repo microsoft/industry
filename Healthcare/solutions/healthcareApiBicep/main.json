@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "18153395474460784637"
+      "templateHash": "12774744576834381130"
     }
   },
   "parameters": {
@@ -41,6 +41,17 @@
       "metadata": {
         "description": "Specifies the tags that you want to apply to all resources."
       }
+    },
+    "ingestionService": {
+      "type": "string",
+      "defaultValue": "iothub",
+      "metadata": {
+        "description": "Specifies the ingestion service for the FHIR IoT API."
+      },
+      "allowedValues": [
+        "iothub",
+        "eventhub"
+      ]
     },
     "enableRoleAssignments": {
       "type": "bool",
@@ -108,6 +119,7 @@
   "variables": {
     "name": "[toLower(format('{0}-{1}', parameters('prefix'), parameters('environment')))]",
     "eventhubNamespace001Name": "[format('{0}-eventhub001', variables('name'))]",
+    "iotHub001Name": "[format('{0}-iothub001', variables('name'))]",
     "containerRegistry001Name": "[format('{0}-containerregistry001', variables('name'))]",
     "healthcareApi001Name": "[format('{0}-hapi001', variables('name'))]",
     "healthcareBot001Name": "[format('{0}-hbot001', variables('name'))]",
@@ -117,6 +129,7 @@
   },
   "resources": [
     {
+      "condition": "[equals(parameters('ingestionService'), 'eventhub')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "eventhubNamespace001",
@@ -323,6 +336,233 @@
       }
     },
     {
+      "condition": "[equals(parameters('ingestionService'), 'iothub')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "iotHub001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "iothubName": {
+            "value": "[variables('iotHub001Name')]"
+          },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "9504715822784841372"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "subnetId": {
+              "type": "string"
+            },
+            "iothubName": {
+              "type": "string"
+            },
+            "iothubSkuName": {
+              "type": "string",
+              "defaultValue": "S1"
+            },
+            "iothubSkuCapacity": {
+              "type": "int",
+              "defaultValue": 1,
+              "minValue": 1
+            },
+            "privateDnsZoneIdIothub": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "privateDnsZoneIdEventhubNamespace": {
+              "type": "string",
+              "defaultValue": ""
+            }
+          },
+          "functions": [],
+          "variables": {
+            "iothubEventhubEndpointName": "events",
+            "iothubEventhubEndpointConsumerGroupName": "healthcareapiiot",
+            "iothubPrivateEndpointName": "[format('{0}-private-endpoint', parameters('iothubName'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Devices/IotHubs",
+              "apiVersion": "2021-03-31",
+              "name": "[parameters('iothubName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "sku": {
+                "name": "[parameters('iothubSkuName')]",
+                "capacity": "[parameters('iothubSkuCapacity')]"
+              },
+              "properties": {
+                "authorizationPolicies": [],
+                "cloudToDevice": {
+                  "defaultTtlAsIso8601": "PT1M",
+                  "feedback": {
+                    "lockDurationAsIso8601": "PT1M",
+                    "maxDeliveryCount": 10,
+                    "ttlAsIso8601": "PT1H"
+                  },
+                  "maxDeliveryCount": 10
+                },
+                "comments": "",
+                "enableFileUploadNotifications": false,
+                "eventHubEndpoints": {
+                  "events": {
+                    "partitionCount": 4,
+                    "retentionTimeInDays": 1
+                  }
+                },
+                "features": "DeviceManagement",
+                "ipFilterRules": [],
+                "messagingEndpoints": {
+                  "fileNotifications": {
+                    "lockDurationAsIso8601": "PT1M",
+                    "maxDeliveryCount": 10,
+                    "ttlAsIso8601": "PT1H"
+                  }
+                },
+                "networkRuleSets": {
+                  "applyToBuiltInEventHubEndpoint": true,
+                  "defaultAction": "Deny",
+                  "ipRules": []
+                },
+                "publicNetworkAccess": "Enabled",
+                "routing": {
+                  "endpoints": {
+                    "eventHubs": [],
+                    "serviceBusQueues": [],
+                    "serviceBusTopics": [],
+                    "storageContainers": []
+                  },
+                  "enrichments": [],
+                  "fallbackRoute": {
+                    "condition": "true",
+                    "endpointNames": [
+                      "events"
+                    ],
+                    "isEnabled": false,
+                    "name": "$fallback",
+                    "source": "DeviceMessages"
+                  },
+                  "routes": []
+                },
+                "storageEndpoints": {}
+              }
+            },
+            {
+              "type": "Microsoft.Devices/IotHubs/eventHubEndpoints/ConsumerGroups",
+              "apiVersion": "2021-07-01",
+              "name": "[format('{0}/{1}/{2}', parameters('iothubName'), variables('iothubEventhubEndpointName'), variables('iothubEventhubEndpointConsumerGroupName'))]",
+              "properties": {
+                "name": "[variables('iothubEventhubEndpointConsumerGroupName')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Devices/IotHubs', parameters('iothubName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2020-11-01",
+              "name": "[variables('iothubPrivateEndpointName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "manualPrivateLinkServiceConnections": [],
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "[variables('iothubPrivateEndpointName')]",
+                    "properties": {
+                      "groupIds": [
+                        "iotHub"
+                      ],
+                      "privateLinkServiceId": "[resourceId('Microsoft.Devices/IotHubs', parameters('iothubName'))]",
+                      "requestMessage": ""
+                    }
+                  }
+                ],
+                "subnet": {
+                  "id": "[parameters('subnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Devices/IotHubs', parameters('iothubName'))]"
+              ]
+            },
+            {
+              "condition": "[and(not(empty(parameters('privateDnsZoneIdIothub'))), not(empty(parameters('privateDnsZoneIdEventhubNamespace'))))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2020-11-01",
+              "name": "[format('{0}/{1}', variables('iothubPrivateEndpointName'), 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "[format('{0}-arecord-iothub', variables('iothubPrivateEndpointName'))]",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('privateDnsZoneIdIothub')]"
+                    }
+                  },
+                  {
+                    "name": "[format('{0}-arecord-eventhub', variables('iothubPrivateEndpointName'))]",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('privateDnsZoneIdEventhubNamespace')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('iothubPrivateEndpointName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "iothubId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Devices/IotHubs', parameters('iothubName'))]"
+            },
+            "iothubEvenhubEndpointFqdn": {
+              "type": "string",
+              "value": "[first(split(last(split(reference(resourceId('Microsoft.Devices/IotHubs', parameters('iothubName'))).eventHubEndpoints[variables('iothubEventhubEndpointName')].endpoint, '//')), '/'))]"
+            },
+            "iothubEvenhubEndpointName": {
+              "type": "string",
+              "value": "[variables('iothubEventhubEndpointName')]"
+            },
+            "iothubEvenhubEndpointConsumerGroupName": {
+              "type": "string",
+              "value": "[format('{0}/{1}/{2}', parameters('iothubName'), variables('iothubEventhubEndpointName'), variables('iothubEventhubEndpointConsumerGroupName'))]"
+            }
+          }
+        }
+      }
+    },
+    {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "containerRegistry001",
@@ -518,13 +758,13 @@
             ]
           },
           "healthcareapiIotEventhubName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001'), '2019-10-01').outputs.eventhub001Name.value]"
+            "value": "[if(equals(parameters('ingestionService'), 'iothub'), reference(resourceId('Microsoft.Resources/deployments', 'iotHub001'), '2019-10-01').outputs.iothubEvenhubEndpointName.value, reference(resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001'), '2019-10-01').outputs.eventhub001Name.value)]"
           },
           "healthcareapiIotEventhubConsumerGroupName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001'), '2019-10-01').outputs.eventhub001ConsumerGroupName.value]"
+            "value": "[if(equals(parameters('ingestionService'), 'iothub'), reference(resourceId('Microsoft.Resources/deployments', 'iotHub001'), '2019-10-01').outputs.iothubEvenhubEndpointConsumerGroupName.value, reference(resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001'), '2019-10-01').outputs.eventhub001ConsumerGroupName.value)]"
           },
           "healthcareapiIotEventhubNamespaceFqdn": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001'), '2019-10-01').outputs.eventhubNamespaceFqdn.value]"
+            "value": "[if(equals(parameters('ingestionService'), 'iothub'), reference(resourceId('Microsoft.Resources/deployments', 'iotHub001'), '2019-10-01').outputs.iothubEvenhubEndpointFqdn.value, reference(resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001'), '2019-10-01').outputs.eventhubNamespaceFqdn.value)]"
           },
           "healthcareapiIotDeviceMapping": {
             "value": "[parameters('iotDeviceMapping')]"
@@ -770,7 +1010,8 @@
       },
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', 'containerRegistry001')]",
-        "[resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001')]"
+        "[resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001')]",
+        "[resourceId('Microsoft.Resources/deployments', 'iotHub001')]"
       ]
     },
     {

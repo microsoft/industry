@@ -359,7 +359,16 @@
                                     "placeholder": "[string(parse('{\"templateType\": \"CollectionContent\",\"template\": []}'))]",
                                     "constraints": {
                                         "required": false,
-                                        "validations": []
+                                        "validations": [
+                                            {
+                                                "isValid": "[and(not(empty(steps('generalSettings').healthcareApiSettings.iotDeviceMapping)), contains(parse(steps('generalSettings').healthcareApiSettings.iotDeviceMapping), 'templateType'))]",
+                                                "message": "Please provide the template type."
+                                            },
+                                            {
+                                                "isValid": "[and(not(empty(steps('generalSettings').healthcareApiSettings.iotDeviceMapping)), contains(parse(steps('generalSettings').healthcareApiSettings.iotDeviceMapping), 'template'))]",
+                                                "message": "Please provide the template."
+                                            }
+                                        ]
                                     }
                                 },
                                 {
@@ -373,7 +382,16 @@
                                     "placeholder": "[string(parse('{\"templateType\": \"CollectionFhirTemplate\",\"template\": []}'))]",
                                     "constraints": {
                                         "required": false,
-                                        "validations": []
+                                        "validations": [
+                                            {
+                                                "isValid": "[and(not(empty(steps('generalSettings').healthcareApiSettings.iotFhirMapping)), contains(parse(steps('generalSettings').healthcareApiSettings.iotFhirMapping), 'templateType'))]",
+                                                "message": "Please provide the template type."
+                                            },
+                                            {
+                                                "isValid": "[and(not(empty(steps('generalSettings').healthcareApiSettings.iotFhirMapping)), contains(parse(steps('generalSettings').healthcareApiSettings.iotFhirMapping), 'template'))]",
+                                                "message": "Please provide the template."
+                                            }
+                                        ]
                                     }
                                 }
                             ]
@@ -394,6 +412,34 @@
                                             "label": "",
                                             "uri": ""
                                         }
+                                    }
+                                },
+                                {
+                                    "name": "ingestionService",
+                                    "label": "Ingestion Service",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "IoT Hub",
+                                    "toolTip": "Select the ingestion service for your IoMT data.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "IoT Hub",
+                                                "description": "Select if you want to deploy an IoT Hub for ingestion of IoMT data.",
+                                                "value": "iothub"
+                                            },
+                                            {
+                                                "label": "Event Hub",
+                                                "description": "Select if you want to deploy an Event Hub for ingestion of IoMT data.",
+                                                "value": "eventhub"
+                                            }
+                                        ],
+                                        "required": true
                                     }
                                 },
                                 {
@@ -690,11 +736,12 @@
                 "environment": "[if(empty(steps('basics').dataProductName.environment), '', steps('basics').dataProductName.environment)]",
                 "prefix": "[if(empty(steps('basics').dataProductName.dataProductPrefix), '', steps('basics').dataProductName.dataProductPrefix)]",
                 "tags": "[if(not(contains(steps('tags').tagsByResource, 'Healthcare')), parse('{}'), first(map(parse(concat('[', string(steps('tags').tagsByResource), ']')), (item) => item.Healthcare)))]",
+                "ingestionService": "[if(empty(steps('generalSettings').generalSettings.ingestionService), '', steps('generalSettings').generalSettings.ingestionService)]",
                 "enableRoleAssignments": "[steps('generalSettings').generalSettings.enableRoleAssignments]",
                 "enableHealthBot": "[steps('generalSettings').generalSettings.enableHealthBot]",
                 "fhirStorageAccountId": "[if(empty(steps('generalSettings').healthcareApiSettings.fhirExportStorageAccountFileSystemId), '', steps('generalSettings').healthcareApiSettings.fhirExportStorageAccountFileSystemId)]",
-                "iotDeviceMapping": "[if(empty(''), '', '')]",
-                "iotFhirMapping": "[if(empty(''), '', '')]",
+                "iotDeviceMapping": "[if(empty(steps('generalSettings').healthcareApiSettings.iotDeviceMapping), parse('{}'), steps('generalSettings').healthcareApiSettings.iotDeviceMapping)]",
+                "iotFhirMapping": "[if(empty(steps('generalSettings').healthcareApiSettings.iotFhirMapping), parse('{}'), steps('generalSettings').healthcareApiSettings.iotFhirMapping)]",
                 "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",
                 "privateDnsZoneIdEventhubNamespace": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdEventhubNamespace), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdEventhubNamespace)]",
                 "privateDnsZoneIdContainerRegistry": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdContainerRegistry), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdContainerRegistry)]",

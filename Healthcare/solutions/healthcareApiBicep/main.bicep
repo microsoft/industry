@@ -21,6 +21,12 @@ param prefix string
 param tags object = {}
 
 // Resource parameters
+@allowed([
+  'iothub'
+  'eventhub'
+])
+@description('Specifies the ingestion service for the FHIR IoT API.')
+param ingestionService string = 'iothub'
 @description('Specifies whether role assignments should be enabled.')
 param enableRoleAssignments bool = false
 @description('Specifies whether the Azure Healthbot should be enabled.')
@@ -47,6 +53,7 @@ param privateDnsZoneIdHealthcareApi string = ''
 // Variables
 var name = toLower('${prefix}-${environment}')
 var eventhubNamespace001Name = '${name}-eventhub001'
+var iotHub001Name = '${name}-iothub001'
 var containerRegistry001Name = '${name}-containerregistry001'
 var healthcareApi001Name = '${name}-hapi001'
 var healthcareBot001Name = '${name}-hbot001'
@@ -55,7 +62,7 @@ var fhirStorageAccountResourceGroupName = length(split(fhirExportStorageAccountF
 var fhirStorageAccountName = length(split(fhirExportStorageAccountFileSystemId, '/')) >= 13 ? split(fhirExportStorageAccountFileSystemId, '/')[8] : 'incorrectSegmentLength'
 
 // Resources
-module eventhubNamespace001 'modules/services/eventhubnamespace.bicep' = {
+module eventhubNamespace001 'modules/services/eventhubnamespace.bicep' = if(ingestionService == 'eventhub') {
   name: 'eventhubNamespace001'
   scope: resourceGroup()
   params: {
@@ -66,6 +73,17 @@ module eventhubNamespace001 'modules/services/eventhubnamespace.bicep' = {
     privateDnsZoneIdEventhubNamespace: privateDnsZoneIdEventhubNamespace
     eventhubnamespaceMinThroughput: 1
     eventhubnamespaceMaxThroughput: 1
+  }
+}
+
+module iotHub001 'modules/services/iothub.bicep' = if(ingestionService == 'iothub') {
+  name: 'iotHub001'
+  scope: resourceGroup()
+  params: {
+    location: location
+    tags: tags
+    iothubName: iotHub001Name
+    subnetId: subnetId
   }
 }
 
@@ -95,9 +113,9 @@ module healthcareApi001 'modules/services/healthcareapi.bicep' = {
     healthcareapiFhirContainerRegistryLoginServers: [
       containerRegistry001.outputs.containerRegistryLoginServer
     ]
-    healthcareapiIotEventhubName: eventhubNamespace001.outputs.eventhub001Name
-    healthcareapiIotEventhubConsumerGroupName: eventhubNamespace001.outputs.eventhub001ConsumerGroupName
-    healthcareapiIotEventhubNamespaceFqdn: eventhubNamespace001.outputs.eventhubNamespaceFqdn
+    healthcareapiIotEventhubName: ingestionService == 'iothub' ? iotHub001.outputs.iothubEvenhubEndpointName : eventhubNamespace001.outputs.eventhub001Name
+    healthcareapiIotEventhubConsumerGroupName: ingestionService == 'iothub' ? iotHub001.outputs.iothubEvenhubEndpointConsumerGroupName : eventhubNamespace001.outputs.eventhub001ConsumerGroupName
+    healthcareapiIotEventhubNamespaceFqdn: ingestionService == 'iothub' ? iotHub001.outputs.iothubEvenhubEndpointFqdn : eventhubNamespace001.outputs.eventhubNamespaceFqdn
     healthcareapiIotDeviceMapping: iotDeviceMapping
     healthcareapiIotFhirMapping: iotFhirMapping
   }
