@@ -66,7 +66,7 @@ resource healthcareapiPrivateEndpoint 'Microsoft.Network/privateEndpoints@2020-1
   }
 }
 
-resource eventhubNamespacePrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (false && !empty(privateDnsZoneIdHealthcareApi)) {
+resource healthcareapiPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (false && !empty(privateDnsZoneIdHealthcareApi)) {
   parent: healthcareapiPrivateEndpoint
   name: 'default'
   properties: {
