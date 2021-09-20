@@ -36,7 +36,7 @@ This is a sample template for Azure Healthcare APIs. More details about the serv
 
 ## Deployment
 
-The Infrastructure as Code (IaC) templates in this solution folder can be used as starting point for the scenario described above. The solution will deploy the following resources:
+The Infrastructure as Code (IaC) templates in this solution folder can be used as starting point for the IoMT scenario and the Dynamics 365 synch described above. The solution will deploy the following resources into a single resource group (resource-group level deployment):
 
 - [Azure Healthcare APIs](https://docs.microsoft.com/en-us/azure/healthcare-apis/healthcare-apis-overview)
 - [Azure Health Bot (optional)](https://docs.microsoft.com/en-us/azure/health-bot/)
@@ -45,7 +45,7 @@ The Infrastructure as Code (IaC) templates in this solution folder can be used a
 - [Azure Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/)
 - [Azure Service Bus](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview)
 
-Please use the following button to deploy the service into your resource group:
+Please use the following "Deploy to Azure" button to get started with this accelerator:
 
 [![Deploy To Azure](https://aka.ms/deploytoazurebutton)](#TODO)
 
