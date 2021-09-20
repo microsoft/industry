@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "12688988869149376521"
+      "templateHash": "3313005159423589065"
     }
   },
   "parameters": {
@@ -600,7 +600,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "1517361121885497079"
+              "templateHash": "2724698724990884427"
             }
           },
           "parameters": {
@@ -655,9 +655,6 @@
               },
               "properties": {
                 "disableLocalAuth": true,
-                "encryption": {
-                  "requireInfrastructureEncryption": false
-                },
                 "zoneRedundant": true
               }
             },
@@ -701,12 +698,16 @@
             {
               "type": "Microsoft.ServiceBus/namespaces/queues/authorizationRules",
               "apiVersion": "2021-06-01-preview",
-              "name": "[variables('servicebusQueue001SharedAccessPolicyName')]",
+              "name": "[format('{0}/{1}/{2}', parameters('servicebusnamespaceName'), variables('servicebusQueue001Name'), variables('servicebusQueue001SharedAccessPolicyName'))]",
               "properties": {
                 "rights": [
                   "Listen"
                 ]
-              }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('servicebusnamespaceName'))]",
+                "[resourceId('Microsoft.ServiceBus/namespaces/queues', parameters('servicebusnamespaceName'), variables('servicebusQueue001Name'))]"
+              ]
             },
             {
               "type": "Microsoft.Network/privateEndpoints",
@@ -771,7 +772,7 @@
             },
             "serviceBusQueue001SharedAccessPolicyKey": {
               "type": "string",
-              "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/queues/authorizationRules', split(variables('servicebusQueue001SharedAccessPolicyName'), '/')[0], split(variables('servicebusQueue001SharedAccessPolicyName'), '/')[1], split(variables('servicebusQueue001SharedAccessPolicyName'), '/')[2]), '2021-06-01-preview').primaryKey]"
+              "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/queues/authorizationRules', parameters('servicebusnamespaceName'), variables('servicebusQueue001Name'), variables('servicebusQueue001SharedAccessPolicyName')), '2021-06-01-preview').primaryKey]"
             }
           }
         }

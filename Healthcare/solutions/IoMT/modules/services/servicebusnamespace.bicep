@@ -39,9 +39,6 @@ resource servicebusNamespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview
   }
   properties: {
     disableLocalAuth: true
-    encryption: {
-      requireInfrastructureEncryption: false
-    }
     zoneRedundant: true
   }
 }
@@ -79,6 +76,7 @@ resource servicebusQueue001 'Microsoft.ServiceBus/namespaces/queues@2021-06-01-p
 
 resource servicebusQueue001SharedAccessPolicy 'Microsoft.ServiceBus/namespaces/queues/authorizationRules@2021-06-01-preview' = {
   name: servicebusQueue001SharedAccessPolicyName
+  parent: servicebusQueue001
   properties: {
     rights: [
       'Listen'
