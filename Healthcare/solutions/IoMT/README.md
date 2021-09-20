@@ -14,7 +14,7 @@ The architecture diagram depicts a typical IoMT scenario, where internet-connect
 
 ![Internet of Medical Things Architecture](https://azurecomcdn.azureedge.net/cvt-de4fdbbb3ad8eae39e175d8a2cfbe51a8ba26df89652cc54f4ca3e6d74bf43d2/images/page/overview/iot/industry/healthcare/diag-iot-healthcare.svg)
 
-After the data has reached the Azure datacenter, data can be further processed by using tools such as Azure Functions, Azure Synapse or Azure Stream Analytics. Finally, data usually gets persisted onto one of the various data services inside Azure like Azure Cosmos DB, Azure Storage, Azure Synapse SQL Pool or Azure Healthcare APIs. 
+After the data has reached the Azure datacenter, data can be further processed by using tools such as Azure Functions, Azure Synapse or Azure Stream Analytics. Finally, data usually gets persisted onto one of the various data services inside Azure like Azure Cosmos DB, Azure Storage, Azure Synapse SQL Pool or Azure Healthcare APIs.
 
 Except for the data persistence layer, the Microsoft Cloud for Healthcare does not offer any industry-specific solutions for realizing such end-to-end scenarios. Today, standard Azure services including Azure IoT Edge, Azure IoT Hub or Azure Synapse must be used by customers to realize such architectures. Only for the storage layer, the industry-specific Azure Healthcare APIs service is available, which supports standards such as Fast Healthcare Interoperability Resources (FHIR), Digital Imaging and Communications in Medicine (DICOM) and conversion of multiple other data standards into FHIR.
 
