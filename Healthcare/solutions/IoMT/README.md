@@ -47,6 +47,8 @@ Please use the following "Deploy to Azure" button to get started with this accel
 
 [![Deploy To Azure](https://aka.ms/deploytoazurebutton)](#TODO)
 
+The deployment outputs will provide the details required to setup the synch between Azure Healthcare APIs and Dataverse in Dynamics 365.
+
 ## Policies
 
 Custom Policies for the industry specific services used in this solution can be found in the folder [`./Policies/PolicyDefinitions/HealthCareApis`](./Policies/PolicyDefinitions/HealthCareApis). These policies can be deployed using:
