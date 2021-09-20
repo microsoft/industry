@@ -3,22 +3,12 @@
     "view": {
         "kind": "Form",
         "properties": {
-            "title": "Enterprise-Scale Analytics - Data Product Healthcare",
+            "title": "Healthcare - Internet of Medical Things Accelerator",
             "steps": [
                 {
                     "name": "basics",
                     "label": "Data Product",
                     "elements": [
-                        {
-                            "name": "infoBoxEnterpriseScaleAnalytics",
-                            "type": "Microsoft.Common.InfoBox",
-                            "visible": true,
-                            "options": {
-                                "text": "Enterprise-Scale Analytics is a prescriptive reference architecture for data with reference implementation provided by Microsoft. Visit 'aka.ms/adopt/datamanagement' for more details about the solution pattern.",
-                                "style": "Info",
-                                "uri": "https://aka.ms/adopt/datamanagement"
-                            }
-                        },
                         {
                             "name": "deploymentDetails",
                             "label": "Deployment Details",
@@ -111,7 +101,7 @@
                                     "type": "Microsoft.Common.InfoBox",
                                     "visible": true,
                                     "options": {
-                                        "text": "Since not all service features are available in all regions, Enterprise Scale Analytics is available in a subset of regions.",
+                                        "text": "Since not all services and features are available in all regions, the accelerator is only available in a subset of Azure regions.",
                                         "style": "Info"
                                     }
                                 },
