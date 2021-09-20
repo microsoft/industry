@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "4460349583431339856"
+      "templateHash": "12688988869149376521"
     }
   },
   "parameters": {
@@ -119,6 +119,7 @@
   "variables": {
     "name": "[toLower(format('{0}-{1}', parameters('prefix'), parameters('environment')))]",
     "eventhubNamespace001Name": "[format('{0}-eventhub001', variables('name'))]",
+    "servicebusNamespace001Name": "[format('{0}-servicebus001', variables('name'))]",
     "iotHub001Name": "[format('{0}-iothub001', variables('name'))]",
     "containerRegistry001Name": "[format('{0}-containerregistry001', variables('name'))]",
     "healthcareApi001Name": "[format('{0}-hapi001', variables('name'))]",
@@ -352,11 +353,11 @@
           "tags": {
             "value": "[parameters('tags')]"
           },
-          "iothubName": {
-            "value": "[variables('iotHub001Name')]"
-          },
           "subnetId": {
             "value": "[parameters('subnetId')]"
+          },
+          "iothubName": {
+            "value": "[variables('iotHub001Name')]"
           }
         },
         "template": {
@@ -558,6 +559,219 @@
             "iothubEvenhubEndpointConsumerGroupName": {
               "type": "string",
               "value": "[format('{0}/{1}/{2}', parameters('iothubName'), variables('iothubEventhubEndpointName'), variables('iothubEventhubEndpointConsumerGroupName'))]"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "servicebusNamespace001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
+          "servicebusnamespaceName": {
+            "value": "[variables('servicebusNamespace001Name')]"
+          },
+          "servicebusnamespaceThroughput": {
+            "value": 1
+          },
+          "privateDnsZoneIdServicebusNamespace": {
+            "value": "[parameters('privateDnsZoneIdEventhubNamespace')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "1517361121885497079"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "subnetId": {
+              "type": "string"
+            },
+            "servicebusnamespaceName": {
+              "type": "string"
+            },
+            "servicebusnamespaceThroughput": {
+              "type": "int",
+              "defaultValue": 1,
+              "allowedValues": [
+                1,
+                2,
+                4,
+                8,
+                16
+              ]
+            },
+            "privateDnsZoneIdServicebusNamespace": {
+              "type": "string",
+              "defaultValue": ""
+            }
+          },
+          "functions": [],
+          "variables": {
+            "servicebusQueue001Name": "eventHub001",
+            "servicebusQueue001SharedAccessPolicyName": "fhir-synch-agent",
+            "servicebusNamespacePrivateEndpointName": "[format('{0}-private-endpoint', parameters('servicebusnamespaceName'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.ServiceBus/namespaces",
+              "apiVersion": "2021-06-01-preview",
+              "name": "[parameters('servicebusnamespaceName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "sku": {
+                "name": "Premium",
+                "tier": "Premium",
+                "capacity": "[parameters('servicebusnamespaceThroughput')]"
+              },
+              "properties": {
+                "disableLocalAuth": true,
+                "encryption": {
+                  "requireInfrastructureEncryption": false
+                },
+                "zoneRedundant": true
+              }
+            },
+            {
+              "type": "Microsoft.ServiceBus/namespaces/networkRuleSets",
+              "apiVersion": "2021-06-01-preview",
+              "name": "[format('{0}/{1}', parameters('servicebusnamespaceName'), 'default')]",
+              "properties": {
+                "defaultAction": "Deny",
+                "ipRules": [],
+                "publicNetworkAccess": "Enabled",
+                "trustedServiceAccessEnabled": true,
+                "virtualNetworkRules": []
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('servicebusnamespaceName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.ServiceBus/namespaces/queues",
+              "apiVersion": "2021-06-01-preview",
+              "name": "[format('{0}/{1}', parameters('servicebusnamespaceName'), variables('servicebusQueue001Name'))]",
+              "properties": {
+                "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+                "deadLetteringOnMessageExpiration": false,
+                "defaultMessageTimeToLive": "P14D",
+                "duplicateDetectionHistoryTimeWindow": "PT10M",
+                "enableBatchedOperations": true,
+                "enableExpress": false,
+                "enablePartitioning": false,
+                "lockDuration": "PT30S",
+                "maxDeliveryCount": 10,
+                "maxSizeInMegabytes": 1024,
+                "requiresDuplicateDetection": false,
+                "requiresSession": false
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('servicebusnamespaceName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.ServiceBus/namespaces/queues/authorizationRules",
+              "apiVersion": "2021-06-01-preview",
+              "name": "[variables('servicebusQueue001SharedAccessPolicyName')]",
+              "properties": {
+                "rights": [
+                  "Listen"
+                ]
+              }
+            },
+            {
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2020-11-01",
+              "name": "[variables('servicebusNamespacePrivateEndpointName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "manualPrivateLinkServiceConnections": [],
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "[variables('servicebusNamespacePrivateEndpointName')]",
+                    "properties": {
+                      "groupIds": [
+                        "namespace"
+                      ],
+                      "privateLinkServiceId": "[resourceId('Microsoft.ServiceBus/namespaces', parameters('servicebusnamespaceName'))]",
+                      "requestMessage": ""
+                    }
+                  }
+                ],
+                "subnet": {
+                  "id": "[parameters('subnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('servicebusnamespaceName'))]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('privateDnsZoneIdServicebusNamespace')))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2020-11-01",
+              "name": "[format('{0}/{1}', variables('servicebusNamespacePrivateEndpointName'), 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "[format('{0}-arecord', variables('servicebusNamespacePrivateEndpointName'))]",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('privateDnsZoneIdServicebusNamespace')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('servicebusNamespacePrivateEndpointName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "serviceBusUrl": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.ServiceBus/namespaces', parameters('servicebusnamespaceName'))).serviceBusEndpoint]"
+            },
+            "serviceBusQueue001Name": {
+              "type": "string",
+              "value": "[variables('servicebusQueue001Name')]"
+            },
+            "serviceBusQueue001SharedAccessPolicyName": {
+              "type": "string",
+              "value": "[variables('servicebusQueue001SharedAccessPolicyName')]"
+            },
+            "serviceBusQueue001SharedAccessPolicyKey": {
+              "type": "string",
+              "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/queues/authorizationRules', split(variables('servicebusQueue001SharedAccessPolicyName'), '/')[0], split(variables('servicebusQueue001SharedAccessPolicyName'), '/')[1], split(variables('servicebusQueue001SharedAccessPolicyName'), '/')[2]), '2021-06-01-preview').primaryKey]"
             }
           }
         }
@@ -1148,5 +1362,23 @@
         }
       }
     }
-  ]
+  ],
+  "outputs": {
+    "serviceBusUrl": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'servicebusNamespace001'), '2019-10-01').outputs.serviceBusUrl.value]"
+    },
+    "serviceBusQueue001Name": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'servicebusNamespace001'), '2019-10-01').outputs.serviceBusQueue001Name.value]"
+    },
+    "serviceBusQueue001SharedAccessPolicyName": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'servicebusNamespace001'), '2019-10-01').outputs.serviceBusQueue001SharedAccessPolicyName.value]"
+    },
+    "serviceBusQueue001SharedAccessPolicyKey": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'servicebusNamespace001'), '2019-10-01').outputs.serviceBusQueue001SharedAccessPolicyKey.value]"
+    }
+  }
 }

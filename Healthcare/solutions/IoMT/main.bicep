@@ -53,6 +53,7 @@ param privateDnsZoneIdHealthcareApi string = ''
 // Variables
 var name = toLower('${prefix}-${environment}')
 var eventhubNamespace001Name = '${name}-eventhub001'
+var servicebusNamespace001Name = '${name}-servicebus001'
 var iotHub001Name = '${name}-iothub001'
 var containerRegistry001Name = '${name}-containerregistry001'
 var healthcareApi001Name = '${name}-hapi001'
@@ -82,8 +83,21 @@ module iotHub001 'modules/services/iothub.bicep' = if(ingestionService == 'iothu
   params: {
     location: location
     tags: tags
-    iothubName: iotHub001Name
     subnetId: subnetId
+    iothubName: iotHub001Name
+  }
+}
+
+module servicebusNamespace001 'modules/services/servicebusnamespace.bicep' = {
+  name: 'servicebusNamespace001'
+  scope: resourceGroup()
+  params: {
+    location: location
+    tags: tags
+    subnetId: subnetId
+    servicebusnamespaceName: servicebusNamespace001Name
+    servicebusnamespaceThroughput: 1
+    privateDnsZoneIdServicebusNamespace: privateDnsZoneIdEventhubNamespace
   }
 }
 
@@ -141,3 +155,7 @@ module healthcareBot001 'modules/services/healthcarebot.bicep' = if(enableHealth
 }
 
 // Outputs
+output serviceBusUrl string = servicebusNamespace001.outputs.serviceBusUrl
+output serviceBusQueue001Name string = servicebusNamespace001.outputs.serviceBusQueue001Name
+output serviceBusQueue001SharedAccessPolicyName string = servicebusNamespace001.outputs.serviceBusQueue001SharedAccessPolicyName
+output serviceBusQueue001SharedAccessPolicyKey string = servicebusNamespace001.outputs.serviceBusQueue001SharedAccessPolicyKey
