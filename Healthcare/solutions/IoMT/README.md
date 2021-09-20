@@ -32,10 +32,6 @@ Within the FHIR Synch Agent Administration Application, administrators can defin
 
 This allows customers to leverage datasets, collected in IoMT sceanrios, in Dynamics 365 to further enhance the patients experience and quality of results. Additional applications and data-driven solutions can be built to simplify the end-to-end experience for all participants and reduce the time to diagnosis.
 
-## Azure Healthcare APIs
-
-This is a sample template for Azure Healthcare APIs. More details about the service can be found in [the official documentation](https://docs.microsoft.com/en-us/azure/healthcare-apis/).
-
 ## Deployment
 
 The Infrastructure as Code (IaC) templates in this solution folder can be used as starting point for the IoMT scenario and the Dynamics 365 synch described above. The solution will deploy the following resources into a single resource group (resource-group level deployment):
