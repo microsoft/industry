@@ -17,9 +17,6 @@
         "administratorPassword": {
             "value": "<your-secure-password>"
         },
-        "synapseDefaultStorageAccountFileSystemId": {
-            "value": "/subscriptions/1f6c9a98-a387-420d-853c-9d27cfda0f33/resourceGroups/mabuss-dataverse/providers/Microsoft.Storage/storageAccounts/mydversedevstorage/blobServices/default/containers/synapse"
-        },
         "purviewId": {
             "value": ""
         },
