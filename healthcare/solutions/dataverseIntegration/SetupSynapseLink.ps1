@@ -10,6 +10,14 @@ param (
 
     [Parameter(Mandatory = $true)]
     [String]
+    $OrganizationUrl,
+
+    [Parameter(Mandatory = $true)]
+    [String]
+    $OrganizationId,
+
+    [Parameter(Mandatory = $true)]
+    [String]
     $SynapseId,
 
     [Parameter(Mandatory = $true)]
@@ -56,81 +64,6 @@ New-AzSynapseRoleAssignment `
     -WorkspaceName $synapseName `
     -RoleDefinitionName "Workspace Admin" `  # More role details: "{"id": "6e4bf58a-b8e1-4cc3-bbf9-d73143322b78", "isBuiltIn": true, "name": "Workspace Admin"},"
     -ObjectId $exportDataLakeServicePrincipal.Id
-
-# Create File Systems on Data Lake
-Write-Output "Creating File Systems on Data Lake"
-$dataLakeSubscriptionId = $DataLakeId.Split("/")[2]
-$dataLakeName = $DataLakeId.Split("/")[-1]
-$powerPlatformContainerName = "power-platform-dataflows"
-$dataverseContainerName = "dataverse"
-
-Set-AzContext `
-    -Subscription $dataLakeSubscriptionId
-
-$context = New-AzStorageContext `
-    -StorageAccountName $dataLakeName
-
-New-AzureStorageContainer `
-    -Context $context `
-    -Name $powerPlatformContainerName
-
-New-AzureStorageContainer `
-    -Context $context `
-    -Name $dataverseContainerName
-
-#Add Role Assignments for 'Export to data lake' Enterprise Application
-Write-Output "Adding Role Assignments for 'Export to data lake' Enterprise Application"
-New-AzRoleAssignment `
-    -ObjectId $exportDataLakeServicePrincipal.Id `
-    -RoleDefinitionId "Owner" `
-    -Scope $DataLakeId
-
-New-AzRoleAssignment `
-    -ObjectId $exportDataLakeServicePrincipal.Id `
-    -RoleDefinitionId "Storage Blob Data Owner" `
-    -Scope $DataLakeId
-
-New-AzRoleAssignment `
-    -ObjectId $exportDataLakeServicePrincipal.Id `
-    -RoleDefinitionId "Storage Blob Data Contributor" `
-    -Scope $DataLakeId
-
-New-AzRoleAssignment `
-    -ObjectId $exportDataLakeServicePrincipal.Id `
-    -RoleDefinitionId "Storage Account Contributor" `
-    -Scope $DataLakeId
-
-New-AzRoleAssignment `
-    -ObjectId $exportDataLakeServicePrincipal.Id `
-    -RoleDefinitionId "Storage Account Contributor" `
-    -Scope "${DataLakeId}/blobServices/default/containers/${dataverseContainerName}"
-
-New-AzRoleAssignment `
-    -ObjectId $exportDataLakeServicePrincipal.Id `
-    -RoleDefinitionId "Owner" `
-    -Scope "${DataLakeId}/blobServices/default/containers/${dataverseContainerName}"
-
-New-AzRoleAssignment `
-    -ObjectId $exportDataLakeServicePrincipal.Id `
-    -RoleDefinitionId "Storage Blob Data Owner" `
-    -Scope "${DataLakeId}/blobServices/default/containers/${dataverseContainerName}"
-
-New-AzRoleAssignment `
-    -ObjectId $exportDataLakeServicePrincipal.Id `
-    -RoleDefinitionId "Storage Blob Data Contributor" `
-    -Scope "${DataLakeId}/blobServices/default/containers/${dataverseContainerName}"
-
-# Add Role Assignments for 'Microsoft Power Query' Enterprise Application
-Write-Output "Adding Role Assignments for 'Microsoft Power Query' Enterprise Application"
-New-AzRoleAssignment `
-    -ObjectId $powerPlatformServicePrincipal.Id `
-    -RoleDefinitionId "Reader and Data Access" `
-    -Scope $DataLakeId
-
-New-AzRoleAssignment `
-    -ObjectId $powerPlatformServicePrincipal.Id `
-    -RoleDefinitionId "Storage Blob Data Owner" `
-    -Scope "${DataLakeId}/blobServices/default/containers/${powerPlatformContainerName}"
 
 # Update Organization Details
 Write-Output "Creating New Data Lake Details"
