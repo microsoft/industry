@@ -17,6 +17,12 @@
         "administratorPassword": {
             "value": "<your-secure-password>"
         },
+        "powerPlatformServicePrincipalObjectId": {
+            "value": ""
+        },
+        "dataverseServicePrincipalObjectId": {
+            "value": ""
+        },
         "purviewId": {
             "value": ""
         },

@@ -79,9 +79,9 @@ module storage001 'modules/services/storage.bicep' = {
     location: location
     tags: tagsJoined
     fileSystemNames: [
-      'Synapse'
-      'PowerPlatformDataFlows'
-      'Dataverse'
+      'synapse'
+      'power-platform-dataflows'
+      'dataverse'
     ]
     storageName: storage001Name
     subnetId: subnetId
@@ -104,7 +104,7 @@ module synapse001 'modules/services/synapse.bicep' = {
     privateDnsZoneIdSynapseSql: privateDnsZoneIdSynapseSql
     purviewId: purviewId
     synapseComputeSubnetId: ''
-    synapseDefaultStorageAccountFileSystemId: storage001.outputs.storageFileSystemIds[0]
+    synapseDefaultStorageAccountFileSystemId: storage001.outputs.storageFileSystemIds[0].storageFileSystemId
   }
 }
 
@@ -112,12 +112,12 @@ module synapse001RoleAssignmentStorageFileSystem 'modules/auxiliary/synapseRoleA
   name: 'synapse001RoleAssignmentStorageFileSystem'
   scope: resourceGroup()
   params: {
-    storageAccountFileSystemId: storage001.outputs.storageFileSystemIds[0]
+    storageAccountFileSystemId: storage001.outputs.storageFileSystemIds[0].storageFileSystemId
     synapseId: synapse001.outputs.synapseId
   }
 }
 
-module powerPlatformRoleAssignmentStorage001 'modules/auxiliary/servicePrincipalRoleAssignmentStorage.bicep' = if(enableRoleAssignments) {
+module powerPlatformRoleAssignmentStorage001 'modules/auxiliary/servicePrincipalRoleAssignmentStorage.bicep' = if(enableRoleAssignments && !empty(powerPlatformServicePrincipalObjectId)) {
   name: 'powerPlatformRoleAssignmentStorage001'
   scope: resourceGroup()
   params: {
@@ -127,17 +127,17 @@ module powerPlatformRoleAssignmentStorage001 'modules/auxiliary/servicePrincipal
   }
 }
 
-module powerPlatformRoleAssignmentStorageFileSystem001 'modules/auxiliary/servicePrincipalRoleAssignmentStorageFileSystem.bicep' = if(enableRoleAssignments) {
+module powerPlatformRoleAssignmentStorageFileSystem001 'modules/auxiliary/servicePrincipalRoleAssignmentStorageFileSystem.bicep' = if(enableRoleAssignments && !empty(powerPlatformServicePrincipalObjectId)) {
   name: 'powerPlatformRoleAssignmentStorageFileSystem001'
   scope: resourceGroup()
   params: {
     servicePrincipalObjectId: powerPlatformServicePrincipalObjectId
-    storageAccountFileSystemId: storage001.outputs.storageFileSystemIds[1]
+    storageAccountFileSystemId: storage001.outputs.storageFileSystemIds[1].storageFileSystemId
     roleId: 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'  // Storage Blob Data Owner
   }
 }
 
-module dataverseRoleAssignmentStorage001 'modules/auxiliary/servicePrincipalRoleAssignmentStorage.bicep' = if(enableRoleAssignments) {
+module dataverseRoleAssignmentStorage001 'modules/auxiliary/servicePrincipalRoleAssignmentStorage.bicep' = if(enableRoleAssignments && !empty(dataverseServicePrincipalObjectId)) {
   name: 'dataverseRoleAssignmentStorage001'
   scope: resourceGroup()
   params: {
@@ -147,7 +147,7 @@ module dataverseRoleAssignmentStorage001 'modules/auxiliary/servicePrincipalRole
   }
 }
 
-module dataverseRoleAssignmentStorage002 'modules/auxiliary/servicePrincipalRoleAssignmentStorage.bicep' = if(enableRoleAssignments) {
+module dataverseRoleAssignmentStorage002 'modules/auxiliary/servicePrincipalRoleAssignmentStorage.bicep' = if(enableRoleAssignments && !empty(dataverseServicePrincipalObjectId)) {
   name: 'dataverseRoleAssignmentStorage002'
   scope: resourceGroup()
   params: {
@@ -157,7 +157,7 @@ module dataverseRoleAssignmentStorage002 'modules/auxiliary/servicePrincipalRole
   }
 }
 
-module dataverseRoleAssignmentStorage003 'modules/auxiliary/servicePrincipalRoleAssignmentStorage.bicep' = if(enableRoleAssignments) {
+module dataverseRoleAssignmentStorage003 'modules/auxiliary/servicePrincipalRoleAssignmentStorage.bicep' = if(enableRoleAssignments && !empty(dataverseServicePrincipalObjectId)) {
   name: 'dataverseRoleAssignmentStorage003'
   scope: resourceGroup()
   params: {
@@ -167,7 +167,7 @@ module dataverseRoleAssignmentStorage003 'modules/auxiliary/servicePrincipalRole
   }
 }
 
-module dataverseRoleAssignmentStorage004 'modules/auxiliary/servicePrincipalRoleAssignmentStorage.bicep' = if(enableRoleAssignments) {
+module dataverseRoleAssignmentStorage004 'modules/auxiliary/servicePrincipalRoleAssignmentStorage.bicep' = if(enableRoleAssignments && !empty(dataverseServicePrincipalObjectId)) {
   name: 'dataverseRoleAssignmentStorage004'
   scope: resourceGroup()
   params: {
@@ -177,42 +177,42 @@ module dataverseRoleAssignmentStorage004 'modules/auxiliary/servicePrincipalRole
   }
 }
 
-module dataverseRoleAssignmentStorageFileSystem001 'modules/auxiliary/servicePrincipalRoleAssignmentStorageFileSystem.bicep' = if(enableRoleAssignments) {
+module dataverseRoleAssignmentStorageFileSystem001 'modules/auxiliary/servicePrincipalRoleAssignmentStorageFileSystem.bicep' = if(enableRoleAssignments && !empty(dataverseServicePrincipalObjectId)) {
   name: 'dataverseRoleAssignmentStorageFileSystem001'
   scope: resourceGroup()
   params: {
     servicePrincipalObjectId: dataverseServicePrincipalObjectId
-    storageAccountFileSystemId: storage001.outputs.storageFileSystemIds[2]
+    storageAccountFileSystemId: storage001.outputs.storageFileSystemIds[2].storageFileSystemId
     roleId: '17d1049b-9a84-46fb-8f53-869881c3d3ab'  // Storage Account Contributor
   }
 }
 
-module dataverseRoleAssignmentStorageFileSystem002 'modules/auxiliary/servicePrincipalRoleAssignmentStorageFileSystem.bicep' = if(enableRoleAssignments) {
+module dataverseRoleAssignmentStorageFileSystem002 'modules/auxiliary/servicePrincipalRoleAssignmentStorageFileSystem.bicep' = if(enableRoleAssignments && !empty(dataverseServicePrincipalObjectId)) {
   name: 'dataverseRoleAssignmentStorageFileSystem002'
   scope: resourceGroup()
   params: {
     servicePrincipalObjectId: dataverseServicePrincipalObjectId
-    storageAccountFileSystemId: storage001.outputs.storageFileSystemIds[2]
+    storageAccountFileSystemId: storage001.outputs.storageFileSystemIds[2].storageFileSystemId
     roleId: '8e3af657-a8ff-443c-a75c-2fe8c4bcb635'  // Owner
   }
 }
 
-module dataverseRoleAssignmentStorageFileSystem003 'modules/auxiliary/servicePrincipalRoleAssignmentStorageFileSystem.bicep' = if(enableRoleAssignments) {
+module dataverseRoleAssignmentStorageFileSystem003 'modules/auxiliary/servicePrincipalRoleAssignmentStorageFileSystem.bicep' = if(enableRoleAssignments && !empty(dataverseServicePrincipalObjectId)) {
   name: 'dataverseRoleAssignmentStorageFileSystem003'
   scope: resourceGroup()
   params: {
     servicePrincipalObjectId: dataverseServicePrincipalObjectId
-    storageAccountFileSystemId: storage001.outputs.storageFileSystemIds[2]
+    storageAccountFileSystemId: storage001.outputs.storageFileSystemIds[2].storageFileSystemId
     roleId: 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'  // Storage Blob Data Owner
   }
 }
 
-module dataverseRoleAssignmentStorageFileSystem004 'modules/auxiliary/servicePrincipalRoleAssignmentStorageFileSystem.bicep' = if(enableRoleAssignments) {
+module dataverseRoleAssignmentStorageFileSystem004 'modules/auxiliary/servicePrincipalRoleAssignmentStorageFileSystem.bicep' = if(enableRoleAssignments && !empty(dataverseServicePrincipalObjectId)) {
   name: 'dataverseRoleAssignmentStorageFileSystem004'
   scope: resourceGroup()
   params: {
     servicePrincipalObjectId: dataverseServicePrincipalObjectId
-    storageAccountFileSystemId: storage001.outputs.storageFileSystemIds[2]
+    storageAccountFileSystemId: storage001.outputs.storageFileSystemIds[2].storageFileSystemId
     roleId: 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'  // Storage Blob Data Contributor
   }
 }
