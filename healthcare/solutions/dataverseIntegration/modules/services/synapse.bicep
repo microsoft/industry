@@ -118,6 +118,15 @@ resource synapseAadAdministrators 'Microsoft.Synapse/workspaces/administrators@2
   }
 }
 
+resource synapseFirewallRule001 'Microsoft.Synapse/workspaces/firewallRules@2021-06-01-preview' = {
+  parent: synapse
+  name: 'allowAll'
+  properties: {
+    startIpAddress: '0.0.0.0'
+    endIpAddress: '255.255.255.255'
+  }
+}
+
 resource synapsePrivateEndpointSql 'Microsoft.Network/privateEndpoints@2020-11-01' = {
   name: synapsePrivateEndpointNameSql
   location: location

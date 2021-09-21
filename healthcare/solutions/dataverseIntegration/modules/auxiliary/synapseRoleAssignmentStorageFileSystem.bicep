@@ -16,8 +16,18 @@ var synapseResourceGroupName = length(split(synapseId, '/')) >= 9 ? split(synaps
 var synapseName = length(split(synapseId, '/')) >= 9 ? last(split(synapseId, '/')) : 'incorrectSegmentLength'
 
 // Resources
-resource storageAccountFileSystem 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-02-01' existing = {
-  name: '${storageAccountName}/default/${storageAccountFileSystemName}'
+resource storage 'Microsoft.Storage/storageAccounts@2021-04-01' existing = {
+  name: storageAccountName
+}
+
+resource storageBlobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-04-01' existing = {
+  name: 'default'
+  parent: storage
+}
+
+resource storageFileSystem 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-02-01' existing = {
+  name: storageAccountFileSystemName
+  parent: storageBlobServices
 }
 
 resource synapse 'Microsoft.Synapse/workspaces@2021-03-01' existing = {
@@ -26,8 +36,8 @@ resource synapse 'Microsoft.Synapse/workspaces@2021-03-01' existing = {
 }
 
 resource synapseRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(uniqueString(storageAccountFileSystem.id, synapse.id))
-  scope: storageAccountFileSystem
+  name: guid(uniqueString(storageFileSystem.id, synapse.id))
+  scope: storageFileSystem
   properties: {
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
     principalId: synapse.identity.principalId
