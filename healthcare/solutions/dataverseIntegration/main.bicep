@@ -218,3 +218,5 @@ module dataverseRoleAssignmentStorageFileSystem004 'modules/auxiliary/servicePri
 }
 
 // Outputs
+output synapseId string = synapse001.outputs.synapseId
+output dataverseDataLakeFileSystemId string = storage001.outputs.storageFileSystemIds[2].storageFileSystemId
