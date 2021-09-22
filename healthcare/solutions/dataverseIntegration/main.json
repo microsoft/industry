@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "4494666277324552804"
+      "templateHash": "8829416978934135310"
     }
   },
   "parameters": {
@@ -639,7 +639,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "7918254326984888691"
+              "templateHash": "13182141804118079952"
             }
           },
           "parameters": {
@@ -733,7 +733,7 @@
             },
             {
               "type": "Microsoft.Synapse/workspaces/bigDataPools",
-              "apiVersion": "2021-03-01",
+              "apiVersion": "2021-05-01",
               "name": "[format('{0}/{1}', parameters('synapseName'), 'bigDataPool001')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -744,13 +744,15 @@
                 },
                 "autoScale": {
                   "enabled": true,
-                  "maxNodeCount": 10,
-                  "minNodeCount": 3
+                  "minNodeCount": 3,
+                  "maxNodeCount": 10
                 },
                 "customLibraries": [],
                 "defaultSparkLogFolder": "logs/",
                 "dynamicExecutorAllocation": {
-                  "enabled": true
+                  "enabled": true,
+                  "minExecutors": 1,
+                  "maxExecutors": 9
                 },
                 "nodeSize": "Small",
                 "nodeSizeFamily": "MemoryOptimized",
