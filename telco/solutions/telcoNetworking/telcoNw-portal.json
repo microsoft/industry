@@ -27,12 +27,12 @@
                 },
                 {
                     "name": "lzSettings",
-                    "label": "Scale-out networking for Telco industry",
+                    "label": "Scale-out Hub virtual network",
                     "subLabel": {
-                        "preValidation": "Provide a company prefix for the management group structure that will be created.",
+                        "preValidation": "",
                         "postValidation": "Done"
                     },
-                    "bladeTitle": "Company prefix",
+                    "bladeTitle": "Nw setup",
                     "elements": [
                         {
                             "name": "info",

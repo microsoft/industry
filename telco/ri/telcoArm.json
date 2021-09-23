@@ -419,7 +419,7 @@
         },
         "location": {
             "type": "string",
-            "defaultValue": "[deployment().location]"
+            "defaultValue": ""
         },
         "enableHub": {
             "type": "string",
@@ -790,6 +790,15 @@
                     },
                     "subnetMaskForAzFw": {
                         "value": "[parameters('subnetMaskForAzFw')]"
+                    },
+                    "subnetMaskForGw": {
+                        "value": "[parameters('subnetMaskForGw')]"
+                    },
+                    "enableAscForArm": {
+                        "value": "[parameters('enableAscForArm')]"
+                    },
+                    "corpLzSubscriptionId": {
+                        "value": "[parameters('corpLzSubscriptionId')]"
                     },
                     "gwRegionalOrAz": {
                         "value": "[parameters('gwRegionalOrAz')]"
