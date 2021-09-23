@@ -419,7 +419,7 @@
         },
         "location": {
             "type": "string",
-            "defaultValue": ""
+            "defaultValue": "[deployment().location]"
         },
         "enableHub": {
             "type": "string",
