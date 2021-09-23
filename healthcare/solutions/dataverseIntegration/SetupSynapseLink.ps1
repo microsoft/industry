@@ -60,25 +60,37 @@ $synapseName = $SynapseId.Split("/")[-1]
 Set-AzContext `
     -Subscription $synapseSubscriptionId
 
+# More role details: "{"id": "6e4bf58a-b8e1-4cc3-bbf9-d73143322b78", "isBuiltIn": true, "name": "Synapse Administrator"},"
 New-AzSynapseRoleAssignment `
     -WorkspaceName $synapseName `
-    -RoleDefinitionName "Workspace Admin" `  # More role details: "{"id": "6e4bf58a-b8e1-4cc3-bbf9-d73143322b78", "isBuiltIn": true, "name": "Workspace Admin"},"
+    -RoleDefinitionName "Synapse Administrator" `
     -ObjectId $exportDataLakeServicePrincipal.Id
 
+# Get Power App Access Token
+Write-Output "Getting Power App Access Token"
+$powerAppAccessToken = (Get-AzAccessToken -ResourceUrl "${ExportDataLakeApplicationId}").Token
+
 # Update Organization Details
-Write-Output "Creating New Data Lake Details"
+Write-Output "Updating Organization Details"
 Update-OrganizationDetails `
     -PowerPlatformEnvironmentId $PowerPlatformEnvironmentId `
     -OrganizationUrl $OrganizationUrl `
-    -OrganizationId $OrganizationId
+    -OrganizationId $OrganizationId `
+    -AccessToken $powerAppAccessToken
 
 # Create New Data Lake Details
 Write-Output "Creating New Data Lake Details"
 $datalakeDetails = New-LakeDetails `
     -PowerPlatformEnvironmentId $PowerPlatformEnvironmentId `
     -DataLakeFileSystemId $DataverseDataLakeFileSystemId `
-    -SynapseId $SynapseId
+    -SynapseId $SynapseId `
+    -AccessToken $powerAppAccessToken
 Write-Output "New Data Lake Details: '${datalakeDetails}'"
+
+# Sleep for X Seconds to give the Backend Process some time to Finish
+$seconds = 10
+Write-Host "Sleeping for ${seconds} Seconds to give the Backend Process some time to Finish"
+Start-Sleep -Seconds $seconds
 
 # Create New Data Lake Profile
 Write-Output "Creating New Data Lake Profile"
@@ -86,12 +98,19 @@ $datalakeProfile = New-LakeProfile `
     -PowerPlatformEnvironmentId $PowerPlatformEnvironmentId `
     -DataLakeFileSystemId $DataverseDataLakeFileSystemId `
     -LakeDetailsId $datalakeDetails.Id `
-    -Entities $Entities
+    -Entities $Entities `
+    -AccessToken $powerAppAccessToken
 Write-Output "New Data Lake Profile: '${datalakeProfile}'"
+
+# Sleep for X Seconds to give the Backend Process some time to Finish
+$seconds = 10
+Write-Host "Sleeping for ${seconds} Seconds to give the Backend Process some time to Finish"
+Start-Sleep -Seconds $seconds
 
 # Activate Lake Profile
 Write-Output "Activating Lake Profile"
 $datalakeProfileActivation = New-LakeProfileActivation `
     -PowerPlatformEnvironmentId $PowerPlatformEnvironmentId `
-    -LakeDetailsId $datalakeDetails.Id
+    -LakeDetailsId $datalakeDetails.Id `
+    -AccessToken $powerAppAccessToken
 Write-Output "New Data Lake Profile Activation: '${datalakeProfileActivation}'"
