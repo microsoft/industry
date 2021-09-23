@@ -89,7 +89,7 @@ Write-Output "New Data Lake Details: '${datalakeDetails}'"
 
 # Sleep for X Seconds to give the Backend Process some time to Finish
 $seconds = 10
-Write-Host "Sleeping for ${seconds} Seconds to give the Backend Process some time to Finish"
+Write-Output "Sleeping for ${seconds} Seconds to give the Backend Process some time to Finish"
 Start-Sleep -Seconds $seconds
 
 # Create New Data Lake Profile
@@ -104,7 +104,7 @@ Write-Output "New Data Lake Profile: '${datalakeProfile}'"
 
 # Sleep for X Seconds to give the Backend Process some time to Finish
 $seconds = 10
-Write-Host "Sleeping for ${seconds} Seconds to give the Backend Process some time to Finish"
+Write-Output "Sleeping for ${seconds} Seconds to give the Backend Process some time to Finish"
 Start-Sleep -Seconds $seconds
 
 # Activate Lake Profile

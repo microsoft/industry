@@ -117,7 +117,7 @@ function New-FileSystem {
     Write-Verbose "Setting Power Platform URI"
     $powerPlatformUri = "https://athenawebservice.eus-il105.gateway.prod.island.powerapps.com/environment/${PowerPlatformEnvironmentId}/createfilesystem"
     Write-Verbose "Uri: '${powerPlatformUri}'"
-    
+
     # Define parameters based on input parameters
     Write-Verbose "Defining parameters based on input parameters"
     $tenantId = (Get-AzTenant).Id
