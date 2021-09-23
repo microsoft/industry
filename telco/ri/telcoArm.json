@@ -782,6 +782,9 @@
                     "enableDdoS": {
                         "value": "[parameters('enableDdoS')]"
                     },
+                    "enablePrivateDnsZones": {
+                        "value": "[parameters('enablePrivateDnsZones')]"
+                    },
                     "enablePrivateDnsZonesForLzs": {
                         "value": "[parameters('enablePrivateDnsZonesForLzs')]"
                     },
