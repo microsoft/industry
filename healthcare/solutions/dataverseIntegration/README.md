@@ -41,14 +41,14 @@ The Storage Account, the Synapse Workspace and the Power Platform Environment mu
 
 The user creating the connection requires Owner or User Access Administrator rights on the two Azure resources in order to be able to assign RBAC roles to the Service Principles of the two Enterprise Applications. In addition, the user needs to have the Dataverse system administrator role in the environment to connect Azure and Dataverse successfully.
 
-## Accelerator
+## Reference Implementations
 
-To accelerate the integration of datasets between Dataverse and a data platform, an accelerator has been developed to set this up much more quickly. The accelerator consists of Infrastructure as Code (IaC) templates and a "Deploy To Azure" Button to setup everything related to Azure including the following:
+To accelerate the integration of datasets between Dataverse and a data platform, a reference implementation has been developed to set this up much more quickly. The code consists of Infrastructure as Code (IaC) templates and a "Deploy To Azure" Button to setup everything related to Azure including the following:
 
 - Azure Services: Storage Account, Synapse workspace (including Spark pool), Key Vault
 - All Role assigments ([see role assignments above](#service-requirements))
 
-Also, the accelerator includes a set of powershell scripts to automate the first setup of "Azure Synapse Link". Afterwards, modifications can be made with respect to the tables that get synchronized as well as the settings for each table.
+Also, the reference implementation includes a set of powershell scripts to automate the first setup of "Azure Synapse Link". Afterwards, modifications can be made with respect to the tables that get synchronized as well as the settings for each table.
 
 ### Deploy To Azure
 
