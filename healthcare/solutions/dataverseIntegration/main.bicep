@@ -38,6 +38,10 @@ param enableRoleAssignments bool = false
 param subnetId string
 
 // Private DNS Zone parameters
+@description('Specifies the resource ID of the private DNS zone for Blob Storage.')
+param privateDnsZoneIdBlob string = ''
+@description('Specifies the resource ID of the private DNS zone for Datalake Storage.')
+param privateDnsZoneIdDfs string = ''
 @description('Specifies the resource ID of the private DNS zone for KeyVault.')
 param privateDnsZoneIdKeyVault string = ''
 @description('Specifies the resource ID of the private DNS zone for Synapse Dev.')
@@ -85,6 +89,8 @@ module storage001 'modules/services/storage.bicep' = {
     ]
     storageName: storage001Name
     subnetId: subnetId
+    privateDnsZoneIdBlob: privateDnsZoneIdBlob
+    privateDnsZoneIdDfs: privateDnsZoneIdDfs
   }
 }
 

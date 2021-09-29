@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "15370992525510895090"
+      "templateHash": "7729186315494720054"
     }
   },
   "parameters": {
@@ -81,6 +81,20 @@
       "type": "string",
       "metadata": {
         "description": "Specifies the resource ID of the subnet to which all services will connect."
+      }
+    },
+    "privateDnsZoneIdBlob": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the resource ID of the private DNS zone for Blob Storage."
+      }
+    },
+    "privateDnsZoneIdDfs": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the resource ID of the private DNS zone for Datalake Storage."
       }
     },
     "privateDnsZoneIdKeyVault": {
@@ -294,6 +308,12 @@
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
+          },
+          "privateDnsZoneIdBlob": {
+            "value": "[parameters('privateDnsZoneIdBlob')]"
+          },
+          "privateDnsZoneIdDfs": {
+            "value": "[parameters('privateDnsZoneIdDfs')]"
           }
         },
         "template": {
