@@ -3,11 +3,11 @@
     "view": {
         "kind": "Form",
         "properties": {
-            "title": "Healthcare - Internet of Medical Things Accelerator",
+            "title": "Healthcare - Internet of Medical Things (IoMT) Reference Implementation",
             "steps": [
                 {
                     "name": "basics",
-                    "label": "Data Product",
+                    "label": "IoMT",
                     "elements": [
                         {
                             "name": "deploymentDetails",
@@ -126,7 +126,7 @@
                                     "filterPlaceholder": "Filter items ...",
                                     "multiLine": true,
                                     "constraints": {
-                                        "allowedValues": "[map(filter(steps('basics').deploymentDetails.locationsApi.value,(item) => contains(split('southafricanorth,southeastasia,japaneast,canadacentral,northeurope,westeurope,francecentral,germanywestcentral,uksouth,centralus,eastus,eastus2,southcentralus,westus2', ','), item.name)),(item) => parse(concat('{\"label\":\"', item.regionalDisplayName, '\",\"value\":\"', item.name, '\"}')))]",
+                                        "allowedValues": "[map(filter(steps('basics').deploymentDetails.locationsApi.value,(item) => contains(split('australiaeast,canadacentral,eastus,eastus2,northeurope,southcentralus,uksouth,westeurope,westus2', ','), item.name)),(item) => parse(concat('{\"label\":\"', item.regionalDisplayName, '\",\"value\":\"', item.name, '\"}')))]",
                                         "required": true
                                     }
                                 }
