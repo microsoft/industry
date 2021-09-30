@@ -3,11 +3,11 @@
     "view": {
         "kind": "Form",
         "properties": {
-            "title": "Dataverse ",
+            "title": "Dataverse-Azure - Data Integration",
             "steps": [
                 {
                     "name": "basics",
-                    "label": "Data Product",
+                    "label": "Deployment Location",
                     "elements": [
                         {
                             "name": "deploymentDetails",
@@ -82,7 +82,7 @@
                                     "type": "Microsoft.Common.InfoBox",
                                     "visible": true,
                                     "options": {
-                                        "text": "Since not all service features are available in all regions, Enterprise Scale Analytics is available in a subset of regions.",
+                                        "text": "Your Power Platform environment and Azure services must be in the same region.",
                                         "style": "Info"
                                     }
                                 },
@@ -100,14 +100,14 @@
                                     "type": "Microsoft.Common.DropDown",
                                     "visible": true,
                                     "defaultValue": "",
-                                    "toolTip": "Select the Location for your Data Product.",
+                                    "toolTip": "Select the Location for your Deployment.",
                                     "multiselect": false,
                                     "selectAll": false,
                                     "filter": true,
                                     "filterPlaceholder": "Filter items ...",
                                     "multiLine": true,
                                     "constraints": {
-                                        "allowedValues": "[map(filter(steps('basics').deploymentDetails.locationsApi.value,(item) => contains(split('southafricanorth,southeastasia,japaneast,canadacentral,northeurope,westeurope,francecentral,germanywestcentral,uksouth,centralus,eastus,eastus2,southcentralus,westus2', ','), item.name)),(item) => parse(concat('{\"label\":\"', item.regionalDisplayName, '\",\"value\":\"', item.name, '\"}')))]",
+                                        "allowedValues": "[map(steps('basics').deploymentDetails.locationsApi.value,(item) => parse(concat('{\"label\":\"', item.regionalDisplayName, '\",\"value\":\"', item.name, '\"}')))]",
                                         "required": true
                                     }
                                 }
@@ -165,8 +165,8 @@
                                     }
                                 },
                                 {
-                                    "name": "dataProductPrefix",
-                                    "label": "Data Product Prefix",
+                                    "name": "deploymentPrefix",
+                                    "label": "Deployment Prefix",
                                     "type": "Microsoft.Common.TextBox",
                                     "visible": true,
                                     "defaultValue": "",
@@ -179,23 +179,15 @@
                                                 "message": "The prefix must be between 1-10 lowercase characters and numbers."
                                             },
                                             {
-                                                "isValid": "[not(equals(steps('basics').dataProductName.keyVaultNameApi.nameAvailable, false))]",
+                                                "isValid": "[not(equals(steps('basics').deploymentName.keyVaultNameApi.nameAvailable, false))]",
                                                 "message": "Prefix currently unavailable. Please choose a different one."
                                             },
                                             {
-                                                "isValid": "[not(equals(steps('basics').dataProductName.storageAccountNameApi.nameAvailable, false))]",
+                                                "isValid": "[not(equals(steps('basics').deploymentName.storageAccountNameApi.nameAvailable, false))]",
                                                 "message": "Prefix currently unavailable. Please choose a different one."
                                             },
                                             {
-                                                "isValid": "[not(equals(steps('basics').dataProductName.containerRegistryNameApi.nameAvailable, false))]",
-                                                "message": "Prefix currently unavailable. Please choose a different one."
-                                            },
-                                            {
-                                                "isValid": "[not(equals(steps('basics').dataProductName.synapseNameApi.available, false))]",
-                                                "message": "Prefix currently unavailable. Please choose a different one."
-                                            },
-                                            {
-                                                "isValid": "[not(equals(steps('basics').dataProductName.searchNameApi.nameAvailable, false))]",
+                                                "isValid": "[not(equals(steps('basics').deploymentName.synapseNameApi.available, false))]",
                                                 "message": "Prefix currently unavailable. Please choose a different one."
                                             }
                                         ]
@@ -208,7 +200,7 @@
                                         "method": "POST",
                                         "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.KeyVault/checkNameAvailability?api-version=2019-09-01')]",
                                         "body": {
-                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-vault001')]",
+                                            "name": "[concat(steps('basics').deploymentName.deploymentPrefix, '-', steps('basics').deploymentName.environment, '-vault001')]",
                                             "type": "Microsoft.KeyVault/vaults"
                                         }
                                     }
@@ -220,20 +212,8 @@
                                         "method": "POST",
                                         "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Storage/checkNameAvailability?api-version=2021-04-01')]",
                                         "body": {
-                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, steps('basics').dataProductName.environment, 'storage001')]",
+                                            "name": "[concat(steps('basics').deploymentName.deploymentPrefix, steps('basics').deploymentName.environment, 'storage001')]",
                                             "type": "Microsoft.Storage/storageAccounts"
-                                        }
-                                    }
-                                },
-                                {
-                                    "name": "containerRegistryNameApi",
-                                    "type": "Microsoft.Solutions.ArmApiControl",
-                                    "request": {
-                                        "method": "POST",
-                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.ContainerRegistry/checkNameAvailability?api-version=2019-05-01')]",
-                                        "body": {
-                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, steps('basics').dataProductName.environment, 'containerregistry001')]",
-                                            "type": "Microsoft.ContainerRegistry/registries"
                                         }
                                     }
                                 },
@@ -244,20 +224,8 @@
                                         "method": "POST",
                                         "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Synapse/checkNameAvailability?api-version=2021-03-01')]",
                                         "body": {
-                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-synapse001')]",
+                                            "name": "[concat(steps('basics').deploymentName.deploymentPrefix, '-', steps('basics').deploymentName.environment, '-synapse001')]",
                                             "type": "Microsoft.Synapse/workspaces"
-                                        }
-                                    }
-                                },
-                                {
-                                    "name": "searchNameApi",
-                                    "type": "Microsoft.Solutions.ArmApiControl",
-                                    "request": {
-                                        "method": "POST",
-                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Search/checkNameAvailability?api-version=2021-04-01-preview')]",
-                                        "body": {
-                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-search001')]",
-                                            "type": "searchServices"
                                         }
                                     }
                                 }
@@ -269,7 +237,7 @@
                     "name": "generalSettings",
                     "label": "General Settings",
                     "subLabel": {
-                        "preValidation": "Provide settings for your data product deployment.",
+                        "preValidation": "Provide settings for your deployment.",
                         "postValidation": "Done"
                     },
                     "bladeTitle": "General Settings",
@@ -288,10 +256,58 @@
                                     "options": {
                                         "text": "Specify the Object IDs of the required Enterprise Applications.",
                                         "link": {
-                                            "label": "Learn more",
+                                            "label": "",
                                             "uri": ""
                                         }
                                     }
+                                },
+                                {
+                                    "name": "powerPlatformServicePrincipalObjectId",
+                                    "label": {
+                                        "password": "Password",
+                                        "certificateThumbprint": "Certificate thumbprint",
+                                        "authenticationType": "Authentication Type",
+                                        "sectionHeader": "Power Platform Service Principal"
+                                    },
+                                    "type": "Microsoft.Common.ServicePrincipalSelector",
+                                    "toolTip": {
+                                        "password": "Password",
+                                        "certificateThumbprint": "Certificate thumbprint",
+                                        "authenticationType": "Authentication Type"
+                                    },
+                                    "defaultValue": {
+                                        "principalId": "f3b07414-6bf4-46e6-b63f-56941f3f4128",
+                                        "name": "Microsoft Power Query"
+                                    },
+                                    "constraints": {},
+                                    "options": {
+                                        "hideCertificate": true
+                                    },
+                                    "visible": true
+                                },
+                                {
+                                    "name": "dataverseServicePrincipalObjectId",
+                                    "label": {
+                                        "password": "Password",
+                                        "certificateThumbprint": "Certificate thumbprint",
+                                        "authenticationType": "Authentication Type",
+                                        "sectionHeader": "Dataverse Service Principal"
+                                    },
+                                    "type": "Microsoft.Common.ServicePrincipalSelector",
+                                    "toolTip": {
+                                        "password": "Password",
+                                        "certificateThumbprint": "Certificate thumbprint",
+                                        "authenticationType": "Authentication Type"
+                                    },
+                                    "defaultValue": {
+                                        "principalId": "7f15f9d9-cad0-44f1-bbba-d36650e07765",
+                                        "name": "Export to data lake"
+                                    },
+                                    "constraints": {},
+                                    "options": {
+                                        "hideCertificate": true
+                                    },
+                                    "visible": true
                                 }
                             ]
                         },
@@ -302,12 +318,15 @@
                             "visible": true,
                             "elements": [
                                 {
-                                    "name": "infoBoxProcessingService",
-                                    "type": "Microsoft.Common.InfoBox",
+                                    "name": "infoBoxsynapseDeploymentSettings",
+                                    "type": "Microsoft.Common.TextBlock",
                                     "visible": true,
                                     "options": {
                                         "text": "Specify the settings for your Synapse workspace.",
-                                        "style": "Info"
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
                                     }
                                 },
                                 {
@@ -345,7 +364,7 @@
                                     "type": "Microsoft.Common.TextBlock",
                                     "visible": true,
                                     "options": {
-                                        "text": "Select the Purview account to which you want to connect the Synapse workspace or Data Factory.",
+                                        "text": "Select the Purview account to which you want to connect the Synapse workspace.",
                                         "link": {
                                             "label": "Learn more",
                                             "uri": "https://docs.microsoft.com/en-us/azure/purview/overview"
@@ -358,7 +377,7 @@
                                     "type": "Microsoft.Solutions.ResourceSelector",
                                     "visible": true,
                                     "defaultValue": "",
-                                    "toolTip": "Select the Purview account to which you want to connect Synapse or Data Factory.",
+                                    "toolTip": "Select the Purview account to which you want to connect the Synapse workspace.",
                                     "resourceType": "Microsoft.Purview/accounts",
                                     "required": true,
                                     "options": {
@@ -393,8 +412,9 @@
                                     "type": "Microsoft.Common.InfoBox",
                                     "visible": true,
                                     "options": {
-                                        "text": "The role assignment is optional and will assign the Service Principle of the Power Platform Enterprise Application and the Service Principle of the Dataverse Enterprise Application multiple roles on the Data Lake. Please visit the link to learn more about the required role assignments.",
-                                        "style": "Info"
+                                        "text": "The role assignment is required for setting up a connection between Dataverse and Azure (Storage Account and Synapse). Multiple role assignment will be added to the storage account at account and container level. Please visit the link to learn more about the required role assignments.",
+                                        "style": "Info",
+                                        "uri": "https://github.com/microsoft/industry/blob/marvinbuss/dataverse-integration-template/healthcare/solutions/dataverseIntegration/README.md"
                                     }
                                 },
                                 {
@@ -406,7 +426,7 @@
                                     "toolTip": "Enable role assignments.",
                                     "constraints": {
                                         "required": false,
-                                        "validationMessage": "Enable role assignments of Machine Learning MSI and Synapse MSI. Please read infobox above for more details."
+                                        "validationMessage": "Enable role assignments of Power Platform and Dataverse Enterprise Applications. Please read infobox above for more details."
                                     }
                                 }
                             ]
@@ -417,7 +437,7 @@
                     "name": "connectivitySettings",
                     "label": "Connectivity Settings",
                     "subLabel": {
-                        "preValidation": "Provide the connectivity settings that should be used for the Data Product.",
+                        "preValidation": "Provide the connectivity settings that should be used for your deployment.",
                         "postValidation": "Done"
                     },
                     "bladeTitle": "Connectivity Settings",
@@ -446,7 +466,7 @@
                                     "type": "Microsoft.Common.InfoBox",
                                     "visible": true,
                                     "options": {
-                                        "text": "Please select the Virtual Network of your Data Landing Zone and select a free Subnet within the Virtual Network to make sure that you have proper outbound connectivity as well as DNS name resolution in place. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled. This is already pre-configured for you in the DataProduct and DataIntegration subnets in the Data Landing Zone Vnet. In addition, Azure Machine Learning requires a subnet with the 'Microsoft.Storage' service endpoint enabled in the region of the Data Product deployment. This is not enabled by default and therefore must be setup manually.",
+                                        "text": "Please select a free Subnet within the Virtual Network with 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled.",
                                         "style": "Info"
                                     }
                                 },
@@ -464,7 +484,7 @@
                                     "type": "Microsoft.Common.DropDown",
                                     "visible": true,
                                     "defaultValue": "",
-                                    "toolTip": "Select the Virtual Network for your Data Product.",
+                                    "toolTip": "Select the Virtual Network for your Deployment.",
                                     "multiselect": false,
                                     "selectAll": false,
                                     "filter": true,
@@ -489,7 +509,7 @@
                                     "type": "Microsoft.Common.DropDown",
                                     "visible": true,
                                     "defaultValue": "",
-                                    "toolTip": "Select the Subnet for your Data Product. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled.",
+                                    "toolTip": "Select the Subnet for your Deployment. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled.",
                                     "multiselect": false,
                                     "selectAll": false,
                                     "filter": true,
@@ -688,7 +708,7 @@
                             "type": "Microsoft.Common.TagsByResource",
                             "visible": true,
                             "resources": [
-                                "EnterpriseScaleAnalytics"
+                                "DeploymentTags"
                             ]
                         }
                     ]
@@ -701,11 +721,11 @@
             "resourceGroupId": "[steps('basics').deploymentDetails.resourceGroupId]",
             "parameters": {
                 "location": "[if(empty(steps('basics').deploymentDetails.locationName), '', steps('basics').deploymentDetails.locationName)]",
-                "environment": "[if(empty(steps('basics').dataProductName.environment), '', steps('basics').dataProductName.environment)]",
-                "prefix": "[if(empty(steps('basics').dataProductName.dataProductPrefix), '', steps('basics').dataProductName.dataProductPrefix)]",
+                "environment": "[if(empty(steps('basics').deploymentName.environment), '', steps('basics').deploymentName.environment)]",
+                "prefix": "[if(empty(steps('basics').deploymentName.deploymentPrefix), '', steps('basics').deploymentName.deploymentPrefix)]",
                 "administratorPassword": "[if(empty(steps('generalSettings').synapseDeploymentSettings.administratorPassword.password), '', steps('generalSettings').synapseDeploymentSettings.administratorPassword.password)]",
-                "powerPlatformServicePrincipalObjectId": "[if(empty(steps('generalSettings').synapseDeploymentSettings.synapseDefaultStorageAccountFileSystemId), '', steps('generalSettings').synapseDeploymentSettings.synapseDefaultStorageAccountFileSystemId)]",
-                "dataverseServicePrincipalObjectId": "[if(empty(steps('generalSettings').synapseDeploymentSettings.synapseDefaultStorageAccountFileSystemId), '', steps('generalSettings').synapseDeploymentSettings.synapseDefaultStorageAccountFileSystemId)]",
+                "powerPlatformServicePrincipalObjectId": "[if(empty(steps('generalSettings').servicePrincipleSettings.powerPlatformServicePrincipalObjectId.objectId), '', first(steps('generalSettings').servicePrincipleSettings.powerPlatformServicePrincipalObjectId.objectId))]",
+                "dataverseServicePrincipalObjectId": "[if(empty(steps('generalSettings').servicePrincipleSettings.dataverseServicePrincipalObjectId.objectId), '', first(steps('generalSettings').servicePrincipleSettings.dataverseServicePrincipalObjectId.objectId))]",
                 "purviewId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewId.id)]",
                 "enableRoleAssignments": "[steps('generalSettings').generalSettings.enableRoleAssignments]",
                 "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",
@@ -714,7 +734,7 @@
                 "privateDnsZoneIdKeyVault": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault)]",
                 "privateDnsZoneIdSynapseDev": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev)]",
                 "privateDnsZoneIdSynapseSql": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseSql), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseSql)]",
-                "tags": "[if(not(contains(steps('tags').tagsByResource, 'EnterpriseScaleAnalytics')), parse('{}'), first(map(parse(concat('[', string(steps('tags').tagsByResource), ']')), (item) => item.EnterpriseScaleAnalytics)))]"
+                "tags": "[if(not(contains(steps('tags').tagsByResource, 'DeploymentTags')), parse('{}'), first(map(parse(concat('[', string(steps('tags').tagsByResource), ']')), (item) => item.DeploymentTags)))]"
             }
         }
     }
