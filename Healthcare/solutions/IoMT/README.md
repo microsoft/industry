@@ -42,6 +42,7 @@ The Infrastructure as Code (IaC) templates in this solution folder can be used f
 - [Azure IoT Hub (optional)](https://docs.microsoft.com/azure/iot-hub/about-iot-hub)
 - [Azure Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/)
 - [Azure Service Bus](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview)
+- [Azure Function](https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview)
 
 Please use the following "Deploy to Azure" button to get started with this accelerator:
 
