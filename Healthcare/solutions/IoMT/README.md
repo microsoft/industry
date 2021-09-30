@@ -32,9 +32,9 @@ Within the FHIR Synch Agent Administration Application, administrators can defin
 
 This allows customers to leverage datasets, collected in IoMT sceanrios, in Dynamics 365 to further enhance the patients experience and quality of results. Additional applications and data-driven solutions can be built to simplify the end-to-end experience for all participants and reduce the time to diagnosis.
 
-## Deployment
+## Reference Implementation
 
-The Infrastructure as Code (IaC) templates in this solution folder can be used as starting point for the IoMT scenario and the Dynamics 365 synch described above. The solution will deploy the following resources into a single resource group (resource-group level deployment):
+The Infrastructure as Code (IaC) templates in this solution folder can be used for the implementation of IoMT scenarios as well as the Dynamics 365 synch described above. The solution will deploy the following resources into a single resource group (resource-group level deployment):
 
 - [Azure Healthcare APIs](https://docs.microsoft.com/en-us/azure/healthcare-apis/healthcare-apis-overview)
 - [Azure Health Bot (optional)](https://docs.microsoft.com/en-us/azure/health-bot/)
@@ -49,7 +49,7 @@ Please use the following "Deploy to Azure" button to get started with this accel
 
 The deployment outputs will provide the details required to setup the synch between Azure Healthcare APIs and Dataverse in Dynamics 365.
 
-## Policies
+### Policies
 
 Custom Policies for the industry specific services used in this solution can be found in the folder [`./Policies/PolicyDefinitions/HealthCareApis`](./Policies/PolicyDefinitions/HealthCareApis). These policies can be deployed using:
 
