@@ -1,4 +1,4 @@
-# Link Dataverse with Azure Data Lake Gen2 and Azure Synapse
+# Linking Dataverse with Azure Data Lake Gen2 and Azure Synapse
 
 In a data platform, disparate data sources and datasets are integrated onto a Data Lake in order to allow the development of new data products as well as the generation of new insights by using machine learning and other techniques. One of such data sources can be Dataverse, which is the standard storage option for all business applications running inside a Power Platform enviornment. Dataverse stores datasets in a tabular format and allows them to be extracted to a Data Lake Gen2 via a feature called "Azure Synapse Link for Dataverse".
 
@@ -35,13 +35,13 @@ Our tests have shown that similar requirements are existing for the Synapse work
 |:---------------------------------------------------|:------------------------------|---------------------------|
 | 'Export to data lake' (Dataverse)                  | Synapse Administrator         | Synapse Workspace         |
 
-### Other comments
+### Other
 
 The Storage Account, the Synapse Workspace and the Power Platform Environment must be in the same region. Otherwise, the "Azure Synapse Link" feature in Power Apps will not work. Also, all services need to be in the same tenant, subscription and resource group.
 
 The user creating the connection requires Owner or User Access Administrator rights on the two Azure resources in order to be able to assign RBAC roles to the Service Principles of the two Enterprise Applications. In addition, the user needs to have the Dataverse system administrator role in the environment to connect Azure and Dataverse successfully.
 
-## Reference Implementations
+## Reference Implementation
 
 To accelerate the integration of datasets between Dataverse and a data platform, a reference implementation has been developed to set this up much more quickly. The code consists of Infrastructure as Code (IaC) templates and a "Deploy To Azure" Button to setup everything related to Azure including the following:
 
@@ -50,7 +50,7 @@ To accelerate the integration of datasets between Dataverse and a data platform,
 
 Also, the reference implementation includes a set of powershell scripts to automate the first setup of "Azure Synapse Link". Afterwards, modifications can be made with respect to the tables that get synchronized as well as the settings for each table.
 
-### Deploy To Azure
+### Azure Deployment
 
 First, use the "Deploy To Azure" Button to setup all Azure related services. Go through the portal experience and specify the details of your environment to successfully deploy the setup:
 
@@ -58,7 +58,7 @@ First, use the "Deploy To Azure" Button to setup all Azure related services. Go 
 
 Please look at the outputs of the Azure deployment and take note of the Synapse Workspace Id as well as the Dataverse data lake file system Id, as they are required in the next step.
 
-### Connect Azure Services and Dataverse
+### Connecting Dataverse and Azure Services
 
 For the next step, you will need the following PowerShell scripts included in this folder: "SetupSynapseLink.ps1" and "Helper.ps1". This step cannot be automated, because the Power Platform APIs do not support the on-behalf workflow. Therefore, this script needs to be executed by a user. Before executing "SetupSynapseLink.ps1", please follow the steps below:
 
