@@ -7,9 +7,19 @@ deployment and adoption of industry cloud.
 
 ![Industry Cloud Overview](./docs/industry-cloud.png)
 
-## Industry Cloud Reference Architecture
+## Industry Cloud Reference Architectures
 
 - [Healthcare](./healthcare/readme.md)
+    - [Pre-requisites](placeholder)
+        - [Healthcare APIs](fo)
+        - [Power Platform environments](asd)
+        - [Microsoft Teams for Healthcare](sd)
+    - [Patient service center](.healthcare/solutions/patientServiceCenter.md)
+    - [Patient outreach](.healthcare/solutions/patientOutreach.md)
+    - [Patient access](.healthcare/solutions/patientAccess.md)
+    - [Care management](.healthcare/solutions/careMangement.md)
+    - [Home health](.healthcare/solutions/homeHealth.md)
+    - [Health assistant](.healthcare/solutions/healthAssistant.md)
 - [Telecommunications](./telco/readme.md)
 
 ### Healthcare
