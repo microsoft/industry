@@ -11,15 +11,15 @@ deployment and adoption of industry cloud.
 
 - [Healthcare](./healthcare/readme.md)
     - [Pre-requisites](placeholder)
-        - [Healthcare APIs](fo)
+        - [Healthcare APIs](./healthcare/solutions/healthcareApis/readme.md)
         - [Power Platform environments](asd)
         - [Microsoft Teams for Healthcare](sd)
-    - [Patient service center](.healthcare/solutions/patientServiceCenter.md)
-    - [Patient outreach](.healthcare/solutions/patientOutreach.md)
-    - [Patient access](.healthcare/solutions/patientAccess.md)
-    - [Care management](.healthcare/solutions/careMangement.md)
-    - [Home health](.healthcare/solutions/homeHealth.md)
-    - [Health assistant](.healthcare/solutions/healthAssistant.md)
+    - [Patient service center](.healthcare/solutions/patientServiceCenter/readme.md)
+    - [Patient outreach](.healthcare/solutions/patientOutreach/readme.md)
+    - [Patient access](.healthcare/solutions/patientAccess/readme.md)
+    - [Care management](.healthcare/solutions/careMangement/readme.md)
+    - [Home health](.healthcare/solutions/homeHealth/readme.md)
+    - [Health assistant](.healthcare/solutions/healthAssistant/readme.md)
 - [Telecommunications](./telco/readme.md)
 
 ### Healthcare
