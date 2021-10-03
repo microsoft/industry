@@ -12,7 +12,7 @@ Classical IoT as well as IoMT scenarios share similar architectures. The most si
 
 The architecture diagram depicts a typical IoMT scenario, where internet-connected devices collect protected health information (PHI) of patients and then transmit the data points over one or multiple gateways to the cloud.
 
-![Internet of Medical Things Architecture](https://azurecomcdn.azureedge.net/cvt-de4fdbbb3ad8eae39e175d8a2cfbe51a8ba26df89652cc54f4ca3e6d74bf43d2/images/page/overview/iot/industry/healthcare/diag-iot-healthcare.svg)
+![Internet of Medical Things Architecture](#TODO)
 
 After the data has reached the Azure datacenter, data can be further processed by using tools such as Azure Functions, Azure Synapse or Azure Stream Analytics. Finally, data usually gets persisted onto one of the various data services inside Azure like Azure Cosmos DB, Azure Storage, Azure Synapse SQL Pool or Azure Healthcare APIs.
 
@@ -46,7 +46,7 @@ The Infrastructure as Code (IaC) templates in this solution folder can be used f
 
 Please use the following "Deploy to Azure" button to get started with this accelerator:
 
-[![Deploy To Azure](https://aka.ms/deploytoazurebutton)](#TODO)
+[![Deploy To Azure](/docs/deploytomicrosoftcloud.svg)](#TODO)
 
 The deployment outputs will provide the details required to setup the synch between Azure Healthcare APIs and Dataverse in Dynamics 365.
 
