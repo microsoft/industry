@@ -54,7 +54,7 @@ Also, the reference implementation includes a set of powershell scripts to autom
 
 First, use the "Deploy To Azure" Button to setup all Azure related services. Go through the portal experience and specify the details of your environment to successfully deploy the setup:
 
-[![Deploy To Azure](https://aka.ms/deploytoazurebutton)](#TODO)
+[![Deploy To Azure](/docs/deploytomicrosoftcloud.svg)](#TODO)
 
 Please look at the outputs of the Azure deployment and take note of the Synapse Workspace Id as well as the Dataverse data lake file system Id, as they are required in the next step.
 
