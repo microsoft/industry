@@ -2252,7 +2252,7 @@
                         }                        
                     ]
                 },          
-				{
+								{
                     "name": "powerp",
                     "label": "Power Platform setup",
                     "subLabel": {},
@@ -2264,10 +2264,340 @@
 							"visible": true,
 							"options": {
 								"icon": "Info",
-								"text": "Coming soon :-)",
+								"text": "Microsoft Cloud for Telco industry requires dedicated Environments in Power Platform with Dataverse. You can use existing Environments, or create new Environments (recommended).",
 								"uri": "https://www.microsoft.com"
 							}
-						}	
+						},
+						{
+                            "name": "esPp",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Provision and configure Power Platform for Telco",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Telco solutions",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": true
+                        },
+						{
+							"name": "SpnBox",
+							"type": "Microsoft.Common.TextBlock",
+							"visible": "[equals(steps('powerp').esPp, 'yes')]",
+							"options": {
+								"text": "Microsoft Cloud for Telco industry setup requires a service principal to complete the deployment. You can use an existing service principal or create a new one, that will get assigned the appropriate permissions to complete the setup.",
+								"link": {
+									"label": "Learn more",
+									"uri": "https://www.microsoft.com"
+								}
+							}
+						}, 
+                        {
+                            "name": "spnSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "",
+                            "elements": [
+                                {
+                                    "name": "esServicePrincipal",
+                                    "type": "Microsoft.Common.ServicePrincipalSelector",
+                                    "visible": "[equals(steps('powerp').esPp, 'yes')]",
+                                    "label": {
+                                        "password": "Password",
+                                        "certificateThumbprint": "Certificate thumbprint",
+                                        "authenticationType": "Authentication Type",
+                                        "sectionHeader": "Service Principal"
+                                    },
+                                    "toolTip": {
+                                        "password": "Provide the application secret as it will be used to authenticate with Azure AD",
+                                        "certificateThumbprint": "Certificate thumbprint",
+                                        "authenticationType": "Authentication Type"
+                                    },
+                                    "defaultValue": {
+                                        "principalId": "",
+                                        "name": ""
+                                    },
+                                    "constraints": {
+                                        "required": true
+                                    },
+                                    "options": {
+                                        "hideCertificate": true
+                                    }
+                                }
+                            ],
+                            "visible": "[and(equals(steps('powerp').esPp, 'yes'), equals(steps('powerp').cicdOption, 'Yes'))]"
+                        },
+						{
+							"name": "EnvBox",
+							"type": "Microsoft.Common.TextBlock",
+							"visible": "[equals(steps('powerp').esPp, 'yes')]",
+							"options": {
+								"text": "Microsoft Cloud for Telco requires Environments in Power Platform. You can use existing Environment, or create new Environments (recommended). When creating new, the setup will instantiate dedicated Environments for Test, Development, and Production in order to support maintenance, testing, and validation before deploying to production.",
+								"link": {
+									"label": "Learn more",
+									"uri": "https://www.microsoft.com"
+								}
+							}
+						},                       
+                        {
+                            "name": "esPpEnv",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Create new or use existing Environments in Power Platform",
+                            "defaultValue": "New (recommended)",
+                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Telco solutions",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "New (recommended)",
+                                        "value": "New"
+                                    },
+                                    {
+                                        "label": "Use existing",
+                                        "value": "Existing"
+                                    }
+                                ]
+                            },
+                            "visible": "[equals(steps('powerp').esPp, 'yes')]"
+                        },
+						{
+							"name": "powerPlatNamePrefix",
+							"type": "Microsoft.Common.TextBox",
+							"label": "Name prefix for the new Environments",
+							"placeholder": "",
+							"defaultValue": "",
+							"toolTip": "Use only allowed characters to provide the prefix for the Power Platform Environments",
+							"constraints": {
+								"required": true,
+								"regex": "^[a-z0-9A-Z]{1,30}$",
+								"validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+							},
+							"visible": "[and(equals(steps('powerp').esPp, 'yes'), equals(steps('powerp').esPpEnv, 'New'))]"
+						},
+						{
+							"name": "ppRegion",
+							"type": "Microsoft.Common.DropDown",
+							"label": "Select region for the new Environments",
+							"placeholder": "",
+							"defaultValue": "",
+							"toolTip": "",
+							"visible": "[and(equals(steps('powerp').esPpEnv, 'New'), equals(steps('powerp').esPp, 'yes'))]",
+							"constraints": {
+								"allowedValues": [
+                                    {
+                                        "label": "Europe",
+                                        "value": "europe"
+                                    },
+                                    {
+                                        "label": "United States",
+                                        "value": "eastus"
+                                    },
+                                    {
+                                        "label": "United Arab Emirates",
+                                        "value": "uaecentral"
+                                    },
+                                    {
+                                        "label": "Switzerland",
+                                        "value": "switzerlandnorth"
+                                    },
+                                    {
+                                        "label": "Japan",
+                                        "value": "japaneast"
+                                    },
+                                    {
+                                        "label": "France",
+                                        "value": "francesouth"
+                                    },
+                                    {
+                                        "label": "Germany",
+                                        "value": "germanynorth"
+                                    },
+                                    {
+                                        "label": "Australia",
+                                        "value": "australiaeast"
+                                    }
+                                ],
+								"required": true
+							}
+						},
+						{
+							"name": "ppAllowDlp",
+							"type": "Microsoft.Common.DropDown",
+							"label": "Select recommended Data Loss Prevention Policies to allow Connectors for the Telco Power Platform Environments",
+							"placeholder": "",
+                            "multiselect": true,
+                            "selectAll": true,
+                            "filter": true,
+                            "filterPlaceholder": "Filter items ...",
+                            "multiLine": true,
+							"defaultValue": "",
+							"toolTip": "",
+							"visible": "[and(equals(steps('powerp').esPpEnv, 'New'), equals(steps('powerp').esPp, 'yes'))]",
+							"constraints": {
+								"allowedValues": [
+                                    {
+                                        "label": "Adobe Creative Cloud",
+										"description": "Connector for Adobe",
+                                        "value": "adobe"
+                                    },
+                                    {
+                                        "label": "DropBox",
+										"description": "Connector that allows you to connect to DropBox enterprises",
+                                        "value": "dropbox"
+                                    },
+                                    {
+                                        "label": "Azure Synapse",
+										"description": "Connector for Azure Synapse for data scenarios",
+                                        "value": "synapse"
+                                    }
+                                ],
+								"required": true
+							}
+						},
+						{
+							"name": "ppBlockDlp",
+							"type": "Microsoft.Common.DropDown",
+							"label": "Select recommended Data Loss Prevention Policies to block Connectors for the Telco Power Platform Environments",
+							"placeholder": "",
+                            "multiselect": true,
+                            "selectAll": true,
+                            "filter": true,
+                            "filterPlaceholder": "Filter items ...",
+                            "multiLine": true,
+							"defaultValue": "",
+							"toolTip": "",
+							"visible": "[and(equals(steps('powerp').esPpEnv, 'New'), equals(steps('powerp').esPp, 'yes'))]",
+							"constraints": {
+								"allowedValues": [
+                                    {
+                                        "label": "Adobe Creative Cloud",
+										"description": "Connector for Adobe",
+                                        "value": "adobe"
+                                    },
+                                    {
+                                        "label": "DropBox",
+										"description": "Connector that allows you to connect to DropBox enterprises",
+                                        "value": "dropbox"
+                                    },
+                                    {
+                                        "label": "Azure Synapse",
+										"description": "Connector for Azure Synapse for data scenarios",
+                                        "value": "synapse"
+                                    }
+                                ],
+								"required": true
+							}
+						},
+						{
+                            "name": "info",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": "[equals(steps('powerp').esPp, 'yes')]",
+                            "options": {
+                                "text": "Microsoft Cloud for Telco industry provides an integrated CICD pipeline for Power Platform to manage environments and solutions can be used with either GitHub Actions or Azure DevOps pipelines.",
+                                "uri": "https://github.com/azure/azops-accelerator/wiki/introduction",
+                                "style": "Info"
+                            }
+                        },
+                        {
+                            "name": "cicdOption",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy integrated CICD pipeline?",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('powerp').esPp, 'yes')]"
+                        },
+                        {
+                            "name": "Instructions",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": "[and(equals(steps('powerp').esPp, 'yes'), equals(steps('powerp').cicdOption, 'Yes'))]",
+                            "options": {
+                                "text": "Provide the credentials to initialize the repository with GitHub actions/DevOps pipelines.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/management-group-and-subscription-organization"
+                                }
+                            }
+                        },
+                        {
+                            "name": "optionsGroup1",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Select CICD option",
+                            "defaultValue": "GitHub Actions",
+                            "toolTip": "Microsoft Cloud for Telco industry will provide options for both GitHub Actions and Azure DevOps pipelines. For now, only GitHub Actions is available",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "GitHub Actions",
+                                        "value": "actions"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('powerp').esPp, 'yes'), equals(steps('powerp').cicdOption, 'Yes'))]"
+                        },
+                        {
+                            "name": "esGit",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "GitHub organization or username",
+                            "toolTip": "Provide Git org/username.",
+                            "visible": "[and(equals(steps('powerp').esPp, 'yes'), equals(steps('powerp').cicdOption, 'Yes'))]",
+                            "defaultValue": "",
+                            "constraints": {
+                                "required": true,
+                                "regex": "^[a-z0-9A-Z-]{1,39}$",
+                                "validationMessage": "The GitHub org/username must be 1-39 characters."
+                            }
+                        },
+                        {
+                            "name": "esGitRepoName",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "New GitHub repository name",
+                            "toolTip": "Provide a name for the new repository that will be created",
+                            "defaultValue": "",
+                            "visible": "[and(equals(steps('powerp').esPp, 'yes'), equals(steps('powerp').cicdOption, 'Yes'))]",
+                            "placeholder": "",
+                            "constraints": {
+                                "required": true,
+                                "regex": "^[a-z0-9A-Z-]{1,100}$",
+                                "validationMessage": "The repository name must be 1-100 characters."
+                            }
+                        },
+                        {
+                            "name": "esPaToken",
+                            "type": "Microsoft.Common.PasswordBox",
+                            "label": {
+                                "password": "GitHub personal access token",
+                                "confirmPassword": "Confirm PA Token"
+                            },
+                            "toolTip": "Provide the personal access token to access your GitHub account or organization. For more information see this link: https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token",
+                            "constraints": {
+                                "required": true,
+                                "validationMessage": "Password must be at least 8 characters long, contain only numbers and letters"
+                            },
+                            "options": {
+                                "hideConfirmation": true
+                            },
+                            "visible": "[and(equals(steps('powerp').esPp, 'yes'), equals(steps('powerp').cicdOption, 'Yes'))]"
+                        }
 					]
                 },
 				{
