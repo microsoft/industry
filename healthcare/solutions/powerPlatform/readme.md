@@ -2,6 +2,10 @@
 
 Microsoft Power Platform is an essential component of the overall Healthcare solutions for Microsoft clouds, and this prescriptive guidance aim to provide you with best practices and recommendations across the critical design areas for Power Platform to host and integrate the various Healthcare applications.
 
+| Reference implementation | Description | Deploy |
+|:----------------------|:------------|--------|
+| Power Platform for Healthcare | Power Platform environments with DLP, logging, and security enabled for Healthcare solutions |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
+
 ## Environments
 
 Healthcare applications requires an environment in Power Platform, that must be created and governed upfront and in a supported region for Healthcare. 
@@ -39,7 +43,13 @@ To do: End to end architecture reference
 
 ## Data-Loss Prevention (governance)
 
-To ensure that your applications that are deployed, customized, and developed as part of the Healthcare solutions in Power Platform environments are secured and compliant, and also mitigate risk for data exfiltration, Data-Loss Prevention (DLP) policies should be used to determine the connectors availalbe for the environments.
+An environment in Power Platform is an allow-by default system from a policy perspective, and for the Healthcare solutions and applications, one must use Data-Loss Prevention policies to explicitly categorize and enable/disable connecters for business use cases. This will help to mitigate risk for data exfiltration, and help to stay secure and compliant.
+### Design considerations
+
+### Design recommendations
+
+## Data
+
 ### Design considerations
 
 ### Design recommendations
