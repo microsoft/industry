@@ -17,12 +17,10 @@ The following section describes the design considerations and the design recomme
 
 * An environment must be pinned to a location (abstraction of Azure regions), and is determined during creation by the maker/admin, and cannot be changed post creation.
 * Environments are defined out of the box to serve different audiences and purposes like dev, test, production, and personal exploration/development. Depending on what type of environment that is created, it will determine what you can do with the environment as well as the apps within.
-* Each tenant has its own default environment where individuals can freely make their own apps
+* Each tenant has a default environment and it is created in the region closest to the default region of the Azure AD tenant
 * Environments can be used to target different audiences and/or for different purposes such as dev, 
 test and production
 * Data Loss Prevention (DLP) policies can be applied to individual environments or the tenant root ("/") level
-* Every tenant has a Default environment where all licensed Power Apps and Power Automate users 
-can create apps & flows
 * Non-default environments can be created by licensed Power Apps, Power Automate and 
 Dynamics users. Creation can be restricted to only global and service admins via a tenant setting
 * An environment can have one or zero database (Dataverse) instances
