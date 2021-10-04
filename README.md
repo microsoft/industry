@@ -12,7 +12,7 @@ deployment and adoption of industry cloud.
 - [Healthcare](./healthcare/readme.md)
     - [Pre-requisites](placeholder)
         - [Healthcare APIs](./healthcare/solutions/healthcareApis)
-        - [Power Platform environments](asd)
+        - [Power Platform](./healthcare/solutions/powerPlatform)
         - [Microsoft Teams for Healthcare](sd)
     - [Personalized care](./healthcare/solutions/)
         - [Patient service center](./healthcare/solutions/patientServiceCenter)
@@ -30,7 +30,7 @@ deployment and adoption of industry cloud.
     - [Interoperability](./healthcare/solutions)
     - [Clinical analytics](./healthcare/solutions)
     - [Operational analytics](./healthcare/solutions)
-    
+
 - [Telecommunications](./telco/readme.md)
 
 ### Healthcare
