@@ -46,7 +46,7 @@ The Infrastructure as Code (IaC) templates in this solution folder can be used f
 
 Please use the following "Deploy to Azure" button to get started with this accelerator:
 
-[![Deploy To Azure](/docs/deploytomicrosoftcloud.svg)](#TODO)
+[![Deploy To Microsoft Cloud](/docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Findustry%2Fmain%2FHealthcare%2Fsolutions%2FIoMT%2Fmain.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Findustry%2Fmain%2FHealthcare%2Fsolutions%2FIoMT%2Fportal.json)
 
 The deployment outputs will provide the details required to setup the synch between Azure Healthcare APIs and Dataverse in Dynamics 365 via the FHIR Synch Agent.
 
