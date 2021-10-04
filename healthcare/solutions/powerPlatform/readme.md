@@ -46,6 +46,8 @@ To do: End to end architecture reference
 An environment in Power Platform is an allow-by default system from a policy perspective, and for the Healthcare solutions and applications, one must use Data-Loss Prevention policies to explicitly categorize and enable/disable connecters for business use cases. This will help to mitigate risk for data exfiltration, and help to stay secure and compliant.
 ### Design considerations
 
+* A policy can be scoped to include the entire tenant, multiple environments, as well as exclude multiple environments
+
 ### Design recommendations
 
 ## Data
