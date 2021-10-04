@@ -26,6 +26,7 @@ can create apps & flows
 * Non-default environments can be created by licensed Power Apps, Power Automate and 
 Dynamics users. Creation can be restricted to only global and service admins via a tenant setting
 * An environment can have one or zero database (Dataverse) instances
+* Environments act as security boundaries allowing different security needs to be implemented in each environment
 
 ### Design recommendations
 
@@ -41,6 +42,20 @@ Dynamics users. Creation can be restricted to only global and service admins via
 
 To do: End to end architecture reference
 
+## Identity and access
+
+Identity and access to the Power Platform, the environments, and the applications, components, and solutions within the environments must be carefully through through in parallel with assigned licenses.
+Further, for data, security in Dataverse is there to ensure users can do the work they need to do with the least amount of friction, while still protecting the data and services. Security in Dataverse can be implemented as a simple security model with broad access all the way to highly complex security models where users have specific record and field level access.
+### Design considerations
+
+* Licensing is the first contro-gate to allowing access to Power Platform components
+* Ability to create applications and flows is controlled by security roles in the context of an environment
+* Environments act as a security boundary, allowing different security requirements to be implemented in each environment
+* The security and RBAC model for Environments with - and without Dataverse are different
+* Environments with Dataverse supports more advanced security models to control access to data and services within the Dataverse environment
+### Design recommendations
+
+* Create AAD groups that are automatically assigned the correct licenses per user per their requirements and roles, and avoid assigning licenses to individual users
 ## Data-Loss Prevention (governance)
 
 An environment in Power Platform is an allow-by default system from a policy perspective, and for the Healthcare solutions and applications, one must use Data-Loss Prevention policies to explicitly categorize and enable/disable connecters for business use cases. This will help to mitigate risk for data exfiltration, and help to stay secure and compliant.
@@ -48,6 +63,10 @@ An environment in Power Platform is an allow-by default system from a policy per
 
 * A policy can be scoped to include the entire tenant, multiple environments, as well as exclude multiple environments
 
+* You can create data loss prevention (DLP) policies that can act as guardrails to help prevent users from unintentionally exposing organizational data. 
+* DLP policies can be scoped at the environment level or tenant level, offering flexibility to craft sensible policies that strike the right balance between protection and productivity. 
+* Connectors can be grouped into business, non-business, and blocked. Once categorized, it cannot be used in conjunction with other connectors outside its group. When a connector is blocked, it cannot be used at all.
+* Environment admins cannot edit policies created by tenant admins
 ### Design recommendations
 
 ## Data
