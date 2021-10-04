@@ -13,7 +13,7 @@ deployment and adoption of industry cloud.
     - [Pre-requisites](placeholder)
         - [Healthcare APIs](./healthcare/solutions/healthcareApis)
         - [Power Platform](./healthcare/solutions/powerPlatform)
-        - [Microsoft Teams for Healthcare](sd)
+        - [Microsoft Teams for Healthcare](./healthcare/solutions/MicrosoftTeams)
     - [Personalized care](./healthcare/solutions/)
         - [Patient service center](./healthcare/solutions/patientServiceCenter)
         - [Patient access](./healthcare/solutions/patientAccess)

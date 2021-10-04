@@ -7,6 +7,8 @@ Microsoft Power Platform is an essential component of the overall Healthcare sol
 Healthcare applications requires an environment in Power Platform, that must be created and governed upfront and in a supported region for Healthcare. 
 The following section describes the design considerations and the design recommendations for Environments, to help you navigate to the correct setup per your organizational requirements.
 
+![Environments for Healthcare](./images/env.png)
+
 ### Design considerations
 
 * An environment must be pinned to a location (abstraction of Azure regions), and is determined during creation by the maker/admin, and cannot be changed post creation.
