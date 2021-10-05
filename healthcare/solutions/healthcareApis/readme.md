@@ -1,5 +1,5 @@
 # Healthcare API industry architecture
-Healthcare APIs with FHIR is essential in almost every Mircosoft Cloud for Healthcare scenario, and strongly recommended to deploy into a landing zone in Azure to simplify and expedite the integration with Power Platform (Dataverse and Healthcare applications), and Microsoft Teams
+Healthcare APIs with FHIR is essential in almost every Microsoft Cloud for Healthcare scenario, and strongly recommended to deploy into a landing zone in Azure to simplify and expedite the integration with Power Platform (Dataverse and Healthcare applications), and Microsoft Teams
 
 | Industry Architecture | Description | Deploy |
 |:----------------------|:------------|--------|
