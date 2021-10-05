@@ -42,7 +42,7 @@ To do: End to end architecture reference
 
 ## Identity and access
 
-Identity and access to the Power Platform, the environments, and the applications, components, and solutions within the environments must be carefully through through in parallel with assigned licenses.
+Identity and access to the Power Platform, the environments, and the applications, components, and solutions within the environments must be carefully thought through in parallel with assigned licenses.
 Further, for data, security in Dataverse is there to ensure users can do the work they need to do with the least amount of friction, while still protecting the data and services. Security in Dataverse can be implemented as a simple security model with broad access all the way to highly complex security models where users have specific record and field level access.
 ### Design considerations
 
