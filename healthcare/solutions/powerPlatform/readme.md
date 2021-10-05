@@ -46,7 +46,7 @@ Identity and access to the Power Platform, the environments, and the application
 Further, for data, security in Dataverse is there to ensure users can do the work they need to do with the least amount of friction, while still protecting the data and services. Security in Dataverse can be implemented as a simple security model with broad access all the way to highly complex security models where users have specific record and field level access.
 ### Design considerations
 
-* Licensing is the first contro-gate to allowing access to Power Platform components
+* Licensing is the first control-gate to allowing access to Power Platform components
 * Ability to create applications and flows is controlled by security roles in the context of an environment
 * Environments act as a security boundary, allowing different security requirements to be implemented in each environment
 * The security and RBAC model for Environments with - and without Dataverse are different
