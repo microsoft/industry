@@ -111,7 +111,7 @@ function DownloadFilesFromRepo {
 
 ### Search the patients
 
-Exsample of a search that returns all non-femail patients:
+Example of a search that returns all non-female patients:
 
 ```powershell
 $FhirGetMalePatients = Invoke-RestMethod "$fhirservice/Patient?gender:not=female" `
