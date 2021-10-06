@@ -1,6 +1,6 @@
 # Microsoft Teams for Healthcare
 
-Microsoft Teams offers a number of useful telemedicine features and scenarios useful for hospitals and Healthcare organizations in the context of Microsoft Cloud for Healthcare. 
+Microsoft Teams offers a number of useful telemedicine features and scenarios useful for hospitals and Healthcare organizations in the context of Microsoft Cloud for Healthcare.
 This document outlines recommendations in order to leverage Microsoft Teams across the various *Healthcare* scenarios, as well as a reference architecture and implementation.
 
 | Reference implementation | Description | Deploy |
@@ -9,8 +9,10 @@ This document outlines recommendations in order to leverage Microsoft Teams acro
 
 
 ## Prerequisites
+
+> The content in this section assumes that you've already deployed Teams in your organization. If you haven't yet rolled out Teams, start by reading [How to roll out Microsoft Teams](https://docs.microsoft.com/en-us/microsoftteams/deploy-overview)
 ### Licensing
-- [For licensing, see the prequisites](../prereqs.md) 
+- [For licensing, see the prequisites](../prereqs.md)
 
 ### Permissions
 
