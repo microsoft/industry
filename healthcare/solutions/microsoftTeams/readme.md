@@ -12,7 +12,7 @@ This document outlines recommendations in order to leverage Microsoft Teams acro
 
 > The content in this section assumes that you've already deployed Teams in your organization. If you haven't yet rolled out Teams, start by reading [How to roll out Microsoft Teams](https://docs.microsoft.com/en-us/microsoftteams/deploy-overview)
 ### Licensing
-- [For licensing, see the prerequisites](../prereqs.md)
+- [For licensing, see the prerequisites](../../prereqs.md)
 
 ### Permissions
 
