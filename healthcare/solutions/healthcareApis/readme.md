@@ -1,9 +1,9 @@
 # Healthcare API industry architecture
-Healthcare APIs with FHIR is essential in almost every Mircosoft Cloud for Healthcare scenario, and strongly recommended to deploy into a landing zone in Azure to simplify and expedite the integration with Power Platform (Dataverse and Healthcare applications), and Microsoft Teams
+Healthcare APIs with FHIR is essential in almost every Microsoft Cloud for Healthcare scenario, and strongly recommended to deploy into a landing zone in Azure to simplify and expedite the integration with Power Platform (Dataverse and Healthcare applications), and Microsoft Teams
 
 | Industry Architecture | Description | Deploy |
 |:----------------------|:------------|--------|
-| Healthcare APIs | Healthcare APIs architecture with FHIR, Dicom, IoT connectors, and requisite infrastructure for Healthcare solutions |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
+| Healthcare APIs | Healthcare APIs architecture with FHIR, DICOM, IoT connectors, and requisite infrastructure for Healthcare solutions |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
 
 ![Healthcare Industry Reference Architecture](./images/mc4h-reference-architecture.png)
 
@@ -118,7 +118,7 @@ function DownloadFilesFromRepo {
 
 ### Search the patients
 
-Exsample of a search that returns all non-femail patients:
+Example of a search that returns all non-female patients:
 
 ```powershell
 $FhirGetMalePatients = Invoke-RestMethod "$fhirservice/Patient?gender:not=female" `
