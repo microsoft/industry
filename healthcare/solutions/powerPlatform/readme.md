@@ -8,7 +8,7 @@ Microsoft Power Platform is an essential component of the overall Healthcare sol
 
 ## Environments
 
-Healthcare applications requires an environment in Power Platform, that must be created and governed upfront and in a supported region for Healthcare. 
+Healthcare applications requires an environment in Power Platform, that must be created and governed upfront and in a supported region for Healthcare.
 The following section describes the design considerations and the design recommendations for Environments, to help you navigate to the correct setup per your organizational requirements.
 
 ![Environments for Healthcare](./images/env.png)
@@ -18,10 +18,10 @@ The following section describes the design considerations and the design recomme
 * An environment must be pinned to a location (abstraction of Azure regions), and is determined during creation by the maker/admin, and cannot be changed post creation.
 * Environments are defined out of the box to serve different audiences and purposes like dev, test, production, and personal exploration/development. Depending on what type of environment that is created, it will determine what you can do with the environment as well as the apps within.
 * Each tenant has a default environment and it is created in the region closest to the default region of the Azure AD tenant
-* Environments can be used to target different audiences and/or for different purposes such as dev, 
+* Environments can be used to target different audiences and/or for different purposes such as dev,
 test and production
 * Data Loss Prevention (DLP) policies can be applied to individual environments or the tenant root ("/") level
-* Non-default environments can be created by licensed Power Apps, Power Automate and 
+* Non-default environments can be created by licensed Power Apps, Power Automate and
 Dynamics users. Creation can be restricted to only global and service admins via a tenant setting
 * An environment can have one or zero database (Dataverse) instances
 * Environments act as security boundaries allowing different security needs to be implemented in each environment
@@ -32,7 +32,7 @@ Dynamics users. Creation can be restricted to only global and service admins via
 * Create dedicated environments for test, development, and production for the Healthcare solutions, which allows ease of maintenance and validation of changes, such as release wave updates which is per environment
 * Create the dedicated environments for Healthcare in the same region
 * The production environment for Healthcare must be of type "production", while test and development environments should be of type "sandbox"
-* Limit high privilige access by using an AAD Security Group with PIM for admin access to the environments
+* Limit high privilege access by using an AAD Security Group with PIM for admin access to the environments
 * Create DLP policies to limit data flow between trusted MSFT connectors and 3rd party APIs, aligned with your organizational requirements
 * Manage the correct number of environments in the tenant to avoid sprawl and conserve capacity
 * Limit creation of production and sandbox environments to only specific administrators
@@ -61,8 +61,8 @@ An environment in Power Platform is an allow-by default system from a policy per
 
 * A policy can be scoped to include the entire tenant, multiple environments, as well as exclude multiple environments
 
-* You can create data loss prevention (DLP) policies that can act as guardrails to help prevent users from unintentionally exposing organizational data. 
-* DLP policies can be scoped at the environment level or tenant level, offering flexibility to craft sensible policies that strike the right balance between protection and productivity. 
+* You can create data loss prevention (DLP) policies that can act as guardrails to help prevent users from unintentionally exposing organizational data.
+* DLP policies can be scoped at the environment level or tenant level, offering flexibility to craft sensible policies that strike the right balance between protection and productivity.
 * Connectors can be grouped into business, non-business, and blocked. Once categorized, it cannot be used in conjunction with other connectors outside its group. When a connector is blocked, it cannot be used at all.
 * Environment admins cannot edit policies created by tenant admins
 ### Design recommendations
