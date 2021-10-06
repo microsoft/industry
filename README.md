@@ -10,7 +10,7 @@ deployment and adoption of industry cloud.
 ## Industry Cloud Reference Architectures
 
 - [Healthcare](./healthcare/readme.md)
-    - [Pre-requisites](placeholder)
+    - [Pre-requisites](./healthcare/licenses.md)
         - [Healthcare APIs](./healthcare/solutions/healthcareApis)
         - [Power Platform](./healthcare/solutions/powerPlatform)
         - [Microsoft Teams for Healthcare](./healthcare/solutions/microsoftTeams)
