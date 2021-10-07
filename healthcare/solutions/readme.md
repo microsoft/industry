@@ -4,8 +4,8 @@ This folder contains specific solutions for the Healthcare industry, which can b
 
 To do: End to end architecture reference
 
-## Azure
+## Patient Management
 
-## Power Platform
+## Health Team Colloboration
 
-## Microsoft 365
+## Clinical and Operational Insights
