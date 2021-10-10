@@ -34,7 +34,68 @@ Device data is normalized, grouped, and mapped to FHIR that can be sent via FHIR
 
 ## Deployment instructions
 
-add screenshots and description
+Click this button to deploy the reference implementation for Healthcare APIs, and sign into your Azure tenant.
+
+[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
+
+The deployment requires you to select the subscription you will create the Healthcare APIs into, and a location.
+
+Once provided, navigate to the Healthcare APIs configuration tab, and provide inptu for the following:
+
+* Resource group name. A resource group will be created to logically group all the Healthcare APIs resources and additional infrastructure, such as monitoring, storage accounts, managed identities etc.
+
+* Region for the resources. Select one of the supported regions you will deploy Healthcare APIs into.
+
+* Healthcare API (workspace) name. Provide a resource name for the Healthcare API workspace, which act as a logical container for the Healthcare API services.
+
+* Azure AD user. You can optionally select a user that will be granted the required RBAC for the data plane operations for Healthcare APIs, across all services.
+
+![healthApi](./images/setup1.png)
+
+* Enable FHIR Service. Select whether FHIR should be created or not. By selecting yes, additional parameters are required.
+
+* FHIR service name. Provide a unique name for the FHIR service name, that will also be used to construct the service endpoint name for your FHIR service.
+
+* Select SKU. Select one of the supported SKUs for FHIR service, per your requirements.
+
+* Create and integrate storage account with FHIR. FHIR service supports a secure export operation to Azure Storage account. If you select yes, the storage account will be created and associated with the FHIR service, and RBAC for the managed identity is assigned.
+
+* Enable Managed Identity for FHIR. If you select yes, a system managed identity is created for the FHIR service.
+
+![healthApi](./images/setup2.png)
+
+* Enable DICOM service. Select if DICOM should be provisioned and configured as part of the Healthcare API setup.
+
+* DICOM service name. Provide a unique name for the DICOM service name, that will also be used to construct the service endpoint for your DICOM service.
+
+![healthApi](./images/setup3.png)
+
+* Enable IoT connector. Select if IoT connector should be provisioned and configured as part of the Healthcare API setup.
+
+IoT connector name. Provide a name for the IoT connector service name.
+
+* Enable Managed Identity for IoT. If you select yes, a system managed identity is created for the IoT connector service.
+
+* Enable Event Hub. If you select yes, an Event Hub with namespace is created and configured as part of the IoT connector service.
+
+![healthApi](./images/setup4.png)
+
+* Enable HealthBot. Select yes if you want to configur an Ai-powered health assistant.
+
+* HealthBot name. Provide a name for the Health Bot service.
+
+* HealthBot SKU. Select the required SKU for the Health Bot
+
+![healthApi](./images/setup5.png)
+
+* Enable Monitoring. Select yes if you want to enable end-to-end monitoring of the Healthcare APIs and all services that are being created.
+
+* Use existing Log Analytics workspace. Select yes if you want to use an existing Log Analytics workspace to collect the diagnostics and metrics of the services, or select no if you want to create a new dedicated Log Analytics workspace for the Healthcare API services (application centric).
+
+![healthApi](./images/setup6.png)
+
+Once the configuration has been made, you can validate and review your input before deploying into the Azure subscription (landing zone) which will host the Healthcare APIs.
+
 ### Post deployment
 
 Get the FHIR endpoint:
