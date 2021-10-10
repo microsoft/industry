@@ -104,7 +104,7 @@ The Power Platform provides different mechanism to allow connectivity to Azure d
 
 * Use a VNet data gateway to access data from cloud services in the data platform to Azure data services.
     * This feature is still in public preview, hence may not be suitable for production scenarios.
-* Deploy the VNet data gateway in the hub virtual network on the Azure Landing Zones platform. This will provide connectivity to Azure data services located in Azure Landing Zones.
+* Deploy the VNet data gateway in the [hub virtual network](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/traditional-azure-networking-topology) on the [Azure Landing Zones](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/architecture) platform. This will provide connectivity to Azure data services located in Azure Landing Zones.
 * Use on-premises data gateway if you cannot deploy preview services in your Azure environment, or you need to securely access data assets stored outside Azure.
 * When using on-premises data gateways:
     * Do not install it in personal mode. The personal mode only allows access for a single user and is therefore not suited for large-scale solutions.
