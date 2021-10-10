@@ -7,10 +7,10 @@ Healthcare APIs with FHIR is essential in almost every Microsoft Cloud for Healt
 
 ![Healthcare Industry Reference Architecture](./images/mc4h-reference-architecture.png)
 
-
 ## Overview
 
 Add description and context
+
 ## Azure Healthcare API
 
 ![Healthcare API architecture ](./images/healthcareapi.png "Healthcare API")
