@@ -21,7 +21,10 @@
                         },
                         {
                             "name": "resourceScope",
-                            "type": "Microsoft.Common.ResourceScope"
+                            "type": "Microsoft.Common.ResourceScope",
+                            "location": {
+                                "resourceTypes": []
+                            }
                         }
                     ]
                 },
@@ -827,8 +830,9 @@
                 "vpnGateWayScaleUnit": "[steps('lzSettings').esVwanGwScaleUnits]",
                 "enablePrivateDnsZones": "[steps('lzSettings').esPrivateDns]"
 			},
-            "kind": "Tenant",
-            "location": "[steps('basics').resourceScope.location.name]"
+            "kind": "Subscription",
+            "location": "[steps('basics').resourceScope.location.name]",
+            "subscriptionId": "[steps('basics').resourceScope.subscription.id]"
         }
     }
 }
