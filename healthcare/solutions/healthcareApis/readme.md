@@ -1,4 +1,4 @@
-# Healthcare APIs
+# Healthcare APIs in Microsoft Cloud for Healthcare
 
 Healthcare APIs with FHIR is essential in many of the Microsoft Cloud for Healthcare scenario, and strongly recommended to deploy into a landing zone in Azure to simplify and expedite the integration with Power Platform (Dataverse and Healthcare applications), and Microsoft Teams
 
@@ -6,28 +6,40 @@ Healthcare APIs with FHIR is essential in many of the Microsoft Cloud for Health
 |:----------------------|:------------|--------|
 | Healthcare APIs | Healthcare APIs architecture with FHIR, DICOM, IoT connectors, and requisite infrastructure for Healthcare solutions |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
 
+
+In the overall architecture for Microsoft Cloud for Healthcare, the Healthcare APIs components together with the FHIR Sync Agent enables organizations that uses data models based on the Fast Healthcare Interoperability Resources (FHIR) standards frameworks to simplify data synchronization between Azure and Microsoft Dataverse, powered by the Microsoft Healthcare solutions in Power Platform.
+
 ![Healthcare Industry Reference Architecture](./images/mc4h-reference-architecture.png)
 
-## Overview
+## Critical design areas for Healthcare APIs
 
-Add description and context
+The core of enterprise-scale architecture for Healthcare APIs contains a critical design path comprised of fundamental design topics with heavily interrelated and dependent design decisions. This repo provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the enterprise-scale architecture. For each of the considered domains, review the provided considerations and recommendations and use them to structure and drive designs within each area.
 
-## Azure Healthcare API
+* [Identity and access](#identity-and-access)
+* [Data-loss prevention](#data-loss-prevention)
+* [Data ingress and egress](#data)
+* [Observability, security, and logging](#observability-and-logging)
+* [Networking](#azure-vnet-connectivity-for-power-platform)
+* [Regulatory compliance](#regulatory-compliance)
+
+## Azure Healthcare APIs
+
+Azure Healthcare APIs (Preview) enables rapid exchange of data through FHIR APIs, backed by a managed Platform-as-a Service (PaaS) offering in the cloud. It makes it easier for anyone working with health data to ingest, manage, and persist protected health information (PHI) in the cloud. The FHIR API and compliant data store enable you to securely connect and interact with any system that uses FHIR APIs.
 
 ![Healthcare API architecture ](./images/healthcareapi.png "Healthcare API")
 
-## FHIR Service
+### FHIR Service
 
 The FHIR service is a set of tools to combine and store disparate health datasets and standardize data in the cloud. The service offers a set of search options to query the persisted data or export for consumption by other services.
 
-## DICOM Service
+### DICOM Service
 
 The DICOM Service enables the secure exchange of medical images and associated metadata with any DICOMweb™ enabled systems.
 QIDO, WADO, and STOW supports query, retrieve, and store of DICOM objects.
 Ingests and persists DICOM data from VNA, PACS and other medical imaging systems at thousands of images per second.
 DICOM Custom Tags allows for user defined, searchable tags.​
 
-## IOT Connector
+### IOT Connector
 
 The IOT Connector ingests streaming data from devices in real-time at millions of events per second.
 Customized settings allow developers to manage device content, sample data rates, and set the desired capture thresholds.
