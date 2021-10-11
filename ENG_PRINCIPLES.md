@@ -10,7 +10,7 @@ However, there’s no such thing as a reference implementation that 1) spans acr
 
 This gap ultimately slows down the field, and our customers in order to realize value faster, and there’s a very high risk that customers are left with something that is bespoke and are facing a cliff as we continue to develop our clouds and offerings in the industry space.
 
-* What must be true?
+### What must be true?
 
 CAT must provide the core cloud foundation for each of our cloud platforms, to ensure the industry solutions will land on something that is sustainable, aligned with the platform and product roadmap(s), and anchored on core design principles across critical design areas for the respective cloud platforms.
 The goal of the reference implementations is to accelerate and expedite the customer journey and help them to realize value much faster vs what’s feasible today, due to the lack of a cohesive approach to the industry clouds.

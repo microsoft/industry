@@ -21,7 +21,10 @@
                         },
                         {
                             "name": "resourceScope",
-                            "type": "Microsoft.Common.ResourceScope"
+                            "type": "Microsoft.Common.ResourceScope",
+                            "location": {
+                                "resourceTypes": []
+                            }
                         }
                     ]
                 },
@@ -126,7 +129,7 @@
                         {
                             "name": "esNwLocation",
                             "type": "Microsoft.Common.DropDown",
-                            "label": "Region for the first networking hub",
+                            "label": "Region for the additional networking hub",
                             "filter": true,
                             "toolTip": "Select the target region for you connectivity deployment (requires you to provide a subscriptionId for connectivity)",
                             "constraints": {
@@ -827,8 +830,9 @@
                 "vpnGateWayScaleUnit": "[steps('lzSettings').esVwanGwScaleUnits]",
                 "enablePrivateDnsZones": "[steps('lzSettings').esPrivateDns]"
 			},
-            "kind": "Tenant",
-            "location": "[steps('basics').resourceScope.location.name]"
+            "kind": "Subscription",
+            "location": "[steps('basics').resourceScope.location.name]",
+            "subscriptionId": "[steps('basics').resourceScope.subscription.id]"
         }
     }
 }
