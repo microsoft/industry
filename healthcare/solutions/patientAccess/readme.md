@@ -3,6 +3,8 @@
 Patient access customizes a Microsoft Power Apps portal with healthcare-specific capabilities as part of Microsoft Cloud for Healthcare.
 It provides patients with access to their health data, knowledge articles, and in-person and virtual appointment scheduling, chat with health bot, communicate with a caregiver, and view their clinical data. The portal connects with entities in Dataverse.
 
+![PatientAccess](./images/overview.png)
+
 Before you deploy and configure, verify you have implemented the [prerequisites](../../prereqs.md).
 
 Specifically for patient access, you need:
