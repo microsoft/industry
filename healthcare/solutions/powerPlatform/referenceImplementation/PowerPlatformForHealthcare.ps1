@@ -7,6 +7,7 @@ param (
 
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
+    [ValidateSet('unitedstates', 'europe', 'asia', 'australia', 'india', 'japan', 'canada', 'unitedkingdom', 'unitedstatesfirstrelease', 'southamerica', 'france', 'switzerland', 'germany', 'unitedarabemirates')]
     [String]
     $Location
 )
@@ -31,31 +32,31 @@ $PostEnvironment = '/providers/Microsoft.BusinessAppPlatform/environments?api-ve
 
 # Power Platform HTTP Get DLP Policy Uri
 $GetPolicies = "https://api.bap.microsoft.com/providers/Microsoft.BusinessAppPlatform/scopes/admin/apiPolicies?api-version=2016-11-01"
-    
+
 # Declare Rest headers
-    $Headers = @{
-        "Content-Type"  = "application/json"
-        "Authorization" = "Bearer $($Token)"
-    }
+$Headers = @{
+    "Content-Type"  = "application/json"
+    "Authorization" = "Bearer $($Token)"
+}
 
 foreach ($Env in $Environments) {
-Write-host "Creating Environment $($Env)"
+    Write-host "Creating Environment $($Env)"
 
-# Form the request body to create new Environments in Power Platform
-# Declaring the HTTP Post request
+    # Form the request body to create new Environments in Power Platform
+    # Declaring the HTTP Post request
 
     $PostBody = @{
         "properties" = @{
             "linkedEnvironmentMetadata" = @{
                 "baseLanguage" = ''
-                "domainName" = "$($Env)"
-                "templates" = ''
+                "domainName"   = "$($Env)"
+                "templates"    = ''
             }
-            "databaseType" = "CommonDataService"
-            "displayName" = "$($Env)"
-            "environmentSku" = "Production"
+            "databaseType"              = "CommonDataService"
+            "displayName"               = "$($Env)"
+            "environmentSku"            = "Production"
         }
-        "location" = "$($Location)"
+        "location"   = "$($Location)"
     }
 
     $PostParameters = @{
@@ -67,13 +68,13 @@ Write-host "Creating Environment $($Env)"
     }
 
     Write-Host "Invoking REST API to create $($Env)"
-    
+
     try {
         $response = Invoke-RestMethod @PostParameters
         Write-Host "Environment $($Env) is being created..."
     }
     catch {
-        Write-Error "Creation of Environment $($Env) failed"
+        Write-Error "Creation of Environment $($Env) failed`r`n$_"
         throw "REST API call failed drastically"
     }
 
@@ -90,12 +91,19 @@ Write-host "Creating Environment $($Env)"
     Write-Host "Checking environment status for $($Env)"
     try {
         $response = Invoke-RestMethod @GetParameters
-        Write-Host $response
     }
     catch {
-        Write-Host "Retrieving the environment failed.."
+        Write-Host "Retrieving the environment failed.`r`n$_"
         throw "Ouch...."
     }
-    return $response.value.properties | where-object {$_.displayName -eq $($Env)} | Select-Object -Property displayname, environmentType, provisioningState, azureRegionHint  #| convertto-json -depth 100
-    ## [Newtonsoft.Json.Linq.JObject]::Parse($response.content).ToString()
+    $response.value.properties | Where-Object { $_.displayName -eq $($Env) } | Sort-Object -Property createdTime -Descending -Top 1 | Foreach-Object -Process {
+        [PSCustomObject]@{
+            Name              = $_.displayName
+            environmentType   = $_.environmentType
+            provisioningState = $_.provisioningState
+            azureRegionHint   = $_.azureRegionHint
+            createdTime       = $_.createdTime
+            resourceId        = $_.linkedEnvironmentMetadata.resourceId
+        }
+    }
 }
