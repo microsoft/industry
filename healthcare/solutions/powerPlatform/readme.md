@@ -77,16 +77,24 @@ In case you are managing your own keys or your deployment spans multiple geo's, 
 
 ### Data Design recommendations
 
-When designing your data environment make a plan for data modeling, data connectivity, data sources, update frequencies and bandwidth requirements.
+When designing your data environment make a plan for: 
+
+* data modeling
+* data connectivity
+* data sources
+* update frequencies
+* bandwidth requirements
+  
 When you need to access data from an existing source consider if a replica should be made in Dataverse and if this needs to be bidirectional synched or if you need a one directionally static snapshop.
 
-#### Data modeling
+* Data modeling
+    * Define the data structure and relation requirements, one-to-may or many-to-many.
+    * Every application building on the data have individual modeling requirements, but consider standardizing on models. This can simplify integrations and avoid data duplication.
+    * In some scenarios standard Industry Data models are available. Evaluate if  this is the right approach for your company and if they need adoption/ configuration.
 
-Define the data structure and relation requirements, one-to-may or many-to-many. Every application building on the data have individual modeling requirements, but consider standardizing on models. This can simplify integrations and avoid data duplication. In some scenarios standard Industry Data models are available. Evaluate if  this is the right approach for your company and if they need adoption/ configuration.
-
-#### Data sources
-
-When connecting to other data sources its important to define the need to gateways to connect to on-prem systems, the network bandwidth between you Dataverse environment and server location. Ensure that the database source has capacity to handle the additional load and the data transferred is optimized. Map the data volume and update frequency needed for each use case.  
+* Data sources
+    * When connecting to other data sources its important to define the need to gateways to connect to on-prem systems, the network bandwidth between you Dataverse environment and server location.
+    * Ensure that the database source has capacity to handle the additional load and the data transferred is optimized. Map the data volume and update frequency needed for each use case.  
 
 ## Observability and logging
 
