@@ -96,7 +96,7 @@ foreach ($Env in $Environments) {
         Write-Host "Retrieving the environment failed.`r`n$_"
         throw "Ouch...."
     }
-    $response.value.properties | Where-Object { $_.displayName -eq $($Env) } | Sort-Object -Property createdTime -Descending | Foreach-Object -Process {
+    $response.value.properties | Where-Object { $_.displayName -eq $($Env) } | Sort-Object -Property createdTime -Descending -Top 1 | Foreach-Object -Process {
         [PSCustomObject]@{
             Name              = $_.displayName
             environmentType   = $_.environmentType
