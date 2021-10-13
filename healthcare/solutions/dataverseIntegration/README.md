@@ -39,7 +39,7 @@ Our tests have shown that similar requirements are existing for the Synapse work
 
 The Storage Account, the Synapse Workspace and the Power Platform Environment must be in the same region. Otherwise, the "Azure Synapse Link" feature in Power Apps will not work. Also, all services need to be in the same tenant, subscription and resource group.
 
-The user creating the connection requires Owner or User Access Administrator rights on the two Azure resources in order to be able to assign RBAC roles to the Service Principles of the two Enterprise Applications. In addition, the user needs to have the Dataverse system administrator role in the environment to connect Azure and Dataverse successfully.
+The user creating the connection requires Owner or User Access Administrator rights on the two Azure resources and Synapse Administrator rights in the Synapse workspace in order to be able to assign RBAC roles to the Service Principles of the two Enterprise Applications. In addition, the user needs to have the Dataverse system administrator role in the environment to connect Azure and Dataverse successfully.
 
 ## Reference Implementation
 

@@ -40,6 +40,12 @@
         },
         "privateDnsZoneIdSynapseSql": {
             "value": "/subscriptions/1f6c9a98-a387-420d-853c-9d27cfda0f33/resourceGroups/mabuss-dataverse/providers/Microsoft.Network/privateDnsZones/privatelink.sql.azuresynapse.net"
+        },
+        "privateDnsZoneIdBlob": {
+            "value": "/subscriptions/1f6c9a98-a387-420d-853c-9d27cfda0f33/resourceGroups/mabuss-dataverse/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+        },
+        "privateDnsZoneIdDfs": {
+            "value": "/subscriptions/1f6c9a98-a387-420d-853c-9d27cfda0f33/resourceGroups/mabuss-dataverse/providers/Microsoft.Network/privateDnsZones/privatelink.dfs.core.windows.net"
         }
     }
 }
