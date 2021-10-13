@@ -3,7 +3,7 @@
     "view": {
         "kind": "Form",
         "properties": {
-            "title": "Microsoft Cloud for Healthcare (Azure)",
+            "title": "Healthcare APIs",
             "steps": [
                 {
                     "name": "basics",

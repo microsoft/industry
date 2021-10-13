@@ -6,6 +6,17 @@ Microsoft Power Platform is an essential component of the overall Healthcare sol
 |:----------------------|:------------|--------|
 | Power Platform for Healthcare | Power Platform environments with DLP, logging, and security enabled for Healthcare solutions |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
 
+## Critical design areas for Power Platform for Healthcare
+
+The core of enterprise-scale architecture for Power Platform contains a critical design path comprised of fundamental design topics with heavily interrelated and dependent design decisions. This repo provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the enterprise-scale architecture. For each of the considered domains, review the provided considerations and recommendations and use them to structure and drive designs within each area.
+
+* [Environments](#environments)
+* [Identity and access](#identity-and-access)
+* [Data-loss prevention](#data-loss-prevention)
+* [Data ingress and egress](#data)
+* [Observability and logging](#observability-and-logging)
+* [Azure VNet connectivity for Power Platform](#azure-vnet-connectivity-for-power-platform)
+
 ## Environments
 
 Healthcare applications requires an environment in Power Platform, that must be created and governed upfront and in a supported region for Healthcare.
