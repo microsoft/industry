@@ -50,7 +50,7 @@ foreach ($Env in $Environments) {
             "linkedEnvironmentMetadata" = @{
                 "baseLanguage" = ''
                 "domainName"   = "$($Env)"
-                "templates"    = ''
+                "templates"    = @("D365_DeveloperEdition")
             }
             "databaseType"              = "CommonDataService"
             "displayName"               = "$($Env)"
@@ -63,11 +63,11 @@ foreach ($Env in $Environments) {
         "Uri"         = "$($baseUri)$($postEnvironment)"
         "Method"      = "Post"
         "Headers"     = $headers
-        "Body"        = $postBody | ConvertTo-json
+        "Body"        = $postBody | ConvertTo-json -Depth 100
         "ContentType" = "application/json"
     }
 
-    Write-Host "Invoking REST API to create $($Env)"
+    Write-Host "Invoking the request to create $($Env)"
 
     try {
         $response = Invoke-RestMethod @PostParameters
@@ -79,8 +79,7 @@ foreach ($Env in $Environments) {
     }
 
     # Get newly created environments
-    Start-Sleep -Seconds 10
-
+    
     $GetParameters = @{
         "Uri"         = "$($BaseUri)$($GetEnvironment)"
         "Method"      = "Get"
@@ -89,6 +88,7 @@ foreach ($Env in $Environments) {
     }
 
     Write-Host "Checking environment status for $($Env)"
+    Start-Sleep -Seconds 30
     try {
         $response = Invoke-RestMethod @GetParameters
     }
@@ -96,7 +96,7 @@ foreach ($Env in $Environments) {
         Write-Host "Retrieving the environment failed.`r`n$_"
         throw "Ouch...."
     }
-    $response.value.properties | Where-Object { $_.displayName -eq $($Env) } | Sort-Object -Property createdTime -Descending -Top 1 | Foreach-Object -Process {
+    $response.value.properties | Where-Object { $_.displayName -eq $($Env) } | Sort-Object -Property createdTime -Descending | Foreach-Object -Process {
         [PSCustomObject]@{
             Name              = $_.displayName
             environmentType   = $_.environmentType
