@@ -29,8 +29,6 @@ The following section describes the design considerations and the design recomme
 * An environment must be pinned to a location (abstraction of Azure regions), and is determined during creation by the maker/admin, and cannot be changed post creation.
 * Environments are defined out of the box to serve different audiences and purposes like dev, test, production, and personal exploration/development. Depending on what type of environment that is created, it will determine what you can do with the environment as well as the apps within.
 * Each tenant has a default environment and it is created in the region closest to the default region of the Azure AD tenant
-* Environments can be used to target different audiences and/or for different purposes such as dev,
-test and production
 * Data Loss Prevention (DLP) policies can be applied to individual environments or the tenant root ("/") level
 * Non-default environments can be created by licensed Power Apps, Power Automate and
 Dynamics users. Creation can be restricted to only global and service admins via a tenant setting
@@ -40,9 +38,10 @@ Dynamics users. Creation can be restricted to only global and service admins via
 ### Design recommendations
 
 * Rename the Default environment to clarify the intent, e.g., "personal productivity"
-* Create dedicated environments for test, development, and production for the Healthcare solutions, which allows ease of maintenance and validation of changes, such as release wave updates which is per environment
-* Create the dedicated environments for Healthcare in the same region
-* The production environment for Healthcare must be of type "production", while test and development environments should be of type "sandbox"
+* Disable self-service of Environment creation, both for Production and Sandbox as well as Trials, and limit this to selected Power Platform admins as this can potentially cause capacity constraints in the tenant
+* Enable a process for the organization to request new environments. Either establish and implement the process yourself, or leverage the ["Center of Excellence starter kit"](https://docs.microsoft.com/power-platform/guidance/coe/starter-kit) which provides a solution that can be imported to a dedicated environment to facilitate this, together with other core capabilities.
+* Create dedicated environments for test, development, and production for the Healthcare solutions in the same region, which allows ease of maintenance and validation of changes, such as release wave updates which is per environment
+* The production and development environments for Healthcare must be of type "production", while test environments could be of type "sandbox" to simplify reset process for testing purposes.
 * Limit high privilege access by using an AAD Security Group with PIM for admin access to the environments
 * Create DLP policies to limit data flow between trusted MSFT connectors and 3rd party APIs, aligned with your organizational requirements
 * Manage the correct number of environments in the tenant to avoid sprawl and conserve capacity
@@ -55,6 +54,7 @@ To do: End to end architecture reference
 
 Identity and access to the Power Platform, the environments, and the applications, components, and solutions within the environments must be carefully thought through in parallel with assigned licenses.
 Further, for data, security in Dataverse is there to ensure users can do the work they need to do with the least amount of friction, while still protecting the data and services. Security in Dataverse can be implemented as a simple security model with broad access all the way to highly complex security models where users have specific record and field level access.
+
 ### Design considerations
 
 * Licensing is the first control-gate to allowing access to Power Platform components
@@ -62,20 +62,23 @@ Further, for data, security in Dataverse is there to ensure users can do the wor
 * Environments act as a security boundary, allowing different security requirements to be implemented in each environment
 * The security and RBAC model for Environments with - and without Dataverse are different
 * Environments with Dataverse supports more advanced security models to control access to data and services within the Dataverse environment
+
 ### Design recommendations
 
 * Create AAD groups that are automatically assigned the correct licenses per user per their requirements and roles, and avoid assigning licenses to individual users
+
 ## Data-Loss Prevention (governance)
 
 An environment in Power Platform is an allow-by default system from a policy perspective, and for the Healthcare solutions and applications, one must use Data-Loss Prevention policies to explicitly categorize and enable/disable connecters for business use cases. This will help to mitigate risk for data exfiltration, and help to stay secure and compliant.
+
 ### Design considerations
 
 * A policy can be scoped to include the entire tenant, multiple environments, as well as exclude multiple environments
-
 * You can create data loss prevention (DLP) policies that can act as guardrails to help prevent users from unintentionally exposing organizational data.
 * DLP policies can be scoped at the environment level or tenant level, offering flexibility to craft sensible policies that strike the right balance between protection and productivity.
 * Connectors can be grouped into business, non-business, and blocked. Once categorized, it cannot be used in conjunction with other connectors outside its group. When a connector is blocked, it cannot be used at all.
 * Environment admins cannot edit policies created by tenant admins
+
 ### Design recommendations
 
 ## Data
@@ -83,9 +86,15 @@ An environment in Power Platform is an allow-by default system from a policy per
 ### Design considerations
 
 ### Design recommendations
+
 ## Observability and logging
 
+Observability and auditing is key for the environments, the various application components into the environments, as well as the Dataverse platform. Additional integration and end-to-end view will rely on Microsoft 365 Security and Compliance Center, and Azure Active Directory. For most of the services in Power PLatform, organizations who are using Azure can integrate with Azure Monitor (Application Insights and Log Analytics) for long-term retention and further analysis.
+
 ### Design considerations
+
+* Auditing for Environments is default set to off and cannot be enabled on Environments during provisioning. To enable auditing you must explicitly opt-in within the Environment settings once it has been created.
+* 
 
 ### Design recommendations
 
