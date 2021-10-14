@@ -6,6 +6,17 @@ Microsoft Power Platform is an essential component of the overall Healthcare sol
 |:----------------------|:------------|--------|
 | Power Platform for Healthcare | Power Platform environments with DLP, logging, and security enabled for Healthcare solutions |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
 
+## Critical design areas for Power Platform for Healthcare
+
+The core of enterprise-scale architecture for Power Platform contains a critical design path comprised of fundamental design topics with heavily interrelated and dependent design decisions. This repo provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the enterprise-scale architecture. For each of the considered domains, review the provided considerations and recommendations and use them to structure and drive designs within each area.
+
+* [Environments](#environments)
+* [Identity and access](#identity-and-access)
+* [Data-loss prevention](#data-loss-prevention)
+* [Data ingress and egress](#data)
+* [Observability and logging](#observability-and-logging)
+* [Azure VNet connectivity for Power Platform](#azure-vnet-connectivity-for-power-platform)
+
 ## Environments
 
 Healthcare applications requires an environment in Power Platform, that must be created and governed upfront and in a supported region for Healthcare.
@@ -69,9 +80,33 @@ An environment in Power Platform is an allow-by default system from a policy per
 
 ## Data
 
-### Design considerations
+### Data Design considerations
 
-### Design recommendations
+PowerBI offers 3 payed lisences options and one free. Consider your requirements for capacity 1GB, 100GB, 400GB and need for refresh rate 7 times per day vs 48 times per day. Other important aspects to consider are key management, multi-geo requirements and auto scaling. More details on Power-BI pricing and licenses can be found here: [Pricing & Product Comparison | Microsoft Power BI](https://powerbi.microsoft.com/en-us/pricing/)
+
+In case you are managing your own keys or your deployment spans multiple geo's, this can only be achieved using Premium.
+
+### Data Design recommendations
+
+When designing your data environment make a plan for: 
+
+* data modeling
+* data connectivity
+* data sources
+* update frequencies
+* bandwidth requirements
+  
+When you need to access data from an existing source consider if a replica should be made in Dataverse and if this needs to be bidirectional synched or if you need a one directionally static snapshop.
+
+* Data modeling
+    * Define the data structure and relation requirements, one-to-may or many-to-many.
+    * Every application building on the data have individual modeling requirements, but consider standardizing on models. This can simplify integrations and avoid data duplication.
+    * In some scenarios standard Industry Data models are available. Evaluate if  this is the right approach for your company and if they need adoption/ configuration.
+
+* Data sources
+    * When connecting to other data sources its important to define the need to gateways to connect to on-prem systems, the network bandwidth between you Dataverse environment and server location.
+    * Ensure that the database source has capacity to handle the additional load and the data transferred is optimized. Map the data volume and update frequency needed for each use case.  
+
 ## Observability and logging
 
 ### Design considerations
