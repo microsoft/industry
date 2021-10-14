@@ -45,8 +45,7 @@ Dynamics users. Creation can be restricted to only global and service admins via
 * Limit high privilege access by using an AAD Security Group with PIM for admin access to the environments
 * Create DLP policies to limit data flow between trusted MSFT connectors and 3rd party APIs, aligned with your organizational requirements
 * Manage the correct number of environments in the tenant to avoid sprawl and conserve capacity
-* Limit creation of production and sandbox environments to only specific administrators
-* Allow users to create trial environments via self-service for exploration and development
+* Enable auditing for your tenant and environments to understand usage and available capacity
 
 To do: End to end architecture reference
 
@@ -66,6 +65,7 @@ Further, for data, security in Dataverse is there to ensure users can do the wor
 ### Design recommendations
 
 * Create AAD groups that are automatically assigned the correct licenses per user per their requirements and roles, and avoid assigning licenses to individual users
+* Organize the AAD groups that streamlines and simplifies licensing assignment and RBAC for the environments per the functions and requirements for the business units and application teams
 
 ## Data-Loss Prevention (governance)
 
