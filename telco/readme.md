@@ -46,7 +46,7 @@ _Figure 2: Management group for business to business and business to customer ap
 
 ### Networking
 
-The reference architecture for Microsoft Cloud for Telco industry users Enterprise-Scale Landing Zones to provide the foundational networking and connectivity services for deploying applications and services in Microsoft Azure at scale.
+The reference architecture for Microsoft Cloud for Telco industry uses Enterprise-Scale Landing Zones to provide the foundational networking and connectivity services for deploying applications and services in Microsoft Azure at scale.
 
 The Network topology and connectivity design considerations and recommendations provided by Enterprise-Scale Landing Zones are mostly compatible with the Microsoft Cloud for Telco industry reference architecture. For example, guidance around access to Azure PaaS services via Private Link, or the usage of hub and spoke or VWAN network topologies are fully compatible with the Telco reference architecture.
 
