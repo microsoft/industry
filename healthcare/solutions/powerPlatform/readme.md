@@ -61,11 +61,12 @@ Further, for data, security in Dataverse is there to ensure users can do the wor
 * Environments act as a security boundary, allowing different security requirements to be implemented in each environment
 * The security and RBAC model for Environments with - and without Dataverse are different
 * Environments with Dataverse supports more advanced security models to control access to data and services within the Dataverse environment
+* A user's ability to see and use apps is controlled by sharing the application with the user. Sharing of canvas apps is done directly with a user or Azure AD group but is still subject to Dataverse security roles, and sharing of model-driven apps is done via Dataverse security roles
 
 ### Design recommendations
 
 * Create AAD groups that are automatically assigned the correct licenses per user per their requirements and roles, and avoid assigning licenses to individual users
-* Organize the AAD groups that streamlines and simplifies licensing assignment and RBAC for the environments per the functions and requirements for the business units and application teams
+* Organize the AAD groups that streamlines and simplifies RBAC for the environments per the functions and requirements for the business units and application teams
 
 ## Data-Loss Prevention (governance)
 
@@ -78,6 +79,7 @@ An environment in Power Platform is an allow-by default system from a policy per
 * DLP policies can be scoped at the environment level or tenant level, offering flexibility to craft sensible policies that strike the right balance between protection and productivity.
 * Connectors can be grouped into business, non-business, and blocked. Once categorized, it cannot be used in conjunction with other connectors outside its group. When a connector is blocked, it cannot be used at all.
 * Environment admins cannot edit policies created by tenant admins
+* Tenant isolation for Power Platform can be applied at the connector level and is used to prevent connectors using Azure AD based authentication to other tenants, and supports both one-way (inbound) or two-way (inbound and outbound) restriction. Enabling tenant isolation requires raising a support ticket in the Power Platform admin center.
 
 ### Design recommendations
 
