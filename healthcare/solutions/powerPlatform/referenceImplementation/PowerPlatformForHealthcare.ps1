@@ -31,7 +31,7 @@ $GetEnvironment = '/providers/Microsoft.BusinessAppPlatform/scopes/admin/environ
 $PostEnvironment = '/providers/Microsoft.BusinessAppPlatform/environments?api-version=2019-05-01&ud=/providers/Microsoft.BusinessAppPlatform/scopes/admin/environments'
 
 # Power Platform HTTP Get DLP Policy Uri // Coming soon
-$GetPolicies = "https://api.bap.microsoft.com/providers/Microsoft.BusinessAppPlatform/scopes/admin/apiPolicies?api-version=2016-11-01"
+# $GetPolicies = "https://api.bap.microsoft.com/providers/Microsoft.BusinessAppPlatform/scopes/admin/apiPolicies?api-version=2016-11-01"
 
 # Declare Rest headers
 $Headers = @{
