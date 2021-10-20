@@ -12,6 +12,14 @@ Specifically for Microsoft Cloud for Healthcare, Microsoft Power Platform is an 
 
 Enterprise-Scale for Power Platform architecture represents the strategic design path and target technical state for an organizations Power Platform enviornment. It continues to evolve alongside the Power roadmap. Various design decisions define the architecture that your organization must make to map your Power Platform journey.
 
+### High-level architecture
+
+An Enterprise-Scale architecture includes a set of design considerations and recommendations across the [critical design areas](#critical-design-areas-for-power-platform-for-healthcare) for Power Platform. It is modular by design and allows you to start with a foundational architecture that enables construction and operationalization of landing zones (Environments) that supports your business application portfolios, for both pro developers and citizen developers. The architecture will scale regardless your organization scale-point and business requirements.
+
+Figure 1 shows the high-level architecture of Enterprise-Scale for Power Platform
+
+![power platform architecture](./images/architecture.png)
+
 ### Landing zone in Enterprise-Scale for Power Platform
 
 A landing zone (environment) is where pro devs and citizen devs can confidently develop and run their business applications, that accounts for:
@@ -23,15 +31,9 @@ A landing zone (environment) is where pro devs and citizen devs can confidently 
 
 The landing zones consider all platform capabilities and resources that are necessary to support the organization's business application portfolio.
 
-Figure 1 shows the landing zone (environment) in Power Platform.
+Figure 2 shows the landing zone (environment) in Power Platform.
 
 ![landing zone for power platform](./images/landingzone.png)
-
-### High-level architecture
-
-An Enterprise-Scale architecture includes a set of design considerations and recommendations across the [critical design areas](#critical-design-areas-for-power-platform-for-healthcare) for Power Platform. It is modular by design and allows you to start with a foundational landing zone that supports your business application portfolios, for both pro developers and citizen developers. The architecture will scale regardless your organization scale-point and business requirements.
-
-![power platform architecture](./images/architecture.png)
 
 ## Critical design areas for Power Platform for Healthcare
 
@@ -39,7 +41,7 @@ The core of enterprise-scale architecture for Power Platform contains a critical
 
 * [Environments](#environments)
 * [Identity and access](#identity-and-access)
-* [Data-loss prevention](#data-loss-prevention)
+* [Security, governance, and compliance](#security-governance-and-compliance)
 * [Data ingress and egress](#data)
 * [Observability and logging](#observability-and-logging)
 * [Azure VNet connectivity for Power Platform](#azure-vnet-connectivity-for-power-platform)
@@ -95,7 +97,7 @@ Further, for data, security in Dataverse is there to ensure users can do the wor
 * Create AAD groups that are automatically assigned the correct licenses per user per their requirements and roles, and avoid assigning licenses to individual users
 * Organize the AAD groups that streamlines and simplifies RBAC for the environments per the functions and requirements for the business units and application teams
 
-## Data-Loss Prevention (governance)
+## Security, governance, and compliance
 
 An environment in Power Platform is an allow-by default system from a policy perspective, and for the Healthcare solutions and applications, one must use Data-Loss Prevention policies to explicitly categorize and enable/disable connecters for business use cases. This will help to mitigate risk for data exfiltration, and help to stay secure and compliant.
 
@@ -110,15 +112,20 @@ An environment in Power Platform is an allow-by default system from a policy per
 
 ### Design recommendations
 
+* Create a data loss prevention policy that enforces the bare minimum security requirements at the tenant scope, to ensure that all landing zones are secure by-default and both pro devs and citizen devs can safely develop business applications that does not vialates the security requirements.
+* Establish a process that will always include data-loss prevention policy when creating a new landing zone (environment), to ensure no one are accessing - or starting to create or deploy apps into it that could potentially violate the policies.
+
 ## Data
 
-### Data Design considerations
+Apps created in the Power Platform, whether they are canvas, model, or portal based, can all leverage the native database capability through Dataverse within a Power platform environment.
+
+### Design considerations
 
 PowerBI offers 3 payed lisences options and one free. Consider your requirements for capacity 1GB, 100GB, 400GB and need for refresh rate 7 times per day vs 48 times per day. Other important aspects to consider are key management, multi-geo requirements and auto scaling. More details on Power-BI pricing and licenses can be found here: [Pricing & Product Comparison | Microsoft Power BI](https://powerbi.microsoft.com/en-us/pricing/)
 
 In case you are managing your own keys or your deployment spans multiple geo's, this can only be achieved using Premium.
 
-### Data Design recommendations
+### Design recommendations
 
 When designing your data environment make a plan for:
 
