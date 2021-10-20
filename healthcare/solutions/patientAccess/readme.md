@@ -3,6 +3,12 @@
 Patient access customizes a Microsoft Power Apps portal with healthcare-specific capabilities as part of Microsoft Cloud for Healthcare.
 It provides patients with access to their health data, knowledge articles, and in-person and virtual appointment scheduling, chat with health bot, communicate with a caregiver, and view their clinical data. The portal connects with entities in Dataverse.
 
+| Reference implementation | Description | Deploy |
+|:----------------------|:------------|--------|
+| Monitoring for Patient Access | End-2-end deployment and configuration of Application Insights and Log Analytics to monitor Patient Access portal |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
+
+>Note: The implementation of the Patient Access solution can currently not be automated, and requires manual implementation and configuration across Solution Center, Power Platform Admin Center, and portal for Power Apps. See the [implementation guide](#implementation-guide-for-patient-access) for detailed instructions.
+
 ![PatientAccess](./images/overview.png)
 
 Before you deploy and configure, verify you have implemented the [prerequisites](../../prereqs.md).
@@ -13,7 +19,53 @@ Specifically for patient access, you need:
   * Must be created upfront, in United States with Dataverse and D365 Apps enabled
   * Power Apps Portal app deployed and configured in the targeted environment(s)
 
-## Installing Power Apps Portal application
+## Planning guidelines for Patient Access
+
+This section provide prescriptive guidance with design considerations and recommendations across the critical design areas for Patient Access portal for the teams that will deploy and manage the Patient Access capabilities within the Microsoft Cloud for Healthcare.
+
+* [Identity and access](#identity-and-access)
+* [Monitoring](#monitoring)
+* [Security](#identity-and-access)
+
+## Identity and access
+
+### Design considerations
+
+* There are licensing implications with the number of loggins on the self-service portal.
+* You can use local identities or centralized-managed identities for patient access.
+* There are multiple identity providers for patients when accesing the self-service portal, including Azure AD B2B, Microsoft Accounts and others.
+
+### Design recommendations
+
+* Allow self-service capabilities for patients via the patient access portal.
+  * Those self-service capabilities include booking an appointment, searching for a practicioner, as well as review current appointments.
+
+## Monitoring
+
+### Design considerations
+
+* Telemetry, metrics, and logs are disabled for portal apps, and must explicitly be enabled and requires Azure Application Insights.
+* Performance and scale are determined by the license add-ons for for portal apps.
+* There are multiple identity providers for patients when accesing the self-service portal, including Azure AD B2B, Microsoft Accounts and others.
+
+### Design recommendations
+
+* Use a dedicated Azure Application Insights instance, connected with Log Analytics to capture key telemetry, metrics, and logs for the portal apps.
+* Create alerts and views to monitor usage, such as logins, performance, and response time in order to make informed decision around need for additional add-on licensing.
+* If portal apps are used externally, ensure you have purchased required add-on capacity to meet expected peak.
+
+## Security
+
+### Design considerations
+
+* Once provisioned, the portal will become public and will be accesible by anyone from any computer from the internet.
+
+### Design recommendations
+
+* Ensure portal authentication is configured to your chosen identity provider.
+* Restrict portal access from a list of IP addresses and CIDR ranges to limit portal access as described on this [article](https://docs.microsoft.com/powerapps/maker/portals/admin/ip-address-restrict).
+
+## Implementation guide for Patient Access
 
 The following instructions will guide you to how to install and configure the patient access portal in your Power Platform environment for healthcare.
 

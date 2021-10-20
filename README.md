@@ -39,8 +39,8 @@ Microsoft Cloud for healthcare spans the Microsoft Clouds (Azure, Power Platform
 Microsoft Cloud for telecommunications enables an at-scale, and sustainable architecture for telco specific workloads, catering for the unique set of requirements a telco industry has compared to enterprises or customers in other industries. A prescriptive architecture and design guidance is provided below.
 
 - [Pre-requisites](./telco/prereqs.md)
-  - [Azure landing zone](./telco/readme.md)
-  - [Scale-out networking](./telco/nwScaleOut/readme.md)
+  - [Azure landing zone](./telco)
+  - [Scale-out networking](./telco/nwScaleOut)
 
 ### Financial services
 

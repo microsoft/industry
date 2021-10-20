@@ -30,8 +30,8 @@ $GetEnvironment = '/providers/Microsoft.BusinessAppPlatform/scopes/admin/environ
 # Power Platform HTTP Post Environment Uri
 $PostEnvironment = '/providers/Microsoft.BusinessAppPlatform/environments?api-version=2019-05-01&ud=/providers/Microsoft.BusinessAppPlatform/scopes/admin/environments'
 
-# Power Platform HTTP Get DLP Policy Uri
-$GetPolicies = "https://api.bap.microsoft.com/providers/Microsoft.BusinessAppPlatform/scopes/admin/apiPolicies?api-version=2016-11-01"
+# Power Platform HTTP Get DLP Policy Uri // Coming soon
+# $GetPolicies = "https://api.bap.microsoft.com/providers/Microsoft.BusinessAppPlatform/scopes/admin/apiPolicies?api-version=2016-11-01"
 
 # Declare Rest headers
 $Headers = @{
@@ -40,7 +40,7 @@ $Headers = @{
 }
 
 foreach ($Env in $Environments) {
-    Write-host "Creating Environment $($Env)"
+    Write-Output "Creating Environment: $($Env)"
 
     # Form the request body to create new Environments in Power Platform
     # Declaring the HTTP Post request
@@ -50,11 +50,11 @@ foreach ($Env in $Environments) {
             "linkedEnvironmentMetadata" = @{
                 "baseLanguage" = ''
                 "domainName"   = "$($Env)"
-                "templates"    = ''
+                "templates"    = @("D365_DeveloperEdition")
             }
-            "databaseType"              = "CommonDataService"
-            "displayName"               = "$($Env)"
-            "environmentSku"            = "Production"
+            "databaseType"   = "CommonDataService"
+            "displayName"    = "$($Env)"
+            "environmentSku" = "Production"
         }
         "location"   = "$($Location)"
     }
@@ -63,15 +63,15 @@ foreach ($Env in $Environments) {
         "Uri"         = "$($baseUri)$($postEnvironment)"
         "Method"      = "Post"
         "Headers"     = $headers
-        "Body"        = $postBody | ConvertTo-json
+        "Body"        = $postBody | ConvertTo-json -Depth 100
         "ContentType" = "application/json"
     }
 
-    Write-Host "Invoking REST API to create $($Env)"
+    Write-Output "Invoking the request to create Environment: $($Env)"
 
     try {
         $response = Invoke-RestMethod @PostParameters
-        Write-Host "Environment $($Env) is being created..."
+        Write-Output "Environment $($Env) is being created..."
     }
     catch {
         Write-Error "Creation of Environment $($Env) failed`r`n$_"
@@ -79,7 +79,6 @@ foreach ($Env in $Environments) {
     }
 
     # Get newly created environments
-    Start-Sleep -Seconds 10
 
     $GetParameters = @{
         "Uri"         = "$($BaseUri)$($GetEnvironment)"
@@ -88,12 +87,13 @@ foreach ($Env in $Environments) {
         "ContentType" = "application/json"
     }
 
-    Write-Host "Checking environment status for $($Env)"
+    Write-Output "Checking environment status for $($Env)"
+    Start-Sleep -Seconds 30
     try {
         $response = Invoke-RestMethod @GetParameters
     }
     catch {
-        Write-Host "Retrieving the environment failed.`r`n$_"
+        Write-Output "Retrieving the environment failed.`r`n$_"
         throw "Ouch...."
     }
     $response.value.properties | Where-Object { $_.displayName -eq $($Env) } | Sort-Object -Property createdTime -Descending -Top 1 | Foreach-Object -Process {
