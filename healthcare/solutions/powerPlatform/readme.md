@@ -22,7 +22,7 @@ Figure 1 shows the high-level architecture of Enterprise-Scale for Power Platfor
 
 ### Landing zone in Enterprise-Scale for Power Platform
 
-A landing zone (environment) is where pro devs and citizen devs can confidently develop and run their business applications, that accounts for:
+A landing zone (environment) is where professional developers and citizen developers can confidently develop and run their business applications, that accounts for:
 
 * Scale
 * Security
@@ -39,44 +39,12 @@ Figure 2 shows the landing zone (environment) in Power Platform.
 
 The core of enterprise-scale architecture for Power Platform contains a critical design path comprised of fundamental design topics with heavily interrelated and dependent design decisions. This repo provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the enterprise-scale architecture. For each of the considered domains, review the provided considerations and recommendations and use them to structure and drive designs within each area.
 
-* [Environments](#environments)
 * [Identity and access](#identity-and-access)
 * [Security, governance, and compliance](#security-governance-and-compliance)
+* [Environments](#environments)
 * [Data ingress and egress](#data)
 * [Observability and logging](#observability-and-logging)
 * [Azure VNet connectivity for Power Platform](#azure-vnet-connectivity-for-power-platform)
-
-## Environments
-
-Healthcare applications requires an environment in Power Platform, that must be created and governed upfront and in a supported region for Healthcare.
-The following section describes the design considerations and the design recommendations for Environments, to help you navigate to the correct setup per your organizational requirements.
-
-![Environments for Healthcare](./images/env.png)
-
-### Design considerations
-
-* An environment must be pinned to a location (abstraction of Azure regions), and is determined during creation by the maker/admin, and cannot be changed post creation.
-* Environments are defined out of the box to serve different audiences and purposes like dev, test, production, and personal exploration/development. Depending on what type of environment that is created, it will determine what you can do with the environment as well as the apps within.
-* Each tenant has a default environment and it is created in the region closest to the default region of the Azure AD tenant
-* Data Loss Prevention (DLP) policies can be applied to individual environments or the tenant root ("/") level
-* Non-default environments can be created by licensed Power Apps, Power Automate and
-Dynamics users. Creation can be restricted to only global and service admins via a tenant setting
-* An environment can have one or zero database (Dataverse) instances
-* Environments act as security boundaries allowing different security needs to be implemented in each environment
-
-### Design recommendations
-
-* Rename the Default environment to clarify the intent, e.g., "personal productivity"
-* Disable self-service of Environment creation, both for Production and Sandbox as well as Trials, and limit this to selected Power Platform admins as this can potentially cause capacity constraints in the tenant
-* Enable a process for the organization to request new environments. Either establish and implement the process yourself, or leverage the ["Center of Excellence starter kit"](https://docs.microsoft.com/power-platform/guidance/coe/starter-kit) which provides a solution that can be imported to a dedicated environment to facilitate this, together with other core capabilities.
-* Create dedicated environments for test, development, and production for the Healthcare solutions in the same region, which allows ease of maintenance and validation of changes, such as release wave updates which is per environment
-* The production and development environments for Healthcare must be of type "production", while test environments could be of type "sandbox" to simplify reset process for testing purposes.
-* Limit high privilege access by using an AAD Security Group with PIM for admin access to the environments
-* Create DLP policies to limit data flow between trusted MSFT connectors and 3rd party APIs, aligned with your organizational requirements
-* Manage the correct number of environments in the tenant to avoid sprawl and conserve capacity
-* Enable auditing for your tenant and environments to understand usage and available capacity
-
-To do: End to end architecture reference
 
 ## Identity and access
 
@@ -113,7 +81,40 @@ An environment in Power Platform is an allow-by default system from a policy per
 ### Design recommendations
 
 * Create a data loss prevention policy that enforces the bare minimum security requirements at the tenant scope, to ensure that all landing zones are secure by-default and both pro devs and citizen devs can safely develop business applications that does not vialates the security requirements.
+* The tenant wide policy spanning all environments should prevent all unsupported non-Microsoft connectors, and classify all Microsoft connectors as 'Business data'
+* Create a policy for the default environment that furter restricts which Microsoft connectors are classified as 'Business Data'
 * Establish a process that will always include data-loss prevention policy when creating a new landing zone (environment), to ensure no one are accessing - or starting to create or deploy apps into it that could potentially violate the policies.
+
+## Environments
+
+Healthcare applications requires an environment in Power Platform, that must be created and governed upfront and in a supported region for Healthcare.
+The following section describes the design considerations and the design recommendations for Environments, to help you navigate to the correct setup per your organizational requirements.
+
+![Environments for Healthcare](./images/env.png)
+
+### Design considerations
+
+* An environment must be pinned to a location (abstraction of Azure regions), and is determined during creation by the maker/admin, and cannot be changed post creation.
+* Environments are defined out of the box to serve different audiences and purposes like dev, test, production, and personal exploration/development. Depending on what type of environment that is created, it will determine what you can do with the environment as well as the apps within.
+* Each tenant has a default environment and it is created in the region closest to the default region of the Azure AD tenant
+* Data Loss Prevention (DLP) policies can be applied to individual environments or the tenant root ("/") level
+* Non-default environments can be created by licensed Power Apps, Power Automate and
+Dynamics users. Creation can be restricted to only global and service admins via a tenant setting
+* An environment can have one or zero database (Dataverse) instances
+* Environments act as security boundaries allowing different security needs to be implemented in each environment
+
+### Design recommendations
+
+* Rename the Default environment to clarify the intent, e.g., "personal productivity"
+* Disable self-service of Environment creation, both for Production and Sandbox as well as Trials, and limit this to selected Power Platform admins as this can potentially cause capacity constraints in the tenant
+* Enable a process for the organization to request new environments. Either establish and implement the process yourself, or leverage the ["Center of Excellence starter kit"](https://docs.microsoft.com/power-platform/guidance/coe/starter-kit) which provides a solution that can be imported to a dedicated environment to facilitate this, together with other core capabilities.
+* Have dedicated environments (dev, test, and prod) for management, monitoring, and analytics, that is managed and operated by the Power Platform admins, providing core capabilities for the Power Platform as a whole
+* Create dedicated environments for test, development, and production for the Healthcare solutions in the same region, which allows ease of maintenance and validation of changes, such as release wave updates which is per environment
+* The production and development environments for Healthcare must be of type "production", while test environments could be of type "sandbox" to simplify reset process for testing purposes.
+* Limit high privilege access by using an AAD Security Group with PIM for admin access to the environments
+* Create DLP policies to limit data flow between trusted MSFT connectors and 3rd party APIs, aligned with your organizational requirements
+* Manage the correct number of environments in the tenant to avoid sprawl and conserve capacity
+* Enable auditing for your tenant and environments to understand usage and available capacity
 
 ## Data
 
