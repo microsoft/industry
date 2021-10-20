@@ -7,6 +7,8 @@ It provides patients with access to their health data, knowledge articles, and i
 |:----------------------|:------------|--------|
 | Monitoring for Patient Access | End-2-end deployment and configuration of Application Insights and Log Analytics to monitor Patient Access portal |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
 
+>Note: The implementation of the Patient Access solution can currently not be automated, and requires manual implementation and configuration across Solution Center, Power Platform Admin Center, and portal for Power Apps. See the [implementation guide](#implementation-guide-for-patient-access) for detailed instructions.
+
 ![PatientAccess](./images/overview.png)
 
 Before you deploy and configure, verify you have implemented the [prerequisites](../../prereqs.md).
@@ -19,7 +21,14 @@ Specifically for patient access, you need:
 
 ## Planning guidelines for Patient Access
 
-This section provide prescriptive guidance with design considerations and recommendations for the teams that will deploy and manage the Patient Access capabilities within the Microsoft Cloud for Healthcare.
+This section provide prescriptive guidance with design considerations and recommendations across the critical design areas for Patient Access portal for the teams that will deploy and manage the Patient Access capabilities within the Microsoft Cloud for Healthcare.
+
+* [Identity and access](#identity-and-access)
+* [Security](#identity-and-access)
+* [Observability and logging](#security-governance-and-compliance)
+* [Azure VNet connectivity for Power Platform](#azure-vnet-connectivity-for-power-platform)
+
+## Identity and access
 
 ### Design considerations
 
@@ -30,7 +39,7 @@ This section provide prescriptive guidance with design considerations and recomm
 ### Design recommendations
 
 * Allow self-service capabilities for patients via the patient access portal.
-  *  Those self-service capabilities include booking an appointment, searching for a practicioner, as well as review current appointments.
+  * Those self-service capabilities include booking an appointment, searching for a practicioner, as well as review current appointments.
 * Work-in-progress
 
 ## Implementation guide for Patient Access
