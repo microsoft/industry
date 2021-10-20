@@ -3,6 +3,10 @@
 Patient access customizes a Microsoft Power Apps portal with healthcare-specific capabilities as part of Microsoft Cloud for Healthcare.
 It provides patients with access to their health data, knowledge articles, and in-person and virtual appointment scheduling, chat with health bot, communicate with a caregiver, and view their clinical data. The portal connects with entities in Dataverse.
 
+| Reference implementation | Description | Deploy |
+|:----------------------|:------------|--------|
+| Monitoring for Patient Access | End-2-end deployment and configuration of Application Insights and Log Analytics to monitor Patient Access portal |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
+
 ![PatientAccess](./images/overview.png)
 
 Before you deploy and configure, verify you have implemented the [prerequisites](../../prereqs.md).
@@ -13,7 +17,7 @@ Specifically for patient access, you need:
   * Must be created upfront, in United States with Dataverse and D365 Apps enabled
   * Power Apps Portal app deployed and configured in the targeted environment(s)
 
-## Installing Power Apps Portal application
+## Implementation guide for Patient Access
 
 The following instructions will guide you to how to install and configure the patient access portal in your Power Platform environment for healthcare.
 
