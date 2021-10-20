@@ -26,7 +26,6 @@ This section provide prescriptive guidance with design considerations and recomm
 * [Identity and access](#identity-and-access)
 * [Monitoring](#monitoring)
 * [Security](#identity-and-access)
-* [Azure VNet connectivity for Power Platform](#azure-vnet-connectivity-for-power-platform)
 
 ## Identity and access
 
@@ -40,21 +39,31 @@ This section provide prescriptive guidance with design considerations and recomm
 
 * Allow self-service capabilities for patients via the patient access portal.
   * Those self-service capabilities include booking an appointment, searching for a practicioner, as well as review current appointments.
-* Work-in-progress
 
 ## Monitoring
 
 ### Design considerations
 
 * Telemetry, metrics, and logs are disabled for portal apps, and must explicitly be enabled and requires Azure Application Insights.
-* Performance and scale are determined by the license add-ons for for portal apps
+* Performance and scale are determined by the license add-ons for for portal apps.
 * There are multiple identity providers for patients when accesing the self-service portal, including Azure AD B2B, Microsoft Accounts and others.
 
 ### Design recommendations
 
 * Use a dedicated Azure Application Insights instance, connected with Log Analytics to capture key telemetry, metrics, and logs for the portal apps.
-* Create alerts and views to monitor usage, such as logins, performance, and response time in order to make informed decision around need for additional add-on licensing
-* If portal apps are used externally, ensure you have purchased required add-on capacity to meet expected peak
+* Create alerts and views to monitor usage, such as logins, performance, and response time in order to make informed decision around need for additional add-on licensing.
+* If portal apps are used externally, ensure you have purchased required add-on capacity to meet expected peak.
+
+## Security
+
+### Design considerations
+
+* Once provisioned, the portal will become public and will be accesible by anyone from any computer from the internet.
+
+### Design recommendations
+
+* Ensure portal authentication is configured to your chosen identity provider.
+* Restrict portal access from a list of IP addresses and CIDR ranges to limit portal access as described on this [article](https://docs.microsoft.com/powerapps/maker/portals/admin/ip-address-restrict).
 
 ## Implementation guide for Patient Access
 
