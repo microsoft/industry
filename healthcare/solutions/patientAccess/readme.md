@@ -17,6 +17,22 @@ Specifically for patient access, you need:
   * Must be created upfront, in United States with Dataverse and D365 Apps enabled
   * Power Apps Portal app deployed and configured in the targeted environment(s)
 
+## Planning guidelines for Patient Access
+
+This section provide prescriptive guidance with design considerations and recommendations for the teams that will deploy and manage the Patient Access capabilities within the Microsoft Cloud for Healthcare.
+
+### Design considerations
+
+* There are licensing implications with the number of loggins on the self-service portal.
+* You can use local identities or centralized-managed identities for patient access.
+* There are multiple identity providers for patients when accesing the self-service portal, including Azure AD B2B, Microsoft Accounts and others.
+
+### Design recommendations
+
+* Allow self-service capabilities for patients via the patient access portal.
+  *  Those self-service capabilities include booking an appointment, searching for a practicioner, as well as review current appointments.
+* Work-in-progress
+
 ## Implementation guide for Patient Access
 
 The following instructions will guide you to how to install and configure the patient access portal in your Power Platform environment for healthcare.
