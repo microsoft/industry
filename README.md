@@ -9,48 +9,46 @@ deployment and adoption of industry cloud.
 
 ## Industry Cloud Reference Architectures
 
-- [Healthcare](./healthcare/readme.md)
-    - [Pre-requisites](./healthcare/prereqs.md)
-        - [Healthcare APIs](./healthcare/solutions/healthcareApis)
-        - [Power Platform](./healthcare/solutions/powerPlatform)
-        - [Microsoft Teams for Healthcare](./healthcare/solutions/microsoftTeams)
-    - [Personalized care](./healthcare/solutions/)
-        - [Patient service center](./healthcare/solutions/patientServiceCenter)
-        - [Patient access](./healthcare/solutions/patientAccess)
-    - [Patient insights](./healthcare/solutions/)
-        - [Patient outreach](./healthcare/solutions/patientOutreach)
-    - [Virtual health](./healthcare/solutions)
-        - [Virtual visits](./healthcare/solutions/virtualVisits)
-    - [Care coordination](./healthcare/solutions)
-        - [Care management](./healthcare/solutions/careMangement)
-        - [Home health](./healthcare/solutions/homeHealth)
-    - [Care collaboration](./healthcare/solutions)
-        - [Health assistant](./healthcare/solutions/healthAssistant)
-    - [Remote patient monitoring](./healthcare/solutions)
-    - [Interoperability](./healthcare/solutions)
-    - [Clinical analytics](./healthcare/solutions)
-    - [Operational analytics](./healthcare/solutions)
-
-- [Telecommunications](./telco/readme.md)
-
 ### Healthcare
 
-The following reference architectures and reference implementations can be used to accelerate your journey on Microsoft Cloud for Healthcare industry, enabling your Microsoft tenant with the core foundations across the cloud platforms, and instantiate proven architectures for Healthcare specific solutions.
+Microsoft Cloud for healthcare spans the Microsoft Clouds (Azure, Power Platform and Microsoft 365). This repository provides the prescriptive architecture and design guidence together with respective reference implementations for the industry solution as a whole, as well as the various healthcare capabilities.
 
-| Industry Architecture | Description | Deploy |
-|:----------------------|:------------|--------|
-| Microsoft Cloud for Healthcare Industry | Cloud Foundation that spans across Azure, Power Platform, and Microsoft 365 for Healthcare|[![Deploy To Microsoft Cloud](./docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealth%2Fri%2FhealthArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealth%2Fri%2Fhealth-portal.json)|
-| Healthcare APIs | Healthcare APIs solution including FHIR, Dicom, IoT, and sync agent with D365 | [![Deploy To Microsoft Cloud](./docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealth%2Fsolutions%2FhealthcareApis%2Fmc4h.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealth%2Fsolutions%2FhealthcareApis%2Fmc4hAzure.json)|
-
-![Healthcare Industry Reference Architecture](./healthcare/docs/mc4h-reference-architecture.png)
+- [Pre-requisites](./healthcare/prereqs.md)
+  - [Healthcare APIs](./healthcare/solutions/healthcareApis)
+  - [Power Platform for Healthcare](./healthcare/solutions/powerPlatform)
+  - [Microsoft Teams for Healthcare](./healthcare/solutions/microsoftTeams)
+- [Personalized care](./healthcare/solutions/)
+  - [Patient service center](./healthcare/solutions/patientServiceCenter)
+  - [Patient access](./healthcare/solutions/patientAccess)
+- [Patient insights](./healthcare/solutions/)
+  - [Patient outreach](./healthcare/solutions/patientOutreach)
+- [Virtual health](./healthcare/solutions)
+  - [Virtual visits](./healthcare/solutions/virtualVisits)
+- [Care coordination](./healthcare/solutions)
+  - [Care management](./healthcare/solutions/careMangement)
+  - [Home health](./healthcare/solutions/homeHealth)
+- [Care collaboration](./healthcare/solutions)
+  - [Health assistant](./healthcare/solutions/healthAssistant)
+- [Remote patient monitoring](./healthcare/solutions)
+- [Interoperability](./healthcare/solutions)
+- [Clinical analytics](./healthcare/solutions)
+- [Operational analytics](./healthcare/solutions)
 
 ### Telecommunications
 
-The following reference architectures and reference implementations can be used to accelerate your journey on Microsoft Cloud for Telco industry, enabling your Microsoft tenant with the core foundations across the cloud platforms, and instantiate proven architectures for Telco specific solutions.
+Microsoft Cloud for telecommunications enables an at-scale, and sustainable architecture for telco specific workloads, catering for the unique set of requirements a telco industry has compared to enterprises or customers in other industries. A prescriptive architecture and design guidance is provided below.
 
-| Industry Architecture | Description | Deploy |
-|:----------------------|:------------|--------|
-| Microsoft Cloud for Telco Industry | Cloud Foundation that spans across Azure, Power Platform, and Microsoft 365 for Telco industry and workloads |[![Deploy To Microsoft Cloud](./docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Ftelco%2Fri%2FtelcoArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Ftelco%2Fri%2Ftelco-portal.json)
+- [Pre-requisites](./telco/prereqs.md)
+  - [Azure landing zone](./telco)
+  - [Scale-out networking](./telco/nwScaleOut)
+
+### Financial services
+
+Placeholder
+
+- [Pre-reqiusites](./fsi/prereqs.md)
+  - [Azure landing zone](./fsi/readme.md)
+  - [Service enablement framework](./fsi/solutions/serviceEnablement/readme.md)
 
 ## Contributing
 

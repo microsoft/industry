@@ -1,0 +1,838 @@
+{
+    "$schema": "<relative path to createFormUI.schema.json>",
+    "view": {
+        "kind": "Form",
+        "properties": {
+            "title": "Microsoft Cloud for Telco industry",
+            "steps": [
+                {
+                    "name": "basics",
+                    "label": "Deployment location",
+                    "elements": [
+                        {
+                            "name": "infoBox1",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": true,
+                            "options": {
+                                "icon": "Info",
+                                "text": "Scale-out Networking for Telco industry allows you to create multiple connectivity subscriptions and configure them with the requisite infrastructure for Telco workloads. Select the location for the deployment.",
+                                "uri": "https://www.microsoft.com"
+                            }
+                        },
+                        {
+                            "name": "resourceScope",
+                            "type": "Microsoft.Common.ResourceScope",
+                            "location": {
+                                "resourceTypes": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "lzSettings",
+                    "label": "Scale-out Hub virtual network",
+                    "subLabel": {
+                        "preValidation": "",
+                        "postValidation": "Done"
+                    },
+                    "bladeTitle": "Nw setup",
+                    "elements": [
+                        {
+                            "name": "info",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": true,
+                            "options": {
+                                "text": "Scale-out Networking for Telco Industry allows you to create multiple connectivity hubs with requisite networking infrastructure.",
+                                "uri": "https://docs.microsoft.com/azure/role-based-access-control/elevate-access-global-admin",
+                                "style": "Info"
+                            }
+                        },
+                        {
+                            "name": "esHub",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy networking topology",
+                            "defaultValue": "Hub and spoke with Azure Firewall",
+                            "toolTip": "Select the preferred network topology. If third-party NVA is a requirement, you must deploy this into the connectivity subscription post the deployment.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Hub and spoke with Azure Firewall",
+                                        "value": "vhub"
+                                    },
+                                    {
+                                        "label": "Hub and spoke with your own third-party NVA",
+                                        "value": "nva"
+                                    },
+                                    {
+                                        "label": "Virtual WAN (Microsoft managed)",
+                                        "value": "vwan"
+                                    }
+                                ]
+                            },
+                            "visible": true
+                        },
+                        {
+                            "name": "esNwSubSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Connectivity subscription",
+                            "elements": [
+                                {
+                                    "type": "Microsoft.Common.SubscriptionSelector",
+                                    "name": "esNwSub",
+                                    "label": "Connectivity subscription"
+                                }
+                            ],
+                            "visible": true
+                        },
+                        {
+                            "name": "esAddressHubVWAN",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Address space (required for vWAN hub)",
+                            "toolTip": "Provide address prefix in CIDR notation (e.g 10.100.0.0/23)",
+                            "defaultValue": "10.100.0.0/23",
+                            "visible": "[and(not(equals(steps('lzSettings').esHub, 'No')), not(equals(steps('lzSettings').esHub, 'nva')), not(equals(steps('lzSettings').esHub, 'vhub')))]",
+                            "constraints": {
+                                "required": true,
+                                "validations": [
+                                    {
+                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(1[0-9]|2[0-4]))$",
+                                        "message": "Invalid CIDR range. The address prefix must be in the range [10,24]."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esAddressHubHS",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Address space (required for hub virtual network)",
+                            "toolTip": "Provide address prefix in CIDR notation (e.g 10.100.0.0/16)",
+                            "defaultValue": "10.100.0.0/16",
+                            "visible": "[and(not(equals(steps('lzSettings').esHub, 'No')), not(equals(steps('lzSettings').esHub, 'vwan')))]",
+                            "constraints": {
+                                "required": true,
+                                "validations": [
+                                    {
+                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(1[0-9]|2[0-4]))$",
+                                        "message": "Invalid CIDR range. The address prefix must be in the range [10,24]."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esLocationsApi",
+                            "type": "Microsoft.Solutions.ArmApiControl",
+                            "request": {
+                                "method": "GET",
+                                "path": "locations?api-version=2019-11-01"
+                            }
+                        },
+                        {
+                            "name": "esNwLocation",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Region for the additional networking hub",
+                            "filter": true,
+                            "toolTip": "Select the target region for you connectivity deployment (requires you to provide a subscriptionId for connectivity)",
+                            "constraints": {
+                                "allowedValues": "[map(steps('lzSettings').esLocationsApi.value,(item) => parse(concat('{\"label\":\"',item.displayName,'\",\"value\":\"',item.name,'\"}')))]",
+                                "required": true
+                            },
+                            "visible": "[not(equals(steps('lzSettings').esHub, 'No'))]"
+                        },
+                        {
+                            "name": "esDdoS",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable DDoS Protection Standard",
+                            "defaultValue": "Yes (recommended)",
+                            "visible": "[not(equals(steps('lzSettings').esHub, 'No'))]",
+                            "toolTip": "If 'Yes' is selected when also adding a connectivity subscription, DDoS Protection Standard will be enabled.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esPrivateDns",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Create Private DNS Zones for Azure PaaS services",
+                            "defaultValue": "Yes (recommended)",
+                            "visible": "[or(equals(steps('lzSettings').esHub, 'vhub'), equals(steps('lzSettings').esHub, 'nva'))]",
+                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, ARM will create Private DNS Zones for Azure PaaS services",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esVpnGw",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy VPN Gateway",
+                            "defaultValue": "No",
+                            "visible": "[not(equals(steps('lzSettings').esHub, 'No'))]",
+                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, ARM will deploy VPN gateway",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esGwRegionalOrAz",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy zone redundant or regional VPN Gateway",
+                            "defaultValue": "Zone redundant (recommended)",
+                            "visible": "[and(and(equals(steps('lzSettings').esVpnGw,'Yes'), not(equals(steps('lzSettings').esHub, 'vwan'))), equals(steps('lzSettings').esVpnGw,'Yes'),contains(split('canadacentral,centralus,eastus,eastus2,southcentralus,westus2,francecentral,germanywestcentral,northeurope,westeurope,uksouth,southafricanorth,japaneast,southeastasia,australiaeast', ','), steps('lzSettings').esNwLocation))]",
+                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, ARM will deploy Virtual Gateway to the selected region and availability zones.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Zone redundant (recommended)",
+                                        "value": "Zone"
+                                    },
+                                    {
+                                        "label": "Regional",
+                                        "value": "Regional"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esGwNoAzSku",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select the VPN Gateway SKU",
+                            "defaultValue": "",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": false,
+                            "multiLine": true,
+                            "visible": "[and(and(equals(steps('lzSettings').esVpnGw, 'Yes'), not(equals(steps('lzSettings').esHub, 'vwan'))), equals(steps('lzSettings').esVpnGw,'Yes'), not(contains(split('canadacentral,centralus,eastus,eastus2,southcentralus,westus2,francecentral,germanywestcentral,northeurope,westeurope,uksouth,southafricanorth,japaneast,southeastasia,australiaeast', ','), steps('lzSettings').esNwLocation)))]",
+                            "toolTip": "Select the required SKU for the VPN gateway.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "VpnGw2",
+                                        "description": "Supports BGP, max 30 S2S/VNet-VNet tunnels, max 128 P2S SSTP connections, max 500 IKEv2/OpenVPN connections, aggregate throughput is 1.25 Gbps",
+                                        "value": "VpnGw2"
+                                    },
+                                    {
+                                        "label": "VpnGw3",
+                                        "description": "Supports BGP, max 30 S2S/VNet-VNet tunnels, max 128 P2S SSTP connections, max 1000 IKEv2/OpenVPN connections, aggregate throughput is 2.5 Gbps",
+                                        "value": "VpnGw3"
+                                    },
+                                    {
+                                        "label": "VpnGw4",
+                                        "description": "Supports BGP, max 30 S2S/VNet-VNet tunnels, max 128 P2S SSTP connections, max 5000 IKEv2/OpenVPN connections, aggregate throughput is 5 Gbps",
+                                        "value": "VpnGw4"
+                                    },
+                                    {
+                                        "label": "VpnGw5",
+                                        "description": "Supports BGP, max 30 S2S/VNet-VNet tunnels, max 128 P2S SSTP connections, max 10000 IKEv2/OpenVPN connections, aggregate throughput is 10 Gbps",
+                                        "value": "VpnGw5"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esGwAzSku",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select the VPN Gateway SKU",
+                            "defaultValue": "",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": false,
+                            "multiLine": true,
+                            "visible": "[and(and(equals(steps('lzSettings').esVpnGw, 'Yes'), not(equals(steps('lzSettings').esHub, 'vwan'))), equals(steps('lzSettings').esVpnGw,'Yes'), equals(steps('lzSettings').esGwRegionalOrAz, 'Zone') ,contains(split('canadacentral,centralus,eastus,eastus2,southcentralus,westus2,francecentral,germanywestcentral,northeurope,westeurope,uksouth,southafricanorth,japaneast,southeastasia,australiaeast', ','), steps('lzSettings').esNwLocation))]",
+                            "toolTip": "Select the required SKU for the VPN gateway.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "VpnGw2AZ",
+                                        "description": "Supports BGP, max 30 S2S/VNet-VNet tunnels, max 128 P2S SSTP connections, max 500 IKEv2/OpenVPN connections, aggregate throughput is 1.25 Gbps",
+                                        "value": "VpnGw2AZ"
+                                    },
+                                    {
+                                        "label": "VpnGw3AZ",
+                                        "description": "Supports BGP, max 30 S2S/VNet-VNet tunnels, max 128 P2S SSTP connections, max 1000 IKEv2/OpenVPN connections, aggregate throughput is 2.5 Gbps",
+                                        "value": "VpnGw3AZ"
+                                    },
+                                    {
+                                        "label": "VpnGw4AZ",
+                                        "description": "Supports BGP, max 30 S2S/VNet-VNet tunnels, max 128 P2S SSTP connections, max 5000 IKEv2/OpenVPN connections, aggregate throughput is 5 Gbps",
+                                        "value": "VpnGw4AZ"
+                                    },
+                                    {
+                                        "label": "VpnGw5AZ",
+                                        "description": "Supports BGP, max 30 S2S/VNet-VNet tunnels, max 128 P2S SSTP connections, max 10000 IKEv2/OpenVPN connections, aggregate throughput is 10 Gbps",
+                                        "value": "VpnGw5AZ"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esGwRegionalSku",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select the VPN Gateway SKU",
+                            "defaultValue": "",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": false,
+                            "multiLine": true,
+                            "visible": "[and(and(equals(steps('lzSettings').esVpnGw, 'Yes'), not(equals(steps('lzSettings').esHub, 'vwan'))), equals(steps('lzSettings').esVpnGw,'Yes'), equals(steps('lzSettings').esGwRegionalOrAz, 'Regional') ,contains(split('canadacentral,centralus,eastus,eastus2,southcentralus,westus2,francecentral,germanywestcentral,northeurope,westeurope,uksouth,southafricanorth,japaneast,southeastasia,australiaeast', ','), steps('lzSettings').esNwLocation))]",
+                            "toolTip": "Select the required SKU for the VPN gateway.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "VpnGw2",
+                                        "description": "Supports BGP, max 30 S2S/VNet-VNet tunnels, max 128 P2S SSTP connections, max 500 IKEv2/OpenVPN connections, aggregate throughput is 1.25 Gbps",
+                                        "value": "VpnGw2"
+                                    },
+                                    {
+                                        "label": "VpnGw3",
+                                        "description": "Supports BGP, max 30 S2S/VNet-VNet tunnels, max 128 P2S SSTP connections, max 1000 IKEv2/OpenVPN connections, aggregate throughput is 2.5 Gbps",
+                                        "value": "VpnGw3"
+                                    },
+                                    {
+                                        "label": "VpnGw4",
+                                        "description": "Supports BGP, max 30 S2S/VNet-VNet tunnels, max 128 P2S SSTP connections, max 5000 IKEv2/OpenVPN connections, aggregate throughput is 5 Gbps",
+                                        "value": "VpnGw4"
+                                    },
+                                    {
+                                        "label": "VpnGw5",
+                                        "description": "Supports BGP, max 30 S2S/VNet-VNet tunnels, max 128 P2S SSTP connections, max 10000 IKEv2/OpenVPN connections, aggregate throughput is 10 Gbps",
+                                        "value": "VpnGw5"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esVwanGwScaleUnits",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select the VPN Gateway scale unit",
+                            "defaultValue": "",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": false,
+                            "multiLine": true,
+                            "visible": "[and(equals(steps('lzSettings').esVpnGw, 'Yes'), equals(steps('lzSettings').esHub, 'vwan'))]",
+                            "toolTip": "Select the VPN Gateway scale unit",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "1 scale unit",
+                                        "description": "Supports 500 Mbps x2",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "label": "2 scale units",
+                                        "description": "Supports 1 Gbps x 2",
+                                        "value": "2"
+                                    },
+                                    {
+                                        "label": "3 scale units",
+                                        "description": "Supports 1.5 Gbps x 2",
+                                        "value": "3"
+                                    },
+                                    {
+                                        "label": "4 scale units",
+                                        "description": "Supports 2 Gbps x 2",
+                                        "value": "4"
+                                    },
+                                    {
+                                        "label": "5 scale units",
+                                        "description": "Supports 2.5 Gbps x 2",
+                                        "value": "5"
+                                    },
+                                    {
+                                        "label": "6 scale units",
+                                        "description": "Supports 3 Gbps x 2",
+                                        "value": "6"
+                                    },
+                                    {
+                                        "label": "7 scale units",
+                                        "description": "Supports 3.5 Gbps x 2",
+                                        "value": "7"
+                                    },
+                                    {
+                                        "label": "8 scale units",
+                                        "description": "Supports 4 Gbps x 2",
+                                        "value": "8"
+                                    },
+                                    {
+                                        "label": "9 scale units",
+                                        "description": "Supports 4.5 Gbps x 2",
+                                        "value": "9"
+                                    },
+                                    {
+                                        "label": "10 scale units",
+                                        "description": "Supports 5 Gbps x 2",
+                                        "value": "10"
+                                    },
+                                    {
+                                        "label": "11 scale units",
+                                        "description": "Supports 5.5 Gbps x 2",
+                                        "value": "11"
+                                    },
+                                    {
+                                        "label": "12 scale units",
+                                        "description": "Supports 6 Gbps x 2",
+                                        "value": "12"
+                                    },
+                                    {
+                                        "label": "13 scale units",
+                                        "description": "Supports 6.5 Gbps x 2",
+                                        "value": "13"
+                                    },
+                                    {
+                                        "label": "14 scale units",
+                                        "description": "Supports 7 Gbps x 2",
+                                        "value": "14"
+                                    },
+                                    {
+                                        "label": "15 scale units",
+                                        "description": "Supports 7.5 Gbps x 2",
+                                        "value": "15"
+                                    },
+                                    {
+                                        "label": "16 scale units",
+                                        "description": "Supports 8 Gbps x 2",
+                                        "value": "16"
+                                    },
+                                    {
+                                        "label": "17 scale units",
+                                        "description": "Supports 8.5 Gbps x 2",
+                                        "value": "17"
+                                    },
+                                    {
+                                        "label": "18 scale units",
+                                        "description": "Supports 9 Gbps x 2",
+                                        "value": "18"
+                                    },
+                                    {
+                                        "label": "19 scale units",
+                                        "description": "Supports 9.5 Gbps x 2",
+                                        "value": "19"
+                                    },
+                                    {
+                                        "label": "20 scale units",
+                                        "description": "Supports 10 Gbps x 2",
+                                        "value": "20"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esAddressVpnOrEr",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Subnet for VPN/ExpressRoute Gateways",
+                            "toolTip": "Provide address prefix in CIDR notation (e.g 10.100.1.0/24)",
+                            "defaultValue": "10.100.1.0/24",
+                            "visible": "[or(equals(steps('lzSettings').esErGw, 'Yes'),equals(steps('lzSettings').esVpnGw, 'Yes'))]",
+                            "constraints": {
+                                "required": true,
+                                "validations": [
+                                    {
+                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(2[0-7]))$",
+                                        "message": "Invalid CIDR range. The address prefix must be in the range [20,27]."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('lzSettings').esAddressHubHS, '/')), 8), equals(last(take(split(first(split(steps('lzSettings').esAddressHubHS, '/')), '.'), 1)), last(take(split(first(split(steps('lzSettings').esAddressVpnOrEr, '/')), '.'), 1))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (first octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('lzSettings').esAddressHubHS, '/')), 16), equals(last(take(split(first(split(steps('lzSettings').esAddressHubHS, '/')), '.'), 2)), last(take(split(first(split(steps('lzSettings').esAddressVpnOrEr, '/')), '.'), 2))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (second octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('lzSettings').esAddressHubHS, '/')), 24), equals(last(take(split(first(split(steps('lzSettings').esAddressHubHS, '/')), '.'), 3)), last(take(split(first(split(steps('lzSettings').esAddressVpnOrEr, '/')), '.'), 3))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (third octet)."
+                                    },
+                                    {
+                                        "isValid": "[lessOrEquals(last(split(steps('lzSettings').esAddressHubHS, '/')), last(split(steps('lzSettings').esAddressVpnOrEr, '/')))]",
+                                        "message": "CIDR range not within virtual network CIDR range (subnet mask)."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esErGw",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy ExpressRoute Gateway",
+                            "defaultValue": "No",
+                            "visible": "[not(equals(steps('lzSettings').esHub, 'No'))]",
+                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, ARM will deploy Express Route gateway",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esErRegionalOrAz",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy zone redundant or regional ExpressRoute Gateway",
+                            "defaultValue": "Zone redundant (recommended)",
+                            "visible": "[and(and(equals(steps('lzSettings').esErGw, 'Yes'), not(equals(steps('lzSettings').esHub, 'vwan'))),equals(steps('lzSettings').esErGw,'Yes'),contains(split('canadacentral,centralus,eastus,eastus2,southcentralus,westus2,francecentral,germanywestcentral,northeurope,westeurope,uksouth,southafricanorth,japaneast,southeastasia,australiaeast', ','), steps('lzSettings').esNwLocation))]",
+                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, ARM will deploy Express Route Gateway to the selected region and availability zones.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Zone redundant (recommended)",
+                                        "value": "Zone"
+                                    },
+                                    {
+                                        "label": "Regional",
+                                        "value": "Regional"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esErAzSku",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select the ExpressRoute Gateway SKU",
+                            "defaultValue": "",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": false,
+                            "multiLine": true,
+                            "visible": "[and(and(equals(steps('lzSettings').esErGw, 'Yes'), not(equals(steps('lzSettings').esHub, 'vwan'))),equals(steps('lzSettings').esErGw,'Yes'), equals(steps('lzSettings').esErRegionalOrAz, 'Zone'), contains(split('canadacentral,centralus,eastus,eastus2,southcentralus,westus2,francecentral,germanywestcentral,northeurope,westeurope,uksouth,southafricanorth,japaneast,southeastasia,australiaeast', ','), steps('lzSettings').esNwLocation))]",
+                            "toolTip": "Select the required SKU for the Express Route gateway.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "ErGw1AZ",
+                                        "description": "Megabits per second 1000, packets per second 100,000, connections per second 7000, max number of cicuit connections is 4",
+                                        "value": "ErGw1AZ"
+                                    },
+                                    {
+                                        "label": "ErGw2AZ",
+                                        "description": "Megabits per second 2000, packets per second 250,000, connections per second 14000, max number of cicuit connections is 8",
+                                        "value": "ErGw2AZ"
+                                    },
+                                    {
+                                        "label": "ErGw3AZ",
+                                        "description": "Megabits per second 10,000, packets per second 1,000,000, connections per second 28,000, max number of cicuit connections is 16",
+                                        "value": "ErGw3AZ"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esErRegionalSku",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select the ExpressRoute Gateway SKU",
+                            "defaultValue": "",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": false,
+                            "multiLine": true,
+                            "visible": "[and(and(equals(steps('lzSettings').esErGw, 'Yes'), not(equals(steps('lzSettings').esHub, 'vwan'))), equals(steps('lzSettings').esErGw,'Yes'), equals(steps('lzSettings').esErRegionalOrAz, 'Regional'), contains(split('canadacentral,centralus,eastus,eastus2,southcentralus,westus2,francecentral,germanywestcentral,northeurope,westeurope,uksouth,southafricanorth,japaneast,southeastasia,australiaeast', ','), steps('lzSettings').esNwLocation))]",
+                            "toolTip": "Select the required SKU for the Express Route gateway.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Standard",
+                                        "description": "Megabits per second 1000, packets per second 100,000, connections per second 7000, max number of cicuit connections is 4",
+                                        "value": "Standard"
+                                    },
+                                    {
+                                        "label": "HighPerformance",
+                                        "description": "Megabits per second 2000, packets per second 250,000, connections per second 14000, max number of cicuit connections is 8",
+                                        "value": "HighPerformance"
+                                    },
+                                    {
+                                        "label": "UltraPerformance",
+                                        "description": "Megabits per second 10,000, packets per second 1,000,000, connections per second 28,000, max number of cicuit connections is 16",
+                                        "value": "UltraPerformance"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esErNoAzSku",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select the ExpressRoute Gateway SKU",
+                            "defaultValue": "",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": false,
+                            "multiLine": true,
+                            "visible": "[and(and(equals(steps('lzSettings').esErGw, 'Yes'), not(equals(steps('lzSettings').esHub, 'vwan'))),equals(steps('lzSettings').esErGw,'Yes'), not(contains(split('canadacentral,centralus,eastus,eastus2,southcentralus,westus2,francecentral,germanywestcentral,northeurope,westeurope,uksouth,southafricanorth,japaneast,southeastasia,australiaeast', ','), steps('lzSettings').esNwLocation)))]",
+                            "toolTip": "Select the required SKU for the Express Route gateway.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Standard",
+                                        "description": "Megabits per second 1000, packets per second 100,000, connections per second 7000, max number of cicuit connections is 4",
+                                        "value": "Standard"
+                                    },
+                                    {
+                                        "label": "HighPerformance",
+                                        "description": "Megabits per second 2000, packets per second 250,000, connections per second 14000, max number of cicuit connections is 8",
+                                        "value": "HighPerformance"
+                                    },
+                                    {
+                                        "label": "UltraPerformance",
+                                        "description": "Megabits per second 10,000, packets per second 1,000,000, connections per second 28,000, max number of cicuit connections is 16",
+                                        "value": "UltraPerformance"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esVwanErScaleUnits",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select the ExpressRoute Gateway scale unit",
+                            "defaultValue": "",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": false,
+                            "multiLine": true,
+                            "visible": "[and(equals(steps('lzSettings').esErGw, 'Yes'), equals(steps('lzSettings').esHub, 'vwan'))]",
+                            "toolTip": "Select the ExpressRoute Gateway scale unit",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "1 scale unit",
+                                        "description": "Supports 2 Gbps",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "label": "2 scale units",
+                                        "description": "Supports 4 Gbps",
+                                        "value": "2"
+                                    },
+                                    {
+                                        "label": "3 scale units",
+                                        "description": "Supports 6 Gbps",
+                                        "value": "3"
+                                    },
+                                    {
+                                        "label": "4 scale units",
+                                        "description": "Supports 8 Gbps",
+                                        "value": "4"
+                                    },
+                                    {
+                                        "label": "5 scale units",
+                                        "description": "Supports 10 Gbps",
+                                        "value": "5"
+                                    },
+                                    {
+                                        "label": "6 scale units",
+                                        "description": "Supports 12 Gbps",
+                                        "value": "6"
+                                    },
+                                    {
+                                        "label": "7 scale units",
+                                        "description": "Supports 14 Gbps",
+                                        "value": "7"
+                                    },
+                                    {
+                                        "label": "8 scale units",
+                                        "description": "Supports 16 Gbps",
+                                        "value": "8"
+                                    },
+                                    {
+                                        "label": "9 scale units",
+                                        "description": "Supports 18 Gbps",
+                                        "value": "9"
+                                    },
+                                    {
+                                        "label": "10 scale units",
+                                        "description": "Supports 20 Gbps",
+                                        "value": "10"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esAzFw",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy Azure Firewall",
+                            "defaultValue": "Yes (recommended)",
+                            "visible": "[or(equals(steps('lzSettings').esHub, 'vhub'), equals(steps('lzSettings').esHub, 'vwan'))]",
+                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, ARM will deploy Azure Firewall",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esAzFwDns",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Azure Firewall as a DNS proxy",
+                            "defaultValue": "No",
+                            "visible": "[equals(steps('lzSettings').esAzFw, 'Yes')]",
+                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, ARM will enable Azure Firewall as a DNS Proxy.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esAzFwSku",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select Azure Firewall tier",
+                            "defaultValue": "Standard",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": false,
+                            "multiLine": true,
+                            "visible": "[equals(steps('lzSettings').esAzFw, 'Yes')]",
+                            "toolTip": "Select Azure Firewall tier",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Standard",
+                                        "description": "Standard Azure Firewall",
+                                        "value": "Standard"
+                                    },
+                                    {
+                                        "label": "Premium",
+                                        "description": "Premium Azure Firewall adds support for TLS inspection, IDPS, URL filtering and web categories.",
+                                        "value": "Premium"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esFwAz",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select Availability Zones for the Azure Firewall",
+                            "defaultValue": "None",
+                            "multiselect": true,
+                            "selectAll": true,
+                            "filter": true,
+                            "visible": "[if(equals(steps('lzSettings').esHub, 'vhub'), and(equals(steps('lzSettings').esAzFw,'Yes'), contains(split('canadacentral,centralus,eastus,eastus2,southcentralus,westus2,francecentral,germanywestcentral,northeurope,westeurope,uksouth,southafricanorth,japaneast,southeastasia,australiaeast', ','), steps('lzSettings').esNwLocation)), false)]",
+                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, ARM will deploy Azure Firewall to the selected region and availability zones.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Zone 1",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "label": "Zone 2",
+                                        "value": "2"
+                                    },
+                                    {
+                                        "label": "Zone 3",
+                                        "value": "3"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esAddressFw",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Subnet for Azure Firewall",
+                            "toolTip": "Provide address prefix in CIDR notation (e.g 10.100.0.0/24)",
+                            "defaultValue": "10.100.0.0/24",
+                            "visible": "[and(equals(steps('lzSettings').esAzFw, 'Yes'), not(equals(steps('lzSettings').esHub, 'vwan')))]",
+                            "constraints": {
+                                "required": true,
+                                "validations": [
+                                    {
+                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(2[0-6]))$",
+                                        "message": "Invalid CIDR range. The address prefix must be in the range [20,26]."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('lzSettings').esAddressHubHS, '/')), 8), equals(last(take(split(first(split(steps('lzSettings').esAddressHubHS, '/')), '.'), 1)), last(take(split(first(split(steps('lzSettings').esAddressFw, '/')), '.'), 1))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (first octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('lzSettings').esAddressHubHS, '/')), 16), equals(last(take(split(first(split(steps('lzSettings').esAddressHubHS, '/')), '.'), 2)), last(take(split(first(split(steps('lzSettings').esAddressFw, '/')), '.'), 2))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (second octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('lzSettings').esAddressHubHS, '/')), 24), equals(last(take(split(first(split(steps('lzSettings').esAddressHubHS, '/')), '.'), 3)), last(take(split(first(split(steps('lzSettings').esAddressFw, '/')), '.'), 3))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (third octet)."
+                                    },
+                                    {
+                                        "isValid": "[lessOrEquals(last(split(steps('lzSettings').esAddressHubHS, '/')), last(split(steps('lzSettings').esAddressFw, '/')))]",
+                                        "message": "CIDR range not within virtual network CIDR range (subnet mask)."
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "outputs": {
+            "parameters": {
+                "subnetMaskForGw": "[steps('lzSettings').esAddressVpnOrEr]",
+                "subnetMaskForAzFw": "[steps('lzSettings').esAddressFw]",
+                "enableErGw": "[steps('lzSettings').esErGw]",
+                "enableVpnGw": "[steps('lzSettings').esVpnGw]",
+                "enableHub": "[steps('lzSettings').esHub]",
+                "enableDdoS": "[steps('lzSettings').esDdoS]",
+                "connectivitySubscriptionId": "[steps('lzSettings').esNwSubSection.esNwSub.subscriptionId]",
+                "enableAzFw": "[steps('lzSettings').esAzFw]",
+                "enableAzFwDnsProxy": "[steps('lzSettings').esAzFwDns]",
+                "addressPrefix": "[coalesce(steps('lzSettings').esAddressHubVWAN, steps('lzSettings').esAddressHubHS, '')]",
+                "location": "[steps('lzSettings').esNwLocation]",
+                "vpnOrErZones": "[steps('lzSettings').esGwRegionalOrAz]",
+                "firewallSku": "[steps('lzSettings').esAzFwSku]",
+                "firewallZones": "[steps('lzSettings').esFwAz]",
+                "gwRegionalOrAz": "[steps('lzSettings').esGwRegionalOrAz]",
+                "gwAzSku": "[steps('lzSettings').esGwAzSku]",
+                "gwRegionalSku": "[if(empty(steps('lzSettings').esGwRegionalSku), steps('lzSettings').esGwNoAzSku, steps('lzSettings').esGwRegionalSku)]",
+                "erRegionalOrAz": "[steps('lzSettings').esErRegionalOrAz]",
+                "erAzSku": "[steps('lzSettings').esErAzSku]",
+                "erRegionalSku": "[if(empty(steps('lzSettings').esErRegionalSku), steps('lzSettings').esErNoAzSku, steps('lzSettings').esErRegionalSku)]",
+                "expressRouteScaleUnit": "[steps('lzSettings').esVwanErScaleUnits]",
+                "vpnGateWayScaleUnit": "[steps('lzSettings').esVwanGwScaleUnits]",
+                "enablePrivateDnsZones": "[steps('lzSettings').esPrivateDns]"
+			},
+            "kind": "Subscription",
+            "location": "[steps('basics').resourceScope.location.name]",
+            "subscriptionId": "[steps('basics').resourceScope.subscription.id]"
+        }
+    }
+}
