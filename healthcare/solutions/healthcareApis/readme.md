@@ -14,35 +14,107 @@ In the overall architecture for Microsoft Cloud for Healthcare, the Healthcare A
 
 The core of enterprise-scale architecture for Healthcare APIs contains a critical design path comprised of fundamental design topics with heavily interrelated and dependent design decisions. This repo provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the enterprise-scale architecture. For each of the considered domains, review the provided considerations and recommendations and use them to structure and drive designs within each area.
 
-* [Identity and access](#identity-and-access)
-* [Data-loss prevention](#data-loss-prevention)
-* [Data ingress and egress](#data)
-* [Observability, security, and logging](#observability-and-logging)
-* [Networking](#azure-vnet-connectivity-for-power-platform)
+* [Composition of the Healthcare API's](#Azure-Healthcare-APIs)
+* [Access Control](#Access-Control)
+* [Data ingress and egress](#Data-ingress-and-egress)
+* [Observability and logging](#observability-and-logging)
+* [Networking](#networking)
 * [Regulatory compliance](#regulatory-compliance)
 
-## Azure Healthcare APIs
+### Composition of the Healthcare API's
 
-Azure Healthcare APIs (Preview) enables rapid exchange of data through FHIR APIs, backed by a managed Platform-as-a Service (PaaS) offering in the cloud. It makes it easier for anyone working with health data to ingest, manage, and persist protected health information (PHI) in the cloud. The FHIR API and compliant data store enable you to securely connect and interact with any system that uses FHIR APIs.
+Azure Healthcare APIs enables rapid exchange of data through APIs, backed by a managed Platform-as-a Service (PaaS) offering in the cloud. It makes it easier for anyone working with health data to ingest, manage, and persist protected health information (PHI) in the cloud using an industry standard. The healthcare API's consist of a workspace and one or many API services.
 
 ![Healthcare API architecture ](./images/healthcareapi.png "Healthcare API")
 
-### FHIR Service
+### Healthcare API Workspace
 
-The FHIR service is a set of tools to combine and store disparate health datasets and standardize data in the cloud. The service offers a set of search options to query the persisted data or export for consumption by other services.
+The Healthcare API workspace is a logical construct. All your healthcare service instances, such as FHIR services, DICOM services, and IoT Connectors are deployed within the workspace. Inside the workspace you can provision one or multiple instances of the FHIR service, DICOM service or IoT Connector. The workspace can also be used as a compliance boundary for HIPAA, HITRUST, CCPA, GDPR. Each service within the workspace has its own endpoint and can shares common workspace-level configurations, like keys data encryption, or RBAC. Deployment region is defined in the workspace and all services within the workspace will be hosted in that region.
 
-### DICOM Service
+#### FHIR Service
+
+The FHIR service is a set of tools to combine and store disparate health datasets and standardize data in the cloud. The service offers a set of search options to query the persisted data or export for consumption by other services. Role-based access control (RBAC) enables you to manage how your data is stored and accessed. Based on the role definitions you created you determine who has access to the datasets.
+
+#### DICOM Service
 
 The DICOM Service enables the secure exchange of medical images and associated metadata with any DICOMweb™ enabled systems.
 QIDO, WADO, and STOW supports query, retrieve, and store of DICOM objects.
 Ingests and persists DICOM data from VNA, PACS and other medical imaging systems at thousands of images per second.
 DICOM Custom Tags allows for user defined, searchable tags.​
 
-### IOT Connector
+#### IOT Connector
 
-The IOT Connector ingests streaming data from devices in real-time at millions of events per second.
-Customized settings allow developers to manage device content, sample data rates, and set the desired capture thresholds.
+The IOT Connector ingests streaming data from devices in real-time at millions of events per second. It can accept any JSON-based messages sent out by an IoMT device. This data is first transformed into appropriate FHIR-based Observation resources and then persisted into Azure API for FHIR. The data transformation logic is defined through a pair of mapping templates that you configure based on your message schema and FHIR requirements. The settings are used to manage device content, sample data rates, and set the desired capture thresholds.
 Device data is normalized, grouped, and mapped to FHIR that can be sent via FHIR APIs to an EHR or other FHIR Service.
+
+### Access Control
+
+The recommended way to configure access control is using Azure role-based access control (RBAC). RBAC only works if you want to secure data plane access using the Azure Active Directory tenant associated with your subscription. It is possible to use a different tenant, but not recommended. When adding a role assignment, the roles you can choose between are:
+
+* FHIR Data Reader: Can read (and search) FHIR data.
+* FHIR Data Writer: Can read, write, and soft delete FHIR data.
+* FHIR Data Exporter: Can read and export ($export operator) data.
+* FHIR Data Contributor: Can perform all data plane operations.
+
+### Data ingress and egress
+
+#### Data ingress
+
+Ingesting data into the Azure Healthcare services for FHIR or DICOM is performed in an ETL/ELT or using the IoT Connector. Pulling data from the source system and converting if required.
+
+> FHIR Converter and Loader are released under MIT License and are not supported by Microsoft Support.
+
+FHIR Converter is an open source project that enables conversion of health data from legacy formats to FHIR.
+[GitHub: FHIR Converter](https://github.com/microsoft/FHIR-Converter)
+The converter supports HL7v2 and C-CDA formats.
+
+FHIR Bulk Loader is an Azure Function App solution that provides the following services for ingesting FHIR Resources into the FHIR Server
+[GitHub: FHIR Loader](https://github.com/microsoft/fhir-loader)
+
+#### Data egress
+
+Egress from FHIR is done using the $export function. Before using $export, you have to configure the FHIR service to use it. There are three steps involved in configuring export in FHIR service:
+
+1. Enable Managed Identity on FHIR service Service.
+2. Creating a Azure storage account (if not done before) and assigning  permission to FHIR service to the storage account.
+3. Selecting the storage account in FHIR service as export storage account.
+The FHIR service supports $export at the following levels:
+
+* System:
+  
+```http
+GET https://<<FHIR service base URL>>/$export>>
+```
+
+* Patient:
+  
+```http
+GET https://<<FHIR service base URL>>/Patient/$export>>
+```
+
+* Group of patients, FHIR service exports all related resources but doesn't export the characteristics of the group:
+
+```http
+GET https://<<FHIR service base URL>>/Group/[ID]/$export>>
+```
+
+When data is exported, a separate file is created for each resource type.
+
+The $export command can also be used to export de-identified data from the FHIR server. This is using the tool for data anonymization: [GitHub: Tools for Health Data Anonymization](https://github.com/microsoft/Tools-for-Health-Data-Anonymization)
+
+### Observability and logging
+
+Having access to diagnostic logs is essential for monitoring a service and providing compliance reports. Azure API for FHIR allows you to do these actions through diagnostic logs. Access to diagnostic logs is  a compliance requirement with regulatory such as HIPAA. Diagnostic settings are applied as part of the service deployment. Log data is streamed to the Log Analytics workspace in Azure Monitor.
+
+### Networking
+
+> Private Link is currently not available in Healthcare API FHIR service.
+
+For secure communication we recommend using Private Link. Private link enables you to access the FHIR service over a private endpoint. To create a private endpoint you need RBAC permissions on the FHIR service. When private endpoint is created, public traffic to it is automatically disabled.
+
+### Regulatory compliance
+
+Please refer to the this page for regulatory compliance in the Healthcare API's: [Compliance in Microsoft Cloud for Healthcare](https://docs.microsoft.com/en-us/industry/healthcare/compliance-overview)
 
 ## Deployment instructions
 
@@ -118,7 +190,6 @@ Get the FHIR endpoint:
 Ensure you are connected to the correct tenant and subscription
 
 ```powershell
-
 Connect-AzAccount -Tenant "<<your_tenant_id>>" -Subscription "<<your_subscription_id>>"
 ```
 
