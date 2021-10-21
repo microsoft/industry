@@ -52,7 +52,7 @@ The deployment outputs will provide the details required to setup the synch betw
 
 ### Policies
 
-Custom Policies for the industry specific services used in this solution can be found in the folder [`./Policies/PolicyDefinitions/HealthCareApis`](./Policies/PolicyDefinitions/HealthCareApis). These policies can be deployed using:
+Custom Policies for the industry specific services used in this solution can be found in the folder [`/healthcare/referenceImplementation/industrySpecific/Policies/PolicyDefinitions/healthCareApis`](/healthcare/referenceImplementation/industrySpecific/Policies/PolicyDefinitions/healthCareApis). These policies can be deployed using:
 
-1. [ARM template for deployment to subscription scope](./Policies/PolicyDefinitions/deploy.policyDefinition.sub.json)
-2. [ARM template for deployment to management group scope](./Policies/PolicyDefinitions/deploy.policyDefinition.mg.json)
+1. [ARM template for deployment to subscription scope](/healthcare/referenceImplementation/industrySpecific/Policies/PolicyDefinitions/deploy.policyDefinition.sub.json)
+2. [ARM template for deployment to management group scope](/healthcare/referenceImplementation/industrySpecific/Policies/PolicyDefinitions/deploy.policyDefinition.mg.json)
