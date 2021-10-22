@@ -28,7 +28,7 @@ param tags object = {}
 @description('Specifies the ingestion service for the FHIR IoT API.')
 param ingestionService string = 'iothub'
 @description('Specifies whether role assignments should be enabled.')
-param enableRoleAssignments bool = false
+param enableRoleAssignments bool = true
 @description('Specifies whether the Azure Healthbot should be enabled.')
 param enableHealthBot bool = true
 @description('Specifies the storage account file system resource id used for FHIR exports.')

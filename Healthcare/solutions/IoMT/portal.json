@@ -444,25 +444,57 @@
                                 {
                                     "name": "enableRoleAssignments",
                                     "label": "Enable role assignments",
-                                    "type": "Microsoft.Common.CheckBox",
+                                    "type": "Microsoft.Common.DropDown",
                                     "visible": true,
-                                    "defaultValue": false,
+                                    "defaultValue": "Yes (recommended)",
                                     "toolTip": "Enable role assignments as mentioned in the infobox above.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
                                     "constraints": {
-                                        "required": false,
-                                        "validationMessage": "Enable role assignments of Machine Learning MSI and Synapse MSI. Please read infobox above for more details."
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "description": "Select if you want to enable role assignments.",
+                                                "value": true
+                                            },
+                                            {
+                                                "label": "No",
+                                                "description": "Select if you want to disable role assignments.",
+                                                "value": false
+                                            }
+                                        ],
+                                        "required": true
                                     }
                                 },
                                 {
                                     "name": "enableHealthBot",
-                                    "label": "Enable deployment of the Azure Health Bot.",
-                                    "type": "Microsoft.Common.CheckBox",
+                                    "label": "Enable Health Bot Deployment",
+                                    "type": "Microsoft.Common.DropDown",
                                     "visible": true,
-                                    "defaultValue": false,
-                                    "toolTip": "Enable Health Bot Deployment.",
+                                    "defaultValue": "Yes (recommended)",
+                                    "toolTip": "Enable deployment of the Azure Health Bot.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
                                     "constraints": {
-                                        "required": false,
-                                        "validationMessage": "Enable the Health Bot deployment."
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "description": "Select if you want to enable the Azure Health Bot Deployment.",
+                                                "value": true
+                                            },
+                                            {
+                                                "label": "No",
+                                                "description": "Select if you want to disable the Azure Health Bot Deployment.",
+                                                "value": false
+                                            }
+                                        ],
+                                        "required": true
                                     }
                                 }
                             ]

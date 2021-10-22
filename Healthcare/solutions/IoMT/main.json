@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1008.15138",
-      "templateHash": "5346258149299627783"
+      "templateHash": "10756026143161844453"
     }
   },
   "parameters": {
@@ -55,7 +55,7 @@
     },
     "enableRoleAssignments": {
       "type": "bool",
-      "defaultValue": false,
+      "defaultValue": true,
       "metadata": {
         "description": "Specifies whether role assignments should be enabled."
       }
