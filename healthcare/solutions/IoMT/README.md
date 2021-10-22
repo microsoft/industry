@@ -44,15 +44,8 @@ The Infrastructure as Code (IaC) templates in this solution folder can be used f
 - [Azure Service Bus](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview)
 - [Azure Function](https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview)
 
-Please use the following "Deploy to Azure" button to get started with this accelerator:
+Please use the following "Deploy to Microsoft Cloud" button to get started with the reference implementation:
 
 [![Deploy To Microsoft Cloud](/docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Findustry%2Fmain%2FHealthcare%2Fsolutions%2FIoMT%2Fmain.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Findustry%2Fmain%2FHealthcare%2Fsolutions%2FIoMT%2Fportal.json)
 
 The deployment outputs will provide the details required to setup the synch between Azure Healthcare APIs and Dataverse in Dynamics 365 via the FHIR Synch Agent.
-
-### Policies
-
-Custom Policies for the industry specific services used in this solution can be found in the folder [`/healthcare/referenceImplementation/industrySpecific/Policies/PolicyDefinitions/healthCareApis`](/healthcare/referenceImplementation/industrySpecific/Policies/PolicyDefinitions/healthCareApis). These policies can be deployed using:
-
-1. [ARM template for deployment to subscription scope](/healthcare/referenceImplementation/industrySpecific/Policies/PolicyDefinitions/deploy.policyDefinition.sub.json)
-2. [ARM template for deployment to management group scope](/healthcare/referenceImplementation/industrySpecific/Policies/PolicyDefinitions/deploy.policyDefinition.mg.json)
