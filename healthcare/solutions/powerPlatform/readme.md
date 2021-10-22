@@ -116,13 +116,27 @@ Dynamics users. Creation can be restricted to only global and service admins via
 * Manage the correct number of environments in the tenant to avoid sprawl and conserve capacity
 * Enable auditing for your tenant and environments to understand usage and available capacity
 
-## Data
+## Data with Dataverse
 
-Apps created in the Power Platform, whether they are canvas, model, or portal based, can all leverage the native database capability through Dataverse within a Power platform environment.
+Apps created in the Power Platform, whether they are canvas, model, or portal based, can all leverage the native database capability through Dataverse within a Power Platform environment. Dataverse is a transactional SaaS data platform that can be used to include data little code to be written inside a Power Platform application. 
 
 ### Design considerations
 
-PowerBI offers 3 payed lisences options and one free. Consider your requirements for capacity 1GB, 100GB, 400GB and need for refresh rate 7 times per day vs 48 times per day. Other important aspects to consider are key management, multi-geo requirements and auto scaling. More details on Power-BI pricing and licenses can be found here: [Pricing & Product Comparison | Microsoft Power BI](https://powerbi.microsoft.com/en-us/pricing/)
+* To have a common datastore, data can be integrated into Dataverse as a one-off activity or on a schedule. ALternatively, virtual tables can be used to map data in an external data source so that it appears to exist in Dataverse.
+* Custom tables and/or standard, pre-defined tables can be used as a datasource when creating a Power Platform application. 
+
+### Design recommendations
+
+* Integrate required data sources into Dataverse to leverage a common datastore for your applications, simplify connectivity, reduce management overhead
+* Use standard tables whenever possible to simplify the app development and reduce the risk of data replication within Dataverse.
+
+## Power BI
+
+Power BI is a visualization tool that can be used to present coherent, visually immersive, and interactive insights from various data sources across cloud environments and on-premises.
+
+### Design considerations
+
+PowerBI offers 3 paid and one free lisence option. Consider your requirements for capacity (1GB, 100GB, 400GB) and need for refresh rate (7 vs. 48 times per day). Other important aspects to consider are key management, multi-geo requirements and auto scaling. More details on Power-BI pricing and licenses can be found here: [Pricing & Product Comparison | Microsoft Power BI](https://powerbi.microsoft.com/en-us/pricing/)
 
 In case you are managing your own keys or your deployment spans multiple geo's, this can only be achieved using Premium.
 
@@ -135,7 +149,7 @@ When designing your data environment make a plan for:
 * data sources
 * update frequencies
 * bandwidth requirements
-  
+
 When you need to access data from an existing source consider if a replica should be made in Dataverse and if this needs to be bidirectional synched or if you need a one directionally static snapshop.
 
 * Data modeling
