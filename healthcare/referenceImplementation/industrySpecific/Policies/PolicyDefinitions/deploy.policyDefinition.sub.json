@@ -1,0 +1,73 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "policyName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the policy."
+            }
+        },
+        "policyDescription": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies a description of the policy."
+            }
+        },
+        "policyMode": {
+            "type": "string",
+            "defaultValue": "All",
+            "allowedValues": [
+                "All",
+                "Indexed",
+                "Microsoft.KeyVault.Data",
+                "Microsoft.Kubernetes.Data"
+            ],
+            "metadata": {
+                "description": "Specifies the mode of the policy set."
+            }
+        },
+        "policyParameters": {
+            "type": "object",
+            "metadata": {
+                "description": "Specifies the parameters of the policy."
+            }
+        },
+        "policyDefinition": {
+            "type": "object",
+            "metadata": {
+                "description": "Specifies the Policy itself."
+            }
+        },
+        "policyMetadata": {
+            "type": "object",
+            "metadata": {
+                "description": "Specifies key-value pairs for the policy."
+            }
+        }
+    },
+    "variables": {
+        "policyName": "[parameters('policyName')]",
+        "policyDescription": "[parameters('policyDescription')]",
+        "policyParameters": "[parameters('policyParameters')]",
+        "policyDefinition": "[parameters('policyDefinition')]",
+        "policyMode": "[parameters('policyMode')]",
+        "policyMetadata": "[parameters('policyMetadata')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "apiVersion": "2020-03-01",
+            "name": "[variables('policyName')]",
+            "properties": {
+                "policyType": "Custom",
+                "mode": "[variables('policyMode')]",
+                "displayName": "[variables('policyName')]",
+                "description": "[variables('policyDescription')]",
+                "parameters": "[variables('policyParameters')]",
+                "policyRule": "[variables('policyDefinition')]",
+                "metadata": "[variables('policyMetadata')]"
+            }
+        }
+    ]
+}
