@@ -52,7 +52,7 @@ param privateDnsZoneIdHealthcareApi string = ''
 
 // Variables
 var name = toLower('${prefix}-${environment}')
-var eventhubNamespace001Name = '${name}-eventhub001'
+var eventhubNamespace001Name = '${name}-ehnamepspace001'
 var servicebusNamespace001Name = '${name}-servicebus001'
 var iotHub001Name = '${name}-iothub001'
 var containerRegistry001Name = '${name}-containerregistry001'

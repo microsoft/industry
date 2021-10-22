@@ -18,7 +18,7 @@ param eventhubnamespaceMaxThroughput int
 param privateDnsZoneIdEventhubNamespace string = ''
 
 // Variables
-var eventhub001Name = 'eventHub001'
+var eventhub001Name = '${eventhubnamespaceName}-eh001'
 var eventHub001ConsumerGroupName = 'healthcareapiiot'
 var eventhubNamespacePrivateEndpointName = '${eventhubNamespace.name}-private-endpoint'
 
@@ -56,11 +56,11 @@ resource eventhubNamespaceNetworkRuleSets 'Microsoft.EventHub/namespaces/network
   }
 }
 
-resource eventhub001 'Microsoft.EventHub/namespaces/eventhubs@2021-06-01-preview' = {  // Uncomment to deploy an Event Hub in the namespace
+resource eventhub001 'Microsoft.EventHub/namespaces/eventhubs@2021-06-01-preview' = {
   parent: eventhubNamespace
   name: eventhub001Name
   properties: {
-    // captureDescription: {
+    // captureDescription: {  // Uncomment to define capture details
     //   enabled: false
     //   destination: {
     //     name: eventhub001Name
