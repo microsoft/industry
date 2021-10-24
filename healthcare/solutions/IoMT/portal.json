@@ -3,7 +3,7 @@
     "view": {
         "kind": "Form",
         "properties": {
-            "title": "Healthcare - Internet of Medical Things (IoMT) Reference Implementation",
+            "title": "Healthcare APIs - Internet of Medical Things (IoMT)",
             "steps": [
                 {
                     "name": "basics",
@@ -20,21 +20,11 @@
                                     "type": "Microsoft.Common.TextBlock",
                                     "visible": true,
                                     "options": {
-                                        "text": "Select the subscription and resource group as well as the location to specify the scope of your Data Product deployment.",
+                                        "text": "Select the subscription and resource group as well as the location to specify the scope of your deployment.",
                                         "link": {
                                             "label": "",
                                             "uri": ""
                                         }
-                                    }
-                                },
-                                {
-                                    "name": "infoBoxPrerequisites",
-                                    "type": "Microsoft.Common.InfoBox",
-                                    "visible": true,
-                                    "options": {
-                                        "text": "Please make sure that you have a Data Management Zone and Data Landing Zone deployed before deploying a Data Product or Data Integration template.",
-                                        "style": "Warning",
-                                        "uri": "https://github.com/Azure/data-management-zone"
                                     }
                                 },
                                 {
@@ -51,7 +41,7 @@
                                     "type": "Microsoft.Common.DropDown",
                                     "visible": true,
                                     "defaultValue": "",
-                                    "toolTip": "Select the Subscription of your Data Landing Zone.",
+                                    "toolTip": "Select the Subscription for your Deployment.",
                                     "multiselect": false,
                                     "selectAll": false,
                                     "filter": true,
@@ -71,21 +61,12 @@
                                     }
                                 },
                                 {
-                                    "name": "infoBoxResourceGroup",
-                                    "type": "Microsoft.Common.InfoBox",
-                                    "visible": true,
-                                    "options": {
-                                        "text": "We have already deployed a few resourge groups in your Data Landing Zone, which can be used for Data Product and Data Integration Template deployments. They have the following names: '{prefix}-dp001', '{prefix}-dp002', '{prefix}-di001' and '{prefix}-di002'.",
-                                        "style": "Info"
-                                    }
-                                },
-                                {
                                     "name": "resourceGroupId",
                                     "label": "Resource Group",
                                     "type": "Microsoft.Common.DropDown",
                                     "visible": true,
                                     "defaultValue": "",
-                                    "toolTip": "Select the Resource Group for your Data Product.",
+                                    "toolTip": "Select the Resource Group for your Deployment.",
                                     "multiselect": false,
                                     "selectAll": false,
                                     "filter": true,
@@ -101,7 +82,7 @@
                                     "type": "Microsoft.Common.InfoBox",
                                     "visible": true,
                                     "options": {
-                                        "text": "Since not all services and features are available in all regions, the accelerator is only available in a subset of Azure regions.",
+                                        "text": "The reference implementation is only available in a subset of Azure regions, because not all services and features are available in all regions.",
                                         "style": "Info"
                                     }
                                 },
@@ -119,7 +100,7 @@
                                     "type": "Microsoft.Common.DropDown",
                                     "visible": true,
                                     "defaultValue": "",
-                                    "toolTip": "Select the Location for your Data Product.",
+                                    "toolTip": "Select the Location for your Deployment.",
                                     "multiselect": false,
                                     "selectAll": false,
                                     "filter": true,
@@ -133,13 +114,13 @@
                             ]
                         },
                         {
-                            "name": "dataProductName",
-                            "label": "Data Product Name",
+                            "name": "deploymentName",
+                            "label": "Deployment Name",
                             "type": "Microsoft.Common.Section",
                             "visible": true,
                             "elements": [
                                 {
-                                    "name": "dataPruductNamesText",
+                                    "name": "deploymentNameText",
                                     "type": "Microsoft.Common.TextBlock",
                                     "visible": true,
                                     "options": {
@@ -184,8 +165,8 @@
                                     }
                                 },
                                 {
-                                    "name": "dataProductPrefix",
-                                    "label": "Data Product Prefix",
+                                    "name": "deploymentPrefix",
+                                    "label": "Prefix",
                                     "type": "Microsoft.Common.TextBox",
                                     "visible": true,
                                     "defaultValue": "",
@@ -198,15 +179,15 @@
                                                 "message": "The prefix must be between 1-10 lowercase characters and numbers."
                                             },
                                             {
-                                                "isValid": "[not(equals(steps('basics').dataProductName.healthcareapiNameApi.nameAvailable, false))]",
+                                                "isValid": "[not(equals(steps('basics').deploymentName.healthcareapiNameApi.nameAvailable, false))]",
                                                 "message": "Prefix currently unavailable. Please choose a different one."
                                             },
                                             {
-                                                "isValid": "[not(equals(steps('basics').dataProductName.eventHubNamespaceNameApi.nameAvailable, false))]",
+                                                "isValid": "[not(equals(steps('basics').deploymentName.eventHubNamespaceNameApi.nameAvailable, false))]",
                                                 "message": "Prefix currently unavailable. Please choose a different one."
                                             },
                                             {
-                                                "isValid": "[not(equals(steps('basics').dataProductName.containerRegistryNameApi.nameAvailable, false))]",
+                                                "isValid": "[not(equals(steps('basics').deploymentName.containerRegistryNameApi.nameAvailable, false))]",
                                                 "message": "Prefix currently unavailable. Please choose a different one."
                                             }
                                         ]
@@ -219,7 +200,7 @@
                                         "method": "POST",
                                         "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.HealthcareApis/checkNameAvailability?api-version=2019-09-16')]",
                                         "body": {
-                                            "name": "[toLower(concat(steps('basics').dataProductName.dataProductPrefix, steps('basics').dataProductName.environment, 'hapi001'))]",
+                                            "name": "[toLower(concat(steps('basics').deploymentName.deploymentPrefix, steps('basics').deploymentName.environment, 'hapi001'))]",
                                             "type": "Microsoft.HealthcareApis/workspaces"
                                         }
                                     }
@@ -231,7 +212,7 @@
                                         "method": "POST",
                                         "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.EventHub/checkNameAvailability?api-version=2017-04-01')]",
                                         "body": {
-                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-eventhub001')]"
+                                            "name": "[concat(steps('basics').deploymentName.deploymentPrefix, '-', steps('basics').deploymentName.environment, '-eventhub001')]"
                                         }
                                     }
                                 },
@@ -242,7 +223,7 @@
                                         "method": "POST",
                                         "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.ContainerRegistry/checkNameAvailability?api-version=2019-05-01')]",
                                         "body": {
-                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, steps('basics').dataProductName.environment, 'containerregistry001')]",
+                                            "name": "[concat(steps('basics').deploymentName.deploymentPrefix, steps('basics').deploymentName.environment, 'containerregistry001')]",
                                             "type": "Microsoft.ContainerRegistry/registries"
                                         }
                                     }
@@ -255,7 +236,7 @@
                     "name": "generalSettings",
                     "label": "General Settings",
                     "subLabel": {
-                        "preValidation": "Provide settings for your data product deployment.",
+                        "preValidation": "Provide settings for your Deployment.",
                         "postValidation": "Done"
                     },
                     "bladeTitle": "General Settings",
@@ -275,7 +256,7 @@
                                         "text": "Specify the settings for your Azure Healthcare API.",
                                         "link": {
                                             "label": "Learn more",
-                                            "uri": "https://docs.microsoft.com/en-us/azure/purview/overview"
+                                            "uri": "https://docs.microsoft.com/azure/healthcare-apis/healthcare-apis-overview"
                                         }
                                     }
                                 },
@@ -285,7 +266,8 @@
                                     "visible": true,
                                     "options": {
                                         "text": "Please select a storage account that will be used for exports from the FHIR API.",
-                                        "style": "Info"
+                                        "style": "Info",
+                                        "uri": "https://docs.microsoft.com/azure/healthcare-apis/data-transformation/configure-export-data"
                                     }
                                 },
                                 {
@@ -302,7 +284,7 @@
                                     "type": "Microsoft.Common.DropDown",
                                     "visible": true,
                                     "defaultValue": "",
-                                    "toolTip": "Select the Storage account to which you want to connect Synapse.",
+                                    "toolTip": "Select the Storage account to which you want to connect FHIR.",
                                     "multiselect": false,
                                     "selectAll": false,
                                     "filter": true,
@@ -323,11 +305,11 @@
                                 },
                                 {
                                     "name": "fhirExportStorageAccountFileSystemId",
-                                    "label": "Synapse Default Storage Account Container",
+                                    "label": "FHIR Default Storage Account Container",
                                     "type": "Microsoft.Common.DropDown",
                                     "visible": true,
                                     "defaultValue": "",
-                                    "toolTip": "Default storage container for the Synapse workspace. If no option is shown, please make sure that a container exists within the storage account selected above.",
+                                    "toolTip": "Default storage container for FHIR. If no option is shown, please make sure that a container exists within the storage account selected above.",
                                     "multiselect": false,
                                     "selectAll": false,
                                     "filter": true,
@@ -505,7 +487,7 @@
                     "name": "connectivitySettings",
                     "label": "Connectivity Settings",
                     "subLabel": {
-                        "preValidation": "Provide the connectivity settings that should be used for the Data Product.",
+                        "preValidation": "Provide the connectivity settings that should be used for the Deployment.",
                         "postValidation": "Done"
                     },
                     "bladeTitle": "Connectivity Settings",
@@ -534,7 +516,7 @@
                                     "type": "Microsoft.Common.InfoBox",
                                     "visible": true,
                                     "options": {
-                                        "text": "Please select the Virtual Network of your Data Landing Zone and select a free Subnet within the Virtual Network to make sure that you have proper outbound connectivity as well as DNS name resolution in place. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled. This is already pre-configured for you in the DataProduct and DataIntegration subnets in the Data Landing Zone Vnet.",
+                                        "text": "Please select the Virtual Network for your Deployment and select a Subnet within the Virtual Network. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled.",
                                         "style": "Info"
                                     }
                                 },
@@ -552,7 +534,7 @@
                                     "type": "Microsoft.Common.DropDown",
                                     "visible": true,
                                     "defaultValue": "",
-                                    "toolTip": "Select the Virtual Network for your Data Product.",
+                                    "toolTip": "Select the Virtual Network for your Deployment.",
                                     "multiselect": false,
                                     "selectAll": false,
                                     "filter": true,
@@ -577,7 +559,7 @@
                                     "type": "Microsoft.Common.DropDown",
                                     "visible": true,
                                     "defaultValue": "",
-                                    "toolTip": "Select the Subnet for your Data Product. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled.",
+                                    "toolTip": "Select the Subnet for your Deployment. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled.",
                                     "multiselect": false,
                                     "selectAll": false,
                                     "filter": true,
@@ -755,8 +737,8 @@
             "resourceGroupId": "[steps('basics').deploymentDetails.resourceGroupId]",
             "parameters": {
                 "location": "[if(empty(steps('basics').deploymentDetails.locationName), '', steps('basics').deploymentDetails.locationName)]",
-                "environment": "[if(empty(steps('basics').dataProductName.environment), '', steps('basics').dataProductName.environment)]",
-                "prefix": "[if(empty(steps('basics').dataProductName.dataProductPrefix), '', steps('basics').dataProductName.dataProductPrefix)]",
+                "environment": "[if(empty(steps('basics').deploymentName.environment), '', steps('basics').deploymentName.environment)]",
+                "prefix": "[if(empty(steps('basics').deploymentName.deploymentPrefix), '', steps('basics').deploymentName.deploymentPrefix)]",
                 "tags": "[if(not(contains(steps('tags').tagsByResource, 'Healthcare')), parse('{}'), first(map(parse(concat('[', string(steps('tags').tagsByResource), ']')), (item) => item.Healthcare)))]",
                 "ingestionService": "[if(empty(steps('generalSettings').generalSettings.ingestionService), '', steps('generalSettings').generalSettings.ingestionService)]",
                 "enableRoleAssignments": "[steps('generalSettings').generalSettings.enableRoleAssignments]",
