@@ -321,6 +321,16 @@
                                     }
                                 },
                                 {
+                                    "name": "infoBoxIotDeviceMapping",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Please specify the Device Mapping. For more details, please visit the link.",
+                                        "style": "Info",
+                                        "uri": "https://docs.microsoft.com/azure/healthcare-apis/iot/how-to-use-device-mapping-iot"
+                                    }
+                                },
+                                {
                                     "name": "iotDeviceMapping",
                                     "label": "IoT Device Mapping",
                                     "type": "Microsoft.Common.TextBox",
@@ -341,6 +351,16 @@
                                                 "message": "Please provide the template."
                                             }
                                         ]
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxIotFhirMapping",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Please specify the FHIR Mapping. For more details, please visit the link.",
+                                        "style": "Info",
+                                        "uri": "https://docs.microsoft.com/azure/healthcare-apis/iot/how-to-use-fhir-mapping-iot"
                                     }
                                 },
                                 {
@@ -743,7 +763,7 @@
                 "ingestionService": "[if(empty(steps('generalSettings').generalSettings.ingestionService), '', steps('generalSettings').generalSettings.ingestionService)]",
                 "enableRoleAssignments": "[steps('generalSettings').generalSettings.enableRoleAssignments]",
                 "enableHealthBot": "[steps('generalSettings').generalSettings.enableHealthBot]",
-                "fhirStorageAccountId": "[if(empty(steps('generalSettings').healthcareApiSettings.fhirExportStorageAccountFileSystemId), '', steps('generalSettings').healthcareApiSettings.fhirExportStorageAccountFileSystemId)]",
+                "fhirExportStorageAccountFileSystemId": "[if(empty(steps('generalSettings').healthcareApiSettings.fhirExportStorageAccountFileSystemId), '', steps('generalSettings').healthcareApiSettings.fhirExportStorageAccountFileSystemId)]",
                 "iotDeviceMapping": "[if(empty(steps('generalSettings').healthcareApiSettings.iotDeviceMapping), parse('{}'), steps('generalSettings').healthcareApiSettings.iotDeviceMapping)]",
                 "iotFhirMapping": "[if(empty(steps('generalSettings').healthcareApiSettings.iotFhirMapping), parse('{}'), steps('generalSettings').healthcareApiSettings.iotFhirMapping)]",
                 "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",
