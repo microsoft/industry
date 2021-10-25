@@ -102,19 +102,24 @@ The following section describes the design considerations and the design recomme
 Dynamics users. Creation can be restricted to only global and service admins via a tenant setting
 * An environment can have one or zero database (Dataverse) instances
 * Environments act as security boundaries allowing different security needs to be implemented in each environment
+* Environments can be created with - or without Dynamics 365 application templates available in the tenant
+* Dynamics 365 applications takes a dependency on environments with Dataverse provisioned
 
 ### Design recommendations
 
 * Rename the Default environment to clarify the intent, e.g., "personal productivity"
 * Disable self-service of Environment creation, both for Production and Sandbox as well as Trials, and limit this to selected Power Platform admins as this can potentially cause capacity constraints in the tenant
 * Enable a process for the organization to request new environments. Either establish and implement the process yourself, or leverage the ["Center of Excellence starter kit"](https://docs.microsoft.com/power-platform/guidance/coe/starter-kit) which provides a solution that can be imported to a dedicated environment to facilitate this, together with other core capabilities.
+* As part of the Environment creation process, ensure auditing, DLP policies, and RBAC are included so the environments can be used safely
 * Have dedicated environments (dev, test, and prod) for management, monitoring, and analytics, that is managed and operated by the Power Platform admins, providing core capabilities for the Power Platform as a whole
-* Create dedicated environments for test, development, and production for the Healthcare solutions in the same region, which allows ease of maintenance and validation of changes, such as release wave updates which is per environment
-* The production and development environments for Healthcare must be of type "production", while test environments could be of type "sandbox" to simplify reset process for testing purposes.
+* Create dedicated environments for test, development, and production for the industry solutions in the same region, which allows ease of maintenance and validation of changes, such as release wave updates which is per environment
+* The production and development environments for industry solutions must be of type "production", while test environments could be of type "sandbox" to simplify reset process for testing purposes.
 * Limit high privilege access by using an AAD Security Group with PIM for admin access to the environments
 * Create DLP policies to limit data flow between trusted MSFT connectors and 3rd party APIs, aligned with your organizational requirements
 * Manage the correct number of environments in the tenant to avoid sprawl and conserve capacity
 * Enable auditing for your tenant and environments to understand usage and available capacity
+* For industry solutions (e.g., Healthcare, Financial Services Industry), deploy all Dynamics 365 applications to the same environment(s), and avoid creating islands of data that will be complex to combine later
+* Only split solutions across different environments if there's data or security constraints
 
 ## Data
 
@@ -122,19 +127,18 @@ Apps created in the Power Platform, whether they are canvas, model, or portal ba
 
 ### Design considerations
 
-PowerBI offers 3 payed lisences options and one free. Consider your requirements for capacity 1GB, 100GB, 400GB and need for refresh rate 7 times per day vs 48 times per day. Other important aspects to consider are key management, multi-geo requirements and auto scaling. More details on Power-BI pricing and licenses can be found here: [Pricing & Product Comparison | Microsoft Power BI](https://powerbi.microsoft.com/en-us/pricing/)
-
-In case you are managing your own keys or your deployment spans multiple geo's, this can only be achieved using Premium.
+* PowerBI offers 3 payed lisences options and one free. Consider your requirements for capacity 1GB, 100GB, 400GB and need for refresh rate 7 times per day vs 48 times per day. Other important aspects to consider are key management, multi-geo requirements and auto scaling. More details on Power-BI pricing and licenses can be found here: [Pricing & Product Comparison | Microsoft Power BI](https://powerbi.microsoft.com/en-us/pricing/)
+* In case you are managing your own keys or your deployment spans multiple geo's, this can only be achieved using Premium.
 
 ### Design recommendations
 
 When designing your data environment make a plan for:
 
-* data modeling
-* data connectivity
-* data sources
-* update frequencies
-* bandwidth requirements
+* Data modeling
+* Data connectivity
+* Data sources
+* Update frequencies
+* Bandwidth requirements
   
 When you need to access data from an existing source consider if a replica should be made in Dataverse and if this needs to be bidirectional synched or if you need a one directionally static snapshop.
 
@@ -149,13 +153,12 @@ When you need to access data from an existing source consider if a replica shoul
 
 ## Observability and logging
 
-Observability and auditing is key for the environments, the various application components into the environments, as well as the Dataverse platform. Additional integration and end-to-end view will rely on Microsoft 365 Security and Compliance Center, and Azure Active Directory. For most of the services in Power PLatform, organizations who are using Azure can integrate with Azure Monitor (Application Insights and Log Analytics) for long-term retention and further analysis.
+Observability and auditing is key for the environments, the various application components deployed in the environments, as well as the Dataverse platform. Additional integration and end-to-end view will rely on Microsoft 365 Security and Compliance Center, and Azure Active Directory. For most of the services in Power Platform, organizations who are using Azure can integrate with Azure Monitor (Application Insights and Log Analytics) for long-term retention and further analysis.
 
 ### Design considerations
 
 * Auditing for Environments is default set to off and cannot be enabled on Environments during provisioning. To enable auditing you must explicitly opt-in within the Environment settings once it has been created.
-
-*
+* 
 
 ### Design recommendations
 
