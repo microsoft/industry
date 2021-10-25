@@ -123,12 +123,18 @@ Apps created in the Power Platform, whether they are canvas, model, or portal ba
 ### Design considerations
 
 * To have a common datastore, data can be integrated into Dataverse as a one-off activity or on a schedule. ALternatively, virtual tables can be used to map data in an external data source so that it appears to exist in Dataverse.
-* Custom tables and/or standard, pre-defined tables can be used as a datasource when creating a Power Platform application. 
+* Custom tables and/or standard, pre-defined tables can be used as a datasource when creating a Power Platform application.
+* Row- and column-level security can be used to restrict access to data within tables.
+* Automatic and manual backups are available. Automatic backups are system-initiated and manual backups are user-initiated.
+* Audit Logs can be enabled to track changes to tables and columns over time for security and analyticl purposes.
 
 ### Design recommendations
 
-* Integrate required data sources into Dataverse to leverage a common datastore for your applications, simplify connectivity, reduce management overhead
+* Integrate required data sources into Dataverse to leverage a common datastore for your applications, simplify connectivity, reduce management overhead and reduce the point of failures within the architecture.
 * Use standard tables whenever possible to simplify the app development and reduce the risk of data replication within Dataverse.
+* In general, rely on automatic system-initiated backups. Use manual user-initiated backups before updating the environment or before making any application updates.
+* Enable auditing for tables to log any data creation, changes, or deletion in the respective tables. All columns are audited by default, when turning the feature on and auditing must be turned on for the environment.
+* 
 
 ## Power BI
 
