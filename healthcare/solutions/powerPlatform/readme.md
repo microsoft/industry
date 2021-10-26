@@ -122,9 +122,9 @@ Apps created in the Power Platform, whether they are canvas, model, or portal ba
 
 ### Design considerations
 
-* Data can be integrated into Dataverse as a one-off activity or on a schedule. Alternatively, virtual tables can be used to map data in an external data source so that it appears to exist in Dataverse.
+* Data can be integrated into Dataverse as a one-off activity or on a schedule. Alternatively, virtual tables can be used to map data in an external data source so that it appears to exist in Dataverse. Virtual tables do not support many of the security and auditing related features that are offered for non-virtual tables.
 * Custom tables and/or standard, pre-defined tables can be used as a datasource when creating a Power Platform application.
-* Ownership type of custom tables can't be changed after creation.
+* Ownership type of custom tables can't be changed after creation. Virtual tables are always owned at the organizational level.
 * Row- and column-level security can be used to restrict access to data within tables.
 * Dataverse provides the option of automatic and manual backups. Automatic backups are system-initiated and manual backups are user-initiated.
 * Audit Logs can be enabled to track changes to tables and columns over time for security and analytical purposes.
@@ -132,7 +132,8 @@ Apps created in the Power Platform, whether they are canvas, model, or portal ba
 
 ### Design recommendations
 
-* Integrate required data sources into Dataverse to leverage a common datastore for your applications, simplify connectivity, reduce management overhead and reduce the point of failures within the architecture.
+* Integrate required data sources into Dataverse to leverage a common datastore for your applications, simplify connectivity, reduce management overhead and reduce the point of failures within the architecture. In addition, users will also gain access to additional features such as queues, knowledge management, SLAs, duplicate detection, change tracking, mobile offline capability, column security, and Dataverse search.
+* Securely integrate data using Power Platform dataflows and virtual network data gateways.
 * Setup an automatic refresh schedule or an event-driven update workflow for imported data that changes frequently in the source system. Setup refresh failure notifications to get notified about synch errors. Use incremental refreshes to reduce the amount of data that needs to be processed by Power Platform Dataflow or other integration tools.
 * Use standard tables, columns, and table relationships when they make sense for your organization to simplify the app development and reduce the risk of data replication within Dataverse.
 * When creating a custom table, decide upfront whether the table and accesscontrol should be owned by the "Organization" or by a "User or team".
