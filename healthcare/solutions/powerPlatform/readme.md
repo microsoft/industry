@@ -118,7 +118,7 @@ Dynamics users. Creation can be restricted to only global and service admins via
 
 ## Data with Dataverse
 
-Apps created in the Power Platform, whether they are canvas, model, or portal based, can all leverage the native database capability through Dataverse within a Power Platform environment. Dataverse is a transactional SaaS data platform that can be used to include data little code to be written inside a Power Platform application. 
+Apps created in the Power Platform, whether they are canvas, model, or portal based, can all leverage the native database capability through Dataverse within a Power Platform environment. Dataverse is a transactional SaaS data platform that can be used to include data little code to be written inside a Power Platform application.
 
 ### Design considerations
 
@@ -134,7 +134,6 @@ Apps created in the Power Platform, whether they are canvas, model, or portal ba
 * Use standard tables whenever possible to simplify the app development and reduce the risk of data replication within Dataverse.
 * In general, rely on automatic system-initiated backups. Use manual user-initiated backups before updating the environment or before making any application updates.
 * Enable auditing for tables to log any data creation, changes, or deletion in the respective tables. All columns are audited by default, when turning the feature on and auditing must be turned on for the environment.
-* 
 
 ## Power BI
 
