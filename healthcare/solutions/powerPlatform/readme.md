@@ -122,18 +122,21 @@ Apps created in the Power Platform, whether they are canvas, model, or portal ba
 
 ### Design considerations
 
-* To have a common datastore, data can be integrated into Dataverse as a one-off activity or on a schedule. ALternatively, virtual tables can be used to map data in an external data source so that it appears to exist in Dataverse.
+* Data can be integrated into Dataverse as a one-off activity or on a schedule. Alternatively, virtual tables can be used to map data in an external data source so that it appears to exist in Dataverse.
 * Custom tables and/or standard, pre-defined tables can be used as a datasource when creating a Power Platform application.
 * Row- and column-level security can be used to restrict access to data within tables.
-* Automatic and manual backups are available. Automatic backups are system-initiated and manual backups are user-initiated.
-* Audit Logs can be enabled to track changes to tables and columns over time for security and analyticl purposes.
+* Dataverse provides the option of automatic and manual backups. Automatic backups are system-initiated and manual backups are user-initiated.
+* Audit Logs can be enabled to track changes to tables and columns over time for security and analytical purposes.
+* Data existing in Dataverse can be continuously integrated into an Azure Data Lake Gen2 for running analytical workloads on the data.
 
 ### Design recommendations
 
 * Integrate required data sources into Dataverse to leverage a common datastore for your applications, simplify connectivity, reduce management overhead and reduce the point of failures within the architecture.
+* Setup an automatic refresh schedule or an event-driven workflow for imported data that changes frequently in the source system. Setup refresh failure notifications to get notified about synch errors. Use incremental refreshes to reduce the amount of data that needs to be processed by Power Platform Dataflow or other integration tools.
 * Use standard tables whenever possible to simplify the app development and reduce the risk of data replication within Dataverse.
 * In general, rely on automatic system-initiated backups. Use manual user-initiated backups before updating the environment or before making any application updates.
 * Enable auditing for tables to log any data creation, changes, or deletion in the respective tables. All columns are audited by default, when turning the feature on and auditing must be turned on for the environment.
+* For analytical workloads such as machine learning, reporting, data warehousing and other downstream integration processes, use Azure Synapse Link to export the data from Dataverse into the analytical data platform. This will reduce the impact on the transactional Dataverse database and allows multiple Data Product teams to consume the same consistent dataset at scale.
 
 ## Power BI
 
