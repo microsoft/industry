@@ -43,7 +43,7 @@ The core of enterprise-scale architecture for Power Platform contains a critical
 * [Security, governance, and compliance](#security-governance-and-compliance)
 * [Environments](#environments)
 * [Data ingress and egress](#data)
-* [Observability and logging](#observability-and-logging)
+* [Management and monitoring](#management-and-monitoring)
 * [Azure VNet connectivity for Power Platform](#azure-vnet-connectivity-for-power-platform)
 
 ## Identity and access
@@ -59,11 +59,13 @@ Further, for data, security in Dataverse is there to ensure users can do the wor
 * The security and RBAC model for Environments with - and without Dataverse are different
 * Environments with Dataverse supports more advanced security models to control access to data and services within the Dataverse environment
 * A user's ability to see and use apps is controlled by sharing the application with the user. Sharing of canvas apps is done directly with a user or Azure AD group but is still subject to Dataverse security roles, and sharing of model-driven apps is done via Dataverse security roles
+* If an Environment is first created without Dataverse and its get added later, the Dataverse roles will take over for controlling security in the Environment and all environment admins and makers are automatically migrated
 
 ### Design recommendations
 
 * Create AAD groups that are automatically assigned the correct licenses per user per their requirements and roles, and avoid assigning licenses to individual users
 * Organize the AAD groups that streamlines and simplifies RBAC for the environments per the functions and requirements for the business units and application teams
+* User Conditional Access Policies in Azure AD to grant/prevent access to Power Apps and Power Automate based upon user/group, device, and location
 
 ## Security, governance, and compliance
 
@@ -83,11 +85,11 @@ An environment in Power Platform is an allow-by default system from a policy per
 * Create a data loss prevention policy that enforces the bare minimum security requirements at the tenant scope, to ensure that all landing zones are secure by-default and both pro devs and citizen devs can safely develop business applications that does not vialates the security requirements.
 * The tenant wide policy spanning all environments should prevent all unsupported non-Microsoft connectors, and classify all Microsoft connectors as 'Business data'
 * Create a policy for the default environment that furter restricts which Microsoft connectors are classified as 'Business Data'
-* Establish a process that will always include data-loss prevention policy when creating a new landing zone (environment), to ensure no one are accessing - or starting to create or deploy apps into it that could potentially violate the policies.
+* Establish a process that will always include data-loss prevention policy when creating a new landing zone (environment), to ensure no one are accessing - or starting to create or deploy apps could potentially violate the policies.
 
 ## Environments
 
-Healthcare applications requires an environment in Power Platform, that must be created and governed upfront and in a supported region for Healthcare.
+Environments acts as the scale-unit, and management boundary in Power platform and is where organizations can store, manage, and share business data, applications, including Dynamics 365 apps, chatbots, and flows. It's recommended to have a strategy for how you should create, distribute, and scale environments to accelerate digital transformation for your pro - and citizen developers.
 The following section describes the design considerations and the design recommendations for Environments, to help you navigate to the correct setup per your organizational requirements.
 
 ![Environments for Healthcare](./images/env.png)
@@ -107,7 +109,7 @@ Dynamics users. Creation can be restricted to only global and service admins via
 
 ### Design recommendations
 
-* Rename the Default environment to clarify the intent, e.g., "personal productivity"
+* Rename the Default environment to clarify the intent, e.g., "personal productivity" as all licensed users will have access by default
 * Disable self-service of Environment creation, both for Production and Sandbox as well as Trials, and limit this to selected Power Platform admins as this can potentially cause capacity constraints in the tenant
 * Enable a process for the organization to request new environments. Either establish and implement the process yourself, or leverage the ["Center of Excellence starter kit"](https://docs.microsoft.com/power-platform/guidance/coe/starter-kit) which provides a solution that can be imported to a dedicated environment to facilitate this, together with other core capabilities.
 * As part of the Environment creation process, ensure auditing, DLP policies, and RBAC are included so the environments can be used safely
@@ -151,17 +153,25 @@ When you need to access data from an existing source consider if a replica shoul
   * When connecting to other data sources its important to define the need to gateways to connect to on-prem systems, the network bandwidth between you Dataverse environment and server location.
   * Ensure that the database source has capacity to handle the additional load and the data transferred is optimized. Map the data volume and update frequency needed for each use case.  
 
-## Observability and logging
+## Management and monitoring
 
-Observability and auditing is key for the environments, the various application components deployed in the environments, as well as the Dataverse platform. Additional integration and end-to-end view will rely on Microsoft 365 Security and Compliance Center, and Azure Active Directory. For most of the services in Power Platform, organizations who are using Azure can integrate with Azure Monitor (Application Insights and Log Analytics) for long-term retention and further analysis.
+Power Platform provides first-party connectors for the Power Platform administration capabilities so organizations can configure and implement the desired management scenarios and automation needed for their tenant and environments. The [Center of Excellence starter-kit](https://docs.microsoft.com/power-platform/guidance/coe/core-components) provides ready to use solutions that enables curated management experiences in addition to what the Power Platform admin center enables by default.
+Further overall management, including observability and auditing is crucial to ensure a continiously healthy tenant and environments, the the usage of the various applications deployed in the environments, as well as the Dataverse platform. Additional integration and end-to-end view will rely on Microsoft 365 Security and Compliance Center, and Azure Active Directory. For most of the services in Power Platform, organizations who are using Azure can integrate with Azure Monitor (Application Insights and Log Analytics) for long-term retention and further analysis.
 
 ### Design considerations
 
-* Auditing for Environments is default set to off and cannot be enabled on Environments during provisioning. To enable auditing you must explicitly opt-in within the Environment settings once it has been created.
-* 
+* Only Environments with Dataverse provides auditing capabilities (access logs) at the environment and database layer, and the logs can be viewed and consumed from [Office 365 Security & Compliance center](https://protection.office.com/homepage)
+* Auditing for Environments with Dataverse is default set to off and cannot be enabled on Environments during provisioning. To enable auditing you must explicitly opt-in within the Environment settings once it has been created.
+* Power Platform admin center provides out-of-the box analytics capabilities of the various Power Platform components, such as Dataverse, Power Apps, and Power Automate
+* The Power Platform admins can configure [Data export](https://admin.powerplatform.microsoft.com/analytics/dataexport) for all Power Apps in the tenant, and export to an Azure Data Lake Storage (Gen2) account to get an overview of the adoption, usage, inventory, and application metadata
+* For each envrionment with Dataverse, the Power Platform admins can export Dataverse diagnostics, such as usage of APIs, form load diagnostics, and performance metrics to an Azure Application Insights instance
+* Activity logs for Power Apps is integrated with Office 365 Security & Compliance center which provides an API to query the data
 
 ### Design recommendations
 
+* Use Application Insights that is linked to a Log Analytics workspace in Azure to capture key diagnostics and performance metrics for all environments using Dataverse, and enable critical alerts for the respective Power Platform admins and environments owners
+* If separation of concern is important, configure Data Export to Application Insights on behalf of the application teams/owners, so they can monitor the diagnostics and performance for their own dedicated environments
+* Use Azure Data Lake Storage (Gen2) account to store and analyze Power App usage for the tenant, for durations as required by your organization's data retention policies, and use Power BI to build informative reports for the various stakeholders for the Power Platform
 * Enable tenant-level analytics for aggregated view of usage across the Power Platform components
 
 ## Azure VNet connectivity for Power Platform

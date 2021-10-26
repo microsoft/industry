@@ -11,11 +11,11 @@ deployment and adoption of industry cloud.
 
 ### Healthcare
 
-Microsoft Cloud for healthcare spans the Microsoft Clouds (Azure, Power Platform and Microsoft 365). This repository provides the prescriptive architecture and design guidence together with respective reference implementations for the industry solution as a whole, as well as the various healthcare capabilities.
+Microsoft Cloud for Healthcare spans the Microsoft Clouds (Azure, Power Platform and Microsoft 365). This repository provides the prescriptive architecture and design guidence together with respective reference implementations for the industry solution as a whole, as well as the various healthcare capabilities.
 
 - [Pre-requisites](./healthcare/prereqs.md)
+  - [Power Platform for Healthcare](./healthcare/solutions/powerPlatform)  
   - [Healthcare APIs](./healthcare/solutions/healthcareApis)
-  - [Power Platform for Healthcare](./healthcare/solutions/powerPlatform)
   - [Microsoft Teams for Healthcare](./healthcare/solutions/microsoftTeams)
 - [Personalized care](./healthcare/solutions/)
   - [Patient service center](./healthcare/solutions/patientServiceCenter)
@@ -36,19 +36,31 @@ Microsoft Cloud for healthcare spans the Microsoft Clouds (Azure, Power Platform
 
 ### Telecommunications
 
-Microsoft Cloud for telecommunications enables an at-scale, and sustainable architecture for telco specific workloads, catering for the unique set of requirements a telco industry has compared to enterprises or customers in other industries. A prescriptive architecture and design guidance is provided below.
+Microsoft Cloud for Telecommunications enables an at-scale, and sustainable architecture for telco specific workloads, catering for the unique set of requirements a telco industry has compared to enterprises or customers in other industries. A prescriptive architecture and design guidance is provided below.
 
 - [Pre-requisites](./telco/prereqs.md)
-  - [Azure landing zone](./telco)
+  - [Azure landing zone for Telecommunications](./telco)
   - [Scale-out networking](./telco/nwScaleOut)
 
 ### Financial services
 
-Placeholder
+Microsoft Cloud for Financial Services provides capabilities to manage data to deliver differentiated experiences, empower employees, and combat financial crime while facilitating security, compliance, and interoperability
 
 - [Pre-reqiusites](./fsi/prereqs.md)
-  - [Azure landing zone](./fsi/readme.md)
+  - [Power Platform for Financial Services](./healthcare/solutions/powerPlatform)  
+  - [Azure landing zone for Financial Services](./fsi/readme.md)
   - [Service enablement framework](./fsi/solutions/serviceEnablement/readme.md)
+- [Customer and exmployee experience](./fsi/solutions)
+  - [Unified customer profile](./fsi/solutions/unifiedCustomerProfile)
+  - [Customer onboarding](./fsi/solutions/customerOnboarding)
+  - [Collaboration manager](./fsi/solutions/collaborationManager)
+  - [Banking customer engagement](./fsi/solutions/customerEngagement)
+- [Financial crime protection](./fsi/solutions)
+  - [Account protection](./fsi/solutions/accountProtection)
+  - [Purchase protection](./fsi/solutions/purchaseProtection)
+- [Compliance, privacy, and security](./fsi/solutions)
+  - [Risk assurance and support](./fsi/solutions/riskAssurance)
+  - [Regulatory compliance assessments](/.fsi/solutions/complianceAssessments)
 
 ## Contributing
 
