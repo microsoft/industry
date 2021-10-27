@@ -23,11 +23,11 @@ The core of enterprise-scale architecture for Healthcare APIs contains a critica
 
 ### Composition of the Healthcare API's
 
-Azure Healthcare APIs enables rapid exchange of data through APIs, backed by a managed Platform-as-a Service (PaaS) offering in the cloud. It makes it easier for anyone working with health data to ingest, manage, and persist protected health information (PHI) in the cloud using an industry standard. The healthcare API's consist of a workspace and one or many API services.
+Azure Healthcare APIs enables rapid exchange of data through APIs, backed by a managed Platform-as-a Service (PaaS) offering in the cloud. It makes it easier for anyone working with health data to ingest, manage, and persist protected health information (PHI) in the cloud using an industry standard. The healthcare API's consist of a workspace that enables several services such as FHIR, DICOM, and IoMT.
 
 ![Healthcare API architecture ](./images/healthcareapi.png "Healthcare API")
 
-### Healthcare API Workspace
+#### Healthcare API Workspace
 
 The Healthcare API workspace is a logical construct. All your healthcare service instances, such as FHIR services, DICOM services, and IoT Connectors are deployed within the workspace. Inside the workspace you can provision one or multiple instances of the FHIR service, DICOM service or IoT Connector. The workspace can also be used as a compliance boundary for HIPAA, HITRUST, CCPA, GDPR. Each service within the workspace has its own endpoint and can shares common workspace-level configurations, like keys data encryption, or RBAC. Deployment region is defined in the workspace and all services within the workspace will be hosted in that region.
 
