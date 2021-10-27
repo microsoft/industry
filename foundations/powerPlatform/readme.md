@@ -140,11 +140,12 @@ Apps created in the Power Platform, whether they are canvas, model, or portal ba
 * Audit Logs can be enabled to track changes to tables and columns over time for security and analytical purposes.
 * Data existing in Dataverse can be continuously integrated into an Azure Data Lake Gen2 for running analytical workloads on the data.
 * App Makers can perform changes directly within Dataverse (Default Solution) or work within a custom Solution.
+* Application data model must be defined including table structure, relationships between tables (one-to-many, many-to-one, many-to-many). Existing business data models should be resused to simplify data integration, data sharing and joins with other datasets. 
 
 #### Design recommendations
 
 * Integrate required data sources into Dataverse to leverage a common datastore for your applications, simplify connectivity, reduce management overhead and reduce the point of failures within the architecture. In addition, users will also gain access to additional features such as queues, knowledge management, SLAs, duplicate detection, change tracking, mobile offline capability, column security, and Dataverse search.
-* Securely integrate data using Power Platform dataflows and virtual network data gateways.
+* Securely integrate data using Power Platform dataflows and virtual network data gateways or on-premises data gateways.
 * Setup an automatic refresh schedule or an event-driven update workflow for imported data that changes frequently in the source system. Setup refresh failure notifications to get notified about synch errors. Use incremental refreshes to reduce the amount of data that needs to be processed by Power Platform dataflow or other integration tools.
 * Split complex Power Platform dataflows into "Load" and "Transformation" dataflows or use computed entities. This will simplify readability and will allow reuse of the original loaded dataset across multiple transformation dataflows.
 * Use standard tables, columns, and table relationships when they make sense for your organization to simplify the app development and reduce the risk of data replication within Dataverse.
@@ -161,30 +162,11 @@ Power BI is a visualization tool that can be used to present coherent, visually 
 
 #### Design considerations
 
-PowerBI offers 3 paid and one free lisence option. Consider your requirements for capacity (1GB, 100GB, 400GB) and need for refresh rate (7 vs. 48 times per day). Other important aspects to consider are key management, multi-geo requirements and auto scaling. More details on Power-BI pricing and licenses can be found here: [Pricing & Product Comparison | Microsoft Power BI](https://powerbi.microsoft.com/pricing/)
-
-In case you are managing your own keys or your deployment spans multiple geo's, this can only be achieved using Premium.
+* Power BI offers 3 paid and one free lisence option. Consider your requirements for capacity (1GB, 100GB, 400GB) and need for refresh rate (7 vs. 48 times per day). Other important aspects to consider are key management, multi-geo requirements and auto scaling. More details on Power-BI pricing and licenses can be found here: [Pricing & Product Comparison | Microsoft Power BI](https://powerbi.microsoft.com/pricing/)
 
 #### Design recommendations
 
-When designing your data environment make a plan for:
-
-* Data modeling
-* Data connectivity
-* Data sources
-* Dpdate frequencies
-* Bandwidth requirements
-
-When you need to access data from an existing source consider if a replica should be made in Dataverse and if this needs to be bidirectional synched or if you need a one directionally static snapshop.
-
-* Data modeling
-  * Define the data structure and relation requirements, one-to-may or many-to-many.
-  * Every application building on the data have individual modeling requirements, but consider standardizing on models. This can simplify integrations and avoid data duplication.
-  * In some scenarios standard Industry Data models are available. Evaluate if  this is the right approach for your company and if they need adoption/ configuration.
-
-* Data sources
-  * When connecting to other data sources its important to define the need to gateways to connect to on-prem systems, the network bandwidth between you Dataverse environment and server location.
-  * Ensure that the database source has capacity to handle the additional load and the data transferred is optimized. Map the data volume and update frequency needed for each use case.  
+* In case you are managing your own keys or your deployment spans multiple geo's, this can only be achieved using Premium.
 
 ## Management and monitoring
 
