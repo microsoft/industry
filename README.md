@@ -14,7 +14,7 @@ deployment and adoption of industry cloud.
 Microsoft Cloud for Healthcare spans the Microsoft Clouds (Azure, Power Platform and Microsoft 365). This repository provides the prescriptive architecture and design guidence together with respective reference implementations for the industry solution as a whole, as well as the various healthcare capabilities.
 
 - [Pre-requisites](./healthcare/prereqs.md)
-  - [Power Platform for Healthcare](./healthcare/solutions/powerPlatform)  
+  - [Power Platform for Healthcare](./foundations/powerPlatform)  
   - [Healthcare APIs](./healthcare/solutions/healthcareApis)
   - [Microsoft Teams for Healthcare](./healthcare/solutions/microsoftTeams)
 - [Personalized care](./healthcare/solutions/)
@@ -47,7 +47,7 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
 Microsoft Cloud for Financial Services provides capabilities to manage data to deliver differentiated experiences, empower employees, and combat financial crime while facilitating security, compliance, and interoperability
 
 - [Pre-reqiusites](./fsi/prereqs.md)
-  - [Power Platform for Financial Services](./healthcare/solutions/powerPlatform)  
+  - [Power Platform for Financial Services](./foundations/powerPlatform)  
   - [Azure for Financial Services](./fsi/readme.md)
     - [Service enablement framework](./fsi/solutions/serviceEnablement/readme.md)
 - [Customer and exmployee experience](./fsi/solutions)

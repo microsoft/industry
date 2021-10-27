@@ -14,7 +14,7 @@ Enterprise-Scale for Power Platform architecture represents the strategic design
 
 ### High-level architecture
 
-An Enterprise-Scale architecture includes a set of design considerations and recommendations across the [critical design areas](#critical-design-areas-for-power-platform-for-healthcare) for Power Platform. It is modular by design and allows you to start with a foundational architecture that enables construction and operationalization of landing zones (Environments) that supports your business application portfolios, for both pro developers and citizen developers. The architecture will scale regardless your organization scale-point and business requirements.
+An Enterprise-Scale architecture includes a set of design considerations and recommendations across the [critical design areas](#critical-design-areas-for-power-platform) for Power Platform. It is modular by design and allows you to start with a foundational architecture that enables construction and operationalization of landing zones (Environments) that supports your business application portfolios, for both pro developers and citizen developers. The architecture will scale regardless your organization scale-point and business requirements.
 
 Figure 1 shows the high-level architecture of Enterprise-Scale for Power Platform
 
@@ -35,7 +35,7 @@ Figure 2 shows the landing zone (environment) in Power Platform.
 
 ![landing zone for power platform](./images/landingzone.png)
 
-## Critical design areas for Power Platform for Healthcare
+## Critical design areas for Power Platform
 
 The core of enterprise-scale architecture for Power Platform contains a critical design path comprised of fundamental design topics with heavily interrelated and dependent design decisions. This repo provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the enterprise-scale architecture. For each of the considered domains, review the provided considerations and recommendations and use them to structure and drive designs within each area.
 

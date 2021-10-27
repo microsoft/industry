@@ -41,6 +41,8 @@ This section provide prescriptive guidance with design considerations and recomm
 * Allow self-service capabilities for patients via the patient access portal.
   * Those self-service capabilities include booking an appointment, searching for a practicioner, as well as review current appointments.
 * Use Azure B2C to enable patients to register, sign-in, and reset password via self-service
+* Have separated B2C tenants (instances) for different environments (dev, test, prod)
+* Use conditional access policies with MFA for users who are accessing the Patient Access portal
 
 ## Monitoring
 
@@ -109,7 +111,7 @@ Once the portal application has been provisioned, go to <https://solutions.micro
 
 ![powerapps](./images/patientaccess7.png)
 
-## Configure Portal application
+## Configure Patient Access Portal application
 
 To complete the configuration of the portal application you created before deploying the “Patient access” solution, you must navigate to <https://make.powerapps.com> and change the bindings, and optionally customize the portal per your organizations requiremenents.
 
@@ -124,6 +126,12 @@ To complete the configuration of the portal application you created before deplo
 4. Once the changes are saved, access the patient access portal via its URL.
 
 ![powerapps](./images/patientaccess9.png)
+
+### Configure Azure AD B2C for Patient Access Portal
+
+Azure Active Directory B2C provider is the preferred method for user authentication in Power Apps portals, that enables organizations to provide sign-up, login, and password reset via self service for their users/customers. Specifically for Patient Access, this will enable the patients to use their preferred social, enterprise, or local account identities to get single sign-on access to the Patient Access Portal application.
+
+Todo: add configuration details
 
 ## Update Healthcare administration
 
