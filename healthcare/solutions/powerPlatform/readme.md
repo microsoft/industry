@@ -138,8 +138,9 @@ Apps created in the Power Platform, whether they are canvas, model, or portal ba
 * Securely integrate data using Power Platform dataflows and virtual network data gateways.
 * Setup an automatic refresh schedule or an event-driven update workflow for imported data that changes frequently in the source system. Setup refresh failure notifications to get notified about synch errors. Use incremental refreshes to reduce the amount of data that needs to be processed by Power Platform Dataflow or other integration tools.
 * Use standard tables, columns, and table relationships when they make sense for your organization to simplify the app development and reduce the risk of data replication within Dataverse.
-* When creating a custom table, decide upfront whether the table and accesscontrol should be owned by the "Organization" or by a "User or team".
-* In general, rely on automatic system-initiated backups. Use manual user-initiated backups before updating the environment or before making any application updates.
+* When creating a custom table, decide upfront whether the table and access control should be owned by the "Organization" or by a "User or team".
+* Use column-level/field-level security for columns and fields that include sensitive data such as PII data.
+* In general, rely on automatic system-initiated backups. Use manual user-initiated backups before updating the environment or before triggering application updates.
 * Enable auditing for tables to log any data creation, changes, or deletion in the respective tables. All columns are audited by default, when turning the feature on and auditing must be turned on for the environment.
 * For analytical workloads such as machine learning, reporting, data warehousing and other downstream integration processes, use Azure Synapse Link to export the data from Dataverse into the analytical data platform. This will reduce the impact on the transactional Dataverse database and allows multiple Data Product teams to consume the same consistent dataset at scale.
 
