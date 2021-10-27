@@ -40,7 +40,7 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
 
 - [Pre-requisites](./telco/prereqs.md)
   - [Azure for Telecommunications](./telco)
-  - [Scale-out networking](./telco/nwScaleOut)
+    - [Scale-out networking](./telco/nwScaleOut)
 
 ### Financial services
 
