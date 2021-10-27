@@ -131,6 +131,7 @@ Apps created in the Power Platform, whether they are canvas, model, or portal ba
 * Dataverse provides the option of automatic and manual backups. Automatic backups are system-initiated and manual backups are user-initiated.
 * Audit Logs can be enabled to track changes to tables and columns over time for security and analytical purposes.
 * Data existing in Dataverse can be continuously integrated into an Azure Data Lake Gen2 for running analytical workloads on the data.
+* App Makers can perform changes directly within Dataverse or work within a Solution.
 
 #### Design recommendations
 
@@ -143,6 +144,7 @@ Apps created in the Power Platform, whether they are canvas, model, or portal ba
 * In general, rely on automatic system-initiated backups. Use manual user-initiated backups before updating the environment or before triggering application updates.
 * Enable auditing for tables to log any data creation, changes, or deletion in the respective tables. All columns are audited by default, when turning the feature on and auditing must be turned on for the environment.
 * For analytical workloads such as machine learning, reporting, data warehousing and other downstream integration processes, use Azure Synapse Link to export the data from Dataverse into the analytical data platform. This will reduce the impact on the transactional Dataverse database and allows multiple Data Product teams to consume the same consistent dataset at scale.
+* Always, create and work within the context of a solution as you add, edit and create components. For Dataverse in particular, [create a segmented solution with table assets](https://docs.microsoft.com/en-us/powerapps/maker/data-platform/create-solution#create-a-segmented-solution-with-table-assets). This makes it easy to export your solution so that it can be backed up or imported to another environment.
 
 ### Power BI
 
