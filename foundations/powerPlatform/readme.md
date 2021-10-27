@@ -145,7 +145,7 @@ Apps created in the Power Platform, whether they are canvas, model, or portal ba
 #### Design recommendations
 
 * Integrate required data sources into Dataverse to leverage a common datastore for your applications, simplify connectivity, reduce management overhead and reduce the point of failures within the architecture. In addition, users will also gain access to additional features such as queues, knowledge management, SLAs, duplicate detection, change tracking, mobile offline capability, column security, and Dataverse search.
-* Securely integrate data using Power Platform dataflows and virtual network data gateways or on-premises data gateways.
+* Securely integrate data using Power Platform dataflows and virtual network data gateways for Azure data sources or on-premises data gateways for data sources outside of Azure.
 * Setup an automatic refresh schedule or an event-driven update workflow for imported data that changes frequently in the source system. Setup refresh failure notifications to get notified about synch errors. Use incremental refreshes to reduce the amount of data that needs to be processed by Power Platform dataflow or other integration tools.
 * Split complex Power Platform dataflows into "Load" and "Transformation" dataflows or use computed entities. This will simplify readability and will allow reuse of the original loaded dataset across multiple transformation dataflows.
 * Use standard tables, columns, and table relationships when they make sense for your organization to simplify the app development and reduce the risk of data replication within Dataverse.
