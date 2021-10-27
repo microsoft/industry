@@ -1,12 +1,12 @@
 # Enterprise-Scale architecture for Power Platform
 
-Enterprise-scale is an architectural approach and a reference implementation. It enables effective construction and operationalization of environments (landing zones) on Power Platform, at scale. This approach aligns with the platform and product roadmap.
+Enterprise-scale is an architectural approach and a reference implementation. It enables effective construction and operationalization of landing zones (environments) on Power Platform, at scale. This approach aligns with the platform and product roadmap, and Center of Excellence adoption framework.
 
-Specifically for Microsoft Cloud for Healthcare, Microsoft Power Platform is an essential platform for the overall Healthcare solutions, and this prescriptive guidance aim to provide you with best practices and recommendations across the critical design areas for Power Platform to host and integrate the various Healthcare applications.
+Specifically for Microsoft Cloud for Industries (e.g., Healthcare, Financial Services), Microsoft Power Platform is an essential platform for the overall industry solutions, and this prescriptive guidance aim to provide you with best practices and recommendations across the critical design areas for Power Platform to host and integrate the various industry applications.
 
 | Reference implementation | Description | Deploy |
 |:----------------------|:------------|--------|
-| Enterprise-Scale for Power Platform | Power Platform environments with DLP, logging, and security enabled for scalable Healthcare solutions |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
+| Enterprise-Scale for Power Platform | Power Platform environments with DLP, logging, and security enabled for scalable industry solutions |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
 
 ## Architecture overview
 
@@ -111,9 +111,9 @@ Dynamics users. Creation can be restricted to only global and service admins via
 
 * Rename the Default environment to clarify the intent, e.g., "personal productivity" as all licensed users will have access by default
 * Disable self-service of Environment creation, both for Production and Sandbox as well as Trials, and limit this to selected Power Platform admins as this can potentially cause capacity constraints in the tenant
-* Enable a process for the organization to request new environments. Either establish and implement the process yourself, or leverage the ["Center of Excellence starter kit"](https://docs.microsoft.com/power-platform/guidance/coe/starter-kit) which provides a solution that can be imported to a dedicated environment to facilitate this, together with other core capabilities.
+* Enable a process for the organization to request new environments. Either establish and implement the process yourself, or leverage the [Center of Excellence starter kit](https://docs.microsoft.com/power-platform/guidance/coe/starter-kit) as an enabler and starting point which provides a solution that can be imported to a dedicated environment to facilitate this, together with other core capabilities.
 * As part of the Environment creation process, ensure auditing, DLP policies, and RBAC are included so the environments can be used safely
-* Have dedicated environments (dev, test, and prod) for management, monitoring, and analytics, that is managed and operated by the Power Platform admins, providing core capabilities for the Power Platform as a whole
+* Have dedicated environments (dev, test, and prod) for administrative purposes for the Power Platform itself, including management, monitoring, and analytics. These environments should be managed and operated by the Power Platform admins, in order to safely operate and scale the distribution of landing zones (environments) to business units and application teams within the organization
 * Create dedicated environments for test, development, and production for the industry solutions in the same region, which allows ease of maintenance and validation of changes, such as release wave updates which is per environment
 * The production and development environments for industry solutions must be of type "production", while test environments could be of type "sandbox" to simplify reset process for testing purposes.
 * Limit high privilege access by using an AAD Security Group with PIM for admin access to the environments
@@ -157,7 +157,7 @@ Power BI is a visualization tool that can be used to present coherent, visually 
 
 #### Design considerations
 
-PowerBI offers 3 paid and one free lisence option. Consider your requirements for capacity (1GB, 100GB, 400GB) and need for refresh rate (7 vs. 48 times per day). Other important aspects to consider are key management, multi-geo requirements and auto scaling. More details on Power-BI pricing and licenses can be found here: [Pricing & Product Comparison | Microsoft Power BI](https://powerbi.microsoft.com/en-us/pricing/)
+PowerBI offers 3 paid and one free lisence option. Consider your requirements for capacity (1GB, 100GB, 400GB) and need for refresh rate (7 vs. 48 times per day). Other important aspects to consider are key management, multi-geo requirements and auto scaling. More details on Power-BI pricing and licenses can be found here: [Pricing & Product Comparison | Microsoft Power BI](https://powerbi.microsoft.com/pricing/)
 
 In case you are managing your own keys or your deployment spans multiple geo's, this can only be achieved using Premium.
 
@@ -165,11 +165,11 @@ In case you are managing your own keys or your deployment spans multiple geo's, 
 
 When designing your data environment make a plan for:
 
-* data modeling
-* data connectivity
-* data sources
-* update frequencies
-* bandwidth requirements
+* Data modeling
+* Data connectivity
+* Data sources
+* Dpdate frequencies
+* Bandwidth requirements
 
 When you need to access data from an existing source consider if a replica should be made in Dataverse and if this needs to be bidirectional synched or if you need a one directionally static snapshop.
 
