@@ -139,18 +139,21 @@ Apps created in the Power Platform, whether they are canvas, model, or portal ba
 * Dataverse provides the option of automatic and manual backups. Automatic backups are system-initiated and manual backups are user-initiated.
 * Audit Logs can be enabled to track changes to tables and columns over time for security and analytical purposes.
 * Data existing in Dataverse can be continuously integrated into an Azure Data Lake Gen2 for running analytical workloads on the data.
+* App Makers can perform changes directly within Dataverse (Default Solution) or work within a custom Solution.
 
 #### Design recommendations
 
 * Integrate required data sources into Dataverse to leverage a common datastore for your applications, simplify connectivity, reduce management overhead and reduce the point of failures within the architecture. In addition, users will also gain access to additional features such as queues, knowledge management, SLAs, duplicate detection, change tracking, mobile offline capability, column security, and Dataverse search.
 * Securely integrate data using Power Platform dataflows and virtual network data gateways.
-* Setup an automatic refresh schedule or an event-driven update workflow for imported data that changes frequently in the source system. Setup refresh failure notifications to get notified about synch errors. Use incremental refreshes to reduce the amount of data that needs to be processed by Power Platform Dataflow or other integration tools.
+* Setup an automatic refresh schedule or an event-driven update workflow for imported data that changes frequently in the source system. Setup refresh failure notifications to get notified about synch errors. Use incremental refreshes to reduce the amount of data that needs to be processed by Power Platform dataflow or other integration tools.
+* Split complex Power Platform dataflows into "Load" and "Transformation" dataflows or use computed entities. This will simplify readability and will allow reuse of the original loaded dataset across multiple transformation dataflows.
 * Use standard tables, columns, and table relationships when they make sense for your organization to simplify the app development and reduce the risk of data replication within Dataverse.
 * When creating a custom table, decide upfront whether the table and access control should be owned by the "Organization" or by a "User or team".
 * Use column-level/field-level security for columns and fields that include sensitive data such as PII data.
 * In general, rely on automatic system-initiated backups. Use manual user-initiated backups before updating the environment or before triggering application updates.
 * Enable auditing for tables to log any data creation, changes, or deletion in the respective tables. All columns are audited by default, when turning the feature on and auditing must be turned on for the environment.
 * For analytical workloads such as machine learning, reporting, data warehousing and other downstream integration processes, use Azure Synapse Link to export the data from Dataverse into the analytical data platform. This will reduce the impact on the transactional Dataverse database and allows multiple Data Product teams to consume the same consistent dataset at scale.
+* Always, create and work within the context of a new solution as you add, edit and create components. For Dataverse in particular, [create a segmented solution with table assets](https://docs.microsoft.com/en-us/powerapps/maker/data-platform/create-solution#create-a-segmented-solution-with-table-assets). This makes it easy to export your solution so that it can be backed up or imported to another environment.
 
 ### Power BI
 
