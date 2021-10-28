@@ -17,7 +17,7 @@ To setup the Healthcare capabilities that spans the Microsoft Clouds, the follow
 |Dynamics 365 Sales Enterprise | placeholder
 |Microsoft Teams | placeholder
 
-## Azure subscription (landing zone) 
+## Azure subscription (landing zone)
 
 Healthcare APIs require a subscription (landing zone) in Azure that will host the Healthcare APIs to enable FHIR to integrate with the Healthcare applications.
 
@@ -31,7 +31,7 @@ Use this reference implementation to deploy Healthcare APIs into your landing zo
 
 ## Power Platform
 
-Healthcare requires Power Platform environments (recommendation is dedicated environments for test, development, and production) that are created into the target region with D365 applications enabled. 
+Healthcare requires Power Platform environments (recommendation is dedicated environments for test, development, and production) that are created into the target region with D365 applications enabled.
 
 [Prescriptive guidance and design recommendations for Power Platform for Healthcare](../foundations/powerPlatform)
 
