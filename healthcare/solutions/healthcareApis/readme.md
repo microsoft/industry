@@ -108,9 +108,7 @@ Having access to diagnostic logs is essential for monitoring a service and provi
 
 ### Networking
 
-> Private Link is currently not available in Healthcare API FHIR service.
-
-For secure communication we recommend using Private Link. Private link enables you to access the FHIR service over a private endpoint. To create a private endpoint you need RBAC permissions on the FHIR service. When private endpoint is created, public traffic to it is automatically disabled.
+Please note that [Azure Private Link](https://docs.microsoft.com/azure/private-link/) is currently not available for the Healthcare API FHIR service.
 
 ### Regulatory compliance
 
@@ -136,7 +134,7 @@ Once provided, navigate to the Healthcare APIs configuration tab, and provide in
 
 ![healthApi](./images/setup1.png)
 
-* Enable FHIR Service. Select whether FHIR should be created or not. By selecting yes, additional parameters are required.
+* Enable FHIR Service. Select whether FHIR should be created or not. By selecting yes, additional parameters will be required.
 
 * FHIR service name. Provide a unique name for the FHIR service name, that will also be used to construct the service endpoint name for your FHIR service.
 
@@ -156,7 +154,7 @@ Once provided, navigate to the Healthcare APIs configuration tab, and provide in
 
 * Enable IoT connector. Select if IoT connector should be provisioned and configured as part of the Healthcare API setup.
 
-IoT connector name. Provide a name for the IoT connector service name.
+* IoT connector name. Provide a name for the IoT connector service name.
 
 * Enable Managed Identity for IoT. If you select yes, a system managed identity is created for the IoT connector service.
 
@@ -164,7 +162,7 @@ IoT connector name. Provide a name for the IoT connector service name.
 
 ![healthApi](./images/setup4.png)
 
-* Enable HealthBot. Select yes if you want to configur an Ai-powered health assistant.
+* Enable HealthBot. Select yes if you want to configur an AI-powered health assistant.
 
 * HealthBot name. Provide a name for the Health Bot service.
 
@@ -278,7 +276,7 @@ Other examples can be found here: [FHIR Search](solutions/healthcareApis/sampled
 > There are a few known issues:
 >
 > - Existing storage account and existing workspace is currently not mapped
-> - Container for storage account must be created post deployment (will be fixed shortly)
-> - FHIR sync agent is coming shortly
-> - FHIR proxy is coming shortly
+> - Container for storage account must be created post deployment (will be fixed soon)
+> - FHIR sync agent is coming soon
+> - FHIR proxy is coming soon
 >
