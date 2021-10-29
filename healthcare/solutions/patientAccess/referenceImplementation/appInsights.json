@@ -23,7 +23,9 @@
         },
         "location": {
             "type": "string",
-            "defaultValue": "[resourceGroup().location]"
+            "metadata": {
+                "description": "Select the Azure region you want to deploy your Application Insights and Log Analytics workspace into."
+            }
         }
     },
     "resources": [
@@ -44,7 +46,7 @@
         },
         {
             "type": "microsoft.insights/components",
-            "apiVersion": "2020-02-02-preview",
+            "apiVersion": "2020-02-02",
             "name": "[parameters('appInsightsName')]",
             "location": "[parameters('location')]",
             "dependsOn": [
