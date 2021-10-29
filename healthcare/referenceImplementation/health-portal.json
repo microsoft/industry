@@ -3,7 +3,7 @@
     "view": {
         "kind": "Form",
         "properties": {
-            "title": "Microsoft Cloud for Healthcare industry",
+            "title": "Enterprise-Scale for Healthcare industry",
             "steps": [
                 {
                     "name": "basics",
@@ -15,7 +15,7 @@
 							"visible": true,
 							"options": {
 								"icon": "Info",
-								"text": "Microsoft Cloud for Healthcare industry will deploy and configure your Microsoft tenant including all the foundations for each cloud, alongside with the specific settings for Healthcare workloads. This requires that the user is a Global Admin in the Azure Active Directory.",
+								"text": "Enterprise-Scale for Healthcare industry will deploy and configure your Microsoft tenant including all the foundations for each cloud, alongside with the specific settings for Healthcare workloads. This requires that the user is a Global Admin in the Azure Active Directory.",
 								"uri": "https://www.microsoft.com"
 							}
 						},

@@ -68,6 +68,7 @@ This section provide prescriptive guidance with design considerations and recomm
 
 * Ensure portal authentication is configured to your chosen identity provider.
 * Restrict portal access from a list of IP addresses and CIDR ranges to limit portal access as described on this [article](https://docs.microsoft.com/powerapps/maker/portals/admin/ip-address-restrict).
+* Create required policies and flows for user sign-up if integrating the portal application with Azure AD B2C
 
 ## Implementation guide for Patient Access
 
@@ -131,7 +132,17 @@ To complete the configuration of the portal application you created before deplo
 
 Azure Active Directory B2C provider is the preferred method for user authentication in Power Apps portals, that enables organizations to provide sign-up, login, and password reset via self service for their users/customers. Specifically for Patient Access, this will enable the patients to use their preferred social, enterprise, or local account identities to get single sign-on access to the Patient Access Portal application.
 
-Todo: add configuration details
+Pre-requisites:
+
+* [Create an Azure AD B2C tenant](https://docs.microsoft.com/azure/active-directory-b2c/tutorial-create-tenant)
+
+Once you have created your Azure AD B2C tenant, you must create and register an application that must support accounts in any identity provider or organization directory for users to authenticate with user flows.
+
+For detailed deployment instructions for Azure AD B2C setup with Portal Apps:
+
+* [Configure Azure AD B2C manually](https://docs.microsoft.com/powerapps/maker/portals/configure/configure-azure-ad-b2c-provider-manual)
+
+* [Configure Azure AD B2C using interface in preview](https://docs.microsoft.com/powerapps/maker/portals/configure/configure-azure-ad-b2c-provider)
 
 ## Update Healthcare administration
 
