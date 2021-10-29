@@ -162,11 +162,16 @@ Power BI is a visualization tool that can be used to present coherent, visually 
 
 #### Design considerations
 
-* Power BI offers 3 paid and one free lisence option. Consider your requirements for capacity (1GB, 100GB, 400GB) and need for refresh rate (7 vs. 48 times per day). Other important aspects to consider are key management, multi-geo requirements and auto scaling. More details on Power-BI pricing and licenses can be found here: [Pricing & Product Comparison | Microsoft Power BI](https://powerbi.microsoft.com/pricing/)
+* Available features in Power BI depend on the license that is assigned to the user and workspace. One free and two paid licenses are available (Pro and Premium (v2)). In an organization, admins purchase a license subscription (Billing administrator or Global administrator) and then assign licenses to individual users (License administrator, User administrator, Global administrator).
+* Self-service sign-up to Power BI licenses can be enabled or disabled.
 
 #### Design recommendations
 
-* In case you are managing your own keys or your deployment spans multiple geo's, this can only be achieved using Premium.
+* To make the most out of Power BI, purchase a Premium (v2) license. Large organizations should purchase a Premium capacity license as well as a set of Premium per user (PPU) licenses and assign licenses to the respective workspaces, content creators and users. Smaller organizations may only purchase a set of PPU licenses instead of Premium capacity.
+  
+  Premium licenses will enable a significant number of required functionality for enterprises to securely access and share data. For instance, only a Premium license allows using the virtual network gateways to privately access data stored in private link enables Azure data services. In addition, workspaces with premium capacity will allow the usage of "Bring Your Own Key" (BYOK), will provide multi-region support, unlimited distributions and reports on-premises.
+
+* Assign a free user license to all users who are just consuming content shared with them or who are exploring or learning Power BI through their own workspace.
 
 ## Management and monitoring
 
