@@ -167,7 +167,7 @@ Power BI is a visualization tool that can be used to present coherent, visually 
 
 #### Design recommendations
 
-* To make the most out of Power BI, purchase a Premium (v2) license. Large organizations should purchase a Premium capacity license as well as a set of Premium per user (PPU) licenses and assign licenses to the respective workspaces, content creators and users. Smaller organizations may only purchase a set of PPU licenses instead of Premium capacity.
+* To make the most out of Power BI, purchase a Premium (v2) license. Large organizations should purchase a Premium capacity license as well as a set of Premium per user (PPU) licenses and assign licenses to the respective workspaces, content creators and user groups. Smaller organizations may only purchase a set of PPU licenses instead of Premium capacity.
   
   Premium licenses will enable a significant number of required functionality for enterprises to securely access and share data. For instance, only a Premium license allows using the virtual network gateways to privately access data stored in private link enables Azure data services. In addition, workspaces with premium capacity will allow the usage of "Bring Your Own Key" (BYOK), will provide multi-region support, unlimited distributions and reports on-premises.
 
