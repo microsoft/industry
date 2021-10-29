@@ -17,17 +17,17 @@ Microsoft Cloud for Healthcare spans the Microsoft Clouds (Azure, Power Platform
   - [Power Platform for Healthcare](./foundations/powerPlatform)  
   - [Healthcare APIs](./healthcare/solutions/healthcareApis)
   - [Microsoft Teams for Healthcare](./healthcare/solutions/microsoftTeams)
-- [Personalized care](./healthcare/solutions/)
+- Personalized care
   - [Patient service center](./healthcare/solutions/patientServiceCenter)
   - [Patient access](./healthcare/solutions/patientAccess)
-- [Patient insights](./healthcare/solutions/)
+- Patient insights
   - [Patient outreach](./healthcare/solutions/patientOutreach)
-- [Virtual health](./healthcare/solutions)
+- Virtual health
   - [Virtual visits](./healthcare/solutions/virtualVisits)
-- [Care coordination](./healthcare/solutions)
+- Care coordination
   - [Care management](./healthcare/solutions/careMangement)
   - [Home health](./healthcare/solutions/homeHealth)
-- [Care collaboration](./healthcare/solutions)
+- Care collaboration
   - [Health assistant](./healthcare/solutions/healthAssistant)
 - [Remote patient monitoring](./healthcare/solutions)
 - [Interoperability](./healthcare/solutions)
