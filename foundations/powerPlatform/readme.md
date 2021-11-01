@@ -154,7 +154,7 @@ Apps created in the Power Platform, whether they are canvas, model, or portal ba
 * In general, rely on automatic system-initiated backups. Use manual user-initiated backups before updating the environment or before triggering application updates.
 * Enable auditing for tables to log any data creation, changes, or deletion in the respective tables. All columns are audited by default, when turning the feature on and auditing must be turned on for the environment.
 * For analytical workloads such as machine learning, reporting, data warehousing and other downstream integration processes, use Azure Synapse Link to export the data from Dataverse into the analytical data platform. This will reduce the impact on the transactional Dataverse database and allows multiple Data Product teams to consume the same consistent dataset at scale.
-* Always, create and work within the context of a new solution as you add, edit and create components. For Dataverse in particular, [create a segmented solution with table assets](https://docs.microsoft.com/en-us/powerapps/maker/data-platform/create-solution#create-a-segmented-solution-with-table-assets). This makes it easy to export your solution so that it can be backed up or imported to another environment.
+* Always, create and work within the context of a new solution as you add, edit and create components. For Dataverse in particular, [create a segmented solution with table assets](https://docs.microsoft.com/powerapps/maker/data-platform/create-solution#create-a-segmented-solution-with-table-assets). This makes it easy to export your solution so that it can be backed up or imported to another environment.
 
 ### Power BI
 
@@ -162,16 +162,19 @@ Power BI is a visualization tool that can be used to present coherent, visually 
 
 #### Design considerations
 
-* Available features in Power BI depend on the license that is assigned to the user and workspace. One free and two paid licenses are available (Pro and Premium (v2)). In an organization, admins purchase a license subscription (Billing administrator or Global administrator) and then assign licenses to workspaces, groups and individual users (License administrator, User administrator, Global administrator).
+* Available features in Power BI depend on the license that is assigned to the user and workspace. One free and two paid licenses are available (Pro and Premium (Gen2)). In an organization, admins purchase a license subscription (Billing administrator or Global administrator) and then assign licenses to workspaces, groups and individual users (License administrator, User administrator, Global administrator).
 * Self-service sign-up to Power BI licenses can be enabled or disabledwithin an organization.
+* Auto-scale in Premium Gen2 allows for automatically adding one v-core for 24-hour periods when the load on the capacity exceeds its limits. Additional v-cores are charged on a pay-as-you-go basis.
+* Power BI premium requires an organization to manage capacity and assign capacity to workspaces.
 
 #### Design recommendations
 
-* To make the most out of Power BI, purchase a Premium (v2) license. Large organizations should purchase a Premium capacity license as well as a set of Premium per user (PPU) licenses and assign licenses to the respective workspaces, content creators and user groups. Smaller organizations may only purchase a set of PPU licenses instead of Premium capacity.
+* To make the most out of Power BI, purchase a Premium (Gen2) license. Large organizations should purchase a Premium capacity license as well as a set of Premium per user (PPU) licenses and assign licenses to the respective workspaces, content creators and user groups. Smaller organizations may only purchase a set of PPU licenses instead of Premium capacity.
   
-  Premium licenses will enable a significant number of required functionality for enterprises to securely access and share data. For instance, only a Premium license allows using the virtual network gateways to privately access data stored in private link enables Azure data services. In addition, workspaces with premium capacity will allow the usage of "Bring Your Own Key" (BYOK), will provide multi-region support, unlimited refresh concurrency, unlimited distributions and reports on-premises.
+  Premium licenses will enable a significant number of required functionality for enterprises to securely access and share data. For instance, only a Premium license allows using the virtual network gateways to privately access data stored in private link enables Azure data services. In addition, workspaces with premium capacity will allow the usage of "Bring Your Own Key" (BYOK), will provide multi-region support, unlimited refresh concurrency, unlimited distributions and reports on-premises. Premium Gen2 also simplifies the capacity monitoring, as users will in most cases no longer have to monitor the memory used but only the CPU time required to serve the load. 
 
 * Assign a free user license to all users who are just consuming content shared with them or who are exploring or learning Power BI through their own workspace.
+* Enable autoscale for shared workspaces within your orgnaization to reduce the management overhead and the requirement to continuously monitor the required CPU time of each workspace. For more details about load evaluation in Power BI Premium Gen2 visit this [documentation page](https://docs.microsoft.com/power-bi/admin/service-premium-concepts).
 
 ## Management and monitoring
 
