@@ -202,28 +202,25 @@ Power BI is a visualization tool that can be used to present coherent, visually 
 
 #### Design considerations
 
-* WIP
+* When connecting to data sources you can import data into Power BI or connect directly to data in the original source repository (Direct Query).
+* Data sources connected to a virtual network can be accessed using virtual network data gateways or on-premises data gateways.
+* If datasets reside in Power BI, data can be refreshed through different mechanisms.
 
 #### Design recommendations
 
-When designing your data environment make a plan for:
-
-* Data modeling
-* Data connectivity
-* Data sources
-* Dpdate frequencies
-* Bandwidth requirements
-
-When you need to access data from an existing source consider if a replica should be made in Dataverse and if this needs to be bidirectional synched or if you need a one directionally static snapshop.
-
-* Data modeling
-  * Define the data structure and relation requirements, one-to-may or many-to-many.
-  * Every application building on the data have individual modeling requirements, but consider standardizing on models. This can simplify integrations and avoid data duplication.
-  * In some scenarios standard Industry Data models are available. Evaluate if  this is the right approach for your company and if they need adoption/ configuration.
-
-* Data sources
-  * When connecting to other data sources its important to define the need to gateways to connect to on-prem systems, the network bandwidth between you Dataverse environment and server location.
-  * Ensure that the database source has capacity to handle the additional load and the data transferred is optimized. Map the data volume and update frequency needed for each use case.
+* Import data into Power BI instead of using Direct Query whenever possible to take full advantage of the Power BI query engine.
+* Use Direct Query only in the following cases:
+  * The underlying data changes frequently (less than 1h) and/or near real-time reporting is required.
+  * The required dataset is very large and importing just a subset or aggregation is not feasible.
+  * The security rules are defined in the underlying data source.
+  * Data souvereignity does not allow importing the dataset to Power BI.
+  * The used connector and data source supports the produced load and can compute aggregations within a short window.
+  * Rich data transformation capabilities via Power Query are not required.
+  * The source is a multidimensional source containing measures.
+  * More limitations can be found [here](https://docs.microsoft.com/power-bi/connect-data/desktop-directquery-about).
+* Connect to data sources securely by using virtual network data gateways for Azure data sources or on-premises data gateways for data sources outside of Azure.
+* Configure refresh schedules for Power BI datasets that refresh frequently within the source system. Depending on the Power BI license, you will be limited to a pre-defined number of refreshed per day (8 per day for datasets on a shared capacity, 48 per day for datasets on a premium capacity). Also configure refresh failure notifications to get email updates when scheduled refreshed fail.
+* If possible, use incremental data refreshes to speed up the refresh process, make it more reliable and consume less capacity.
 
 ## Management and monitoring
 
