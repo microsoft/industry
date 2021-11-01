@@ -140,7 +140,7 @@ Apps created in the Power Platform, whether they are canvas, model, or portal ba
 * Audit Logs can be enabled to track changes to tables and columns over time for security and analytical purposes.
 * Data existing in Dataverse can be continuously integrated into an Azure Data Lake Gen2 for running analytical workloads on the data.
 * App Makers can perform changes directly within Dataverse (Default Solution) or work within a custom Solution.
-* Application data model must be defined including table structure, relationships between tables (one-to-many, many-to-one, many-to-many). Existing business data models should be resused to simplify data integration, data sharing and joins with other datasets. 
+* Application data model must be defined including table structure, relationships between tables (one-to-many, many-to-one, many-to-many). Existing business data models should be resused to simplify data integration, data sharing and joins with other datasets.
 
 #### Design recommendations
 
@@ -162,14 +162,14 @@ Power BI is a visualization tool that can be used to present coherent, visually 
 
 #### Design considerations
 
-* Available features in Power BI depend on the license that is assigned to the user and workspace. One free and two paid licenses are available (Pro and Premium (v2)). In an organization, admins purchase a license subscription (Billing administrator or Global administrator) and then assign licenses to individual users (License administrator, User administrator, Global administrator).
-* Self-service sign-up to Power BI licenses can be enabled or disabled.
+* Available features in Power BI depend on the license that is assigned to the user and workspace. One free and two paid licenses are available (Pro and Premium (v2)). In an organization, admins purchase a license subscription (Billing administrator or Global administrator) and then assign licenses to workspaces, groups and individual users (License administrator, User administrator, Global administrator).
+* Self-service sign-up to Power BI licenses can be enabled or disabledwithin an organization.
 
 #### Design recommendations
 
 * To make the most out of Power BI, purchase a Premium (v2) license. Large organizations should purchase a Premium capacity license as well as a set of Premium per user (PPU) licenses and assign licenses to the respective workspaces, content creators and user groups. Smaller organizations may only purchase a set of PPU licenses instead of Premium capacity.
   
-  Premium licenses will enable a significant number of required functionality for enterprises to securely access and share data. For instance, only a Premium license allows using the virtual network gateways to privately access data stored in private link enables Azure data services. In addition, workspaces with premium capacity will allow the usage of "Bring Your Own Key" (BYOK), will provide multi-region support, unlimited distributions and reports on-premises.
+  Premium licenses will enable a significant number of required functionality for enterprises to securely access and share data. For instance, only a Premium license allows using the virtual network gateways to privately access data stored in private link enables Azure data services. In addition, workspaces with premium capacity will allow the usage of "Bring Your Own Key" (BYOK), will provide multi-region support, unlimited refresh concurrency, unlimited distributions and reports on-premises.
 
 * Assign a free user license to all users who are just consuming content shared with them or who are exploring or learning Power BI through their own workspace.
 
