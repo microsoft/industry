@@ -163,12 +163,15 @@ Power BI is a visualization tool that can be used to present coherent, visually 
 #### Design considerations
 
 * Available features in Power BI depend on the license that is assigned to the user and workspace. One free and two paid licenses are available (Pro and Premium (Gen2)). In an organization, admins purchase a license subscription (Billing administrator or Global administrator) and then assign licenses to workspaces, groups and individual users (License administrator, User administrator, Global administrator).
-* Self-service sign-up to Power BI licenses can be enabled or disabledwithin an organization.
+* Self-service sign-up to Power BI licenses can be enabled or disabled within an organization.
 * Power BI premium requires an organization to manage capacity and assign capacity to workspaces. Deleting Premium capacity won't result in the deletion of the assigned artifacts.
 * Auto-scale in Premium Gen2 allows for automatically adding one v-core for 24-hour periods when the load on the capacity exceeds its limits. Additional v-cores are charged on a pay-as-you-go basis.
 * Metadata scanning can be used to facilitates governance over your organization's Power BI data by making it possible to quickly catalog and report on all the metadata of your organization's Power BI artifacts.
 * Default and mandatory label policies for Power BI can be defined in the Microsoft 365 compliance center (currently in preview).
 * Sensitivity label inheritance can be used to have the label trickle down and be applied to content that is built from other labeled datasets or reports (currently in preview).
+* Custom messages can be setup to guide users when creating artifacts within the Power BI tenant.
+* Power BI premium allows storing dataflows in a customer owned ADLS Gen2 account. Optionally, workspaces owners can be allowed to configure their own datalake for Power BI dataflows.
+* Audit logs can be used to track usage for all Power BI resources at the tenant level.
 
 #### Design recommendations
 
@@ -183,7 +186,10 @@ Power BI is a visualization tool that can be used to present coherent, visually 
 * Enable autoscale for shared workspaces within your organization to reduce the management overhead and the requirement to continuously monitor the required CPU time of each workspace. Set the maximum number of additional autoscale v-cores to a reasonable number between 1-4. If more capacity is required, evaluate whether a AKU upgrade is required. For more details about load evaluation in Power BI Premium Gen2 visit this [documentation page](https://docs.microsoft.com/power-bi/admin/service-premium-concepts). Assign the subscription and resource group of the application team to the autoscale settings for cross-charging purposes.
 * Set up metadata scanning in the Power BI tenant to allow Azure Purview or other data catalogues to collect metadata and lineage.
 * Define a default label and enforce mandatory label policies for Power BI dashboards and datasets in the Microsoft 365 compliance center to ensure comprehensive protection and governance of sensitive data.
-* Configure sensitivity label inheritance from data sources as well as downstream inheritance in the Power BI tenant to simplify end-to-end information protection inside your organization. <!-- Use the "Downstream inheritance with user consent" mode, to allow users define more restrictive sensitivity labels when combining multiple data assets. -->
+* Configure sensitivity label inheritance from data sources as well as downstream inheritance in the Power BI tenant to simplify end-to-end information protection inside your organization. <!-- Use the "Downstream inheritance with user consent" mode, to allow users define more restrictive sensitivity labels when combining multiple data assets. --> Also, evaluate restricting highly confidential content from being shared within the organization via links.
+* Define and present custom messages in the Power BI tenant to shows disclaimers and guide users before publishing artifacts to a workspace.
+* Continuously export Power BI audit logs to an Azure storage account and build dashboards to track usage of Power BI artifacts. More details on how to setup the data export can be found [here](https://docs.microsoft.com/en-us/power-bi/admin/service-admin-auditing#use-the-activity-log).
+* COnsider restricting export paths that do not support label inheritance. Supported paths are [documented here](https://docs.microsoft.com/en-us/power-bi/admin/service-security-sensitivity-label-overview#supported-export-paths).
 
 ## Management and monitoring
 
