@@ -213,7 +213,7 @@ Power BI is a visualization tool that can be used to present coherent, visually 
   * The underlying data changes frequently (less than 1h) and/or near real-time reporting is required.
   * The required dataset is very large and importing just a subset or aggregation is not feasible.
   * The security rules are defined in the underlying data source.
-  * Data souvereignity does not allow importing the dataset to Power BI.
+  * Data sovereignty does not allow importing the dataset to Power BI.
   * The used connector and data source supports the produced load and can compute aggregations within a short window.
   * Rich data transformation capabilities via Power Query are not required.
   * The source is a multidimensional source containing measures.
