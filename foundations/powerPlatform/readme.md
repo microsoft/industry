@@ -139,6 +139,26 @@ The following section describes the design considerations and the design recomme
 
 ### Design recommendations
 
+* Treat environments as a democratized unit of management aligned with business needs and priorities, and use the following principles when identifying requirements for new environments:
+  * Scale limits. Environments serve as scale unit for components/apps/database to scale within the platform limits
+  * Management boundary: Environments provide a management boundary for governance and isolation, which allows for a clear separation of concerns. For example, different environments such as dev, test, and production are often isolated from a management perspective
+  * Policy boundary: Environments serve as a boundary for the assignment of DLP policies. For example, secure apps such as PCI typically require additional DLP policies to achieve compliance
+* Rename the Default environment to clarify the intent, e.g., "personal productivity" as all licensed users will have access by default.
+* Disable self-service of Environment creation, both for Production and Sandbox as well as Trials, and limit this to selected Power Platform admins as this can potentially cause capacity constraints in the tenant.
+* Enable a process for the organization to request new environments aligned to the principles above. Either establish and implement the process yourself or leverage the [Center of Excellence starter kit](https://docs.microsoft.com/power-platform/guidance/coe/starter-kit) as an enabler and starting point which provides a solution that can be imported to a dedicated environment to facilitate this, together with other core capabilities.
+* As part of the Environment creation process, ensure auditing, DLP policies, and RBAC are included so the environments can be used safely.
+* Have dedicated environments (dev, test, and prod) for administrative purposes for the Power Platform itself, including management, monitoring, and analytics. These environments should be managed and operated by the Power Platform admins, in order to safely operate and scale the distribution of landing zones (environments) to business units and application teams within the organization.
+* Create dedicated environments for app teams/business units such as test, development, and production in the same region, which allows ease of maintenance and validation of changes, such as release wave updates which is per environment.
+* The production and development environments for production targeted apps must be of type "production", while test environments could be of type "sandbox" to simplify reset process for testing purposes.
+* Limit high privilege access by using an Azure AD Security Group with PIM for admin access to the environments.
+* Manage the correct number of environments in the tenant to avoid sprawl and conserve capacity.
+* Enable auditing for your tenant and environments to understand usage and available capacity.
+* For industry solutions (e.g., Healthcare, Financial Services Industry), deploy all Dynamics 365 applications to the same environment(s), and avoid creating islands of data that will be complex to combine later.
+
+* Only split solutions across different environments if there are data or security constraints.
+
+
+
 * Rename the Default environment to clarify the intent, e.g., "personal productivity" as all licensed users will have access by default.
 * Disable self-service of Environment creation, both for Production and Sandbox as well as Trials, and limit this to selected Power Platform admins as this can potentially cause capacity constraints in the tenant.
 * Enable a process for the organization to request new environments. Either establish and implement the process yourself, or leverage the [Center of Excellence starter kit](https://docs.microsoft.com/power-platform/guidance/coe/starter-kit) as an enabler and starting point which provides a solution that can be imported to a dedicated environment to facilitate this, together with other core capabilities.
