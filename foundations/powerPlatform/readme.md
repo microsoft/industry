@@ -57,7 +57,7 @@ The North Star architecture is Persona agnostic, and does not treat them differe
 
 ### Power Platform Native Design and Platform Roadmap Alignment
 
-The North Star architecture approach advocates using Power Platform native services and capabilities whenever possible. This approach aligns with the product roadmap to ensure that new capabilities are available within your environments. The Power Platform roadmap helps to inform the adoption strategy and NorthStar trajectory.
+The North Star architecture approach advocates using Power Platform native services and capabilities whenever possible. This approach aligns with the product roadmap to ensure that new capabilities are available within your environments. The Power Platform roadmap helps to inform the adoption strategy and North Star trajectory.
 
 ### Recommendations
 
