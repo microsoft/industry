@@ -3,7 +3,7 @@
     "view": {
         "kind": "Form",
         "properties": {
-            "title": "Microsoft Cloud for Telco industry",
+            "title": "Enterprise scale architecture for Telco",
             "steps": [
                 {
                     "name": "basics",
