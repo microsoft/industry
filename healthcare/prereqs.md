@@ -4,18 +4,18 @@ To setup the Healthcare capabilities that spans the Microsoft Clouds, the follow
 
 ## Licensing requirements
 
-| Product name | Description |
-|:----------------------|:------------|
-|Microsoft Cloud for Healthcare | Licenses for Healthcare applications deployed to Power platform
-|Digital Messaging add-in for Dynamics 365 Customer service | placeholder
-|Dynamics 365 Customer Service Enterprise | placeholder
-|Dynamics 365 Marketing | placeholder
-|Power BI Pro | placeholder
-|Power Apps for Dynamics 365 | placeholder
-|Dynamics 365 Field Service | placeholder
-|Sales Insights Add-in for Dynamics 365 Sales | placeholder
-|Dynamics 365 Sales Enterprise | placeholder
-|Microsoft Teams | placeholder
+| Product name |
+|:----------------------:|
+|Microsoft Cloud for Healthcare
+|Digital Messaging add-in for Dynamics 365 Customer service
+|Dynamics 365 Customer Service Enterprise
+|Dynamics 365 Marketing
+|Power BI Pro
+|Power Apps for Dynamics 365
+|Dynamics 365 Field Service
+|Sales Insights Add-in for Dynamics 365 Sales
+|Dynamics 365 Sales Enterprise
+|Microsoft Teams
 
 ## Azure subscription (landing zone)
 
