@@ -44,23 +44,24 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
 
 ### Financial services
 
-Microsoft Cloud for Financial Services provides capabilities to manage data to deliver differentiated experiences, empower employees, and combat financial crime while facilitating security, compliance, and interoperability
+Microsoft Cloud for Financial Services provides capabilities to manage data to deliver differentiated experiences, empower employees, and combat financial crime while facilitating security, compliance, and interoperability.
 
 - [Pre-reqiusites](./fsi/prereqs.md)
   - [Power Platform for Financial Services](./foundations/powerPlatform)  
   - [Azure for Financial Services](./fsi/readme.md)
-    - [Service enablement framework](./fsi/solutions/serviceEnablement/readme.md)
-- [Customer and exmployee experience](./fsi/solutions)
+    - [Service enablement framework](./fsi/solutions/serviceEnablement)
+  - [Azure Synapse for Banking](./fsi/solutions/synapseBanking)
+- Customer and exmployee experience
   - [Unified customer profile](./fsi/solutions/unifiedCustomerProfile)
   - [Customer onboarding](./fsi/solutions/customerOnboarding)
   - [Collaboration manager](./fsi/solutions/collaborationManager)
   - [Banking customer engagement](./fsi/solutions/customerEngagement)
-- [Financial crime protection](./fsi/solutions)
+- Financial crime protection
   - [Account protection](./fsi/solutions/accountProtection)
   - [Purchase protection](./fsi/solutions/purchaseProtection)
-- [Compliance, privacy, and security](./fsi/solutions)
+- Compliance, privacy, and security
   - [Risk assurance and support](./fsi/solutions/riskAssurance)
-  - [Regulatory compliance assessments](/.fsi/solutions/complianceAssessments)
+  - [Regulatory compliance assessments](./fsi/solutions/complianceAssessments)
 
 ## Contributing
 
