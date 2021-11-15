@@ -15,7 +15,7 @@ Before you deploy and configure, verify you have implemented the [prerequisites]
 
 Specifically for patient access, you need:
 
-* [Power Platform environments](../powerPlatform/)
+* [Power Platform environments](../../../foundations/powerPlatform/)
   * Must be created upfront, in United States with Dataverse and D365 Apps enabled
   * Power Apps Portal app deployed and configured in the targeted environment(s)
 
