@@ -30,10 +30,10 @@ Microsoft Cloud for Healthcare spans the Microsoft Clouds (Azure, Power Platform
 - Care collaboration
   - [Health assistant](./healthcare/solutions/healthAssistant)
 - [Remote patient monitoring](./healthcare/solutions/IoMT)
-- [Data Interoperability](./healthcare/solutions)
 - Cinical and operational insights
   - [Clinical analytics](./healthcare/solutions)
   - [Operational analytics](./healthcare/solutions)
+  - [Data Interoperability](./healthcare/solutions)
 
 ### Telecommunications
 
