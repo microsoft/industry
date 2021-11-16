@@ -9,8 +9,6 @@ Home health extends Microsoft Dynamics 365 Field Services with healthcare specif
 
 Besides the Dynamics 365 App, the overall solution also encompasses two apps today, the home health app and the care team member app.
 
-![Home health](./images/overview.png)
-
 Before you deploy and configure, verify you have implemented the [prerequisites](../../prereqs.md).
 
 Specifically for home health, you need:
@@ -30,7 +28,7 @@ After successfully deploying the home health solution into your power platform e
 
 1. Patient Feedback with Dynamics 365 Customer Voice
 
-   Dynamics 365 Customer Voice can be used to gather and track patient metrics. Healthcare-specific surveys are available out of the box and can be used to:
+   Dynamics 365 Customer Voice can be used to gather and track patient metrics. Pre-configured healthcare-specific surveys are available and can be used to:
 
     * New Patient Survey: Check in on patient experience and monitor health.
     * Patient Service Center: Experience with patient service center.
@@ -39,8 +37,55 @@ After successfully deploying the home health solution into your power platform e
 
 2. Patient and Provider analytics with Power BI
 
-   Power BI dashboards can be used and embedded into the home health solution 
+   Power BI reports can be used and embedded into the home health solution to provide a visual overview of your home health data. Pre-configured healthcare-specific reports are available. For the home care scenario, the following ones are available:
 
+   * Patient Analytics
+   * Provider Analytics
 
-## Home health app
+   [Follow the steps described here](https://docs.microsoft.com/en-us/dynamics365/industry/healthcare/configure-powerbi-reports#embed-the-power-bi-report-in-home-health-or-care-management) to embed healthcare-specific Power BI reports into your solution.
 
+## Accesing Home health
+
+After deployment, the home health app can be opened from the Microsoft Dynamics 365 home page. For more details about the home health app, please [follow this link](https://docs.microsoft.com/en-us/dynamics365/industry/healthcare/use-home-health#home-health-app).
+
+The care member app that is also part of the home health scanario is meant to be accessed through the field service Dnymaics 365 mobile app and can be used to see and update the specifics of a home care visit on a mobile device. Please [follow this link](https://docs.microsoft.com/en-us/dynamics365/industry/healthcare/use-home-health#care-team-member-app).
+
+Users required to use these apps, need to be granted access on the Power Platform environment. More details and step-by-step guidance can be found [here](https://docs.microsoft.com/en-us/dynamics365/industry/healthcare/deploy#step-3-add-users-and-assign-security-role).
+
+## Planning guidelines for home health
+
+This section provide prescriptive guidance with design considerations and recommendations across the critical design areas for home health for the teams that will deploy and manage the capabilities within the Microsoft Cloud for Healthcare.
+
+* [Identity and access](#identity-and-access)
+* [Monitoring](#monitoring)
+* [Security](#security)
+
+## Identity and access
+
+### Design considerations
+
+TODO
+
+### Design recommendations
+
+TODO
+
+## Monitoring
+
+### Design considerations
+
+TODO
+
+### Design recommendations
+
+TODO
+
+## Security
+
+### Design considerations
+
+TODO
+
+### Design recommendations
+
+TODO
