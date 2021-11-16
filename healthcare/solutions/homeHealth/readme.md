@@ -19,8 +19,8 @@ Specifically for home health, you need:
 
 ## Deployment of home health
 
-To deploy home health you first need to create a Power Platform environment and then you need to follow a few steps to deploy the healthcare specific solution.
-For the deployment, please [follow the steps described here (Step 1, Step 2, Step 3)](https://docs.microsoft.com/en-us/dynamics365/industry/healthcare/deploy#step-1-prepare-environment).
+To deploy home health you first need to create a Power Platform environment. Next, you need to follow a few steps to deploy the healthcare specific solution.
+For the deployment, please [follow the steps described here (Step 1, Step 2, Step 3)](https://docs.microsoft.com/en-us/dynamics365/industry/healthcare/deploy#step-1-prepare-environment) and deploy the home health solution.
 
 ## Post-deployment configurations for home health
 
@@ -44,7 +44,7 @@ After successfully deploying the home health solution into your power platform e
 
    [Follow the steps described here](https://docs.microsoft.com/en-us/dynamics365/industry/healthcare/configure-powerbi-reports#embed-the-power-bi-report-in-home-health-or-care-management) to embed healthcare-specific Power BI reports into your solution.
 
-## Accesing Home health
+## Accesing home health
 
 After deployment, the home health app can be opened from the Microsoft Dynamics 365 home page. For more details about the home health app, please [follow this link](https://docs.microsoft.com/en-us/dynamics365/industry/healthcare/use-home-health#home-health-app).
 
