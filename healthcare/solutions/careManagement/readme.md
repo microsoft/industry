@@ -13,7 +13,7 @@ Before you deploy and configure, verify you have implemented the [prerequisites]
 Specifically for care management, you need:
 
 * [Power Platform environments](../powerPlatform/)
-  * Must be created upfront, in United States with Dataverse and D365 Apps enabled
+  * Must be created upfront, in United States with Dataverse and Dynamics 365 Apps enabled
   * Dynamics 365 application dependency: Dynamics 365 Customer Service License, Microsoft Cloud for Healthcare License
 
 ## Deployment of care management
@@ -47,38 +47,37 @@ Users required to use these apps, need to be granted access on the Power Platfor
 
 ## Planning guidelines for care management
 
-This section provide prescriptive guidance with design considerations and recommendations across the critical design areas for care management for the teams that will deploy and manage the capabilities within the Microsoft Cloud for Healthcare.
+This section provides prescriptive guidance with design considerations and recommendations across the critical design areas for care management for the teams that will deploy and manage the capabilities within the Microsoft Cloud for Healthcare.
 
 * [Identity and access](#identity-and-access)
-* [Monitoring](#monitoring)
-* [Security](#security)
+* [Deployment](#deployment)
 
 ## Identity and access
 
 ### Design considerations
 
-TODO
+* The user who deploys and configures the Dynamics 365 Customer Service solution must either be Global Admin, Power Platform Admin, Dynamics 365 Admin, or have sufficient permissions directly on the dedicated Power Platform environment.
+* If you are deploying to an Environment in Power Platform that previously had the Customer Service solution deployed, then the *Service support admin* user must use the same user ID as was used for the initial install. If not, a user with Global Admin, Power Platform Admin, or Dynamics 365 Admin must deploy it.
+* The user deploying the Dynamics 365 Customer Service app must also have permissions to register applications in Azure AD.
+* Due to technical constraints, the user deploying the Dynamics 365 Customer Service solution must be associated with a Dynamics 365 Customer Service license.
+* To deploy the care management solution, the user must have an assigned license for the Healthcare add-on.
 
 ### Design recommendations
 
-TODO
+* Ensure user/group mapping for the requisite licenses are done before deploying the solutions to Power Platform.
+* Ensure appropriate RBAC is assigned to the Security group for the dedicated Environment for Healthcare in Power Platform, ideally as part of the Environment creation process.
+* If privileged access to application registration in Azure AD cannot be granted for the group/users who will deploy and operate the Dynamics 365 Customer Service solution and care management scenario, a Global Administrator must assist with the deployment.
 
-## Monitoring
+## Deployment
 
 ### Design considerations
 
-TODO
+* Deployment of Dynamics 365 Customer Service solution starts from within the Admin Center of Power Platform, which then will take you to the Dynamics 365 apps admin page to complete the setup.
+* Deployment of Dynamics 365 Customer Service solution can take several hours, and puts a write lock on the environment to prevent parallel deployments of solutions.
+* There's limited logs and telemetry available during the deployment in case anything fails, hence you should ensure you have reserved enough time to get Dynamics 365 Customer Service app installed successfully as a dependency to the care management solution deployment.
 
 ### Design recommendations
 
-TODO
-
-## Security
-
-### Design considerations
-
-TODO
-
-### Design recommendations
-
-TODO
+* If Global Administrator permissions are needed to complete the deployment, ensure this is a joint activity in order to troubleshoot and follow-up with support in case Dynamics 365 Customer Service deployment is having issues.
+* Deploy Dynamics 365 Customer Service to test, development, and production environment to align with the overall [Environment strategy recommendations]([Power Platform environments](../../../foundations/powerPlatform/) for Industry solutions in Power Platform.
+* Similarily, deploy care management (and all other Healthcare solutions) to test, developtment, and production environments per the above.
