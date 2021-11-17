@@ -4,5 +4,5 @@
 # review when someone opens a pull request.
 * @Azure/customer-architecture-team
 
-.github/CODEOWNERS @uday31in
-.github/** @Azure/customer-architecture-team
+/.github/ @Azure/customer-architecture-team
+/.github/CODEOWNERS @uday31in
