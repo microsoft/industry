@@ -5,7 +5,7 @@ It provides patients with access to their health data, knowledge articles, and i
 
 | Reference implementation | Description | Deploy |
 |:----------------------|:------------|--------|
-| Monitoring for Patient Access | End-2-end deployment and configuration of Application Insights and Log Analytics to monitor Patient Access portal |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
+| Monitoring for Patient Access | End-to-end deployment and configuration of Application Insights and Log Analytics to monitor Patient Access portal |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
 
 >Note: The implementation of the Patient Access solution can currently not be automated, and requires manual implementation and configuration across Solution Center, Power Platform Admin Center, and portal for Power Apps. See the [implementation guide](#implementation-guide-for-patient-access) for detailed instructions.
 
@@ -15,7 +15,7 @@ Before you deploy and configure, verify you have implemented the [prerequisites]
 
 Specifically for patient access, you need:
 
-* [Power Platform environments](../powerPlatform/)
+* [Power Platform environments](../../../foundations/powerPlatform/)
   * Must be created upfront, in United States with Dataverse and D365 Apps enabled
   * Power Apps Portal app deployed and configured in the targeted environment(s)
 

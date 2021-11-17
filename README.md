@@ -47,12 +47,12 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
 
 Microsoft Cloud for Financial Services provides capabilities to manage data to deliver differentiated experiences, empower employees, and combat financial crime while facilitating security, compliance, and interoperability.
 
-- [Pre-reqiusites](./fsi/prereqs.md)
+- [Pre-requisites](./fsi/prereqs.md)
   - [Power Platform for Financial Services](./foundations/powerPlatform)  
   - [Azure for Financial Services](./fsi/readme.md)
-    - [Service enablement framework](./fsi/solutions/serviceEnablement)
+    - [Service enablement framework](./fsi/solutions/serviceEnablementFramework)
   - [Azure Synapse for Banking](./fsi/solutions/synapseBanking)
-- Customer and exmployee experience
+- Customer and employee experience
   - [Unified customer profile](./fsi/solutions/unifiedCustomerProfile)
   - [Customer onboarding](./fsi/solutions/customerOnboarding)
   - [Collaboration manager](./fsi/solutions/collaborationManager)
