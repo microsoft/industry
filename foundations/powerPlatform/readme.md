@@ -173,10 +173,12 @@ The following section describes the design considerations and the design recomme
 * Enable auditing for your tenant and environments to understand usage and available capacity.
 * For industry solutions (e.g., Healthcare, Financial Services Industry), deploy all Dynamics 365 applications to the same environment(s), and avoid creating islands of data that will be complex to combine later.
 * Only split Industry solutions across different environments if there are data or security constraints.
+
 ## Management and Monitoring
 
 Power Platform provides first-party connectors for the Power Platform administration capabilities so organizations can configure and implement the desired management scenarios and automation needed for their tenant and environments. The [Center of Excellence starter-kit](https://docs.microsoft.com/power-platform/guidance/coe/core-components) provides ready to use solutions that enables curated management experiences in addition to what the Power Platform admin center enables by default.
 Further overall management, including observability and auditing is crucial to ensure a continiously healthy tenant and environments, the the usage of the various applications deployed in the environments, as well as the Dataverse platform. Additional integration and end-to-end view will rely on Microsoft 365 Security and Compliance Center, and Azure Active Directory. For most of the services in Power Platform, organizations who are using Azure can integrate with Azure Monitor (Application Insights and Log Analytics) for long-term retention and further analysis.
+
 ### Design considerations
 
 * Only Environments with Dataverse provide auditing capabilities (access logs) at the environment and database layer, and the logs can be viewed and consumed from Office 365 Security & Compliance center
@@ -186,6 +188,7 @@ Further overall management, including observability and auditing is crucial to e
 * For each environment with Dataverse, the Power Platform admins can export Dataverse diagnostics, such as usage of APIs, form load diagnostics, and performance metrics to an Azure Application Insights instance.
 * Activity logs for Power Apps is integrated with Office 365 Security & Compliance center which provides an API to query the data.
 * Power Platform provides connectors specifically for management scenarios so organizations can build on top of existing capabilities provided natively in the platform.
+
 ### Design recommendations
 
 * Use Application Insights that is linked to a Log Analytics workspace in Azure to capture key diagnostics and performance metrics for all environments using Dataverse and enable critical alerts for the respective Power Platform admins and environments owners.
@@ -196,10 +199,29 @@ Further overall management, including observability and auditing is crucial to e
 
 ## Business Continuity and Disaster Recovery
 
+Protecting your data in Power Platform is primarily at the Environment level, and allows you to protect data in customer engagement apps (Dynamics 365 Sales, Dynamics 365 Customer Service, Dynamics 365 Field Service, Dynamics 365 Marketing, and Dynamics 365 Project Service Automation), and providing continuous availability of service are important. You have multiple options for backing up and restoring your environments.
 ### Design considerations
 
 * Monitor the M365 message center for planned service interruptions which will identify the date and time of the service maintenance.
 * Unplanned service interruptions result in a notice that the organization is currently undergoing unplanned maintenance
+* Backup and restore can be done per Environment.
+* Power Platform performs system backups, and:
+ * Depending on the amount of copied and restored audit data, copy and restore operations can take up to 8 hours.
+ * All your environments, except Trial environments (standard and subscription-based), are backed up.
+ * System backups occur continuously. The underlying technology used is Azure SQL Database. See SQL Database documentation Automated backups for details.
+ * System backups for production environments that have been created with a database and have one or more Dynamics 365 applications installed are retained up to 28 days. * System backups for production environments which don't have Dynamics 365 applications deployed in them will be retained for 7 days. System backups for sandbox environments will be retained for 7 days.
+* You must restore an environment to the same region in which it was backed up.
+* When an environment is restored onto itself, audit logs aren't deleted. For example, when an environment is restored onto itself to a past time t1, full audit data for the environment will be available, including any audit logs that were generated after t1.
+* Admins of an Environment can also do manual backups:
+ * A backup is created for you when we update your environment.
+ * You can back up production and sandbox environments.
+ * You can't back up the default environment.
+ * Sandbox backups are retained for up to 7 days.
+ * Manual backups for production environments that have been created with a database and have one or more Dynamics 365 applications installed are retained up to 28 days. 
+ * Manual backups for production environments which do not have Dynamics 365 applications deployed in them will be retained for 7 days.
+ * You are not limited in the number of manual backups you can make.
+ * Manual backups do not count against your storage limits.
+ * You must restore an environment to the same region in which it was backed up.
 
 ### Design recommendations
 
