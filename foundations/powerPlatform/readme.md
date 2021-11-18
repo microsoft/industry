@@ -72,7 +72,6 @@ Together with the design principles, the core of North Star architecture for Pow
 * [Identity and access management](#identity-and-access-management)
 * [Security, governance, and compliance](#security-governance-and-compliance)
 * [Environments](#environments)
-* [Data ingress and egress](#data)
 * [Management and monitoring](#management-and-monitoring)
 * [Business continuity and Disaster recovery](#business-continuity-and-disaster-recovery)
 * [Azure VNet connectivity for Power Platform](#azure-vnet-connectivity-for-power-platform)
@@ -84,8 +83,16 @@ placeholder
 
 ### Design considerations
 
+* Licensing is the first control-gate to allowing access to Power Platform components.
+* Power Platform provides different licensing constructs, as well as capacity add-ons and requires some planning in advance
+* D365 Trials are one-in-a-lifetime per Azure AD tenant
+* Pay As You Go (PAYG) is a low-risk entry to Premium functionality in Power Platform
 ### Design recommendations
 
+* Avoid creating multiple Azure AD tenants
+* Dev/test/prod environments can be isolated and controlled natively in the Power Platform, without needing separation at the identity control plane (AD tenant)
+* Use the pay-as-you-go plan for apps that need to be shared with a large user base with infrequent and/or unpredictable use
+* Use an Azure Subscription for Power Apps to reduce license procurement overhead and consolidate with other service purchases
 ## Identity and access management
 
 Identity and access to the Power Platform, the environments, the applications, components, and solutions within the environments must be carefully thought through in parallel with assigned licenses.
@@ -93,7 +100,6 @@ Furthermore, for data, security in Dataverse is there to ensure users can do the
 
 ### Design considerations
 
-* Licensing is the first control-gate to allowing access to Power Platform components.
 * Ability to create applications and flows is controlled by security roles in the context of an environment.
 * Environments act as a security boundary, allowing different security requirements to be implemented in each environment.
 * The security and RBAC model for Environments with - and without Dataverse are different.
@@ -108,6 +114,7 @@ Furthermore, for data, security in Dataverse is there to ensure users can do the
 * Create AAD groups that are automatically assigned the correct licenses per user per their requirements and roles, and avoid assigning licenses to individual users.
 * Organize the AAD groups that streamline and simplify RBAC for the environments per the functions and requirements for the business units and application teams.
 * Use Conditional Access Policies in Azure AD to grant/prevent access to Power Apps and Power Automate based upon user/group, device, and location.
+* Include mapping of security groups to Environments where Dataverse is enabled as part of the Environment creation process.
 
 ## Security, governance, and compliance
 
@@ -153,9 +160,9 @@ The following section describes the design considerations and the design recomme
 * Treat environments as a democratized unit of management aligned with business needs and priorities, and use the following principles when identifying requirements for new environments:
   * Scale limits. Environments serve as scale unit for components/apps/database to scale within the platform limits
   * Management boundary: Environments provide a management boundary for governance and isolation, which allows for a clear separation of concerns. For example, different environments such as dev, test, and production are often isolated from a management perspective
-  * Policy boundary: Environments serve as a boundary for the assignment of Data Loss Prevention (DLP) policies. For example, secure apps such as PCI typically require additional DLP policies to achieve compliance
+  * Policy boundary: Environments serve as a boundary for the assignment of Data Loss Prevention (DLP) policies. For example, apps that are subject to regulatory compliance such as PCI and HITRUST typically require additional DLP policy enforcmenet to achieve compliance
 * Rename the Default environment to clarify the intent, e.g., "personal productivity" as all licensed users will have access by default.
-* Disable self-service of Environment creation, both for Production and Sandbox as well as Trials, and limit this to selected Power Platform admins as this can potentially cause capacity constraints in the tenant.
+* Disable self-service of Environment creation, both for Production and Sandbox as well as Trials, and limit this to selected Power Platform admins as this can potentially cause [capacity constraints](https://docs.microsoft.com/power-platform/admin/capacity-add-on) in the tenant.
 * Enable a process for the organization to request new environments aligned to the principles above. Either establish and implement the process yourself or leverage the [Center of Excellence starter kit](https://docs.microsoft.com/power-platform/guidance/coe/starter-kit) as an enabler and starting point which provides a solution that can be imported to a dedicated environment to facilitate this, together with other core capabilities.
 * As part of the Environment creation process, ensure auditing, DLP policies, and RBAC are included so the environments can be used safely.
 * Have dedicated environments (dev, test, and prod) for administrative purposes for the Power Platform itself, including management, monitoring, and analytics. These environments should be managed and operated by the Power Platform admins, in order to safely operate and scale the distribution of landing zones (environments) to business units and application teams within the organization.
