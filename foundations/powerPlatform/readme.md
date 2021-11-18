@@ -173,7 +173,6 @@ The following section describes the design considerations and the design recomme
 * Enable auditing for your tenant and environments to understand usage and available capacity.
 * For industry solutions (e.g., Healthcare, Financial Services Industry), deploy all Dynamics 365 applications to the same environment(s), and avoid creating islands of data that will be complex to combine later.
 * Only split Industry solutions across different environments if there are data or security constraints.
-
 ## Management and Monitoring
 
 Power Platform provides first-party connectors for the Power Platform administration capabilities so organizations can configure and implement the desired management scenarios and automation needed for their tenant and environments. The [Center of Excellence starter-kit](https://docs.microsoft.com/power-platform/guidance/coe/core-components) provides ready to use solutions that enables curated management experiences in addition to what the Power Platform admin center enables by default.
