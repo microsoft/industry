@@ -79,18 +79,18 @@ Together with the design principles, the core of North Star architecture for Pow
 
 ## Licensing and AD Tenants
 
-placeholder
-
+Organizations can obtain licenses by either licensing Microsoft Power Apps or Microsoft Power Automate specifically or by it being included in the license of another Microsoft cloud service offering. For example, both Microsoft 365 and Dynamics 365 provide entitlements for Power Apps and Power Automate. As with most Microsoft licensing, you can mix and match for users as appropriate, giving some additional entitlements. Further, any users in an organization can sign up for a Power App trial, unless explicitly blocked by the organization.
 ### Design considerations
 
 * Licensing is the first control-gate to allowing access to Power Platform components.
+* Licenses are tied to the tenant and the assigned Azure AD users/groups.
 * Power Platform provides different licensing constructs, as well as capacity add-ons and requires some planning in advance
 * D365 Trials are one-in-a-lifetime per Azure AD tenant
 * Pay As You Go (PAYG) is a low-risk entry to Premium functionality in Power Platform
 ### Design recommendations
 
 * Avoid creating multiple Azure AD tenants
-* Dev/test/prod environments can be isolated and controlled natively in the Power Platform, without needing separation at the identity control plane (AD tenant)
+* Dev/test/prod environments can be isolated and controlled natively in the Power Platform, without needing separation at the identity control plane (AD tenant). For secure usage of connectors related to Microsoft Graph - such as Office 365, Sharepoint etc., ensure a well-defined RBAC model is implemented to meet the security and data classification requirements.
 * Use the pay-as-you-go plan for apps that need to be shared with a large user base with infrequent and/or unpredictable use
 * Use an Azure Subscription for Power Apps to reduce license procurement overhead and consolidate with other service purchases
 ## Identity and access management
@@ -200,6 +200,7 @@ Further overall management, including observability and auditing is crucial to e
 ## Business Continuity and Disaster Recovery
 
 Protecting your data in Power Platform is primarily at the Environment level, and allows you to protect data in customer engagement apps (Dynamics 365 Sales, Dynamics 365 Customer Service, Dynamics 365 Field Service, Dynamics 365 Marketing, and Dynamics 365 Project Service Automation), and providing continuous availability of service are important. You have multiple options for backing up and restoring your environments.
+
 ### Design considerations
 
 * Monitor the M365 message center for planned service interruptions which will identify the date and time of the service maintenance.
@@ -226,7 +227,8 @@ Protecting your data in Power Platform is primarily at the Environment level, an
 ### Design recommendations
 
 * Use Power Automate to create alerts for planned service interruptions that are created into - and managed within dedicated admin environments.
-* Establish well-defined processes to manage unplanned services interruptions integrated into the application/IT operations support 
+* Establish well-defined processes to manage unplanned services interruptions integrated into the application/IT operations support.
+* Make the environment owners aware of their responsibility, to facilitate manual backups as needed per their requirements and lifecycle management.
 ## Azure VNet connectivity for Power Platform
 
 The Power Platform provides different mechanism to allow connectivity to Azure data services. This section will provide prescriptive design considerations and recommendations to help you implement the right connectivity model from the Power Platform to an Azure VNet.
@@ -260,19 +262,36 @@ The Power Platform provides different mechanism to allow connectivity to Azure d
   * When installing the on-premises data gateway, [choose the datacenter region](https://docs.microsoft.com/data-integration/gateway/service-gateway-data-region) that is closest to the data.
   * [Enforce HTTPS communication](https://docs.microsoft.com/data-integration/gateway/service-gateway-communication#force-https-communication-with-azure-service-bus) for the on-premises data gateways and make sure that [TLS 1.2 is used](https://docs.microsoft.com/data-integration/gateway/service-gateway-communication#tls-12-for-gateway-traffic) for gateway traffic.
 
-  ## Platform Automation and DevOps
-  
-  placeholder
+## Platform Automation and DevOps
 
-  ### Design considerations
+Most organizations starting with the cloud does not have an operating model that is compatible, and will very likely undergo a degree of operational and organization transformation to deliver on the principle of cloud computing and digital transformation enablement. As it relates to Power Platform it is highly recommended that a DevOps approach is being employed for both the central IT team responsible for the Power Platform, as well as the professional developers teams.
 
-* Where central teams are concerned, you should use pipelines for continuous integration and deployment. Use pipelines to manage environment life-cycle, including DLP, and security groups
+### Design considerations
+
+* Where central teams are concerned, you should use pipelines for continuous integration and deployment. Use pipelines to manage environment life-cycle, including DLP, security groups, RBAC, and auditing from a compliance perspective.
 * The blanket application of a DevOps model won’t instantly establish capable DevOps teams
 * Investing in engineering capabilities and resources is critical to ensure sustainable engineering and development of the platform alongside with the roadmap
 
-  ### Design recommendations
+### Design recommendations
 
-* Provide a central DevOps functions to support Environment provisioning with DLP and RBAC
+* Establish a cross functional DevOps Platform Team to build, manage and maintain the North Star Architecture of Power Platform, including functions to support Environment provisioning with DLP, Security Groups, RBAC, and Auditing.
+* This team should include members from your central IT, security, compliance, and business units teams to ensure a wide spectrum of your enterprise is represented. The list below presents a recommended set of DevOps roles for the central Platform Team.
+ * PlatformOps (Platform Operations) to:
+  * Manage Environment provisioning and delegation of required, IAM, and Data-Loss Prevention policies.
+  * Platform management and monitoring (holistic).
+  * Cost Management (holistic).
+  * "Platform as Code" (management of templates, scripts and other assets).
+  * Responsible for overall operations on Power Platform within the Azure AD tenant, such as managing service principles, Graph API registration, and role definitions.
+ * SecOps (Security Operations)
+  * Role based access control (holistic).
+  * Key management (for central services).
+  * Policy management and enforcement (holistic).
+  * Security monitoring and audit (holistic).
+ * NetOps (Network Operations)
+  * Network Management (holistic).
+* Allow application owners to create and manage application resources through a DevOps model.
+* In some instances, customers may wish to break AppDevOps into more granular roles such as AppDataOps for database management like traditional DBA roles, or AppSecOps where more security sensitive applications are concerned; this is to be expected.
+* Leverage a policy-driven approach with clear RBAC boundaries to centrally enforce consistency and security across application teams.
 * To accelerate adoption, the central platform function should establish and provide common set of guidance, templates, and libraries within the organization
 * Don’t restrict developers (both pro and citizen) to use central artifacts or approaches because it hinders their agility
  * This includes enforcing the use of specific tooling for development and IaC, either directly or indirectly
