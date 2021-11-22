@@ -8,7 +8,7 @@
 Due to the network centric nature of their business, customers in the Telecommunications (or Telco) industry have a unique set of requirements compared other organizations of similar scale. Such requirements include:
 
 * Delivery of strenuous networking services that consume large amounts of bandwidth and are sensitive to latency and jitter on the network (ex. VOIP or video streaming).
-* Provide networking and end-user services to consumers (ex. firewall as a service, cloud storage, cloud email, etc).
+* Provide networking and end user services to consumers (ex. firewall as a service, cloud storage, cloud email, etc).
 * Provide managed services to other companies (ex. managed SD-WAN solution, managed SoC).
 * Leverage the provider’s distributed edges to provide services closer to where their end users are for better performance and lower latency (ex. 5G, gaming or augmented reality).
 
