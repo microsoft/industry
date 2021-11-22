@@ -27,15 +27,15 @@ _Figure 1: Reference architecture for the telco industry on Microsoft Azure._
 
 As figure 1 depicts, the reference architecture for the Telco industry on Microsoft Azure follows the design principles and recommendations of Enterprise-Scale Landing Zones, but it provides specific guidance and recommendations in the following areas to accommodate for the typical requirements of Telcos:
 
-* Telco workloads (depicted as C in figure 1).
-* Networking (Depicted as E in figure 1).
-* Telco distributed edge (Depicted as G in figure 1).
+* Specialized telco scenarios (depicted as C in figure 1).
+* Networking across Azure and on-premises (Depicted as E in figure 1).
+* Telco distributed edge (Depicted as K in figure 1).
 
 The following sections will provide a high-level overview of the considerations for each of those areas, and subsequent articles will provide detailed design considerations and recommendations.
 
-### Telco workloads
+### Specialized telco scenarios
 
-Many applications - especially those providing traditional internal IT services - can be deployed, managed and governed in Azure using existing Enterprise Scale guidance. However, some applications, such as those that provide managed services to end customers (B2C), or businesses (B2B) might require a set of controls and governance that are different from the internal line-of-business (LOB) applications. These applications typically provide services such as Core CP, vIMS, vHSS, Thin/uCPE, SDWAN, vFW, vRouter, vLTM, CGNAT, vBNG, DDI and vRadius among others.
+Many applications - especially those providing traditional internal IT services - can be deployed, managed and governed in Azure using existing Enterprise Scale guidance. However, some applications, such as those that provide managed services to end customers (B2C), or businesses (B2B) might require a set of controls and governance that are different from the internal line-of-business (LOB) applications. These applications typically provide services such as Core CP, SBC, vIMS, vHSS, Thin/uCPE, SDWAN, vFW, vRouter, vLTM, CGNAT, vBNG, DDI and vRadius among others.
 
 For example, B2B and B2C telco applications may require deploying their own ExpressRoute Gateways so they can use dedicated ExpressRoute circuits for data plane traffic, while other dedicated circuits can provide connectivity to on-premises network for control plane traffic. Another example would be applications that require public IPs in their Landing Zones.
 
