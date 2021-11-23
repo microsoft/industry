@@ -14,22 +14,22 @@ Due to the network centric nature of their business, customers in the Telecommun
 
 This article provides a reference architecture with prescriptive guidance and recommendations for the Telco industry across the Microsoft Cloud (Power Platform, Dynamics, Microsoft 365 and Microsoft Azure).
 
-## Azure for Telco Industry Reference Architecture
+## Azure for Telecommunications Industry Reference Architecture
 
-This article describes the Azure for Telco industry reference architecture which enables the delivery of Telco specialized workloads on Microsoft Azure and at the edge.
+This article describes the Azure for Telecommunications (Telco) industry reference architecture which enables the delivery of Telco specialized workloads on Microsoft Azure and at the edge.
 
 ### High-level architecture
 
 The Azure for Telco industry reference architecture is based on a [proven, at scale Azure architecture](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/architecture) foundation for the construction and operationalization of landing zones in Azure.  Our guidance for Telcos provides a specific set of recommendations to accommodate Telco industry requirements and scenarios as described previously on this article. The Azure for Telco reference architecture is depicted on figure 1 below:
 
 ![Azure for Telco industry reference architecture](./docs/telco-industry-reference-architecture.png)
-_Figure 1: Reference architecture for the telco industry on Microsoft Azure._
+_Figure 1:Azure for telco industry reference architecture._
 
-As figure 1 depicts, the Azure for Telco follows the design principles and recommendations of proven, compliant, and scalable architecture, but it provides specific guidance and recommendations in the following areas to accommodate for the typical requirements of Telcos:
+As figure 1 depicts, the Azure for Telco industry follows the design principles and recommendations of proven, compliant, and scalable architecture, but it provides specific guidance and recommendations in the following areas to accommodate for the typical requirements of Telcos:
 
 * Specialized telco scenarios (depicted as C in figure 1).
 * Networking across Azure and on-premises (Depicted as E in figure 1).
-* Telco distributed edge (Depicted as K in figure 1).
+* Distributed edge (Depicted as K in figure 1).
 
 The following sections will provide a high-level overview of the considerations for each of those areas, and subsequent articles will provide detailed design considerations and recommendations.
 
@@ -39,16 +39,16 @@ Many applications - especially those providing traditional internal IT services 
 
 For example, B2B and B2C telco applications may require deploying their own ExpressRoute Gateways so they can use dedicated ExpressRoute circuits for data plane traffic, while other dedicated circuits can provide connectivity to on-premises network for control plane traffic. Another example would be applications that require public IPs in their Landing Zones.
 
-Given these specialized requirements which might conflict with existing policy controls for internal LOB applications, the reference architecture for the Microsoft Cloud for Telco industry recommends the creation a new Management Group dedicated to Telco industry specific applications and services. Azure policies that are designed to govern and manage those applications can be assigned at this scope and subscriptions dedicated for such applications would need to be deployed under this management group. This new management group is depicted in figure 2 below:
+Given these specialized requirements which might conflict with existing policy controls for internal LOB applications, the Azure for Telco industry reference architecture recommends the creation a new Management Group dedicated to Telco industry specific applications and services. Azure policies that are designed to govern and manage those applications can be assigned at this scope and subscriptions dedicated for such applications would need to be deployed under this management group. This new management group is depicted in figure 2 below:
 
 ![Management workloads](./docs/management-group-telco.png)
 _Figure 2: Management group for business to business and business to customer applications._
 
 ### Networking
 
-The Azure for Telco reference architecture provides the foundational networking and connectivity services for deploying applications and services in Microsoft Azure at scale.
+The Azure for Telco industry reference architecture provides the foundational networking and connectivity services for deploying applications and services in Microsoft Azure at scale.
 
-The Network topology and connectivity design considerations and recommendations described in the [Cloud Adoption Framework]((https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/architecture) are mostly compatible with the Azure for Telco reference architecture. For example, guidance around access to Azure PaaS services via Private Link, or the usage of hub and spoke or VWAN network topologies are fully compatible with the Azure for Telco reference architecture.
+The Network topology and connectivity design considerations and recommendations described in the [Cloud Adoption Framework](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/architecture) are mostly compatible with the Azure for Telco reference architecture. For example, guidance around access to Azure PaaS services via Private Link, or the usage of hub and spoke or VWAN network topologies are fully compatible with the Azure for Telco reference architecture.
 
 Our guidance diverges from the Cloud Adoption Framework when it comes to addressing the Telco specific requirements, as outlined in the introduction above.  Most of these changes focus on how to provide more scalable, flexible connectivity using a modified network topology and ExpressRoute connectivity.
 
@@ -57,7 +57,7 @@ This added complexity is due to most companies in the Telco industry having mult
 ![Telco on-prem network](./docs/telco-onprem.png)
 _Figure 3 – On-premises network with isolation across multiple example VRFs_
 
-With the design outlined above, Telcos with strong network isolation requirements have a network topology that can keep such network isolation from on-premises to Azure where needed.Our reference architecture outlined above provides design considerations and recommendations to ensure isolation is maintained either by using IPSec tunnels or with multiple ExpressRoute circuits and a network topology with multiple hub virtual networks and multi-homed spoke VNets.  This isdepicted in figure 4 below.
+With the design outlined above, Telcos with strong network isolation requirements have a network topology that can keep such network isolation from on-premises to Azure where needed. Our reference architecture outlined above provides design considerations and recommendations to ensure isolation is maintained either by using an overlay (such as IPSec tunnels) or with multiple ExpressRoute circuits and a network topology with multiple hub virtual networks and multi-homed spoke VNets.  This is depicted in figure 4 below.
 
 Other customers may be fine with consolidating multiple VRFs over a single (or a small set of) ExpressRoute circuit(s). In this scenario, a network topology based on hub and spoke architecture or Azure Virtual WAN as recommended in Cloud Adoption Framework would be sufficient without the added complexity.
 
@@ -74,7 +74,7 @@ While figure 4 depicts a dual-homed network architecture with Azure Route Server
 
 ### Operator distributed edge
 
-Telcos operate a distributed edge network to provide services (such as Radio Access Networks (RAN) or Wi-Fi) closer to where their customers are. The Azure for Telco industry reference implementation provides prescriptive guidance to leverage the Telco’s distributed edge infrastructure to provide Azure services at the edge via [Azure Stack Edge](https://docs.microsoft.com/azure/databox-online/) and [Azure private multi-access edge compute (MEC)](https://docs.microsoft.com/azure/private-multi-access-edge-compute-mec/overview), which among other benefits provides a low-latency experience to users, as services are provided directly at the edge instead of having to provide the services from the Azure region. Such services typically include 5G, CDN, gaming or augmented/virtual reality. This is depicted in figure 5 below.
+Telcos operate a distributed edge network to provide services (such as Radio Access Networks, RAN, or Wi-Fi) closer to where their customers are. The Azure for Telco industry reference implementation provides prescriptive guidance to leverage the Telco’s distributed edge infrastructure to provide Azure services at the edge via [Azure Stack Edge](https://docs.microsoft.com/azure/databox-online/) and [Azure private multi-access edge compute (MEC)](https://docs.microsoft.com/azure/private-multi-access-edge-compute-mec/overview), which among other benefits provides a low-latency experience to users, as services are provided directly at the edge instead of having to provide the services from the Azure region. Such services typically include 5G, CDN, gaming or augmented/virtual reality. This is depicted in figure 5 below.
 
 ![Figure 5: Distributed edge](./docs/telco-industry-edge.png)
 _Figure 5: Operators distributed edge_
