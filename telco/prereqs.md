@@ -12,7 +12,7 @@ To setup the Telecommunications capabilities that spans the Microsoft Clouds, th
 
 ## Azure subscription (landing zone)
 
-The [Telecommunications industry reference architecture for Azure](./readme.md) requires an Azure platform specialized for Telcos and a set of subscriptions (landing zones) in Microsoft Azure that will host the Telco workloads for internal IT systems as well as carrier-grade Telco workloads (such as SD-WAN solutions).
+The [Azure for Telecommunications industry reference architecture](./readme.md) requires an Azure platform specialized for Telcos and a set of subscriptions (landing zones) in Microsoft Azure that will host the Telco workloads for internal IT systems as well as carrier-grade Telco solutions (such as SBC or SD-WAN solutions).
 
 ## Power Platform
 
