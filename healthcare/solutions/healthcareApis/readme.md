@@ -1,10 +1,10 @@
-# Healthcare APIs in Microsoft Cloud for Healthcare
+# Azure Healthcare APIs for Healthcare
 
 Healthcare APIs with FHIR is essential in many of the Microsoft Cloud for Healthcare scenarios, and is strongly recommended to deploy them into a landing zone in Azure to simplify and expedite the integration with Power Platform (Dataverse and Healthcare applications), and Microsoft Teams.
 
 | Industry Architecture | Description | Deploy |
 |:----------------------|:------------|--------|
-| Healthcare APIs | Healthcare APIs architecture with FHIR, DICOM, IoT connectors, and requisite infrastructure for Healthcare solutions |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
+| Azure Healthcare APIs | Healthcare APIs architecture with FHIR, Dicom, IoT connectors, and requisite infrastructure that can be deployed into an existing landing zone in Azure |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2FhealthArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2Fhealth-portal.json)
 
 In the overall architecture for Microsoft Cloud for Healthcare, the Healthcare APIs components together with the FHIR Sync Agent enable organizations that uses data models based on the Fast Healthcare Interoperability Resources (FHIR) standards frameworks to simplify data synchronization between Azure and Microsoft Dataverse, powered by the Microsoft Healthcare solutions in the Power Platform.
 
