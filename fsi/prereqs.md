@@ -28,12 +28,12 @@ Use this reference implementation to deploy Azure Synapse with database template
 
 ## Power Platform
 
-Financial Services requires Power Platform environments (recommendation is dedicated environments for test, development, and production) that are created into the target region with D365 applications enabled.
+Microsoft Cloud for Financial Services requires Power Platform environments (recommendation is dedicated environments for test, development, and production) that are created into the target region with D365 applications enabled.
 
 [Prescriptive guidance and design recommendations for Power Platform for Financial Services](../foundations/powerPlatform)
 
 ## Microsoft Teams
 
-Teams is used for many of the Financial Services capabilities, such as collaboration manager for loans.
+Microsoft Teams is used for many of the Financial Services capabilities, such as collaboration manager for loans.
 
 [Prescriptive guidance and design recommendations for Microsoft Teams for Financial Services](./solutions/microsoftTeams)
