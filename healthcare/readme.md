@@ -22,9 +22,9 @@ QIDO, WADO, and STOW supports query, retrieve, and store of DICOM objects.
 Ingests and persists DICOM data from VNA, PACS and other medical imaging systems at thousands of images per second.
 DICOM Custom Tags allows for user defined, searchable tags.​
 
-## IOT Connector
+## IoT Connector
 
-The IOT Connector ingests streaming data from devices in real-time at millions of events per second.
+The IoT Connector ingests streaming data from devices in real-time at millions of events per second.
 Customized settings allow developers to manage device content, sample data rates, and set the desired capture thresholds.
 Device data is normalized, grouped, and mapped to FHIR that can be sent via FHIR APIs to an EHR or other FHIR Service.
 
@@ -61,7 +61,7 @@ Write-Host $FhirGetPatient
 
 ### Sample patient data
 
-To simplify dowloading sample data and posting it to the API you can either clone this repo and run download.ps1 or you can run edit and paste this:
+To simplify dowloading sample data and posting it to the API you can either clone this repository and run download.ps1 or you can run edit and paste this:
 
 ```powershell
 $token = (Get-AzAccessToken -ResourceUrl $fhirservice).token
