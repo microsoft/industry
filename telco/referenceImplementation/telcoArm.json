@@ -891,7 +891,7 @@
                         "value": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-landingzones')]"
                     },
                     "managementGroupId": {
-                        "value": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-telco')]"
+                        "value": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-telco-industry')]"
                     }
                 }
             }
