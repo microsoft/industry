@@ -86,6 +86,13 @@
                 "description": "Provide the subscription ids for existing, empty subscriptions you want to move in as your first corp landing zones and connect to virtual networking hub."
             }
         },
+        "telcoLzSubscriptionId": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Provide the subscription ids for existing, empty subscriptions you want to move in as your first telco landing zones."
+            }
+        },
         "enableLogAnalytics": {
             "type": "string",
             "defaultValue": "No",
@@ -515,43 +522,6 @@
             "type": "array",
             "defaultValue": []
         },
-        "paToken": {
-            "type": "securestring",
-            "defaultValue": ""
-        },
-        "principalId": {
-            "type": "array",
-            "defaultValue": []
-        },
-        "appId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "principalSecret": {
-            "type": "securestring",
-            "defaultValue": ""
-        },
-        "gitHubUserNameOrOrg": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "repositoryName": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "enableAzOps": {
-            "type": "string",
-            "allowedValues": [
-                "Yes",
-                "No"
-            ],
-            "defaultValue": "No"
-        },
-        "subscriptionId": {
-            "type": "string",
-            "defaultValue": "",
-            "maxLength": 36
-        },
         "singlePlatformSubscriptionId": {
             "type": "string",
             "defaultValue": "",
@@ -592,16 +562,42 @@
                 "Yes",
                 "No"
             ]
+        },
+        "enableErHa": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "enablePipHa": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
         }
     },
     "variables": {
+        "scopes": {
+            "intermediate": "[tenantResourceId('Microsoft.Management/managementGroups', parameters('enterpriseScaleCompanyPrefix'))]",
+            "telco": "[tenantResourceId('Microsoft.Management/managementGroups', concat(parameters('enterpriseScaleCompanyPrefix'), '-', 'telco-specialized'))]"
+        },
         "deploymentUris": {
             "eslzArm": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/eslzArm.json",
-            "telcoMgmtGroup": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/telcoMgmtGroup.json')]"
+            "telcoMgmtGroup": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/telcoMgmtGroup.json')]",
+            "telcoPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/telcoPolicies.json')]",
+            "erHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/DENY-non-ha-expressRoutes-policyAssignment.json')]",
+            "pipHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/DENY-non-ha-publicIps-policyAssignment.json')]"
         },
         "deploymentNames": {
-            "azureCore": "Industry-Core",
-            "telcoIndustry": "Telco-industry"
+            "azureCore": "[take(concat('AzForTelco-', deployment().location, '-', deployment().name), 64)]",
+            "telcoIndustry": "[take(concat('TelcoIndustry-', deployment().location, '-', deployment().name), 64)]",
+            "telcoPolicyDefinitons": "[take(concat('TelcoPolicy', deployment().location, '-', deployment().name), 64)]",
+            "erHaPolicyAssignment": "[take(concat('DenyNonHaEr', deployment().location, '-', deployment().name), 64)]",
+            "pipHaPolicyAssignment": "[take(concat('DenyNonHaPip', deployment().location, '-', deployment().name), 64)]"                        
         }
     },
     "resources": [
@@ -824,30 +820,6 @@
                     "firewallZones": {
                         "value": "[parameters('firewallZones')]"
                     },
-                    "paToken": {
-                        "value": "[parameters('paToken')]"
-                    },
-                    "principalId": {
-                        "value": "[parameters('principalId')]"
-                    },
-                    "appId": {
-                        "value": "[parameters('appId')]"
-                    },
-                    "principalSecret": {
-                        "value": "[parameters('principalSecret')]"
-                    },
-                    "gitHubUserNameOrOrg": {
-                        "value": "[parameters('gitHubUserNameOrOrg')]"
-                    },
-                    "repositoryName": {
-                        "value": "[parameters('repositoryName')]"
-                    },
-                    "enableAzOps": {
-                        "value": "[parameters('enableAzOps')]"
-                    },
-                    "subscriptionId": {
-                        "value": "[parameters('subscriptionId')]"
-                    },
                     "singlePlatformSubscriptionId": {
                         "value": "[parameters('singlePlatformSubscriptionId')]"
                     },
@@ -891,8 +863,44 @@
                         "value": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-landingzones')]"
                     },
                     "managementGroupId": {
-                        "value": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-telco')]"
+                        "value": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-telco-specialized')]"
                     }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[deployment().location]",
+            "name": "[variables('deploymentNames').telcoPolicyDefinitons]",
+            "scope": "[tenantResourceId('Microsoft.Management/managementGroups/', parameters('enterpriseScaleCompanyPrefix'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').azureCore)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').telcoPolicyDefinitions]"
+                },
+                "parameters": {}
+            }
+        },
+        {
+            "condition": "[equals(parameters('enableErHa'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[deployment().location]",
+            "name": "[variables('deploymentNames').erHaPolicyAssignment]",
+            "scope": "[variables('scopes').telco]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').erHaPolicyAssignment]"
                 }
             }
         }
