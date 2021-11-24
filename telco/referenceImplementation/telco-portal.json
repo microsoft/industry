@@ -3,7 +3,7 @@
     "view": {
         "kind": "Form",
         "properties": {
-            "title": "Azure for Telecommunication",
+            "title": "Azure for Telecommunications",
             "steps": [
                 {
                     "name": "basics",
