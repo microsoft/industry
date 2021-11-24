@@ -588,7 +588,7 @@
         "deploymentUris": {
             "eslzArm": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/eslzArm.json",
             "telcoMgmtGroup": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/telcoMgmtGroup.json')]",
-            "telcoPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/telcoPolicyDefinitions.json')]",
+            "telcoPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/telcoPolicies.json')]",
             "erHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/DENY-non-ha-expressRoutes-policyAssignment.json')]",
             "pipHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/DENY-non-ha-publicIps-policyAssignment.json')]"
         },
