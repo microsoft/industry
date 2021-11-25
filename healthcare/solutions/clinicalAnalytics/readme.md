@@ -11,7 +11,7 @@ Key capabilities of Clinical Analytics include:
 
 | Reference implementation | Description | Deploy |
 |:----------------------|:------------|--------|
-| Healthcare Analytics | End-2-end deployment and configuration of analytics solution for healthcare |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
+| Healthcare Analytics | End-to-end deployment and configuration of analytics solution for healthcare |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
 
 ## Reference architecture
 
@@ -30,7 +30,7 @@ Key capabilities of Clinical Analytics include:
 
 * **Azure platform**: Enterprise Scale Landing Zones
 * **Data platform**: Enterprise Scale Analytics (optional)
-* **Azure Healthcare APIs**: FHIR + DICOM + IOT Connector
+* **Azure Healthcare APIs**: FHIR + DICOM + IoT Connector
 * **Synapse**: Workspace + Spark + SQL pool (optional)
 * **Azure ML**: Custom AI app or cognitive services Custom vision (TBD)
 
