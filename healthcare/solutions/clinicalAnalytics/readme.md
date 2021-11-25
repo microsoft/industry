@@ -1,5 +1,5 @@
-# Coming soon
-# Clinical Analytics
+
+# Clinical Analytics & Operational Insights
 
 The solution for Clinical Analytics will harness data and discover clinical insights to deliver value-based care models. In this flow, we look at how you can persist data in an analytical store, enable large scale analytical query capabilities and leverage insights from AI assisted imaging analysis and population health metrics to determine course of care. The analytical solution enable you to search through large amounts of data from sources like electronic medical records, smart medical devices, patient and population demographics, and the public domain to find hidden patterns and trends and predict outcomes for individual patients. The care guidance can rely on AI learning models that become more precise when additional data and cases are introduced.
 
@@ -17,7 +17,7 @@ Key capabilities of Clinical Analytics include:
 
 ![Healthcare - Clinical Analytics](./images/clinicalanalytics.png)
 
-## Critical design areas for Clinical Analytics
+## Critical design areas for Clinical Analytics & Operational Insights
 
 >The analytical use-cases for healthcare leverages a combination of services in Azure, Dynamics and the Power platform.
 
@@ -77,20 +77,41 @@ Make the Azure Synapse Link configurations solution-aware, import the Azure Syna
 
 #### Design considerations
 
->Work in progress
+If your use-case involves analyzing text then consider using Azure Cognitive Service for Text Analytics in healthcare. Text Analytics for health extracts and labels relevant medical information from unstructured texts such as doctor's notes, discharge summaries, clinical documents, and electronic health records.
 
+Named Entity Recognition detects words and phrases mentioned in unstructured text that can be associated with one or more semantic types, such as diagnosis, medication name, symptom/sign, or age.
+
+Relation extraction identifies meaningful connections between concepts mentioned in text. For example, a "time of condition" relation is found by associating a condition name with a time or between an abbreviation and the full description.
+
+Entity linking disambiguates distinct entities by associating named entities mentioned in text to concepts found in a predefined database of concepts including the Unified Medical Language System (UMLS). Medical concepts are also assigned preferred naming, as an additional form of normalization.
+
+The meaning of medical content is highly affected by modifiers, such as negative or conditional assertions which can have critical implications if misrepresented. Text Analytics for health supports three categories of assertion detection for entities in the text:
+Certainty, Conditional and Association.
+
+Text Analytics has 3 deployment options:
+
+* Language Studio
+* REST API and client-library
+* Docker container
+  
 #### Design recommendations
 
->Work in progress
+Do not use for scenarios that use this service as a medical device, clinical support, or diagnostic tools to be used in the diagnosis, cure, mitigation, treatment or prevention of disease or other conditions without a human intervention. A qualified medical professional should always do due diligence and verify the source data regarding patient care decisions.
+Do not use for scenarios related to automatically granting or denying medical service or health insurance without human intervention. Since this is an extremely impactful decision, the source data should always be verified for decisions that affect coverage level.
+Do not use for scenarios that use personal health information for a purpose that consent was not obtained for. Health information has special protections regarding consent. Make sure all data you use has consent for the purpose of your system.*
+
+Currently the health feature only supports English text. If there are other languages embedded within the input text, the quality of the output may be affected.
+Incorrect spelling may affect the output. Specifically, entity linking is looking for terms and synonyms based on correct spelling. If a drug name, for example, is spelled incorrectly, the system may have enough information to recognize that the text is a drug name, but it may not have the link identified as it would for the correctly spelled drug name.
+The system does not yet recognize the context of a hypothetical in text. For example, if the doctor were to say "if the patient starts to experience nausea, I would recommend to start Dramamine b.i.d", The system might recognize nausea as an existing symptom rather than a hypothetical one. Review your data and ensure you have other ways to account for recognizing hypotheticals in your data.
 
 ### Observability and logging
 
 After you have set up the Azure Synapse Link, you can monitor it under the Tables tab in Power Apps. There will be a list of tables that are a part of the selected Synapse Link.
 There are different stages the sync status will circulate through. NotStarted indicates that the table is waiting to be synced. Once the table initial sync has been Completed, there will be a post processing stage where incremental updates will not take place. This may take several hours depending on the size of your data. As the incremental updates start taking place, the date for the last sync will be regularly updated. The Count column shows the number of changes to the data. It does not show the total number of rows to the data. The Append only and Partition strategy columns show the usage of different advanced configurations.
 
-## TODO
+## Known limitations
 
-* Data flow from FHIR to Dataverse
-* Data flow into FHIR
-* Write analytic result-set back to Dataverse
+* Data flow from FHIR to Dataverse is currently done using a a proprietary sync agent. A more scalable and reliable solution is recommended.
+* Data flow into FHIR needs a more detailed description and samples.
+* Write analytic result-set back to Dataverse needs a prescriptive guidance.
   
