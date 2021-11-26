@@ -1,9 +1,9 @@
-# Industry Reference Architecture
+# Azure for Healthcare
 
 | Industry Architecture | Description | Deploy |
 |:----------------------|:------------|--------|
-| Microsoft Cloud for Healthcare Industry | Cloud Foundation that spans across Azure, Power Platform, and Microsoft 365 for Haalthcare industry and workloads |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2FhealthArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2Fhealth-portal.json)
-| Healthcare APIs | Healthcare APIs architecture with FHIR, Dicom, IoT connectors, and requisite infrastructure |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2FhealthArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2Fhealth-portal.json)
+| Azure for Healthcare | Azure for Healthcare foundation that provides full architecture with landing zones for Healthcare industry, including Azure Healthcare API workloads |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2FhealthArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2Fhealth-portal.json)
+| Azure Healthcare APIs | Healthcare APIs architecture with FHIR, Dicom, IoT connectors, and requisite infrastructure that can be deployed into an existing landing zone in Azure |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2FhealthArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2Fhealth-portal.json)
 
 ![Healthcare Industry Reference Architecture](./docs/mc4h-reference-architecture.png)
 
@@ -22,9 +22,9 @@ QIDO, WADO, and STOW supports query, retrieve, and store of DICOM objects.
 Ingests and persists DICOM data from VNA, PACS and other medical imaging systems at thousands of images per second.
 DICOM Custom Tags allows for user defined, searchable tags.​
 
-## IOT Connector
+## IoT Connector
 
-The IOT Connector ingests streaming data from devices in real-time at millions of events per second.
+The IoT Connector ingests streaming data from devices in real-time at millions of events per second.
 Customized settings allow developers to manage device content, sample data rates, and set the desired capture thresholds.
 Device data is normalized, grouped, and mapped to FHIR that can be sent via FHIR APIs to an EHR or other FHIR Service.
 
@@ -61,7 +61,7 @@ Write-Host $FhirGetPatient
 
 ### Sample patient data
 
-To simplify dowloading sample data and posting it to the API you can either clone this repo and run download.ps1 or you can run edit and paste this:
+To simplify dowloading sample data and posting it to the API you can either clone this repository and run download.ps1 or you can run edit and paste this:
 
 ```powershell
 $token = (Get-AzAccessToken -ResourceUrl $fhirservice).token

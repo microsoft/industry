@@ -1,10 +1,10 @@
-# Healthcare APIs in Microsoft Cloud for Healthcare
+# Azure Healthcare APIs for Healthcare
 
 Healthcare APIs with FHIR is essential in many of the Microsoft Cloud for Healthcare scenarios, and is strongly recommended to deploy them into a landing zone in Azure to simplify and expedite the integration with Power Platform (Dataverse and Healthcare applications), and Microsoft Teams.
 
 | Industry Architecture | Description | Deploy |
 |:----------------------|:------------|--------|
-| Healthcare APIs | Healthcare APIs architecture with FHIR, DICOM, IoT connectors, and requisite infrastructure for Healthcare solutions |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
+| Azure Healthcare APIs | Healthcare APIs architecture with FHIR, Dicom, IoT connectors, and requisite infrastructure that can be deployed into an existing landing zone in Azure |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2FhealthArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2Fhealth-portal.json)
 
 In the overall architecture for Microsoft Cloud for Healthcare, the Healthcare APIs components together with the FHIR Sync Agent enable organizations that uses data models based on the Fast Healthcare Interoperability Resources (FHIR) standards frameworks to simplify data synchronization between Azure and Microsoft Dataverse, powered by the Microsoft Healthcare solutions in the Power Platform.
 
@@ -14,16 +14,16 @@ In the overall architecture for Microsoft Cloud for Healthcare, the Healthcare A
 
 The core of enterprise-scale architecture for Healthcare APIs contains a critical design path comprised of fundamental design topics with heavily interrelated and dependent design decisions. This repository provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the enterprise-scale architecture. For each of the design areas, review the provided considerations and recommendations and use them to structure and drive designs within each area.
 
-* [Composition of the Healthcare API's](#Azure-Healthcare-APIs)
+* [Composition of the Healthcare APIs](#Azure-Healthcare-APIs)
 * [Access Control](#Access-Control)
 * [Data ingress and egress](#Data-ingress-and-egress)
 * [Observability and logging](#observability-and-logging)
 * [Networking](#networking)
 * [Regulatory compliance](#regulatory-compliance)
 
-### Composition of the Healthcare API's
+### Composition of the Healthcare APIs
 
-Azure Healthcare APIs enables rapid exchange of data through APIs, backed by a managed Platform-as-a Service (PaaS) offering in the cloud. It makes it easier for anyone working with health data to ingest, manage, and persist protected health information (PHI) in the cloud using an industry standard. The healthcare API's consist of a workspace that enables several services such as [FHIR](https://docs.microsoft.com/azure/healthcare-apis/fhir/), [DICOM](https://docs.microsoft.com/azure/healthcare-apis/dicom/), and [IoT Connector](https://docs.microsoft.com/azure/healthcare-apis/iot/).
+Azure Healthcare APIs enables rapid exchange of data through APIs, backed by a managed Platform-as-a Service (PaaS) offering in the cloud. It makes it easier for anyone working with health data to ingest, manage, and persist protected health information (PHI) in the cloud using an industry standard. The healthcare APIs consist of a workspace that enables several services such as [FHIR](https://docs.microsoft.com/azure/healthcare-apis/fhir/), [DICOM](https://docs.microsoft.com/azure/healthcare-apis/dicom/), and [IoT Connector](https://docs.microsoft.com/azure/healthcare-apis/iot/).
 
 ![Healthcare API architecture ](./images/healthcareapi.png "Healthcare API")
 
@@ -42,9 +42,9 @@ QIDO, WADO, and STOW supports query, retrieve, and store of DICOM objects.
 Ingests and persists DICOM data from VNA, PACS and other medical imaging systems at thousands of images per second.
 DICOM Custom Tags allows for user defined, searchable tags.​
 
-#### IOT Connector
+#### IoT Connector
 
-The IOT Connector ingests streaming data from devices in real-time at millions of events per second. It can accept any JSON-based messages sent out by an IoMT device. This data is first transformed into appropriate FHIR-based Observation resources and then persisted into Azure API for FHIR. The data transformation logic is defined through a pair of mapping templates that you configure based on your message schema and FHIR requirements. The settings are used to manage device content, sample data rates, and set the desired capture thresholds.
+The IoT Connector ingests streaming data from devices in real-time at millions of events per second. It can accept any JSON-based messages sent out by an IoMT device. This data is first transformed into appropriate FHIR-based Observation resources and then persisted into Azure API for FHIR. The data transformation logic is defined through a pair of mapping templates that you configure based on your message schema and FHIR requirements. The settings are used to manage device content, sample data rates, and set the desired capture thresholds.
 Device data is normalized, grouped, and mapped to FHIR that can be sent via FHIR APIs to an EHR or other FHIR Service.
 
 ### Access Control
@@ -210,7 +210,7 @@ Write-Host $FhirGetPatient
 
 ### Sample patient data
 
-To simplify dowloading sample data and posting it to the API you can either clone this repo and run download.ps1 or you can run edit and paste this:
+To simplify dowloading sample data and posting it to the API you can either clone this repository and run download.ps1 or you can run edit and paste this:
 
 ```powershell
 $token = (Get-AzAccessToken -ResourceUrl $fhirservice).token
