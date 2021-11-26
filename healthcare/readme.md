@@ -10,10 +10,8 @@ In the overall architecture for Microsoft Cloud for Healthcare, the Healthcare A
 
 ![Healthcare Industry Reference Architecture](./docs/mc4h-reference-architecture.png)
 
-> ### Known issues
->
-> There are a few known issues:
->
+## Known issues
+
 > - Existing storage account and existing workspace is currently not mapped
 > - Container for storage account must be created post deployment (will be fixed shortly)
 > - FHIR sync agent is coming shortly
