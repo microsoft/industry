@@ -31,10 +31,10 @@ This section provide prescriptive guidance with design considerations and recomm
 
 ### Design considerations
 
-* The user who deploys and configures the D365 Marketing solution must either be Global Admin, Power Platform Admin, D365 Admin, or have sufficient permissions directly on the dedidacted Power Platform environment.
+* The user who deploys and configures the D365 Marketing solution must either be Global Admin, Power Platform Admin, D365 Admin, or have sufficient permissions directly on the dedicated Power Platform environment.
 * If you are deploying to an Environment in Power Platform that previously had the Marketing solution deployed, then the *Service support admin* user must use the same user ID as was used for the initial install. If not, a user with Global Admin, Power Platform Admin, or D365 Admin must deploy it.
 * The user deploying the D365 Marketing app must also have permissions to register applications in Azure AD.
-* Due to technical constraints, the user deploying the D365 Marketing solution must be asociated with a D365 Marketing license.
+* Due to technical constraints, the user deploying the D365 Marketing solution must be associated with a D365 Marketing license.
 * To deploy the Patient Outreach solution, the user must have an assigned license for the Healthcare add-on.
 
 ### Design recommendations
@@ -55,4 +55,4 @@ This section provide prescriptive guidance with design considerations and recomm
 
 * If Global Administrator permissions are needed to complete the deployment, ensure this is a joint activity in order to troubleshoot and follow-up with support in case D365 Marketing deployment is having issues.
 * Deploy D365 Marketing to test, development, and production environment to align with the overall [Environment strategy recommendations](../../../foundations/powerPlatform/) for Industry solutions in Power Platform.
-* Similarily, deploy Patient Outreach (and all other Healthcare solutions) to test, developtment, and production environments per the above.
+* Similarly, deploy Patient Outreach (and all other Healthcare solutions) to test, development, and production environments per the above.

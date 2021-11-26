@@ -1,4 +1,4 @@
-# Home health
+# Home Health
 
 Home health extends Microsoft Dynamics 365 Field Services with healthcare specific capabilities to manage home visit schedules, notify patients and give providers access to medical information. Key capabilities include:
 
