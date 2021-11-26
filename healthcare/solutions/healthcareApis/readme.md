@@ -6,8 +6,6 @@ Healthcare APIs with FHIR is essential in many of the Microsoft Cloud for Health
 |:----------------------|:------------|--------|
 | Azure Healthcare APIs | Healthcare APIs architecture with FHIR, Dicom, IoT connectors, and requisite infrastructure that can be deployed into an existing landing zone in Azure |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2FhealthArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2Fhealth-portal.json)
 
-In the overall architecture for Microsoft Cloud for Healthcare, the Healthcare APIs components together with the FHIR Sync Agent enable organizations that uses data models based on the Fast Healthcare Interoperability Resources (FHIR) standards frameworks to simplify data synchronization between Azure and Microsoft Dataverse, powered by the Microsoft Healthcare solutions in the Power Platform.
-
 ![Healthcare Industry Reference Architecture](./images/mc4h-reference-architecture.png)
 
 ## Critical design areas for Healthcare APIs
@@ -270,12 +268,3 @@ Write-Host $FhirGetPatient
 ```
 
 Other examples can be found here: [FHIR Search](solutions/healthcareApis/sampledata/fhirget.ps1)
-
-> ### Known issues
->
-> There are a few known issues:
->
-> * Existing storage account and existing workspace is currently not mapped
-> * Container for storage account must be created post deployment (will be fixed soon)
-> * FHIR sync agent is coming soon
-> * FHIR proxy is coming soon
