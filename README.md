@@ -71,14 +71,15 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
 [Pre-requisites](./telco/prereqs.md)
 
 [Azure for Telecommunications](./telco)
- - [Specialized Telco Industry Scenario](./telco#specialized-telco-scenarios)
- - [B2B and B2C Telco Networking](./telco#Networking)
- - [Distributed Edge](./telco#operator-distributed-edge)
 
-    </td>
-    <td>
-    <img src="telco\docs\telco-industry-reference-architecture-overview.png" width="99%" height="99%"/>
-    </td>
+- [Specialized Telco Industry Scenario](./telco#specialized-telco-scenarios)
+- [B2B and B2C Telco Networking](./telco#Networking)
+- [Distributed Edge](./telco#operator-distributed-edge)
+
+  </td>
+  <td>
+  <img src="telco\docs\telco-industry-reference-architecture-overview.png" width="99%" height="99%"/>
+  </td>
 
  </tr>
 </tbody>
@@ -126,4 +127,3 @@ trademarks or logos is subject to and must follow
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
-
