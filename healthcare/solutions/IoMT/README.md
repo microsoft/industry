@@ -1,6 +1,6 @@
 # Internet of Medical Things
 
-Internet of Medical Things (IoMT) is a subcategory of Internet of Things (IoT) and focusses on the practical application of IoT in the area of healthcare. In IoMT scenarios medical data is collected and sometime pre-processed through the means of Internet Connected medical devices and then sent to a datacenter in (near) real-time. The data can then be used for various data-driven applications and use-cases including:
+Internet of Medical Things (IoMT) is a subcategory of Internet of Things (IoT) and focusses on the practical application of IoT in the area of healthcare. In IoMT scenarios medical data is collected and sometime pre-processed through the means of internet Connected medical devices and then sent to a datacenter in (near) real-time. The data can then be used for various data-driven applications and use-cases including:
 
 - The prediction of medical states and incidents for device users as well as healthcare providers.
 - Allowing healthcare professional to remotely monitor patients' key biometrics in (near) real-time.
