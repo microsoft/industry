@@ -1,6 +1,6 @@
 # Internet of Medical Things
 
-Internet of Medical Things (IoMT) is a subcategory of Internet of Things (IoT) and focusses on the practical application of IoT in the area of healthcare. In IoMT scenarios medical data is collected and sometime pre-processed through the means of internet-connected medical devices and then sent to a datacenter in (near) real-time. The data can then be used for various data-driven applications and use-cases including:
+Internet of Medical Things (IoMT) is a subcategory of Internet of Things (IoT) and focusses on the practical application of IoT in the area of healthcare. In IoMT scenarios medical data is collected and sometime pre-processed through the means of Internet Connected medical devices and then sent to a datacenter in (near) real-time. The data can then be used for various data-driven applications and use-cases including:
 
 - The prediction of medical states and incidents for device users as well as healthcare providers.
 - Allowing healthcare professional to remotely monitor patients' key biometrics in (near) real-time.
@@ -10,7 +10,7 @@ Classical IoT as well as IoMT scenarios share similar architectures. The most si
 
 ## IoMT Architecture
 
-The architecture diagram depicts a typical IoMT scenario, where internet-connected devices collect protected health information (PHI) of patients and then transmit the data points over one or multiple gateways to the cloud.
+The architecture diagram depicts a typical IoMT scenario, where practical-connected devices collect protected health information (PHI) of patients and then transmit the data points over one or multiple gateways to the cloud.
 
 ![Internet of Medical Things Architecture](./docs/IoMT.png)
 
@@ -26,7 +26,7 @@ Within Dynamics 365, the Microsoft Cloud for Healthcare offers a comprehensive s
 
 The healthcare data model for Dynamics 365 is also based on the FHIR framework, which makes it easier for customers and partners to develop new applications without redefining the healthcare data architecture.
 
-In order to not end up with two disparate systems and datasets, customers can make use of a FHIR synch agent to synch datapoints and updates between Dataverse and Azure Healthcare APIs. The synch Agent consists of two components, the FHIR Synch Agent service and the FHIR Synch Agent Administration Application. Both components are required to synch data between Azure and the Power Platform. The synch must be setup by providing few application secrets as well as Service Bus Queue propertied.
+In order to not end up with two disparate systems and datasets, customers can make use of a FHIR synch agent to synch data points and updates between Dataverse and Azure Healthcare APIs. The synch Agent consists of two components, the FHIR Synch Agent service and the FHIR Synch Agent Administration Application. Both components are required to synch data between Azure and the Power Platform. The synch must be setup by providing few application secrets as well as Service Bus Queue propertied.
 
 Within the FHIR Synch Agent Administration Application, administrators can define entity maps, attribute maps and expansion maps. Sync Agent Logs can be used to validate synch operations and to understand why a certain data point is sent over the services bus and why others are not.
 

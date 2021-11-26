@@ -13,19 +13,20 @@ Microsoft Cloud for Healthcare spans the Microsoft Clouds (Azure, Power Platform
 
 <table>
 <thead>
-	<tr>
-		<th style="text-align:left" width="25%">Healthcare Scenario</th>
-		<th style="text-align:left" width="75%">Reference Architecture</th>
-	</tr>
+ <tr>
+  <th style="text-align:left" width="25%">Healthcare Scenario</th>
+  <th style="text-align:left" width="75%">Reference Architecture</th>
+ </tr>
 </thead>
 <tbody>
-	<tr>
-		<td style="text-align:top">
+ <tr>
+  <td style="text-align:top">
 
 [Pre-requisites for Healthcare](./healthcare/prereqs.md)
-  - [Power Platform](./foundations/powerPlatform)
-  - [Azure](./healthcare/solutions/healthcareApis)
-  - [Microsoft Teams](./healthcare/solutions/microsoftTeams)
+
+- [Power Platform](./foundations/powerPlatform)
+- [Azure](./healthcare/solutions/healthcareApis)
+- [Microsoft Teams](./healthcare/solutions/microsoftTeams)
 
 [Healthcare Solutions](./healthcare/solutions)
 
@@ -43,11 +44,12 @@ Microsoft Cloud for Healthcare spans the Microsoft Clouds (Azure, Power Platform
   - [Health Assistant](./healthcare/solutions/healthAssistant)
 - [Remote Patient Monitoring](./healthcare/solutions/IoMT)
 - [Clinical and Operational insights](./healthcare/solutions/clinicalAnalytics)
+
 </td>
-		<td>
+  <td>
         <img src="./healthcare/solutions/healthcareApis/images/mc4h-reference-architecture.png" width="99%" height="99%"/>
     </td>
-	</tr>
+ </tr>
 </tbody>
 </table>
 
@@ -57,25 +59,26 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
 
 <table>
 <thead>
-	<tr>
-		<th style="text-align:left" width="10%">Telecommunications Scenario</th>
-		<th style="text-align:left" width="90%">Reference Architecture</th>
-	</tr>
+ <tr>
+  <th style="text-align:left" width="10%">Telecommunications Scenario</th>
+  <th style="text-align:left" width="90%">Reference Architecture</th>
+ </tr>
 </thead>
 <tbody>
-	<tr>
-		<td style="vertical-align:top">
+ <tr>
+  <td style="vertical-align:top">
 
 - [Pre-requisites](./telco/prereqs.md)
 
 - [Azure for Telecommunications](./telco)
-    - [Scale-out networking](./telco/nwScaleOut)
+  - [Scale-out networking](./telco/nwScaleOut)
 
     </td>
     <td>
     <img src="telco\docs\telco-industry-reference-architecture-overview.png" width="99%" height="99%"/>
     </td>
-	</tr>
+
+ </tr>
 </tbody>
 </table>
 
