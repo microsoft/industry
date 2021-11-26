@@ -55,7 +55,7 @@ $headers.Add("Content-Type", "application/json")
 
 $FhirGetMalePatients = Invoke-RestMethod "$fhirservice/Patient?gender:not=female" `
     -Method 'GET' `
-    -Headers $headers 
+    -Headers $headers
 Write-Host $FhirGetPatient
 ```
 
@@ -76,15 +76,15 @@ function DownloadFilesFromRepo {
         [string]$Path,
         [string]$fhirservice
         )
-    
+
         $baseUri = "https://api.github.com/"
         $args = "repos/$Owner/$Repository/contents/$Path"
         $wr = Invoke-WebRequest -Uri $($baseuri+$args)
         $objects = $wr.Content | ConvertFrom-Json
         $files = $objects | where {$_.type -eq "file"} | Select -exp download_url
         $directories = $objects | where {$_.type -eq "dir"}
-        
-        $directories | ForEach-Object { 
+
+        $directories | ForEach-Object {
             DownloadFilesFromRepo -Owner $Owner -Repository $Repository -Path $_.path -DestinationPath $($DestinationPath+$_.name)
         }
 
@@ -95,7 +95,7 @@ function DownloadFilesFromRepo {
                 $FhirGetPatient = Invoke-RestMethod "$fhirservice/" `
                 -Method 'POST' `
                 -Headers $headers `
-                -Body $dlfile  
+                -Body $dlfile
 
                 Write-Host $file
             } catch {
@@ -116,7 +116,7 @@ Exsample of a search that returns all non-femail patients:
 ```powershell
 $FhirGetMalePatients = Invoke-RestMethod "$fhirservice/Patient?gender:not=female" `
     -Method 'GET' `
-    -Headers $headers 
+    -Headers $headers
 Write-Host $FhirGetPatient
 ```
 
@@ -130,4 +130,3 @@ Other examples can be found here: [FHIR Search](solutions/healthcareApis/sampled
 > - Container for storage account must be created post deployment (will be fixed shortly)
 > - FHIR sync agent is coming shortly
 > - FHIR proxy is coming shortly
->

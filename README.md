@@ -5,50 +5,86 @@ large scale deployments and at-scale adoption with customers and partners. This 
 inside Microsoft to help customers and partners by providing prescriptive and actionable guidance and implementation to accelerate
 deployment and adoption of industry cloud.
 
-![Industry Cloud Overview](./docs/industry-cloud.png)
-
 ## Industry Cloud Reference Architectures
 
 ### Healthcare
 
 Microsoft Cloud for Healthcare spans the Microsoft Clouds (Azure, Power Platform and Microsoft 365). This repository provides prescriptive architecture and design guidence together with respective reference implementations for the industry solution as a whole, as well as the various healthcare capabilities.
 
-- [Pre-requisites](./healthcare/prereqs.md)
-  - [Power Platform for Healthcare](./foundations/powerPlatform)  
-  - [Healthcare APIs](./healthcare/solutions/healthcareApis)
-  - [Microsoft Teams for Healthcare](./healthcare/solutions/microsoftTeams)
-- Personalized care
-  - [Patient service center](./healthcare/solutions/patientServiceCenter)
-  - [Patient access](./healthcare/solutions/patientAccess)
-- Patient insights
-  - [Patient outreach](./healthcare/solutions/patientOutreach)
-- Virtual health
-  - [Virtual visits](./healthcare/solutions/virtualVisits)
-- Care coordination
-  - [Care management](./healthcare/solutions/careMangement)
-  - [Home health](./healthcare/solutions/homeHealth)
-- Care collaboration
-  - [Health assistant](./healthcare/solutions/healthAssistant)
-- [Remote patient monitoring](./healthcare/solutions/IoMT)
-- Cinical and operational insights
-  - [Clinical analytics](./healthcare/solutions)
-  - [Operational analytics](./healthcare/solutions)
-  - [Data Interoperability](./healthcare/solutions)
+<table>
+<thead>
+	<tr>
+		<th style="text-align:left" width="25%">Healthcare Scenario</th>
+		<th style="text-align:left" width="75%">Reference Architecture</th>
+	</tr>
+</thead>
+<tbody>
+	<tr>
+		<td style="text-align:top">
+
+[Pre-requisites for Healthcare](./healthcare/prereqs.md)
+  - [Power Platform](./foundations/powerPlatform)
+  - [Azure](./healthcare/solutions/healthcareApis)
+  - [Microsoft Teams](./healthcare/solutions/microsoftTeams)
+
+[Healthcare Solutions](./healthcare/solutions)
+
+- Personalized Care
+  - [Patient Access](./healthcare/solutions/patientAccess)
+  - [Patient Service Center](./healthcare/solutions/patientServiceCenter)
+- Patient Insights
+  - [Patient Outreach](./healthcare/solutions/patientOutreach)
+- Virtual Health
+  - [Virtual Visits](./healthcare/solutions/virtualVisits)
+- Care Coordination
+  - [Care Management](./healthcare/solutions/careManagement)
+  - [Home Health](./healthcare/solutions/homeHealth)
+- Care Collaboration
+  - [Health Assistant](./healthcare/solutions/healthAssistant)
+- [Remote Patient Monitoring](./healthcare/solutions/IoMT)
+- [Clinical and Operational insights](./healthcare/solutions/clinicalAnalytics)
+</td>
+		<td>
+        <img src="./healthcare/solutions/healthcareApis/images/mc4h-reference-architecture.png" width="99%" height="99%"/>
+    </td>
+	</tr>
+</tbody>
+</table>
 
 ### Telecommunications
 
-Microsoft Cloud for Telecommunications enables an at-scale, and sustainable architecture for telco specific workloads, catering for the unique set of requirements a telco industry has compared to enterprises or customers in other industries. A prescriptive architecture and design guidance is provided below.
+Microsoft Cloud for Telecommunications enables an at-scale, and sustainable architecture for telecommunication specific workloads, catering for the unique set of requirements a telecommunication industry has compared to enterprises or customers in other industries. A prescriptive architecture and design guidance is provided below.
+
+<table>
+<thead>
+	<tr>
+		<th style="text-align:left" width="10%">Telecommunications Scenario</th>
+		<th style="text-align:left" width="90%">Reference Architecture</th>
+	</tr>
+</thead>
+<tbody>
+	<tr>
+		<td style="vertical-align:top">
 
 - [Pre-requisites](./telco/prereqs.md)
-  - [Azure for Telecommunications](./telco)
+
+- [Azure for Telecommunications](./telco)
     - [Scale-out networking](./telco/nwScaleOut)
+
+    </td>
+    <td>
+    <img src="telco\docs\telco-industry-reference-architecture-overview.png" width="99%" height="99%"/>
+    </td>
+	</tr>
+</tbody>
+</table>
 
 ### Financial services
 
 Microsoft Cloud for Financial Services provides capabilities to manage data to deliver differentiated experiences, empower employees, and combat financial crime while facilitating security, compliance, and interoperability.
 
 - [Pre-requisites](./fsi/prereqs.md)
-  - [Power Platform for Financial Services](./foundations/powerPlatform)  
+  - [Power Platform for Financial Services](./foundations/powerPlatform)
   - [Azure for Financial Services](./fsi/readme.md)
     - [Service enablement framework](./fsi/solutions/serviceEnablementFramework)
   - [Azure Synapse for Banking](./fsi/solutions/synapseBanking)

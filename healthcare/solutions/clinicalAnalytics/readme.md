@@ -45,7 +45,7 @@ Using Azure Synapse Link, continuously export data from:
 
 ![Healthcare - Clinical Analytics](./images/azure-synapse-link-dataverse.png)
 
-Azure Data Lake Storage Gen2 is required for setting up Synapse Link for Dataverse. You can consider deploying Enterprise Scala Analytics (ESA) for a consisten set up of you analytics environment. ESA includes Azure Data Lake Storage Gen2.
+Azure Data Lake Storage Gen2 is required for setting up Synapse Link for Dataverse. You can consider deploying Enterprise Scala Analytics (ESA) for a consistent set up of you analytics environment. ESA includes Azure Data Lake Storage Gen2.
 
 Consider in-place updates vs. append-only writes. For the Dataverse tables you are writing to the Data Lake consider if you should use in-place or append mode. In-place will update or upsert (update or insert) from source tables where createdOn is available. Append only mode will append source tables in Dataverse to the corresponding file partition in the Data Lake.
 
@@ -83,7 +83,7 @@ Named Entity Recognition detects words and phrases mentioned in unstructured tex
 
 Relation extraction identifies meaningful connections between concepts mentioned in text. For example, a "time of condition" relation is found by associating a condition name with a time or between an abbreviation and the full description.
 
-Entity linking disambiguates distinct entities by associating named entities mentioned in text to concepts found in a predefined database of concepts including the Unified Medical Language System (UMLS). Medical concepts are also assigned preferred naming, as an additional form of normalization.
+Entity linking disambiguate distinct entities by associating named entities mentioned in text to concepts found in a predefined database of concepts including the Unified Medical Language System (UMLS). Medical concepts are also assigned preferred naming, as an additional form of normalization.
 
 The meaning of medical content is highly affected by modifiers, such as negative or conditional assertions which can have critical implications if misrepresented. Text Analytics for health supports three categories of assertion detection for entities in the text:
 Certainty, Conditional and Association.
@@ -93,7 +93,7 @@ Text Analytics has 3 deployment options:
 * Language Studio
 * REST API and client-library
 * Docker container
-  
+
 #### Design recommendations
 
 Do not use for scenarios that use this service as a medical device, clinical support, or diagnostic tools to be used in the diagnosis, cure, mitigation, treatment or prevention of disease or other conditions without a human intervention. A qualified medical professional should always do due diligence and verify the source data regarding patient care decisions.
@@ -114,4 +114,3 @@ There are different stages the sync status will circulate through. NotStarted in
 * Data flow from FHIR to Dataverse is currently done using a a proprietary sync agent. A more scalable and reliable solution is recommended.
 * Data flow into FHIR needs a more detailed description and samples.
 * Write analytic result-set back to Dataverse needs a prescriptive guidance.
-  

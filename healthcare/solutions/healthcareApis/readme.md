@@ -1,4 +1,4 @@
-# Azure Healthcare APIs for Healthcare
+# Azure for Healthcare
 
 Healthcare APIs with FHIR is essential in many of the Microsoft Cloud for Healthcare scenarios, and is strongly recommended to deploy them into a landing zone in Azure to simplify and expedite the integration with Power Platform (Dataverse and Healthcare applications), and Microsoft Teams.
 
@@ -81,13 +81,13 @@ Egress from FHIR is done using the $export function. Before using $export, you h
 The FHIR service supports $export at the following levels:
 
 * System:
-  
+
 ```http
 GET https://<<FHIR service base URL>>/$export>>
 ```
 
 * Patient:
-  
+
 ```http
 GET https://<<FHIR service base URL>>/Patient/$export>>
 ```
@@ -204,7 +204,7 @@ $headers.Add("Content-Type", "application/json")
 
 $FhirGetMalePatients = Invoke-RestMethod "$fhirservice/Patient?gender:not=female" `
     -Method 'GET' `
-    -Headers $headers 
+    -Headers $headers
 Write-Host $FhirGetPatient
 ```
 
@@ -225,15 +225,15 @@ function DownloadFilesFromRepo {
         [string]$Path,
         [string]$fhirservice
         )
-    
+
         $baseUri = "https://api.github.com/"
         $args = "repos/$Owner/$Repository/contents/$Path"
         $wr = Invoke-WebRequest -Uri $($baseuri+$args)
         $objects = $wr.Content | ConvertFrom-Json
         $files = $objects | where {$_.type -eq "file"} | Select -exp download_url
         $directories = $objects | where {$_.type -eq "dir"}
-        
-        $directories | ForEach-Object { 
+
+        $directories | ForEach-Object {
             DownloadFilesFromRepo -Owner $Owner -Repository $Repository -Path $_.path -DestinationPath $($DestinationPath+$_.name)
         }
 
@@ -244,7 +244,7 @@ function DownloadFilesFromRepo {
                 $FhirGetPatient = Invoke-RestMethod "$fhirservice/" `
                 -Method 'POST' `
                 -Headers $headers `
-                -Body $dlfile  
+                -Body $dlfile
 
                 Write-Host $file
             } catch {
@@ -265,7 +265,7 @@ Example of a search that returns all non-female patients:
 ```powershell
 $FhirGetMalePatients = Invoke-RestMethod "$fhirservice/Patient?gender:not=female" `
     -Method 'GET' `
-    -Headers $headers 
+    -Headers $headers
 Write-Host $FhirGetPatient
 ```
 
@@ -275,8 +275,7 @@ Other examples can be found here: [FHIR Search](solutions/healthcareApis/sampled
 >
 > There are a few known issues:
 >
-> - Existing storage account and existing workspace is currently not mapped
-> - Container for storage account must be created post deployment (will be fixed soon)
-> - FHIR sync agent is coming soon
-> - FHIR proxy is coming soon
->
+> * Existing storage account and existing workspace is currently not mapped
+> * Container for storage account must be created post deployment (will be fixed soon)
+> * FHIR sync agent is coming soon
+> * FHIR proxy is coming soon
