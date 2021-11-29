@@ -27,13 +27,13 @@ _Figure 1:Azure for telco industry reference architecture._
 
 As figure 1 depicts, the Azure for Telco industry follows the design principles and recommendations of proven, compliant, and scalable architecture, but it provides specific guidance and recommendations in the following areas to accommodate for the typical requirements of Telcos:
 
-* Specialized telco scenarios (depicted as C in figure 1).
-* Networking across Azure and on-premises (Depicted as E in figure 1).
-* Distributed edge (Depicted as K in figure 1).
+* Governance for Telco Industry Scenarios (depicted as C in figure 1).
+* Networking for Telco Industry Scenarios (Depicted as E in figure 1).
+* Distributed Edge (Depicted as K in figure 1).
 
 The following sections will provide a high-level overview of the considerations for each of those areas, and subsequent articles will provide detailed design considerations and recommendations.
 
-### Specialized telco scenarios
+### Governance
 
 In general, any application composition can be deployed, managed and governed in Azure using existing the prescriptive guidance and architecture provided in Cloud Adoption Framework guidance. However, some applications typical for the Telco industry, such as those that provide managed services to end customers (B2C), or businesses (B2B) requires additional set of controls and governance that are different from the traditional LoB applications, and cloud native applications. Telco industry specific applications typically provide services such as Core CP, SBC, vIMS, vHSS, Thin/uCPE, SDWAN, vFW, vRouter, vLTM, CGNAT, vBNG, DDI and vRadius among others.
 
@@ -72,7 +72,7 @@ While figure 4 depicts a dual-homed network architecture with Azure Route Server
 
 ---
 
-### Operator distributed edge
+### Distributed Edge
 
 Telcos operate a distributed edge network to provide services (such as Radio Access Networks, RAN, or Wi-Fi) closer to where their customers are. The Azure for Telco industry reference implementation provides prescriptive guidance to leverage the Telco’s distributed edge infrastructure to provide Azure services at the edge via [Azure Stack Edge](https://docs.microsoft.com/azure/databox-online/) and [Azure private multi-access edge compute (MEC)](https://docs.microsoft.com/azure/private-multi-access-edge-compute-mec/overview), which among other benefits provides a low-latency experience to users, as services are provided directly at the edge instead of having to provide the services from the Azure region. Such services typically include 5G, CDN, gaming or augmented/virtual reality. This is depicted in figure 5 below.
 
