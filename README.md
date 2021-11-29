@@ -78,7 +78,7 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
 
   </td>
   <td>
-  <img src="telco\docs\telco-industry-reference-architecture-overview.png" width="99%" height="99%"/>
+  <img src="telco\docs\telco-industry-reference-architecture.png" width="99%" height="99%"/>
   </td>
 
  </tr>
