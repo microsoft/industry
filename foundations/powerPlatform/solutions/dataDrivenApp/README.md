@@ -14,7 +14,13 @@ The architecture diagram below illustrates the two design patterns (A) and (B), 
 
 ## (A) Data-driven Application using Microsoft Power Platform
 
-TODO
+Power Platform includes a rich set of tools and features to enhance and add capabilities to your business processes. Power Platform Canvas apps, model apps, portal apps, Dynamics 365 (D365) apps or Power Automate flows can be used in combination with Dataverse to collect data and build a historical dataset. The data can be further enriched by integrating additional datasets using Power Query.
+
+The data residing in Dataverse can then be used to train and host data science models within power platform using AI Builder. Eventually, these data science models can enhance the users experience, allow for automated or more informed decisions and provide more accurate results. To make use of AI Builder, an AI Builder capacity add-on needs to be purchased for the existing Power Apps or Power Automate licenses. When purchasing the capacity, users need to estimate how much capacity will be required. Once the add-on has been purchased, the capacity needs to be allocated to the Power Platform environment where AI Builder will be used. More details about Licensing can be found [here](https://docs.microsoft.com/en-us/ai-builder/administer-licensing).
+
+Once AI Builder capacity has been allocated to the Environment, users can select from a range of model types and categories. There are two types of models in AI Builder: *Prebuilt* and *Custom*. The majority of models is prebuilt and can be added to the application without requiring the user to select data or train and host the model. This simplifies the management overhead and is sufficient for many scenarios, but also means that the models cannot be tailored to the specific use case and data of the application. On the other hand, for custom models users are required to select a historical dataset or provide data samples to finetune the model (transfer learning). Once, the training was successful, the model can be used in Power Applications or in Power Automate. The provided capabilities by AI Builder are very similar to the Cognitive Services that are available on the Azure Platform today. However, in Power Platform these services are much more easily accessible and can also be consumed by business users.
+
+Before adding machine learning capabilities to a Power App, it may also be sufficient to provide simple reporting capabilities to provide decision makers with insights that allow for more informed and data-driven conclusions. Power BI is the recommended tool for such requirements. Power BI can be connected to Dataverse to create Power BI Datasets and the respective Reports. These can then be shared with users across an organization.
 
 ## (B) Data-driven Application using Microsoft Power Platform and Microsoft Azure
 
