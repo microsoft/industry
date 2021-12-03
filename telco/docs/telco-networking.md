@@ -17,7 +17,7 @@ This added complexity is due to most companies in the Telco industry having mult
   - Core
   - Operations and Management
   - Media
-  - Signaling 
+  - Signaling
   - Internet
   - Others
 
@@ -35,5 +35,11 @@ This added complexity is due to most companies in the Telco industry having mult
 
 - As first approach, evaluate whether is possible to consolidate multiple VRFs over a single (or a small set of) ExpressRoute circuit(s). In this way, a network topology based on hub and spoke architecture or Azure Virtual WAN as recommended in Cloud Adoption Framework would be sufficient without the added complexity.
 
-- Work in progress
+- If is not possible to consolidate multiple VRFs into a single (or a small set of) ExpressRoute circuit(s), evaluate which of the following alternatives would be suitable for your environment to map multiple VRFs to Azure:
+
+### Multiple ExpressRoute Circuits
+
+### IPSec Tunnels
+
+### Overlay Network Technologies (such as VXLAN)
 
