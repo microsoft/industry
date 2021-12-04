@@ -35,7 +35,6 @@ The **Enterprise Scale architecture** approach advocates the use of native platf
 -   Be prepared to trade off functionality as not everything will likely be required on day one.
 -   Leverage preview services and take dependencies on service roadmaps in order to remove technical blockers.
 
-These design principles helps organizations to navigate and make design decisions across the critical design areas for Azure.
 
 ## Critical Design areas
 
