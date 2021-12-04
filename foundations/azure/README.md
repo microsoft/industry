@@ -1,8 +1,13 @@
-# Azure for industries
+# Azure Cloud Foundation for industries
 
 The Microsoft Azure Cloud Foundation for industries is based on proven and authoritative guidance that is published and documented in the [Cloud Adoption Framework](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/).
 
 Each of the respective reference implementations in this repository is based on this as a foundation, and provides unique industry recommendations and industry specific implementations to accelerate organizations journey to a scalable foundation for subsequent industry solutions.
+
+| Azure Cloud Foundations | Description | Deploy |
+|:----------------------|:------------|--------|
+| Azure for Telecommunications | Azure for Telco foundation that provides a full, rich, compliant architecture with scale-out pattern for connectivity and landing zones for Telco industry scenarios |[![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Ftelco%2FreferenceImplementation%2FtelcoArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Ftelco%2FreferenceImplementation%2Ftelco-portal.json)
+| Azure for Healthcare | Azure for Healthcare foundation that provides a full, rich compliant architecture with specific HIPAA/HITRUST compliance requirements, alongside with Healthcare APIs in the landing zones for interoperability with Healthcare solutions in Power Platform | [![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2FhealthArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2Fhealth-portal.json)
 
 The architecture and design for the Azure for industries foundation is based on the following design principles:
 
@@ -35,7 +40,6 @@ The **Enterprise Scale architecture** approach advocates the use of native platf
 -   Be prepared to trade off functionality as not everything will likely be required on day one.
 -   Leverage preview services and take dependencies on service roadmaps in order to remove technical blockers.
 
-
 ## Critical Design areas
 
 Use the guidelines in the following Critical design areas article series to help you translate your requirements to Azure constructs and capabilities. These eight critical design areas articles can help you address the mismatch between on-premises and cloud-design infrastructure, which typically creates dissonance between the enterprise-scale definition and Azure adoption.
@@ -47,6 +51,10 @@ Decisions you make within these critical areas reverberate across enterprise-sca
 * [Identity and access management](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/identity-and-access-management)
 
 * [Management group and subscription organization](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/management-group-and-subscription-organization)
+
+* [Network topology and connectivity](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/network-topology-and-connectivity)
+
+* [Management and monitoring](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/management-and-monitoring)
 
 * [Business continuity and disaster recovery](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/business-continuity-and-disaster-recovery)
 
