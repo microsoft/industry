@@ -1,1 +1,96 @@
-# Coming Soon
+# Patient service center
+
+Patient service center enables your organization to engage with your patients in the way they want, by using chat, and monitor automatic conversations through the Microsoft Azure Healthbot service. Service agents can help your patients with information and setting up appoints.
+
+Patient service center builds on Power Platform, Dynamics 365 Customer Service and its Digital Messaging Add-in to provide healthcare-specific capabilities.
+
+Further, Patient service center can be integrated with [Patient access portal](../patientAccess) to create a direct channel for your patients and automate conversations using the Healthbot.
+
+| Reference implementation | Description | Deploy |
+|:----------------------|:------------|--------|
+| Compliant Azure Healthbot | End-to-end deployment and configuration of a compliant Azure Healthbot for integration with Omnichannel and Patient service center, and Patient Access portal |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
+
+>Note: The implementation of the Patient service center solution can currently not be automated, and requires manual implementation and configuration across Solution Center, Power Platform Admin Center, and portal for Power Apps. See the [implementation guide](#implementation-guide-for-patient-access) for detailed instructions.
+
+![PatientSerivceCenter](./images/overview.png)
+
+Before you deploy and configure, verify you have implemented the [prerequisites](../../prereqs.md).
+
+Specifically for Patient service center, you need:
+
+* [Power Platform environments](../../../foundations/powerPlatform/)
+  * Must be created upfront, in United States with Dataverse and D365 Apps enabled
+  * If you plan to integrate with Patient Access Portal, see the [pre-requisites](../patientAccess/) for this scenario.
+  * Dynamics 365 Customer Service
+  * Digital Messaging add-in for Dynamics 365 Customer Service
+
+## Planning guidelines for Patient service center
+
+This section provide prescriptive guidance with design considerations and recommendations across the critical design areas for Patient service center scenario for the teams that will deploy and manage these specific capabilities within the Microsoft Cloud for Healthcare.
+
+* [Identity and access](#identity-and-access)
+* [Monitoring](#monitoring)
+* [Security](#identity-and-access)
+
+## Identity and access
+
+### Design considerations
+
+* For a complete setup of the Patient service center scenario, the persona(s) doing the setup and configuration requires permissions across Azure AD, Azure (landing zone subscription), Power Platform, and Microsoft teams.
+* Azure Healthbot is an Azure resource provided by the "Microsoft.Healthbot" Resource Provider. To register this resource provider, the user must at least be *Contributor* on the landing zone subscription
+
+### Design recommendations
+
+to-do
+
+## Monitoring
+
+### Design considerations
+
+to-do
+
+### Design recommendations
+
+to-do
+
+## Security
+
+### Design considerations
+
+to-do
+
+### Design recommendations
+
+* For Patient access integration, ensure portal authentication is configured to your chosen identity provider.
+* For Patient access integration, restrict portal access from a list of IP addresses and CIDR ranges to limit portal access as described on this [article](https://docs.microsoft.com/powerapps/maker/portals/admin/ip-address-restrict).
+* For Patient access integration, create required policies and flows for user sign-up if integrating the portal application with Azure AD B2C
+
+## Implementation guide for Patient Service Center
+
+The following instructions will guide you to how to install and configure the Patient service center across Azure, Power Platform, and Microsoft Teams.
+
+1. Patient service center will be deployed from the Microsoft Solution Center, but prior to that an environment with the pre-requisites must be deployed. Please refer to the [North Star Architecture for Power Platform](../../../foundations/powerPlatform) to ensure you have a compliant, production ready environment before you start.
+Further, Dynamics 365 Customer Service and Digital Messaging add-in for Dynamics 365 Customer Service must be pre-provisioned and configured into the target environment(s).
+
+2. For the environment you will enable the Patient service center scenario, you must first enable the *Customer Service Hub (CRM Hub)* solution as this is a pre-requisite for the Omnichannel setup you will complete later.
+>Note: If your environment has been created after October 1st 2021, this is already pre-loaded in your environment and this step is not required. If the enviornment was created before this date, you must navigate to [Admin portal for Power Platform](https://admin.powerplatform.com), select *Resources* --> *D365 Apps* --> and install *Microsoft Dynamics 365 CRM Hub*
+
+3. To configure Omnichannel for Customer Service, you must [provide data access consent](https://go.microsoft.com/fwlink/p/?linkid=2070932) as a user being Global Tenant Admin and select *Consent on behalf of your organization* checkbox.
+
+![consent](./images/consent.png)
+
+4. When the consent has been granted, navigate to [Admin portal for Power Platform](https://admin.powerplatform.com), select *Resources* --> *D365 Apps* --> and locate *Omnichannel for Customer Service*
+
+![omnichannel](./images/omnichannel.png)
+
+Click on the *...* button and select *Manage*. This will take you to the Dynamics 365 apps admin page to start the setup.
+
+![d365](./images/d365.png)
+
+5. In the *Dynamics 365 Administration Center*, select *+Add environment* and ensure you are using the same environment you will be using for the Patient Service Center deployment later. Once selected, you can enable the capabilities you require for your setup. For now, we are enabling *Chat*, *SMS*, and *Microsoft Teams*. You can visit the *Dynamics 365 Administration Center* later if you want to enable further capabilities. 
+
+![omnisetup](./images/omnisetup.png)
+
+Once you have confirmed the selection, Omnichannel setup will start and can take a few hours to complete.
+
+![setupstatus](./images/setupstatus.png)
