@@ -5,6 +5,8 @@ large scale deployments and at-scale adoption with customers and partners. This 
 inside Microsoft to help customers and partners by providing prescriptive and actionable guidance and implementation to accelerate
 deployment and adoption of industry cloud.
 
+![msforindustry](./docs/industry.gif)
+
 ## Industry Cloud Reference Architectures
 
 ### Healthcare
