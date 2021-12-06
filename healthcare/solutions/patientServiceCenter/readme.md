@@ -38,17 +38,20 @@ This section provide prescriptive guidance with design considerations and recomm
 
 * For a complete setup of the Patient service center scenario, the persona(s) doing the setup and configuration requires permissions across Azure AD, Azure (landing zone subscription), Power Platform, and Microsoft teams.
 * Azure Healthbot is an Azure resource provided by the "Microsoft.Healthbot" Resource Provider. To register this resource provider, the user must at least be *Contributor* (RBAC) on the landing zone subscription(s).
+* Users accessing the Healthcare applications - such as the Patient service center need to be explicitly added to the security group in the Power Platform environments.
 
 ### Design recommendations
 
 * Ensure the right permission are assigned upfront before installing and enabling the Patient service center solution. If there's clear separation of concerns within the organization to carry out these tasks across Power Platform, Azure, and Microsoft Teams, ensure the required personas are involved and engaged to adhere to the required deployment sequence.
-* 
+* Create dedicated Azure AD Groups to maintain access to the Healthcare applications such as Patient service center. This AAD group must be mapped towards the built-in *Healthcare users* role in the Power Platform environments.
 
 ## Monitoring
 
 ### Design considerations
 
-to-do
+* Microsoft Azure Health Bot does not provide a diagnostic setting similar to other Azure resources.
+* All writes (create, update, and delete) operations towards the Healthcare Bot service from a control plane perspective is captured in the Azure Activity log
+* 
 
 ### Design recommendations
 
@@ -98,4 +101,16 @@ Once you have confirmed the selection, Omnichannel setup will start and can take
 
 6. Once the setup has completed, you need to start the deployment of the *Patient service center* solution using the [Microsoft Cloud Solution Center](https://solutions.microsoft.com). Ensure you are targeting the same Power Platform environment as used for Customer Service and omnichannel. The deployment can take one or more hours.
 
-![solution](./solution.png)
+![solution](./images/solution.png)
+
+## Integrate Patient service center with chat functionality using Microsoft Azure Health Bot
+
+Once the Patient service center has been deployed and enabled, you can integrate with the Microsoft Azure Health Bot to enable AI-powered virtual health assistants. This will provide an intelligent and personalized access to health-related information and interactions through a natural conversation experience.
+
+The bot will handle simple patient questions in the portal of the [Patient access](../patientAccess) solution (or any other website). For complex questions you can instrument the Health bot service to hand off the conversation to professional care coordinators in the Patient service center.
+
+1. Deploy a Microsoft Azure Health Bot into a compliant landing zone (Azure). You can use the reference implementation provided here to ensure it is fully configured, secured, and monitored. 
+
+2. Post deployment, navigate to the *management portal* of the Health bot, go to *Configuration* --> *Conversation* and select *Human Handoff*. Here you must toggle the *Dynamics 365 OmniChannel* option to bridge messages. 
+
+![botconfig](./images/botconfig.png)
