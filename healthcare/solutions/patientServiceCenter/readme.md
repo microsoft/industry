@@ -39,11 +39,13 @@ This section provide prescriptive guidance with design considerations and recomm
 * For a complete setup of the Patient service center scenario, the persona(s) doing the setup and configuration requires permissions across Azure AD, Azure (landing zone subscription), Power Platform, and Microsoft teams.
 * Azure Healthbot is an Azure resource provided by the "Microsoft.Healthbot" Resource Provider. To register this resource provider, the user must at least be *Contributor* (RBAC) on the landing zone subscription(s).
 * Users accessing the Healthcare applications - such as the Patient service center need to be explicitly added to the security group in the Power Platform environments.
+* Healthcare Bot and Omnichannel integration requires an AD Application with read permissions to various MS Graph APIs.
 
 ### Design recommendations
 
 * Ensure the right permission are assigned upfront before installing and enabling the Patient service center solution. If there's clear separation of concerns within the organization to carry out these tasks across Power Platform, Azure, and Microsoft Teams, ensure the required personas are involved and engaged to adhere to the required deployment sequence.
 * Create dedicated Azure AD Groups to maintain access to the Healthcare applications such as Patient service center. This AAD group must be mapped towards the built-in *Healthcare users* role in the Power Platform environments.
+* Create a dedicated AD Application for Healthcare Bot and Omnichannel integration. For dev, test, and production scenarios, ensure you are using dedicated applications for this.
 
 ## Monitoring
 
@@ -51,11 +53,14 @@ This section provide prescriptive guidance with design considerations and recomm
 
 * Microsoft Azure Health Bot does not provide a diagnostic setting similar to other Azure resources.
 * All writes (create, update, and delete) operations towards the Healthcare Bot service from a control plane perspective is captured in the Azure Activity log
-* 
+* Azure AD sign-ins and operations are logged to the Azure AD logs.
 
 ### Design recommendations
 
-to-do
+* Use dedicated Application Insights instances per Healthcare Bot environment, and persist the data in an associated Log Analytics workspace.
+* Capture Azure Activity Logs from the subscription into the dedicated Log Analytics workspace.
+* Enable Data export from the Power Platform environment to capture diagnostics for the Dataverse instance in the Environment for Healthcare solutions, into the dedicated Application Insights instance.
+* If integrating with Patient access portal app, ensure the portal is also ingesting metrics and logs to the dedicated Application Insights instance.
 
 ## Security
 
@@ -65,6 +70,7 @@ to-do
 
 ### Design recommendations
 
+* The Application Id for the Healthcare Bot integration must be added to the 'Omnichannel agent' built-in security role in the Environment where the Healthcare solution is deployed.
 * For Patient access integration, ensure portal authentication is configured to your chosen identity provider.
 * For Patient access integration, restrict portal access from a list of IP addresses and CIDR ranges to limit portal access as described on this [article](https://docs.microsoft.com/powerapps/maker/portals/admin/ip-address-restrict).
 * For Patient access integration, create required policies and flows for user sign-up if integrating the portal application with Azure AD B2C
@@ -77,6 +83,7 @@ The following instructions will guide you to how to install and configure the Pa
 Further, Dynamics 365 Customer Service and Digital Messaging add-in for Dynamics 365 Customer Service must be pre-provisioned and configured into the target environment(s).
 
 2. For the environment you will enable the Patient service center scenario, you must first enable the *Customer Service Hub (CRM Hub)* solution as this is a pre-requisite for the Omnichannel setup you will complete later.
+
 >Note: If your environment has been created after October 1st 2021, this is already pre-loaded in your environment and this step is not required. If the enviornment was created before this date, you must navigate to [Admin portal for Power Platform](https://admin.powerplatform.com), select *Resources* --> *D365 Apps* --> and install *Microsoft Dynamics 365 CRM Hub*
 
 3. To configure Omnichannel for Customer Service, you must [provide data access consent](https://go.microsoft.com/fwlink/p/?linkid=2070932) as a user being Global Tenant Admin and select *Consent on behalf of your organization* checkbox.
@@ -91,7 +98,7 @@ Click on the *...* button and select *Manage*. This will take you to the Dynamic
 
 ![d365](./images/d365.png)
 
-5. In the *Dynamics 365 Administration Center*, select *+Add environment* and ensure you are using the same environment you will be using for the Patient Service Center deployment later. Once selected, you can enable the capabilities you require for your setup. For now, we are enabling *Chat*, *SMS*, and *Microsoft Teams*. You can visit the *Dynamics 365 Administration Center* later if you want to enable further capabilities. 
+5. In the *Dynamics 365 Administration Center*, select *+Add environment* and ensure you are using the same environment you will be using for the Patient Service Center deployment later. Once selected, you can enable the capabilities you require for your setup. For now, we are enabling *Chat*, *SMS*, and *Microsoft Teams*. You can visit the *Dynamics 365 Administration Center* later if you want to enable further capabilities.
 
 ![omnisetup](./images/omnisetup.png)
 
@@ -109,8 +116,21 @@ Once the Patient service center has been deployed and enabled, you can integrate
 
 The bot will handle simple patient questions in the portal of the [Patient access](../patientAccess) solution (or any other website). For complex questions you can instrument the Health bot service to hand off the conversation to professional care coordinators in the Patient service center.
 
-1. Deploy a Microsoft Azure Health Bot into a compliant landing zone (Azure). You can use the reference implementation provided here to ensure it is fully configured, secured, and monitored. 
+1. Deploy a Microsoft Azure Health Bot into a compliant landing zone (Azure). You can use the reference implementation provided here to ensure it is fully configured, secured, and monitored.
 
-2. Post deployment, navigate to the *management portal* of the Health bot, go to *Configuration* --> *Conversation* and select *Human Handoff*. Here you must toggle the *Dynamics 365 OmniChannel* option to bridge messages. 
+2. Post deployment, navigate to the *management portal* of the Health bot, go to *Configuration* --> *Conversation* and select *Human Handoff*. Here you must toggle the *Dynamics 365 OmniChannel* option to bridge messages.
 
 ![botconfig](./images/botconfig.png)
+
+3. Create a Bot user, add the bot user to the queues in Dynamics 365 Omnichannel and set the escalation rules.
+
+To create the bot user, navigate to channels in the *management portal* of your Healthcare Bot. Select *Integration* --> *Channels*, and set *Microsoft Teams* to active if not done already, and click *View*. This will show the Bot id. Copy this id to your clipboard.
+
+![botid](./images/botid.png)
+
+In the Power Platform [admin center](https://admin.powerplatform.com), locate the enviornment where you have deployed the solutions, and open *Settings*, select *Security*, and *Users*.
+
+Select *Application Users* and create a new, where you enter or select the following:
+
+* User Name: User name of the Bot (this will not be displayed in the chat-widget)
+* Application Id: An application ID for any valid (non-expired) application created in Azure Active Directory.
