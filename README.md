@@ -5,6 +5,8 @@ large scale deployments and at-scale adoption with customers and partners. This 
 inside Microsoft to help customers and partners by providing prescriptive and actionable guidance and implementation to accelerate
 deployment and adoption of industry cloud.
 
+>Microsoft Cloud for industries will take a dependency on well-architected, sustainable, and scalable *cloud foundations* (Microsoft Azure, Microsoft Power Platform, and Microsoft 365), which will de-risk technical debt and ensure durable solutions regardless of the industry cloud reference architecture your organization would need. This repository references and provides proven, authoritative, and prescriptive architecture and design recommendations for these foundations, as well as specific reference implementations targeting the unique industry requirements. See the [following article](./foundations) to learn more
+
 ## Industry Cloud Reference Architectures
 
 ### Healthcare
@@ -24,9 +26,9 @@ Microsoft Cloud for Healthcare spans the Microsoft Clouds (Azure, Power Platform
 
 [Pre-requisites for Healthcare](./healthcare/prereqs.md)
 
-- [Power Platform](./foundations/powerPlatform)
-- [Azure](./healthcare/solutions/healthcareApis)
-- [Microsoft Teams](./healthcare/solutions/microsoftTeams)
+- [Power Platform for Healthcare](./foundations/powerPlatform)
+- [Azure for Healthcare](./healthcare/solutions/healthcareApis)
+- [Microsoft Teams for Healthcare](./healthcare/solutions/microsoftTeams)
 
 [Healthcare Solutions](./healthcare/solutions)
 
