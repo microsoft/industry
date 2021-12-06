@@ -39,6 +39,25 @@ This added complexity is due to most companies in the Telco industry having mult
 
 ### Multiple ExpressRoute Circuits
 
+#### Design Considerations
+
+- Consider the following ExpressRoute limits when designing for a solution involving multiple ExpressRoute circuits:
+  - Up to 4 ExpressRoute connections into the same ExpressRoute Gateway when then connections are provisioned from the same peering location.
+  - For Azure VWAN, up to 8 ExpressRoute connections into the same VHub when then connections are provisioned from different peering locations.
+  - For hub and spoke, up to 16 ExpressRoute connections into the same VHub when then connections are provisioned from different peering locations.
+
+- Azure Virtual WAN allows the creation of multiple VHubs in the same region within the same VWAN resource. 
+
+- In hub and spoke networks, it is possible to deploy multi-homed virtual networks (virtual networks connected to two or more hub virtual networks) by using UDRs and a NVA (such as Azure Firewall) or by using the Azure Route Server.
+
+#### Design Recommendations
+- Use dedicated ExpressRoute circuits and dedicated ExpressRoute Gateways when end-to-end network isolation from an on-premises VRF into Azure VNet is required.
+- Connect virtual networks by using VNet peering when resources across different virtual networks need to communicate with each other.
+  - A typical scenario is a management plane VNet communicating with data plane VNet(s) as depicted in the picture below:
+![Figure 1: VNet peering between control plane and data plane VNets](./telco-multiple-er-vnet-peering.png)
+
+
+
 ### IPSec Tunnels
 
 ### Overlay Network Technologies (such as VXLAN)
