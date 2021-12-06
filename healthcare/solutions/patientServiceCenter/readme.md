@@ -37,11 +37,12 @@ This section provide prescriptive guidance with design considerations and recomm
 ### Design considerations
 
 * For a complete setup of the Patient service center scenario, the persona(s) doing the setup and configuration requires permissions across Azure AD, Azure (landing zone subscription), Power Platform, and Microsoft teams.
-* Azure Healthbot is an Azure resource provided by the "Microsoft.Healthbot" Resource Provider. To register this resource provider, the user must at least be *Contributor* on the landing zone subscription
+* Azure Healthbot is an Azure resource provided by the "Microsoft.Healthbot" Resource Provider. To register this resource provider, the user must at least be *Contributor* (RBAC) on the landing zone subscription(s).
 
 ### Design recommendations
 
-to-do
+* Ensure the right permission are assigned upfront before installing and enabling the Patient service center solution. If there's clear separation of concerns within the organization to carry out these tasks across Power Platform, Azure, and Microsoft Teams, ensure the required personas are involved and engaged to adhere to the required deployment sequence.
+* 
 
 ## Monitoring
 
@@ -94,3 +95,7 @@ Click on the *...* button and select *Manage*. This will take you to the Dynamic
 Once you have confirmed the selection, Omnichannel setup will start and can take a few hours to complete.
 
 ![setupstatus](./images/setupstatus.png)
+
+6. Once the setup has completed, you need to start the deployment of the *Patient service center* solution using the [Microsoft Cloud Solution Center](https://solutions.microsoft.com). Ensure you are targeting the same Power Platform environment as used for Customer Service and omnichannel. The deployment can take one or more hours.
+
+![solution](./solution.png)
