@@ -37,8 +37,8 @@ The **Enterprise Scale architecture** approach advocates the use of native platf
 
 ### Recommendations
 
--   Be prepared to trade off functionality as not everything will likely be required on day one.
--   Leverage preview services and take dependencies on service roadmaps in order to remove technical blockers.
+- Be prepared to trade off functionality as not everything will likely be required on day one.
+- Leverage preview services and take dependencies on service roadmaps in order to remove technical blockers.
 
 ## Critical Design areas
 
