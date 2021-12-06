@@ -6,6 +6,7 @@ inside Microsoft to help customers and partners by providing prescriptive and ac
 deployment and adoption of industry cloud.
 
 >Microsoft Cloud for industries will take a dependency on well-architected, sustainable, and scalable *cloud foundations* (Microsoft Azure, Microsoft Power Platform, and Microsoft 365), which will de-risk technical debth and ensure durable solutions regardless of industry cloud reference architecture your organization would need. This repository references and provides proven, authoritative, and prescriptive architecture and design recommendations for these foundations, as well as specific reference implementations targeting the unique industry requirements. See the [following article](./foundations) to learn more
+![msforindustry](./docs/industry.gif)
 
 ## Industry Cloud Reference Architectures
 
@@ -129,3 +130,7 @@ trademarks or logos is subject to and must follow
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
+
+## Microsoft Sponsorship
+
+The Industry Reference Architecture project was created by the **Microsoft Customer Architecture Team (CAT)** in partnership with several Microsoft engineering teams who continue to actively sponsor the sustained evolution of the project through the creation of additional reference implementations for common industry scenarios.
