@@ -40,3 +40,7 @@ Healthcare requires Power Platform environments (recommendation is dedicated env
 Teams is used for many of the healthcare capabilities, such as care management and collaboration.
 
 [Prescriptive guidance and design recommendations for Microsoft Teams for Healthcare](./solutions/microsoftTeams)
+
+---
+
+[Back to documentation root](../)
