@@ -48,9 +48,13 @@ This added complexity is due to most companies in the Telco industry having mult
 - In Azure, connect virtual networks by using VNet peering when resources across different virtual networks need to communicate with each other.
   - A typical scenario is a management plane VNet communicating with data plane VNet(s) as depicted in the picture below:
 ![Figure 1: VNet peering between control plane and data plane VNets](./telco-multiple-er-vnet-peering.png)
+_Figure 1:VNet peering between control plane and data plane VNets._
 - When using dedicated ExpressRoute circuits and VNets, and Azure resources must be accesible over two on more ExpressRoute circuits, a multi-homed VNets network architecture is recommended. A multi-homed VNet architecture can be implemented by using one of the following approaches:
-  - Automatically with Azure Route Server
-  - Manually with UDRs
+  - **Automatic route exchange with Azure Route Server**. In this setup, a NVA in the hub virtual network will learn about on-premises routes from the ExpressRoute gateway through route exchange with the Route Server in the hub. In return, the NVA will send the spoke virtual network addresses to the ExpressRoute gateway using the same Route Server. The Route Server in both the spoke and hub virtual network will then program the on-premises network addresses to the virtual machines in their respective virtual network. The virtual machines in the spoke virtual network will send all traffic destined for the on-premises network to the NVA in the hub virtual network first. Then the NVA will forward the traffic to the on-premises network through ExpressRoute. Traffic from on-premises will traverse the same data path in the reverse direction. In this setup, neither of the Route Servers are in the data path. This scenario is depicted in figure 2 below:
+  ![Figure 2: Multi-homed VNets using Azure Route Server](./dual-homed-topology-expressroute.png)
+
+  _Figure 2:Multi-homed VNets using Azure Route Server_
+  - Static routing with User Defined Routes (UDRs).
 
 
 ### IPSec Tunnels
