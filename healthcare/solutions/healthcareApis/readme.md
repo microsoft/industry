@@ -268,3 +268,7 @@ Write-Host $FhirGetPatient
 ```
 
 Other examples can be found here: [FHIR Search](solutions/healthcareApis/sampledata/fhirget.ps1)
+
+---
+
+[Back to documentation root](../../../)

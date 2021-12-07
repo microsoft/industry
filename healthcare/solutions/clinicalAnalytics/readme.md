@@ -114,3 +114,7 @@ There are different stages the sync status will circulate through. NotStarted in
 * Data flow from FHIR to Dataverse is currently done using a a proprietary sync agent. A more scalable and reliable solution is recommended.
 * Data flow into FHIR needs a more detailed description and samples.
 * Write analytic result-set back to Dataverse needs a prescriptive guidance.
+
+---
+
+[Back to documentation root](../../../)

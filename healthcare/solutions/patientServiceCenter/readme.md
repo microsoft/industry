@@ -143,3 +143,7 @@ Select *Application Users* and create a new, where you enter or select the follo
 * Application Id: An application ID for any valid (non-expired) application created in Azure Active Directory.
 
 *WORK IN PROGRESS*
+
+---
+
+[Back to documentation root](../../../)

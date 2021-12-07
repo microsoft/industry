@@ -63,3 +63,7 @@ This section provides prescriptive guidance with design considerations and recom
 
 * Ensure user/group mapping for the requisite licenses are done before deploying the solutions to Power Platform.
 * Ensure appropriate RBAC is assigned to the Security group for the dedicated Environment for Healthcare in Power Platform, ideally as part of the Environment creation process.
+
+---
+
+[Back to documentation root](../../../)

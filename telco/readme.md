@@ -39,3 +39,7 @@ The following articles will provide detailed design considerations and recommend
 * [Governance for Telco Industry Scenarios](./docs/telco-governance.md)
 * [Networking for Telco Industry Scenarios](./docs/telco-networking.md)
 * [Distributed Edge](./docs/telco-edge.md)
+
+---
+
+[Back to documentation root](../)

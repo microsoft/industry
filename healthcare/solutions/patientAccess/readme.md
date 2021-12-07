@@ -159,3 +159,7 @@ Once the portal has been created and configured, you must update the Healthcare 
 3. Provide the URL for your patient access portal you created earlier, and save.
 
 ![powerapps](./images/patientaccess12.png)
+
+---
+
+[Back to documentation root](../../../)
