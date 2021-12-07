@@ -10,7 +10,7 @@ Further, Patient service center can be integrated with [Patient access portal](.
 |:----------------------|:------------|--------|
 | Compliant Azure Healthbot | End-to-end deployment and configuration of a compliant Azure Healthbot for integration with Omnichannel and Patient service center, and Patient Access portal |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
 
->Note: The implementation of the Patient service center solution can currently not be automated, and requires manual implementation and configuration across Solution Center, Power Platform Admin Center, and portal for Power Apps. See the [implementation guide](#implementation-guide-for-patient-access) for detailed instructions.
+>Note: The implementation of the Patient service center solution can currently not be automated, and requires manual implementation and configuration across Solution Center, Power Platform Admin Center, and portal for Power Apps. See the [implementation guide](#implementation-guide-for-patient-service-center) for detailed instructions.
 
 ![PatientSerivceCenter](./images/overview.png)
 
@@ -39,12 +39,14 @@ This section provide prescriptive guidance with design considerations and recomm
 * For a complete setup of the Patient service center scenario, the persona(s) doing the setup and configuration requires permissions across Azure AD, Azure (landing zone subscription), Power Platform, and Microsoft teams.
 * Azure Healthbot is an Azure resource provided by the "Microsoft.Healthbot" Resource Provider. To register this resource provider, the user must at least be *Contributor* (RBAC) on the landing zone subscription(s).
 * Users accessing the Healthcare applications - such as the Patient service center need to be explicitly added to the security group in the Power Platform environments.
-* Healthcare Bot and Omnichannel integration requires an AD Application with read permissions to various MS Graph APIs.
+* Healthcare Bot and Omnichannel integration requires an AD Application with read permissions to several MS Graph APIs.
+* To configure and manage Omnichannel, the user/group/application must be added explicitly to the built-in roles for Omnichannel once the solution has been deployed, in the Power Platform environment
 
 ### Design recommendations
 
 * Ensure the right permission are assigned upfront before installing and enabling the Patient service center solution. If there's clear separation of concerns within the organization to carry out these tasks across Power Platform, Azure, and Microsoft Teams, ensure the required personas are involved and engaged to adhere to the required deployment sequence.
 * Create dedicated Azure AD Groups to maintain access to the Healthcare applications such as Patient service center. This AAD group must be mapped towards the built-in *Healthcare users* role in the Power Platform environments.
+* For Omnichannel configuration and management, users, groups, and applications (e.g., chat bots etc.) should be mapped directly to the built-in Omnichannel security roles in the environment, such as Administrator, Agent, or Operator.
 * Create a dedicated AD Application for Healthcare Bot and Omnichannel integration. For dev, test, and production scenarios, ensure you are using dedicated applications for this.
 
 ## Monitoring
@@ -52,7 +54,7 @@ This section provide prescriptive guidance with design considerations and recomm
 ### Design considerations
 
 * Microsoft Azure Health Bot does not provide a diagnostic setting similar to other Azure resources.
-* All writes (create, update, and delete) operations towards the Healthcare Bot service from a control plane perspective is captured in the Azure Activity log
+* All writes (create, update, and delete) operations towards the Healthcare Bot service from an Azure control plane perspective is logged in the Azure Activity log for 90 days
 * Azure AD sign-ins and operations are logged to the Azure AD logs.
 
 ### Design recommendations
@@ -66,12 +68,17 @@ This section provide prescriptive guidance with design considerations and recomm
 
 ### Design considerations
 
-to-do
+* Azure Health Bot is a multi-tenant service in Azure, where the infrastructure and runtime is being managed by Microsoft and is HIPAA compliant alongside with multiple other certifications.
+* Azure Health Bot stores customer data in Azure storage and Azure Cosmos DB and is always encrypted at rest, where the encryption keys are managed by Microsoft.
+* All communication (inbound and outbound) with the Health Bot service happens over HTTPS, ensuring data in transit is also always encrypted.
 
 ### Design recommendations
 
 * The Application Id for the Healthcare Bot integration must be added to the 'Omnichannel agent' built-in security role in the Environment where the Healthcare solution is deployed.
+* Map Azure AD Group to the requisite built-in roles for Omnichannel in the Power Platform environment where the Healthcare solutions are deployed.
 * For Patient access integration, ensure portal authentication is configured to your chosen identity provider.
+* Use Azure AD PIM to ensure no standing access to the Azure Health Bot service.
+* Create an Azure AD Group with users who should have access to the Azure Health Bot Service.
 * For Patient access integration, restrict portal access from a list of IP addresses and CIDR ranges to limit portal access as described on this [article](https://docs.microsoft.com/powerapps/maker/portals/admin/ip-address-restrict).
 * For Patient access integration, create required policies and flows for user sign-up if integrating the portal application with Azure AD B2C
 
@@ -134,3 +141,5 @@ Select *Application Users* and create a new, where you enter or select the follo
 
 * User Name: User name of the Bot (this will not be displayed in the chat-widget)
 * Application Id: An application ID for any valid (non-expired) application created in Azure Active Directory.
+
+*WORK IN PROGRESS*
