@@ -61,3 +61,7 @@ Decisions you make within these critical areas reverberate across enterprise-sca
 * [Security, governance and compliance](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/security-governance-and-compliance)
 
 * [Platform automation and DevOps](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/platform-automation-and-devops)
+
+---
+
+[Back to documentation root](../README.md)

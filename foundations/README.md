@@ -20,4 +20,4 @@ Review the articles below to learn more about the North Star architecture method
 
 ---
 
-[Back to documentation root](../)
+[Back to documentation root](../README.md)

@@ -34,4 +34,4 @@ This allows customers to leverage datasets, collected in IoMT scenarios, in Dyna
 
 ---
 
-[Back to documentation root](../../../)
+[Back to documentation root](../../../README.md)

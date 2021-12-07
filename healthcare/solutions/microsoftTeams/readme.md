@@ -51,4 +51,4 @@ Messaging policies are used to control what chat and channel messaging features 
 
 ---
 
-[Back to documentation root](../../../)
+[Back to documentation root](../../../README.md)

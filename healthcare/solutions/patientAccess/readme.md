@@ -162,4 +162,4 @@ Once the portal has been created and configured, you must update the Healthcare 
 
 ---
 
-[Back to documentation root](../../../)
+[Back to documentation root](../../../README.md)

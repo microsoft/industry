@@ -43,4 +43,4 @@ Teams is used for many of the healthcare capabilities, such as care management a
 
 ---
 
-[Back to documentation root](../)
+[Back to documentation root](../README.md)

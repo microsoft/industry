@@ -271,4 +271,4 @@ Other examples can be found here: [FHIR Search](solutions/healthcareApis/sampled
 
 ---
 
-[Back to documentation root](../../../)
+[Back to documentation root](../../../README.md)

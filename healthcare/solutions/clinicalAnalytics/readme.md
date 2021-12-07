@@ -117,4 +117,4 @@ There are different stages the sync status will circulate through. NotStarted in
 
 ---
 
-[Back to documentation root](../../../)
+[Back to documentation root](../../../README.md)
