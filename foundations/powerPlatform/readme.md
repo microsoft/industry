@@ -108,6 +108,7 @@ Furthermore, for data, security in Dataverse is there to ensure users can do the
   * Sharing of canvas apps is done directly with a user or Azure AD group but is still subject to Dataverse security roles.
   * Sharing of model-driven apps is done via Dataverse security roles.
 * If an Environment is first created without Dataverse and it gets added later, the Dataverse roles will take over for controlling security in the Environment and all environment admins and makers are automatically migrated.
+* Built-in security roles can be customized, and cloned
 
 ### Design recommendations
 
@@ -115,6 +116,7 @@ Furthermore, for data, security in Dataverse is there to ensure users can do the
 * Organize the AAD groups that streamline and simplify RBAC for the environments per the functions and requirements for the business units and application teams.
 * Use Conditional Access Policies in Azure AD to grant/prevent access to Power Apps and Power Automate based upon user/group, device, and location.
 * Include mapping of security groups to Environments where Dataverse is enabled as part of the Environment creation process.
+* Avoid customizing built-in roles, but rather clone existing built-ins and add/remove the permissions required for a particular role
 
 ## Security, governance, and compliance
 
@@ -135,6 +137,7 @@ An environment in Power Platform is an allow-by default system from a policy per
 * The tenant wide policy spanning all environments should prevent all unsupported non-Microsoft connectors, and classify all Microsoft connectors as 'Business data'.
 * Create a policy for the default environment that furter restricts which Microsoft connectors are classified as 'Business Data'.
 * Establish a process that will always include data-loss prevention policy when creating a new landing zone (environment), to ensure no one are accessing - or starting to create or deploy apps could potentially violate the policies.
+* Implement a process where personas can request DLP changes while providing the requisite business justification.
 
 ## Environments
 
@@ -154,6 +157,7 @@ The following section describes the design considerations and the design recomme
 * Environments act as security boundaries allowing different security needs to be implemented in each environment.
 * Environments can be created with - or without Dynamics 365 application templates available in the tenant.
 * Dynamics 365 applications takes a dependency on environments with Dataverse provisioned.
+* Dataverse for Microsoft Teams can be created directly from the Teams client, which grants the creator Owner permission on the Environment.
 
 ### Design recommendations
 
@@ -192,7 +196,7 @@ Further overall management, including observability and auditing is crucial to e
 ### Design recommendations
 
 * Use Application Insights that is linked to a Log Analytics workspace in Azure to capture key diagnostics and performance metrics for all environments using Dataverse and enable critical alerts for the respective Power Platform admins and environments owners.
-* If separation of concern is important, configure Data Export to Application Insights on behalf of the application teams/owners, so they can monitor the diagnostics and performance for their own dedicated environments.
+* If separation of concern is important, configure Data Export to Application Insights on behalf of the application teams/owners for their environments, so they can monitor the diagnostics and performance for their own dedicated environments.
 * Use Azure Data Lake Storage (Gen2) account to store and analyze Power App usage for the tenant, for durations as required by your organization's data retention policies and use Power BI to build informative reports for the various stakeholders for the Power Platform.
 * Enable tenant-level analytics for aggregated view of usage across the Power Platform components.
 * Use Center of Excellence starter kit as a starting point to add core management scenarios for the platform management in dedicated "admin" environments managed centrally.
