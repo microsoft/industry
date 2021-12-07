@@ -10,11 +10,11 @@ When setting this feature up, the Storage Account as well as the Synapse workspa
 
 ### Storage Account
 
-The storage Account must have hierarchical namespaces (HNS) enabled. This is a strict requirement, since the Power Platform uses the dfs endpoint of the storage account for data extraction. In addition, the firewall of the storage account needs to be opened so that the power platform cann access the storage account and update datasets within the data lake file systems. Today, it is not possible to rely on private endpoints or service endpoints for the export feature to work. Hence, the `defaultAction` in the `networkAcls` property bag needs to be set to `Allow`. Enabling `AzureServices` to bypass the firewall was not sufficient when testing the setup of the feature.
+The storage Account must have hierarchical namespaces (HNS) enabled. This is a strict requirement, since the Power Platform uses the DFS endpoint of the storage account for data extraction. In addition, the firewall of the storage account needs to be opened so that the power platform can access the storage account and update datasets within the data lake file systems. Today, it is not possible to rely on private endpoints or service endpoints for the export feature to work. Hence, the `defaultAction` in the `networkAcls` property bag needs to be set to `Allow`. Enabling `AzureServices` to bypass the firewall was not sufficient when testing Azure Synapse Link for Dataverse.
 
-The storage account requires two containers/file systems. One is used for the actual export of data and the second one is used for power platform dataflows. In addition to that, multiple role assignments are required as outlined below:
+The setup creates two storage account containers/file systems. One is used for the actual export of data and the second one is used for power platform dataflows. In addition to that, multiple role assignments are setup as outlined below:
 
-| Service Principle                                  | Role Name                     | Scope                     |
+| Service Principal                                  | Role Name                     | Scope                     |
 |:---------------------------------------------------|:------------------------------|---------------------------|
 | 'Microsoft Power Query' (Power Platform Dataflows) | Reader and Data Access        | Storage Account           |
 | 'Microsoft Power Query' (Power Platform Dataflows) | Storage Blob Data Owner       | Storage Account Container |
@@ -29,14 +29,14 @@ The storage account requires two containers/file systems. One is used for the ac
 
 ### Synapse workspace
 
-Our tests have shown that similar requirements are existing for the Synapse workspace. Disabling traffic on the public endpoint of Synase is not possible and private endpoints can also not be used today. The Synapse workspace firewall needs to be opened up to allow traffic from the Power Platform environment. The following role assignment is required to enable the creation of the metadata tables in Synapse:
+Our tests have shown that similar requirements exist for Synapse workspaces. Disabling traffic to Synapse's public endpoint or using private endpoints are not supported scenarios. The Synapse workspace firewall needs to be opened up to allow traffic from the Power Platform environment. The following role assignment are setup when creating a Azure Synapse Link for Dataverse connection:
 
-| Service Principle                                  | Role Name                     | Scope                     |
+| Service Principal                                  | Role Name                     | Scope                     |
 |:---------------------------------------------------|:------------------------------|---------------------------|
 | 'Export to data lake' (Dataverse)                  | Synapse Administrator         | Synapse Workspace         |
 
 ### Other
 
-The Storage Account, the Synapse Workspace and the Power Platform Environment must be in the same region. Otherwise, the "Azure Synapse Link" feature in Power Apps will not work. Also, all services need to be in the same tenant, subscription and resource group.
+For Azure Synapse Link to work, the Storage Account, the Synapse Workspace and the Power Platform Environment must share the same region. Furthermore, all services must belong to the same tenant, subscription and Resource Group. If one of these requirements is not fulfilles, setup of "Azure Synapse Link" in Power Apps will fail.
 
-The user creating the connection requires Owner or User Access Administrator rights on the two Azure resources and Synapse Administrator rights in the Synapse workspace in order to be able to assign RBAC roles to the Service Principles of the two Enterprise Applications. In addition, the user needs to have the Dataverse system administrator role in the environment to connect Azure and Dataverse successfully.
+The user creating the connection requires Owner or User Access Administrator rights on the two Azure resources and Synapse Administrator rights in the Synapse workspace in order to be able to assign RBAC roles to the Service Principals of the two Enterprise Applications. In addition, the user needs to have the Dataverse system administrator role in the environment to connect Azure and Dataverse successfully.
