@@ -11,31 +11,25 @@ This added complexity is due to most companies in the Telco industry having mult
 ## Design Considerations
 
 - Customers in the Telco industry have an on-premises network where both, internal IT systems as well as telco-specific workloads (such as SBC) are deployed in infrastructure such as bare metal, hardware virtualization (such as VMware or Hyper-V) or private clouds (such as OpenStack or Azure Stack).
-
 - On-premises networks for telco customers have a high level of isolation across multiple VRFs for scenarios such as overlapping IP address space, workload isolation, avoid network contention across services among others. Typical VRFs seen in the Telco industry include:
   - Access
   - Core
   - Operations and Management
   - Media
   - Signaling
-  - Internet
-  - Others
-
+  - Internet  
 - Many telco workloads in on-premises network require communication across two or more of such VRFs, and would require similar isolation when such applications are deployed in Azure.
-
 - Azure provides a flat layer-3 network, and hence does not offer a native solution to extend VRFs into virtual networks. However, it is possible to use any of the following approaches by using native Azure technologies:
   - Map a VRF to an ExpressRoute circuit.
   - Map VRFs by using multiple IPSec tunnels
-
 - As an alternative, customers can use a network overlay (such as VXLAN) over ExpressRoute Private Peering to map on-premises VRF isolation to the Azure VNet.
-
-- Work in progress
+- **_Work in progress_**
 
 ## Design Recommendations
 
-- As first approach, evaluate whether is possible to consolidate multiple VRFs over a single (or a small set of) ExpressRoute circuit(s). In this way, a network topology based on hub and spoke architecture or Azure Virtual WAN as recommended in Cloud Adoption Framework would be sufficient without the added complexity.
+- Evaluate whether is possible to consolidate multiple VRFs over a single (or a small set of) ExpressRoute circuit(s). In this way, a network topology based on hub and spoke architecture or Azure Virtual WAN as recommended in Cloud Adoption Framework would be sufficient without the added complexity.
 
-- If is not possible to consolidate multiple VRFs into a single (or a small set of) ExpressRoute circuit(s), evaluate which of the following alternatives would be suitable for your environment to map multiple VRFs to Azure:
+- If is not possible to consolidate multiple VRFs into a single (or a small set of) ExpressRoute circuit(s), evaluate which of the following alternatives would be suitable for your environment to connect multiple on-premises VRFs to Azure:
 
 ### Multiple ExpressRoute Circuits
 
@@ -45,20 +39,22 @@ This added complexity is due to most companies in the Telco industry having mult
   - Up to 4 ExpressRoute connections into the same ExpressRoute Gateway when then connections are provisioned from the same peering location.
   - For Azure VWAN, up to 8 ExpressRoute connections into the same VHub when then connections are provisioned from different peering locations.
   - For hub and spoke, up to 16 ExpressRoute connections into the same VHub when then connections are provisioned from different peering locations.
-
-- Azure Virtual WAN allows the creation of multiple VHubs in the same region within the same VWAN resource. 
-
-- In hub and spoke networks, it is possible to deploy multi-homed virtual networks (virtual networks connected to two or more hub virtual networks) by using UDRs and a NVA (such as Azure Firewall) or by using the Azure Route Server.
+- Azure Virtual WAN allows the creation of multiple VHubs in the same region within the same VWAN resource. As Azure VWAN VHubs are fully meshed, VMs in Azure VWAN can communicate to on-premises networks through any of their VHUBs.
+- In hub andd spoke networks, spoke VNets are typically connected to one hub VNet, but it is possible to connect a spoke VNet to two or more hub VNets via VNet peering. This network topology is called **multi-homed network**, and in this configuration, virtual machines in the spoke VNet can communicate through either hub virtual network to the on-premises network(s).
 
 #### Design Recommendations
-- Use dedicated ExpressRoute circuits and dedicated ExpressRoute Gateways when end-to-end network isolation from an on-premises VRF into Azure VNet is required.
-- Connect virtual networks by using VNet peering when resources across different virtual networks need to communicate with each other.
+- Use dedicated ExpressRoute circuits and dedicated ExpressRoute Gateways when end-to-end network isolation from an on-premises VRFs to Azure is required.
+  - This approach not only ensures end-to-end network isolation from on-premises to Azure, but also, it overcomes the ExpressRoute connections limits described in the design considerations section above.
+- In Azure, connect virtual networks by using VNet peering when resources across different virtual networks need to communicate with each other.
   - A typical scenario is a management plane VNet communicating with data plane VNet(s) as depicted in the picture below:
 ![Figure 1: VNet peering between control plane and data plane VNets](./telco-multiple-er-vnet-peering.png)
-
+- When using dedicated ExpressRoute circuits and VNets, and Azure resources must be accesible over two on more ExpressRoute circuits, a multi-homed VNets network architecture is recommended. A multi-homed VNet architecture can be implemented by using one of the following approaches:
+  - Automatically with Azure Route Server
+  - Manually with UDRs
 
 
 ### IPSec Tunnels
+- **_Work in progress_**
 
 ### Overlay Network Technologies (such as VXLAN)
-
+- **_Work in progress_**
