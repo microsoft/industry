@@ -192,7 +192,7 @@ Once the integration is completed, you can validate the chat functionality from 
 
 ![patientchat](./images/patientchat.png)
 
-When the session has started, the agent will see an incoming chat request in the *Omnichannel for Customer Service* application, and can determine if he/she will accept or reject the request. Once accepted, the chat between the patient and agent can start.
+When the session has started, the agents will see an incoming chat request in the *Omnichannel for Customer Service* application, and can determine if they will accept or reject the request. Once accepted, the chat between the patient and agent can start.
 
 ![request](./images/request.png)
 
