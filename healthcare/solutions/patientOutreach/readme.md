@@ -56,3 +56,7 @@ This section provide prescriptive guidance with design considerations and recomm
 * If Global Administrator permissions are needed to complete the deployment, ensure this is a joint activity in order to troubleshoot and follow-up with support in case D365 Marketing deployment is having issues.
 * Deploy D365 Marketing to test, development, and production environment to align with the overall [Environment strategy recommendations](../../../foundations/powerPlatform/) for Industry solutions in Power Platform.
 * Similarly, deploy Patient Outreach (and all other Healthcare solutions) to test, development, and production environments per the above.
+
+---
+
+[Back to documentation root](../../../README.md)

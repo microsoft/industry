@@ -31,3 +31,7 @@ In order to not end up with two disparate systems and datasets, customers can ma
 Within the FHIR Synch Agent Administration Application, administrators can define entity maps, attribute maps and expansion maps. Sync Agent Logs can be used to validate synch operations and to understand why a certain data point is sent over the services bus and why others are not.
 
 This allows customers to leverage datasets, collected in IoMT scenarios, in Dynamics 365 to further enhance the patients experience and quality of results. Additional applications and data-driven solutions can be built to simplify the end-to-end experience for all participants and reduce the time to diagnosis.
+
+---
+
+[Back to documentation root](../../../README.md)

@@ -30,7 +30,7 @@ Microsoft Cloud for Healthcare spans the Microsoft Clouds (Azure, Power Platform
 - [Azure for Healthcare](./healthcare/solutions/healthcareApis)
 - [Microsoft Teams for Healthcare](./healthcare/solutions/microsoftTeams)
 
-[Healthcare Solutions](./healthcare/solutions)
+Healthcare Solutions
 
 - Personalized Care
   - [Patient Access](./healthcare/solutions/patientAccess)
@@ -72,7 +72,9 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
 
 [Pre-requisites](./telco/prereqs.md)
 
-[Azure for Telecommunications](./telco)
+- [Azure for Telecommunications](./telco)
+
+Telco Solutions
 
 - [Governance for Telco Industry Scenarios](./telco#governance)
 - [Networking for Telco Industry Scenarios](./telco#networking)

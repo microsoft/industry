@@ -21,3 +21,7 @@ Coming soon.
 ## Microsoft Teams
 
 Coming soon.
+
+---
+
+[Back to documentation root](../README.md)

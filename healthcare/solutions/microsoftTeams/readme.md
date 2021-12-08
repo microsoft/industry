@@ -48,3 +48,7 @@ Teams template policies let you create and set up policies for people in your or
 Messaging policies are used to control what chat and channel messaging features are available to users in Teams.
 
 [Manage messaging policies in Teams - Microsoft Teams \| Microsoft Docs](https://docs.microsoft.com/en-US/microsoftteams/messaging-policies-in-teams?WT.mc_id=TeamsAdminCenterCSH)
+
+---
+
+[Back to documentation root](../../../README.md)
