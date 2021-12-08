@@ -143,7 +143,7 @@ To configure the chat functionality, open the *Omnichannel Administration* app a
 
 3. After verifying that the users are present, you can either use the default messaging queue in Omnichannel, or create a new one. In this guide, we will use the default. Open the default messaging queues, and click on *Add existing User* to add the users who will act as agents and save.
 
-![exusers](/images/exusers.png)
+![exusers](./images/exusers.png)
 
 ### Create chat widget
 
