@@ -68,7 +68,7 @@ The North Star architecture approach advocates using Power Platform native servi
 
 Together with the design principles, the core of North Star architecture for Power Platform also contains a critical design path comprised of fundamental design areas with heavily interrelated and dependent design decisions. This repository provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the North Star architecture. For each of the key design areas listed below, review the considerations and recommendations provided and use them to structure and drive design decisions within each area.
 
-* [Licensing and AD tenants](#licensing-and-ad-tenants)
+* [Licensing and AD tenants](#licensing-and-azure-ad-tenants)
 * [Identity and access management](#identity-and-access-management)
 * [Security, governance, and compliance](#security-governance-and-compliance)
 * [Environments](#environments)
@@ -77,9 +77,11 @@ Together with the design principles, the core of North Star architecture for Pow
 * [Azure VNet connectivity for Power Platform](#azure-vnet-connectivity-for-power-platform)
 * [Platform Automation and DevOps](#platform-automation-and-devops)
 
-## Licensing and AD Tenants
+## Licensing and Azure AD Tenants
 
 Organizations can obtain licenses by either licensing Microsoft Power Apps or Microsoft Power Automate specifically or by it being included in the license of another Microsoft cloud service offering. For example, both Microsoft 365 and Dynamics 365 provide entitlements for Power Apps and Power Automate. As with most Microsoft licensing, you can mix and match for users as appropriate, giving some additional entitlements. Further, any users in an organization can sign up for a Power App trial, unless explicitly blocked by the organization.
+
+![licenseandtenants](./images/licenseandtenants.png)
 
 ### Design considerations
 
