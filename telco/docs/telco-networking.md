@@ -31,6 +31,8 @@ Besides this, customers in the Telco industry differentiate to other industries 
 - An ExpressRoute gateway can be deployed as regional, zonal or zone redundant. However, there can be up to only one ExpressRoute gateways per VNet.
 - While currently there are no charges for network traffic across Availability Zones, data transfer across availability zones [will be charged](https://azure.microsoft.com/pricing/details/bandwidth/) beginning from July 1, 2022. The following Availability Zone data transfer will be charged:
   - Data transfer, ingress and egress, from a VNet resource deployed in an Availability Zone to another resource in different Availability Zone in the same VNET
+- A proximity placement group is a logical grouping used to make sure that Azure compute resources are physically located close to each other. Proximity placement groups are useful for workloads where low latency is a requirement.
+  - Proximity placement groups offer colocation in the same data center. However, because proximity placement groups represent an additional deployment constraint, [allocation failures can occur](https://docs.microsoft.com/azure/virtual-machines/co-location#what-to-expect-when-using-proximity-placement-groups).
 
 ### Design Recommendations
 
@@ -38,6 +40,7 @@ Besides this, customers in the Telco industry differentiate to other industries 
 - For Azure regions that do support availability zones, deploy Azure ExpressRoute gateway as zone-redundant as this will provide the maximum availability within the region with gateway instances spread across multiple availability zones. With this deployment, however, the telco solution may experience extra latency when the solution instances (such as VMs) are deployed across availability zones, and also, this would incur in extra costs beginning from July 1, 2022.
 - For Azure regions that do support availability zones, and if the Telco solution is latency sensitive or if the projected network charges when cross avilability zones traffic is charged, deploy the Telco solution as Zonal. This will minimize latency and will avoid cross-zones data transfer charges (when included). For zonal deployments:
   - Deploy the ExpressRoute Gateway to a zone, and ensure the application resources (such as VMs) are also deployed in the same zone.
+  - If latency is the first priority, put VMs in a proximity placement group and the entire solution in an availability zone.
   - If the Telco solution scales-out by using multiple stamps or shards, each stamp/shard must include a VNet and a zonal ExpressRoute gateway. Then resources for that stamp/shard must be deployed in the same zone as the zone where the ExpressRoute gateway was deployed.
 
 ## Multiple ExpressRoute Circuits
