@@ -127,6 +127,8 @@ Furthermore, for data, security in Dataverse is there to ensure users can do the
 
 An environment in Power Platform is an allow-by default system from a policy perspective, and for the Healthcare solutions and applications, one must use Data-Loss Prevention policies to explicitly categorize and enable/disable connecters for business use cases. This will help to mitigate risk for data exfiltration, and help to stay secure and compliant.
 
+![policies](./images/policies.png)
+
 ### Design considerations
 
 * A policy can be scoped to include the entire tenant, multiple environments, as well as exclude multiple environments.
@@ -282,6 +284,8 @@ The Power Platform provides different mechanism to allow connectivity to Azure d
 ## Platform Automation and DevOps
 
 Most organizations starting with the cloud does not have an operating model that is compatible, and will very likely undergo a degree of operational and organization transformation to deliver on the principle of cloud computing and digital transformation enablement. As it relates to Power Platform it is highly recommended that a DevOps approach is being employed for both the central IT team responsible for the Power Platform, as well as the professional developers teams.
+
+![devops](./images/devops.png)
 
 ### Design considerations
 
