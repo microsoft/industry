@@ -21,6 +21,15 @@ Many telco workloads in on-premises network require communication across two or 
 
 It is typically recommended to evaluate whether is possible to consolidate multiple VRFs over a single (or a small set of) ExpressRoute circuit(s). In this way, a network topology based on hub and spoke architecture or Azure Virtual WAN as recommended in Cloud Adoption Framework would be sufficient without the added complexity. If is not possible to consolidate multiple VRFs into a single (or a small set of) ExpressRoute circuit(s), evaluate which of the following alternatives would be suitable for your environment to connect multiple on-premises VRFs to Azure:
 
+- [Availability Zones or Regional](#availability-zones-or-regional)
+- [Multiple ExpressRoute Circuits](#multiple-expressroute-circuits)
+- [IPSec Tunnels](#ipsec-tunnels)
+- [Overlay Network](#overlay-network)
+
+
+## Availability Zones or Regional
+- **_Work in progress_**
+
 ## Multiple ExpressRoute Circuits
 
 ### Design Considerations
@@ -54,5 +63,5 @@ _Figure 1:VNet peering between control plane and data plane VNets._
 ## IPSec Tunnels
 - **_Work in progress_**
 
-## Overlay Network Technologies (such as VXLAN)
+## Overlay Network
 - **_Work in progress_**
