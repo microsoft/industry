@@ -34,6 +34,12 @@ Besides this, customers in the Telco industry differentiate to other industries 
 
 ### Design Recommendations
 
+- For Azure regions that do not support availability zones, deploy Azure ExpressRoute gateway as regional.
+- For Azure regions that do support availability zones, deploy Azure ExpressRoute gateway as zone-redundant as this will provide the maximum availability within the region with gateway instances spread across multiple availability zones. With this deployment, however, the telco solution may experience extra latency when the solution instances (such as VMs) are deployed across availability zones, and also, this would incur in extra costs beginning from July 1, 2022.
+- For Azure regions that do support availability zones, and if the Telco solution is latency sensitive or if the projected network charges when cross avilability zones traffic is charged, deploy the Telco solution as Zonal. This will minimize latency and will avoid cross-zones data transfer charges (when included). For zonal deployments:
+  - Deploy the ExpressRoute Gateway to a zone, and ensure the application resources (such as VMs) are also deployed in the same zone.
+  - If the Telco solution scales-out by using multiple stamps or shards, each stamp/shard must include a VNet and a zonal ExpressRoute gateway. Then resources for that stamp/shard must be deployed in the same zone as the zone where the ExpressRoute gateway was deployed.
+
 ## Multiple ExpressRoute Circuits
 
 ### Design Considerations
