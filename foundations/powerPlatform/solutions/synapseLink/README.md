@@ -29,7 +29,7 @@ The setup creates two storage account containers/file systems. One is used for t
 
 ### Synapse workspace
 
-Our tests have shown that similar requirements exist for Synapse workspaces. Disabling traffic to Synapse's public endpoint or using private endpoints are not supported scenarios. The Synapse workspace firewall needs to be opened up to allow traffic from the Power Platform environment. The following role assignment are setup when creating a Azure Synapse Link for Dataverse connection:
+Disabling traffic to Synapse's public endpoint or using private endpoints are not supported scenarios. The Synapse workspace firewall needs to be opened up to allow traffic from the Power Platform environment. The following role assignment are setup when creating a Azure Synapse Link for Dataverse connection:
 
 | Service Principal                                  | Role Name                     | Scope                     |
 |:---------------------------------------------------|:------------------------------|---------------------------|
