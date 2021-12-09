@@ -2,7 +2,7 @@
 
 North Star is an architectural approach and a reference implementation. It enables effective construction and operationalization of landing zones (environments) on Power Platform, at scale. This approach aligns with the platform and product roadmap and the Center of Excellence adoption framework.
 
-Specifically for Microsoft Cloud for Industries (e.g., Healthcare, Financial Services), Microsoft Power Platform is an essential platform for the overall industry solutions, and this prescriptive guidance aims to provide you with best practices and recommendations across the critical design areas for Power Platform to host and integrate the various industry applications.
+Specifically for Microsoft Cloud for Industries (e.g., Healthcare, Financial Services), Microsoft Power Platform is an essential platform for the overall industry solutions - which primarily are D365 applications that are deployed into Power Platform environments, and this prescriptive guidance aims to provide you with best practices and recommendations across the critical design areas for Power Platform to host and integrate the various industry applications.
 
 | Reference implementation | Description | Deploy |
 |:----------------------|:------------|--------|
@@ -80,6 +80,7 @@ Together with the design principles, the core of North Star architecture for Pow
 ## Licensing and AD Tenants
 
 Organizations can obtain licenses by either licensing Microsoft Power Apps or Microsoft Power Automate specifically or by it being included in the license of another Microsoft cloud service offering. For example, both Microsoft 365 and Dynamics 365 provide entitlements for Power Apps and Power Automate. As with most Microsoft licensing, you can mix and match for users as appropriate, giving some additional entitlements. Further, any users in an organization can sign up for a Power App trial, unless explicitly blocked by the organization.
+
 ### Design considerations
 
 * Licensing is the first control-gate to allowing access to Power Platform components.
@@ -87,12 +88,14 @@ Organizations can obtain licenses by either licensing Microsoft Power Apps or Mi
 * Power Platform provides different licensing constructs, as well as capacity add-ons and requires some planning in advance
 * D365 Trials are one-in-a-lifetime per Azure AD tenant
 * Pay As You Go (PAYG) is a low-risk entry to Premium functionality in Power Platform
+
 ### Design recommendations
 
 * Avoid creating multiple Azure AD tenants
 * Dev/test/prod environments can be isolated and controlled natively in the Power Platform, without needing separation at the identity control plane (AD tenant). For secure usage of connectors related to Microsoft Graph - such as Office 365, Sharepoint etc., ensure a well-defined RBAC model is implemented to meet the security and data classification requirements.
 * Use the pay-as-you-go plan for apps that need to be shared with a large user base with infrequent and/or unpredictable use
 * Use an Azure Subscription for Power Apps to reduce license procurement overhead and consolidate with other service purchases
+
 ## Identity and access management
 
 Identity and access to the Power Platform, the environments, the applications, components, and solutions within the environments must be carefully thought through in parallel with assigned licenses.
@@ -128,20 +131,23 @@ An environment in Power Platform is an allow-by default system from a policy per
 * You can create data loss prevention (DLP) policies that can act as guardrails to help prevent users from unintentionally exposing organizational data.
 * DLP policies can be scoped at the environment or tenant level, offering flexibility to craft sensible policies that strike the right balance between protection and productivity.
 * Connectors can be grouped into business, non-business, and blocked. Once categorized, they cannot be used in conjunction with other connectors outside its group. When a connector is blocked, it cannot be used at all.
+* Some connectors can be controlled at a very granular level, such as determining which actions they can - or can not do from a policy perspective.
 * Environment admins cannot edit policies created by tenant admins.
 * Tenant isolation for Power Platform can be applied at the connector level and is used to prevent connectors using Azure AD based authentication to other tenants, and supports both one-way (inbound) or two-way (inbound and outbound) restriction. Enabling tenant isolation requires raising a support ticket in the Power Platform admin center.
 
 ### Design recommendations
 
-* Create a data loss prevention policy that enforces the bare minimum security requirements at the tenant scope, to ensure that all landing zones are secure by-default and both pro devs and citizen devs can safely develop business applications that do not violate the security requirements.
+* Assess which data loss prevention policies you need, and which connectors that should be classified as either Business Data only, or No Business Data.
+* Create a data loss prevention policy that enforces the bare minimum security requirements at the tenant scope to ensure that all landing zones are secure by-default and both pro devs and citizen devs can safely develop business applications that do not violate the security requirements.
 * The tenant wide policy spanning all environments should prevent all unsupported non-Microsoft connectors, and classify all Microsoft connectors as 'Business data'.
 * Create a policy for the default environment that furter restricts which Microsoft connectors are classified as 'Business Data'.
-* Establish a process that will always include data-loss prevention policy when creating a new landing zone (environment), to ensure no one are accessing - or starting to create or deploy apps could potentially violate the policies.
+* Establish a process that will always include or exclude data-loss prevention policy when creating a new landing zone (environment), to ensure no one are accessing - or starting to create or deploy apps could potentially violate the policies.
 * Implement a process where personas can request DLP changes while providing the requisite business justification.
+* Establish a process to review existing and new connectors in context of the DLP policies you have established.
 
 ## Environments
 
-Environments acts as the scale-unit, and management boundary in Power platform and is where organizations can store, manage, and share business data, applications, including Dynamics 365 apps, chatbots, and flows. It's recommended to have a strategy for how you should create, distribute, and scale environments to accelerate digital transformation for your pro - and citizen developers.
+Environments acts as the scale-unit, and a management boundary in Power platform and is where organizations can store, manage, and share business data, applications, including Dynamics 365 apps, chatbots, and flows. It's recommended to have a strategy for how you should create, distribute, and scale environments to accelerate digital transformation for your pro - and citizen developers.
 The following section describes the design considerations and the design recommendations for Environments, to help you navigate to the correct setup per your organizational requirements.
 
 ![Environments for Healthcare](./images/env.png)
@@ -181,7 +187,9 @@ The following section describes the design considerations and the design recomme
 ## Management and Monitoring
 
 Power Platform provides first-party connectors for the Power Platform administration capabilities so organizations can configure and implement the desired management scenarios and automation needed for their tenant and environments. The [Center of Excellence starter-kit](https://docs.microsoft.com/power-platform/guidance/coe/core-components) provides ready to use solutions that enables curated management experiences in addition to what the Power Platform admin center enables by default.
-Further overall management, including observability and auditing is crucial to ensure a continiously healthy tenant and environments, the the usage of the various applications deployed in the environments, as well as the Dataverse platform. Additional integration and end-to-end view will rely on Microsoft 365 Security and Compliance Center, and Azure Active Directory. For most of the services in Power Platform, organizations who are using Azure can integrate with Azure Monitor (Application Insights and Log Analytics) for long-term retention and further analysis.
+Further overall management, including observability and auditing is crucial to ensure a continiously healthy tenant and environments, the usage of the various applications deployed in the environments, as well as the Dataverse platform. Additional integration and end-to-end view will rely on Microsoft 365 Security and Compliance Center, and Azure Active Directory. For most of the services in Power Platform, organizations who are using Azure can integrate with Azure Monitor (Application Insights and Log Analytics) for long-term retention and further analysis.
+
+![management](./images/management.png)
 
 ### Design considerations
 
@@ -195,6 +203,7 @@ Further overall management, including observability and auditing is crucial to e
 
 ### Design recommendations
 
+* Turn on auditing on all environments where Dataverse is enabled to ingest critical events to Microsoft 365 Security & Compliance. This is ideally done during the environment creation process.
 * Use Application Insights that is linked to a Log Analytics workspace in Azure to capture key diagnostics and performance metrics for all environments using Dataverse and enable critical alerts for the respective Power Platform admins and environments owners.
 * If separation of concern is important, configure Data Export to Application Insights on behalf of the application teams/owners for their environments, so they can monitor the diagnostics and performance for their own dedicated environments.
 * Use Azure Data Lake Storage (Gen2) account to store and analyze Power App usage for the tenant, for durations as required by your organization's data retention policies and use Power BI to build informative reports for the various stakeholders for the Power Platform.
@@ -211,28 +220,29 @@ Protecting your data in Power Platform is primarily at the Environment level, an
 * Unplanned service interruptions result in a notice that the organization is currently undergoing unplanned maintenance
 * Backup and restore can be done per Environment.
 * Power Platform performs system backups, and:
- * Depending on the amount of copied and restored audit data, copy and restore operations can take up to 8 hours.
- * All your environments, except Trial environments (standard and subscription-based), are backed up.
- * System backups occur continuously. The underlying technology used is Azure SQL Database. See SQL Database documentation Automated backups for details.
- * System backups for production environments that have been created with a database and have one or more Dynamics 365 applications installed are retained up to 28 days. * System backups for production environments which don't have Dynamics 365 applications deployed in them will be retained for 7 days. System backups for sandbox environments will be retained for 7 days.
+* Depending on the amount of copied and restored audit data, copy and restore operations can take up to 8 hours.
+* All your environments, except Trial environments (standard and subscription-based), are backed up.
+* System backups occur continuously. The underlying technology used is Azure SQL Database. See SQL Database documentation Automated backups for details.
+* System backups for production environments that have been created with a database and have one or more Dynamics 365 applications installed are retained up to 28 days. * System backups for production environments which don't have Dynamics 365 applications deployed in them will be retained for 7 days. System backups for sandbox environments will be retained for 7 days.
 * You must restore an environment to the same region in which it was backed up.
 * When an environment is restored onto itself, audit logs aren't deleted. For example, when an environment is restored onto itself to a past time t1, full audit data for the environment will be available, including any audit logs that were generated after t1.
 * Admins of an Environment can also do manual backups:
- * A backup is created for you when we update your environment.
- * You can back up production and sandbox environments.
- * You can't back up the default environment.
- * Sandbox backups are retained for up to 7 days.
- * Manual backups for production environments that have been created with a database and have one or more Dynamics 365 applications installed are retained up to 28 days. 
- * Manual backups for production environments which do not have Dynamics 365 applications deployed in them will be retained for 7 days.
- * You are not limited in the number of manual backups you can make.
- * Manual backups do not count against your storage limits.
- * You must restore an environment to the same region in which it was backed up.
+* A backup is created for you when we update your environment.
+* You can back up production and sandbox environments.
+* You can't back up the default environment.
+* Sandbox backups are retained for up to 7 days.
+* Manual backups for production environments that have been created with a database and have one or more Dynamics 365 applications installed are retained up to 28 days.
+* Manual backups for production environments which do not have Dynamics 365 applications deployed in them will be retained for 7 days.
+* You are not limited in the number of manual backups you can make.
+* Manual backups do not count against your storage limits.
+* You must restore an environment to the same region in which it was backed up.
 
 ### Design recommendations
 
 * Use Power Automate to create alerts for planned service interruptions that are created into - and managed within dedicated admin environments.
 * Establish well-defined processes to manage unplanned services interruptions integrated into the application/IT operations support.
 * Make the environment owners aware of their responsibility, to facilitate manual backups as needed per their requirements and lifecycle management.
+
 ## Azure VNet connectivity for Power Platform
 
 The Power Platform provides different mechanism to allow connectivity to Azure data services. This section will provide prescriptive design considerations and recommendations to help you implement the right connectivity model from the Power Platform to an Azure VNet.
@@ -252,6 +262,7 @@ The Power Platform provides different mechanism to allow connectivity to Azure d
 * When using the VNet data gateway, there is no need of using an on-premises data gateway.
 * A Power BI Premium license (Power BI Premium workspaces and Premium Per User (PPU)) is required to make use of the VNet data gateway.
 * Be sure to familiarize with VNet data gateway [limitations](https://docs.microsoft.com/data-integration/vnet/overview#limitations) as well as [supported Azure data services](https://docs.microsoft.com/data-integration/vnet/use-data-gateways-sources-power-bi#supported-azure-data-services).
+
 ### Design recommendations
 
 * Use a VNet data gateway to access data from cloud services in the data platform to Azure data services.
@@ -280,26 +291,26 @@ Most organizations starting with the cloud does not have an operating model that
 
 * Establish a cross functional DevOps Platform Team to build, manage and maintain the North Star Architecture of Power Platform, including functions to support Environment provisioning with DLP, Security Groups, RBAC, and Auditing.
 * This team should include members from your central IT, security, compliance, and business units teams to ensure a wide spectrum of your enterprise is represented. The list below presents a recommended set of DevOps roles for the central Platform Team.
- * PlatformOps (Platform Operations) to:
+* PlatformOps (Platform Operations) to:
   * Manage Environment provisioning and delegation of required, IAM, and Data-Loss Prevention policies.
   * Platform management and monitoring (holistic).
   * Cost Management (holistic).
   * "Platform as Code" (management of templates, scripts and other assets).
   * Responsible for overall operations on Power Platform within the Azure AD tenant, such as managing service principles, Graph API registration, and role definitions.
- * SecOps (Security Operations)
+  * SecOps (Security Operations)
   * Role based access control (holistic).
   * Key management (for central services).
   * Policy management and enforcement (holistic).
   * Security monitoring and audit (holistic).
- * NetOps (Network Operations)
+  * NetOps (Network Operations)
   * Network Management (holistic).
 * Allow application owners to create and manage application resources through a DevOps model.
 * In some instances, customers may wish to break AppDevOps into more granular roles such as AppDataOps for database management like traditional DBA roles, or AppSecOps where more security sensitive applications are concerned; this is to be expected.
 * Leverage a policy-driven approach with clear RBAC boundaries to centrally enforce consistency and security across application teams.
 * To accelerate adoption, the central platform function should establish and provide common set of guidance, templates, and libraries within the organization
 * Don’t restrict developers (both pro and citizen) to use central artifacts or approaches because it hinders their agility
- * This includes enforcing the use of specific tooling for development and IaC, either directly or indirectly
- * You can enforce consistent baseline configuration through policy driven governance (DLP)
+* This includes enforcing the use of specific tooling for development and IaC, either directly or indirectly
+* You can enforce consistent baseline configuration through policy driven governance (DLP)
 
  ---
 
