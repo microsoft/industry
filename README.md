@@ -83,7 +83,7 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
 Telco Solutions
 
 - [Governance for Telco Industry Scenarios](./telco#governance)
-- [Networking for Telco Industry Scenarios](./telco#networking)
+- [Networking for Telco Industry Scenarios](./telco/docs/telco-networking.md)
 - [Distributed Edge](./telco#distributed-edge)
 
   </td>
