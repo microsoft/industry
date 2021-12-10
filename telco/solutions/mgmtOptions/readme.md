@@ -41,3 +41,11 @@ For Telco's considering Azure Lighthouse to manage and operate their customers d
 * Ensure you have an Azure AD group present in the Azure Resource Manager template that is mapped to the *Managed Services Registration assignment Delete Role*, so you can opt-out from a customer if it's required.
 * Use Azure AD Groups to organize the various personas and access requirements needed to operate the customers, so clear separation of duties from the Telco tenant is established.
 * For updates required to the authorization needed for the Telco identities, the customer must re-deploy the Azure Resource Manager template with the changes for it to be reflected back to the Telco tenant.
+
+## Azure Managed Application
+
+Azure Managed Application is a capability for ISV's and service providers to deliver turn-key applications to Azure customers directly from the Azure marketplace. Customers deploy via self-service, and once provisioned, the ISV/service provider will have cross-tenant RBAC permission on the *managed resource group*, which contains all the required infrastructure for the services they are delivering, that customers can use and integrate with other Azure services they may have. 
+
+The following picture depicts how the Managed Application construct works, and the cross-tenant RBAC authorization at the managed resource group scope, granting principal Id's from the remote Azure AD tenant permissions directly on the managed resource group in a customer tenant's Azure subscription.
+
+![managedapp](./images/managedapp.png)
