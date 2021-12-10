@@ -1,14 +1,14 @@
 # Networking for Telco Industry Scenarios
 
-The Azure for Telco industry reference architecture provides the foundational networking and connectivity services for deploying telco applications and services in Microsoft Azure at scale.
+The Azure for Telco industry reference architecture provides the foundational networking and connectivity services for deploying telco applications and services on Microsoft Azure at scale.
 
 The Network topology and connectivity design considerations and recommendations described in the [Cloud Adoption Framework](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/architecture) are mostly compatible with the Azure for Telco reference architecture. For example, guidance around access to Azure PaaS services via Private Link, or the usage of hub and spoke or VWAN network topologies are fully compatible with the Azure for Telco reference architecture.
 
-Our guidance diverges from the Cloud Adoption Framework when it comes to addressing the Telco specific requirements, as outlined in the introduction above. Most of these changes focus on how to provide more scalable, flexible connectivity using a modified network topology and ExpressRoute connectivity.
+Our guidance diverges from the Cloud Adoption Framework when it comes to addressing the telco specific requirements, as outlined in the introduction above. Most of these changes focus on how to provide more scalable and flexible connectivity using a modified network topology and ExpressRoute connectivity.
 
-This added complexity is due to most companies in the Telco industry having multiple interconnected on-premises or other private networks (such as an MPLS) they depend on to provide B2B and B2C services for their customers. It is not uncommon for customers in the telco industry to have an heavily segmented on-premises network that is highly isolated across multiple Virtual Routing and Forwarding (VRFs). Such on-premises networks have a high level of isolation across multiple VRFs for scenarios such as overlapping IP address space, workload isolation, avoid network contention across services among others.
+This added complexity is due to most companies in the telco industry having multiple interconnected on-premises or other private networks (such as an MPLS) they depend on to provide B2B and B2C services for their customers. It is not uncommon for customers in the telco industry to have an heavily segmented on-premises network that is highly isolated across multiple Virtual Routing and Forwarding (VRFs). Such on-premises networks have a high level of isolation across multiple VRFs for scenarios such as overlapping IP address space, workload isolation, avoid network contention across services among others.
 
-Besides this, customers in the Telco industry differentiate to other industries as besides providing networking services to their customers, they also provide managed solutions to their customers either by providing managed services on their customers Azure subscriptions or by offering fully managed services which are running on either their customers subscriptions or on the telco provider Azure subscriptions. The following sections will cover networking design considerations and recommendations for such scenarios:
+In addition to providing networking services to their customers, telcos also provide networking managed solutions through managed services which are hosted on either a customer's or telco provider's subscription(s). The following sections will cover networking design considerations and recommendations for such scenarios.
 
 - [Availability Zones or Regional deployments](#availability-zones-or-regional-deployments)
 - [Multiple ExpressRoute Circuits](#multiple-expressroute-circuits)
