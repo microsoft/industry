@@ -49,3 +49,15 @@ Azure Managed Application is a capability for ISV's and service providers to del
 The following picture depicts how the Managed Application construct works, and the cross-tenant RBAC authorization at the managed resource group scope, granting principal Id's from the remote Azure AD tenant permissions directly on the managed resource group in a customer tenant's Azure subscription.
 
 ![managedapp](./images/managedapp.png)
+
+For Telco's considering Azure Managed Application as a way to package, distribute, and operate their solutions, we provide the following design considerations and recommendations.
+
+### Design considerations
+
+* Managed Application requires Azure Resource Manager template(s) and a User Interface definition, that must be versioned and published to the Azure Marketplace via [Partner Center](https://partner.microsoft.com/dashboard/home).
+* You can enable any customer subscription to purchase and deploy your Managed Application, or you can enable this per subscription(s) manually.
+* When customer is deploying a Managed Application, they will see two resource groups where the managed resource group cannot be altered by the customer.
+* Due to how the managed resource group is being locked (using deny assignment), only the Telco can access, create, and change the Azure resources within.
+* When publishing a Managed Application, you must provide the users/groups/service principals from your Azure Active Directory who will operate the Managed Application in the customer subscriptions, and map towards built-in role-based access controls in Azure.
+* Managed Applications can connect to your customer relationship management (CRM) system, such as Dynamics 365 Customer Engagement, HTTPS endpoint, Salesforce and more, so you can receive customer contact information when a customer deploys your product.
+* When a customer deletes the Managed Application object, the managed resource group will then also be deleted.
