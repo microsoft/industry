@@ -30,7 +30,7 @@ The diagram below shows that users originating from the Telco Azure Active Direc
 * Developers can use Azure AD B2B APIs to customize the invitation process or write applications like self-service sign-up portals.
 * Guests are using their own identities and credentials, and are managing their own accounts and passwords.
 * Authorization policies can be used to protect your corporate content, such as Conditional Access policies and multi-factor authentication.
-* Administration of guest users can be delegated to application owners.
+* Administration of guest users can be [delegated](https://docs.microsoft.com/azure/active-directory/external-identities/delegate-invitations) to application owners.
 * Application owners who need to grant access to Azure must have *Microsoft.Authorization/roleAssignments/write* permission, which is included in the *Owner* and *User Access Administrator* built-in roles.
 * If the guest accounts are subject to multi-factor authentication within their Azure Active Directory, and this is also enabled in the customer's Azure Active Directory, the guest users might have to perform the authentication once in their home organization, and then in the customer organization.
 
@@ -105,4 +105,4 @@ For Telco's considering Azure Managed Application as a way to package, distribut
 
 ---
 
-[Back to documentation root](../../../README.md)
+[Back to documentation root](/README.md)
