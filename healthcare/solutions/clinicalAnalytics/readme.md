@@ -1,9 +1,9 @@
 
-# Clinical Analytics & Operational Insights
+# Healthcare Analytics
 
-The solution for Clinical Analytics will harness data and discover clinical insights to deliver value-based care models. In this flow, we look at how you can persist data in an analytical store, enable large scale analytical query capabilities and leverage insights from AI assisted imaging analysis and population health metrics to determine course of care. The analytical solution enable you to search through large amounts of data from sources like electronic medical records, smart medical devices, patient and population demographics, and the public domain to find hidden patterns and trends and predict outcomes for individual patients. The care guidance can rely on AI learning models that become more precise when additional data and cases are introduced.
+The solution for Healthcare Analytics will harness data and discover insights to deliver value. In this guidance we show how you can persist data in the Healthcare API, export de-identified data to an analytical store, enable large scale analytical query capabilities and leverage insights from AI assisted imaging analysis and population health metrics to determine course of care. The analytical solution enable you to search through large amounts of data from sources like electronic medical records, smart medical devices, patient and population demographics, and the public domain to find hidden patterns and trends and predict outcomes for individual patients. The care guidance can rely on AI learning models that become more precise when additional data and cases are introduced.
 
-Key capabilities of Clinical Analytics include:
+Key capabilities of Healthcare Analytics include:
 
 * **Provider Evaluation**: Reviews IoMT data, EHR and patient data.
 * **Imaging AI**: DICOM images supported by an AI report, which indicates patient condition.
@@ -15,9 +15,9 @@ Key capabilities of Clinical Analytics include:
 
 ## Reference architecture
 
-![Healthcare - Clinical Analytics](./images/clinicalanalytics.png)
+![Healthcare - Clinical Analytics](./images/healthcare_analytics.png)
 
-## Critical design areas for Clinical Analytics & Operational Insights
+## Critical design areas for healthcare Analytics
 
 >The analytical use-cases for healthcare leverages a combination of services in Azure, Dynamics and the Power platform.
 
@@ -108,6 +108,47 @@ The system does not yet recognize the context of a hypothetical in text. For exa
 
 After you have set up the Azure Synapse Link, you can monitor it under the Tables tab in Power Apps. There will be a list of tables that are a part of the selected Synapse Link.
 There are different stages the sync status will circulate through. NotStarted indicates that the table is waiting to be synced. Once the table initial sync has been Completed, there will be a post processing stage where incremental updates will not take place. This may take several hours depending on the size of your data. As the incremental updates start taking place, the date for the last sync will be regularly updated. The Count column shows the number of changes to the data. It does not show the total number of rows to the data. The Append only and Partition strategy columns show the usage of different advanced configurations.
+
+## Analytics using PowerBI Connector
+
+Using the PowerBI connector you can connect directly to your Healthcare API FHIR service. The connector does not anonymize the data. Using the connector is the easiest approach to get insights into your data. Using PowerBI you can wrangle the data and present graphs, lists and other visualizations in a dashboard.
+
+### Connect and import
+
+In order to import your data into PowerBI first click the **Get Data** button and search for **FHIR**.
+
+![PowerBI Get Data - FHIR](./images/pbi_1.png)
+
+To connect to your FHIR service write or insert the URL to the Healthcare API you deploy earlier. **Example: h ttps://your-fhir-service.fhir.azurehealthcareapis.com**
+If you want to reduce the amount of data transferred to PowerBI you can include a query parameter like *Patient?name:exact=Jon*, this will limit the data returned only including patients with the name Jon.
+
+To be able to access your FHIR service you will be asked to log in.
+
+![PowerBI FHIR url](./images/pbi_2.png)
+
+Once connected you can select the relevant FHIR resources. The chosen resources will be available as tables in PowerBI. Any relations between resources/tables will have to be applied manually as part of your data wrangling.
+
+![PowerBI Navigate tables](./images/pbi_3.png)
+
+### Create dashboard
+
+Once your data is imported, cleaned and prepared you can start building a dashboard using the available set of data visualizations or import/create custom visuals.
+
+![PowerBI FHIR Dashboard](./images/pbi_4.png)
+
+To update your data from the source either manually refresh or define an automated refresh interval.
+
+## Analytics using Synapse Pipelines or Azure Data Factory
+
+If you need more advanced capabilities like anonymize the data for research datasets while applying HIPAA safe harbor rules, you can create a pipeline in Azure Synapse or Azure Data Factory.  
+
+### Pipeline
+
+![Azure Data Factory pipeline](./images/adf_1.png)
+
+To export data from Azure Healthcare API - FHIR service we use the export function.
+
+![Azure Data Factory pipeline](./images/adf_2.png)
 
 ## Known limitations
 
