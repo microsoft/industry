@@ -51,7 +51,7 @@ Healthcare Solutions
 - Care Collaboration
   - [Health Assistant](./healthcare/solutions/healthAssistant)
 - [Remote Patient Monitoring](./healthcare/solutions/IoMT)
-- [Clinical and Operational insights](./healthcare/solutions/clinicalAnalytics)
+- [Healthcare Analytics](./healthcare/solutions/clinicalAnalytics)
 
 </td>
   <td>
