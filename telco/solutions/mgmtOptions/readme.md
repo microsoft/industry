@@ -45,7 +45,7 @@ The diagram below shows that users originating from the Telco Azure Active Direc
 
 Azure Lighthouse is primarily a capability for enterprises with Azure subscriptions spread across multiple Azure AD tenants, as well as for service providers to manage multiple Azure subscriptions across multiple customer Azure AD tenants.
 
-The following picture depicts how the cross-tenant RBAC authorization works, granting principal Id's from the remote Azure AD tenant permissions directly on a subscription or a resource group in a customer tenant.
+The following picture depicts how the cross-tenant RBAC authorization works, granting principal IDs from the remote Azure AD tenant permissions directly on a subscription or a resource group in a customer tenant.
 
 ![lighthouse](./images/lighthouse.png)
 
@@ -53,7 +53,7 @@ For Telco's considering Azure Lighthouse to manage and operate their customers d
 
 ### Design considerations
 
-* Principal Id's in the Telco tenant can only be associated with Azure built-in RBAC, and the highest privilige that can be used is *Contributor*.
+* Principal IDs in the Telco tenant can only be associated with Azure built-in RBAC, and the highest privilige that can be used is *Contributor*.
 * Azure AD Privileged Identity Management can be leveraged on the Telco Azure AD tenant, providing additional security confirmation to their customers that users are subject to just-in-time access, access reviews, approval process, multi-factor authentication and more.
 * All *write* operations (create, update, and delete) in the customer subscription(s) is transparent for both parties in the Azure Activity log.
 * Customers can at any point in time remove the permissions given to users from the Telco Azure AD.
@@ -73,9 +73,9 @@ For Telco's considering Azure Lighthouse to manage and operate their customers d
 
 ## Azure Managed Application
 
-Azure Managed Application is a capability for ISV's and service providers to deliver turn-key applications to Azure customers directly from the Azure marketplace. Customers deploy via self-service, and once provisioned, the ISV/service provider will have cross-tenant RBAC permission on the *managed resource group*, which contains all the required infrastructure for the services they are delivering, that customers can use and integrate with other Azure services they may have. 
+Azure Managed Application is a capability for ISV's and service providers to deliver turn-key applications to Azure customers directly from the Azure marketplace. Customers deploy via self-service, and once provisioned, the ISV/service provider will have cross-tenant RBAC permission on the *managed resource group*, which contains all the required infrastructure for the services they are delivering, that customers can use and integrate with other Azure services they may have.
 
-The following picture depicts how the Managed Application construct works, and the cross-tenant RBAC authorization at the managed resource group scope, granting principal Id's from the remote Azure AD tenant permissions directly on the managed resource group in a customer tenant's Azure subscription.
+The following picture depicts how the Managed Application construct works, and the cross-tenant RBAC authorization at the managed resource group scope, granting principal IDs from the remote Azure AD tenant permissions directly on the managed resource group in a customer tenant's Azure subscription.
 
 ![managedapp](./images/managedapp.png)
 
