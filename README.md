@@ -86,8 +86,8 @@ Telco Solutions
 - [Networking for Telco Industry Scenarios](./telco#networking)
 - [Distributed Edge](./telco#distributed-edge)
 - [Telco services](./telco/solutions/mgmtOptions/readme.md)
-  - [Telco Managed Services](./telco/solutions/managedServices)
-  - [Telco Managed Solution](./telco/solutions/managedSolutions)
+<!--  - [Telco Managed Services](./telco/solutions/managedServices)
+  - [Telco Managed Solution](./telco/solutions/managedSolutions)-->
 
   </td>
   <td>
