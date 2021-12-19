@@ -33,6 +33,8 @@ As figure 1 depicts, the Azure for Telco industry follows the design principles 
 
 ![The letter C](./docs/c.png) [Distributed Edge](./docs/telco-edge.md). The Azure for Telco industry reference implementation provides prescriptive guidance to leverage the Telco’s distributed edge infrastructure to provide Azure services at the edge via [Azure Stack Edge](https://docs.microsoft.com/azure/databox-online/) and [Azure private multi-access edge compute (MEC)](https://docs.microsoft.com/azure/private-multi-access-edge-compute-mec/overview), which among other benefits provides a low-latency experience to users, as services are provided directly at the edge instead of having to provide the services from the Azure region.
 
+![The letter D](./docs/d.png) [Telco Services](./solutions/mgmtOptions/readme.md). In addition to providing networking services to their customers, telcos also provide managed services and managed solutions whether from their own Azure AD tenant, or in the customer's Azure AD tenants.
+
 ### Next Steps
 The following articles will provide detailed design considerations and recommendations for Telco Industry Scenarios key design areas.
 
