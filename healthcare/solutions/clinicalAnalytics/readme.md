@@ -204,6 +204,11 @@ The final step before executing the data transfer pipeline is to do the mapping 
 
 With the finished pipeline you can set a scheduled interval or a trigger for the data transfer to be executed. Some source systems support CDC (currently FHIR service does not). If your sources are files in blob you can set a trigger for new files landing in blob and delete the files once processed.
 
+=======
+To export data from Azure Healthcare API - FHIR service we use the export function.
+
+![Azure Data Factory pipeline](./images/adf_2.png)
+
 ## Known limitations
 
 * Data flow from FHIR to Dataverse is currently done using a a proprietary sync agent. A more scalable and reliable solution is recommended. Consider to have teh Dynamics application read and write directly to the FHIR service.
