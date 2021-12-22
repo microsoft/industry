@@ -166,7 +166,7 @@ Start by creating a service principle in Azure, then go to the Power Platform ad
 
 #### Design considerations
 
-Consider to create a custom security role with only the necessary privileges required by the service principle. Alternative is to use existing roles, you can combine multiple roles. 
+Consider to create a custom security role with only the necessary privileges required by the service principle. Alternative is to use existing roles, you can combine multiple roles.
 
 ![Power Platform admin center](./images/adf_fhir_1.png)
 
