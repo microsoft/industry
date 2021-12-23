@@ -146,7 +146,7 @@ If you need more advanced capabilities like anonymize the data for research data
 
 ![Azure Data Factory pipeline](./images/adf_1.png)
 
-To export data from Azure Healthcare API - FHIR service we uses the export function.
+To export data from Azure Healthcare API - FHIR service uses the export function.
 
 ![Azure Data Factory pipeline](./images/adf_2.png)
 
