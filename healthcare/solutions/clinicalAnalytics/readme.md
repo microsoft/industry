@@ -146,15 +146,68 @@ If you need more advanced capabilities like anonymize the data for research data
 
 ![Azure Data Factory pipeline](./images/adf_1.png)
 
-To export data from Azure Healthcare API - FHIR service we use the export function.
+To export data from Azure Healthcare API - FHIR service uses the export function.
 
 ![Azure Data Factory pipeline](./images/adf_2.png)
 
+#### Design recommendations
+
+To be HIPAA Safe Harbor compliant when exporting data for analytics it is recommended to anonymize the data using the [Tools-for-Health-Data-Anonymization](https://github.com/microsoft/Tools-for-Health-Data-Anonymization)
+
+The anonymization engine uses a configuration file specifying different parameters as well as anonymization methods for different data-elements and datatypes. Using the definitions in the configuration file the tool deploys a set of virtual machines using Azure Batch and executes t anonymization algorithms. By default the data is exported as files and stored in Azure Data Lake Store.
+
+### Writing data to Dataverse using Azure Data Factory
+
+Azure Data Factory or Synapse Pipelines can be used to write data into Dataverse. The pipeline can read data from the FHIR service or from most other Azure data stores and upsert them to Dataverse.
+
+#### Design recommendations
+
+Start by creating a service principle in Azure, then go to the Power Platform admin center and add that service principle as an application. Once the service principle is added Edit the security roles and ensure the service has required access to write data to tables in Dataverse. Follow the principle of least privilege access.
+
+#### Design considerations
+
+Consider to create a custom security role with only the necessary privileges required by the service principle. Alternative is to use existing roles, you can combine multiple roles.
+
+![Power Platform admin center](./images/adf_fhir_1.png)
+
+Azure Data Factory has a Dataverse connector that enables you to communicate with Dataverse.
+
+#### Design considerations
+
+The Power Query activity in Data Factory can write to Dataverse, but has a very limited set of sources available. It can only read from SQL Server, Synapse, Blob or ADLS and only CSV or Parquet files. This can result in additional steps ad complexity in the pipeline.
+
+#### Design recommendations
+
+The recommended approach is to us a Copy activity.
+
+![Data Factory Copy activity](./images/adf_fhir_2.png)
+
+The copy activity has a source and a sink. The source can be the FHIR data stored in files or Azure Healthcare API - FHIR service. To authenticate you can use the service principle from earlier or the recommended method is using managed identity. This managed identity needs to be assigned the role of FHIR Data Reader.
+
+![Data Factory REST linked service](./images/adf_fhir_3.png)
+
+#### Design considerations
+
+In cases where you need the data to be anonymized consider using the FHIR export function with the anoymizer tool. Then extend the pipeline by adding the exported files as the new source for your Dataverse copy activity.  
+
+![Data Factory Dataverse linked service](./images/adf_fhir_4.png)
+
+#### Design recommendations
+
+Using the Dataverse Linked service, authenticated using the same service principle created earlier we connect to the Dataverse environment.
+
+![Data Factory Dataverse mapping](./images/adf_fhir_5.png)
+
+The final step before executing the data transfer pipeline is to do the mapping between the data source (FHIR service) and the sink (Dataverse). Each relevant line in the FHIR resource needs to be mapped to a column in Dataverse. Given the nature of FHIR resources you may need to create multiple tables with relations in Dataverse and normalize the data.
+
+#### Design considerations
+
+With the finished pipeline you can set a scheduled interval or a trigger for the data transfer to be executed. Some source systems support CDC (currently FHIR service does not). If your sources are files in blob you can set a trigger for new files landing in blob and delete the files once processed.
+
 ## Known limitations
 
-* Data flow from FHIR to Dataverse is currently done using a a proprietary sync agent. A more scalable and reliable solution is recommended.
+* Data flow from FHIR to Dataverse is currently done using a a proprietary sync agent. A more scalable and reliable solution is recommended. Consider to have the Dynamics application read and write directly to the FHIR service.
 * Data flow into FHIR needs a more detailed description and samples.
-* Write analytic result-set back to Dataverse needs a prescriptive guidance.
 
 ---
 
