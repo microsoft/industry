@@ -152,7 +152,7 @@ To export data from Azure Healthcare API - FHIR service uses the export function
 
 #### Design recommendations
 
-When exporting data for analytics and a requirement to be HIPAA Safe Harbor compliant it is recommended to anonymize the data using the [Tools-for-Health-Data-Anonymization](https://github.com/microsoft/Tools-for-Health-Data-Anonymization)
+To be HIPAA Safe Harbor compliant when exporting data for analytics it is recommended to anonymize the data using the [Tools-for-Health-Data-Anonymization](https://github.com/microsoft/Tools-for-Health-Data-Anonymization)
 
 The anonymization engine uses a configuration file specifying different parameters as well as anonymization methods for different data-elements and datatypes. Using the definitions in the configuration file the tool deploys a set of virtual machines using Azure Batch and executes t anonymization algorithms. By default the data is exported as files and stored in Azure Data Lake Store.
 
