@@ -14,7 +14,7 @@
                 {
                     "properties": {
                         "description": "Ensures that ExpressRoute gateways for Telco specialized workloads are deployed as highly-available",
-                        "displayName": "Ensure ExpressRoute gateways for Telco is highly-available",
+                        "displayName": "Ensure ExpressRoute gateways for Telco are highly-available",
                         "mode": "Indexed",
                         "parameters": {
                             "effect": {

@@ -61,7 +61,7 @@
                         {
                             "name": "subOrgsOption",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Select dedicated subscriptions or single subscription for platform resources",
+                            "label": "Select dedicated subscriptions or single subscription for Azure for Telco platform resources",
                             "defaultValue": "Dedicated (recommended)",
                             "toolTip": "If 'Yes' is selected when also adding a subscription for management, ARM will deploy resources and enable them for continious compliance.",
                             "constraints": {
@@ -89,7 +89,7 @@
                                     "visible": true,
                                     "options": {
                                       "icon": "Warning",
-                                      "text": "Dedicated subscriptions are recommended for the various platform components to ensure scale, sustainability, and segregation of duties. However, a single subscription can also be used in case this is not a concern (e.g., small enterprises).",
+                                      "text": "Dedicated subscriptions are recommended for the various platform components to ensure scale, sustainability, and segregation of duties, and especially around networking. However, a single subscription can also be used in case this is not a concern (e.g., small enterprises).",
                                       "uri": "https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/management-group-and-subscription-organization"
                                     }
                                 },
@@ -98,7 +98,7 @@
 									"type": "Microsoft.Common.TextBlock",
 									"visible": true,
 									"options": {
-										"text": "Select the dedicated, single subscription that will be used for all platform resources during deployment, for security, logging, connectivity, and identity."
+										"text": "Select the single subscription that will be used for all platform resources during deployment, for security, logging, connectivity, and identity."
 									}
 								},
 								{
@@ -113,7 +113,7 @@
                 },
                 {
                     "name": "esGoalState",
-                    "label": "Platform management, security, and governance",
+                    "label": "Security, governance, and compliance",
                     "subLabel": {
                         "preValidation": "",
                         "postValidation": ""
@@ -629,7 +629,7 @@
                 },
                 {
                     "name": "esConnectivityGoalState",
-                    "label": "Network topology and connectivity for platform and edge",
+                    "label": "Connectivity for Azure and Distributed Edge",
                     "subLabel": {
                         "preValidation": "",
                         "postValidation": ""
@@ -641,7 +641,7 @@
                             "type": "Microsoft.Common.InfoBox",
                             "visible": "[not(equals(steps('lzSettings').subOrgsOption, 'Single'))]",
                             "options": {
-                                "text": "To enable network topology and connectivity, you must allocate a dedicated connectivity Subscription. Please note, this Subscription will be moved to the connectivity Management Group, and ARM will deploy the first hub virtual network for either a hub and spoke or Virtual WAN  network topology. Additional networking platform resources such as gateways or Azure Firewall can be deployed. We recommend using a new dedicated Subscription with no existing resources.",
+                                "text": "To enable connectivity for Azure and Distributed Edge, you must allocate a dedicated connectivity Subscription. Please note, this Subscription will be moved to the connectivity Management Group, and ARM will deploy the first hub virtual network for either a hub and spoke or Virtual WAN  network topology. Additional networking platform resources such as gateways or Azure Firewall can be deployed. We recommend using a new dedicated Subscription with no existing resources. When you need to scale-out networking, either into the same region and same subscription, or to a new region or a separate connectivity subscription, use the following link to deploy and scale-out.",
                                 "uri": "https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/define-an-azure-network-topology",
                                 "style": "Info"
                             }
@@ -651,7 +651,7 @@
                             "type": "Microsoft.Common.InfoBox",
                             "visible": "[equals(steps('lzSettings').subOrgsOption, 'Single')]",
                             "options": {
-                                "text": "To enable network topology and connectivity, you can select the preferred networking topology, and deploy this into the dedicated platform subscription. Additional networking platform resources such as gateways or Azure Firewall can also be deployed.",
+                                "text": "To enable network topology and connectivity for Azure and Distributed Edge, you can select the preferred networking topology, and deploy this into the dedicated platform subscription. Additional networking platform resources such as gateways or Azure Firewall can also be deployed.",
                                 "uri": "https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/define-an-azure-network-topology",
                                 "style": "Info"
                             }
@@ -659,7 +659,7 @@
                         {
                             "name": "esHub",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Deploy networking topology",
+                            "label": "Deploy networking topology for Azure and Distributed Edge",
                             "defaultValue": "No",
                             "toolTip": "Select the preferred network topology. If third-party NVA is a requirement, you must deploy this into the connectivity subscription post the deployment.",
                             "constraints": {
@@ -757,7 +757,7 @@
                             "label": "Enable DDoS Protection Standard",
                             "defaultValue": "Yes (recommended)",
                             "visible": "[not(equals(steps('esConnectivityGoalState').esHub, 'No'))]",
-                            "toolTip": "If 'Yes' is selected when also adding a connectivity subscription, DDoS Protection Standard will be enabled.",
+                            "toolTip": "If 'Yes' is selected when also adding a connectivity subscription, DDoS Protection Standard will be enabled and protect your Azure resources from denial of service threats.",
                             "constraints": {
                                 "allowedValues": [
                                     {
@@ -1417,7 +1417,7 @@
                 },
                 {
                     "name": "esIdentityGoalState",
-                    "label": "Identity management & AuthN/AuthZ",
+                    "label": "Authentication & Authorization",
                     "subLabel": {
                         "preValidation": "",
                         "postValidation": ""
@@ -1890,7 +1890,7 @@
                             "label": "Enable DDoS Protection Standard",
                             "defaultValue": "Yes (recommended)",
                             "visible": "[and(not(equals(steps('esConnectivityGoalState').esHub,'No')),equals(steps('esConnectivityGoalState').esDdoS,'Yes'))]",
-                            "toolTip": "If 'Yes' is selected when also adding a connectivity subscription earlier, DDoS Protection Standard will be enabled.",
+                            "toolTip": "If 'Yes' is selected when also adding a connectivity subscription earlier, DDoS Protection Standard will be enabled and protect your Azure resources from denial of service threats.",
                             "constraints": {
                                 "allowedValues": [
                                     {
