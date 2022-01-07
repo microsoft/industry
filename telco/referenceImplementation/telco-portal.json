@@ -1611,7 +1611,7 @@
                 },
                 {
                     "name": "lzGoalState",
-                    "label": "Telco industry landing zone configuration",
+                    "label": "Telco landing zone configuration",
                     "subLabel": {
                         "preValidation": "",
                         "postValidation": ""
