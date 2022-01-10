@@ -7,7 +7,7 @@ Recommendations and guidance on Microsoft Teams deployment in the enterprise is 
 
 | Reference implementation | Description | Deploy |
 |:----------------------|:------------|--------|
-| Microsoft Teams  for Industries | Coming soon| Coming soon
+| Microsoft Teams for Industries | Coming soon| Coming soon
 
 ## Design areas
 
