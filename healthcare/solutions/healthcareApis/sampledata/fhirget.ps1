@@ -22,8 +22,8 @@ $FhirGetPatientId = Invoke-RestMethod "$fhirservice/Patient/8fee45ff-cc41-4b22-a
     $FhirGetPatientId | ConvertTo-Json
 Write-Verbose  $FhirGetPatientId
 
-$FhirGetPatientId = Invoke-RestMethod "$fhirservice/$export?_container='https://<<YOUR STORAGE ACCOUNT>>.blob.core.windows.net/lake'" `
+$FhirPatientExport = Invoke-RestMethod "$fhirservice/Patient/$export" `
     -Method 'GET' `
     -Headers $headers
-    $FhirGetPatientId | ConvertTo-Json
-Write-Verbose  $FhirGetPatientId
+    $FhirPatientExport | ConvertTo-Json
+Write-Verbose  $FhirPatientExport
