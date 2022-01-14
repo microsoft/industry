@@ -13,4 +13,4 @@ Data is pulled back from Shopify via REST APIs and conformed to retail data mode
 ## Design principles
 
 - Leverage ESA guidance for deployment.
-- Leverage 1P solutions to build end to end solution.
+- Leverage 1P solutions to build end-to-end solution.
