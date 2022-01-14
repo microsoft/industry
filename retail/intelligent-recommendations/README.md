@@ -8,7 +8,7 @@ At a high-level, the scenario centers around sourcing data from Shopify and then
 
 Data is pulled back from Shopify via REST APIs and conformed to retail data model. The data is then stored on an Azure datastore. For integration with IR, datasets are extracted to an ADLS container. IR then processes data stored on ADLS at specific time intervals to produce recommendations.
 
-![shopifyintegration](../../../../images/concept-shopify.png)
+![shopifyintegration](../media/concept-shopify.png)
 
 ## Design principles
 
