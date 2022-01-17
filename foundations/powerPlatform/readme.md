@@ -120,6 +120,7 @@ Any design for IAM and RBAC must meet regulatory, security, and operational requ
 * Centralized versus federated resource ownership:
   * Shared resources or any aspect of the environment that implements or enforces a security boundary, such as the network (Azure integration scenarios) must be managed centrally. This is both a requirement of many regulatory framewrosk as well as standard practice for any organization which must grant or deny access to confidential or business critical resources.
   * The management of app resources which do not violate security boundaries or other aspects required to maintain security and compliance can be delegated to application teams/citizen developers/business units. Allowing users to provision their app resources within a securely managed environment allows organizations to take advantage of the agile nature of cloud and modern apps while preventing the violation of any critical security or governance boundary.
+* Power Platform can enable cross-tenant inbound and outbound restrictions, to control access to SaaS cloud applications.
 
 ### Design recommendations
 
@@ -132,6 +133,7 @@ Any design for IAM and RBAC must meet regulatory, security, and operational requ
 * Avoid customizing built-in roles, but rather clone existing built-ins and add/remove the permissions required for a particular role.
 * Enforce MFA for any user with rights to the Power Platform environment(s). This is arequirement of many compliance frameworks and greatly lowers the risk of credential theft and unauthorized access.
 * Integrate Azure AD logs with a platform-central Azure Monitor Log Analytics workspace, which provides a single source of truth around log and monitoring data, giving organizations a cloud native option to meet requirements around log collection and retention.
+* If cross-tenant inbound or/and outbound restrictions are required from an identity perspective, organizations must open a support case to enable this capability.
 
 ## Security, governance, and compliance
 
