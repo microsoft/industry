@@ -62,7 +62,7 @@ The North Star architecture approach advocates using Power Platform native servi
 ### Recommendations
 
 * Be prepared to trade off functionality as not everything will likely be required on day one.
-* Leverage preview services and take dependencies on roadmap in order to remove technical blockers.
+* Leverage preview services and take dependencies on the Power Platform product roadmap in order to remove technical blockers.
 
 ## Critical design areas for Power Platform
 
@@ -135,7 +135,7 @@ Any design for IAM and RBAC must meet regulatory, security, and operational requ
 
 ## Security, governance, and compliance
 
-An environment in Power Platform is an allow-by default system from a policy perspective, and for the Healthcare solutions and applications, one must use Data-Loss Prevention policies to explicitly categorize and enable/disable connecters for business use cases. This will help to mitigate risk for data exfiltration, and help to stay secure and compliant.
+An environment in Power Platform is an allow-by default system from a policy perspective, and one must use Data-Loss Prevention policies to explicitly categorize and enable/disable connecters for business usage, non-business usage, as well as blocking them entirely. This will help to mitigate risk for data exfiltration, and help to stay secure and compliant by providing application teams, professional developers, and citizen developers with landing zones that have well-defined set of policies for the connectors they can use.
 
 ![policies](./images/policies.png)
 
@@ -151,7 +151,7 @@ An environment in Power Platform is an allow-by default system from a policy per
 
 ### Design recommendations
 
-* Assess which data loss prevention policies you need, and which connectors that should be classified as either Business Data only, or No Business Data.
+* Assess which data loss prevention policies you need, and which connectors that should be classified as either Business Data only, No Business Data, and which connectors you should Block.
 * Create a data loss prevention policy that enforces the bare minimum security requirements at the tenant scope to ensure that all landing zones are secure by-default and both pro devs and citizen devs can safely develop business applications that do not violate the security requirements.
 * The tenant wide policy spanning all environments should prevent all unsupported non-Microsoft connectors, and classify all Microsoft connectors as 'Business data'.
 * Create a policy for the default environment that furter restricts which Microsoft connectors are classified as 'Business Data'.
@@ -164,7 +164,7 @@ An environment in Power Platform is an allow-by default system from a policy per
 Environments acts as the scale-unit, and a management boundary in Power platform and is where organizations can store, manage, and share business data, applications, including Dynamics 365 apps, chatbots, and flows. It's recommended to have a strategy for how you should create, distribute, and scale environments to accelerate digital transformation for your pro - and citizen developers.
 The following section describes the design considerations and the design recommendations for Environments, to help you navigate to the correct setup per your organizational requirements.
 
-![Environments for Healthcare](./images/env.png)
+![Environments](./images/env.png)
 
 ### Design considerations
 
