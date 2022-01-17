@@ -16,7 +16,7 @@ Review the articles below to learn more about the North Star architecture method
 
 * [Microsoft Power Platform](./powerPlatform)
 * [Microsoft Azure](./azure)
-* [Microsoft 365](./m365)
+* [Microsoft Teams](./teams)
 
 ---
 

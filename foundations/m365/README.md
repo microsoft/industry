@@ -1,1 +1,0 @@
-# Microsoft 365 for Industries
