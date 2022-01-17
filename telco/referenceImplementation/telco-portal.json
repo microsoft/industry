@@ -3,7 +3,7 @@
     "view": {
         "kind": "Form",
         "properties": {
-            "title": "Azure for Telecommunications",
+            "title": "AfO Architecture",
             "steps": [
                 {
                     "name": "basics",
@@ -17,7 +17,7 @@
                 },
                 {
                     "name": "lzSettings",
-                    "label": "Azure for Telco core setup",
+                    "label": "AfO Architecture core setup",
                     "subLabel": {
                         "preValidation": "Provide a company prefix for the management group structure that will be created.",
                         "postValidation": "Done"
@@ -29,7 +29,7 @@
                             "type": "Microsoft.Common.InfoBox",
                             "visible": true,
                             "options": {
-                                "text": "Azure for Telco deployment requires access at the tenant root (/) scope. Visit this link to ensure you have the appropriate RBAC permission to complete the deployment",
+                                "text": "AfO Architecture requires access at the tenant root (/) scope. Visit this link to ensure you have the appropriate RBAC permission to complete the deployment",
                                 "uri": "https://docs.microsoft.com/azure/role-based-access-control/elevate-access-global-admin",
                                 "style": "Info"
                             }
@@ -39,7 +39,7 @@
                             "type": "Microsoft.Common.TextBlock",
                             "visible": true,
                             "options": {
-                                "text": "Azure for Telco will create the management group hierarchy under the Tenant Root Group with the prefix provided at this step.",
+                                "text": "AfO Architecture will create the management group hierarchy under the Tenant Root Group with the prefix provided at this step.",
                                 "link": {
                                     "label": "Learn more",
                                     "uri": "https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/management-group-and-subscription-organization"
@@ -1611,7 +1611,7 @@
                 },
                 {
                     "name": "lzGoalState",
-                    "label": "Telco landing zone configuration",
+                    "label": "Operator landing zones",
                     "subLabel": {
                         "preValidation": "",
                         "postValidation": ""
