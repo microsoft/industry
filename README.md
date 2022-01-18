@@ -79,6 +79,7 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
 [Pre-requisites](./telco/prereqs.md)
 
 - [Azure for Telecommunications](./telco)
+- [Power Platform for Telecommunications](./foundations/powerPlatform)
 
 Telco Solutions
 
@@ -88,6 +89,8 @@ Telco Solutions
 - [Telco services](./telco/solutions/mgmtOptions/readme.md)
 <!--  - [Telco Managed Services](./telco/solutions/managedServices)
   - [Telco Managed Solution](./telco/solutions/managedSolutions)-->
+<!--- [Telco Sales](./telco/solutions/sales/readme.md)
+- [Place Management](./telco/solutions/placeManagement/readme.md)-->
 
   </td>
   <td>

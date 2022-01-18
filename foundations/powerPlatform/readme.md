@@ -1,20 +1,20 @@
 # North Star Architecture for Power Platform
 
-North Star is an architectural approach and a reference implementation. It enables effective construction and operationalization of landing zones (environments) on Power Platform, at scale. This approach aligns with the platform and product roadmap and the Center of Excellence adoption framework.
+North Star Architecture for Power Platform is an architecture and design methodology, as well as a reference implementation to deploy into your on Power Platform tenant. It enables effective construction and operationalization of landing zones (environments) on Power Platform, at scale. This approach aligns with the platform and product roadmap and the Center of Excellence adoption framework.
 
-Specifically for Microsoft Cloud for Industries (e.g., Healthcare, Financial Services), Microsoft Power Platform is an essential platform for the overall industry solutions - which primarily are D365 applications that are deployed into Power Platform environments, and this prescriptive guidance aims to provide you with best practices and recommendations across the critical design areas for Power Platform to host and integrate the various industry applications.
+In addition to being application, persona, and industry agnostic, North Star Architecture will also address the specific recommendations for Microsoft Cloud for Industries (e.g., Healthcare, Financial Services), where Microsoft Power Platform is an essential platform for the overall industry solutions. These curated industry solutions are primarily D365 applications that are deployed into Power Platform environments, and this prescriptive guidance aims to provide you with best practices and recommendations across the critical design areas for Power Platform to host and integrate the various industry applications.
 
 | Reference implementation | Description | Deploy |
 |:----------------------|:------------|--------|
-| North Star Architecture for Power Platform | Power Platform environments with DLP, logging, and security enabled for scalable industry solutions |[![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
+| North Star Architecture for Power Platform | Power Platform environments with DLP, logging, and security enabled for scalable business- and industry solutions for professional and citizen developers | Deployment button is coming soon :-) <!--[![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)-->
 
 ## Architecture overview
 
-North Star architecture for Power Platform represents the strategic design path and target technical state for an organizations Power Platform enviornment. It continues to evolve alongside the Power roadmap. Various design decisions define the architecture that your organization must make to map your Power Platform journey.
+North Star architecture for Power Platform represents the strategic design path and target technical state for an organizations Power Platform enviornment. It continues to evolve alongside the Power Platform product roadmap. Various design decisions define the architecture that your organization must make to map your Power Platform journey.
 
 ### High-level architecture
 
-A North Star architecture includes a set of design considerations and recommendations across the [critical design areas](#critical-design-areas-for-power-platform) for Power Platform. It is modular by design and allows you to start with a foundational architecture that enables construction and operationalization of landing zones (Environments) that supports your business application portfolios, for both pro developers and citizen developers. The architecture will scale regardless your organization scale-point and business requirements.
+A North Star architecture includes a set of design considerations and recommendations across the [critical design areas](#critical-design-areas-for-power-platform) for Power Platform. It is modular by design and allows you to start with a foundational architecture that enables construction and operationalization of landing zones (Environments) that supports your industry and business application portfolios, for both pro developers and citizen developers. The architecture will scale regardless your organization scale-point and business requirements.
 
 Figure 1 depicts the high-level architecture of North Star architecture for Power Platform
 
@@ -62,7 +62,7 @@ The North Star architecture approach advocates using Power Platform native servi
 ### Recommendations
 
 * Be prepared to trade off functionality as not everything will likely be required on day one.
-* Leverage preview services and take dependencies on roadmap in order to remove technical blockers.
+* Leverage preview services and take dependencies on the Power Platform product roadmap in order to remove technical blockers.
 
 ## Critical design areas for Power Platform
 
@@ -87,13 +87,15 @@ Organizations can obtain licenses by either licensing Microsoft Power Apps or Mi
 
 * Licensing is the first control-gate to allowing access to Power Platform components.
 * Licenses are tied to the tenant and the assigned Azure AD users/groups.
-* Power Platform provides different licensing constructs, as well as capacity add-ons and requires some planning in advance
-* D365 Trials are one-in-a-lifetime per Azure AD tenant
-* Pay As You Go (PAYG) is a low-risk entry to Premium functionality in Power Platform
+* Power Platform provides different licensing constructs, as well as capacity add-ons and requires planning in advance based on use cases for both modern business applications and industry solutions.
+* D365 Trials are one-in-a-lifetime per Azure AD tenant.
+* Pay As You Go (PAYG) is a low-risk entry to Premium functionality in Power Platform.
 
 ### Design recommendations
 
-* Avoid creating multiple Azure AD tenants
+* If Dev/Test/Prod are going to be completely isolated from each outher from an identity perspective, separate them at a tenant level (i.e. use multiple Azure AD tenants)
+* Avoid creating multiple Azure AD tenants unless there is a strong IAM justification and processes are already in place.
+* In case organization does not have existing identity infrastructure, then it is recommended to start by implementing Azure AD only identity deployment. Together with Enterprise mobility suite it provides end to end protection for SaaS and enterprsie applications, as well as devices.
 * Dev/test/prod environments can be isolated and controlled natively in the Power Platform, without needing separation at the identity control plane (AD tenant). For secure usage of connectors related to Microsoft Graph - such as Office 365, Sharepoint etc., ensure a well-defined RBAC model is implemented to meet the security and data classification requirements.
 * Use the pay-as-you-go plan for apps that need to be shared with a large user base with infrequent and/or unpredictable use
 * Use an Azure Subscription for Power Apps to reduce license procurement overhead and consolidate with other service purchases
@@ -102,6 +104,7 @@ Organizations can obtain licenses by either licensing Microsoft Power Apps or Mi
 
 Identity and access to the Power Platform, the environments, the applications, components, and solutions within the environments must be carefully thought through in parallel with assigned licenses.
 Furthermore, for data, security in Dataverse is there to ensure users can do their work with the least amount of friction, while still protecting the data and services. Security in Dataverse can be implemented as a simple security model with broad access all the way to highly complex security models where users have specific record and field level access.
+Any design for IAM and RBAC must meet regulatory, security, and operational requirements before it can be accepted.
 
 ### Design considerations
 
@@ -113,19 +116,28 @@ Furthermore, for data, security in Dataverse is there to ensure users can do the
   * Sharing of canvas apps is done directly with a user or Azure AD group but is still subject to Dataverse security roles.
   * Sharing of model-driven apps is done via Dataverse security roles.
 * If an Environment is first created without Dataverse and it gets added later, the Dataverse roles will take over for controlling security in the Environment and all environment admins and makers are automatically migrated.
-* Built-in security roles can be customized, and cloned
+* Built-in security roles can be customized, and cloned.
+* Centralized versus federated resource ownership:
+  * Shared resources or any aspect of the environment that implements or enforces a security boundary, such as the network (Azure integration scenarios) must be managed centrally. This is both a requirement of many regulatory framewrosk as well as standard practice for any organization which must grant or deny access to confidential or business critical resources.
+  * The management of app resources which do not violate security boundaries or other aspects required to maintain security and compliance can be delegated to application teams/citizen developers/business units. Allowing users to provision their app resources within a securely managed environment allows organizations to take advantage of the agile nature of cloud and modern apps while preventing the violation of any critical security or governance boundary.
+* Power Platform can enable cross-tenant inbound and outbound restrictions, to control access to SaaS cloud applications.
 
 ### Design recommendations
 
 * Create AAD groups that are automatically assigned the correct licenses per user per their requirements and roles, and avoid assigning licenses to individual users.
 * Organize the AAD groups that streamline and simplify RBAC for the environments per the functions and requirements for the business units and application teams.
-* Use Conditional Access Policies in Azure AD to grant/prevent access to Power Apps and Power Automate based upon user/group, device, and location.
+* Use Conditional Access Policies in Azure AD to grant/prevent access to Power Apps and Power Automate based upon user/group, device, and location. Doing so will provide another mechanism to help protect a controlled Power Platform environment from unauthorized access.
+* MFA provides a second barrier of authentication adding another layer of security. It is recommended to enforce MFA and conditional access policies for all privileged accounts to make it more secure. MFA does provide another barrier of authentication but does not stop phishing or social ensingeering such as hacker taking physical possession of your phone, Sim Swapping, or cloning. It is recommended that MFA should be implemented with device management policy.
+* Plan and implement for emergency access or break-glass accounts to prevent tenant-wide account lockout.
 * Include mapping of security groups to Environments where Dataverse is enabled as part of the Environment creation process.
-* Avoid customizing built-in roles, but rather clone existing built-ins and add/remove the permissions required for a particular role
+* Avoid customizing built-in roles, but rather clone existing built-ins and add/remove the permissions required for a particular role.
+* Enforce MFA for any user with rights to the Power Platform environment(s). This is arequirement of many compliance frameworks and greatly lowers the risk of credential theft and unauthorized access.
+* Integrate Azure AD logs with a platform-central Azure Monitor Log Analytics workspace, which provides a single source of truth around log and monitoring data, giving organizations a cloud native option to meet requirements around log collection and retention.
+* If cross-tenant inbound or/and outbound restrictions are required from an identity perspective, organizations must open a support case to enable this capability.
 
 ## Security, governance, and compliance
 
-An environment in Power Platform is an allow-by default system from a policy perspective, and for the Healthcare solutions and applications, one must use Data-Loss Prevention policies to explicitly categorize and enable/disable connecters for business use cases. This will help to mitigate risk for data exfiltration, and help to stay secure and compliant.
+An environment in Power Platform is an allow-by default system from a policy perspective, and one must use Data-Loss Prevention policies to explicitly categorize and enable/disable connecters for business usage, non-business usage, as well as blocking them entirely. This will help to mitigate risk for data exfiltration, and help to stay secure and compliant by providing application teams, professional developers, and citizen developers with landing zones that have well-defined set of policies for the connectors they can use.
 
 ![policies](./images/policies.png)
 
@@ -141,7 +153,7 @@ An environment in Power Platform is an allow-by default system from a policy per
 
 ### Design recommendations
 
-* Assess which data loss prevention policies you need, and which connectors that should be classified as either Business Data only, or No Business Data.
+* Assess which data loss prevention policies you need, and which connectors that should be classified as either Business Data only, No Business Data, and which connectors you should Block.
 * Create a data loss prevention policy that enforces the bare minimum security requirements at the tenant scope to ensure that all landing zones are secure by-default and both pro devs and citizen devs can safely develop business applications that do not violate the security requirements.
 * The tenant wide policy spanning all environments should prevent all unsupported non-Microsoft connectors, and classify all Microsoft connectors as 'Business data'.
 * Create a policy for the default environment that furter restricts which Microsoft connectors are classified as 'Business Data'.
@@ -154,7 +166,7 @@ An environment in Power Platform is an allow-by default system from a policy per
 Environments acts as the scale-unit, and a management boundary in Power platform and is where organizations can store, manage, and share business data, applications, including Dynamics 365 apps, chatbots, and flows. It's recommended to have a strategy for how you should create, distribute, and scale environments to accelerate digital transformation for your pro - and citizen developers.
 The following section describes the design considerations and the design recommendations for Environments, to help you navigate to the correct setup per your organizational requirements.
 
-![Environments for Healthcare](./images/env.png)
+![Environments](./images/env.png)
 
 ### Design considerations
 
@@ -185,8 +197,8 @@ The following section describes the design considerations and the design recomme
 * Limit high privilege access by using an Azure AD Security Group with PIM for admin access to the environments.
 * Manage the correct number of environments in the tenant to avoid sprawl and conserve capacity.
 * Enable auditing for your tenant and environments to understand usage and available capacity.
-* For industry solutions (e.g., Healthcare, Financial Services Industry), deploy all Dynamics 365 applications to the same environment(s), and avoid creating islands of data that will be complex to combine later.
-* Only split Industry solutions across different environments if there are data or security constraints.
+* For Microsoft Cloud for industry solutions (e.g., D365 applications for Healthcare, Financial Services Industry), deploy all Dynamics 365 applications to the same environment(s), and avoid creating islands of data that will be complex to merge and combine later.
+* Only split Microsoft Cloud for industry solutions (D365 applications) across different environments if there are data or security constraints.
 
 ## Management and Monitoring
 
