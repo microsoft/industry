@@ -13,6 +13,273 @@
             "policyDefinitions": [
                 {
                     "properties": {
+                        "description": "Deploys NSG flow logs and traffic analytics for AfO to Log Analytics with a specfied retention period.",
+                        "displayName": "Deploys NSG flow logs and traffic analytics to Log Analytics for AfO",
+                        "mode": "Indexed",
+                        "parameters": {
+                            "retention": {
+                                "type": "Integer",
+                                "metadata": {
+                                    "displayName": "Retention"
+                                },
+                                "defaultValue": 5
+                            },
+                            "interval": {
+                                "type": "Integer",
+                                "metadata": {
+                                    "displayName": "Traffic Analytics processing interval mins (10/60)"
+                                },
+                                "defaultValue": 60
+                            },
+                            "workspace": {
+                                "type": "String",
+                                "metadata": {
+                                    "strongType": "omsWorkspace",
+                                    "displayName": "Resource ID of Log Analytics workspace",
+                                    "description": "Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant 'Log Analytics Contributor' permissions (or similar) to the policy assignment's principal ID."
+                                }
+                            },
+                            "storageAccountResourceId": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Storage Account Resource Id",
+                                    "strongType": "Microsoft.Storage/storageAccounts"
+                                }
+                            },
+                            "effect": {
+                                "type": "String",
+                                "defaultValue": "DeployIfNotExists",
+                                "allowedValues": [
+                                    "DeployIfNotExists",
+                                    "Disabled"
+                                ],
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                }
+                            }
+                        },
+                        "metadata": {
+                            "version": "1.5.0",
+                            "category": "Monitoring"
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Network/networkSecurityGroups"
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]",
+                                "details": {
+                                    "type": "Microsoft.Network/networkWatchers/flowlogs",
+                                    "name": "[[if(empty(coalesce(field('Microsoft.Network/networkSecurityGroups/flowLogs[*].id'))), 'null/null', concat(split(first(field('Microsoft.Network/networkSecurityGroups/flowLogs[*].id')), '/')[8], '/', split(first(field('Microsoft.Network/networkSecurityGroups/flowLogs[*].id')), '/')[10]))]",
+                                    "existenceCondition": {
+                                        "allOf": [
+                                            {
+                                                "field": "Microsoft.Network/networkWatchers/flowLogs/enabled",
+                                                "equals": "true"
+                                            }
+                                        ]
+                                    },
+                                    "existenceScope": "resourceGroup",
+                                    "roleDefinitionIds": [
+                                        "/providers/Microsoft.Authorization/roleDefinitions/4d97b98b-1d4f-4787-a291-c67834d212e7",
+                                        "/providers/Microsoft.Authorization/roleDefinitions/81a9662b-bebf-436f-a333-f67b29880f12",
+                                        "/providers/Microsoft.Authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293",
+                                        "/providers/Microsoft.Authorization/roleDefinitions/17d1049b-9a84-46fb-8f53-869881c3d3ab",
+                                        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+                                    ],
+                                    "resourceGroupName": "[[if(empty(coalesce(field('Microsoft.Network/networkSecurityGroups/flowLogs'))), 'NetworkWatcherRG', split(first(field('Microsoft.Network/networkSecurityGroups/flowLogs[*].id')), '/')[4])]",
+                                    "deploymentScope": "resourceGroup",
+                                    "deployment": {
+                                        "properties": {
+                                            "mode": "Incremental",
+                                            "parameters": {
+                                                "location": {
+                                                    "value": "[[field('location')]"
+                                                },
+                                                "networkSecurityGroup": {
+                                                    "value": "[[field('id')]"
+                                                },
+                                                "workspace": {
+                                                    "value": "[[toLower(parameters('workspace'))]"
+                                                },
+                                                "retention": {
+                                                    "value": "[[parameters('retention')]"
+                                                },
+                                                "interval": {
+                                                    "value": "[[parameters('interval')]"
+                                                },
+                                                "storageAccountResourceId": {
+                                                    "value": "[[parameters('storageAccountResourceId')]"
+                                                }
+                                            },
+                                            "template": {
+                                                "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                                                "contentVersion": "1.0.0.0",
+                                                "parameters": {
+                                                    "location": {
+                                                        "type": "String"
+                                                    },
+                                                    "networkSecurityGroup": {
+                                                        "type": "String"
+                                                    },
+                                                    "workspace": {
+                                                        "type": "String"
+                                                    },
+                                                    "retention": {
+                                                        "type": "int"
+                                                    },
+                                                    "interval": {
+                                                        "type": "int"
+                                                    },
+                                                    "time": {
+                                                        "type": "String",
+                                                        "defaultValue": "[[utcNow()]"
+                                                    },
+                                                    "storageAccountResourceId": {
+                                                        "type": "String"
+                                                    }
+                                                },
+                                                "variables": {
+                                                    "resourceGroupName": "[[split(parameters('networkSecurityGroup'), '/')[4]]",
+                                                    "securityGroupName": "[[split(parameters('networkSecurityGroup'), '/')[8]]"
+                                                },
+                                                "resources": [
+                                                    {
+                                                        "type": "Microsoft.Resources/deployments",
+                                                        "apiVersion": "2019-10-01",
+                                                        "name": "[[concat('NetworkWatcherRG', '.', variables('securityGroupName'))]",
+                                                        "resourceGroup": "NetworkWatcherRG",
+                                                        "properties": {
+                                                            "mode": "Incremental",
+                                                            "template": {
+                                                                "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                                                                "contentVersion": "1.0.0.0",
+                                                                "resources": [
+                                                                    {
+                                                                        "type": "Microsoft.Network/networkWatchers",
+                                                                        "apiVersion": "2020-05-01",
+                                                                        "name": "[[concat('NetworkWatcher_', toLower(parameters('location')))]",
+                                                                        "location": "[[parameters('location')]",
+                                                                        "properties": {},
+                                                                        "resources": [
+                                                                            {
+                                                                                "type": "flowLogs",
+                                                                                "apiVersion": "2019-11-01",
+                                                                                "name": "[[concat(variables('securityGroupName'), '-Network-flowlog')]",
+                                                                                "location": "[[parameters('location')]",
+                                                                                "properties": {
+                                                                                    "enabled": true,
+                                                                                    "format": {
+                                                                                        "type": "JSON",
+                                                                                        "version": 2
+                                                                                    },
+                                                                                    "retentionPolicy": {
+                                                                                        "days": "[[parameters('retention')]",
+                                                                                        "enabled": true
+                                                                                    },
+                                                                                    "flowAnalyticsConfiguration": {
+                                                                                        "networkWatcherFlowAnalyticsConfiguration": {
+                                                                                            "enabled": true,
+                                                                                            "trafficAnalyticsInterval": "[[parameters('interval')]",
+                                                                                            "workspaceResourceId": "[[parameters('workspace')]"
+                                                                                        }
+                                                                                    },
+                                                                                    "storageId": "[[parameters('storageAccountResourceId')]",
+                                                                                    "targetResourceId": "[[parameters('networkSecurityGroup')]"
+                                                                                },
+                                                                                "dependsOn": [
+                                                                                    "[[concat('NetworkWatcher_', toLower(parameters('location')))]"
+                                                                                ]
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                "outputs": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "name": "Deploy-AfO-Nsg-FlowLogs-to-LA"
+                },
+                {
+                    "properties": {
+                        "description": "Create Resource Group for Network Watcher in the subscriptions for AfO",
+                        "displayName": "Create Resource Group for Network Watcher in the subscriptions for AfO",
+                        "mode": "All",
+                        "metadata": {
+                            "version": "1.0.0.0",
+                            "category": "Telco"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "DeployIfNotExists",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "DeployIfNotExists"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "field": "type",
+                                "equals": "Microsoft.Resources/subscriptions"
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]",
+                                "details": {
+                                    "type": "Microsoft.Resources/resourceGroups",
+                                    "name": "NetworkWatcherRG",
+                                    "deploymentScope": "Subscription",
+                                    "existenceScope": "Subscription",
+                                    "roleDefinitionIds": [
+                                        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+                                    ],
+                                    "deployment": {
+                                        "location": "westeurope",
+                                        "properties": {
+                                            "mode": "incremental",
+                                            "template": {
+                                                "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+                                                "contentVersion": "1.0.0.0",
+                                                "parameters": {},
+                                                "resources": [
+                                                    {
+                                                        "type": "Microsoft.Resources/resourceGroups",
+                                                        "apiversion": "2021-04-01",
+                                                        "location": "[[deployment().location]",
+                                                        "name": "NetworkWatcherRG",
+                                                        "properties": {}
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "name": "Dine-NWRg"
+                },
+                {
+                    "properties": {
                         "description": "Ensures that ExpressRoute gateways for Telco specialized workloads are deployed as highly-available",
                         "displayName": "Ensure ExpressRoute gateways for Telco are highly-available",
                         "mode": "Indexed",

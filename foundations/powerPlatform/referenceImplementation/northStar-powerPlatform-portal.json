@@ -106,172 +106,7 @@
                                 }
                             ],
                             "visible": "[and(equals(steps('powerp').esPp, 'yes'), equals(steps('powerp').cicdOption, 'Yes'))]"
-                        },
-						{
-							"name": "EnvBox",
-							"type": "Microsoft.Common.TextBlock",
-							"visible": "[equals(steps('powerp').esPp, 'yes')]",
-							"options": {
-								"text": "Microsoft Cloud for Industry requires Environments in Power Platform. You can use existing Environment, or create new Environments (recommended). When creating new, the setup will instantiate dedicated Environments for Test and Production in order to support maintenance, testing, and validation before deploying to production.",
-								"link": {
-									"label": "Learn more",
-									"uri": "https://www.microsoft.com"
-								}
-							}
-						},                       
-                        {
-                            "name": "esPpEnv",
-                            "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Create new or use existing Environments in Power Platform",
-                            "defaultValue": "New (recommended)",
-                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Healthcare solutions",
-                            "constraints": {
-                                "allowedValues": [
-                                    {
-                                        "label": "New (recommended)",
-                                        "value": "New"
-                                    },
-                                    {
-                                        "label": "Use existing",
-                                        "value": "Existing"
-                                    }
-                                ]
-                            },
-                            "visible": "[equals(steps('powerp').esPp, 'yes')]"
-                        },
-						{
-							"name": "bapApi",
-							"type": "Microsoft.Solutions.ArmApiControl",
-							"request": {
-								"method": "GET",
-								"path": "[concat('/providers/Microsoft.BusinessAppPlatform/environments/', '?api-version=2016-11-01-preview')]"
-							}
-						},
-						{
-							"name": "environmentDropDown",
-							"type": "Microsoft.Common.DropDown",
-							"label": "Existing Environments",
-							"visible": "[equals(steps('powerp').esPpEnv, 'Existing')]",
-							"multiLine": true,
-							"constraints": {
-								"allowedValues": "[map(steps('powerp').bapApi.value, (env) => parse(concat('{\"label\":\"', env.properties.displayName, '\",\"description\":\"', env.name, '\",\"value\":\"', toLower(env.name), '\"}')) )]",
-								"required": true
-							}
-						},
-						{
-							"name": "ppRegion",
-							"type": "Microsoft.Common.DropDown",
-							"label": "Select region for the new Environments",
-							"placeholder": "",
-							"defaultValue": "",
-							"toolTip": "",
-							"visible": "[and(equals(steps('powerp').esPpEnv, 'New'), equals(steps('powerp').esPp, 'yes'))]",
-							"constraints": {
-								"allowedValues": [
-                                    {
-                                        "label": "Europe",
-                                        "value": "europe"
-                                    },
-                                    {
-                                        "label": "United States",
-                                        "value": "eastus"
-                                    },
-                                    {
-                                        "label": "United Arab Emirates",
-                                        "value": "uaecentral"
-                                    },
-                                    {
-                                        "label": "Switzerland",
-                                        "value": "switzerlandnorth"
-                                    },
-                                    {
-                                        "label": "Japan",
-                                        "value": "japaneast"
-                                    },
-                                    {
-                                        "label": "France",
-                                        "value": "francesouth"
-                                    },
-                                    {
-                                        "label": "Germany",
-                                        "value": "germanynorth"
-                                    },
-                                    {
-                                        "label": "Australia",
-                                        "value": "australiaeast"
-                                    }
-                                ],
-								"required": true
-							}
-						},
-						{
-							"name": "ppAllowDlp",
-							"type": "Microsoft.Common.DropDown",
-							"label": "Select recommended Data Loss Prevention Policies to allow Connectors for the Healthcare environments",
-							"placeholder": "",
-                            "multiselect": true,
-                            "selectAll": true,
-                            "filter": true,
-                            "filterPlaceholder": "Filter items ...",
-                            "multiLine": true,
-							"defaultValue": "",
-							"toolTip": "",
-							"visible": "[and(equals(steps('powerp').esPpEnv, 'New'), equals(steps('powerp').esPp, 'yes'))]",
-							"constraints": {
-								"allowedValues": [
-                                    {
-                                        "label": "Adobe Creative Cloud",
-										"description": "Connector for Adobe",
-                                        "value": "adobe"
-                                    },
-                                    {
-                                        "label": "DropBox",
-										"description": "Connector that allows you to connect to DropBox enterprises",
-                                        "value": "dropbox"
-                                    },
-                                    {
-                                        "label": "Azure Synapse",
-										"description": "Connector for Azure Synapse for data scenarios",
-                                        "value": "synapse"
-                                    }
-                                ],
-								"required": true
-							}
-						},
-						{
-							"name": "ppBlockDlp",
-							"type": "Microsoft.Common.DropDown",
-							"label": "Select recommended Data Loss Prevention Policies to block Connectors for the Healthcare environments",
-							"placeholder": "",
-                            "multiselect": true,
-                            "selectAll": true,
-                            "filter": true,
-                            "filterPlaceholder": "Filter items ...",
-                            "multiLine": true,
-							"defaultValue": "",
-							"toolTip": "",
-							"visible": "[and(equals(steps('powerp').esPpEnv, 'New'), equals(steps('powerp').esPp, 'yes'))]",
-							"constraints": {
-								"allowedValues": [
-                                    {
-                                        "label": "Adobe Creative Cloud",
-										"description": "Connector for Adobe",
-                                        "value": "adobe"
-                                    },
-                                    {
-                                        "label": "DropBox",
-										"description": "Connector that allows you to connect to DropBox enterprises",
-                                        "value": "dropbox"
-                                    },
-                                    {
-                                        "label": "Azure Synapse",
-										"description": "Connector for Azure Synapse for data scenarios",
-                                        "value": "synapse"
-                                    }
-                                ],
-								"required": true
-							}
-						},						
+                        },						
                         {
                             "name": "ppCallGraph",
                             "type": "Microsoft.Solutions.GraphApiControl",
@@ -423,7 +258,7 @@
 					]
                 },
 				{
-                    "name": "basics",
+                    "name": "identity",
                     "label": "Identity and Access Management",
                     "elements": [
 						{
@@ -436,14 +271,118 @@
 								"uri": "https://www.microsoft.com"
 							}
 						},
-                        {
-                            "name": "resourceScope",
-                            "type": "Microsoft.Common.ResourceScope"
-                        }
+						{
+                            "name": "tenants",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Restrict cross-tenant inbound and/or outbound authorization",
+                            "defaultValue": "Yes (recommended)",
+							"multiSelect": true,
+                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Healthcare solutions",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": "[equals(steps('powerp').esPp, 'yes')]"
+                        },
+						{
+                            "name": "caa",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Use Azure AD Conditional Access for priviliged access",
+                            "defaultValue": "Yes (recommended)",
+							"multiSelect": true,
+                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Healthcare solutions",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": "[equals(steps('powerp').esPp, 'yes')]"
+                        },
+						{
+									"name": "azMonInfo",
+									"type": "Microsoft.Common.InfoBox",
+									"visible": true,
+									"options": {
+										"icon": "Info",
+										"text": "Access to diagnostic logs is essential for any the overall Power Platform and its environments and apps where compliance with regulatory requirements is a must, and it is recommended to enable Azure Monitor to collect metrics and logs to a Log Analytics workspace. Create a new dedicated Log Analytics workspace for Azure AD logs, or use an existing Log Analytics workspace.",
+										"uri": "https://docs.microsoft.com/azure/healthcare-apis/azure-api-for-fhir/enable-diagnostic-logging"
+									}
+								},
+								{
+									"name": "enableMonitoring",
+									"type": "Microsoft.Common.OptionsGroup",
+									"label": "Enable Monitoring of Azure AD logs",
+									"defaultValue": "Yes",
+									"toolTip": "",
+									"constraints": {
+										"required": false,
+										"allowedValues": [
+											{
+												"label": "Yes",
+												"value": "Yes"
+											},
+											{
+												"label": "No",
+												"value": "No"
+											}
+										]
+									},
+									"visible": true
+								},
+								{
+									"name": "apiWorkspace",
+									"type": "Microsoft.Common.OptionsGroup",
+									"label": "Use existing Log Analytics workspace",
+									"defaultValue": "No",
+									"toolTip": "",
+									"constraints": {
+										"allowedValues": [
+											{
+												"label": "Yes",
+												"value": "Yes"
+											},
+											{
+												"label": "No",
+												"value": "No"
+											}
+										],
+										"required": true
+									},
+									"visible": "[equals(steps('identity').enableMonitoring, 'Yes')]"
+								},
+								{
+									"name": "workspaceSelector",
+									"type": "Microsoft.Solutions.ResourceSelector",
+									"label": "Select existing Log Analytics workspace",
+									"resourceType": "Microsoft.OperationalInsights/workspaces",
+									"visible": "[equals(steps('identity').apiWorkspace, 'Yes')]",
+									"required": true,
+									"options": {
+										"filter": {
+											"subscription": "all",
+											"location": "all"
+										}
+									}
+								}
                     ]
-                },
+                },				
 				{
-                    "name": "security",
+                    "name": "gov",
                     "label": "Security, Governance, and Compliance",
                     "elements": [
 						{
@@ -452,36 +391,330 @@
 							"visible": true,
 							"options": {
 								"icon": "Info",
-								"text": "North Star Architecture for Power Platform will deploy and configure the foundation for your Power Platform tenant including all best practices and recommendations from Microsoft. The deployment requires that the user is a Global Admin or Power Platform Admin in the Azure Active Directory.",
+								"text": "An environment in Power Platform is an allow-by default system from a policy perspective, and one must use Data-Loss Prevention policies to explicitly categorize and enable/disable connecters for business usage, non-business usage, as well as blocking them entirely..",
 								"uri": "https://www.microsoft.com"
 							}
 						},
-                        {
-                            "name": "resourceScope",
-                            "type": "Microsoft.Common.ResourceScope"
+						{
+							"name": "ppAllowDlp",
+							"type": "Microsoft.Common.DropDown",
+							"label": "Select recommended Data Loss Prevention Policies Business Group for the tenant",
+							"placeholder": "",
+                            "multiselect": true,
+                            "selectAll": true,
+                            "filter": true,
+                            "filterPlaceholder": "Filter items ...",
+                            "multiLine": true,
+							"defaultValue": "",
+							"toolTip": "",
+							"visible": "[and(equals(steps('powerp').esPpEnv, 'New'), equals(steps('powerp').esPp, 'yes'))]",
+							"constraints": {
+								"allowedValues": [
+                                    {
+                                        "label": "Adobe Creative Cloud",
+										"description": "Connector for Adobe",
+                                        "value": "adobe"
+                                    },
+                                    {
+                                        "label": "DropBox",
+										"description": "Connector that allows you to connect to DropBox enterprises",
+                                        "value": "dropbox"
+                                    },
+                                    {
+                                        "label": "Azure Synapse",
+										"description": "Connector for Azure Synapse for data scenarios",
+                                        "value": "synapse"
+                                    }
+                                ],
+								"required": true
+							}
+						},
+						{
+							"name": "ppBlockDlp",
+							"type": "Microsoft.Common.DropDown",
+							"label": "Select recommended Data Loss Prevention Policies to Non-Business Group for the tenant",
+							"placeholder": "",
+                            "multiselect": true,
+                            "selectAll": true,
+                            "filter": true,
+                            "filterPlaceholder": "Filter items ...",
+                            "multiLine": true,
+							"defaultValue": "",
+							"toolTip": "",
+							"visible": "[and(equals(steps('powerp').esPpEnv, 'New'), equals(steps('powerp').esPp, 'yes'))]",
+							"constraints": {
+								"allowedValues": [
+                                    {
+                                        "label": "Adobe Creative Cloud",
+										"description": "Connector for Adobe",
+                                        "value": "adobe"
+                                    },
+                                    {
+                                        "label": "DropBox",
+										"description": "Connector that allows you to connect to DropBox enterprises",
+                                        "value": "dropbox"
+                                    },
+                                    {
+                                        "label": "Azure Synapse",
+										"description": "Connector for Azure Synapse for data scenarios",
+                                        "value": "synapse"
+                                    }
+                                ],
+								"required": true
+							}
+						},
+						{
+                            "name": "compliance",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable auditing and integration with M365 Security & Compliance Center",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Healthcare solutions",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": true
+                        },
+						{
+                            "name": "sentinel",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable auditing and integration with Azure Sentinel",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Healthcare solutions",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": true
+                        },
+						{
+                            "name": "appInsights",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable auditing and integration with Azure Application Insights",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Healthcare solutions",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": true
                         }
                     ]
-                },				
+                },
 				{
                     "name": "environments",
                     "label": "Environments",
                     "elements": [
-						{
-							"name": "infoBox1",
+                        {
+							"name": "EnvBox",
 							"type": "Microsoft.Common.InfoBox",
-							"visible": true,
+							"visible": "[equals(steps('powerp').esPp, 'yes')]",
 							"options": {
-								"icon": "Info",
-								"text": "North Star Architecture for Power Platform will deploy and configure the foundation for your Power Platform tenant including all best practices and recommendations from Microsoft. The deployment requires that the user is a Global Admin or Power Platform Admin in the Azure Active Directory.",
-								"uri": "https://www.microsoft.com"
+								"text": "North Star Architecture will create Environments in Power Platform. You can use existing Admin Environments, or create new Admin Environments (recommended). When creating new, the setup will instantiate dedicated Environments for Test, Development, and Production in order to support maintenance, testing, development, and validation before deploying to production.",
+								"link": {
+									"label": "Learn more",
+									"uri": "https://www.microsoft.com"
+								}
+							}
+						},                       
+                        {
+                            "name": "esPpEnv",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Create new or use existing Admin Environments in Power Platform",
+                            "defaultValue": "New (recommended)",
+                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Healthcare solutions",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "New (recommended)",
+                                        "value": "New"
+                                    },
+                                    {
+                                        "label": "Use existing",
+                                        "value": "Existing"
+                                    }
+                                ]
+                            },
+                            "visible": "[equals(steps('powerp').esPp, 'yes')]"
+                        },
+						{
+							"name": "bapApi",
+							"type": "Microsoft.Solutions.ArmApiControl",
+							"request": {
+								"method": "GET",
+								"path": "[concat('/providers/Microsoft.BusinessAppPlatform/environments/', '?api-version=2016-11-01-preview')]"
 							}
 						},
-                        {
-                            "name": "resourceScope",
-                            "type": "Microsoft.Common.ResourceScope"
+						{
+							"name": "environmentDropDown",
+							"type": "Microsoft.Common.DropDown",
+							"label": "Existing Admin Environments",
+							"visible": "[equals(steps('environments').esPpEnv, 'Existing')]",
+							"multiLine": true,
+							"constraints": {
+								"allowedValues": "[map(steps('environments').bapApi.value, (env) => parse(concat('{\"label\":\"', env.properties.displayName, '\",\"description\":\"', env.name, '\",\"value\":\"', toLower(env.name), '\"}')) )]",
+								"required": true
+							}
+						},
+						{
+							"name": "ppRegion",
+							"type": "Microsoft.Common.DropDown",
+							"label": "Select region for the new Admin Environments",
+							"placeholder": "",
+							"defaultValue": "",
+							"toolTip": "",
+							"visible": "[and(equals(steps('environments').esPpEnv, 'New'), equals(steps('powerp').esPp, 'yes'))]",
+							"constraints": {
+								"allowedValues": [
+                                    {
+                                        "label": "Europe",
+                                        "value": "europe"
+                                    },
+                                    {
+                                        "label": "United States",
+                                        "value": "eastus"
+                                    },
+                                    {
+                                        "label": "United Arab Emirates",
+                                        "value": "uaecentral"
+                                    },
+                                    {
+                                        "label": "Switzerland",
+                                        "value": "switzerlandnorth"
+                                    },
+                                    {
+                                        "label": "Japan",
+                                        "value": "japaneast"
+                                    },
+                                    {
+                                        "label": "France",
+                                        "value": "francesouth"
+                                    },
+                                    {
+                                        "label": "Germany",
+                                        "value": "germanynorth"
+                                    },
+                                    {
+                                        "label": "Australia",
+                                        "value": "australiaeast"
+                                    }
+                                ],
+								"required": true
+							}
+						},
+						{
+                            "name": "esPpAppEnv",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Create new Environments for Biz Apps and Industry solutions",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Healthcare solutions",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": "[equals(steps('powerp').esPp, 'yes')]"
+                        },
+						{
+							"name": "ppAppRegion",
+							"type": "Microsoft.Common.DropDown",
+							"label": "Select region for the new Biz Apps and Industry Environments",
+							"placeholder": "",
+							"defaultValue": "",
+							"toolTip": "",
+							"visible": "[and(equals(steps('environments').esPpAppEnv, 'yes'), equals(steps('powerp').esPp, 'yes'))]",
+							"constraints": {
+								"allowedValues": [
+                                    {
+                                        "label": "Europe",
+                                        "value": "europe"
+                                    },
+                                    {
+                                        "label": "United States",
+                                        "value": "eastus"
+                                    },
+                                    {
+                                        "label": "United Arab Emirates",
+                                        "value": "uaecentral"
+                                    },
+                                    {
+                                        "label": "Switzerland",
+                                        "value": "switzerlandnorth"
+                                    },
+                                    {
+                                        "label": "Japan",
+                                        "value": "japaneast"
+                                    },
+                                    {
+                                        "label": "France",
+                                        "value": "francesouth"
+                                    },
+                                    {
+                                        "label": "Germany",
+                                        "value": "germanynorth"
+                                    },
+                                    {
+                                        "label": "Australia",
+                                        "value": "australiaeast"
+                                    }
+                                ],
+								"required": true
+							}
+						},
+						{
+                            "name": "billing",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Create Billing Policy and Use Azure Subscription for pay-as-you-go for the environments",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Healthcare solutions",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": "[equals(steps('powerp').esPp, 'yes')]"
                         }
+						
                     ]
-                },
+                },							
 				{
                     "name": "mgmt",
                     "label": "Management and Monitoring",
