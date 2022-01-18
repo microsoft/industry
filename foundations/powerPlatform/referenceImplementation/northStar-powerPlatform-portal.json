@@ -272,26 +272,34 @@
 							}
 						},
 						{
-                            "name": "tenants",
-                            "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Restrict cross-tenant inbound and/or outbound authorization",
-                            "defaultValue": "Yes (recommended)",
-							"multiSelect": true,
-                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Healthcare solutions",
-                            "constraints": {
-                                "allowedValues": [
+							"name": "tenants",
+							"type": "Microsoft.Common.DropDown",
+							"label": "Cross-tenant inbound and outbound restrictions",
+							"placeholder": "",
+                            "multiselect": true,
+                            "selectAll": true,
+                            "filter": true,
+                            "filterPlaceholder": "Filter items ...",
+                            "multiLine": true,
+							"defaultValue": "",
+							"toolTip": "",
+							"visible": "[and(equals(steps('powerp').esPpEnv, 'New'), equals(steps('powerp').esPp, 'yes'))]",
+							"constraints": {
+								"allowedValues": [
                                     {
-                                        "label": "Yes (recommended)",
-                                        "value": "yes"
+                                        "label": "Restrict cross-tenant inbound establishment",
+										"description": "Block connection establishment attempts to your tenant from other tenants",
+                                        "value": "inbound"
                                     },
                                     {
-                                        "label": "No",
-                                        "value": "no"
+                                        "label": "Restrict cross-tenant outbound establishment",
+										"description": "Block connection establishment attempts from your tenant to other tenants",
+                                        "value": "outbound"
                                     }
-                                ]
-                            },
-                            "visible": "[equals(steps('powerp').esPp, 'yes')]"
-                        },
+                                ],
+								"required": false
+							}
+						},
 						{
                             "name": "caa",
                             "type": "Microsoft.Common.OptionsGroup",
