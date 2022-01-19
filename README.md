@@ -105,6 +105,18 @@ Telco Solutions
 
 Microsoft Cloud for Financial Services provides capabilities to manage data to deliver differentiated experiences, empower employees, and combat financial crime while facilitating security, compliance, and interoperability.
 
+<table>
+<thead>
+ <tr>
+  <th style="text-align:left" width="25%">Financial Services</th>
+  <th style="text-align:left" width="80%">Reference Architecture</th>
+ </tr>
+</thead>
+<tbody>
+ <tr>
+  <td style="vertical-align:top">
+
+
 - [Pre-requisites](./fsi/prereqs.md)
   - [Power Platform for Financial Services](./foundations/powerPlatform)
   - [Azure for Financial Services](./fsi/readme.md)
@@ -121,6 +133,15 @@ Microsoft Cloud for Financial Services provides capabilities to manage data to d
 - Compliance, privacy, and security
   - [Risk assurance and support](./fsi/solutions/riskAssurance)
   - [Regulatory compliance assessments](./fsi/solutions/complianceAssessments)
+
+  </td>
+  <td>
+  <img src="fsi/docs/mc4f-reference-architecture.png" width="99%" height="99%"/>
+  </td>
+
+ </tr>
+</tbody>
+</table>
 
 ## Contributing
 
