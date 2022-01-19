@@ -1,4 +1,4 @@
-# Azure for Telecomunnications
+# Azure for Telecommunications
 
 | Industry Architecture | Description | Deploy |
 |:----------------------|:------------|--------|
