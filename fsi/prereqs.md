@@ -1,8 +1,10 @@
-# Pre-requisites for Financial Services
+# Financial Services Foundations (Recommended)
 
 To setup the Financial Services capabilities that spans the Microsoft Clouds, the following pre-requisites are required.
 
 ## Licensing requirements
+
+The table below summarizes the licenses you may require depending on the Financial Services scenarios you want to deploy. See specific requirements in the respective documentation and implementation guide for each scenario.
 
 | Product name |
 |:----------------------:|
@@ -28,7 +30,7 @@ Use this reference implementation to deploy Azure Synapse with database template
 
 ## Power Platform
 
-Microsoft Cloud for Financial Services requires Power Platform environments (recommendation is dedicated environments for test, development, and production) that are created into the target region with D365 applications enabled.
+Microsoft Cloud for Financial Services requires Power Platform environments (recommendation is dedicated environments for test, development, and production) that are created into the target region with Dataverse and D365 applications enabled.
 
 [Prescriptive guidance and design recommendations for Power Platform for Financial Services](../foundations/powerPlatform)
 

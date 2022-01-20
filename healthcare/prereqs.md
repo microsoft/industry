@@ -1,8 +1,10 @@
-# Pre-requisites for Healthcare
+# Healthcare Foundations (Recommended)
 
 To setup the Healthcare capabilities that spans the Microsoft Clouds, the following pre-requisites are required.
 
 ## Licensing requirements
+
+The table below summarizes the licenses you may require depending on the Healthcare scenarios you want to deploy. See specific requirements in the respective documentation and implementation guide for each scenario.
 
 | Product name |
 |:----------------------:|
@@ -25,13 +27,13 @@ Healthcare APIs require a subscription (landing zone) in Azure that will host th
 
 ## Healthcare APIs (FHIR)
 
-Use this reference implementation to deploy Healthcare APIs into your landing zone, which follows best practices from a composition, security, and observability perspective. Additional configuration and enhancement can be made per your requirements
+Use this reference implementation to deploy Healthcare APIs into your landing zone, which follows best practices and alignes with the proven recommendations. Additional configuration and enhancement can be made per your requirements.
 
 [Prescriptive guidance and design recommendations for Healthcare APIs with FHIR and reference implementation](./solutions/healthcareApis)
 
 ## Power Platform
 
-Healthcare requires Power Platform environments (recommendation is dedicated environments for test, development, and production) that are created into the target region with D365 applications enabled.
+Healthcare requires Power Platform environments (recommendation is dedicated environments for test, development, and production) that are created into the target region with Dataverse and D365 applications enabled.
 
 [Prescriptive guidance and design recommendations for Power Platform for Healthcare](../foundations/powerPlatform)
 
