@@ -301,6 +301,27 @@
 							}
 						},
 						{
+                            "name": "guestMakers",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Prevent Azure AD guests accounts to make Power Apps",
+                            "defaultValue": "Yes (recommended)",
+							"multiSelect": true,
+                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Healthcare solutions",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": "[equals(steps('powerp').esPp, 'yes')]"
+                        },						
+						{
                             "name": "caa",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Use Azure AD Conditional Access for priviliged access",
@@ -548,7 +569,70 @@
 									"uri": "https://www.microsoft.com"
 								}
 							}
-						},                       
+						},
+						{
+                            "name": "envAdmins",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Restrict production and sandbox Environment creation to specific Admins",
+                            "defaultValue": "Yes (recommended)",
+							"multiSelect": true,
+                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Healthcare solutions",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": "[equals(steps('powerp').esPp, 'yes')]"
+                        },
+						{
+                            "name": "envTrialsAdmins",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Restrict trial Environment creation to specific Admins",
+                            "defaultValue": "Yes (recommended)",
+							"multiSelect": true,
+                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Healthcare solutions",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": "[equals(steps('powerp').esPp, 'yes')]"
+                        },
+						{
+                            "name": "capacityAdmins",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Restrict capacity allocation to specific Admins",
+                            "defaultValue": "Yes (recommended)",
+							"multiSelect": true,
+                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Healthcare solutions",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": "[equals(steps('powerp').esPp, 'yes')]"
+                        },																	       
                         {
                             "name": "esPpEnv",
                             "type": "Microsoft.Common.OptionsGroup",
