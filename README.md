@@ -30,14 +30,12 @@ Microsoft Cloud for Healthcare spans the Microsoft Clouds (Azure, Power Platform
  <tr>
   <td style="text-align:top">
 
-[Pre-requisites for Healthcare](./healthcare/prereqs.md)
-
+[Healthcare Foundations (Recommended)](./healthcare/prereqs.md)
 - [Power Platform for Healthcare](./foundations/powerPlatform)
 - [Azure for Healthcare](./healthcare/solutions/healthcareApis)
 - [Microsoft Teams for Healthcare](./healthcare/solutions/microsoftTeams)
 
 Healthcare Solutions
-
 - Personalized Care
   - [Patient Access](./healthcare/solutions/patientAccess)
   - [Patient Service Center](./healthcare/solutions/patientServiceCenter)
@@ -50,8 +48,9 @@ Healthcare Solutions
   - [Home Health](./healthcare/solutions/homeHealth)
 - Care Collaboration
   - [Health Assistant](./healthcare/solutions/healthAssistant)
-- [Remote Patient Monitoring](./healthcare/solutions/IoMT)
-- [Healthcare Analytics](./healthcare/solutions/clinicalAnalytics)
+- Monitoring & Analytics
+  - [Remote Patient Monitoring](./healthcare/solutions/IoMT)
+  - [Healthcare Analytics](./healthcare/solutions/clinicalAnalytics)
 
 </td>
   <td>
@@ -76,13 +75,11 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
  <tr>
   <td style="vertical-align:top">
 
-[Pre-requisites](./telco/prereqs.md)
-
+[Telecommunications Foundations (Recommended)](./telco/prereqs.md)
 - [Azure for Telecommunications](./telco)
 - [Power Platform for Telecommunications](./foundations/powerPlatform)
 
 Telco Solutions
-
 - [Governance for Telco Industry Scenarios](./telco#governance)
 - [Networking for Telco Industry Scenarios](./telco/docs/telco-networking.md)
 - [Distributed Edge](./telco#distributed-edge)
@@ -117,11 +114,12 @@ Microsoft Cloud for Financial Services provides capabilities to manage data to d
   <td style="vertical-align:top">
 
 
-- [Pre-requisites](./fsi/prereqs.md)
+- [Financial Services Foundations (Recommended)](./fsi/prereqs.md)
   - [Power Platform for Financial Services](./foundations/powerPlatform)
   - [Azure for Financial Services](./fsi/readme.md)
     - [Service enablement framework](./fsi/solutions/serviceEnablementFramework)
   - [Azure Synapse for Banking](./fsi/solutions/synapseBanking)
+
 - Customer and employee experience
   - [Unified customer profile](./fsi/solutions/unifiedCustomerProfile)
   - [Customer onboarding](./fsi/solutions/customerOnboarding)
