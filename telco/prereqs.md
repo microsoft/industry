@@ -1,4 +1,4 @@
-# Telecommunications Foundatinos (Recommended)
+# Telecommunications Foundations (Recommended)
 
 To setup the Telecommunications capabilities that spans the Microsoft Clouds, the following pre-requisites are required.
 
