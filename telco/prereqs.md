@@ -4,7 +4,7 @@ To setup the Telecommunications capabilities that spans the Microsoft Clouds, th
 
 ## Licensing requirements
 
-The table below summarizes the licenses you may require depending on the Telecommunication scenarios you want to deploy. See specific requirements in the respective documentation and implementation guide for each scenario.
+The table below summarizes the licenses you may require depending on the Telecommunications scenarios you want to deploy. See specific requirements in the respective documentation and implementation guide for each scenario.
 
 | Product name |
 |:----------------------:|
