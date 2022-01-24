@@ -1629,7 +1629,7 @@
                             }
                         },
                         {
-                            "name": "healthcareText",
+                            "name": "fsiText",
                             "type": "Microsoft.Common.TextBlock",
                             "visible": true,
                             "options": {
@@ -1651,7 +1651,7 @@
                         {
                             "name": "esHealthcareLzSub",
                             "type": "Microsoft.Common.DropDown",
-                            "label": "Healthcare landing zone subscriptions (optional)",
+                            "label": "Financial Services landing zone subscriptions (optional)",
                             "toolTip": "",
                             "multiselect": true,
                             "selectAll": true,
@@ -1669,7 +1669,7 @@
                             "type": "Microsoft.Common.TextBlock",
                             "visible": true,
                             "options": {
-                                "text": "Select which of the the recommended policies you will assign to your healthcare specialized workload landing zones.",
+                                "text": "Select which of the the recommended policies you will assign to your Financial Services specialized workload landing zones.",
                                 "link": {
                                     "label": "Learn more",
                                     "uri": "https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/design-principles#policy-driven-governance"
@@ -1679,43 +1679,47 @@
                         {
                             "name": "esHealthcareCors",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Ensure CORS does not allow every domain to access your Healthcare APIs FHIR services",
-                            "defaultValue": "Yes (recommended)",
+                            "label": "Select the regulatory compliance that is required for the Financial Services workloads",
+                            "defaultValue": "None",
                             "visible": true,
                             "toolTip": "If 'Yes' is selected then Policy will be assigned to enforce that not all domains can access FHIR services.",
                             "constraints": {
                                 "allowedValues": [
                                     {
-                                        "label": "Yes (recommended)",
-                                        "value": "Yes"
+                                        "label": "None",
+                                        "value": "none"
                                     },
                                     {
-                                        "label": "No",
-                                        "value": "No"
+                                        "label": "CSIS Microsoft Azure Foundation Benchmark",
+                                        "value": "csis"
+                                    },
+									{
+                                        "label": "CMMC Level 3",
+                                        "value": "cmmc"
+                                    },
+									{
+                                        "label": "FedRAMP",
+                                        "value": "fed"
+                                    },
+									{
+                                        "label": "ISO 27001",
+                                        "value": "iso"
+                                    },
+									{
+                                        "label": "CSIS Microsoft Azure Foundation Benchmark",
+                                        "value": "csis"
+                                    },
+									{
+                                        "label": "NIST",
+                                        "value": "nist"
+                                    },
+									{
+                                        "label": "PCI v3",
+                                        "value": "pci"
                                     }
                                 ]
                             }
-                        },
-                        {
-                            "name": "esHealthcareDataPlane",
-                            "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Ensure only users within the Azure Active Directory tenant can be granted data-plane access to Healthcare APIs",
-                            "defaultValue": "Yes (recommended)",
-                            "visible": true,
-                            "toolTip": "If 'Yes' is selected then Policy will be assigned to enforce RBAC of local users only.",
-                            "constraints": {
-                                "allowedValues": [
-                                    {
-                                        "label": "Yes (recommended)",
-                                        "value": "Yes"
-                                    },
-                                    {
-                                        "label": "No",
-                                        "value": "No"
-                                    }
-                                ]
-                            }
-                        },                       											
+                        },                     											
                         {
                             "name": "corpText",
                             "type": "Microsoft.Common.TextBlock",
@@ -2948,8 +2952,6 @@
 				"enablePrivateDnsZones": "[steps('esConnectivityGoalState').esPrivateDns]",
                 "enablePrivateDnsZonesForLzs": "[steps('lzGoalState').esPrivateDnsZones]",
                 "identityAddressPrefix": "[steps('esIdentityGoalState').esIdentityCidr]",
-                "enableHealthcareCors": "[steps('lzGoalState').esHealthcareCors]",
-                "enableLocalDataRbac": "[steps('lzGoalState').esHealthcareDataPlane]",
                 "healthcareLzSubscriptionId": "[steps('lzGoalState').esHealthcareLzSub]",
                 "corpConnectedLzSubscriptionId": "[if(or(not(contains(steps('lzGoalState').esCorpLzSub,steps('esGoalState').esMgmtSubSection.esMgmtSub.subscriptionId)),not(contains(steps('lzGoalState').esCorpLzSub,steps('esConnectivityGoalState').esNwSubSection.esNwSub.subscriptionId))),steps('lzGoalState').lzConnectedSubs,'')]"
             },
