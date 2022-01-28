@@ -24,7 +24,7 @@
             "defaultValue": [
                 "online",
                 "corp",
-                "telco-specialized"
+                "operator"
             ],
             "metadata": {
                 "description": "These are the landing zone management groups."

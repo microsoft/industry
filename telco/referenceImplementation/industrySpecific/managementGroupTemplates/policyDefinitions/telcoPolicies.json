@@ -13,8 +13,8 @@
             "policyDefinitions": [
                 {
                     "properties": {
-                        "description": "Deploys NSG flow logs and traffic analytics for AfO to Log Analytics with a specfied retention period.",
-                        "displayName": "Deploys NSG flow logs and traffic analytics to Log Analytics for AfO",
+                        "description": "Deploys NSG flow logs and traffic analytics to Log Analytics with a specfied retention period for a single Azure region. To use across additional regions, assign the policy per region.",
+                        "displayName": "Deploys NSG flow logs and traffic analytics to Log Analytics for a single Azure region",
                         "mode": "Indexed",
                         "parameters": {
                             "retention": {
@@ -212,12 +212,12 @@
                             }
                         }
                     },
-                    "name": "Deploy-AfO-Nsg-FlowLogs-to-LA"
+                    "name": "Dine-Nsg-FlowLogs-to-LA"
                 },
                 {
                     "properties": {
-                        "description": "Create Resource Group for Network Watcher in the subscriptions for AfO",
-                        "displayName": "Create Resource Group for Network Watcher in the subscriptions for AfO",
+                        "description": "Create Resource Group for Network Watcher in the subscriptions",
+                        "displayName": "Create Resource Group for Network Watcher in the subscriptions",
                         "mode": "All",
                         "metadata": {
                             "version": "1.0.0.0",
@@ -235,6 +235,13 @@
                                     "Disabled"
                                 ],
                                 "defaultValue": "DeployIfNotExists"
+                            },
+                            "location": {
+                                "type": "string",
+                                "metadata": {
+                                    "displayName": "Location",
+                                    "description": "Location for the ResourceGroup"
+                                }
                             }
                         },
                         "policyRule": {
@@ -256,15 +263,24 @@
                                         "location": "westeurope",
                                         "properties": {
                                             "mode": "incremental",
+                                            "parameters": {
+                                                "location": {
+                                                    "value": "[[parameters('location')]"
+                                                }
+                                            },
                                             "template": {
                                                 "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
                                                 "contentVersion": "1.0.0.0",
-                                                "parameters": {},
+                                                "parameters": {
+                                                    "location": {
+                                                        "type": "string"
+                                                    }
+                                                },
                                                 "resources": [
                                                     {
                                                         "type": "Microsoft.Resources/resourceGroups",
                                                         "apiversion": "2021-04-01",
-                                                        "location": "[[deployment().location]",
+                                                        "location": "[[parameters('location')]",
                                                         "name": "NetworkWatcherRG",
                                                         "properties": {}
                                                     }

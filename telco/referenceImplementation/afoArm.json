@@ -613,7 +613,31 @@
             "metadata": {
                 "description": "Provide the subscription ids for existing, empty subscriptions you want to move in as your first telco landing zones."
             }
-        }             
+        },
+        "enableNetworkWatcher": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "enableNsgFlowLogs": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "enableTrafficAnalytics": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        }
     },
     "variables": {
         // Declaring the prescriptive management group structure that will be used in the scope construction
@@ -626,7 +650,7 @@
             "lzs": "[concat(parameters('telcoPrefix'), '-', 'landingzones')]",
             "corp": "[concat(parameters('telcoPrefix'), '-', 'corp')]",
             "online": "[concat(parameters('telcoPrefix'), '-', 'online')]",
-            "telco": "[concat(parameters('telcoPrefix'), '-', 'telco-specialized')]"
+            "telco": "[concat(parameters('telcoPrefix'), '-', 'operator')]"
         },
         // Declaring scopes that will be used for optional deployments, such as platform components (monitoring, networking, identity), policy assignments, subscription placement etc.
         "scopes": {
@@ -709,7 +733,10 @@
             "databricksSku": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DENY-DatabricksSkuPolicyAssignment.json')]",
             "databricksPip": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DENY-DatabricksPipPolicyAssignment.json')]",
             "databricksVnet": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DENY-DatabricksVnetPolicyAssignment.json')]",
-            "govAscPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/gov/fairfaxDINE-ASCConfigPolicyAssignment.json')]"                   
+            "govAscPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/gov/fairfaxDINE-ASCConfigPolicyAssignment.json')]",
+            "logStorageAccount": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/subscriptionTemplates/logStorageAccount.json')]",
+            "nwRgPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DINE-NwResourceGroupPolicyAssignment.json')]",
+            "nsgFlowLogPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DINE-NSGFlowLogsPolicyAssignment.json')]"
         },
         // Declaring deterministic deployment names
         "deploymentSuffix": "[concat('-', deployment().location, guid(parameters('telcoPrefix')))]",
@@ -776,6 +803,11 @@
             "telcoPolicyDefinitons": "[take(concat(variables('industry'), '-TelcoPolicy', deployment().location, '-', deployment().name), 64)]",
             "erHaPolicyAssignment": "[take(concat(variables('industry'), '-DenyNonHaEr', deployment().location, '-', deployment().name), 64)]",
             "pipHaPolicyAssignment": "[take(concat(variables('industry'), '-DenyNonHaPip', deployment().location, '-', deployment().name), 64)]",
+            "logStorageDeploymentName": "[take(concat(variables('industry'), '-LogStorage', deployment().location, '-', deployment().name), 64)]",
+            "nwRgPlatformPolicyAssignment": "[take(concat(variables('industry'), '-NwRgPlatform'), 64)]",
+            "nwRgLzPolicyAssignment": "[take(concat(variables('industry'), '-NwRgLz'), 64)]",
+            "nsgFlowLogsPlatformPolicyAssignment": "[take(concat(variables('industry'), '-NSGFlowPlatform'), 64)]",
+            "nsgFLowLogsLzPolicyAssignment": "[take(concat(variables('industry'), '-NSGFlowLz'), 64)]",
             "telcoLzSubs": "[take(concat(variables('industry'), '-TelcoLzs', deployment().location, '-', deployment().name), 60)]"            
         },
         "esLiteDeploymentNames": {
@@ -787,6 +819,7 @@
             "logAnalyticsLitePolicyDeploymentName": "[take(concat(variables('industry'),'-LAPolicyLite', variables('deploymentSuffix')), 64)]",
             "monitoringSolutionsLiteDeploymentName": "[take(concat(variables('industry'), '-SolutionsLite', variables('deploymentSuffix')), 64)]",
             "platformLiteSubscriptionPlacement": "[take(concat(variables('industry'), '-PlatformSubLite', variables('deploymentSuffix')), 64)]",
+            "logLiteStorageDeploymentName": "[take(concat(variables('industry'), '-LogStorageLite', deployment().location, '-', deployment().name), 64)]",
             "vnetConnectivityHubLiteDeploymentName": "[take(concat(variables('industry'), '-VnetHubLite', variables('deploymentSuffix')), 64)]",
             "vwanConnectivityHubLiteDeploymentName": "[take(concat(variables('industry'), '-VWanHubLite', variables('deploymentSuffix')), 64)]",
             "nvaConnectivityHubLiteDeploymentName": "[take(concat(variables('industry'), '-NVAHubLite', variables('deploymentSuffix')), 64)]",
@@ -804,11 +837,13 @@
             "ddosRg": "[concat(parameters('telcoPrefix'), '-ddos')]",
             "privateDnsRg": "[concat(parameters('telcoPrefix'), '-privatedns')]",
             "identityVnetRg": "[concat(parameters('telcoPrefix'), '-vnet-', parameters('location'))]",
-            "lzVnetRg": "[concat(parameters('telcoPrefix'), '-vnet-', parameters('location'))]"
+            "lzVnetRg": "[concat(parameters('telcoPrefix'), '-vnet-', parameters('location'))]",
+            "logNwRg": "[concat(parameters('telcoPrefix'), '-nwlog-', parameters('location'))]"
         },
         // Declaring deterministic names for platform resources that will be created
         "platformResourceNames": {
             "logAnalyticsWorkspace": "[concat(parameters('telcoPrefix'), '-law')]",
+            "logNwStorageAccount": "[take(concat(parameters('telcoPrefix'), parameters('location'), uniqueString(deployment().name)), 23)]",
             "automationAccount": "[concat(parameters('telcoPrefix'), '-aauto')]",
             "vpnGwName": "[concat(parameters('telcoPrefix'), '-vpngw-', parameters('location'))]",
             "erGwName": "[concat(parameters('telcoPrefix'), '-ergw-', parameters('location'))]",
@@ -828,6 +863,7 @@
         "singleVsDedicatedConnectivitySub": "[if(empty(parameters('connectivitySubscriptionId')), parameters('singlePlatformSubscriptionId'), parameters('connectivitySubscriptionId'))]",
         "singleVsDedicatedIdentitySub": "[if(empty(parameters('identitySubscriptionId')), parameters('singlePlatformSubscriptionId'), parameters('identitySubscriptionId'))]",                
         "platformResourceIds": {
+            "logStorageResourceId": "[concat('/subscriptions/', variables('singleVsDedicatedMgmtSub'), '/resourceGroups/', variables('platformRgNames').logNwRg, '/providers/Microsoft.Storage/storageAccounts/', variables('platformResourceNames').logNwStorageAccount)]",
             "logAnalyticsResourceId": "[concat('/subscriptions/', variables('singleVsDedicatedMgmtSub'), '/resourceGroups/', variables('platformRgNames').mgmtRg, '/providers/Microsoft.OperationalInsights/workspaces/', variables('platformResourceNames').logAnalyticsWorkspace)]",
             "automationResourceId": "[concat('/subscriptions/', variables('singleVsDedicatedMgmtSub'), '/resourceGroups/', variables('platformRgNames').mgmtRg, '/providers/Microsoft.Automation/automationAccounts/', variables('platformResourceNames').automationAccount)]",
             "ddosProtectionResourceId": "[concat('/subscriptions/', variables('singleVsDedicatedConnectivitySub'), '/resourceGroups/', variables('platformRgNames').ddosRg, '/providers/Microsoft.Network/ddosProtectionPlans/', variables('platformResourceNames').ddosName)]",
@@ -1231,6 +1267,39 @@
                     },
                     "enableSqlAssessment": {
                         "value": "[parameters('enableSqlAssessment')]"
+                    }
+                }
+            }
+        },
+        {
+            // Create storage account for NSG Flow Logs in the management subscription for networking observability
+            "condition": "[and(not(empty(parameters('managementSubscriptionId'))), equals(parameters('enableNsgFlowLogs'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').logStorageDeploymentName]",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "subscriptionId": "[parameters('managementSubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]",
+                "policyCompletion",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').logStorageAccount]"
+                },
+                "parameters": {
+                    "mgmtStorageRgName": {
+                        "value": "[variables('platformRgNames').logNwRg]"
+                    },
+                    "storageAccountName": {
+                        "value": "[variables('platformResourceNames').logNwStorageAccount]"
+                    },
+                    "storageLocation": {
+                        "value": "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
                     }
                 }
             }
@@ -1862,9 +1931,144 @@
                 }
             }
         },
+        {   // Creating Policy Assignment for NSG Flow Logs Policy on Platform scope
+            "condition": "[and(equals(parameters('enableNetworkWatcher'), 'Yes'), equals(parameters('enableNsgFlowLogs'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').nsgFlowLogsPlatformPolicyAssignment]",
+            "scope": "[variables('scopes').platformManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]",
+                "policyCompletion",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logStorageDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').logLiteStorageDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').nsgFlowLogPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('telcoPrefix')]"
+                    },
+                    "enforcementMode": {
+                        "value": "[if(equals(parameters('enableNsgFlowLogs'), 'Yes'), 'Default', 'DoNotEnforce')]"
+                    },
+                    "storageAccountResourceId": {
+                        "value": "[variables('platformResourceIds').logStorageResourceId]"
+                    },
+                    "workspace": {
+                        "value": "[variables('platformResourceIds').logAnalyticsResourceId]"
+                    }
+                }
+            }
+        },            
+        {   // Creating Policy Assignment for NetworkWatcherRG on Platform scope
+            "condition": "[equals(parameters('enableNetworkWatcher'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[deployment().location]",
+            "name": "[variables('deploymentNames').nwRgPlatformPolicyAssignment]",
+            "scope": "[variables('scopes').platformManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]",
+                "policyCompletion"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').nwRgPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('telcoPrefix')]"
+                    },
+                    "enforcementMode": {
+                        "value": "[if(equals(parameters('enableNetworkWatcher'), 'Yes'), 'Default', 'DoNotEnforce')]"
+                    },
+                    "location": {
+                        "value": "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
+                    }
+                }
+            }
+        },
         /*
             The following deployments will deploy and configure the Azure policy governance for the landing zones
         */
+        {   // Creating Policy Assignment for NSG Flow Logs Policy on Landing zone scope
+            "condition": "[and(equals(parameters('enableNetworkWatcher'), 'Yes'), equals(parameters('enableNsgFlowLogs'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').nsgFlowLogsLzPolicyAssignment]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]",
+                "policyCompletion",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logStorageDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').logLiteStorageDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').nsgFlowLogPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('telcoPrefix')]"
+                    },
+                    "enforcementMode": {
+                        "value": "[if(equals(parameters('enableNsgFlowLogs'), 'Yes'), 'Default', 'DoNotEnforce')]"
+                    },
+                    "storageAccountResourceId": {
+                        "value": "[variables('platformResourceIds').logStorageResourceId]"
+                    },
+                    "workspace": {
+                        "value": "[variables('platformResourceIds').logAnalyticsResourceId]"
+                    }
+                }
+            }
+        },           
+        {
+            // Creating Policy Assignment for NetworkWatcherRG on Landing Zone scope
+            "condition": "[equals(parameters('enableNetworkWatcher'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[deployment().location]",
+            "name": "[variables('deploymentNames').nwRgLzPolicyAssignment]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]",
+                "policyCompletion"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').nwRgPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('telcoPrefix')]"
+                    },
+                    "enforcementMode": {
+                        "value": "[if(equals(parameters('enableNetworkWatcher'), 'Yes'), 'Default', 'DoNotEnforce')]"
+                    },
+                    "location": {
+                        "value": "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
+                    }
+                }
+            }
+        },
         {
             "condition": "[or(equals(parameters('enableErHa'), 'Yes'), equals(parameters('enableErHa'), 'Audit'))]",
             "type": "Microsoft.Resources/deployments",
@@ -1873,7 +2077,8 @@
             "name": "[variables('deploymentNames').erHaPolicyAssignment]",
             "scope": "[variables('scopes').telcoManagementGroup]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]",
+                "policyCompletion"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1899,7 +2104,8 @@
             "name": "[variables('deploymentNames').pipHaPolicyAssignment]",
             "scope": "[variables('scopes').telcoManagementGroup]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]",
+                "policyCompletion"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -3069,7 +3275,39 @@
         },
         /*
             Note: ES Lite only: the following deployments will deploy Log Analytics solutions to the platform subscription
-        */         
+        */
+                {
+            // Create storage account for NSG Flow Logs in the management subscription for networking observability
+            "condition": "[and(not(empty(parameters('singlePlatformSubscriptionId'))), equals(parameters('enableNsgFlowLogs'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('esLiteDeploymentNames').logLiteStorageDeploymentName]",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "subscriptionId": "[parameters('singlePlatformSubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement)]",
+                "policyCompletion",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').logStorageAccount]"
+                },
+                "parameters": {
+                    "mgmtStorageRgName": {
+                        "value": "[variables('platformRgNames').logNwRg]"
+                    },
+                    "storageAccountName": {
+                        "value": "[variables('platformResourceNames').logNwStorageAccount]"
+                    },
+                    "storageLocation": {
+                        "value": "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
+                    }
+                }
+            }
+        },        
         {
             // Deploying Log Analytics solutions to Log Analytics workspace if condition is true
             "condition": "[and(and(not(empty(parameters('singlePlatformSubscriptionId'))), equals(parameters('enableLogAnalytics'), 'Yes')),  equals(parameters('enableLogAnalytics'), 'Yes'), or(or(or(or(or(equals(parameters('enableSecuritySolution'), 'Yes'), equals(parameters('enableAgentHealth'), 'Yes')), equals(parameters('enableChangeTracking'), 'Yes')), equals(parameters('enableUpdateMgmt'), 'Yes'), equals(parameters('enableActivityLog'), 'Yes')), equals(parameters('enableVmInsights'), 'Yes')), equals(parameters('enableServiceMap'), 'Yes'), equals(parameters('enableSqlAssessment'), 'Yes')))]",
