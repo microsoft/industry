@@ -136,83 +136,91 @@
         },
         "enableAscForServers": {
             "type": "string",
-            "defaultValue": "Free",
+            "defaultValue": "Disabled",
             "allowedValues": [
-                "Standard",
-                "Free"
+                "DeployIfNotExists",
+                "Disabled"
             ]
         },
         "enableAscForAppServices": {
             "type": "string",
-            "defaultValue": "Free",
             "allowedValues": [
-                "Standard",
-                "Free"
-            ]
+                "Disabled",
+                "DeployIfNotExists"
+            ],
+            "defaultValue": "Disabled"            
         },
         "enableAscForStorage": {
             "type": "string",
-            "defaultValue": "Free",
             "allowedValues": [
-                "Standard",
-                "Free"
-            ]
+                "Disabled",
+                "DeployIfNotExists"
+            ],
+            "defaultValue": "Disabled"            
         },
         "enableAscForSql": {
             "type": "string",
-            "defaultValue": "Free",
             "allowedValues": [
-                "Standard",
-                "Free"
-            ]
+                "Disabled",
+                "DeployIfNotExists"
+            ],
+            "defaultValue": "Disabled"            
         },
         "enableAscForSqlOnVm": {
             "type": "string",
-            "defaultValue": "Free",
             "allowedValues": [
-                "Standard",
-                "Free"
-            ]
+                "Disabled",
+                "DeployIfNotExists"
+            ],
+            "defaultValue": "Disabled"            
         },
         "enableAscForKeyVault": {
             "type": "string",
-            "defaultValue": "Free",
             "allowedValues": [
-                "Standard",
-                "Free"
-            ]
+                "Disabled",
+                "DeployIfNotExists"
+            ],
+            "defaultValue": "Disabled"            
         },
         "enableAscForArm": {
             "type": "string",
-            "defaultValue": "Free",
             "allowedValues": [
-                "Standard",
-                "Free"
-            ]
+                "Disabled",
+                "DeployIfNotExists"
+            ],
+            "defaultValue": "Disabled"            
         },
         "enableAscForDns": {
             "type": "string",
-            "defaultValue": "Free",
             "allowedValues": [
-                "Standard",
-                "Free"
-            ]
+                "Disabled",
+                "DeployIfNotExists"
+            ],
+            "defaultValue": "Disabled"            
         },
         "enableAscForKubernetes": {
             "type": "string",
-            "defaultValue": "Free",
             "allowedValues": [
-                "Standard",
-                "Free"
-            ]
+                "Disabled",
+                "DeployIfNotExists"
+            ],
+            "defaultValue": "Disabled"            
         },
         "enableAscForRegistries": {
             "type": "string",
-            "defaultValue": "Free",
             "allowedValues": [
-                "Standard",
-                "Free"
-            ]
+                "Disabled",
+                "DeployIfNotExists"
+            ],
+            "defaultValue": "Disabled"            
+        },
+        "enableAscForOssDb": {
+            "type": "string",
+            "allowedValues": [
+                "Disabled",
+                "DeployIfNotExists"
+            ],
+            "defaultValue": "Disabled"
         },
         "denyAksPrivileged": {
             "type": "string",
@@ -581,23 +589,28 @@
         }
     },
     "variables": {
+        "mgmtGroups": {
+            "telco": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-', 'telco-specialized')]"
+        },
         "scopes": {
             "intermediate": "[tenantResourceId('Microsoft.Management/managementGroups', parameters('enterpriseScaleCompanyPrefix'))]",
             "telco": "[tenantResourceId('Microsoft.Management/managementGroups', concat(parameters('enterpriseScaleCompanyPrefix'), '-', 'telco-specialized'))]"
         },
         "deploymentUris": {
             "eslzArm": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/eslzArm.json",
-            "telcoMgmtGroup": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/telcoMgmtGroup.json')]",
-            "telcoPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/telcoPolicies.json')]",
-            "erHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/DENY-non-ha-expressRoutes-policyAssignment.json')]",
-            "pipHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/DENY-non-ha-publicIps-policyAssignment.json')]"
+            "telcoMgmtGroup": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/mgmtGroupStructure/telcoMgmtGroup.json')]",
+            "telcoPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyDefinitions/telcoPolicies.json')]",
+            "erHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DENY-non-ha-expressRoutes-policyAssignment.json')]",
+            "pipHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DENY-non-ha-publicIps-policyAssignment.json')]",
+            "subscriptionPlacement": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/subscriptionOrganization/subscriptionOrganization.json')]"
         },
         "deploymentNames": {
             "azureCore": "[take(concat('AzForTelco-', deployment().location, '-', deployment().name), 64)]",
             "telcoIndustry": "[take(concat('TelcoIndustry-', deployment().location, '-', deployment().name), 64)]",
             "telcoPolicyDefinitons": "[take(concat('TelcoPolicy', deployment().location, '-', deployment().name), 64)]",
             "erHaPolicyAssignment": "[take(concat('DenyNonHaEr', deployment().location, '-', deployment().name), 64)]",
-            "pipHaPolicyAssignment": "[take(concat('DenyNonHaPip', deployment().location, '-', deployment().name), 64)]"                        
+            "pipHaPolicyAssignment": "[take(concat('DenyNonHaPip', deployment().location, '-', deployment().name), 64)]",
+            "telcoLzSubs": "[take(concat('AzForTelco-TelcoLzs', deployment().location, '-', deployment().name), 60)]"                      
         }
     },
     "resources": [
@@ -681,6 +694,9 @@
                     },
                     "enableAscForKubernetes": {
                         "value": "[parameters('enableAscForKubernetes')]"
+                    },
+                    "enableAscForOssDb": {
+                        "value": "[parameters('enableAscForOssDb')]"
                     },
                     "enableAscForRegistries": {
                         "value": "[parameters('enableAscForRegistries')]"
@@ -863,7 +879,38 @@
                         "value": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-landingzones')]"
                     },
                     "managementGroupId": {
-                        "value": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-telco-specialized')]"
+                        "value": "[variables('mgmtGroups').telco]"
+                    }
+                }
+            }
+        },
+        {
+            // Placing subscription(s) into online landing zone management group
+            "condition": "[not(empty(parameters('telcoLzSubscriptionId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[concat(variables('deploymentNames').telcoLzSubs, copyIndex())]",
+            "scope": "[variables('scopes').telco]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoIndustry)]"
+            ],
+            "copy": {
+                "name": "telcoLzs",
+                "count": "[length(parameters('telcoLzSubscriptionId'))]"
+            },
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').subscriptionPlacement]"
+                },
+                "parameters": {
+                    "targetManagementGroupId": {
+                        "value": "[variables('mgmtGroups').telco]"
+                    },
+                    "subscriptionId": {
+                        "value": "[concat(parameters('telcoLzSubscriptionId')[copyIndex()])]"
                     }
                 }
             }
@@ -883,7 +930,11 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').telcoPolicyDefinitions]"
                 },
-                "parameters": {}
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('enterpriseScaleCompanyPrefix')]"
+                    }
+                }
             }
         },
         {
@@ -901,6 +952,34 @@
                 "templateLink": {
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').erHaPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('enterpriseScaleCompanyPrefix')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('enablePipHa'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[deployment().location]",
+            "name": "[variables('deploymentNames').pipHaPolicyAssignment]",
+            "scope": "[variables('scopes').telco]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').pipHaPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('enterpriseScaleCompanyPrefix')]"
+                    }
                 }
             }
         }

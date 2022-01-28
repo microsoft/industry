@@ -122,7 +122,7 @@
         }
     },
     "variables": {
-        "apiName": "[toLower(parameters('healthCareApiName'))]",
+        "apiName": "[toLower(replace(parameters('healthCareApiName'), '-', ''))]",
         "deploymentName": "[concat('MC4H-HealthCare-', parameters('location'))]",
         "fhirDeploymentName": "[concat('MC4H-FHIR-', parameters('location'))]",
         "dicomDeploymentName": "[concat('MC4H-DICOM-', parameters('location'))]",
@@ -437,7 +437,7 @@
                 },
                 "parameters": {
                     "storageAccountName": {
-                        "value": "[concat(variables('apiName'),uniqueString(variables('apiName')))]"
+                        "value": "[take(concat(variables('apiName'),uniqueString(variables('apiName'))), 23)]"
                     },
                     "location": {
                         "value": "[parameters('location')]"
