@@ -37,17 +37,17 @@ In addition to providing networking services to their customers, telcos also pro
 ### Design Recommendations
 
 #### Azure regions
-- For maximum resiliency, deploy an Azure networking platform in at least two Azure regions (preferrably region pairs). This will protect your infrastructure in Azure against localized disasters with availability zones and also from regional or large geography disasters, by making use of another regions.
-- Besides protecting you from a disaster scenario in an Azure region, this redundant setup allows you to deploy highly available, mission critical systems in an Active-Active configuration when instances of your application can be deployed across 2 (or more) Azure regions.
+- For maximum resiliency, deploy an Azure networking platform in at least two Azure regions (preferrably region pairs). This will protect your infrastructure in Azure against localized disasters with availability zones and also from regional or large geography disasters, by making use of another region.
 - Deploy a hub VNet (for hub and spoke networks) or a virtual hub (for Virtual WAN based network topologies) on each of the Azure regions choosen in your organization.
-  - Please note that Telco architectures can have more than one hub or vHub on the same Azure region.
-- Each ExpressRoute Gateway should be connected by at least two ExpressRoute circuits for the same routing domain (in case the Telco is using multiple ExpressRoute circuits to isolate routing domains). The ExpressRoute circuits should be provisioned from different peering locations. This will remove any single-point-of-failure when connecting the telco on-premises environment to Azure.
+  - Note that Telco architectures can have more than one hub or vHub on the same Azure region.
+- Besides protecting you from a disaster in an Azure region, this architecture allows you to deploy highly available, mission critical systems in an Active-Active configuration where instances of your application can be deployed across 2 (or more) Azure regions.
+- Each ExpressRoute Gateway should be connected to at least two ExpressRoute circuits per routing domain (in case the Telco is using multiple ExpressRoute circuits to isolate routing domains). The ExpressRoute circuits should be provisioned from different [peering locations](https://docs.microsoft.com/azure/expressroute/expressroute-locations-providers#expressroute-locations). This will remove any single-point-of-failures for connecting on-premises network to Azure.
   - Use BGP techniques such as AS path prepending and local preference to ensure [optimal routing across the ExpressRoute circuits](https://docs.microsoft.com/azure/expressroute/expressroute-optimize-routing).
   - This setup is depicted in picture 1 below:
 
 ![Figure 1: Dual regions with cross connects ](./vnet-dual-circuits.png)
 
-_Figure 1: Dual regions with cross connected ExpressRoute circuits
+_Figure 1: Dual regions with cross connected ExpressRoute circuits._
 
 #### Availability Zones
 
