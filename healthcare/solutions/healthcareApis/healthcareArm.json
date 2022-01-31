@@ -559,7 +559,7 @@
         {
             "condition": "[equals(parameters('enableMonitoring'), 'Yes')]",
             "type": "microsoft.insights/diagnosticSettings",
-            "apiVersion": "2017-05-01-preview",
+            "apiVersion": "2021-05-01-preview",
             "name": "[concat(variables('apiName'), '-subdiag')]",
             "location": "Global",
             "dependsOn": [
