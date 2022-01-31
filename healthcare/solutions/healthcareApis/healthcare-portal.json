@@ -257,6 +257,35 @@
 									},
 									"visible": "[equals(steps('azureSetup').fhir.enableFhirService, 'Yes')]"
 								},
+                                {
+                                    "name": "storageAccountName",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "label": "Storage Account name",
+                                    "defaultValue": "",
+                                    "toolTip": "Specify a name for your Storage Account.",
+                                    "constraints": {
+                                        "required": true,
+                                        "validations": [
+                                            {
+                                                "isValid": "[not(equals(steps('azureSetup').fhir.storageAccountNameApi.nameAvailable, false))]",
+                                                "message": "Name currently unavailable. Please choose a different one. Name can contain only lowercase letters and numbers."
+                                            }
+                                        ]
+                                    },
+                                    "visible": true
+                                },
+								{
+                                    "name": "storageAccountNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').resourceScope.subscription.id, '/providers/Microsoft.Storage/checkNameAvailability?api-version=2021-04-01')]",
+                                        "body": {
+                                            "name": "[steps('azureSetup').fhir.storageAccountName]",
+                                            "type": "Microsoft.Storage/storageAccounts"
+                                        }
+                                    }
+                                },
 								{
 									"name": "storageSelector",
 									"type": "Microsoft.Solutions.ResourceSelector",
@@ -601,6 +630,7 @@
                 "enableDicomService": "[steps('azureSetup').dicom.enableDicomService]",
                 "dicomServiceName": "[steps('azureSetup').dicom.dicomServiceName]",
                 "enableStorageAccount": "[steps('azureSetup').fhir.enableStorageAccount]",
+				"storageAccountName": "[steps('azureSetup').fhir.storageAccountName]",
                 "enableMonitoring": "[steps('azureSetup').azMon.enableMonitoring]",
                 "enableEventHub": "[steps('azureSetup').iot.enableEventHub]",
                 "enableIotConnector": "[steps('azureSetup').iot.enableIotConnector]",
