@@ -1,11 +1,11 @@
 # Azure for Telecommunications
 
-| Industry Architecture | Description | Deploy |
-|:----------------------|:------------|--------|
-| Azure for Telecommunications | Azure for Telco foundation that provides a full, rich, compliant architecture with scale-out pattern for connectivity and landing zones for Telco industry scenarios |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoRI)
-| Scale-out Hub virtual network | When the Azure for Telco foundation is in place, you can use this reference implementation to scale-out the hub virtual network for Telco industry, and configure the corresponding networking infrastructure |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoScaleOut)
+| Industry Architecture | Description | Deploy | Documentation
+|:----------------------|:------------|--------|--------------|
+| Azure for Telecommunications | Azure for Telco foundation that provides a full, rich, compliant architecture with scale-out pattern for connectivity and landing zones for Telco industry scenarios |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoRI) | [User Guide](./referenceImplementation/readme.md)
+| Scale-out Hub virtual network | When the Azure for Telco foundation is in place, you can use this reference implementation to scale-out the hub virtual network for Telco industry, and configure the corresponding networking infrastructure |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoScaleOut) | [Scale-out Guide](./referenceImplementation/readme.md)
 
-Due to the network centric nature of their business, customers in the Telecommunications (or Telco) industry have a unique set of requirements compared other organizations of similar scale. Such requirements include:
+Due to the network centric nature of their business, organizations in the Telecommunications (or Telco) industry have a unique set of requirements compared other organizations of similar scale. Such requirements include:
 
 * Delivery of strenuous networking services that consume large amounts of bandwidth and are sensitive to latency and jitter on the network (ex. VOIP or video streaming).
 * Provide networking and end user services to consumers (ex. firewall as a service, cloud storage, cloud email, etc).
@@ -20,7 +20,7 @@ This article describes the Azure for Telecommunications (Telco) industry referen
 
 ### High-level architecture
 
-The Azure for Telco industry reference architecture is based on a [proven, at scale Azure architecture](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/architecture) foundation for the construction and operationalization of landing zones in Azure.  Our guidance for Telcos provides a specific set of recommendations to accommodate Telco industry requirements and scenarios as described previously on this article. The Azure for Telco reference architecture is depicted on figure 1 below:
+The Azure for Telco industry reference architecture is based on a [proven, at scale Azure architecture](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/architecture) foundation for the construction and operationalization of landing zones in Azure, which at its core is build upon a set of design principles and critical design areas (as summarized on this [article](../foundations/azure/README.md)). Those design principles and critical design areas are applicable for the Azure for Telco reference architecture. However, due to the unique set of requirements and characteristics of the telecommunications industry (for example, the presence or a large distributed edge), the Azure for Telcos reference architecture provides an additional, and very specific, set of recommendations to accommodate Telco industry requirements and scenarios as described previously on this article. The Azure for Telco reference architecture is depicted on figure 1 below:
 
 ![Azure for Telco industry reference architecture](./docs/telco-industry-reference-architecture.png)
 _Figure 1:Azure for telco industry reference architecture._
