@@ -20,7 +20,7 @@ The [Azure for Telecommunications industry reference architecture](./readme.md) 
 
 Power Platform is optional, but recommended when additional reporting, analyzes, and modern business application and integration is needed to enhance and accelerate digital transformation for Telecommunications industry.
 
-[Prescriptive guidance and design recommendations for Power Platform for Healthcare](../foundations/powerPlatform)
+[Prescriptive guidance and design recommendations for Power Platform for Telecommunications industry](../foundations/powerPlatform)
 
 ## Microsoft Teams
 
