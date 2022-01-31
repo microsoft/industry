@@ -2,7 +2,7 @@ name: Lint Code Base
 
 on:
   push:
-    branches-ignore: [master]
+    branches: [main]
   pull_request:
     branches: [main]
 
