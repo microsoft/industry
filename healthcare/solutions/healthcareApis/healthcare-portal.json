@@ -98,13 +98,29 @@
                                     "type": "Microsoft.Common.TextBox",
                                     "label": "Healthcare Api (workspace) name",
                                     "defaultValue": "",
-                                    "toolTip": "",
+                                    "toolTip": "Specify a name for your Azure Healthcare APIs Workspace.",
                                     "constraints": {
                                         "required": true,
-                                        "regex": "",
-                                        "validationMessage": ""
+                                        "validations": [
+                                            {
+                                                "isValid": "[not(equals(steps('azureSetup').apiWorkspace.healthcareApiNameApi.nameAvailable, false))]",
+                                                "message": "Name currently unavailable. Please choose a different one. Name can contain only lowercase letters and numbers."
+                                            }
+                                        ]
                                     },
                                     "visible": true
+                                },
+								{
+                                    "name": "healthcareApiNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').resourceScope.subscription.id, '/providers/Microsoft.HealthcareApis/checkNameAvailability?api-version=2019-09-16')]",
+                                        "body": {
+                                            "name": "[steps('azureSetup').apiWorkspace.healthCareApiName]",
+                                            "type": "Microsoft.HealthcareApis/workspaces"
+                                        }
+                                    }
                                 },
                                 {
                                     "name": "infoUser",
@@ -184,8 +200,12 @@
                                     "toolTip": "",
                                     "constraints": {
                                         "required": false,
-                                        "regex": "",
-                                        "validationMessage": ""
+                                        "validations": [
+											{
+												"regex": "^[a-z0-9]{3,}$",
+												"message": "The name must contain at least 3 characters and can only consist of lowercase letters, numbers and the '-' character."
+											}
+										]
                                     },
                                     "visible": "[equals(steps('azureSetup').fhir.enableFhirService, 'Yes')]"
                                 },
@@ -368,8 +388,12 @@
 									"toolTip": "",
 									"constraints": {
 										"required": true,
-										"regex": "",
-										"validationMessage": ""
+										"validations": [
+											{
+												"regex": "^[a-z0-9]{3,}$",
+												"message": "The name must contain at least 3 characters and can only consist of lowercase letters, numbers and the '-' character."
+											}
+										]
 									},
 									"visible": "[equals(steps('azureSetup').dicom.enableDicomService, 'Yes')]"
 								}
@@ -419,8 +443,12 @@
 									"toolTip": "",
 									"constraints": {
 										"required": true,
-										"regex": "",
-										"validationMessage": ""
+										"validations": [
+											{
+												"regex": "^[a-z0-9]{3,}$",
+												"message": "The name must contain at least 3 characters and can only consist of lowercase letters, numbers and the '-' character."
+											}
+										]
 									},
 									"visible": "[equals(steps('azureSetup').iot.enableIotConnector, 'Yes')]"
 								},
