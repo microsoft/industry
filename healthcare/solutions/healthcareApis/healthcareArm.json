@@ -60,6 +60,12 @@
             ],
             "defaultValue": "No"
         },
+        "storageAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the storage account."
+            }
+        },
         "enableMonitoring": {
             "type": "string",
             "allowedValues": [
@@ -437,7 +443,7 @@
                 },
                 "parameters": {
                     "storageAccountName": {
-                        "value": "[take(concat(variables('apiName'),uniqueString(variables('apiName'))), 23)]"
+                        "value": "[parameters('storageAccountName')]"
                     },
                     "location": {
                         "value": "[parameters('location')]"
@@ -615,7 +621,7 @@
                 },
                 "parameters": {
                     "healthbotname": {
-                        "value": "[concat(variables('apiName'), '-bot')]"
+                        "value": "[parameters('healthBotName')]"
                     },
                     "location": {
                         "value": "[parameters('location')]"
