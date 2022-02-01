@@ -8,20 +8,20 @@ This user guide explains the Azure for Telco reference implementation, what it i
 - [Pricing](#pricing)
 - [What if I already have an existing Azure footprint?](#what-if-i-already-have-an-existing-azure-footprint)
 - [How Azure for Telco reference implementation works](#how-azure-for-telco-reference-implementation-works)
-    - [Azure for Telco design principles](#azure-for-telco-design-principles)
-        - [Subscription Democratization](#subscription-democratization)
-        - [Policy Driven Governance](#policy-driven-governance)
-        - [Single Control and Management Plane](#single-control-and-management-plane)
-        - [Application Centric and Archetype-neutral](#application-centric-and-archetype-neutral)
-        - [Azure native design and aligned with platform roadmap](#application-native-design-and-aligned-with-platform-roadmap)
-    - [Separating platform and operator landing zones](#separating-platform-and-operator-landing-zones)
-        - [Platform responsibilities and functions](#platform-responsibilities-and-functions)
-        - [Operator landing zone owners responsibilities](#operator-landing-zone-owners-responsibilities)
-    - [Azure for Telco Management Group Structure](#azure-for-telco-management-group-structure)
-    - [What happens when you deploy Azure for Telco](#what-happens-when-you-deploy-azure-for-telco)
+  - [Azure for Telco design principles](#azure-for-telco-design-principles)
+    - [Subscription Democratization](#subscription-democratization)
+    - [Policy Driven Governance](#policy-driven-governance)
+    - [Single Control and Management Plane](#single-control-and-management-plane)
+    - [Application Centric and Archetype-neutral](#application-centric-and-archetype-neutral)
+    - [Azure native design and aligned with platform roadmap](#application-native-design-and-aligned-with-platform-roadmap)
+  - [Separating platform and operator landing zones](#separating-platform-and-operator-landing-zones)
+    - [Platform responsibilities and functions](#platform-responsibilities-and-functions)
+    - [Operator landing zone owners responsibilities](#operator-landing-zone-owners-responsibilities)
+  - [Azure for Telco Management Group Structure](#azure-for-telco-management-group-structure)
+  - [What happens when you deploy Azure for Telco](#what-happens-when-you-deploy-azure-for-telco)
 - [Deployment instructions](#deployment-instructions)
-    - [Pre-requisites](#pre-requisites)
-    - [Step-by-step guidance](#step-by-step-guidance)
+  - [Pre-requisites](#pre-requisites)
+  - [Step-by-step guidance](#step-by-step-guidance)
 
 ---
 Azure for Teleco industry reference architecture provides prescriptive guidance coupled with Azure best practices for the telecommunication industry, and it follows 5 design principles across the 8 critical design areas for organizations to define their target state for their Azure architecture.
@@ -94,7 +94,7 @@ Platform resource are managed by a cross-functional platform team. The team cons
 
 ## Operator landing zone owners responsibilities
 
-Azure for Telco reference implementation enables landing zones supporting a both centralized and federated application DevOps models. Most common model are dedicated **DevOps** team aligned with a single workload. In case of smaller workloads or COTS or 3rd party application a single **AppDevOps** team is responsible for workload operation. Independent of the model every DevOps team manages several workload staging environments (DEV, UAT, PROD) deployed to individual landing zones/subscriptions. Each landing zone has a set of RBAC permissions managed with Azure AD PIM provided by the Platform SecOps team.
+Azure for Telco reference implementation enables landing zones supporting a both centralized and federated application DevOps models. Most common model are dedicated **DevOps** team aligned with a single workload. In case of smaller workloads or COTS or third-party application a single **AppDevOps** team is responsible for workload operation. Independent of the model every DevOps team manages several workload staging environments (DEV, UAT, PROD) deployed to individual landing zones/subscriptions. Each landing zone has a set of RBAC permissions managed with Azure AD PIM provided by the Platform SecOps team.
 
 When the landing zones/subscriptions are handed over to the DevOps team, the team is end-to-end responsible for the workload. They can independently operate within the security guardrails provided by the platform team. If dependency on central teams or functions are discovered, it is highly recommended to review the process and eliminated as soon as possible to unblock DevOps teams.
 
@@ -196,9 +196,9 @@ Since Azure for Telco is a complete, end-to-end setup of your Azure tenant as a 
 
 The pre-requisites requires the following:
 
-* A user that is Global Admin in the Azure Active Directory where Azure for Telco will be deployed.
-* Elevation of privileges of a Global Admin that will grant him/her the "User Access Administrator" role assignment at the tenant root scope.
-* An explicit role assignment (Azure RBAC) made at the tenant root scope via Azure CLI or Azure PowerShell (Note: There's currently no graphical user interface to make this role assignment).
+- A user that is Global Admin in the Azure Active Directory where Azure for Telco will be deployed.
+- Elevation of privileges of a Global Admin that will grant him/her the "User Access Administrator" role assignment at the tenant root scope.
+- An explicit role assignment (Azure RBAC) made at the tenant root scope via Azure CLI or Azure PowerShell (Note: There's currently no graphical user interface to make this role assignment).
 
 #### Elevate Access to manage Azure resources in the directory
 
@@ -281,30 +281,30 @@ On the *Connectivity for Azure and Distributed Edge* tab, you will configure the
 
 To deploy and configure a "hub and spoke" topology, you must:
 
-* In the *Deploy networking topology for Azure and Distributed Edge* option, select either "Hub and spoke with Azure Firewall" or "Hub and spoke with your own third-party NVA". In this guidance we will select the "Hub and spoke with Azure Firewall".
-* Provide a dedicated (empty) subscription that will be used to host the requisite networking infrastructure.
-* Provide the address space to be assigned to the hub virtual network
-* Select an Azure region where the hub virtual network will be created
+- In the *Deploy networking topology for Azure and Distributed Edge* option, select either "Hub and spoke with Azure Firewall" or "Hub and spoke with your own third-party NVA". In this guidance we will select the "Hub and spoke with Azure Firewall".
+- Provide a dedicated (empty) subscription that will be used to host the requisite networking infrastructure.
+- Provide the address space to be assigned to the hub virtual network
+- Select an Azure region where the hub virtual network will be created
 
  ![img](./media/hubandspoke.PNG)
 
 In addition, you can configure:
 
-* Azure Private DNS Zones for Azure PaaS services
-* VPN and ExpressRoute Gateways
-  * If you choose to deploy either or both of these gateways, you will have the option to select the subnet to be dedicated for these resources, if you decide to deploy them as regional or zone-redundant gateways, as well as choose the right SKU based on your requirements
-* If you choose to deploy Azure Firewall, you will have the option to
-  * Select the subnet
-  * Select to deploy Azure Firewall as regional or zone redundant (recommended)
-  * Select the Firewall SKU (Standard or Premium). It is recommended to choose the Azure Firewall [Premium](https://docs.microsoft.com/azure/firewall/premium-features) SKU if your organization requires next generation firewall capabilities such as TLS inspection or network intrusion detection and prevention system (IDPS).
-  * Indicate if you want to enable DNS Proxy in Azure Firewall.
+- Azure Private DNS Zones for Azure PaaS services
+- VPN and ExpressRoute Gateways
+  - If you choose to deploy either or both of these gateways, you will have the option to select the subnet to be dedicated for these resources, if you decide to deploy them as regional or zone-redundant gateways, as well as choose the right SKU based on your requirements
+- If you choose to deploy Azure Firewall, you will have the option to
+  - Select the subnet
+  - Select to deploy Azure Firewall as regional or zone redundant (recommended)
+  - Select the Firewall SKU (Standard or Premium). It is recommended to choose the Azure Firewall [Premium](https://docs.microsoft.com/azure/firewall/premium-features) SKU if your organization requires next generation firewall capabilities such as TLS inspection or network intrusion detection and prevention system (IDPS).
+  - Indicate if you want to enable DNS Proxy in Azure Firewall.
 
 For Networking security and monitoring solutions:
 
-* DDoS Protection Standard to be enabled for the Azure platform. Enabling this will provide an option to assign requisite Azure Policy on the *Operator landing zones* tab later.
-* Network Watcher observability for the virtual networks that will be created. Enabling this will assign Azure Policy to ensure that Network Watcher will be created into all subscriptions containing a virtual network.
-* NSG Flow Logs can be enabled for all Network Security Groups, and will be stored into a storage account in the dedicated subscription for *Security, Governance, and Compliance* subscription, and also in the Azure Log Analytics workspace.
-* Traffic Analytics which provides a curated view of networking traffic for Azure and Distributed Edge.
+- DDoS Protection Standard to be enabled for the Azure platform. Enabling this will provide an option to assign requisite Azure Policy on the *Operator landing zones* tab later.
+- Network Watcher observability for the virtual networks that will be created. Enabling this will assign Azure Policy to ensure that Network Watcher will be created into all subscriptions containing a virtual network.
+- NSG Flow Logs can be enabled for all Network Security Groups, and will be stored into a storage account in the dedicated subscription for *Security, Governance, and Compliance* subscription, and also in the Azure Log Analytics workspace.
+- Traffic Analytics which provides a curated view of networking traffic for Azure and Distributed Edge.
 
  ![img](./media/nwlogs.PNG)
 
@@ -320,26 +320,26 @@ If you don't need - or plan to host domain controllers in Azure for your telco w
 
 On the *Operator Landing Zones* tab, you can bring in the subscriptions you want to use intially for *operator*, *online*, and *corp* landing zones. Each landing zone type is represented by its own child management group of the *landing zones* management group in the hieararchy, and provides different characteristics regarding networking requirements, security, policy, and availability. For each of the landing zone types, you can select the recommended Azure policies you want to assign, as well as the policies recommended for *all* landing zone types.
 
-* Operator landing zones
+- Operator landing zones
 
 Subscriptions can be moved into the *operator* management group, and bootstrapped with Azure policies that are assigned directly to this management group, as well as the overarching policies assigned to the intermediate root management group, and the landing zones management group.
 The specific policies for the operator landing zones will - in addition to compliance and security, ensure that carieer grade workloads are configured with resilliency, performance, and availability in mind.
 
 ![Operatorlz](./media/operatorlz.PNG)
 
-* Corp landing zones
+- Corp landing zones
 
 For workloads that require corp connectivity, and hybrid connectivity through the central connectivity subscription for the Azure platform and Distributed Edge, can be moved/created into the *corp* management group.
 
 ![corplz](./media/corplz.PNG)
 
-* Online landing zones
+- Online landing zones
 
 For workloads that does not require corp connectivity, subscriptions can be moved/created into the *online* management group.
 
 ![onlinelz](./media/onlinelz.PNG)
 
-* Recommended Azure policies for all landing zones
+- Recommended Azure policies for all landing zones
 
 By default, every recommendation is enabled, and you must explicitly opt out if you do not want to assign the recommended policies. The list of available policies will depend on configuration made earlier in the deployment experience.
 
