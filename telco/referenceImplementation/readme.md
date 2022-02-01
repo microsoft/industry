@@ -1,5 +1,7 @@
 # Azure for Telco industry User-Guide
 
+This user guide explains the Azure for Telco reference implementation, what it is, what it does, how organizations within the telecommunication industry can use it to run their carieer-grade workloads on a sustainable, scalable, and reliable Azure architecture.
+
 ## Table of content
 
 - [What is Azure for Telco industry reference implementation?](#what-is-azure-for-telco-reference-implementation)
@@ -26,9 +28,11 @@ Azure for Teleco industry reference architecture provides prescriptive guidance 
 
 The reference architecture is modular by design and allow organizations in the telecommunication industry of any size to start with the optimized landing zones that support their operator workloads, and application portfolios, and the architecture enables the organizations to start as small as needed and scale alongside their business requirements regardless of scale point.
 
-## What is Azure for Teleco reference implementation?
+![Telco architecture](./media/telco-architecture-detailed.PNG)
 
-The Azure for Telco industry reference implementation is an optimized, proven, authoritative, and roadmap aligned architecture that enables Telco industry to deploy mission-critical, carrier-grade workloads in Azure at scale.
+## What is Azure for Telco reference implementation?
+
+The Azure for Telco industry reference implementation is an optimized, proven, authoritative, and roadmap aligned architecture that enables Telco industry to deploy mission-critical, carieer-grade workloads in Azure at scale.
 
 The reference implementation is tying together all the Azure platform primitives and creates a proven, well-defined Azure architecture based on a multi-subscription design, leveraging native platform capabilities to ensure organizations in the telecommunication industry can create and operationalize their operator landing zones in Azure at scale.
 
@@ -40,9 +44,9 @@ For example, you don’t pay for the Management Groups or the Azure Policies tha
 
 ## What if I already have an existing Azure footprint?
 
-Azure for Telco industry reference implementation will meet you where you are, and the design has catered for existing subscriptions and workloads in Azure.
+Azure for Telco industry reference implementation will meet the organizations in the telco industry where they are, and the design has catered for existing subscriptions and workloads in Azure.
 
-See the following [article](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/transition) to learn more how you can transition into the an Azure architecture based on a multi-subscription design with clear separation of platform and landing zones, such as Azure for Telco.
+See the following [article](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/transition) to learn more how you can transition into an Azure architecture based on a multi-subscription design with clear separation of platform and landing zones, such as Azure for Telco.
 
 ## How Azure for Telco reference implementation works
 
@@ -50,7 +54,9 @@ This section describes at a high level how Azure for Telco reference implementat
 
 ## Azure for Telco design principles
 
-The Azure for Telco architecture prescribed in this guidance is based on the design principles described here. These principles serve as a compass for subsequent design decisions across critical technical domains. Familiarize yourself with these principles to better understand their impact and the trade-offs associated with nonadherence.
+The Azure for Telco architecture prescribed in this guidance is based on the design principles described here. These principles serve as a compass for subsequent design decisions across critical technical domains. Familiarize yourself with these principles to better understand their impact and the trade-offs associated with nonadherence, and how them will help you to scale in alignment with the Azure product roadmap.
+
+>Note: The design principles for Azure are by design industry agnostic, and applies to all industries. For more details about architecture and design methodologies for Microsoft Clouds, see [this article](../../foundations/README.md).
 
 ### Subscription Democratization
 
@@ -88,7 +94,7 @@ Platform resource are managed by a cross-functional platform team. The team cons
 
 ## Operator landing zone owners responsibilities
 
-Enterprise-scale landing zones supporting a both centralized and federated application DevOps models. Most common model are dedicated **DevOps** team aligned with a single workload. In case of smaller workloads or COTS or 3rd party application a single **AppDevOps** team is responsible for workload operation. Independent of the model every DevOps team manages several workload staging environments (DEV, UAT, PROD) deployed to individual landing zones/subscriptions. Each landing zone has a set of RBAC permissions managed with Azure AD PIM provided by the Platform SecOps team.
+Azure for Telco reference implementation enables landing zones supporting a both centralized and federated application DevOps models. Most common model are dedicated **DevOps** team aligned with a single workload. In case of smaller workloads or COTS or 3rd party application a single **AppDevOps** team is responsible for workload operation. Independent of the model every DevOps team manages several workload staging environments (DEV, UAT, PROD) deployed to individual landing zones/subscriptions. Each landing zone has a set of RBAC permissions managed with Azure AD PIM provided by the Platform SecOps team.
 
 When the landing zones/subscriptions are handed over to the DevOps team, the team is end-to-end responsible for the workload. They can independently operate within the security guardrails provided by the platform team. If dependency on central teams or functions are discovered, it is highly recommended to review the process and eliminated as soon as possible to unblock DevOps teams.
 
@@ -108,7 +114,7 @@ The Management Group structure implemented with Azure for Telco is as follows:
 
 - **Landing Zones:** This is the parent Management Group for all the landing zone subscriptions and will have workload agnostic Azure Policies assigned to ensure workloads are secure and compliant.
 
-  - **Operator** This is the dedicated Management Group for Operator landing zones, which are optimized and governed aligned with mission-critical, carrier-grade telco workloads.
+  - **Operator** This is the dedicated Management Group for Operator landing zones, which are optimized and governed aligned with mission-critical, carieer-grade telco workloads.
   - **Online:** This is the dedicated Management Group for Online landing zones, meaning workloads that may require direct internet inbound/outbound connectivity or also for workloads that may not require a VNet..
   - **Corp:** This is the dedicated Management Group for Corp landing zones, meaning workloads that requires connectivity/hybrid connectivity with the corporate network thru the hub in the connectivity subscription.
 
@@ -122,7 +128,7 @@ By default, all recommended settings and resources recommendations are enabled a
 - A scalable Management Group hierarchy aligned to core platform capabilities, allowing you to operationalize at scale using centrally managed Azure RBAC and Azure Policy where platform and workloads have clear separation.
 
 - Azure Policies that will enable autonomy for the platform and the landing zones.
-- An Azure subscription dedicated for **Management**, which enables core platform capabilities at scale using Azure Policy such as:
+- An Azure subscription dedicated for **Securety, Governance, and Compliance**, which enables core platform capabilities at scale using Azure Policy such as:
 
   - A Log Analytics workspace and an Automation account
   - Microsoft Sentinel
@@ -160,7 +166,7 @@ By default, all recommended settings and resources recommendations are enabled a
 
 - Landing zone subscriptions for **Operator** , mission-critical applications and resources.
 - Azure Policies for online and corp-connected landing zones, which include:
-  - Enforce highly-available Public IP Addresses
+  - Enforce highly-available Public IP addresses
   - Enforce highly-available ExpressRoute gateways
 
 - Landing zone subscriptions for **Corp** connected applications and resources, including a virtual network that will be connected to the hub via VNet peering.
@@ -239,9 +245,11 @@ New-AzRoleAssignment -Scope '/' -RoleDefinitionName 'Owner' -ObjectId $user.Id
 
 ### Optional pre-requsites
 
-The deployment experience in Azure portal allows you to bring in existing (preferably empty) subscriptions dedicated for the platform part of the Azure for Telco architecture. It also allows you to bring existing subscriptions that can be used as the initial operator landing zones for your carrier grade workloads.
+The deployment experience in Azure portal allows you to bring in existing (preferably empty) subscriptions dedicated for the platform part of the Azure for Telco architecture. It also allows you to bring existing subscriptions that can be used as the initial operator landing zones for your carieer grade workloads.
 
 ## Step by step guidance
+
+This section will explain the deployment experience and the options provided for Azure for Telco reference implementation.
 
 When you click on [*Deploy to Microsoft Cloud*](https://aka.ms/afoRi), it will start the deployment experience in the Azure portal into your default Azure tenant. In case you have access to multiple tenants, ensure you are selecting the right one.
 
@@ -300,7 +308,6 @@ For Networking security and monitoring solutions:
 
  ![img](./media/nwlogs.PNG)
 
-
 ### Authentication & Authorization
 
 On the *Authentication & Authorization* tab you can specify if you want to assign recommended policies to primarily secure and govern domain controllers in Azure, which will have its dedicated subscription to ensure clear separation of concerns, and to provide AuthN/AuthZ to workloads into the landing zones. You can then select which policies you want to get assigned, and you will need to provide the address space for the virtual network that will be deployed on this subscription. Please note that this virtual network will be connected to the hub virtual network via VNet peering.
@@ -316,7 +323,7 @@ On the *Operator Landing Zones* tab, you can bring in the subscriptions you want
 * Operator landing zones
 
 Subscriptions can be moved into the *operator* management group, and bootstrapped with Azure policies that are assigned directly to this management group, as well as the overarching policies assigned to the intermediate root management group, and the landing zones management group.
-The specific policies for the operator landing zones will - in addition to compliance and security, ensure that carrier grade workloads are configured with resilliency, performance, and availability in mind.
+The specific policies for the operator landing zones will - in addition to compliance and security, ensure that carieer grade workloads are configured with resilliency, performance, and availability in mind.
 
 ![Operatorlz](./media/operatorlz.PNG)
 
