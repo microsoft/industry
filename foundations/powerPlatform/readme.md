@@ -6,21 +6,42 @@ In addition to being application, persona, and industry agnostic, North Star Arc
 
 | Reference implementation | Description | Deploy |
 |:----------------------|:------------|--------|
-| North Star Architecture for Power Platform | Power Platform environments with DLP, logging, and security enabled for scalable business- and industry solutions for professional and citizen developers | Deployment button is coming soon :-) <!--[![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)-->
+| North Star Architecture for Power Platform | All up architecture for Power Platform with landing zones (environments) securely configured with security, governance, and compliance for scalable business applications - and industry solutions for professional and citizen developers | Deployment button is coming soon :-) <!--[![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)-->
 
+
+## Table of content
+
+- [Architecture overview](#architecture-overview)
+  - [Landing zone in North Star Architecture for Power Platform](#landing-zone-in-north-star-architecture-for-power-platform)
+- [North Star Architecture Design Principles](#azure-for-telco-design-principles)
+  - [Environment Democratization](#environment-democratization)
+  - [Policy Driven Governance](#policy-driven-governance)
+  - [Single Control and Management Plane](#single-control-and-management-plane)
+  - [Persona Agnostic](#persona-agnostic)
+  - [Power Platform Native Design and Platform Roadmap Alignment](#power-platform-native-design-and-platform-roadmap-alignment)
+    - [Recommendations](#recommendations)
+- [Critical Design Areas for Power Platform](#critical-design-areas-for-power-platform)
+  - [Licensing and AD tenants](#licensing-and-azure-ad-tenants)
+  - [Identity and Access Management](#identity-and-access-management)
+  - [Security, Governance, and Compliance](#security-governance-and-compliance)
+  - [Environments](#environments)
+  - [Management and Monitoring](#management-and-monitoring)
+  - [Business Continuity and Disaster Recovery](#business-continuity-and-disaster-recovery)
+  - [Azure VNet Connectivity for Power Platform](#azure-vnet-connectivity-for-power-platform)
+  - [Platform Automation and DevOps](#platform-automation-and-devops)
 ## Architecture overview
 
 North Star architecture for Power Platform represents the strategic design path and target technical state for an organizations Power Platform enviornment. It continues to evolve alongside the Power Platform product roadmap. Various design decisions define the architecture that your organization must make to map your Power Platform journey.
 
 ### High-level architecture
 
-A North Star architecture includes a set of design considerations and recommendations across the [critical design areas](#critical-design-areas-for-power-platform) for Power Platform. It is modular by design and allows you to start with a foundational architecture that enables construction and operationalization of landing zones (Environments) that supports your industry and business application portfolios, for both pro developers and citizen developers. The architecture will scale regardless your organization scale-point and business requirements.
+A North Star Architecture includes a set of design considerations and recommendations across the [critical design areas](#critical-design-areas-for-power-platform) for Power Platform. It is modular by design and allows you to start with a foundational architecture that enables construction and operationalization of landing zones (Environments) that supports your industry and business application portfolios, for both pro developers and citizen developers. The architecture will scale regardless your organization scale-point and business requirements.
 
-Figure 1 depicts the high-level architecture of North Star architecture for Power Platform
+Figure 1 depicts the high-level architecture of North Star Architecture for Power Platform
 
 ![power platform architecture](./images/architecture.png)
 
-### Landing zone in North Star architecture for Power Platform
+### Landing zone in North Star Architecture for Power Platform
 
 A landing zone (environment) is where professional developers and citizen developers can confidently develop and run their business applications, that accounts for:
 
@@ -37,7 +58,7 @@ Figure 2 shows the landing zone (environment) in Power Platform.
 
 ## Design Principles
 
-The North Star architecture is based on the design principles described in this section. These principles serve as a compass for subsequent design decisions across critical technical domains. Readers are strongly advised to familiarize themselves with these principles to better understand their impact and the trade-offs associated with non-adherence.
+The North Star Architecture is based on the design principles described in this section. These principles serve as a compass for subsequent design decisions across critical technical domains. Readers are strongly advised to familiarize themselves with these principles to better understand their impact and the trade-offs associated with non-adherence.
 
 ### Environment Democratization
 
@@ -49,15 +70,15 @@ Data-loss prevention (DLP) policies are used to provide the guard-rails and ensu
 
 ### Single Control and Management Plane
 
-The North Star architecture does not use any abstraction layers such as custom developed portals or tooling and ensures a consistent experience for both Platform admins and developers, subject to role-based access controls and policy-driven controls by DLP
+The North Star Architecture does not use any abstraction layers such as custom developed portals or tooling and ensures a consistent experience for both Platform admins and developers, subject to role-based access controls and policy-driven controls by DLP.
 
 ### Persona Agnostic
 
-The North Star architecture is Persona agnostic, and does not treat them differently from an architecture and capability perspective, and provides a safe and secure foundation for all developer personas an organization may have
+The North Star Architecture is Persona agnostic, and does not treat them differently from an architecture and capability perspective, and provides a safe and secure foundation for all developer personas an organization may have
 
 ### Power Platform Native Design and Platform Roadmap Alignment
 
-The North Star architecture approach advocates using Power Platform native services and capabilities whenever possible. This approach aligns with the product roadmap to ensure that new capabilities are available within your environments. The Power Platform roadmap helps to inform the adoption strategy and North Star trajectory.
+The North Star Architecture approach advocates using Power Platform native services and capabilities whenever possible. This approach aligns with the product roadmap to ensure that new capabilities are available within your environments. The Power Platform roadmap helps to inform the adoption strategy and North Star trajectory.
 
 ### Recommendations
 
@@ -66,7 +87,7 @@ The North Star architecture approach advocates using Power Platform native servi
 
 ## Critical design areas for Power Platform
 
-Together with the design principles, the core of North Star architecture for Power Platform also contains a critical design path comprised of fundamental design areas with heavily interrelated and dependent design decisions. This repository provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the North Star architecture. For each of the key design areas listed below, review the considerations and recommendations provided and use them to structure and drive design decisions within each area.
+Together with the design principles, the core of North Star Architecture for Power Platform also contains a critical design path comprised of fundamental design areas with heavily interrelated and dependent design decisions. This repository provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the North Star Architecture. For each of the key design areas listed below, review the considerations and recommendations provided and use them to structure and drive design decisions within each area.
 
 * [Licensing and AD tenants](#licensing-and-azure-ad-tenants)
 * [Identity and access management](#identity-and-access-management)
