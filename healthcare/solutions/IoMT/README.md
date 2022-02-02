@@ -59,7 +59,8 @@ This allows customers to leverage datasets, collected in IoMT scenarios, in Dyna
 * Ensure user/group mapping for the requisite licenses are done before deploying the solutions to Power Platform.
 * Ensure appropriate RBAC is assigned to the Security group for the dedicated Environment for Healthcare in Power Platform, ideally as part of the Environment creation process.
 * Ensure that there is no standing access to the production environment and use PIM where applicable.
-* Use managed identitied and credential passthrough across all environments and use row-level security (RLS) or column-level security (CLS) to further limit visibility of data points. 
+* Use managed identitied and credential passthrough across all environments and use row-level security (RLS) or column-level security (CLS) to further limit visibility of data points.
+* ALways follow the least privilege principle to not put any patient data at risk.
 
 ## Monitoring
 
@@ -79,15 +80,18 @@ This allows customers to leverage datasets, collected in IoMT scenarios, in Dyna
 
 ### Design considerations
 
-* Different connectivity options are available for the respective services.
-* In-transit exncryption can be enforced.
+* Different connectivity options are available for the respective services including public endpoints, public endpoints with service endpoints and private endpoints.
+* In-transit encryption can be enforced via HTTPS and TLS.
 * Data and data access can be managed in different ways and different services provide a different set of capabilities. 
 
 ### Design recommendations
 
-* Ensure usage of Private Endpoints across all Azure services to not put customer data at risk.
-* Enforce encryption of data in transit by enforcing HTTPS connections between services.
-* Use row-level security (RLS) or column-level security (CLS) to further limit visibility of data points. 
+* Ensure usage of Private Endpoints across all Azure services to not put patient data at risk.
+* Enforce encryption of data in transit by enforcing HTTPS and TLS 1.2 connections between services.
+* Use row-level security (RLS) or column-level security (CLS) to further limit visibility of data points.
+* Use Power Query to securely transfer data from Azure to Dataverse.
+* Use Synapse Link for Dataverse to transfer data from Dataverse to Azure.
+* Access environments with private endpoints securely using VPN, ExpressRoute or Azure Bastion. 
 
 ---
 
