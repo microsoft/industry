@@ -1,6 +1,6 @@
 # Governance for Telco Industry Scenarios
 
-In general, any application composition can be deployed, managed and governed in Azure using the existing prescriptive and architecture guidance provided in Cloud Adoption Framework. However, some applications typical for the Telco industry, such as those that provide managed services to end customers (B2C), or businesses (B2B) require additional sets of controls and governance that are different from the traditional LoB applications and cloud native applications. 
+In general, any application composition can be deployed, managed and governed in Azure using the existing prescriptive and architecture guidance provided in Cloud Adoption Framework. However, some applications typical for the Telco industry, such as those that provide managed services to end customers (B2C), or businesses (B2B) require additional sets of controls and governance that are different from the traditional LoB applications and cloud native applications.
 
 Telco industry specific applications typically provide services such as Core CP, SBC, vIMS, vHSS, Thin/uCPE, SDWAN, vFW, vRouter, vLTM, CGNAT, vBNG, DDI and vRADIUS/DIAMETER among others.
 
@@ -8,7 +8,7 @@ For example, B2B and B2C telco applications may require deploying their own Expr
 
 ## Management Group
 
-Given these specialized requirements and to cater for scalability for Telco industry specific scenarios in landing zones, the Azure for Telco industry reference architecture recommends the creation a new Management Group dedicated to Telco industry specific applications and services. 
+Given these specialized requirements and to cater for scalability for Telco industry specific scenarios in landing zones, the Azure for Telco industry reference architecture recommends the creation a new Management Group dedicated to Telco industry specific applications and services.
 
 Azure policies that are designed to govern and manage those applications can be assigned to ensure Telco applications are compliant, and configured with high-availability as default at this scope. Subscriptions dedicated for such applications would need to be deployed under this new management group, which is depicted in figure 1 below:
 
