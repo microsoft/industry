@@ -8,6 +8,12 @@ Key capabilities of Patient outreach include:
 * **Patient engagement campaigns**: Create healthcare-specific email campaigns that use prebuilt patient segments.
 * **Event management**: Use provider/payor event management templates for event administration and registration.
 
+| Reference implementation | Description | Deploy |
+|:-------------------------|:------------|--------|
+| Patent Outreach          | Patent Outreach for patient campaign management to help organize and automate marketing and outreach to patients. |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)]() |
+
+## Prerequisites
+
 Before you deploy and configure, verify you have implemented the [prerequisites](../../prereqs.md).
 
 Specifically for patient outreach, you need:

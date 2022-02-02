@@ -8,6 +8,20 @@ Internet of Medical Things (IoMT) focusses on the practical application of IoT i
 
 Classical IoT as well as IoMT scenarios share similar architectures. The most significant differences can be identified on the application and data-driven use-case level. Also, there is a higher emphasis on the security aspect in the IoMT space and the compliance with legal regulations and standards. In the next paragraphs, we will look at the various layers of an IoMT architecture.
 
+| Reference implementation | Description | Deploy |
+|:-------------------------|:------------|--------|
+| IoMT                     | IoMT scenario for integration, analysis and visualization of healthcare data. |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)]() |
+
+## Prerequisites
+
+Before you deploy and configure, verify you have implemented the [prerequisites](../../prereqs.md) for Dynamics 365.
+
+Specifically for IoMT, you need:
+
+* [Power Platform environments](../powerPlatform/)
+  * Must be created upfront, in United States with Dataverse and D365 Apps enabled
+  * Dynamics 365 application dependency: Dynamics 365 Field Service License, Microsoft Cloud for Healthcare License
+
 ## IoMT Architecture
 
 The architecture diagram depicts a typical IoMT scenario, where practical-connected devices collect protected health information (PHI) of patients and then transmit the data points over one or multiple gateways to the cloud.
@@ -31,6 +45,49 @@ In order to not end up with two disparate systems and datasets, customers can ma
 Within the FHIR Synch Agent Administration Application, administrators can define entity maps, attribute maps and expansion maps. Sync Agent Logs can be used to validate synch operations and to understand why a certain data point is sent over the services bus and why others are not.
 
 This allows customers to leverage datasets, collected in IoMT scenarios, in Dynamics 365 to further enhance the patients experience and quality of results. Additional applications and data-driven solutions can be built to simplify the end-to-end experience for all participants and reduce the time to diagnosis.
+
+## Identity and access
+
+### Design considerations
+
+* The user who deploys and configures the Dynamics 365 solutions must have sufficient permissions directly on the dedicated Power Platform environment.
+* To deploy the health D365 solutions, the user must have an assigned license for the Healthcare add-on.
+* Different authentication mechanisms can be used to grant access to data across Azure and Power Platform.
+
+### Design recommendations
+
+* Ensure user/group mapping for the requisite licenses are done before deploying the solutions to Power Platform.
+* Ensure appropriate RBAC is assigned to the Security group for the dedicated Environment for Healthcare in Power Platform, ideally as part of the Environment creation process.
+* Ensure that there is no standing access to the production environment and use PIM where applicable.
+* Use managed identitied and credential passthrough across all environments and use row-level security (RLS) or column-level security (CLS) to further limit visibility of data points. 
+
+## Monitoring
+
+### Design considerations
+
+* Telemetry, metrics, and logs can be enabled for services across Azure, Power Platform and Microsoft 365.
+* Alerts and metrics can be used to get notifications or take automated actions in case of issues or outages.
+* Different telemetry solutions are available across the Microsoft Cloud.
+
+### Design recommendations
+
+* Use Azure Log Analytics and application insights to collect logs across Azure services, Power Platform and Microsoft 365. Use other more specific logging capabilities such as the Microsoft 365 monitoring and audit logs where necessary.
+* Create a health model for your application and setup dashboards for monitoring and evaluation
+* Setup alerts and take automated actions to ensure a highly available application design.
+
+## Security
+
+### Design considerations
+
+* Different connectivity options are available for the respective services.
+* In-transit exncryption can be enforced.
+* Data and data access can be managed in different ways and different services provide a different set of capabilities. 
+
+### Design recommendations
+
+* Ensure usage of Private Endpoints across all Azure services to not put customer data at risk.
+* Enforce encryption of data in transit by enforcing HTTPS connections between services.
+* Use row-level security (RLS) or column-level security (CLS) to further limit visibility of data points. 
 
 ---
 
