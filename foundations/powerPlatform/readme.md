@@ -11,15 +11,15 @@ In addition to being application, persona, and industry agnostic, North Star Arc
 ## Table of content
 
 - [Architecture overview](#architecture-overview)
-  - [Landing zone in North Star Architecture for Power Platform](#landing-zone-in-north-star-architecture-for-power-platform)
-- [North Star Architecture Design Principles](#azure-for-telco-design-principles)
+  - [Landing zones in North Star Architecture for Power Platform](#landing-zone-in-north-star-architecture-for-power-platform)
+- [Design Principles](#azure-for-telco-design-principles)
   - [Environment Democratization](#environment-democratization)
   - [Policy Driven Governance](#policy-driven-governance)
   - [Single Control and Management Plane](#single-control-and-management-plane)
   - [Persona Agnostic](#persona-agnostic)
   - [Power Platform Native Design and Platform Roadmap Alignment](#power-platform-native-design-and-platform-roadmap-alignment)
     - [Recommendations](#recommendations)
-- [Critical Design Areas for Power Platform](#critical-design-areas-for-power-platform)
+- [Critical Design Areas](#critical-design-areas-for-power-platform)
   - [Licensing and AD tenants](#licensing-and-azure-ad-tenants)
   - [Identity and Access Management](#identity-and-access-management)
   - [Security, Governance, and Compliance](#security-governance-and-compliance)
