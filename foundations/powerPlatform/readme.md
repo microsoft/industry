@@ -108,6 +108,7 @@ Organizations can obtain licenses by either licensing Microsoft Power Apps or Mi
 
 - Licensing is the first control-gate to allowing access to Power Platform components.
 - Licenses are tied to the tenant and the assigned Azure AD users/groups.
+- Users in remote Azure AAD tenants with a "Per User License" can use this license to access *any* Power App if invited to the Azure AD tenant as a guest user.
 - Power Platform provides different licensing constructs, as well as capacity add-ons and requires planning in advance based on use cases for both modern business applications and industry solutions.
 - D365 Trials are one-in-a-lifetime per Azure AD tenant.
 - Pay As You Go (PAYG) is a low-risk entry to Premium functionality in Power Platform.
