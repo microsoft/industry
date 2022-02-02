@@ -26,16 +26,16 @@ In addition to being application, persona, and industry agnostic, North Star Arc
   - [Environments](#environments)
   - [Management and Monitoring](#management-and-monitoring)
   - [Business Continuity and Disaster Recovery](#business-continuity-and-disaster-recovery)
-  - [Connectivity and interoperability](#connectivity-and-interoperability)
+  - [Connectivity and Interoperability](#connectivity-and-interoperability)
   - [Platform Automation and DevOps](#platform-automation-and-devops)
 
 ## Architecture overview
 
-North Star architecture for Power Platform represents the strategic design path and target technical state for an organizations Power Platform environment. It continues to evolve alongside the Power Platform product roadmap. Various design decisions define the architecture that your organization must make to map your Power Platform journey.
+North Star Architecture for Power Platform represents the strategic design path and target technical state for an organizations Power Platform environment. It continues to evolve alongside the Power Platform product roadmap. Various design decisions define the architecture that your organization must make to map your Power Platform journey.
 
 ### High-level architecture
 
-A North Star Architecture includes a set of design considerations and recommendations across the [critical design areas](#critical-design-areas-for-power-platform) for Power Platform. It is modular by design and allows you to start with a foundational architecture that enables construction and operationalization of landing zones (Environments) that supports your industry and business application portfolios, for both pro developers and citizen developers. The architecture will scale regardless your organization scale-point and business requirements.
+The North Star Architecture includes is rooted on key design principles and an evolving set of design considerations and recommendations across the [critical design areas](#critical-design-areas-for-power-platform) for Power Platform. It is modular by design and allows you to start with a foundational architecture that enables construction and operationalization of landing zones (Environments) that supports your industry and business application portfolios, for both pro developers and citizen developers. The architecture will scale regardless your organization scale-point and business requirements.
 
 Figure 1 depicts the high-level architecture of North Star Architecture for Power Platform
 
@@ -43,14 +43,14 @@ Figure 1 depicts the high-level architecture of North Star Architecture for Powe
 
 ### Landing zone in North Star Architecture for Power Platform
 
-A landing zone (environment) is where professional developers and citizen developers can confidently develop and run their business applications, that accounts for:
+Within the context of the North Star Architecture, a "Landing Zone" (Environment) is a logical construct capturing everything that *must be true* to enable application innovation and digital transformation regardless of citizen developer or professional developer persona. It considers all the requisite platform utilities, and accounts for:
 
+- Access Management
 - Scale
-- Security
-- Governance
-- Interoperability and extensibility
+- Governance and Compliance
+- Connectivity, Interoperability, and Extensibility
 
-The landing zones consider all platform capabilities and resources that are necessary to support the organization's business application portfolio.
+The principle purpose of the "Landing Zone" (Environment) is therefore to ensure that when an app is being created, the required "plumbing" is already in place, providing greater agility and compliance with enterprise security and governance requirements, while enabling the autonomy for the citizen- and professional developers to confidently develop and run business applications that conforms to the organization's overall security requirements.
 
 Figure 2 shows the landing zone (environment) in Power Platform.
 
@@ -62,23 +62,23 @@ The North Star Architecture is based on the design principles described in this 
 
 ### Environment Democratization
 
-Environments are used as a unit of management, scale, and policy boundary, aligned with business needs and priorities, to support business areas and developers to accelerate digital transformation
+Environments are used as a unit of management, scale, security and policy boundary, aligned with business needs and priorities, to support business units and developers to accelerate their digital transformation.
 
 ### Policy Driven Governance
 
-Data-loss prevention (DLP) policies are used to provide the guard-rails and ensure the continued compliance of the customer platform and applications created onto it, whilst also providing developers sufficient freedom and a secure unhindered path to cloud
+Data-loss prevention (DLP) policies are used to provide the guard-rails and ensure the continued compliance of the customer platform and applications created onto it, whilst also providing developers sufficient freedom and a secure unhindered path to cloud.
 
 ### Single Control and Management Plane
 
-The North Star Architecture does not use any abstraction layers such as custom developed portals or tooling and ensures a consistent experience for both Platform admins and developers, subject to role-based access controls and policy-driven controls by DLP.
+The North Star Architecture does not use any abstraction layers such as custom developed portals or tooling and ensures a consistent experience for both Platform admins and developers, subject to role-based access controls, and policy-driven controls by Data-loss prevention (DLP) policies.
 
 ### Persona Agnostic
 
-The North Star Architecture is Persona agnostic, and does not treat them differently from an architecture and capability perspective, and provides a safe and secure foundation for all developer personas an organization may have
+The North Star Architecture is Persona agnostic, and does not treat anyone differently from an architecture and capability perspective, and provides a safe and secure foundation for all developer personas an organization may have.
 
 ### Power Platform Native Design and Platform Roadmap Alignment
 
-The North Star Architecture approach advocates using Power Platform native services and capabilities whenever possible. This approach aligns with the product roadmap to ensure that new capabilities are available within your environments. The Power Platform roadmap helps to inform the adoption strategy and North Star trajectory.
+The North Star Architecture approach advocates using Power Platform's native services and capabilities whenever possible. This approach aligns with the product roadmap to ensure that new capabilities are available within your environments, and can be adopoted in a predictable fashion. The Power Platform roadmap helps to inform the adoption strategy and North Star trajectory.
 
 ### Recommendations
 
@@ -280,7 +280,7 @@ Protecting your data in Power Platform is primarily at the Environment level, an
 - Establish well-defined processes to manage unplanned services interruptions integrated into the application/IT operations support.
 - Make the environment owners aware of their responsibility, to facilitate manual backups as needed per their requirements and lifecycle management.
 
-## Connectivity and interoperability
+## Connectivity and Interoperability
 
 There are different network options to allow connectivity to the Power Platform as well as different mechanisms to allow connectivity from Power Platform to Azure data services. This section will provide prescriptive design considerations and recommendations to help you implement the right connectivity model to and from the Power Platform.
 

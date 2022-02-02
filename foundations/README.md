@@ -20,7 +20,7 @@ Each cloud provides its own unit of scale, management, and governance boundary, 
 
 ### Cloud Driven Governance
 
-Use built-in primitives for guardrails to ensure deterministic, secure-by-default, and overall compliant environments for application and data environments.
+Use each cloud's built-in primitives for guardrails to ensure deterministic, secure-by-default, and overall compliant environments for application and data environments.
 
 ### Singular Entity Control Plane
 
@@ -30,7 +30,7 @@ Leverage and honor the control plane responsible for the entities in the respect
 
 Architecture must be agnostic to industry, app, and persona and not treat them differently nor uniquely from a capability perspective, but provide safe and secure cloud environments to support the business requirements.
 
-### Aligned with Microsoft Cloud roadmap
+### Native Design and Alignment with Microsoft Cloud Roadmap
 
 De-risk technical debt and be aligned with overall roadmap for Microsoft Cloud to harness new innovations and capabilities
 
@@ -40,7 +40,7 @@ Review the articles below to learn more about the "North Star" architecture meth
 
 * [Microsoft Power Platform](./powerPlatform)
 * [Microsoft Azure](./azure)
-* [Microsoft Teams](./teams)
+* [Microsoft 365 (Teams)](./teams)
 
 ---
 
