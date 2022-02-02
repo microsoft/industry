@@ -1,6 +1,8 @@
 # Governance for Telco Industry Scenarios
 
-In general, any application composition can be deployed, managed and governed in Azure using the existing prescriptive and architecture guidance provided in Cloud Adoption Framework. However, some applications typical for the Telco industry, such as those that provide managed services to end customers (B2C), or businesses (B2B) require additional set of controls and governance that are different from the traditional LoB applications and cloud native applications. Telco industry specific applications typically provide services such as Core CP, SBC, vIMS, vHSS, Thin/uCPE, SDWAN, vFW, vRouter, vLTM, CGNAT, vBNG, DDI and vRadius among others.
+In general, any application composition can be deployed, managed and governed in Azure using the existing prescriptive and architecture guidance provided in Cloud Adoption Framework. However, some applications typical for the Telco industry, such as those that provide managed services to end customers (B2C), or businesses (B2B) require additional sets of controls and governance that are different from the traditional LoB applications and cloud native applications. 
+
+Telco industry specific applications typically provide services such as Core CP, SBC, vIMS, vHSS, Thin/uCPE, SDWAN, vFW, vRouter, vLTM, CGNAT, vBNG, DDI and vRADIUS/DIAMETER among others.
 
 For example, B2B and B2C telco applications may require deploying their own ExpressRoute Gateways so they can use dedicated ExpressRoute circuits to the access network for data plane traffic, while other dedicated circuits can provide connectivity to on-premises network for control plane traffic. Another example would be applications that require public IPs in their Landing Zones, or the need to have IP forwarding capabilities on VM NICs.
 
