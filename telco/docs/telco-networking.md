@@ -6,7 +6,7 @@ The Network topology and connectivity design considerations and recommendations 
 
 Our guidance diverges from the Cloud Adoption Framework when it comes to addressing the telco specific requirements, as outlined in the introduction above. Most of these changes focus on how to provide more scalable and flexible connectivity using a modified network topology and ExpressRoute connectivity.
 
-This added complexity is due to most companies in the telco industry having multiple interconnected on-premises or other private networks (such as an MPLS) they depend on to provide B2B and B2C services for their customers. It is not uncommon for customers in the telco industry to have an heavily segmented on-premises network that is highly isolated across multiple Virtual Routing and Forwarding (VRFs). 
+This added complexity is due to most companies in the telco industry having multiple interconnected on-premises or other private networks (such as an MPLS) they depend on to provide B2B and B2C services for their customers. It is not uncommon for customers in the telco industry to have an heavily segmented on-premises network that is highly isolated across multiple Virtual Routing and Forwarding (VRFs).
 
 Such on-premises networks have a high level of isolation across multiple VRFs for scenarios such as overlapping IP address space, workload isolation, avoiding network contention across services among others.
 
