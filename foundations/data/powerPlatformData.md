@@ -51,7 +51,7 @@ Apps created in the Power Platform, whether they are canvas, model, or portal ba
 #### Design considerations
 
 * Data can be integrated into Dataverse as a one-off activity or on a schedule. Alternatively, virtual tables can be used to map data in an external data source so that it appears to exist in Dataverse. Virtual tables do not support many of the security and auditing related features that are offered for non-virtual tables.
-* Custom tables and/or standard, pre-defined tables can be used as a datasource when creating a Power Platform application.
+* Custom tables and/or standard, predefined tables can be used as a datasource when creating a Power Platform application.
 * Ownership type of custom tables can't be changed after creation. Virtual tables are always owned at the organizational level.
 * Row- and column-level security can be used to restrict access to data within tables.
 * Dataverse provides the option of automatic and manual backups. Automatic backups are system-initiated and manual backups are user-initiated.
@@ -97,5 +97,5 @@ Power BI is a visualization tool that can be used to present coherent, visually 
   * The source is a multidimensional source containing measures.
   * More limitations can be found [here](https://docs.microsoft.com/power-bi/connect-data/desktop-directquery-about).
 * Connect to data sources securely by using virtual network data gateways for Azure data sources or on-premises data gateways for data sources outside of Azure.
-* Configure refresh schedules for Power BI datasets that refresh frequently within the source system. Depending on the Power BI license, you will be limited to a pre-defined number of refreshed per day (8 per day for datasets on a shared capacity, 48 per day for datasets on a premium capacity). Also configure refresh failure notifications to get email updates when scheduled refreshed fail.
+* Configure refresh schedules for Power BI datasets that refresh frequently within the source system. Depending on the Power BI license, you will be limited to a predefined number of refreshed per day (8 per day for datasets on a shared capacity, 48 per day for datasets on a premium capacity). Also configure refresh failure notifications to get email updates when scheduled refreshed fail.
 * If possible, use incremental data refreshes to speed up the refresh process, make it more reliable and consume less capacity.
