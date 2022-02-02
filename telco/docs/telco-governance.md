@@ -8,7 +8,9 @@ For example, B2B and B2C telco applications may require deploying their own Expr
 
 ## Management Group
 
-Given these specialized requirements and to cater for scalability for Telco industry specific scenarios in landing zones, the Azure for Telco industry reference architecture recommends the creation a new Management Group dedicated to Telco industry specific applications and services. Azure policies that are designed to govern and manage those applications can be assigned to ensure Telco applications are compliant, and configured with high-availability as default at this scope and subscriptions dedicated for such applications would need to be deployed under this management group. This new management group is depicted in figure 1 below:
+Given these specialized requirements and to cater for scalability for Telco industry specific scenarios in landing zones, the Azure for Telco industry reference architecture recommends the creation a new Management Group dedicated to Telco industry specific applications and services. 
+
+Azure policies that are designed to govern and manage those applications can be assigned to ensure Telco applications are compliant, and configured with high-availability as default at this scope. Subscriptions dedicated for such applications would need to be deployed under this new management group, which is depicted in figure 1 below:
 
 ![Management workloads](./management-group-telco.png)
 _Figure 1: Management group for business to business and business to customer applications._
