@@ -2,7 +2,7 @@
 
 > Please note that this solution is still in Preview. Previews are not meant for production use.
 
-The banking customer engagement solution enables instant connections and an imrpoved customer engagement for customer service representatives and service agents. The solution can provide an immediate view and cotextual information of the financial situation of the client. This can ultimately drive better outcomes, an increased customer satisfaction and a higher agent productivity.
+The banking customer engagement solution enables instant connections and an improved customer engagement for customer service representatives and service agents. The solution can provide an immediate view and cotextual information of the financial situation of the client. This can ultimately drive better outcomes, an increased customer satisfaction and a higher agent productivity.
 
 Key capabilities of the Banking Customer Engagement scenario include:
 
@@ -77,7 +77,9 @@ TODO
 
 ### Knowledge management
 
-TODO
+In order to improve customer case resolution, the right information needs to be available at the right time to customer representatives. The knowledge management capability in the banking customer engagement solution can help service agents to respond timely in a clear and standardized fashion, by being able to search through a knowledge base and find the right articles at the right time.
+
+This lowers the training cost of customer representatived, while keeping the quality of the custoemr service high. This is built on top of the knowledge article feature of Omnichannel for Customer Service. More information about this feature can be found [here](https://docs.microsoft.com/en-us/dynamics365/customer-service/knowledge-management-oc).
 
 ## Planning guidelines for banking customer engagement
 
