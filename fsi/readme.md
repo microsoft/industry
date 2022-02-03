@@ -10,21 +10,17 @@ Overall architecture for Microsoft Cloud for Financial Services.
 
 ![Financial Services Industry Reference Architecture](./docs/mc4f-reference-architecture.png)
 
-## Design Recommendations
-
-Business applications for FSI has a need for realtime data in several user scenarios, ex account balance has to be reflecting the current state and is updated frequently.
-
-Analytics use cases require a larger dataset, but less frequent updates.
-
-Dataverse use a data model for FSI, this model is tightly integrated with the business applications built for Microsoft Cloud for Finance. Azure Synapse using Lake Database templates currently offers data models for Banking and Fund Management. For data to flow between the different models a mapping data flow needs to be developed. This mapping can be developed using Synapse Pipelines or Azure Data Factory.
-
-## Design Considerations
-
-Consider creating different data pipelines for the realtime data requirements of the business applications and for the analytics workloads.
-
-It is technically possible to connect PowerBi directly to Dataverse, but in order to have a unified data pipeline consider to let all data flow from Dataverse to ADLS/Synapse and PowerBI reads from that storage layer.
-
-## Known issues
-
-> - FSI connector is in development
-> - Mapping between data models
+| Subject | Description |
+|:---------------------------|:------------|
+| [Financial Services Foundations (Recommended)](./fsi/prereqs.md) | Prerequisites
+| Customer and employee experience
+| [Unified customer profile](./fsi/solutions/unifiedCustomerProfile) | Help tailor customer experiences via a comprehensive view of the customer's financial situation
+| [Customer onboarding](./fsi/solutions/customerOnboarding) | Provide customers with easy-access loan apps and self-service tools, streamlining the loan process to help enhance customer experience and loyalty
+| [Collaboration manager](./fsi/solutions/collaborationManager) | Enable automation, collaboration, and communications to help accelerate lending processes, minimize errors, and enhance customer experience
+| [Banking customer engagement](./fsi/solutions/customerEngagement) | Help personalize customer interactions with relevant financial information to accelerate time to resolution
+| Financial crime protection
+| [Account protection](./fsi/solutions/accountProtection) | Help prevent fraudulent digital account creation and account takeover
+| [Purchase protection](./fsi/solutions/purchaseProtection) | Help provide a differentiated experience for merchants to improve revenue and retention
+| Compliance, privacy, and security
+| [Risk assurance and support](./fsi/solutions/riskAssurance) | White glove service to support risk, audit, and compliance teams in addressing financial services regulatory compliance, cybersecurity, and privacy
+| [Regulatory compliance assessments](./fsi/solutions/complianceAssessments) | Assess, monitor, and help improve compliance posture with global, regional, and industry regulations and standards
