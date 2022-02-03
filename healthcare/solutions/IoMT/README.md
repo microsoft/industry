@@ -82,7 +82,7 @@ This allows customers to leverage datasets, collected in IoMT scenarios, in Dyna
 
 * Different connectivity options are available for the respective services including public endpoints, public endpoints with service endpoints and private endpoints.
 * In-transit encryption can be enforced via HTTPS and TLS.
-* Data and data access can be managed in different ways and different services provide a different set of capabilities. 
+* Data and data access can be managed in different ways and different services provide a different set of capabilities.
 
 ### Design recommendations
 
@@ -91,7 +91,7 @@ This allows customers to leverage datasets, collected in IoMT scenarios, in Dyna
 * Use row-level security (RLS) or column-level security (CLS) to further limit visibility of data points.
 * Use Power Query to securely transfer data from Azure to Dataverse.
 * Use Synapse Link for Dataverse to transfer data from Dataverse to Azure.
-* Access environments with private endpoints securely using VPN, ExpressRoute or Azure Bastion. 
+* Access environments with private endpoints securely using VPN, ExpressRoute or Azure Bastion.
 
 ---
 
