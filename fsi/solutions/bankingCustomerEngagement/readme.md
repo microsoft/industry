@@ -73,7 +73,9 @@ TODO
 
 ### Agent scripts
 
-TODO
+Agent scripts can be used to provide guidance to agents to avoid errors and ensure that processes are followed. The contextual guidance guides them through the conversation and provides accurate information taht can then be shared with customers. This allows to create a unified experience for customers and allows to respond more timely and efficiently to customer queries.
+
+More details about the agent script feature in Dynamics 365 customer services can be found [here](https://docs.microsoft.com/en-us/dynamics365/app-profile-manager/agent-scripts).
 
 ### Knowledge management
 
