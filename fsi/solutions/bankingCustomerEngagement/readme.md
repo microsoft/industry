@@ -6,7 +6,7 @@ The banking customer engagement solution enables instant connections and an impr
 
 Key capabilities of the Banking Customer Engagement scenario include:
 
-* **Contact view**: Provides an holistic overview of the customer including their personal details, life moments, financial holdings, credit & debit cards. This allows respresentatives to get a full financial picture of the client and enables an enhanced and personalized client experience.
+* **Contact snapshot**: Provides an holistic overview of the customer including their personal details, life moments, financial holdings, credit & debit cards. This allows respresentatives to get a full financial picture of the client and enables an enhanced and personalized client experience.
 * **Enhanced conversation view**: The holistic contact view can be places side-by-side with customer cases, timelines and conversation summaries to provide a comprehensive experience for the customer representative and imrpove their decision making.
 * **Monitor agent**: Dashboards allow agents, shift managers and general managers to get an overview of various insights depending on their requirements. Dashboards can present active cases, conversations, and more.
 * **Agent script**: Enables agent scripts to address customer specific issues. Own scripts and rules can be integrated.
@@ -54,22 +54,35 @@ For more details on how to grant users access to an environment please visit [th
 
 The following sections will walk through the various features of the banking customer engagement solution.
 
-### Contact view
+### Contact snapshot
 
-TODO
+![Contact Snapshot](./docs/ContactView.png)
 
-Customer snapshot
-Case management
-Financial holdings
-Cards
-Financial summary
-Life events
-Monitor agents
+Teh contact view or customer snapshot provides a holistic overview of the customer and his/her situation. The snapshot includes:
 
+* *Personal information*: Name, demographics.
+* *Financial Information*: Financial measures, regular income, branch information.
+* *Contact information*: Preferred channel for communication.
+* *Customer intelligence-driven information* (optional): Segments, churn score
+* *Conversations*: Open and historical customer sessions, conversation summary
+* *Financial holdings*: Customer relationship with the bank, wallet share, assets, liabilities, financial holdings, alert indicators, accounts, investments, loans, credit lines, long-term savings
+* *Financial summary*: financial holdings name, type & value, alerts for investments and loans, detailed information about holdings, total balance
+* *Cards*: Credit cards, debit cards, expiry alerts, card details, card status
+* *Life events*: Customers and families future and past milestones
 
 ### Enhanced conversation view
 
-TODO
+![EnhancedConversationView](./docs/EnhancedConversationView.png)
+
+The enhanced conversation view is based on [Omnichannel for Customer Service](https://docs.microsoft.com/dynamics365/customer-service/introduction-omnichannel) enables customer agents, to put relevant client information and teh active case side-by-side. The view appears when a customer initiates a conversation with the service center through a supported channel. More details about Omnichannel for Customer Service can be found [here](https://docs.microsoft.com/dynamics365/customer-service/oc-introduction-agent-interface).
+
+### Monitor agent
+
+![Monitor Agents](./docs/MonitorAgents.png)
+
+The monitoring capabilities are built into a solution and can be accessed by opening the dashboard view of the application. Different dashboard views are available for different personas and can be used to monitor active sessions, active cases, cases that require a follow-up, active agents and call-center performance.
+
+To learn how additional dashbaords can be created, visit [this page](https://docs.microsoft.com/powerapps/maker/model-driven-apps/create-edit-dashboards).
 
 ### Agent scripts
 
