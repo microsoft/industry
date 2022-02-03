@@ -48,7 +48,7 @@ Grant users access to the financial services banking customer engagement solutio
 * Omnichannel agent, supervisor, or admin
 * Financial intelligence user (optional for Banking customer engagement with Customer Intelligence)
 
-For more details on how to grant users access to an environment please visit [this website](https://docs.microsoft.com/en-us/power-platform/admin/add-users-to-environment). For more details about security roles, please visit [this website](https://docs.microsoft.com/power-platform/admin/database-security).
+For more details on how to grant users access to an environment please visit [this site](https://docs.microsoft.com/en-us/power-platform/admin/add-users-to-environment). For more details about security roles, please visit [this site](https://docs.microsoft.com/power-platform/admin/database-security).
 
 ## Features of banking customer engagement solution
 
