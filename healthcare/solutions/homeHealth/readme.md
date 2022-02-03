@@ -11,7 +11,7 @@ Besides the Dynamics 365 App, the overall solution also encompasses two apps tod
 
 | Reference implementation | Description | Deploy |
 |:-------------------------|:------------|--------|
-| Home Health              | Home health scenario  to manage home visit schedules, notify patients and give providers access to medical information. |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)]() |
+| Home Health              | Home health scenario  to manage home visit schedules, notify patients and give providers access to medical information. |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/solutioncenter-healthcare) |
 
 ## Prerequisites
 

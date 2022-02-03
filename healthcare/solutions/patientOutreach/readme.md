@@ -10,7 +10,7 @@ Key capabilities of Patient outreach include:
 
 | Reference implementation | Description | Deploy |
 |:-------------------------|:------------|--------|
-| Patent Outreach          | Patent Outreach for patient campaign management to help organize and automate marketing and outreach to patients. |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)]() |
+| Patent Outreach          | Patent Outreach for patient campaign management to help organize and automate marketing and outreach to patients. |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/solutioncenter-healthcare) |
 
 ## Prerequisites
 

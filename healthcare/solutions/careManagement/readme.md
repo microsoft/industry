@@ -10,7 +10,7 @@ The solution allows health providers to create, personalize and enable new care 
 
 | Reference implementation | Description | Deploy |
 |:-------------------------|:------------|--------|
-| IoMT                     | Care management for health providers to create, personalize and enable new care plans for patients and manage care team members. |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)]() |
+| IoMT                     | Care management for health providers to create, personalize and enable new care plans for patients and manage care team members. |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/solutioncenter-healthcare) |
 
 ## Prerequisites
 

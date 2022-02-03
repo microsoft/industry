@@ -10,7 +10,7 @@ Classical IoT as well as IoMT scenarios share similar architectures. The most si
 
 | Reference implementation | Description | Deploy |
 |:-------------------------|:------------|--------|
-| IoMT                     | IoMT scenario for integration, analysis and visualization of healthcare data. |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)]() |
+| IoMT                     | IoMT scenario for integration, analysis and visualization of healthcare data. |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/solutioncenter-healthcare) |
 
 ## Prerequisites
 

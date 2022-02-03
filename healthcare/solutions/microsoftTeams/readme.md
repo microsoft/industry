@@ -5,7 +5,7 @@ This document outlines recommendations in order to leverage Microsoft Teams acro
 
 | Reference implementation | Description | Deploy |
 |:----------------------|:------------|--------|
-| Microsoft Teams for Healthcare | Microsoft Teams environment with recommended policies, templates and integrations enabled for Healthcare|[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)]()
+| Microsoft Teams for Healthcare | Microsoft Teams environment with recommended policies, templates and integrations enabled for Healthcare|[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/solutioncenter-healthcare)
 
 
 ## Prerequisites
