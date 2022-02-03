@@ -18,9 +18,8 @@ This document outlines recommendations in order to leverage Microsoft Teams acro
 
 The following [Azure AD roles](https://docs.microsoft.com/en-us/azure/active-directory/roles/permissions-reference) are required to configure the various healthcare scenarios:
 
--   Teams deployment/configuration: Teams administrator
-
--   [Enable Microsoft Bookings](https://docs.microsoft.com/en-us/microsoft-365/bookings/turn-bookings-on-or-off?view=o365-worldwide) (one-off tenant wide setting): Global Administrator
+- Teams deployment/configuration: Teams administrator
+- [Enable Microsoft Bookings](https://docs.microsoft.com/en-us/microsoft-365/bookings/turn-bookings-on-or-off?view=o365-worldwide) (one-off tenant wide setting): Global Administrator
 
 ## Recommendations
 ### Policies
