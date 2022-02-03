@@ -52,7 +52,7 @@ For more details on how to grant users access to an environment please visit [th
 
 ## Features of banking customer engagement solution
 
-The following sections will walk through the various features of the banking customer engagement solution.
+The following sections will walkthrough the various features of the banking customer engagement solution.
 
 ### Contact snapshot
 
