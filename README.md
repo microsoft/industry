@@ -99,7 +99,9 @@ Telco Solutions
 </table>
 
 ### Financial services
-#### *Work in progress, conent is coming soon.
+
+#### *Work in progress, content is coming soon
+
 Microsoft Cloud for Financial Services provides capabilities to manage data to deliver differentiated experiences, empower employees, and combat financial crime while facilitating security, compliance, and interoperability.
 
 <table>

@@ -58,4 +58,4 @@ It is technically possible to connect PowerBi directly to Dataverse, but in orde
 
 > - FSI connector is in development.
 > - Mapping between data models is in development.
-> 
+>
