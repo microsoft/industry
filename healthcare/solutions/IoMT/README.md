@@ -6,7 +6,7 @@ Internet of Medical Things (IoMT) focusses on the practical application of IoT i
 - Allowing healthcare professional to remotely monitor patients' key biometrics in (near) real-time.
 - Shorter time to diagnosis, because of more efficient and quick data exchange, asynchronous analysis of datasets and analysis of medical data, before impactful medical incidents take place. No in-person visits required.
 
-Classical IoT as well as IoMT scenarios share similar architectures. The most significant differences can be identified on the application and data-driven use-case level. Also, there is a higher emphasis on the security aspect in the IoMT space and the compliance with legal regulations and standards. In the next paragraphs, we will look at the various layers of an IoMT architecture.
+Classical IoT as well as IoMT scenarios share similar architectures. The most significant differences can be identified on the application and data-driven use-case level. Analytics and Data Science use-cases in the healthcare industry can differ vastly from other industry scenarios. Also, there is a higher emphasis on the security aspect in the IoMT space and the compliance with legal regulations and standards, because often personal identifiable information (PII) gets processed that is highly sensible. Additional security mechanisms on the network, identity and data layer need to be established to secure the data and only grant access to individual data points. In the next paragraphs, we will look at the various layers of an IoMT architecture.
 
 | Reference implementation | Description | Deploy |
 |:-------------------------|:------------|--------|
@@ -14,7 +14,7 @@ Classical IoT as well as IoMT scenarios share similar architectures. The most si
 
 ## Prerequisites
 
-Before you deploy and configure, verify you have implemented the [prerequisites](../../prereqs.md) for Dynamics 365.
+Before you deploy and configure, verify you have implemented the [prerequisites](../../prereqs.md).
 
 Specifically for IoMT, you need:
 
@@ -58,7 +58,7 @@ This allows customers to leverage datasets, collected in IoMT scenarios, in Dyna
 
 * Ensure user/group mapping for the requisite licenses are done before deploying the solutions to Power Platform.
 * Ensure appropriate RBAC is assigned to the Security group for the dedicated Environment for Healthcare in Power Platform, ideally as part of the Environment creation process.
-* Ensure that there is no standing access to the production environment and use PIM where applicable.
+* Ensure that there is no standing access to the production Azure and Power Platform environment and use PIM where applicable.
 * Use managed identitied and credential passthrough across all environments and use row-level security (RLS) or column-level security (CLS) to further limit visibility of data points.
 * ALways follow the least privilege principle to not put any patient data at risk.
 
@@ -73,7 +73,8 @@ This allows customers to leverage datasets, collected in IoMT scenarios, in Dyna
 ### Design recommendations
 
 * Use Azure Log Analytics and application insights to collect logs across Azure services, Power Platform and Microsoft 365. Use other more specific logging capabilities such as the Microsoft 365 monitoring and audit logs where necessary.
-* Create a health model for your application and setup dashboards for monitoring and evaluation
+* Collect audit logs, diagnostic logs and metrics in Azure using Log Analytics, enable auditing for Power Platform environments and review audit Logs in teh Microsoft 365 compliance center and enable Microsoft 365 audit logs in the Microsoft 365 compliance center.
+* Create a health model for your application and setup dashboards for monitoring and evaluation.
 * Setup alerts and take automated actions to ensure a highly available application design.
 
 ## Security
@@ -91,7 +92,7 @@ This allows customers to leverage datasets, collected in IoMT scenarios, in Dyna
 * Use row-level security (RLS) or column-level security (CLS) to further limit visibility of data points.
 * Use Power Query to securely transfer data from Azure to Dataverse.
 * Use Synapse Link for Dataverse to transfer data from Dataverse to Azure.
-* Access environments with private endpoints securely using VPN, ExpressRoute or Azure Bastion.
+* Access Azure services hosted with private endpoints securely using VPN, ExpressRoute or Azure Bastion.
 
 ---
 
