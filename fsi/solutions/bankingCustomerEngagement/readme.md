@@ -58,7 +58,7 @@ The following sections will walkthrough the various features of the banking cust
 
 ![Contact Snapshot](./docs/ContactView.png)
 
-Teh contact view or customer snapshot provides a holistic overview of the customer and his/her situation. The snapshot includes:
+The contact view or customer snapshot provides a holistic overview of the customer and his/her situation. The snapshot includes:
 
 * *Personal information*: Name, demographics.
 * *Financial Information*: Financial measures, regular income, branch information.
