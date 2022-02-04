@@ -1,10 +1,10 @@
 # Microsoft Cloud Foundations for Industries
 
-Industry solutions such as Healthcare, Retail, and Financial Services are a composition of different services, infrastructure components, and application components that are deployed into their respective Microsoft *Cloud* such as Power Platform, Azure, and Microsoft 365, to provide optmized, curated, and tailored experiences for the industry verticals.
+Industry solutions such as Healthcare, Retail, and Financial Services are a composition of different services, infrastructure components, and application components that are deployed into their respective Microsoft *Cloud* such as Power Platform, Microsoft Azure, and Microsoft 365, to provide optmized, curated, and tailored experiences for the industry verticals.
 
 As a recommendation, and regardless where each organization is on their journey towards leveraging industry solutions, each Microsoft Cloud need to have a well-architected *foundation* that caters for security, governance, compliance, identity and access, scale, and interoperability. This will ensure successful deployment of the industry solutions and de-risk an organization's technical debt as every cloud foundation is based on prescriptive and proven guidance, that is aligned with the overall product roadmap for the Microsoft Clouds.
 
-A detailed overview of the Microsoft Cloud architecture composition which includes Azure, Power Platform, and Microsoft 365 can be seen below, where each of the cloud's architecture is based on its respective "North Star" architecture and design methodology.
+A detailed overview of the Microsoft Cloud architecture composition which includes Microsoft Azure, Power Platform, and Microsoft 365 is depicted in the picture below, where each of the cloud's architecture is based on its respective "North Star" architecture and design methodology.
 
 ![North Star Architecture for Microsoft Cloud](./images/nsformc.png)
 
@@ -32,7 +32,7 @@ Architecture must be agnostic to industry, app, and persona and not treat them d
 
 ### Native Design and Alignment with Microsoft Cloud Roadmap
 
-De-risk technical debt and be aligned with overall roadmap for Microsoft Cloud to harness new innovations and capabilities
+De-risk technical debt and be aligned with overall roadmap for Microsoft Cloud to harness new innovations and capabilities.
 
 ## Architecture and Design methodologies for Microsoft Cloud Foundations
 
