@@ -28,7 +28,6 @@ In addition to being application, persona, and industry agnostic, North Star Arc
   - [Business Continuity and Disaster Recovery](#business-continuity-and-disaster-recovery)
   - [Connectivity and Interoperability](#connectivity-and-interoperability)
   - [Platform Automation and DevOps](#platform-automation-and-devops)
-- [Reference implementation](#reference-implementation)
 
 ## Architecture overview
 

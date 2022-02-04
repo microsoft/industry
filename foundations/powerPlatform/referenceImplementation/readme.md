@@ -1,7 +1,7 @@
 # North Star Architecture for Power Platform Reference Implementation
 
 This user guide explains the North Star Architecture for Power Platform reference implementation, what it is, what it does, and how organizations can use it to enable "landing zones" at scale to support their digital transformation for citizen developers and professional developers.
-
+<!--!
 ## Table of Contents
 
 - [What is North Star Architecture reference implementation?](#what-is-north-star-architecture-reference-implementation)
@@ -17,4 +17,6 @@ This user guide explains the North Star Architecture for Power Platform referenc
   - [Pre-requisites](#pre-requisites)
   - [Step-by-step guidance](#step-by-step-guidance)
 
----
+--->
+
+## Coming soon
