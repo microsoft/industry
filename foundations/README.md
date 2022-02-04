@@ -1,20 +1,46 @@
 # Microsoft Cloud Foundations for Industries
 
-Microsoft Cloud for Industry provides many curated scenarios, capabilities and solutions targeting specific industries that spans across the Microsoft Clouds, such as Azure, Power Platform, and Microsoft 365.
+Industry solutions such as Healthcare, Retail, and Financial Services are a composition of different services, infrastructure components, and application components that are deployed into their respective Microsoft *Cloud* such as Power Platform, Microsoft Azure, and Microsoft 365, to provide optmized, curated, and tailored experiences for the industry verticals.
 
-Regardless where organizations starts on their journey towards leveraging these industry solutions, a pre-requisite and a recommended path is to have a well-architected industry cloud foundation that caters for security, governance and compliance, scale, and interoperability. This will ultimately de-risk an organization's technical debt as the design recommendations are aligned with the Microsoft Cloud roadmaps. A high-level architecture of Microsoft Cloud Foundations can be seen below, where all clouds are based on their respective "North Star Architecture and Design Methodology".
+As a recommendation, and regardless where each organization is on their journey towards leveraging industry solutions, each Microsoft Cloud need to have a well-architected *foundation* that caters for security, governance, compliance, identity and access, scale, and interoperability. This will ensure successful deployment of the industry solutions and de-risk an organization's technical debt as every cloud foundation is based on prescriptive and proven guidance, that is aligned with the overall product roadmap for the Microsoft Clouds.
 
-![North Star for Microsoft Cloud](./images/nsformc.png)
+A detailed overview of the Microsoft Cloud architecture composition which includes Microsoft Azure, Power Platform, and Microsoft 365 is depicted in the picture below, where each of the cloud's architecture is based on its respective "North Star" architecture and design methodology.
 
-Each cloud foundation is rooted on key design principles across critical design areas for each respective cloud with the industry specific requirements in mind, leading with prescriptive guidance for the considerations each organization must do, as well as the Microsoft recommendations.
+![North Star Architecture for Microsoft Cloud](./images/nsformc.png)
 
-## Foundations
+Each cloud foundation is rooted on key design principles across critical design areas for each respective cloud with the industry specific requirements in mind, leading with prescriptive guidance for the considerations each organization must do, as well as the Microsoft recommendations for all the various technical domains.
 
-Review the articles below to learn more about the North Star architecture methodology for each cloud foundation for your industry scenarios, as well as the specific reference implementations per industry:
+## Microsoft Cloud Design Principles
+
+The following design principles are meant to serve as a compass for design decisions across the critical design areas for the Microsoft Clouds, ultimately leading to business agility and autonomy while ensuring continious compliance for the infrastructure, applications, and components across Azure, Power Platform, and Microsoft 365.
+
+### Cloud Democratization
+
+Each cloud provides its own unit of scale, management, and governance boundary, that organizations should aim to democratize in order to provide agility, autonomy to the business and application teams.
+
+### Cloud Driven Governance
+
+Use each cloud's built-in primitives for guardrails to ensure deterministic, secure-by-default, and overall compliant environments for application and data environments.
+
+### Singular Entity Control Plane
+
+Leverage and honor the control plane responsible for the entities in the respective platforms and avoid abstracting the underlying platform.
+
+### Application, Industry, and Persona agnostic
+
+Architecture must be agnostic to industry, app, and persona and not treat them differently nor uniquely from a capability perspective, but provide safe and secure cloud environments to support the business requirements.
+
+### Native Design and Alignment with Microsoft Cloud Roadmap
+
+De-risk technical debt and be aligned with overall roadmap for Microsoft Cloud to harness new innovations and capabilities.
+
+## Architecture and Design methodologies for Microsoft Cloud Foundations
+
+Review the articles below to learn more about the "North Star" architecture methodology for each cloud foundation for your industry scenarios, as well as the reference implementations provided:
 
 * [Microsoft Power Platform](./powerPlatform)
 * [Microsoft Azure](./azure)
-* [Microsoft Teams](./teams)
+* [Microsoft 365 (Teams)](./teams)
 
 ---
 
