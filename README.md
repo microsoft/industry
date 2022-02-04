@@ -42,12 +42,12 @@ Healthcare Solutions
 - Patient Insights
   - [Patient Outreach](./healthcare/solutions/patientOutreach)
 - Virtual Health
-  - [Virtual Visits](./healthcare/solutions/virtualVisits)
+  - ~~[Virtual Visits](./healthcare/solutions/virtualVisits)~~
 - Care Coordination
   - [Care Management](./healthcare/solutions/careManagement)
   - [Home Health](./healthcare/solutions/homeHealth)
 - Care Collaboration
-  - [Health Assistant](./healthcare/solutions/healthAssistant)
+  - ~~[Health Assistant](./healthcare/solutions/healthAssistant)~~
 - Monitoring & Analytics
   - [Remote Patient Monitoring](./healthcare/solutions/IoMT)
   - [Healthcare Analytics](./healthcare/solutions/clinicalAnalytics)
@@ -68,7 +68,7 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
 <thead>
  <tr>
   <th style="text-align:left" width="25%">Telecommunications Scenario</th>
-  <th style="text-align:left" width="80%">Reference Architecture</th>
+  <th style="text-align:left" width="75%">Reference Architecture</th>
  </tr>
 </thead>
 <tbody>
@@ -100,13 +100,15 @@ Telco Solutions
 
 ### Financial services
 
+#### *Work in progress, content is coming soon
+
 Microsoft Cloud for Financial Services provides capabilities to manage data to deliver differentiated experiences, empower employees, and combat financial crime while facilitating security, compliance, and interoperability.
 
 <table>
 <thead>
  <tr>
-  <th style="text-align:left" width="25%">Financial Services</th>
-  <th style="text-align:left" width="80%">Reference Architecture</th>
+  <th style="text-align:left" width="30%">Financial Services</th>
+  <th style="text-align:left" width="70%">Reference Architecture</th>
  </tr>
 </thead>
 <tbody>
