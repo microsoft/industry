@@ -1,14 +1,24 @@
 # Operator Landing Zones
 
-An Operator Landing Zone is a special type of landing zone, which has significant differences compared to a traditional corp-connected or online Azure Landing Zone, as a typical application in the telco industry, or a network function, have unique set of requirements such as the need to have multiple virtual networks and multiple ExpressRoute circuits to separete control plane from user plane data. Figure 1 below depicts a sample Operator Landing Zone architecture designed to deliver a especialized network function:
+An Operator Landing Zone is a special type of landing zone, which has significant differences compared to traditional corp-connected or online Azure Landing Zones, as a typical application or network function in the telco industry have unique set of requirements such as the need to have multiple virtual networks and multiple ExpressRoute circuits to separete control plane from user plane traffic. Figure 1 below depicts a sample Operator Landing Zone architecture designed to deliver a especialized network function:
 
 ![Figure 1: Sample Operator Landing Zone](./sample-operator-landing-zone.png)
 _Figure 1: Sample Operator Landing Zone._
 
-This section focuses on providing guidance with design considerations and recommendations for deploying mission-critical, carieer-grade telco applications (such as 5G Core, packet core, session boarder control, etc) on Azure on specialized Operator Landing Zones.
+This section focuses on providing guidance with design considerations and recommendations for deploying mission-critical, carieer-grade telco applications (such as 5G Core, packet core, session boarder control, etc) on Azure on specialized Operator Landing Zones. This section will first introduce the AlwaysOn project, and readers are strongly recommended to familiarize with it before proceeding to the remaining sections of this article which provide additional considerations when deploying and delivering network functions from Azure.
 
+- [AlwaysOn](#alwayson)
 - [Proximity Placement Groups](#proximity-placement-groups)
 - [Availability Zones](#availability-zones)
+
+## AlwaysOn
+[AlwaysOn](https://github.com/azure/alwayson) is an open source architectural approach to building highly-reliable cloud-native applications on Microsoft Azure for mission-critical applications. The 'AlwaysOn' project name refers to the highly-reliable and mission-critical nature of the architectural pattern it represents, where for given set of business requirements, an application should always be operational and available.
+
+Building mission-critical applications on any hyper-scale cloud platform requires significant technical expertise and engineering investment to appropriately select and piece together services and features. The AlwaysOn project strives to address this complex consumption experience for Microsoft Azure, by applying Well-Architected best practices to mission-critical application scenarios, providing prescriptive and opinionated technical guidance alongside streamlined consumption mechanisms for common industry patterns through reference implementations.
+
+The AlwaysOn project is based on a Design Methodology (which provides easy to follow guidance surrounding the critical design decisions required to produce a target AlwaysOn architecture) and by 5 key Design Principles which serve as a compass for subsequent design decisions across technical domains and the critical design areas.
+
+Readers are strongly advised to familiarize themselves with the AlwaysOn project, its design methodology, its design principles and the critical design areas when designing for and deploying carrier-grade, mission-critical applications and network functions on Microsoft Azure.
 
 ## Proximity Placement Groups
 
