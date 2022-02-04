@@ -2,7 +2,7 @@
 
 The Microsoft Azure Cloud Foundation for industries is based on proven and authoritative guidance that is published and documented in the [Cloud Adoption Framework](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/).
 
-Each of the respective reference implementations in this repository is based on this as a foundation, and provides unique industry recommendations and industry specific implementations to accelerate organizations in the respective industries journey to a scalable foundation for subsequent industry solutions.
+Each of the respective reference implementations in this repository is based on this as a foundation, and provides unique industry recommendations and industry specific implementations to accelerate organizations journey to a scalable foundation for subsequent industry solutions.
 
 | Azure Cloud Foundations | Description | Deploy |
 |:----------------------|:------------|--------|
