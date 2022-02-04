@@ -12,47 +12,38 @@ Such on-premises networks have a high level of isolation across multiple VRFs fo
 
 In addition to providing networking services to their customers, telcos also provide networking managed solutions through managed services which are hosted on either a customer's or telco provider's subscription(s). The following sections will cover networking design considerations and recommendations for such scenarios.
 
-- [Availability Zones or Regional deployments](#availability-zones-or-regional-deployments)
+- [Azure Regions](#azure-regions)
 - [Multiple ExpressRoute Circuits](#multiple-expressroute-circuits)
 - [Multiple IPSec Tunnels](#multiple-ipsec-tunnels)
 - [Overlay Networks](#overlay-networks)
 
-
-## Availability Zones or Regional Deployments
+## Azure Regions
 
 ### Design Considerations
 
 - Azure availability zones are physically separate locations within each Azure region that are tolerant to local failures (such as floods or fire).
-- To ensure resiliency, a minimum of three separate availability zones are present in all availability zone-enabled regions. Availability zones are designed so that if one zone is affected, regional services, capacity, and high availability are supported by the remaining two zones.
 - Azure regions are designed to offer protection against localized disasters with availability zones and protection from regional or large geography disasters with disaster recovery, by making use of another region.
-- Azure availability zones are connected by a high-performance network with a round-trip latency of less than 2 ms.
-- Azure availability-zones enabled services can be either zone redundant, with automatic replication across zones, or zonal, with instances pinned to a specific zone.
-- Availability zones is currently [available](https://docs.microsoft.com/azure/availability-zones/az-overview#azure-regions-with-availability-zones) in many Azure regions.
-  - Some geographies, have region pairs, where one Azure region supports availability zones while the other does not.
-- Azure virtual network spans across availability zones when created in a region that supports them.
-- An ExpressRoute gateway can be deployed as regional, zonal or zone redundant. However, there can be up to only one ExpressRoute gateways per VNet.
-- While currently there are no charges for network traffic across Availability Zones, data transfer across availability zones [will be charged](https://azure.microsoft.com/pricing/details/bandwidth/) beginning from July 1, 2022. The following Availability Zone data transfer will be charged:
-  - Data transfer, ingress and egress, from a VNet resource deployed in an Availability Zone to another resource in a different Availability Zone in the same VNET.
-- A proximity placement group is a logical grouping used to make sure that Azure compute resources are physically located close to each other. Proximity placement groups are useful for workloads where low latency is a requirement.
-  - Proximity placement groups offer colocation in the same data center. However, because proximity placement groups represent an additional deployment constraint, [allocation failures can occur](https://docs.microsoft.com/azure/virtual-machines/co-location#what-to-expect-when-using-proximity-placement-groups).
+- Each Azure region is paired with another region within the same geography. 
+  - This approach allows for the replication of resources across a geography that should reduce the likelihood of natural disasters, civil unrest, power outages, or physical network outages affecting both regions at once.
+- Additional advantages of region pairs include:
+  - In the event of a wider Azure outage, one region is prioritized out of every pair to help reduce the time to restore for applications.
+  - Planned Azure updates are rolled out to paired regions one at a time to minimize downtime and risk of application outage.
+  - Data continues to reside within the same geography as its pair (except for Brazil South) for tax and law enforcement jurisdiction purposes.
+- Azure latency across Azure regions is constantly monitored and round-trip latency statics are published on this [article](https://docs.microsoft.com/azure/networking/azure-network-latency)
 
 ### Design Recommendations
 
-- For Azure regions that do not support availability zones, deploy Azure ExpressRoute gateway as regional.
-- For Azure regions that do support availability zones, deploy Azure ExpressRoute gateway as zone-redundant as this will provide the maximum availability within the region with gateway instances spread across multiple availability zones. With this deployment, however, the telco solution may experience extra latency when the solution instances (such as VMs) are deployed across availability zones, and also, this would incur in extra costs beginning from July 1, 2022.
-- For Azure regions that do support availability zones, and if the Telco solution is latency sensitive or if the projected network charges when cross avilability zones traffic is charged, deploy the Telco solution as Zonal. This will minimize latency and will avoid cross-zones data transfer charges (when included). For zonal deployments:
-  - Deploy the ExpressRoute Gateway to a zone, and ensure the application resources (such as VMs) are also deployed in the same zone.
-  ![Figure 1: Zonal deployment](./zonal-deployment.png)
+- For maximum resiliency, deploy an Azure networking platform in at least two Azure regions (preferrably region pairs). This will protect your infrastructure in Azure against localized disasters with availability zones and also from regional or large geography disasters, by making use of another region.
+- Deploy a hub VNet (for hub and spoke networks) or a virtual hub (for Virtual WAN based network topologies) on each of the Azure regions choosen in your organization.
+  - Note that Telco architectures can have more than one hub or vHub on the same Azure region.
+- Besides protecting you from a disaster in an Azure region, this architecture allows you to deploy highly available, mission critical systems in an Active-Active configuration where instances of your application can be deployed across 2 (or more) Azure regions.
+- Each ExpressRoute Gateway should be connected to at least two ExpressRoute circuits per routing domain (in case the Telco is using multiple ExpressRoute circuits to isolate routing domains). The ExpressRoute circuits should be provisioned from different [peering locations](https://docs.microsoft.com/azure/expressroute/expressroute-locations-providers#expressroute-locations). This will remove any single-point-of-failures for connecting on-premises network to Azure.
+  - Use BGP techniques such as AS path prepending and local preference to ensure [optimal routing across the ExpressRoute circuits](https://docs.microsoft.com/azure/expressroute/expressroute-optimize-routing).
+  - This setup is depicted in picture 1 below:
 
-  _Figure 1: Zonal deployment._
-  - If latency is the first priority, put VMs in a proximity placement group and the entire solution in an availability zone.
-  ![Figure 2: Zonal deployment with proximity placement group](./zonal-deployment-ppg.png)
+![Figure 1: Dual regions with cross connects ](./telco-cross-region.png)
 
-  _Figure 2: Zonal deployment with proximity placement group._
-  - If the Telco solution scales-out by using multiple stamps or shards, each stamp/shard must include a VNet and a zonal ExpressRoute gateway. Then resources for that stamp/shard must be deployed in the same zone as the zone where the ExpressRoute gateway was deployed.
-  ![Figure 3: Multiple stamps across availability zones](./zonal-deployment-multiple-stamps.png)
-
-   _Figure 3: Multiple stamps across availability zones._
+_Figure 1: Dual regions with cross connected ExpressRoute circuits._
 
 ## Multiple ExpressRoute Circuits
 
@@ -85,19 +76,16 @@ It is typically recommended to evaluate whether is possible to consolidate multi
 - Use dedicated ExpressRoute circuits and dedicated ExpressRoute Gateways when end-to-end network isolation from an on-premises VRFs to Azure is required.
   - This approach not only ensures end-to-end network isolation from on-premises to Azure, but also, it overcomes the ExpressRoute connections limits described in the design considerations section above.
 - In Azure, connect virtual networks by using VNet peering when resources across different virtual networks need to communicate with each other.
-  - A typical scenario is a management plane VNet communicating with data plane VNet(s) as depicted in the picture below:
-![Figure 4: VNet peering between control plane and data plane VNets](./telco-multiple-er-vnet-peering.png)
-_Figure 4:VNet peering between control plane and data plane VNets._
 - When using dedicated ExpressRoute circuits and VNets, and Azure resources must be accesible over two on more ExpressRoute circuits, a multi-homed VNets network architecture is recommended. A multi-homed VNet architecture can be implemented by using one of the following approaches:
-  - **Automatic route exchange with Azure Route Server (Preferred)**. In this setup, a NVA in the hub virtual network will learn about on-premises routes from the ExpressRoute gateway through route exchange with the Route Server in the hub. In return, the NVA will send the spoke virtual network addresses to the ExpressRoute gateway using the same Route Server. The Route Server in both the spoke and hub virtual network will then program the on-premises network addresses to the virtual machines in their respective virtual network. The virtual machines in the spoke virtual network will send all traffic destined for the on-premises network to the NVA in the hub virtual network first. Then the NVA will forward the traffic to the on-premises network through ExpressRoute. Traffic from on-premises will traverse the same data path in the reverse direction. In this setup, neither of the Route Servers are in the data path. This scenario is depicted in figure 5 below:
+  - **Automatic route exchange with Azure Route Server (Preferred)**. In this setup, a NVA in the hub virtual network will learn about on-premises routes from the ExpressRoute gateway through route exchange with the Route Server in the hub. In return, the NVA will send the spoke virtual network addresses to the ExpressRoute gateway using the same Route Server. The Route Server in both the spoke and hub virtual network will then program the on-premises network addresses to the virtual machines in their respective virtual network. The virtual machines in the spoke virtual network will send all traffic destined for the on-premises network to the NVA in the hub virtual network first. Then the NVA will forward the traffic to the on-premises network through ExpressRoute. Traffic from on-premises will traverse the same data path in the reverse direction. In this setup, neither of the Route Servers are in the data path. This scenario is depicted in figure 2 below:
   
-  ![Figure 5: Multi-homed VNets using Azure Route Server](./dual-homed-topology-expressroute.png)
+  ![Figure 2: Multi-homed VNets using Azure Route Server](./dual-homed-topology-expressroute.png)
 
-  _Figure 5: Multi-homed VNets using Azure Route Server_
-  - **Static routing with User Defined Routes (UDRs)**. As a spoke VNet can only be connected to one hub with the “use remote gateway” VNet peering property, we need a different mechanism to ensure a VNet connected to two or more hubs can be reachable from on-premises and vice versa via the different ExpressRoute circuits. If Azure Route Server cannot be used, an alternative approach is by implementing a network model that uses an “auxiliary” or “routing” VNet, with the sole purpose of ensuring that the ExpressRoute gateway advertises to on-premises the address space of the spoke VNets that are connected to the hub without the “use remote gateway” VNet peering property. In this scenario a UDR in the Gateway subnet is required to ensure traffic arriving at the ExpressRoute Gateway with destination a spoke VNet is routed via the Firewall. A UDR in the spoke VNet(s) is also required to send traffic to on-premises over a specific firewall, depending on which VRF or ExpressRoute circuit the traffic needs to go through. This network model with the “routing” or “auxiliary” VNet is depicted in figure 6 below.
+  _Figure 2: Multi-homed VNets using Azure Route Server_
+  - **Static routing with User Defined Routes (UDRs)**. As a spoke VNet can only be connected to one hub with the “use remote gateway” VNet peering property, we need a different mechanism to ensure a VNet connected to two or more hubs can be reachable from on-premises and vice versa via the different ExpressRoute circuits. If Azure Route Server cannot be used, an alternative approach is by implementing a network model that uses an “auxiliary” or “routing” VNet, with the sole purpose of ensuring that the ExpressRoute gateway advertises to on-premises the address space of the spoke VNets that are connected to the hub without the “use remote gateway” VNet peering property. In this scenario a UDR in the Gateway subnet is required to ensure traffic arriving at the ExpressRoute Gateway with destination a spoke VNet is routed via the Firewall. A UDR in the spoke VNet(s) is also required to send traffic to on-premises over a specific firewall, depending on which VRF or ExpressRoute circuit the traffic needs to go through. This network model with the “routing” or “auxiliary” VNet is depicted in figure 3 below.
 
-  ![Figure 6: Multi-homed VNets using UDR](./dual-homed-topology-udr.png)
-  _Figure 6: Multi-homed VNets using User Defined Routes_
+  ![Figure 3: Multi-homed VNets using UDR](./dual-homed-topology-udr.png)
+  _Figure 3: Multi-homed VNets using User Defined Routes_
 
 
 ## Multiple IPSec Tunnels
