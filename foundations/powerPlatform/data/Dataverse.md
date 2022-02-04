@@ -24,7 +24,7 @@ When working with unstructured data like files and images Dataverse has two type
 #### Design considerations
 
 * Data can be integrated into Dataverse as a one-off activity or on a schedule. Alternatively, virtual tables can be used to map data in an external data source so that it appears to exist in Dataverse. Virtual tables do not support many of the security and auditing related features that are offered for non-virtual tables.
-* Custom tables and/or standard, pre-defined tables can be used as a datasource when creating a Power Platform application.
+* Custom tables and/or standard, predefined tables can be used as a datasource when creating a Power Platform application.
 * Ownership type of custom tables can't be changed after creation. Virtual tables are always owned at the organizational level.
 * Row- and column-level security can be used to restrict access to data within tables.
 * Dataverse provides the option of automatic and manual backups. Automatic backups are system-initiated and manual backups are user-initiated.

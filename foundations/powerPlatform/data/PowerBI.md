@@ -65,5 +65,5 @@ Power BI is a visualization tool that can be used to present coherent, visually 
   * The source is a multidimensional source containing measures.
   * More limitations can be found [here](https://docs.microsoft.com/power-bi/connect-data/desktop-directquery-about).
 * Connect to data sources securely by using virtual network data gateways for Azure data sources or on-premises data gateways for data sources outside of Azure.
-* Configure refresh schedules for Power BI datasets that refresh frequently within the source system. Depending on the Power BI license, you will be limited to a pre-defined number of refreshed per day (8 per day for datasets on a shared capacity, 48 per day for datasets on a premium capacity). Also configure refresh failure notifications to get email updates when scheduled refreshed fail.
+* Configure refresh schedules for Power BI datasets that refresh frequently within the source system. Depending on the Power BI license, you will be limited to a predefined number of refreshed per day (8 per day for datasets on a shared capacity, 48 per day for datasets on a premium capacity). Also configure refresh failure notifications to get email updates when scheduled refreshed fail.
 * If possible, use incremental data refreshes to speed up the refresh process, make it more reliable and consume less capacity.
