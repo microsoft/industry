@@ -23,7 +23,7 @@ In addition to providing networking services to their customers, telcos also pro
 
 - Azure availability zones are physically separate locations within each Azure region that are tolerant to local failures (such as floods or fire).
 - Azure regions are designed to offer protection against localized disasters with availability zones and protection from regional or large geography disasters with disaster recovery, by making use of another region.
-- Each Azure region is paired with another region within the same geography. 
+- Each Azure region is paired with another region within the same geography.
   - This approach allows for the replication of resources across a geography that should reduce the likelihood of natural disasters, civil unrest, power outages, or physical network outages affecting both regions at once.
 - Additional advantages of region pairs include:
   - In the event of a wider Azure outage, one region is prioritized out of every pair to help reduce the time to restore for applications.
