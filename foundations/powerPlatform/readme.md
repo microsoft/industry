@@ -4,9 +4,9 @@ North Star Architecture for Power Platform is an architecture and design methodo
 
 In addition to being application, persona, and industry agnostic, North Star Architecture will also address the specific recommendations for Microsoft Cloud for Industries (e.g., Healthcare, Financial Services), where Microsoft Power Platform is an essential platform for the overall industry solutions. These curated industry solutions are primarily D365 applications that are deployed into Power Platform environments, and this prescriptive guidance aims to provide you with best practices and recommendations across the critical design areas for Power Platform to host and integrate the various industry applications.
 
-| Reference implementation | Description | Deploy |
-|:----------------------|:------------|--------|
-| North Star Architecture for Power Platform | All up architecture for Power Platform with landing zones (environments) securely configured with security, governance, and compliance for scalable business applications - and industry solutions for professional and citizen developers | Deployment button is coming soon :-) <!--[![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)-->
+| Reference implementation | Description | Deploy | Documentation
+|:----------------------|:------------|--------|--------------|
+| North Star Architecture for Power Platform | All up architecture for Power Platform with landing zones (environments) securely configured with security, governance, and compliance for scalable business applications - and industry solutions for professional and citizen developers | Deployment button is coming soon :-) | [User Guide](./referenceImplementation/readme.md)
 
 ## Table of content
 
@@ -28,6 +28,7 @@ In addition to being application, persona, and industry agnostic, North Star Arc
   - [Business Continuity and Disaster Recovery](#business-continuity-and-disaster-recovery)
   - [Connectivity and Interoperability](#connectivity-and-interoperability)
   - [Platform Automation and DevOps](#platform-automation-and-devops)
+- [Reference implementation](#reference-implementation)
 
 ## Architecture overview
 
