@@ -43,14 +43,14 @@ This section focuses on providing guidance with design considerations and recomm
   - Applications which resources are deployed across Availability Zones may experience extra latency as resource instances may be spread across different AZs.
 - For Azure regions that do support availability zones, and if the Telco solution is latency sensitive or if the projected network charges are expected to be relatively high when cross avilability zones traffic is charged, deploy the Telco solution as Zonal (pin application resources to a specific AZ). This will minimize latency between application resources and will avoid cross-zones data transfer charges (when included). For zonal deployments:
   - Deploy the ExpressRoute Gateway to a zone, and ensure the application resources (such as VMs) are also deployed in the same zone.
-  ![Figure 1: Zonal deployment](./zonal-deployment.png)
+  ![Figure 2: Zonal deployment](./zonal-deployment.png)
 
-  _Figure 1: Zonal deployment._
+  _Figure 2: Zonal deployment._
   - If latency is the first priority, put VMs in a Proximity Placement Group and the entire solution in an availability zone.
-  ![Figure 2: Zonal deployment with proximity placement group](./zonal-deployment-ppg.png)
+  ![Figure 3: Zonal deployment with proximity placement group](./zonal-deployment-ppg.png)
 
-  _Figure 2: Zonal deployment with proximity placement group._
+  _Figure 3: Zonal deployment with proximity placement group._
   - If the Telco solution scales-out by using multiple stamps, each stamp must include a VNet and a zonal ExpressRoute gateway. Then resources for that stamp must be deployed in the same zone as the zone where the ExpressRoute gateway was deployed.
-  ![Figure 3: Multiple stamps across availability zones](./zonal-deployment-multiple-stamps.png)
+  ![Figure 4: Multiple stamps across availability zones](./zonal-deployment-multiple-stamps.png)
 
-   _Figure 3: Multiple stamps across availability zones._
+   _Figure 4: Multiple stamps across availability zones._
