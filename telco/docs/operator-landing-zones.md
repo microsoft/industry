@@ -5,7 +5,7 @@ An Operator Landing Zone is a special type of landing zone, which has significan
 ![Figure 1: Sample Operator Landing Zone](./sample-operator-landing-zone.png)
 _Figure 1: Sample Operator Landing Zone._
 
-This section focuses on providing guidance with design considerations and recommendations for deploying mission-critical, carieer-grade telco applications (such as 5G Core, packet core, session boarder control, etc) on Azure on specialized Operator Landing Zones.
+This section focuses on providing guidance with design considerations and recommendations for deploying mission-critical, carieer-grade telco applications (such as 5G Core, packet core, session boarder control, etc) on Azure on specialized Operator Landing Zones. This section will first introduce the AlwaysOn project, and readers are strongly recommended to familiarize with it before proceeding to the remaining sections of this article which provide additional considerations when deploying and delivering network functions from Azure.
 
 - [AlwaysOn](#alwayson)
 - [Proximity Placement Groups](#proximity-placement-groups)
