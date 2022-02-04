@@ -1,11 +1,11 @@
-# Telco Landing Zones
+# Operator Landing Zones
 
-A telco landing zone is a special type of landing zone, which has significant differences compared to a traditional corp-connected or online Azure Landing Zone, as a typical application in the telco industry, or a network function, have unique set of requirements such as the need to have multiple virtual networks and multiple ExpressRoute circuits to separete control plane from user plane data. Figure 1 below depicts a sample Telco Landing Zone architecture designed to deliver a especialized network function:
+An Operator Landing Zone is a special type of landing zone, which has significant differences compared to a traditional corp-connected or online Azure Landing Zone, as a typical application in the telco industry, or a network function, have unique set of requirements such as the need to have multiple virtual networks and multiple ExpressRoute circuits to separete control plane from user plane data. Figure 1 below depicts a sample Operator Landing Zone architecture designed to deliver a especialized network function:
 
-![Figure 1: Sample Telco Landing Zone](./sample-telco-landing-zone.png)
-_Figure 4: Sample Telco Landing Zone._
+![Figure 1: Sample Operator Landing Zone](./sample-operator-landing-zone.png)
+_Figure 4: Sample Operator Landing Zone._
 
-This section focuses on providing guidance with design considerations and recommendations for deploying mission-critical, carieer-grade telco applications (such as 5G Core, packet core, session boarder control, etc) on Azure on specialized Telco Landing Zones.
+This section focuses on providing guidance with design considerations and recommendations for deploying mission-critical, carieer-grade telco applications (such as 5G Core, packet core, session boarder control, etc) on Azure on specialized Operator Landing Zones.
 
 - [Proximity Placement Groups](#proximity-placement-groups)
 - [Availability Zones](#availability-zones)
@@ -39,7 +39,7 @@ This section focuses on providing guidance with design considerations and recomm
 ### Design recommendations
 
 - For Azure regions that do not support Availability Zones, resources should be deployed as regional.
-- For Azure regions that support Availability Zones, deploy resource instances within the Telco Landing Zone to be spread across the availability zones. As examples, virtual machine instances should be deployed across Availability Zones, and exposed via a Load Balancer Standard, or if the application requires ExpressRoute Gateways to be deployed in the landing zone they should be deployed as zone-redundant gateways.
+- For Azure regions that support Availability Zones, deploy resource instances within the Operator Landing Zone to be spread across the availability zones. As examples, virtual machine instances should be deployed across Availability Zones, and exposed via a Load Balancer Standard, or if the application requires ExpressRoute Gateways to be deployed in the landing zone they should be deployed as zone-redundant gateways.
   - Applications which resources are deployed across Availability Zones may experience extra latency as resource instances may be spread across different AZs.
 - For Azure regions that do support availability zones, and if the Telco solution is latency sensitive or if the projected network charges are expected to be relatively high when cross avilability zones traffic is charged, deploy the Telco solution as Zonal (pin application resources to a specific AZ). This will minimize latency between application resources and will avoid cross-zones data transfer charges (when included). For zonal deployments:
   - Deploy the ExpressRoute Gateway to a zone, and ensure the application resources (such as VMs) are also deployed in the same zone.

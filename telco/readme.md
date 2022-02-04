@@ -14,7 +14,7 @@ This article provides a reference architecture with prescriptive guidance and re
 * [High-level architecture](#high-level-architecture)
   * [Governance for Telco Industry Scenarios](#letter-a)
   * [Networking for Telco Industry Scenarios](#letter-b)
-  * [Telco Landing Zones](#letter-c)
+  * [Operator Landing Zones](#letter-c)
   * [Distributed Edge](#letter-d)
   * [Telco Services](#letter-e)
 * [Next Steps](#next-steps)
@@ -43,7 +43,7 @@ As figure 1 depicts, the Azure for Telco industry follows the design principles 
 
 <a id="letter-b"></a>![The letter B](./docs/b.png) [Networking for Telco Industry Scenarios](./docs/telco-networking.md). While the networking design considerations and recommendations described in the [Cloud Adoption Framework](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/architecture) are mostly compatible with the Azure for Telco reference architecture, our guidance diverges from the Cloud Adoption Framework when it comes to addressing the Telco specific requirements, as outlined in the introduction above.  Most of these changes focus on how to provide more scalable, flexible connectivity for carrier-grade workloads by using a modified network topology and ExpressRoute connectivity.
 
-<a id="letter-c"></a>![The letter C](./docs/c.png) [Telco Landing Zones](./docs/telco-landing-zones.md). This section focuses on providing guidance and reference architectures for deploying mission-critical, carieer-grade telco applications, such as 5G Core, packet core, session boarder control, etc, on especialized Telco Landing Zones.
+<a id="letter-c"></a>![The letter C](./docs/c.png) [Operator Landing Zones](./docs/operator-landing-zones.md). This section focuses on providing guidance and reference architectures for deploying mission-critical, carieer-grade telco applications, such as 5G Core, packet core, session boarder control, etc, on especialized Operator Landing Zones.
 
 <a id="letter-d"></a>![The letter D](./docs/d.png) [Distributed Edge](./docs/telco-edge.md). The Azure for Telco industry reference implementation provides prescriptive guidance to leverage the Telco’s distributed edge infrastructure to provide network functions (such as mobile core or UPF) at the near and far edge via [Network Cloud](https://azure.microsoft.com/blog/improving-the-cloud-for-telcos-updates-of-microsoft-s-acquisition-of-att-s-network-cloud/).
 
@@ -54,7 +54,7 @@ The following articles will provide detailed design considerations and recommend
 
 * [Governance for Telco Industry Scenarios](./docs/telco-governance.md)
 * [Networking for Telco Industry Scenarios](./docs/telco-networking.md)
-* [Telco Landing Zones](./docs/telco-landing-zones.md)
+* [Operator Landing Zones](./docs/operator-landing-zones.md)
 * [Distributed Edge](./docs/telco-edge.md)
 * [Telco Services](./solutions/mgmtOptions/readme.md)
 
