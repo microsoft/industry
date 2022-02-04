@@ -3,7 +3,7 @@
 An Operator Landing Zone is a special type of landing zone, which has significant differences compared to a traditional corp-connected or online Azure Landing Zone, as a typical application in the telco industry, or a network function, have unique set of requirements such as the need to have multiple virtual networks and multiple ExpressRoute circuits to separete control plane from user plane data. Figure 1 below depicts a sample Operator Landing Zone architecture designed to deliver a especialized network function:
 
 ![Figure 1: Sample Operator Landing Zone](./sample-operator-landing-zone.png)
-_Figure 4: Sample Operator Landing Zone._
+_Figure 1: Sample Operator Landing Zone._
 
 This section focuses on providing guidance with design considerations and recommendations for deploying mission-critical, carieer-grade telco applications (such as 5G Core, packet core, session boarder control, etc) on Azure on specialized Operator Landing Zones.
 
