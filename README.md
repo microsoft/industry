@@ -42,12 +42,12 @@ Healthcare Solutions
 - Patient Insights
   - [Patient Outreach](./healthcare/solutions/patientOutreach)
 - Virtual Health
-  - ~~[Virtual Visits](./healthcare/solutions/virtualVisits)~~
+  - [Virtual Visits](./healthcare/solutions/virtualVisits)
 - Care Coordination
   - [Care Management](./healthcare/solutions/careManagement)
   - [Home Health](./healthcare/solutions/homeHealth)
 - Care Collaboration
-  - ~~[Health Assistant](./healthcare/solutions/healthAssistant)~~
+  - [Health Assistant](./healthcare/solutions/healthAssistant)
 - Monitoring & Analytics
   - [Remote Patient Monitoring](./healthcare/solutions/IoMT)
   - [Healthcare Analytics](./healthcare/solutions/clinicalAnalytics)
