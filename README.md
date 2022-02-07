@@ -41,13 +41,17 @@ Healthcare Solutions
   - [Patient Service Center](./healthcare/solutions/patientServiceCenter)
 - Patient Insights
   - [Patient Outreach](./healthcare/solutions/patientOutreach)
-- Virtual Health
+<!--
+   - Virtual Health
   - [Virtual Visits](./healthcare/solutions/virtualVisits)
+--?
 - Care Coordination
   - [Care Management](./healthcare/solutions/careManagement)
   - [Home Health](./healthcare/solutions/homeHealth)
+<!--
 - Care Collaboration
   - [Health Assistant](./healthcare/solutions/healthAssistant)
+-->
 - Monitoring & Analytics
   - [Remote Patient Monitoring](./healthcare/solutions/IoMT)
   - [Healthcare Analytics](./healthcare/solutions/clinicalAnalytics)
@@ -100,8 +104,6 @@ Telco Solutions
 </table>
 
 ### Financial services
-
-#### *Work in progress, content is coming soon
 
 Microsoft Cloud for Financial Services provides capabilities to manage data to deliver differentiated experiences, empower employees, and combat financial crime while facilitating security, compliance, and interoperability.
 
