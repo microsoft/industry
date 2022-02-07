@@ -9,6 +9,8 @@ Due to the network centric nature of their business, organizations in the Teleco
 
 This article provides a reference architecture with prescriptive guidance and recommendations for the Telco industry across the Microsoft Cloud (Power Platform, Dynamics, Microsoft 365 and Microsoft Azure).
 
+## Table of contents
+
 * [Azure for Telecommunications Reference Implementation](#azure-for-telecommunications-reference-implementation)
 * [Azure for Telecommunications Reference Architecture](#azure-for-telecommunications-reference-architecture)
 * [High-level architecture](#high-level-architecture)
@@ -24,7 +26,7 @@ This article provides a reference architecture with prescriptive guidance and re
 | Industry Architecture | Description | Deploy | Documentation
 |:----------------------|:------------|--------|--------------|
 | Azure for Telecommunications | Azure for Telco foundation that provides a full, rich, compliant architecture with scale-out pattern for connectivity and landing zones for Telco industry scenarios |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoRI) | [User Guide](./referenceImplementation/readme.md)
-| Scale-out Hub virtual network | When the Azure for Telco foundation is in place, you can use this reference implementation to scale-out the hub virtual network for Telco industry, and configure the corresponding networking infrastructure |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoScaleOut) | [Scale-out Guide](./referenceImplementation/readme.md)
+| Scale-out Hub virtual network | When the Azure for Telco foundation is in place, you can use this reference implementation to scale-out the hub virtual network for Telco industry, and configure the corresponding networking infrastructure |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoScaleOut) | [User Guide](./referenceImplementation/readme.md)
 
 ## Azure for Telecommunications Reference Architecture
 

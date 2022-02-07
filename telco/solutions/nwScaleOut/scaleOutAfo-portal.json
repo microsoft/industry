@@ -3,7 +3,7 @@
     "view": {
         "kind": "Form",
         "properties": {
-            "title": "Microsoft Cloud for Telco industry",
+            "title": "AfO Scale-Out Networking",
             "steps": [
                 {
                     "name": "basics",
@@ -830,9 +830,8 @@
                 "vpnGateWayScaleUnit": "[steps('lzSettings').esVwanGwScaleUnits]",
                 "enablePrivateDnsZones": "[steps('lzSettings').esPrivateDns]"
 			},
-            "kind": "Subscription",
-            "location": "[steps('basics').resourceScope.location.name]",
-            "subscriptionId": "[steps('basics').resourceScope.subscription.id]"
+            "kind": "ManagementGroup",
+            "location": "[steps('basics').resourceScope.location.name]"
         }
     }
 }
