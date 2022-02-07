@@ -9,6 +9,12 @@ Home health extends Microsoft Dynamics 365 Field Services with healthcare specif
 
 Besides the Dynamics 365 App, the overall solution also encompasses two apps today, the home health app and the care team member app.
 
+| Reference implementation | Description | Deploy |
+|:-------------------------|:------------|--------|
+| Home Health              | Home health scenario  to manage home visit schedules, notify patients and give providers access to medical information. |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/solutioncenter-healthcare) |
+
+## Prerequisites
+
 Before you deploy and configure, verify you have implemented the [prerequisites](../../prereqs.md).
 
 Specifically for home health, you need:
