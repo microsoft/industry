@@ -70,7 +70,7 @@ Identity and access management (IAM) is one of the core security layers in any a
 
 ### Monitoring
 
-Monitoring and logging is critical not only from a security, but also from an observability and application monitoring standpoint. This design area is critical for defining the uptime targets and to be able to define Service Level Agreements (SLAs), Service Level Objectives (SLOs) and Service Level Indicators (SLIs). This section examines design considerations and recommendations related to monitoring in an IoTM solution. 
+Monitoring and logging is critical not only from a security, but also from an observability and application monitoring standpoint. This design area is critical for defining the uptime targets and to be able to define Service Level Agreements (SLAs), Service Level Objectives (SLOs) and Service Level Indicators (SLIs). This section examines design considerations and recommendations related to monitoring in an IoTM solution.
 
 #### Design considerations
 
