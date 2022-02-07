@@ -46,46 +46,58 @@ Within the FHIR Synch Agent Administration Application, administrators can defin
 
 This allows customers to leverage datasets, collected in IoMT scenarios, in Dynamics 365 to further enhance the patients experience and quality of results. Additional applications and data-driven solutions can be built to simplify the end-to-end experience for all participants and reduce the time to diagnosis.
 
-## Identity and access
+## Planning guidelines for IoMT
 
-### Design considerations
+This section provides prescriptive guidance with design considerations and recommendations across the critical design areas for the IoMT scenario for the teams that will deploy and manage the capabilities within the Microsoft Cloud for Healthcare.
+
+### Identity and access
+
+Identity and access management (IAM) is one of the core security layers in any architecture design and should be treated as the foundation of any secure and fully compliant public cloud solution. This design area examines design considerations and recommendations related to IAM in an IoTM solution. Specifically, it will look at authentication of users and identities to resources and core requirements for seperation of duties.
+
+#### Design considerations
 
 * The user who deploys and configures the Dynamics 365 solutions must have sufficient permissions directly on the dedicated Power Platform environment.
 * To deploy the health D365 solutions, the user must have an assigned license for the Healthcare add-on.
 * Different authentication mechanisms can be used to grant access to data across Azure and Power Platform.
 
-### Design recommendations
+#### Design recommendations
 
 * Ensure user/group mapping for the requisite licenses are done before deploying the solutions to Power Platform.
 * Ensure appropriate RBAC is assigned to the Security group for the dedicated Environment for Healthcare in Power Platform, ideally as part of the Environment creation process.
 * Ensure that there is no standing access to the production Azure and Power Platform environment and use PIM where applicable.
 * Use managed identitied and credential passthrough across all environments and use row-level security (RLS) or column-level security (CLS) to further limit visibility of data points.
-* ALways follow the least privilege principle to not put any patient data at risk.
+* Always follow the least privilege principle to not put any patient data at risk.
 
-## Monitoring
+### Monitoring
 
-### Design considerations
+Monitoring and logging is critical not only from a security, but also from an observability and application monitoring standpoint. This design area is critical for defining the uptime targets and to be able to define Service Level Agreements (SLAs), Service Level Objectives (SLOs) and Service Level Indicators (SLIs). This section examines design considerations and recommendations related to monitoring in an IoTM solution. 
+
+#### Design considerations
 
 * Telemetry, metrics, and logs can be enabled for services across Azure, Power Platform and Microsoft 365.
 * Alerts and metrics can be used to get notifications or take automated actions in case of issues or outages.
 * Different telemetry solutions are available across the Microsoft Cloud.
+* Application monitoring and service level indicators can be defined as monitored as part of the application design and development.
 
-### Design recommendations
+#### Design recommendations
 
 * Use Azure Log Analytics and application insights to collect logs across Azure services, Power Platform and Microsoft 365. Use other more specific logging capabilities such as the Microsoft 365 monitoring and audit logs where necessary.
 * Collect audit logs, diagnostic logs and metrics in Azure using Log Analytics, enable auditing for Power Platform environments and review audit Logs in teh Microsoft 365 compliance center and enable Microsoft 365 audit logs in the Microsoft 365 compliance center.
 * Create a health model for your application and setup dashboards for monitoring and evaluation.
 * Setup alerts and take automated actions to ensure a highly available application design.
+* Define SLAs, SLOs and SLIs for your application across Azure, Microsoft 365 and Power Platform. Collect monitoring data and define an observability startegy to fulfill set requirements.
 
-## Security
+### Security
 
-### Design considerations
+Security across different technical layers is another core construct for each and every application on the Microsoft cloud platform. This design area examines design considerations and recommendations related to security in an IoTM solution. Specifically, the section will look at security controls, networking, vulnerability management, encryption and keys.
+
+#### Design considerations
 
 * Different connectivity options are available for the respective services including public endpoints, public endpoints with service endpoints and private endpoints.
 * In-transit encryption can be enforced via HTTPS and TLS.
 * Data and data access can be managed in different ways and different services provide a different set of capabilities.
 
-### Design recommendations
+#### Design recommendations
 
 * Ensure usage of Private Endpoints across all Azure services to not put patient data at risk.
 * Enforce encryption of data in transit by enforcing HTTPS and TLS 1.2 connections between services.
