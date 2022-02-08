@@ -196,15 +196,7 @@
             ],
             "defaultValue": "Disabled"            
         },
-        "enableAscForKubernetes": {
-            "type": "string",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ],
-            "defaultValue": "Disabled"            
-        },
-        "enableAscForRegistries": {
+        "enableAscForContainers": {
             "type": "string",
             "allowedValues": [
                 "Disabled",
@@ -666,22 +658,22 @@
         },
         // Declaring all required deployment uri's used for deployments of composite ARM templates for Telco
        "azPrivateDnsPolicyMapping": {
-            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyDefinitions/DINE-PrivateDNSZonesPolicySetDefinition.json",
+            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/DINE-PrivateDNSZonesPolicySetDefinition.json",
             "https://management.usgovcloudapi.net": "managementGroupTemplates/policyDefinitions/gov/fairfaxDINE-PrivateDNSZonesPolicySetDefinition.json"
         },
         "azPrivateDnsArmTemplate": "[variables('azPrivateDnsPolicyMapping')[environment().resourceManager]]",
         "azPublicEndpointsPolicyMapping": {
-            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyDefinitions/DENY-PublicEndpointsPolicySetDefinition.json",
+            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/DENY-PublicEndpointsPolicySetDefinition.json",
             "https://management.usgovcloudapi.net": "managementGroupTemplates/policyDefinitions/gov/fairfaxDENY-PublicEndpointsPolicySetDefinition.json"
         },
         "azPublicEndpointArmTemplate": "[variables('azPublicEndpointsPolicyMapping')[environment().resourceManager]]",
         "azPolicyPoliciesMapping": {
-            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyDefinitions/policies.json",
+            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/policies.json",
             "https://management.usgovcloudapi.net": "managementGroupTemplates/policyDefinitions/gov/fairfaxPolicies.json"
         },
         "azPolicyArmTemplate": "[variables('azPolicyPoliciesMapping')[environment().resourceManager]]",
         "azPrivateDnsPolicyAssignmentMapping": {
-            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyAssignments/DINE-PrivateDNSZonesPolicyAssignment.json",
+            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyAssignments/gov/fairfaxDINE-PrivateDNSZonesPolicyAssignment.json",
             "https://management.usgovcloudapi.net": "managementGroupTemplates/policyAssignments/gov/fairfaxDINE-PrivateDNSZonesPolicyAssignment.json"
         },
         "azPrivateDnsPolicyAssignment": "[variables('azPrivateDnsPolicyAssignmentMapping')[environment().resourceManager]]",
@@ -692,7 +684,7 @@
             "telcoPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyDefinitions/telcoPolicies.json')]",
             "erHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DENY-non-ha-expressRoutes-policyAssignment.json')]",
             "pipHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DENY-non-ha-publicIps-policyAssignment.json')]",
-            "dataPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyDefinitions/dataPolicies.json')]",
+            "dataPolicyDefinitions": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/dataPolicies.json",
             "vnetConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/subscriptionTemplates/hubspoke-connectivity.json')]",
             "vwanConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/subscriptionTemplates/vwan-connectivity.json')]",
             "nvaConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/subscriptionTemplates/nvahubspoke-connectivity.json')]",
@@ -1468,17 +1460,14 @@
                     "enableAscForStorage": {
                         "value": "[parameters('enableAscForStorage')]"
                     },
-                    "enableAscForRegistries": {
-                        "value": "[parameters('enableAscForRegistries')]"
-                    },
                     "enableAscForKeyVault": {
                         "value": "[parameters('enableAscForKeyVault')]"
                     },
                     "enableAscForSqlOnVm": {
                         "value": "[parameters('enableAscForSqlOnVm')]"
                     },
-                    "enableAscForKubernetes": {
-                        "value": "[parameters('enableAscForKubernetes')]"
+                    "enableAscForContainers": {
+                        "value": "[parameters('enableAscForContainers')]"
                     },
                     "enableAscForArm": {
                         "value": "[parameters('enableAscForArm')]"
@@ -1529,8 +1518,8 @@
                     "enableAscForStorage": {
                         "value": "[parameters('enableAscForStorage')]"
                     },
-                    "enableAscForRegistries": {
-                        "value": "[parameters('enableAscForRegistries')]"
+                    "enableAscForContainers": {
+                        "value": "[parameters('enableAscForContainers')]"
                     },
                     "enableAscForArm": {
                         "value": "[parameters('enableAscForArm')]"

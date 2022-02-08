@@ -614,31 +614,11 @@
                             }
                         },
                         {
-                            "name": "esAscKubernetes",
+                            "name": "esAscContainers",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Enable Microsoft Defender for Kubernetes",
+                            "label": "Enable Microsoft Defender for Containers (Kubernetes and Registries)",
                             "defaultValue": "Yes (recommended)",
-                            "toolTip": "If 'Yes' is selected, Azure Defender will be enabled for Kubernetes.",
-                            "visible": "[equals(steps('esGoalState').esAsc,'Yes')]",
-                            "constraints": {
-                                "allowedValues": [
-                                    {
-                                        "label": "Yes (recommended)",
-                                        "value": "DeployIfNotExists"
-                                    },
-                                    {
-                                        "label": "No",
-                                        "value": "Disabled"
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "name": "esAscRegistries",
-                            "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Enable Microsoft Defender for Container registries",
-                            "defaultValue": "Yes (recommended)",
-                            "toolTip": "If 'Yes' is selected, Azure Defender will be enabled for Container registries.",
+                            "toolTip": "If 'Yes' is selected, Azure Defender will be enabled for Containers.",
                             "visible": "[equals(steps('esGoalState').esAsc,'Yes')]",
                             "constraints": {
                                 "allowedValues": [
@@ -2601,8 +2581,7 @@
                 "enableAscForKeyVault": "[steps('esGoalState').esAscKeyVault]",
                 "enableAscForArm": "[steps('esGoalState').esAscArm]",
                 "enableAscForDns": "[steps('esGoalState').esAscDns]",
-                "enableAscForKubernetes": "[steps('esGoalState').esAscKubernetes]",
-                "enableAscForRegistries": "[steps('esGoalState').esAscRegistries]",
+                "enableAscForContainers": "[steps('esGoalState').esAscContainers]",
                 "enableSecuritySolution": "[steps('esGoalState').esSecuritySolution]",
                 "enableAgentHealth": "[steps('esGoalState').azMonSection.esAgentSolution]",
                 "enableChangeTracking": "[steps('esGoalState').azMonSection.esChangeTracking]",
