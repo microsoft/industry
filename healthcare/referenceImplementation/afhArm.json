@@ -637,17 +637,17 @@
         },
         "azPrivateDnsArmTemplate": "[variables('azPrivateDnsPolicyMapping')[environment().resourceManager]]",
         "azPublicEndpointsPolicyMapping": {
-            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyDefinitions/DENY-PublicEndpointsPolicySetDefinition.json",
+            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/DENY-PublicEndpointsPolicySetDefinition.json",
             "https://management.usgovcloudapi.net": "managementGroupTemplates/policyDefinitions/gov/fairfaxDENY-PublicEndpointsPolicySetDefinition.json"
         },
         "azPublicEndpointArmTemplate": "[variables('azPublicEndpointsPolicyMapping')[environment().resourceManager]]",
         "azPolicyPoliciesMapping": {
-            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyDefinitions/policies.json",
+            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/policies.json",
             "https://management.usgovcloudapi.net": "managementGroupTemplates/policyDefinitions/gov/fairfaxPolicies.json"
         },
         "azPolicyArmTemplate": "[variables('azPolicyPoliciesMapping')[environment().resourceManager]]",
         "azPrivateDnsPolicyAssignmentMapping": {
-            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyAssignments/DINE-PrivateDNSZonesPolicyAssignment.json",
+            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/DINE-PrivateDNSZonesPolicySetDefinition.json",
             "https://management.usgovcloudapi.net": "managementGroupTemplates/policyAssignments/gov/fairfaxDINE-PrivateDNSZonesPolicyAssignment.json"
         },
         "azPrivateDnsPolicyAssignment": "[variables('azPrivateDnsPolicyAssignmentMapping')[environment().resourceManager]]",
@@ -656,7 +656,7 @@
             "managementGroupsLite": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/mgmtGroupStructure/mgmtGroupsLite.json')]",
             "policyDefinitions": "[uri(deployment().properties.templateLink.uri, variables('azPolicyArmTemplate'))]",
             "healthPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyDefinitions/healthPolicies.json')]",
-            "dataPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyDefinitions/dataPolicies.json')]",
+            "dataPolicyDefinitions": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/dataPolicies.json",
             "vnetConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/subscriptionTemplates/hubspoke-connectivity.json')]",
             "vwanConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/subscriptionTemplates/vwan-connectivity.json')]",
             "nvaConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/subscriptionTemplates/nvahubspoke-connectivity.json')]",
