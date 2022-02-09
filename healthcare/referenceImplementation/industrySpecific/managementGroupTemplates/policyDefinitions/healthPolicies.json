@@ -221,7 +221,7 @@
                         "mode": "All",
                         "metadata": {
                             "version": "1.0.0.0",
-                            "category": "Telco"
+                            "category": "Network"
                         },
                         "parameters": {
                             "effect": {
@@ -293,110 +293,6 @@
                         }
                     },
                     "name": "Dine-NWRg"
-                },
-                {
-                    "properties": {
-                        "description": "Ensures that ExpressRoute gateways for Telco specialized workloads are deployed as highly-available",
-                        "displayName": "Ensure ExpressRoute gateways for Telco are highly-available",
-                        "mode": "Indexed",
-                        "parameters": {
-                            "effect": {
-                                "type": "string",
-                                "allowedValues": [
-                                    "Audit",
-                                    "Deny",
-                                    "Disabled"
-                                ],
-                                "defaultValue": "Deny",
-                                "metadata": {
-                                    "displayName": "Effect",
-                                    "description": "Deny, audit, or disable the execution of the policy"
-                                }
-                            }
-                        },
-                        "metadata": {
-                            "version": "1.0.0",
-                            "category": "Telco"
-                        },
-                        "policyRule": {
-                            "if": {
-                                "allOf": [
-                                    {
-                                        "field": "type",
-                                        "equals": "Microsoft.Network/virtualNetworkGateways"
-                                    },
-                                    {
-                                        "field": "Microsoft.Network/virtualNetworkGateways/gatewayType",
-                                        "equals": "ExpressRoute"
-                                    },
-                                    {
-                                        "field": "Microsoft.Network/virtualNetworkGateways/sku.tier",
-                                        "in": [
-                                            "Standard",
-                                            "HighPerformance",
-                                            "UltraPerformance"
-                                        ]
-                                    }
-                                ]
-                            },
-                            "then": {
-                                "effect": "[[parameters('effect')]"
-                            }
-                        }
-                    },
-                    "name": "Deny-Non-Ha-ErGw"
-                },
-                {
-                    "properties": {
-                        "description": "Ensures that Public Ip addresses for Telco specialized workloads are deployed as highly-available",
-                        "displayName": "Ensure that Public Ip addresses for Telco is highly-available",
-                        "mode": "Indexed",
-                        "parameters": {
-                            "effect": {
-                                "type": "string",
-                                "allowedValues": [
-                                    "Audit",
-                                    "Deny",
-                                    "Disabled"
-                                ],
-                                "defaultValue": "Deny",
-                                "metadata": {
-                                    "displayName": "Effect",
-                                    "description": "Deny, audit, or disable the execution of the policy"
-                                }
-                            }
-                        },
-                        "metadata": {
-                            "version": "1.0.0",
-                            "category": "Telco"
-                        },
-                        "policyRule": {
-                            "if": {
-                                "allOf": [
-                                    {
-                                        "field": "type",
-                                        "equals": "Microsoft.Network/publicIpAddresses"
-                                    },
-                                    {
-                                        "anyOf": [
-                                            {
-                                                "field": "Microsoft.Network/publicIpAddresses/sku.tier",
-                                                "equals": "Regional"
-                                            },
-                                            {
-                                                "field": "Microsoft.Network/publicIpAddresses/sku.name",
-                                                "equals": "Basic"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            "then": {
-                                "effect": "[[parameters('effect')]"
-                            }
-                        }
-                    },
-                    "name": "Deny-Non-Ha-Pip"
                 }
             ]
         }

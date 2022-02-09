@@ -17,7 +17,7 @@
                 },
                 {
                     "name": "lzSettings",
-                    "label": "Healthcare Architecture setup",
+                    "label": "Healthcare Architecture Setup",
                     "subLabel": {
                         "preValidation": "Provide a company prefix for the management group structure that will be created.",
                         "postValidation": "Done"
@@ -388,6 +388,14 @@
                             ],
                             "visible": true
                         },
+                        {
+                            "name": "azDefenderSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Microsoft Security",
+                            "elements": [
+                            ],
+                            "visible": "[equals(steps('esGoalState').azMonSection.esLogAnalytics,'Yes')]"
+                        },                        
                         {
                             "name": "textBlock0",
                             "type": "Microsoft.Common.TextBlock",
@@ -1799,12 +1807,8 @@
                                     "constraints": {
                                         "allowedValues": [
                                             {
-                                                "label": "HIPAA",
+                                                "label": "HIPAA/HITRUST",
                                                 "value": "hipaa"
-                                            },
-                                            {
-                                                "label": "HITRUST",
-                                                "value": "hitrust"
                                             },
                                             {
                                                 "label": "NIST",
@@ -1820,6 +1824,102 @@
                                             }
                                         ]
                                     }
+                                },
+                                {
+                                    "name": "esHealthApi",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Enable Diagnostics on Healthcare APIs (FHIR, DICOM, and IoMT)",
+                                    "defaultValue": "Yes (recommended)",
+                                    "toolTip": "If 'Yes' is selected, policy will be assigned to enable diagnostics on Healthcare APIs",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "Audit only",
+                                                "value": "Audit"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    },
+                                    "visible": true
+                                },
+                                {
+                                    "name": "esDataLakeEnc",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Enforce Encryption on Data Lake Storage Accounts",
+                                    "defaultValue": "Yes (recommended)",
+                                    "toolTip": "If 'Yes' is selected, policy will be assigned to enforce encryption",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "Audit only",
+                                                "value": "Audit"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    },
+                                    "visible": true
+                                },
+                                {
+                                    "name": "fhirKey",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Azure API for FHIR should must use customer-managed key",
+                                    "defaultValue": "Yes (recommended)",
+                                    "toolTip": "If 'Yes' is selected, policy will be assigned to encryption using customer managed key.",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "Audit only",
+                                                "value": "Audit"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    },
+                                    "visible": true
+                                },
+                                {
+                                    "name": "synapseOutbound",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Ensure Azure Synapse workspaces can only allow outbound traffic to approved targets",
+                                    "defaultValue": "Yes (recommended)",
+                                    "toolTip": "If 'Yes' is selected, policy will be assigned to govern outbound traffic for Synapse",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "Audit only",
+                                                "value": "Audit"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    },
+                                    "visible": true
                                 }
                             ],
                             "visible": true

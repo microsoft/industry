@@ -2,11 +2,11 @@
 
 In the overall architecture for Microsoft Cloud for Healthcare, the Healthcare APIs components together with the FHIR Sync Agent enable organizations to use standards based data models e.g. Fast Healthcare Interoperability Resources (FHIR) standards frameworks and simplifies data synchronization between Azure and Microsoft Dataverse in the Power Platform.
 
-| Industry Architecture | Description | Deploy |
-|:----------------------|:------------|--------|
-| Azure for Healthcare | Azure for Healthcare foundation  provides full architecture with landing zones for Healthcare industry, including Azure Healthcare API workloads |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2FhealthArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2Fhealth-portal.json)
-| Power Platform for Healthcare | Coming Soon | Coming Soon
-| Microsoft Teams for Healthcare | Coming Soon | Coming Soon
+| Industry Architecture | Description | Deploy | Documentation
+|:----------------------|:------------|--------|--------------|
+| Azure for Healthcare | Azure for Healthcare foundation that provides a full, rich, compliant architecture which caters for highly regulated landing zones for Healthcare industry scenarios |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afhRI) | [User Guide](./referenceImplementation/readme.md)
+| Azure Healthcare APIs | Reference implementation for Healthcare APIs |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoScaleOut) | [User Guide](./referenceImplementation/readme.md)
+| Healthcare Analytics | Reference implementation for data and analytics specifically for Healthcare industry |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoScaleOut) | [User Guide](./referenceImplementation/readme.md)
 
 ![Healthcare Industry Reference Architecture](./docs/mc4h-reference-architecture.png)
 

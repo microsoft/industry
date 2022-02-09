@@ -6,7 +6,7 @@
             "type": "string",
             "maxLength": 10,
             "metadata": {
-                "description": "Provide a prefix (max 10 characters, unique at tenant-scope) for the Management Group hierarchy and other resources created as part of Enterprise-scale."
+                "description": "Provide a prefix (max 10 characters, unique at tenant-scope) for the Management Group hierarchy and other resources created by the deployment."
             }
         },
         "managementSubscriptionId": {
@@ -196,15 +196,7 @@
             ],
             "defaultValue": "Disabled"            
         },
-        "enableAscForKubernetes": {
-            "type": "string",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ],
-            "defaultValue": "Disabled"            
-        },
-        "enableAscForRegistries": {
+        "enableAscForContainers": {
             "type": "string",
             "allowedValues": [
                 "Disabled",
@@ -632,7 +624,7 @@
         },
         // Declaring all required deployment uri's used for deployments of composite ARM templates for Healthcare
        "azPrivateDnsPolicyMapping": {
-            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyDefinitions/DINE-PrivateDNSZonesPolicySetDefinition.json",
+            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/DINE-PrivateDNSZonesPolicySetDefinition.json",
             "https://management.usgovcloudapi.net": "managementGroupTemplates/policyDefinitions/gov/fairfaxDINE-PrivateDNSZonesPolicySetDefinition.json"
         },
         "azPrivateDnsArmTemplate": "[variables('azPrivateDnsPolicyMapping')[environment().resourceManager]]",
@@ -647,7 +639,7 @@
         },
         "azPolicyArmTemplate": "[variables('azPolicyPoliciesMapping')[environment().resourceManager]]",
         "azPrivateDnsPolicyAssignmentMapping": {
-            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/DINE-PrivateDNSZonesPolicySetDefinition.json",
+            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyAssignments/DINE-PrivateDNSZonesPolicyAssignment.json",
             "https://management.usgovcloudapi.net": "managementGroupTemplates/policyAssignments/gov/fairfaxDINE-PrivateDNSZonesPolicyAssignment.json"
         },
         "azPrivateDnsPolicyAssignment": "[variables('azPrivateDnsPolicyAssignmentMapping')[environment().resourceManager]]",
@@ -1393,17 +1385,14 @@
                     "enableAscForStorage": {
                         "value": "[parameters('enableAscForStorage')]"
                     },
-                    "enableAscForRegistries": {
-                        "value": "[parameters('enableAscForRegistries')]"
-                    },
                     "enableAscForKeyVault": {
                         "value": "[parameters('enableAscForKeyVault')]"
                     },
                     "enableAscForSqlOnVm": {
                         "value": "[parameters('enableAscForSqlOnVm')]"
                     },
-                    "enableAscForKubernetes": {
-                        "value": "[parameters('enableAscForKubernetes')]"
+                    "enableAscForContainers": {
+                        "value": "[parameters('enableAscForContainers')]"
                     },
                     "enableAscForArm": {
                         "value": "[parameters('enableAscForArm')]"
@@ -1454,8 +1443,8 @@
                     "enableAscForStorage": {
                         "value": "[parameters('enableAscForStorage')]"
                     },
-                    "enableAscForRegistries": {
-                        "value": "[parameters('enableAscForRegistries')]"
+                    "enableAscForContainers": {
+                        "value": "[parameters('enableAscForContainers')]"
                     },
                     "enableAscForArm": {
                         "value": "[parameters('enableAscForArm')]"
