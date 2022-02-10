@@ -21,6 +21,8 @@ How its divided up between your organization is based on environments and how mu
 Images used as part of an application, like icons, thumbnails, backgrounds etc. should be stored in Dataverse. Images that are subject to analytics like object detection, classification or unstructured text analytics, should be stored in Azure Data Lake Store. This would enable them to be available for analysis of more advanced tools and support a much larger quantity of images to be parallel processed.
 When working with unstructured data like files and images Dataverse has two types of columns to use, File column and Image column. If a customer decides to encrypt the data using their own keys, there are some limitations applied to these two column types. Files are limited to a maximum size of 128MB per file.  
 
+### Dataverse Design
+
 #### Design considerations
 
 * Data can be integrated into Dataverse as a one-off activity or on a schedule. Alternatively, virtual tables can be used to map data in an external data source so that it appears to exist in Dataverse. Virtual tables do not support many of the security and auditing related features that are offered for non-virtual tables.
@@ -47,7 +49,7 @@ When working with unstructured data like files and images Dataverse has two type
 * For analytical workloads such as machine learning, reporting, data warehousing and other downstream integration processes, use Azure Synapse Link to export the data from Dataverse into the analytical data platform. This will reduce the impact on the transactional Dataverse database and allows multiple Data Product teams to consume the same consistent dataset at scale.
 * Always, create and work within the context of a new solution as you add, edit and create components. For Dataverse in particular, [create a segmented solution with table assets](https://docs.microsoft.com/powerapps/maker/data-platform/create-solution#create-a-segmented-solution-with-table-assets). This makes it easy to export your solution so that it can be backed up or imported to another environment.
   
-## Azure
+### Azure
 
 ### Design recommendations 
 
