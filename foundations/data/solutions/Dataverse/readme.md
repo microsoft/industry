@@ -51,7 +51,7 @@ When working with unstructured data like files and images Dataverse has two type
   
 ### Azure
 
-### Design recommendations 
+### Design recommendations
 
 Azure offers a much broader range of types of services to store data. Ranging from highly specified to more general purpose. All with a distinct set of features and capabilities, most of these services have connectors to Power Platform and are enabled to interact with Power Apps, Power Automate and Logic Apps.
 Microsoft developed connectors for Azure storage solutions:
@@ -70,5 +70,5 @@ Structured and unstructured.
 Specialized options PostgreSQL, CosmosDB (Mongo,  Gremlin, Cassandra)
 Storage account – flexible size, low cost
 Azure SQL – standard, wide set of integration
-SLA – Availability, response time 
-Governance, auditing, lineage, catalog 
+SLA – Availability, response time
+Governance, auditing, lineage, catalog
