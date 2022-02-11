@@ -41,10 +41,8 @@ Healthcare Solutions
   - [Patient Service Center](./healthcare/solutions/patientServiceCenter)
 - Patient Insights
   - [Patient Outreach](./healthcare/solutions/patientOutreach)
-<!--
-   - Virtual Health
+- Virtual Health
   - [Virtual Visits](./healthcare/solutions/virtualVisits)
--->
 - Care Coordination
   - [Care Management](./healthcare/solutions/careManagement)
   - [Home Health](./healthcare/solutions/homeHealth)

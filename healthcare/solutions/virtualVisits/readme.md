@@ -6,6 +6,10 @@ Virtual visits use the complete meetings platform in Teams to schedule, manage, 
 - Scheduling virtual follow-ups to in person visits.
 - Providing non-emergency medical guidance to patients while traveling.
 
+| Reference implementation | Description | Deploy |
+|:-------------------------|:------------|--------|
+| Virtual visits              | Virtual visits scenario to schedule, manage, and conduct virtual appointments with patients |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/solutioncenter-healthcare) |
+
 ## Design Considerations
 
 - If the organization already uses Electronic Health Records (EHR), Teams can be integrated with the EHR for a more seamless experience.
