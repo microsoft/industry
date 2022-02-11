@@ -4,6 +4,7 @@ Due to the security and compliance requirements nature of their business, organi
 
 * placeholder
 * placeholder
+* placeholder
 
 This article provides a reference architecture with prescriptive guidance and recommendations for the Healthcare industry across the Microsoft Cloud (Power Platform, Dynamics, Microsoft 365 and Microsoft Azure).
 
