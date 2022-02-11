@@ -1,0 +1,106 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "maxLength": 10,
+            "metadata": {
+                "description": "Provide a prefix (max 10 characters, unique at tenant-scope) for the Management Group hierarchy and other resources created as part of Enterprise-scale."
+            }
+        },
+        "DeployDiagnosticSettingsforNetworkSecurityGroupsstoragePrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide prefix for flow log diagnostics"
+            }
+        },
+        "DeployDiagnosticSettingsforNetworkSecurityGroupsrgName": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the RG name"
+            }
+        },
+        "installedApplicationsOnWindowsVM": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide app names"
+            },
+            "defaultValue": "*"
+        },
+        "certificateThumbprints": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide cert thumbprints"
+            },
+            "defaultValue": "*"
+        },
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "hipaaHitrust": "/providers/Microsoft.Authorization/policySetDefinitions/a169a624-5599-4385-a696-c8d643089fab"
+            },
+        "policyAssignmentNames": {
+            "hipaaHitrust": "hipaahistrust",
+            "description": "This initiative includes policies that address a subset of HITRUST/HIPAA controls. Additional policies will be added in upcoming releases. For more information, visit https://aka.ms/hipaa-blueprint.",
+            "displayName": "HITRUST/HIPAA"
+            },
+        "rbacOwner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+        "roleAssignmentNames": {
+            "hipaaHitrust": "[guid(concat(parameters('topLevelManagementGroupPrefix'),variables('policyAssignmentNames').hipaaHitrust))]"
+            }
+        },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2019-09-01",
+            "name": "[variables('policyAssignmentNames').hipaaHitrust]",
+            "location": "[deployment().location]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').hipaaHitrust]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "installedApplicationsOnWindowsVm": {
+                        "value": "[parameters('installedApplicationsOnWindowsVM')]"
+                    },
+                    "DeployDiagnosticSettingsforNetworkSecurityGroupsstoragePrefix": {
+                        "value": "[parameters('DeployDiagnosticSettingsforNetworkSecurityGroupsstoragePrefix')]"
+                    },
+                    "DeployDiagnosticSettingsforNetworkSecurityGroupsrgName": {
+                        "value": "[parameters('DeployDiagnosticSettingsforNetworkSecurityGroupsrgName')]"
+                    },
+                    "CertificateThumbprints": {
+                        "value": "[parameters('certificateThumbprints')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2019-04-01-preview",
+            "name": "[variables('roleAssignmentNames').hipaaHitrust]",
+            "dependsOn": [
+                "[variables('policyAssignmentNames').hipaaHitrust]"
+            ],
+            "properties": {
+                "principalType": "ServicePrincipal",
+                "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', variables('rbacOwner'))]",
+                "principalId": "[toLower(reference(concat('/providers/Microsoft.Authorization/policyAssignments/', variables('policyAssignmentNames').hipaaHitrust), '2019-09-01', 'Full' ).identity.principalId)]"
+            }
+        }
+    ],
+    "outputs": {}
+}

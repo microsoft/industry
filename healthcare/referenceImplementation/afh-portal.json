@@ -1808,19 +1808,19 @@
                                         "allowedValues": [
                                             {
                                                 "label": "HIPAA/HITRUST",
-                                                "value": "hipaa"
+                                                "value": "HIPAAHITRUST"
                                             },
                                             {
                                                 "label": "NIST",
-                                                "value": "nist"
+                                                "value": "NIST"
                                             },
                                             {
                                                 "label": "FedRAMP",
-                                                "value": "fedramp"
+                                                "value": "FEDRAMP"
                                             },
                                             {
                                                 "label": "None",
-                                                "value": "none"
+                                                "value": "None"
                                             }
                                         ]
                                     }

@@ -595,6 +595,23 @@
                 "Yes",
                 "No"
             ]
+        },
+        "enableNsgFlowLogs": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "No",
+                "Yes"
+            ]
+        },
+        "enableRegulatoryCompliance": {
+            "type": "string",
+            "defaultValue": "None",
+            "allowedValues": [
+                "HIPAAHITRUST",
+                "PCI",
+                "None"
+            ]
         }
     },
     "variables": {
@@ -691,7 +708,8 @@
             "databricksVnet": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DENY-DatabricksVnetPolicyAssignment.json')]",
             "govAscPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/gov/fairfaxDINE-ASCConfigPolicyAssignment.json')]",
             "logStorageAccount": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/subscriptionTemplates/logStorageAccount.json')]",
-            "nwRgPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DINE-NwResourceGroupPolicyAssignment.json')]"
+            "nwRgPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DINE-NwResourceGroupPolicyAssignment.json')]",
+            "hitrustHipaaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/HIPAHITRUST-PolicyAssignment.json')]"
         },
         // Declaring deterministic deployment names
         "deploymentSuffix": "[concat('-', deployment().location, guid(parameters('healthPrefix')))]",
@@ -758,7 +776,9 @@
             "healthPolicyDefinitons": "[take(concat(variables('industry'), '-HealthPolicy', deployment().location, '-', deployment().name), 64)]",
             "nwRgPlatformPolicyAssignment": "[take(concat(variables('industry'), '-NwRgPlatform'), 64)]",
             "nwRgLzPolicyAssignment": "[take(concat(variables('industry'), '-NwRgLz'), 64)]",
-            "healthLzSubs": "[take(concat(variables('industry'), '-HealthLzs', deployment().location, '-', deployment().name), 60)]"            
+            "healthLzSubs": "[take(concat(variables('industry'), '-HealthLzs', deployment().location, '-', deployment().name), 60)]",
+            "hitrustHipaaPolicyAssignment": "[take(concat(variables('industry'), '-HipaaHitrust', deployment().location, '-', deployment().name), 60)]",
+            "logStorageDeploymentName": "[take(concat(variables('industry'), '-LogStorage', deployment().location, '-', deployment().name), 64)]"
         },
         "esLiteDeploymentNames": {
             "mgmtGroupLiteDeploymentName": "[take(concat(variables('industry'), '-MgsLite', variables('deploymentSuffix')), 64)]",
@@ -1167,6 +1187,39 @@
             }
         },
         {
+            // Create storage account for NSG Flow Logs in the management subscription for networking observability
+            "condition": "[and(not(empty(parameters('managementSubscriptionId'))), equals(parameters('enableNsgFlowLogs'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').logStorageDeploymentName]",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "subscriptionId": "[parameters('managementSubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]",
+                "policyCompletion",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').logStorageAccount]"
+                },
+                "parameters": {
+                    "mgmtStorageRgName": {
+                        "value": "[variables('platformRgNames').logNwRg]"
+                    },
+                    "storageAccountName": {
+                        "value": "[variables('platformResourceNames').logNwStorageAccount]"
+                    },
+                    "storageLocation": {
+                        "value": "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
+                    }
+                }
+            }
+        },        
+        {
             // Deploying Log Analytics solutions to Log Analytics workspace if condition is true
             "condition": "[and(and(not(empty(parameters('managementSubscriptionId'))), equals(parameters('enableLogAnalytics'), 'Yes')),  equals(parameters('enableLogAnalytics'), 'Yes'), or(or(or(or(or(equals(parameters('enableSecuritySolution'), 'Yes'), equals(parameters('enableAgentHealth'), 'Yes')), equals(parameters('enableChangeTracking'), 'Yes')), equals(parameters('enableUpdateMgmt'), 'Yes'), equals(parameters('enableActivityLog'), 'Yes')), equals(parameters('enableVmInsights'), 'Yes')), equals(parameters('enableServiceMap'), 'Yes'), equals(parameters('enableSqlAssessment'), 'Yes')))]",
             "type": "Microsoft.Resources/deployments",
@@ -1260,6 +1313,40 @@
                     },
                     "retentionInDays": {
                         "value": "[parameters('retentionInDays')]"
+                    }
+                }
+            }
+        },
+        {
+            // Assigning HIPAA/HITRUST policy initiative to Healthcare management group if condition is true
+            "condition": "[equals(parameters('enableRegulatoryCompliance'), 'HIPAAHITRUST')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').hitrustHipaaPolicyAssignment]",
+            "scope": "[variables('scopes').healthManagementGroup]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]",
+                "policyCompletion",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logStorageDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').hitrustHipaaPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('healthPrefix')]"
+                    },
+                    "DeployDiagnosticSettingsforNetworkSecurityGroupsstoragePrefix": {
+                        "value": "[variables('platformResourceNames').logNwStorageAccount]"
+                    },
+                    "DeployDiagnosticSettingsforNetworkSecurityGroupsrgName": {
+                        "value": "[variables('platformRgNames').logNwRg]"
                     }
                 }
             }
@@ -3055,6 +3142,38 @@
                     },
                     "retentionInDays": {
                         "value": "[parameters('retentionInDays')]"
+                    }
+                }
+            }
+        },
+                {
+            // Create storage account for NSG Flow Logs in the management subscription for networking observability
+            "condition": "[and(not(empty(parameters('singlePlatformSubscriptionId'))), equals(parameters('enableNsgFlowLogs'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('esLiteDeploymentNames').logLiteStorageDeploymentName]",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "subscriptionId": "[parameters('singlePlatformSubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement)]",
+                "policyCompletion",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').logStorageAccount]"
+                },
+                "parameters": {
+                    "mgmtStorageRgName": {
+                        "value": "[variables('platformRgNames').logNwRg]"
+                    },
+                    "storageAccountName": {
+                        "value": "[variables('platformResourceNames').logNwStorageAccount]"
+                    },
+                    "storageLocation": {
+                        "value": "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
                     }
                 }
             }
