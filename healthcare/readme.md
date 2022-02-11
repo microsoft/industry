@@ -29,10 +29,3 @@ In the overall architecture for Microsoft Cloud for Healthcare, the Healthcare A
 | Healthcare Analytics | Reference implementation for data and analytics specifically for Healthcare industry |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoScaleOut) | [User Guide](./referenceImplementation/readme.md)
 
 ![Healthcare Industry Reference Architecture](./docs/mc4h-reference-architecture.png)
-
-## Known issues
-
-> - Existing storage account and existing workspace is currently not mapped
-> - Container for storage account must be created post deployment (will be fixed shortly)
-> - FHIR sync agent is coming shortly
-> - FHIR proxy is coming shortly
