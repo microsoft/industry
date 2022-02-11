@@ -830,7 +830,7 @@
                 "vpnGateWayScaleUnit": "[steps('lzSettings').esVwanGwScaleUnits]",
                 "enablePrivateDnsZones": "[steps('lzSettings').esPrivateDns]"
 			},
-            "kind": "ManagementGroup",
+            "kind": "Subscription",
             "location": "[steps('basics').resourceScope.location.name]"
         }
     }
