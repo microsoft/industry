@@ -5,7 +5,7 @@ This article provides a reference architecture with prescriptive guidance and re
 ## Table of Contents
 
 - [Azure for Healthcare Reference Implementations](#azure-for-healthcare-reference-implementations)
-- [Azure for Healthcare Reference Architectures](#azure-for-healthcare-reference-architecture)
+- [Azure for Healthcare Reference Architecture](#azure-for-healthcare-reference-architecture)
 - [Regulatory Compliance](#regulatory-compliance)
 - [Architecture composition](#architecture-composition)
   - [Healthcare Landing Zones](#healthcare-landing-zones)
@@ -20,7 +20,7 @@ This article provides a reference architecture with prescriptive guidance and re
 | Azure Healthcare APIs | Reference implementation for Healthcare APIs |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afhApis) | [User Guide](./solutions/healthcareApis)
 | Healthcare Analytics | Reference implementation for data and analytics specifically for Healthcare industry |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afhAnalytics) | [User Guide](./solutions/clinicalAnalytics)
 
-## Azure for Healthcare Reference Architectures
+## Azure for Healthcare Reference Architecture
 
 ![Healthcare Industry Reference Architecture](./docs/mc4h-reference-architecture.png)
 
