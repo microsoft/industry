@@ -76,7 +76,7 @@
                                     "type": "Microsoft.Common.TextBlock",
                                     "visible": true,
                                     "options": {
-                                        "text": "It is recommended dedidated subscriptions for the Azure platform functionality, such as Security, Governance, and Compliance, Connectivity and Distrubuted Edge, and Authentication and Authorization. This enables the organization to scale the Azure platform and the workloads in the healthcare landing zones independently, and regardless of future scale-point.",
+                                        "text": "It is recommended dedidated subscriptions for the Azure platform functionality, such as Security, Governance, and Compliance, Connectivity for Azure and On-premises, and Authentication and Authorization. This enables the organization to scale the Azure platform and the workloads in the healthcare landing zones independently, and regardless of future scale-point.",
                                         "link": {
                                             "label": "Learn more",
                                             "uri": "https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/management-group-and-subscription-organization"

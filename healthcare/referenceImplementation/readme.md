@@ -1,14 +1,14 @@
 # Azure for Healthcare User Guide
 
-This user guide explains the Azure for Healthcare reference implementation, what it is, what it does, how organizations within the telecommunication industry can use it to run their carrier-grade workloads on a sustainable, scalable, and reliable Azure architecture.
+This user guide explains the Azure for Healthcare reference implementation, what it is, what it does, how organizations within the healthcare industry can use it to run their workloads on a sustainable, scalable, secure, and compliant Azure architecture.
 
 ## Table of Contents
 
-- [What is Azure for Healthcare industry reference implementation?](#what-is-azure-for-Healthcare-reference-implementation)
+- [What is Azure for Healthcare industry reference implementation?](#what-is-azure-for-healthcare-reference-implementation)
 - [Pricing](#pricing)
 - [What if I already have an existing Azure footprint?](#what-if-i-already-have-an-existing-azure-footprint)
-- [How Azure for Healthcare reference implementation works](#how-azure-for-Healthcare-reference-implementation-works)
-  - [Azure for Healthcare design principles](#azure-for-Healthcare-design-principles)
+- [How Azure for Healthcare reference implementation works](#how-azure-for-healthcare-reference-implementation-works)
+  - [Azure for Healthcare design principles](#azure-for-healthcare-design-principles)
     - [Subscription Democratization](#subscription-democratization)
     - [Policy Driven Governance](#policy-driven-governance)
     - [Single Control and Management Plane](#single-control-and-management-plane)
@@ -24,19 +24,19 @@ This user guide explains the Azure for Healthcare reference implementation, what
   - [Step-by-step guidance](#step-by-step-guidance)
 
 ---
-Azure for Healthcare industry reference architecture provides prescriptive guidance coupled with Azure best practices for the telecommunication industry, and it follows 5 design principles across the 8 critical design areas for organizations to define their target state for their Azure architecture.
+Azure for Healthcare industry reference architecture provides prescriptive guidance coupled with Azure best practices for the healthcare industry, and it follows 5 design principles across the 8 critical design areas for organizations to define their target state for their Azure architecture.
 
-The reference architecture is modular by design and allows organizations of any size in the telecommunication industry to start with the optimized landing zones that support their healthcare workloads, and application portfolios.
+The reference architecture is modular by design and allows organizations of any size in the healthcare industry to start with the optimized landing zones that support their healthcare workloads, and application portfolios.
 
 In particular, it enables the organizations to start as small as needed and scale alongside their business requirements regardless of scale point.
 
 <!--![Healthcare architecture](./media/Healthcare-architecture-detailed.PNG)-->
 
-## What is Azure for Healthcare reference implementation?
+## What is Azure for Healthcare reference implementation
 
 The Azure for Healthcare industry reference implementation is an optimized, proven, authoritative, and roadmap aligned architecture that enables the Healthcare industry to deploy highly regulated healthcare workloads in Azure at scale.
 
-The reference implementation ties together all the Azure platform primitives and creates a proven, well-defined Azure architecture based on a multi-subscription design, leveraging native platform capabilities to ensure organizations in the telecommunication industry can create and operationalize their healthcare landing zones in Azure at scale.
+The reference implementation ties together all the Azure platform primitives and creates a proven, well-defined Azure architecture based on a multi-subscription design, leveraging native platform capabilities to ensure organizations in the healthcare industry can create and operationalize their healthcare landing zones in Azure at scale.
 
 ## Pricing
 
@@ -44,7 +44,7 @@ There’s no cost associated with the reference implementation itself, as it is 
 
 For example, you don’t pay for the Management Groups or the Azure Policies that are being assigned, but assigning a policy to enable Microsoft Defender for Cloud (previously known as Azure Security Center Standard) on all landing zone subscriptions will generate cost on those subscriptions for the Microsoft Defender for Cloud service as detailed [here](https://azure.microsoft.com/pricing/details/azure-defender/).
 
-## What if I already have an existing Azure footprint?
+## What if I already have an existing Azure footprint
 
 Azure for Healthcare industry reference implementation will meet the organizations in the Healthcare industry where they are, and the design has catered for existing subscriptions and workloads in Azure.
 
@@ -94,7 +94,7 @@ Platform resource are managed by a cross-functional platform team. The team cons
 - SecOps: Responsible for definition and management of Azure Policy and RBAC permissions on the platform for landing zones and platform management groups and subscriptions. Security operations including monitoring and the definition and the operation of reporting and auditing dashboard.
 - NetOps: Definition and management of the common networking components in Azure including the hybrid connectivity and firewall resource to control internet facing networking traffic. NetOps team is responsible to handout virtual networks to landing zone owners or team.
 
-## healthcare landing zone owners responsibilities
+## Healthcare landing zone owners responsibilities
 
 Azure for Healthcare reference implementation enables landing zones supporting a both centralized and federated application DevOps models. Most common model are dedicated **DevOps** team aligned with a single workload. In case of smaller workloads or COTS or third-party application a single **AppDevOps** team is responsible for workload operation. Independent of the model every DevOps team manages several workload staging environments (DEV, UAT, PROD) deployed to individual landing zones/subscriptions. Each landing zone has a set of RBAC permissions managed with Azure AD PIM provided by the Platform SecOps team.
 
@@ -116,7 +116,7 @@ The Management Group structure implemented with Azure for Healthcare is as follo
 
 - **Landing Zones:** This is the parent Management Group for all the landing zone subscriptions and will have workload agnostic Azure Policies assigned to ensure workloads are secure and compliant.
 
-  - **healthcare** This is the dedicated Management Group for healthcare landing zones, which are optimized and governed aligned with mission-critical, carrier-grade Healthcare workloads.
+  - **Healthcare** This is the dedicated Management Group for healthcare landing zones for the Healthcare workloads subject to regulatory compliance.
   - **Online:** This is the dedicated Management Group for Online landing zones, meaning workloads that may require direct internet inbound/outbound connectivity or also for workloads that may not require a VNet..
   - **Corp:** This is the dedicated Management Group for Corp landing zones, meaning workloads that requires connectivity/hybrid connectivity with the corporate network thru the hub in the connectivity subscription.
 
@@ -138,7 +138,7 @@ By default, all recommended settings and resources recommendations are enabled a
   - Storage Account for the NSG Flow Logs setup
   - Diagnostics settings for Activity Logs, VMs, and PaaS resources sent to Log Analytics
 
-- An Azure subscription dedicated for **Connectivity** for Azure platform networking and distributed edge, which deploys core Azure networking resources such as:
+- An Azure subscription dedicated for **Connectivity** for Azure platform networking and On-Premises connectivity, which deploys core Azure networking resources such as:
 
   - A hub virtual network
   - Azure Firewall
@@ -151,8 +151,7 @@ By default, all recommended settings and resources recommendations are enabled a
   - Enable DDoS Standard protection
   - Network Watcher
   - NSG Flow Logs
-  - Traffic Analytis
-
+  
 - (Optionally) An Azure subscription dedicated for **Identity** in case your organization requires to have Active Directory Domain Controllers to provide authorization and authentication for workloads deployed into the landing zones.
 
 - Landing Zone Management Group for **Healthcare** for regulated healthcare applications that has unique requirements for security, governance, compliance, and connectivity.
@@ -168,10 +167,7 @@ By default, all recommended settings and resources recommendations are enabled a
 
 - Landing zone subscriptions for **Healthcare** for regulated healthcare applications and resources.
 - Azure Policies for healthcare landing zones, which include:
-  - Enable particular regulatory compliance
-  - Enable usage of only customer managed key for Azure Data Lake
-  - Enable only approved targets for Azure Synapse outbound connectivity
-  - Ensure Healthcare APIs are enabled for diagnostics
+  - Enable particular regulatory compliance, such as FedRAMP Medium, FedRAMP High, or HIPAA/HITRUST. This will enable at-scale compliance reporting for all your healthcare application and resources.
 
 - Landing zone subscriptions for **Corp** connected applications and resources, including a virtual network that will be connected to the hub via VNet peering.
 - Azure Policies for online and corp-connected landing zones, which include:
@@ -249,7 +245,7 @@ New-AzRoleAssignment -Scope '/' -RoleDefinitionName 'Owner' -ObjectId $user.Id
 
 ### Optional pre-requisites
 
-The deployment experience in Azure portal allows you to bring in existing (preferably empty) subscriptions dedicated for the platform part of the Azure for Healthcare architecture. It also allows you to bring existing subscriptions that can be used as the initial healthcare landing zones for your carrier grade workloads.
+The deployment experience in Azure portal allows you to bring in existing (preferably empty) subscriptions dedicated for the platform part of the Azure for Healthcare architecture. It also allows you to bring existing subscriptions that can be used as the initial healthcare landing zones for your healthcare workloads.
 
 ## Step by step guidance
 
@@ -261,9 +257,7 @@ When you click on [*Deploy to Microsoft Cloud*](https://aka.ms/afhRi), it will s
 
 On the first page, select the *Region*. This region will primarily be used to place the deployment resources in an Azure region, but also used as the initial region for some of the resources that are deployed, such as Azure Monitoring resources.
 
-![Deployment location](./media/location.PNG)
-
-### Azure for Healthcare Architecture setup
+### Healthcare Architecture setup
 
 Provide a prefix that will be used to create the management group hierarchy and platform resources, and select if you would use dedicated subscriptions or a single subscription for platform resources (please note that dedicates subscriptions are recommended, and single platform subscription is only for PoC and testing purposes). For this scenario, select **Dedicated**.
 
@@ -279,13 +273,13 @@ For the Microsoft Defender for Cloud settings, you must also provide an email ad
 
 ![Defender](./media/defender.PNG)
 
-### Connectivity for Azure and Distributed Edge
+### Connectivity for Azure and On-Premises
 
-On the *Connectivity for Azure and Distributed Edge* tab, you will configure the core networking platform resources, such as hub virtual network, gateways (VPN and/or ExpressRoute), Azure Firewall, Private DNS Zones for Azure PaaS services, and depending on the options you selected on the *Security, Governance, and Compliance* tab, additional networking security and monitoring options will be presented, such as DDoS Protection Standard, Network Watcher, NSG Flow Logs, and Traffic Analytics.
+On the *Connectivity for Azure and On-Premises* tab, you will configure the core networking platform resources, such as hub virtual network, gateways (VPN and/or ExpressRoute), Azure Firewall, Private DNS Zones for Azure PaaS services, and depending on the options you selected on the *Security, Governance, and Compliance* tab, additional networking security and monitoring options will be presented, such as DDoS Protection Standard and Network Watcher.
 
 To deploy and configure a "hub and spoke" topology, you must:
 
-- In the *Deploy networking topology for Azure and Distributed Edge* option, select either "Hub and spoke with Azure Firewall" or "Hub and spoke with your own third-party NVA". In this guidance we will select the "Hub and spoke with Azure Firewall".
+- In the *Deploy networking topology for Azure and On-Premises* option, select either "Hub and spoke with Azure Firewall" or "Hub and spoke with your own third-party NVA". In this guidance we will select the "Hub and spoke with Azure Firewall".
 - Provide a dedicated (empty) subscription that will be used to host the requisite networking infrastructure.
 - Provide the address space to be assigned to the hub virtual network
 - Select an Azure region where the hub virtual network will be created
@@ -307,8 +301,6 @@ For Networking security and monitoring solutions:
 
 - DDoS Protection Standard to be enabled for the Azure platform. Enabling this will provide an option to assign requisite Azure Policy on the *healthcare landing zones* tab later.
 - Network Watcher observability for the virtual networks that will be created. Enabling this will assign Azure Policy to ensure that Network Watcher will be created into all subscriptions containing a virtual network.
-- NSG Flow Logs can be enabled for all Network Security Groups, and will be stored into a storage account in the dedicated subscription for *Security, Governance, and Compliance* subscription, and also in the Azure Log Analytics workspace.
-- Traffic Analytics which provides a curated view of networking traffic for Azure and Distributed Edge.
 
  ![img](./media/nwlogs.PNG)
 
@@ -324,10 +316,10 @@ If you don't need - or plan to host domain controllers in Azure for your Healthc
 
 On the *healthcare Landing Zones* tab, you can bring in the subscriptions you want to use initially for *healthcare*, *online*, and *corp* landing zones. Each landing zone type is represented by its own child management group of the *landing zones* management group in the hierarchy, and provides different characteristics regarding networking requirements, security, policy, and availability. For each of the landing zone types, you can select the recommended Azure policies you want to assign, as well as the policies recommended for *all* landing zone types.
 
-- healthcare landing zones
+- Healthcare landing zones
 
 Subscriptions can be moved into the *healthcare* management group, and bootstrapped with Azure policies that are assigned directly to this management group, as well as the overarching policies assigned to the intermediate root management group, and the landing zones management group.
-The specific policies for the healthcare landing zones will - in addition to compliance and security, ensure that carrier grade workloads are configured with resiliency, performance, and availability in mind.
+The specific policies for the healthcare landing zones will conform to the healthcare industry regulatory compliance.
 
 ![healthcarelz](./media/healthcarelz.PNG)
 
@@ -352,3 +344,7 @@ By default, every recommendation is enabled, and you must explicitly opt out if 
 ### Review + create
 
 *Review + Create* page will validate your permission and configuration before you can click deploy. Once it has been validated successfully, you can click *Create*
+
+---
+
+[Back to documentation root](../README.md)
