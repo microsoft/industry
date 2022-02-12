@@ -4,32 +4,29 @@ This article provides a reference architecture with prescriptive guidance and re
 
 ## Table of Contents
 
-- [Azure for Healthcare](#azure-for-healthcare)
-  - [Table of Contents](#table-of-contents)
-  - [Azure for Healthcare Reference Implementations](#azure-for-healthcare-reference-implementations)
-  - [Azure for Healthcare Reference Architecture](#azure-for-healthcare-reference-architecture)
-  - [Compliance](#compliance)
-  - [Deployment steps](#deployment-steps)
-    - [<a id="letter-a"></a>! Healthcare Landing Zone](#-healthcare-landing-zone)
-    - [<a id="letter-b"></a>! Azure Healthcare API](#-azure-healthcare-api)
-    - [<a id="letter-c"></a>! Healthcare Analytics](#-healthcare-analytics)
-    - [<a id="letter-d"></a>! North Star Architecture for Power Platform](#-north-star-architecture-for-power-platform)
-    - [<a id="letter-e"></a>! Solutions for healthcare](#-solutions-for-healthcare)
-  - [Licensing requirements](#licensing-requirements)
+- [Azure for Healthcare Reference Implementations](#azure-for-healthcare-reference-implementations)
+- [Azure for Healthcare Reference Architectures](#azure-for-healthcare-reference-architecture)
+- [Compliance](#compliance)
+- [Deployment steps](#deployment-steps)
+  - [<a id="letter-a"></a>! Healthcare Landing Zone](#-healthcare-landing-zone)
+  - [<a id="letter-b"></a>! Azure Healthcare API](#-azure-healthcare-api)
+  - [<a id="letter-c"></a>! Healthcare Analytics](#-healthcare-analytics)
+  - [<a id="letter-d"></a>! North Star Architecture for Power Platform](#-north-star-architecture-for-power-platform)
+  - [<a id="letter-e"></a>! Solutions for healthcare](#-solutions-for-healthcare)
 
 ## Azure for Healthcare Reference Implementations
 
 | Industry Architecture | Description | Deploy | Documentation
 |:----------------------|:------------|--------|--------------|
 | Azure for Healthcare | Azure for Healthcare foundation that provides a full, rich, compliant architecture which caters for highly regulated landing zones for Healthcare industry scenarios |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afhRI) | [User Guide](./referenceImplementation/readme.md)
-| Azure Healthcare APIs | Reference implementation for Healthcare APIs |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoScaleOut) | [User Guide](./referenceImplementation/readme.md)
-| Healthcare Analytics | Reference implementation for data and analytics specifically for Healthcare industry |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoScaleOut) | [User Guide](./referenceImplementation/readme.md)
+| Azure Healthcare APIs | Reference implementation for Healthcare APIs |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afhApis) | [User Guide](./solutions/healthcareApis)
+| Healthcare Analytics | Reference implementation for data and analytics specifically for Healthcare industry |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afhAnalytics) | [User Guide](./solutions/clinicalAnalytics)
 
 ## Azure for Healthcare Reference Architecture
 
 ![Healthcare Industry Reference Architecture](./docs/mc4h-reference-architecture.png)
 
-## Compliance
+## Regulatory Compliance
 
 Due to the security and compliance requirements nature of their business, organizations in the healthcare industry have a unique set of requirements compared other organizations of similar scale. Such requirements include:
 
@@ -84,19 +81,6 @@ All up architecture for Power Platform with landing zones (environments) securel
 * [Patient outreach](./solutions/patientOutreach/readme.md) Patient outreach is a patient campaign management application that helps organize and automate marketing and outreach to patients. Healthcare providers can communicate with their communities and patients in a targeted, efficient way. Providers can use email, text, regular mail, or a combination, to provide healthcare information to specific groups of patients and community members.
 * [Patient service center](./solutions/patientServiceCenter/readme.md) Patient service center enables your organization to engage with your patients in the way they want, by using chat, and monitor automatic conversations through the Microsoft Azure Healthbot service. Service agents can help your patients with information and setting up appoints.
 
-## Licensing requirements
+---
 
-The table below summarizes the licenses you may require depending on the Healthcare scenarios you want to deploy. See specific requirements in the respective documentation and implementation guide for each scenario.
-
-Product name:
-
-* Microsoft Cloud for Healthcare
-* Digital Messaging add-in for Dynamics 365 Customer service
-* Dynamics 365 Customer Service Enterprise
-* Dynamics 365 Marketing
-* Power BI Pro
-* Power Apps for Dynamics 365
-* Dynamics 365 Field Service
-* Sales Insights Add-in for Dynamics 365 Sales
-* Dynamics 365 Sales Enterprise
-* Microsoft Teams
+[Back to documentation root](../README.md)
