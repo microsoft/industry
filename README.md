@@ -86,7 +86,7 @@ Telco Solutions
 - [Networking for Telco Industry Scenarios](./telco/docs/telco-networking.md)
 - [Operator Landing Zones](./telco/docs/operator-landing-zones.md)
 - [Distributed Edge](./telco/docs/telco-edge.md)
-- [Telco services](./telco/solutions/mgmtOptions/readme.md)
+- [Operator services](./telco/solutions/mgmtOptions/readme.md)
 <!--  - [Telco Managed Services](./telco/solutions/managedServices)
   - [Telco Managed Solution](./telco/solutions/managedSolutions)-->
 <!--- [Telco Sales](./telco/solutions/sales/readme.md)
