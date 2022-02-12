@@ -11,7 +11,7 @@ As an example, those specialized telco applications may require deploying their 
 
 ## Management Group
 
-Given these specialized requirements and to cater for scalability for specialized Telco workloads in Azure, the AfO Landing Zones reference architecture recommends the creation a new Management Group dedicated to Telco specific applications and services.
+Given these specialized requirements and to cater for scalability for specialized Telco workloads in Azure, the AfO Landing Zones architecture recommends the creation a new Management Group dedicated to Telco specific applications and services.
 
 Azure policies that are designed to govern and manage those applications can be assigned to ensure Telco applications are compliant, and configured with high-availability as default at this scope. Subscriptions dedicated for such applications would need to be deployed under this new management group, which is depicted in figure 1 below:
 
