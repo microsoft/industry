@@ -2,11 +2,11 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "telcoPrefix": {
+        "healthPrefix": {
             "type": "string",
             "maxLength": 10,
             "metadata": {
-                "description": "Provide a prefix (max 10 characters, unique at tenant-scope) for the Management Group hierarchy and other resources created as part of Enterprise-scale."
+                "description": "Provide a prefix (max 10 characters, unique at tenant-scope) for the Management Group hierarchy and other resources created by the deployment."
             }
         },
         "managementSubscriptionId": {
@@ -196,15 +196,7 @@
             ],
             "defaultValue": "Disabled"            
         },
-        "enableAscForKubernetes": {
-            "type": "string",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ],
-            "defaultValue": "Disabled"            
-        },
-        "enableAscForRegistries": {
+        "enableAscForContainers": {
             "type": "string",
             "allowedValues": [
                 "Disabled",
@@ -589,29 +581,11 @@
                 "No"
             ]
         },
-        "enableErHa": {
-            "type": "string",
-            "defaultValue": "No",
-            "allowedValues": [
-                "Yes",
-                "Audit",
-                "No"
-            ]
-        },
-        "enablePipHa": {
-            "type": "string",
-            "defaultValue": "No",
-            "allowedValues": [
-                "Yes",
-                "Audit",
-                "No"
-            ]
-        },
-        "telcoLzSubscriptionId": {
+        "healthLzSubscriptionId": {
             "type": "array",
             "defaultValue": [],
             "metadata": {
-                "description": "Provide the subscription ids for existing, empty subscriptions you want to move in as your first telco landing zones."
+                "description": "Provide the subscription ids for existing, empty subscriptions you want to move in as your first healthcare landing zones."
             }
         },
         "enableNetworkWatcher": {
@@ -622,39 +596,34 @@
                 "No"
             ]
         },
-        "enableNsgFlowLogs": {
+        "enableRegulatoryCompliance": {
             "type": "string",
-            "defaultValue": "No",
+            "defaultValue": "None",
             "allowedValues": [
-                "Yes",
-                "No"
-            ]
-        },
-        "enableTrafficAnalytics": {
-            "type": "string",
-            "defaultValue": "No",
-            "allowedValues": [
-                "Yes",
-                "No"
+                "HIPAAHITRUST",
+                "PCI",
+                "FEDRAMPHIGH",
+                "FEDRAMPMODERATE",
+                "None"
             ]
         }
     },
     "variables": {
         // Declaring the prescriptive management group structure that will be used in the scope construction
         "mgmtGroups": {
-            "telcoRoot": "[parameters('telcoPrefix')]",
-            "platform": "[concat(parameters('telcoPrefix'), '-', 'platform')]",
-            "management": "[concat(parameters('telcoPrefix'), '-', 'management')]",
-            "connectivity": "[concat(parameters('telcoPrefix'), '-', 'connectivity')]",
-            "identity": "[concat(parameters('telcoPrefix'), '-', 'identity')]",
-            "lzs": "[concat(parameters('telcoPrefix'), '-', 'landingzones')]",
-            "corp": "[concat(parameters('telcoPrefix'), '-', 'corp')]",
-            "online": "[concat(parameters('telcoPrefix'), '-', 'online')]",
-            "telco": "[concat(parameters('telcoPrefix'), '-', 'operator')]"
+            "healthRoot": "[parameters('healthPrefix')]",
+            "platform": "[concat(parameters('healthPrefix'), '-', 'platform')]",
+            "management": "[concat(parameters('healthPrefix'), '-', 'management')]",
+            "connectivity": "[concat(parameters('healthPrefix'), '-', 'connectivity')]",
+            "identity": "[concat(parameters('healthPrefix'), '-', 'identity')]",
+            "lzs": "[concat(parameters('healthPrefix'), '-', 'landingzones')]",
+            "corp": "[concat(parameters('healthPrefix'), '-', 'corp')]",
+            "online": "[concat(parameters('healthPrefix'), '-', 'online')]",
+            "healthcare": "[concat(parameters('healthPrefix'), '-', 'healthcare')]"
         },
         // Declaring scopes that will be used for optional deployments, such as platform components (monitoring, networking, identity), policy assignments, subscription placement etc.
         "scopes": {
-            "TelcoRootManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').TelcoRoot)]",
+            "healthRootManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').healthRoot)]",
             "platformManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').platform)]",
             "managementManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').management)]",
             "connectivityManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').connectivity)]",
@@ -662,26 +631,26 @@
             "lzsManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').lzs)]",
             "corpManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').corp)]",
             "onlineManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').online)]",
-            "telcoManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').telco)]"
+            "healthManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').healthcare)]"
         },
-        // Declaring all required deployment uri's used for deployments of composite ARM templates for Telco
+        // Declaring all required deployment uri's used for deployments of composite ARM templates for Healthcare
        "azPrivateDnsPolicyMapping": {
-            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyDefinitions/DINE-PrivateDNSZonesPolicySetDefinition.json",
+            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/DINE-PrivateDNSZonesPolicySetDefinition.json",
             "https://management.usgovcloudapi.net": "managementGroupTemplates/policyDefinitions/gov/fairfaxDINE-PrivateDNSZonesPolicySetDefinition.json"
         },
         "azPrivateDnsArmTemplate": "[variables('azPrivateDnsPolicyMapping')[environment().resourceManager]]",
         "azPublicEndpointsPolicyMapping": {
-            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyDefinitions/DENY-PublicEndpointsPolicySetDefinition.json",
+            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/DENY-PublicEndpointsPolicySetDefinition.json",
             "https://management.usgovcloudapi.net": "managementGroupTemplates/policyDefinitions/gov/fairfaxDENY-PublicEndpointsPolicySetDefinition.json"
         },
         "azPublicEndpointArmTemplate": "[variables('azPublicEndpointsPolicyMapping')[environment().resourceManager]]",
         "azPolicyPoliciesMapping": {
-            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyDefinitions/policies.json",
+            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/policies.json",
             "https://management.usgovcloudapi.net": "managementGroupTemplates/policyDefinitions/gov/fairfaxPolicies.json"
         },
         "azPolicyArmTemplate": "[variables('azPolicyPoliciesMapping')[environment().resourceManager]]",
         "azPrivateDnsPolicyAssignmentMapping": {
-            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyAssignments/DINE-PrivateDNSZonesPolicyAssignment.json",
+            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyAssignments/DINE-PrivateDNSZonesPolicyAssignment.json",
             "https://management.usgovcloudapi.net": "managementGroupTemplates/policyAssignments/gov/fairfaxDINE-PrivateDNSZonesPolicyAssignment.json"
         },
         "azPrivateDnsPolicyAssignment": "[variables('azPrivateDnsPolicyAssignmentMapping')[environment().resourceManager]]",
@@ -689,10 +658,8 @@
             "managementGroups": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/mgmtGroupStructure/mgmtGroups.json')]",
             "managementGroupsLite": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/mgmtGroupStructure/mgmtGroupsLite.json')]",
             "policyDefinitions": "[uri(deployment().properties.templateLink.uri, variables('azPolicyArmTemplate'))]",
-            "telcoPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyDefinitions/telcoPolicies.json')]",
-            "erHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DENY-non-ha-expressRoutes-policyAssignment.json')]",
-            "pipHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DENY-non-ha-publicIps-policyAssignment.json')]",
-            "dataPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyDefinitions/dataPolicies.json')]",
+            "healthPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyDefinitions/healthPolicies.json')]",
+            "dataPolicyDefinitions": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/dataPolicies.json",
             "vnetConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/subscriptionTemplates/hubspoke-connectivity.json')]",
             "vwanConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/subscriptionTemplates/vwan-connectivity.json')]",
             "nvaConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/subscriptionTemplates/nvahubspoke-connectivity.json')]",
@@ -736,11 +703,14 @@
             "govAscPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/gov/fairfaxDINE-ASCConfigPolicyAssignment.json')]",
             "logStorageAccount": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/subscriptionTemplates/logStorageAccount.json')]",
             "nwRgPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DINE-NwResourceGroupPolicyAssignment.json')]",
-            "nsgFlowLogPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DINE-NSGFlowLogsPolicyAssignment.json')]"
+            "hitrustHipaaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/HIPAAHITRUST-PolicyAssignment.json')]",
+            "pciPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/PCI-PolicyAssignment.json')]",
+            "fedrampHighPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/FEDRAMPHIGH-PolicyAssignment.json')]",
+            "fedrampMediumPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/FEDRAMMEDIUM-PolicyAssignment.json')]"
         },
         // Declaring deterministic deployment names
-        "deploymentSuffix": "[concat('-', deployment().location, guid(parameters('telcoPrefix')))]",
-        "industry": "Telco",
+        "deploymentSuffix": "[concat('-', deployment().location, guid(parameters('healthPrefix')))]",
+        "industry": "Health",
         "deploymentNames": {
             "mgmtGroupDeploymentName": "[take(concat(variables('industry'), '-Mgs', variables('deploymentSuffix')), 64)]",
             "mgmtSubscriptionPlacement": "[take(concat(variables('industry'), '-MgmtSub', variables('deploymentSuffix')), 64)]",
@@ -799,16 +769,16 @@
             "identityPeeringDeploymentName": "[take(concat(variables('industry'), '-IDPeering', variables('deploymentSuffix')), 64)]",
             "identityVwanPeeringDeploymentName": "[take(concat(variables('industry'), '-IDVwanPeering', variables('deploymentSuffix')), 64)]",
             "corpConnectedLzVwanSubs": "[take(concat(variables('industry'), '-CorpConnLzsVwan', variables('deploymentSuffix')), 50)]",
-            "telcoIndustry": "[take(concat(variables('industry'), '-Industry-', deployment().location, '-', deployment().name), 64)]",
-            "telcoPolicyDefinitons": "[take(concat(variables('industry'), '-TelcoPolicy', deployment().location, '-', deployment().name), 64)]",
-            "erHaPolicyAssignment": "[take(concat(variables('industry'), '-DenyNonHaEr', deployment().location, '-', deployment().name), 64)]",
-            "pipHaPolicyAssignment": "[take(concat(variables('industry'), '-DenyNonHaPip', deployment().location, '-', deployment().name), 64)]",
-            "logStorageDeploymentName": "[take(concat(variables('industry'), '-LogStorage', deployment().location, '-', deployment().name), 64)]",
+            "healthIndustry": "[take(concat(variables('industry'), '-Industry-', deployment().location, '-', deployment().name), 64)]",
+            "healthPolicyDefinitons": "[take(concat(variables('industry'), '-HealthPolicy', deployment().location, '-', deployment().name), 64)]",
             "nwRgPlatformPolicyAssignment": "[take(concat(variables('industry'), '-NwRgPlatform'), 64)]",
             "nwRgLzPolicyAssignment": "[take(concat(variables('industry'), '-NwRgLz'), 64)]",
-            "nsgFlowLogsPlatformPolicyAssignment": "[take(concat(variables('industry'), '-NSGFlowPlatform'), 64)]",
-            "nsgFLowLogsLzPolicyAssignment": "[take(concat(variables('industry'), '-NSGFlowLz'), 64)]",
-            "telcoLzSubs": "[take(concat(variables('industry'), '-TelcoLzs', deployment().location, '-', deployment().name), 60)]"            
+            "healthLzSubs": "[take(concat(variables('industry'), '-HealthLzs', deployment().location, '-', deployment().name), 60)]",
+            "hitrustHipaaPolicyAssignment": "[take(concat(variables('industry'), '-HipaaHitrust', deployment().location, '-', deployment().name), 60)]",
+            "pciPolicyAssignment": "[take(concat(variables('industry'), '-PCI', deployment().location, '-', deployment().name), 60)]",
+            "fedrampHighPolicyAssignment": "[take(concat(variables('industry'), '-FedRampHigh', deployment().location, '-', deployment().name), 60)]",
+            "fedrampMediumPolicyAssignment": "[take(concat(variables('industry'), '-FedRampMed', deployment().location, '-', deployment().name), 60)]",
+            "logStorageDeploymentName": "[take(concat(variables('industry'), '-LogStorage', deployment().location, '-', deployment().name), 64)]"
         },
         "esLiteDeploymentNames": {
             "mgmtGroupLiteDeploymentName": "[take(concat(variables('industry'), '-MgsLite', variables('deploymentSuffix')), 64)]",
@@ -832,31 +802,31 @@
         },
         // Declaring deterministic names for Resource Groups that will be created for platform resources
         "platformRgNames": {
-            "mgmtRg": "[concat(parameters('telcoPrefix'), '-mgmt')]",
-            "connectivityRg": "[concat(parameters('telcoPrefix'), '-vnethub-', parameters('location'))]",
-            "ddosRg": "[concat(parameters('telcoPrefix'), '-ddos')]",
-            "privateDnsRg": "[concat(parameters('telcoPrefix'), '-privatedns')]",
-            "identityVnetRg": "[concat(parameters('telcoPrefix'), '-vnet-', parameters('location'))]",
-            "lzVnetRg": "[concat(parameters('telcoPrefix'), '-vnet-', parameters('location'))]",
-            "logNwRg": "[concat(parameters('telcoPrefix'), '-nwlog-', parameters('location'))]"
+            "mgmtRg": "[concat(parameters('healthPrefix'), '-mgmt')]",
+            "connectivityRg": "[concat(parameters('healthPrefix'), '-vnethub-', parameters('location'))]",
+            "ddosRg": "[concat(parameters('healthPrefix'), '-ddos')]",
+            "privateDnsRg": "[concat(parameters('healthPrefix'), '-privatedns')]",
+            "identityVnetRg": "[concat(parameters('healthPrefix'), '-vnet-', parameters('location'))]",
+            "lzVnetRg": "[concat(parameters('healthPrefix'), '-vnet-', parameters('location'))]",
+            "logNwRg": "[concat(parameters('healthPrefix'), '-nwlog-', parameters('location'))]"
         },
         // Declaring deterministic names for platform resources that will be created
         "platformResourceNames": {
-            "logAnalyticsWorkspace": "[concat(parameters('telcoPrefix'), '-law')]",
-            "logNwStorageAccount": "[take(concat(parameters('telcoPrefix'), parameters('location'), uniqueString(deployment().name)), 23)]",
-            "automationAccount": "[concat(parameters('telcoPrefix'), '-aauto')]",
-            "vpnGwName": "[concat(parameters('telcoPrefix'), '-vpngw-', parameters('location'))]",
-            "erGwName": "[concat(parameters('telcoPrefix'), '-ergw-', parameters('location'))]",
-            "ddosName": "[concat(parameters('telcoPrefix'), '-ddos-', parameters('location'))]",
-            "azFwPolicyName": "[concat(parameters('telcoPrefix'), '-azfwpolicy-', parameters('location'))]",
-            "azFwName": "[concat(parameters('telcoPrefix'), '-fw-', parameters('location'))]",
-            "azErGwIpName": "[concat(parameters('telcoPrefix'), '-erpip-', parameters('location'))]",
-            "hubName": "[concat(parameters('telcoPrefix'), '-hub-', parameters('location'))]",
-            "vwanName": "[concat(parameters('telcoPrefix'), '-vwan-', parameters('location'))]",
-            "azVpnGwIpName": "[concat(parameters('telcoPrefix'), '-gwpip-', parameters('location'))]",
-            "azFwIpName": "[concat(parameters('telcoPrefix'), '-fwpip-', parameters('location'))]",
-            "identityVnet": "[concat(parameters('telcoPrefix'), '-vnet-', parameters('location'))]",
-            "lzVnet": "[concat(parameters('telcoPrefix'), '-vnet-', parameters('location'))]"
+            "logAnalyticsWorkspace": "[concat(parameters('healthPrefix'), '-law')]",
+            "logNwStorageAccount": "[take(concat(parameters('healthPrefix'), parameters('location'), uniqueString(deployment().name)), 23)]",
+            "automationAccount": "[concat(parameters('healthPrefix'), '-aauto')]",
+            "vpnGwName": "[concat(parameters('healthPrefix'), '-vpngw-', parameters('location'))]",
+            "erGwName": "[concat(parameters('healthPrefix'), '-ergw-', parameters('location'))]",
+            "ddosName": "[concat(parameters('healthPrefix'), '-ddos-', parameters('location'))]",
+            "azFwPolicyName": "[concat(parameters('healthPrefix'), '-azfwpolicy-', parameters('location'))]",
+            "azFwName": "[concat(parameters('healthPrefix'), '-fw-', parameters('location'))]",
+            "azErGwIpName": "[concat(parameters('healthPrefix'), '-erpip-', parameters('location'))]",
+            "hubName": "[concat(parameters('healthPrefix'), '-hub-', parameters('location'))]",
+            "vwanName": "[concat(parameters('healthPrefix'), '-vwan-', parameters('location'))]",
+            "azVpnGwIpName": "[concat(parameters('healthPrefix'), '-gwpip-', parameters('location'))]",
+            "azFwIpName": "[concat(parameters('healthPrefix'), '-fwpip-', parameters('location'))]",
+            "identityVnet": "[concat(parameters('healthPrefix'), '-vnet-', parameters('location'))]",
+            "lzVnet": "[concat(parameters('healthPrefix'), '-vnet-', parameters('location'))]"
         },
         // Declaring deterministic resourceId's for platform resources that will be created
         "singleVsDedicatedMgmtSub": "[if(empty(parameters('managementSubscriptionId')), parameters('singlePlatformSubscriptionId'), parameters('managementSubscriptionId'))]",
@@ -874,8 +844,8 @@
         },
         // Declaring deterministic resourceId's for ES Lite platform resources (as they will be consolidated into a single platform subscription)
         "deterministicRoleAssignmentGuids": {
-            "ddosForConnectivity": "[take(guid(concat(parameters('telcoPrefix'), 'ddos')), 10)]",
-            "backupForIdentity": "[take(guid(concat(parameters('telcoPrefix'), 'idbackup')), 10)]"
+            "ddosForConnectivity": "[take(guid(concat(parameters('healthPrefix'), 'ddos')), 10)]",
+            "backupForIdentity": "[take(guid(concat(parameters('healthPrefix'), 'idbackup')), 10)]"
         },
         "privateDnsZones": [
             "privatelink.azure-automation.net",
@@ -941,7 +911,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     }
                 }
             }
@@ -950,12 +920,12 @@
             The following deployments will deploy the required proactive and preventive Azure policies for policy driven governance
         */
         {
-            // Deploying Telco custom policies. Note: all policies will eventually be moved to built-in policies and codebase will be reduced
+            // Deploying Healthcare custom policies. Note: all policies will eventually be moved to built-in policies and codebase will be reduced
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-10-01",
             "name": "[variables('deploymentNames').policyDeploymentName]",
             "location": "[deployment().location]",
-            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('telcoPrefix'))]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('healthPrefix'))]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
@@ -968,7 +938,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     }
                 }
             }
@@ -977,8 +947,8 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
             "location": "[deployment().location]",
-            "name": "[variables('deploymentNames').telcoPolicyDefinitons]",
-            "scope": "[tenantResourceId('Microsoft.Management/managementGroups/', parameters('telcoPrefix'))]",
+            "name": "[variables('deploymentNames').healthPolicyDefinitons]",
+            "scope": "[tenantResourceId('Microsoft.Management/managementGroups/', parameters('healthPrefix'))]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
@@ -987,22 +957,22 @@
                 "mode": "Incremental",
                 "templateLink": {
                     "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').telcoPolicyDefinitions]"
+                    "uri": "[variables('deploymentUris').healthPolicyDefinitions]"
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     }
                 }
             }
         },        
         {
-            // Deploying Telco Policy Initiative to prevent usage of public endpoints for PaaS services using built-in policies
+            // Deploying Healthcare Policy Initiative to prevent usage of public endpoints for PaaS services using built-in policies
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-10-01",
             "name": "[variables('deploymentNames').publicEndpointPolicyDefinitionName]",
             "location": "[deployment().location]",
-            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('telcoPrefix'))]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('healthPrefix'))]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
@@ -1017,12 +987,12 @@
             }
         },
         {
-            // Deploying Telco Policy Initiative to deploy Private DNS Zones for PaaS services using built-in policies
+            // Deploying Healthcare Policy Initiative to deploy Private DNS Zones for PaaS services using built-in policies
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-10-01",
             "name": "[variables('deploymentNames').privateDnsPolicyDefinitionName]",
             "location": "[deployment().location]",
-            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('telcoPrefix'))]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('healthPrefix'))]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
@@ -1037,12 +1007,12 @@
             }
         },
         {
-            // Deploying Telco custom data policies
+            // Deploying Healthcare custom data policies
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-10-01",
             "name": "[variables('deploymentNames').dataPolicyDeploymentName]",
             "location": "[deployment().location]",
-            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('telcoPrefix'))]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('healthPrefix'))]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
@@ -1055,7 +1025,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     }
                 }
             }
@@ -1066,7 +1036,7 @@
             "apiVersion": "2020-10-01",
             "name": "[concat('preparingToLaunch', copyIndex())]",
             "location": "[deployment().location]",
-            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('telcoPrefix'))]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('healthPrefix'))]",
             "dependsOn": [
                 "[variables('deploymentNames').policyDeploymentName]",
                 "[variables('deploymentNames').privateDnsPolicyDefinitionName]",
@@ -1217,6 +1187,39 @@
             }
         },
         {
+            // Create storage account for NSG Flow Logs in the management subscription for networking observability
+            "condition": "[and(not(empty(parameters('managementSubscriptionId'))), equals(parameters('enableRegulatoryCompliance'), 'HIPAAHITRUST'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').logStorageDeploymentName]",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "subscriptionId": "[parameters('managementSubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]",
+                "policyCompletion",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').logStorageAccount]"
+                },
+                "parameters": {
+                    "mgmtStorageRgName": {
+                        "value": "[variables('platformRgNames').logNwRg]"
+                    },
+                    "storageAccountName": {
+                        "value": "[variables('platformResourceNames').logNwStorageAccount]"
+                    },
+                    "storageLocation": {
+                        "value": "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
+                    }
+                }
+            }
+        },        
+        {
             // Deploying Log Analytics solutions to Log Analytics workspace if condition is true
             "condition": "[and(and(not(empty(parameters('managementSubscriptionId'))), equals(parameters('enableLogAnalytics'), 'Yes')),  equals(parameters('enableLogAnalytics'), 'Yes'), or(or(or(or(or(equals(parameters('enableSecuritySolution'), 'Yes'), equals(parameters('enableAgentHealth'), 'Yes')), equals(parameters('enableChangeTracking'), 'Yes')), equals(parameters('enableUpdateMgmt'), 'Yes'), equals(parameters('enableActivityLog'), 'Yes')), equals(parameters('enableVmInsights'), 'Yes')), equals(parameters('enableServiceMap'), 'Yes'), equals(parameters('enableSqlAssessment'), 'Yes')))]",
             "type": "Microsoft.Resources/deployments",
@@ -1272,39 +1275,6 @@
             }
         },
         {
-            // Create storage account for NSG Flow Logs in the management subscription for networking observability
-            "condition": "[and(not(empty(parameters('managementSubscriptionId'))), equals(parameters('enableNsgFlowLogs'), 'Yes'))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[variables('deploymentNames').logStorageDeploymentName]",
-            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
-            "subscriptionId": "[parameters('managementSubscriptionId')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]",
-                "policyCompletion",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').logStorageAccount]"
-                },
-                "parameters": {
-                    "mgmtStorageRgName": {
-                        "value": "[variables('platformRgNames').logNwRg]"
-                    },
-                    "storageAccountName": {
-                        "value": "[variables('platformResourceNames').logNwStorageAccount]"
-                    },
-                    "storageLocation": {
-                        "value": "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
-                    }
-                }
-            }
-        },
-        {
             // Assigning Log Analytics workspace policy to management management group if condition is true
             "condition": "[and(equals(parameters('enableLogAnalytics'), 'Yes'), not(empty(parameters('managementSubscriptionId'))))]",
             "type": "Microsoft.Resources/deployments",
@@ -1324,7 +1294,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "rgName": {
                         "value": "[variables('platformRgNames').mgmtRg]"
@@ -1348,12 +1318,119 @@
             }
         },
         {
+            // Assigning FedRAMP High policy initiative to Healthcare management group if condition is true
+            "condition": "[equals(parameters('enableRegulatoryCompliance'), 'FEDRAMPMEDIUM')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').fedrampMediumPolicyAssignment]",
+            "scope": "[variables('scopes').healthManagementGroup]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "policyCompletion"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').fedrampMediumPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('healthPrefix')]"
+                    }
+                }
+            }
+        },
+        {
+            // Assigning FedRAMP High policy initiative to Healthcare management group if condition is true
+            "condition": "[equals(parameters('enableRegulatoryCompliance'), 'FEDRAMPHIGH')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').fedrampHighPolicyAssignment]",
+            "scope": "[variables('scopes').healthManagementGroup]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "policyCompletion"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').fedrampHighPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('healthPrefix')]"
+                    }
+                }
+            }
+        },        
+        {
+            // Assigning PCI policy initiative to Healthcare management group if condition is true
+            "condition": "[equals(parameters('enableRegulatoryCompliance'), 'PCI')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').pciPolicyAssignment]",
+            "scope": "[variables('scopes').healthManagementGroup]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "policyCompletion"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').pciPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('healthPrefix')]"
+                    }
+                }
+            }
+        },        
+        {
+            // Assigning HIPAA/HITRUST policy initiative to Healthcare management group if condition is true
+            "condition": "[equals(parameters('enableRegulatoryCompliance'), 'HIPAAHITRUST')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').hitrustHipaaPolicyAssignment]",
+            "scope": "[variables('scopes').healthManagementGroup]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]",
+                "policyCompletion",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logStorageDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').logLiteStorageDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').hitrustHipaaPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('healthPrefix')]"
+                    },
+                    "DeployDiagnosticSettingsforNetworkSecurityGroupsstoragePrefix": {
+                        "value": "[variables('platformResourceNames').logNwStorageAccount]"
+                    },
+                    "DeployDiagnosticSettingsforNetworkSecurityGroupsrgName": {
+                        "value": "[variables('platformRgNames').logNwRg]"
+                    }
+                }
+            }
+        },
+        {
             // Assigning Azure Security Benchmark policy to intermediate root management group if condition is true
             "condition": "[and(or(not(empty(parameters('singlePlatformSubscriptionId'))), not(empty(parameters('managementSubscriptionId')))), or(equals(parameters('enableLogAnalytics'), 'Yes'), equals(parameters('enableAsc'), 'Yes')))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "name": "[variables('deploymentNames').asbPolicyDeploymentName]",
-            "scope": "[variables('scopes').TelcoRootManagementGroup]",
+            "scope": "[variables('scopes').healthRootManagementGroup]",
             "location": "[deployment().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]",
@@ -1376,7 +1453,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "name": "[variables('deploymentNames').resourceDiagnosticsPolicyDeploymentName]",
-            "scope": "[variables('scopes').TelcoRootManagementGroup]",
+            "scope": "[variables('scopes').healthRootManagementGroup]",
             "location": "[deployment().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]",
@@ -1392,7 +1469,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "logAnalyticsResourceId": {
                         "value": "[variables('platformResourceIds').logAnalyticsResourceId]"
@@ -1406,7 +1483,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "name": "[variables('deploymentNames').activityDiagnosticsPolicyDeploymentName]",
-            "scope": "[variables('scopes').TelcoRootManagementGroup]",
+            "scope": "[variables('scopes').healthRootManagementGroup]",
             "location": "[deployment().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
@@ -1423,7 +1500,7 @@
                         "value": "[variables('platformResourceIds').logAnalyticsResourceId]"
                     },
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     }
                 }
             }   
@@ -1434,7 +1511,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "name": "[variables('deploymentNames').ascPolicyDeploymentName]",
-            "scope": "[variables('scopes').TelcoRootManagementGroup]",
+            "scope": "[variables('scopes').healthRootManagementGroup]",
             "location": "[deployment().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
@@ -1451,7 +1528,7 @@
                         "value": "[variables('platformResourceIds').logAnalyticsResourceId]"
                     },
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "emailContactAsc": {
                         "value": "[parameters('emailContactAsc')]"
@@ -1468,17 +1545,14 @@
                     "enableAscForStorage": {
                         "value": "[parameters('enableAscForStorage')]"
                     },
-                    "enableAscForRegistries": {
-                        "value": "[parameters('enableAscForRegistries')]"
-                    },
                     "enableAscForKeyVault": {
                         "value": "[parameters('enableAscForKeyVault')]"
                     },
                     "enableAscForSqlOnVm": {
                         "value": "[parameters('enableAscForSqlOnVm')]"
                     },
-                    "enableAscForKubernetes": {
-                        "value": "[parameters('enableAscForKubernetes')]"
+                    "enableAscForContainers": {
+                        "value": "[parameters('enableAscForContainers')]"
                     },
                     "enableAscForArm": {
                         "value": "[parameters('enableAscForArm')]"
@@ -1498,7 +1572,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "name": "[variables('deploymentNames').ascGovPolicyDeploymentName]",
-            "scope": "[variables('scopes').TelcoRootManagementGroup]",
+            "scope": "[variables('scopes').healthRootManagementGroup]",
             "location": "[deployment().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
@@ -1515,7 +1589,7 @@
                         "value": "[variables('platformResourceIds').logAnalyticsResourceId]"
                     },
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "emailContactAsc": {
                         "value": "[parameters('emailContactAsc')]"
@@ -1529,8 +1603,8 @@
                     "enableAscForStorage": {
                         "value": "[parameters('enableAscForStorage')]"
                     },
-                    "enableAscForRegistries": {
-                        "value": "[parameters('enableAscForRegistries')]"
+                    "enableAscForContainers": {
+                        "value": "[parameters('enableAscForContainers')]"
                     },
                     "enableAscForArm": {
                         "value": "[parameters('enableAscForArm')]"
@@ -1660,7 +1734,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "ddosPlanResourceId": {
                         "value": "[variables('platformResourceIds').ddosProtectionResourceId]"
@@ -1750,7 +1824,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "ddosPlanResourceId": {
                         "value": "[variables('platformResourceIds').ddosProtectionResourceId]"
@@ -1825,7 +1899,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enableHub": {
                         "value": "[parameters('enableHub')]"
@@ -1930,44 +2004,7 @@
                     }
                 }
             }
-        },
-        {   // Creating Policy Assignment for NSG Flow Logs Policy on Platform scope
-            "condition": "[and(equals(parameters('enableNetworkWatcher'), 'Yes'), equals(parameters('enableNsgFlowLogs'), 'Yes'))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
-            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
-            "name": "[variables('deploymentNames').nsgFlowLogsPlatformPolicyAssignment]",
-            "scope": "[variables('scopes').platformManagementGroup]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]",
-                "policyCompletion",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logStorageDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').logLiteStorageDeploymentName)]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').nsgFlowLogPolicyAssignment]"
-                },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
-                    },
-                    "enforcementMode": {
-                        "value": "[if(equals(parameters('enableNsgFlowLogs'), 'Yes'), 'Default', 'DoNotEnforce')]"
-                    },
-                    "storageAccountResourceId": {
-                        "value": "[variables('platformResourceIds').logStorageResourceId]"
-                    },
-                    "workspace": {
-                        "value": "[variables('platformResourceIds').logAnalyticsResourceId]"
-                    }
-                }
-            }
-        },            
+        },           
         {   // Creating Policy Assignment for NetworkWatcherRG on Platform scope
             "condition": "[equals(parameters('enableNetworkWatcher'), 'Yes')]",
             "type": "Microsoft.Resources/deployments",
@@ -1976,7 +2013,7 @@
             "name": "[variables('deploymentNames').nwRgPlatformPolicyAssignment]",
             "scope": "[variables('scopes').platformManagementGroup]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').healthPolicyDefinitons)]",
                 "policyCompletion"
             ],
             "properties": {
@@ -1987,7 +2024,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('enableNetworkWatcher'), 'Yes'), 'Default', 'DoNotEnforce')]"
@@ -2000,44 +2037,7 @@
         },
         /*
             The following deployments will deploy and configure the Azure policy governance for the landing zones
-        */
-        {   // Creating Policy Assignment for NSG Flow Logs Policy on Landing zone scope
-            "condition": "[and(equals(parameters('enableNetworkWatcher'), 'Yes'), equals(parameters('enableNsgFlowLogs'), 'Yes'))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
-            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
-            "name": "[variables('deploymentNames').nsgFlowLogsLzPolicyAssignment]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]",
-                "policyCompletion",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logStorageDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').logLiteStorageDeploymentName)]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').nsgFlowLogPolicyAssignment]"
-                },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
-                    },
-                    "enforcementMode": {
-                        "value": "[if(equals(parameters('enableNsgFlowLogs'), 'Yes'), 'Default', 'DoNotEnforce')]"
-                    },
-                    "storageAccountResourceId": {
-                        "value": "[variables('platformResourceIds').logStorageResourceId]"
-                    },
-                    "workspace": {
-                        "value": "[variables('platformResourceIds').logAnalyticsResourceId]"
-                    }
-                }
-            }
-        },           
+        */     
         {
             // Creating Policy Assignment for NetworkWatcherRG on Landing Zone scope
             "condition": "[equals(parameters('enableNetworkWatcher'), 'Yes')]",
@@ -2047,7 +2047,7 @@
             "name": "[variables('deploymentNames').nwRgLzPolicyAssignment]",
             "scope": "[variables('scopes').lzsManagementGroup]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').healthPolicyDefinitons)]",
                 "policyCompletion"
             ],
             "properties": {
@@ -2058,67 +2058,13 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('enableNetworkWatcher'), 'Yes'), 'Default', 'DoNotEnforce')]"
                     },
                     "location": {
                         "value": "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
-                    }
-                }
-            }
-        },
-        {
-            "condition": "[or(equals(parameters('enableErHa'), 'Yes'), equals(parameters('enableErHa'), 'Audit'))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
-            "location": "[deployment().location]",
-            "name": "[variables('deploymentNames').erHaPolicyAssignment]",
-            "scope": "[variables('scopes').telcoManagementGroup]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]",
-                "policyCompletion"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').erHaPolicyAssignment]"
-                },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
-                    },
-                    "enforcementMode": {
-                        "value": "[if(equals(parameters('enableErHa'), 'Yes'), 'Default', 'DoNotEnforce')]"
-                    }
-                }
-            }
-        },
-        {
-            "condition": "[or(equals(parameters('enablePipHa'), 'Yes'), equals(parameters('enablePipHa'), 'Audit'))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
-            "location": "[deployment().location]",
-            "name": "[variables('deploymentNames').pipHaPolicyAssignment]",
-            "scope": "[variables('scopes').telcoManagementGroup]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]",
-                "policyCompletion"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').pipHaPolicyAssignment]"
-                },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
-                    },
-                    "enforcementMode": {
-                        "value": "[if(equals(parameters('enablePipHa'), 'Yes'), 'Default', 'DoNotEnforce')]"
                     }
                 }
             }
@@ -2146,7 +2092,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "location": {
                         "value": "[parameters('location')]"
@@ -2179,7 +2125,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "principalId": {
                         "value": "[if(equals(parameters('enablePrivateDnsZonesForLzs'), 'Yes'), reference(variables('deploymentNames').privateDnsPolicyDeploymentName).outputs.principalId.value, 'na')]"
@@ -2196,7 +2142,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "name": "[variables('deploymentNames').azVmMonitorPolicyDeploymentName]",
-            "scope": "[variables('scopes').TelcoRootManagementGroup]",
+            "scope": "[variables('scopes').healthRootManagementGroup]",
             "location": "[deployment().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
@@ -2212,7 +2158,7 @@
                         "value": "[variables('platformResourceIds').logAnalyticsResourceId]"
                     },
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('enableVmMonitoring'), 'Yes'), 'Default', 'DoNotEnforce')]"
@@ -2226,7 +2172,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "name": "[variables('deploymentNames').azVmssMonitorPolicyDeploymentName]",
-            "scope": "[variables('scopes').TelcoRootManagementGroup]",
+            "scope": "[variables('scopes').healthRootManagementGroup]",
             "location": "[deployment().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
@@ -2242,7 +2188,7 @@
                         "value": "[variables('platformResourceIds').logAnalyticsResourceId]"
                     },
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('enableVmssMonitoring'), 'Yes'), 'Default', 'DonNotEnforce')]"
@@ -2269,7 +2215,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('enableVmBackup'), 'Yes'), 'Default', 'DoNotEnforce')]"
@@ -2299,7 +2245,7 @@
                         "value": "[variables('platformResourceIds').ddosProtectionResourceId]"
                     },
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('enableLzDdoS'), 'Yes'), 'Default', 'DoNotEnforce')]"
@@ -2327,7 +2273,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('denyDatabricksPip'), 'Yes'), 'Default', 'DoNotEnforce')]"
@@ -2355,7 +2301,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('denyDatabricksSku'), 'Yes'), 'Default', 'DoNotEnforce')]"
@@ -2383,7 +2329,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('denyDatabricksVnet'), 'Yes'), 'Default', 'DoNotEnforce')]"
@@ -2410,7 +2356,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('enableaksPolicy'), 'Yes'), 'Default', 'DoNotEnforce')]"
@@ -2510,7 +2456,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('enableEncryptionInTransit'), 'Yes'), 'Default', 'DoNotEnforce')]"
@@ -2563,7 +2509,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "Default"
@@ -2591,7 +2537,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "Default"
@@ -2644,7 +2590,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "Default"
@@ -2671,7 +2617,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "Default"
@@ -2698,7 +2644,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "Default"
@@ -2756,7 +2702,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "Default"
@@ -2784,7 +2730,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "Default"
@@ -2812,7 +2758,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "Default"
@@ -2915,27 +2861,27 @@
             }
         },              
         /*
-            The following deployments will place landing zone subscriptions into online/corp/telco (connected, disconnected, or telco specialized)
+            The following deployments will place landing zone subscriptions into online/corp/healthcare (connected, disconnected, or healthcare specialized)
         */
         {
-            // Placing subscription(s) into telco landing zone management group
-            "condition": "[not(empty(parameters('telcoLzSubscriptionId')))]",
+            // Placing subscription(s) into healthcare landing zone management group
+            "condition": "[not(empty(parameters('healthLzSubscriptionId')))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
-            "name": "[concat(variables('deploymentNames').telcoLzSubs, copyIndex())]",
-            "scope": "[variables('scopes').telcoManagementGroup]",
+            "name": "[concat(variables('deploymentNames').healthLzSubs, copyIndex())]",
+            "scope": "[variables('scopes').healthManagementGroup]",
             "location": "[deployment().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').healthPolicyDefinitons)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascPolicyDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascGovPolicyDeploymentName)]",                
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').resourceDiagnosticsPolicyDeploymentName)]"
             ],
             "copy": {
-                "name": "telcoLzs",
-                "count": "[length(parameters('telcoLzSubscriptionId'))]"
+                "name": "healthLzs",
+                "count": "[length(parameters('healthLzSubscriptionId'))]"
             },
             "properties": {
                 "mode": "Incremental",
@@ -2945,10 +2891,10 @@
                 },
                 "parameters": {
                     "targetManagementGroupId": {
-                        "value": "[variables('mgmtGroups').telco]"
+                        "value": "[variables('mgmtGroups').healthcare]"
                     },
                     "subscriptionId": {
-                        "value": "[concat(parameters('telcoLzSubscriptionId')[copyIndex()])]"
+                        "value": "[concat(parameters('healthLzSubscriptionId')[copyIndex()])]"
                     }
                 }
             }
@@ -2964,7 +2910,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').healthPolicyDefinitons)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascPolicyDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascGovPolicyDeploymentName)]",                
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').resourceDiagnosticsPolicyDeploymentName)]"
@@ -3001,7 +2947,7 @@
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').healthPolicyDefinitons)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascGovPolicyDeploymentName)]",                
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').resourceDiagnosticsPolicyDeploymentName)]"
             ],
@@ -3035,7 +2981,7 @@
             "location": "[deployment().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').telcoPolicyDefinitons)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').healthPolicyDefinitons)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascPolicyDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascGovPolicyDeploymentName)]",                
@@ -3174,14 +3120,14 @@
             }
         },*/     
         /*
-            **Telco Lite Only!**
+            **Healthcare Lite Only!**
             The following section represent optional deployments in case the user select to use a single dedicated subscription for platform resources.
             This is not recommmended for production deployment, only for small enterprises, demo, POC, etc.
 
-            The following deployment will create the management group structure for Telco Lite
+            The following deployment will create the management group structure for Healthcare Lite
         */
         {
-            // Creating the Telco Lite management group structure
+            // Creating the Healthcare Lite management group structure
             "condition": "[not(empty(parameters('singlePlatformSubscriptionId')))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-10-01",
@@ -3195,7 +3141,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     }
                 }
             }
@@ -3273,12 +3219,9 @@
                 }
             }
         },
-        /*
-            Note: ES Lite only: the following deployments will deploy Log Analytics solutions to the platform subscription
-        */
-                {
+        {
             // Create storage account for NSG Flow Logs in the management subscription for networking observability
-            "condition": "[and(not(empty(parameters('singlePlatformSubscriptionId'))), equals(parameters('enableNsgFlowLogs'), 'Yes'))]",
+            "condition": "[and(not(empty(parameters('singlePlatformSubscriptionId'))), equals(parameters('enableRegulatoryCompliance'), 'HIPAAHITRUST'))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "name": "[variables('esLiteDeploymentNames').logLiteStorageDeploymentName]",
@@ -3307,7 +3250,10 @@
                     }
                 }
             }
-        },        
+        },
+        /*
+            Note: ES Lite only: the following deployments will deploy Log Analytics solutions to the platform subscription
+        */      
         {
             // Deploying Log Analytics solutions to Log Analytics workspace if condition is true
             "condition": "[and(and(not(empty(parameters('singlePlatformSubscriptionId'))), equals(parameters('enableLogAnalytics'), 'Yes')),  equals(parameters('enableLogAnalytics'), 'Yes'), or(or(or(or(or(equals(parameters('enableSecuritySolution'), 'Yes'), equals(parameters('enableAgentHealth'), 'Yes')), equals(parameters('enableChangeTracking'), 'Yes')), equals(parameters('enableUpdateMgmt'), 'Yes'), equals(parameters('enableActivityLog'), 'Yes')), equals(parameters('enableVmInsights'), 'Yes')), equals(parameters('enableServiceMap'), 'Yes'), equals(parameters('enableSqlAssessment'), 'Yes')))]",
@@ -3386,7 +3332,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "rgName": {
                         "value": "[variables('platformRgNames').mgmtRg]"
@@ -3608,7 +3554,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "ddosPlanResourceId": {
                         "value": "[variables('platformResourceIds').ddosProtectionResourceId]"
@@ -3699,7 +3645,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "ddosPlanResourceId": {
                         "value": "[variables('platformResourceIds').ddosProtectionResourceId]"
@@ -3777,7 +3723,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enableHub": {
                         "value": "[parameters('enableHub')]"
@@ -3824,7 +3770,8 @@
             "scope": "[variables('scopes').platformManagementGroup]",
             "location": "[deployment().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement)]"            ],
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement)]"            
+                ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -3864,7 +3811,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "Default"
@@ -3895,7 +3842,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[parameters('healthPrefix')]"
                     },
                     "enforcementMode": {
                         "value": "Default"
