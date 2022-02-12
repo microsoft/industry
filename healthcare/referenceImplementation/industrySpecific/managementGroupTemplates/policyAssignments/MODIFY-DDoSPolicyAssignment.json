@@ -5,7 +5,7 @@
         "topLevelManagementGroupPrefix": {
             "type": "string",
             "metadata": {
-                "description": "Provide the ESLZ company prefix to the intermediate root management group containing the policy definitions."
+                "description": "Provide a prefix to the intermediate root management group containing the policy definitions."
             }
         },
         "ddosPlanResourceId": {
