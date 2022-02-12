@@ -117,7 +117,7 @@ Consider the following recommendations if you are deploying the Azure VPN Gatewa
 - For maximum resiliency, deploy the Azure VPN Gateway as zone-redundant in the regions that support Availability Zones.
   - If the region does not support Availability Zones, deploy the VPN Gateway as regional.
 - Deploy the VPN Gateway as zonal only if you are aligning your resources to a specific zone for scenarios such as minimize latency.
-- Choose carefully the right Azure VPN Gateway SKU (https://docs.microsoft.com/azure/vpn-gateway/vpn-gateway-about-vpngateways#gwsku) or Azure Virtual WAN VPN Gateway scale units, as that will determine the capabilities and overall throughput of the gateway.
+- Choose carefully the right Azure VPN Gateway [SKU](https://docs.microsoft.com/azure/vpn-gateway/vpn-gateway-about-vpngateways#gwsku) or Azure Virtual WAN VPN Gateway scale units, as that will determine the capabilities and overall throughput of the gateway.
 - If you need up to 100 site-to-site VPN tunnels use either Azure VPN Gateway or Azure Virtual WAN VPN Gateway.
   - Use Azure Virtual WAN if you need more than 100 site-to-site VPN tunnels.
 
