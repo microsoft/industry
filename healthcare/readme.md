@@ -8,11 +8,11 @@ This article provides a reference architecture with prescriptive guidance and re
 - [Azure for Healthcare Reference Architectures](#azure-for-healthcare-reference-architecture)
 - [Compliance](#compliance)
 - [Deployment steps](#deployment-steps)
-  - [<a id="letter-a"></a>! Healthcare Landing Zone](#-healthcare-landing-zone)
-  - [<a id="letter-b"></a>! Azure Healthcare API](#-azure-healthcare-api)
-  - [<a id="letter-c"></a>! Healthcare Analytics](#-healthcare-analytics)
-  - [<a id="letter-d"></a>! North Star Architecture for Power Platform](#-north-star-architecture-for-power-platform)
-  - [<a id="letter-e"></a>! Solutions for healthcare](#-solutions-for-healthcare)
+  - [Healthcare Landing Zone](#healthcare-landing-zone)
+  - [Azure Healthcare API](#azure-healthcare-api)
+  - [Healthcare Analytics](#healthcare-analytics)
+  - [North Star Architecture for Power Platform](#north-star-architecture-for-power-platform)
+  - [Solutions for healthcare](#solutions-for-healthcare)
 
 ## Azure for Healthcare Reference Implementations
 
@@ -49,29 +49,29 @@ Audit reports can be found here: [Azure & O365 Audit Reports](https://servicetru
 
 The composition of the end to end Microsoft Cloud For Healthcare deployment is layered in a set of steps. This gives you flexibility with deploying the relevant components and allow for different teams in the organization to be responsible for deployment and continuous ownership of additional development, configuration and maintenance needs. In the overall architecture for Microsoft Cloud for Healthcare, the Healthcare APIs components enable organizations to use standards based data models e.g. Fast Healthcare Interoperability Resources (FHIR) standards frameworks and Dicom image library.
 
-### <a id="letter-a"></a>![](./docs/a.png) Healthcare Landing Zone
+### Healthcare Landing Zone
 
 The architecture in the Healthcare Industry reference implementation establishes the essentials for a scalable, secure environment following the compliance requirements of the industry globally.
 
-### <a id="letter-b"></a>![](./docs/b.png) Azure Healthcare API
+### Azure Healthcare API
 
 * [Azure Healthcare API](./solutions/healthcareApis/readme.md)
 
 Building on the secure foundation established in Healthcare Landing Zone an essential part of a healthcare cloud environment are the Azure Healthcare API's.
 
-### <a id="letter-c"></a>![](./docs/c.png) Healthcare Analytics
+### Healthcare Analytics
 
 * [Healthcare Analytics](./solutions/clinicalAnalytics/readme.md)
   
 The solution for Healthcare Analytics will harness data and discover insights to deliver value. In this guidance we show how you can persist data in the Healthcare API, export de-identified data to an analytical store, enable large scale analytical query capabilities and leverage insights from AI assisted imaging analysis and population health metrics to determine course of care. The analytical solution enable you to search through large amounts of data from sources like electronic medical records, smart medical devices, patient and population demographics, and the public domain to find hidden patterns and trends and predict outcomes.
 
-### <a id="letter-d"></a>![](./docs/d.png) North Star Architecture for Power Platform
+### North Star Architecture for Power Platform
 
 * [North Star Architecture for Power Platform](../foundations/powerPlatform/readme.md) 
 
 All up architecture for Power Platform with landing zones (environments) securely configured with security, governance, and compliance for scalable business applications - and industry solutions for professional and citizen developers. North Star Architecture for Power Platform is an architecture and design methodology, as well as a reference implementation to deploy into your on Power Platform tenant. It enables effective construction and operationalization of landing zones (environments) on Power Platform, at scale. This approach aligns with the platform and product roadmap and the Center of Excellence adoption framework.
 
-### <a id="letter-e"></a>![](./docs/e.png) Solutions for healthcare
+### Solutions for healthcare
 
 * [Care management](./solutions/careManagement/readme.md) The Care management solution creates a model-driven app within Power Platform to provide healthcare-specific capabilities as part of Microsoft Cloud for Healthcare. The solution allows health providers to create, personalize and enable new care plans for patients and manage care team members.
 * [Home Health](./solutions/homeHealth/readme.md) Home health extends Microsoft Dynamics 365 Field Services with healthcare specific capabilities to manage home visit schedules, notify patients and give providers access to medical information.
