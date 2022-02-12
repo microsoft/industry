@@ -1785,25 +1785,32 @@
                                         "required": false
                                     }
                                 },
+								{
+									"name": "regSection",
+									"type": "Microsoft.Common.Section",
+									"label": "Regulatory Compliance",
+									"elements": [],
+									"visible": true
+								},
                                 {
                                     "name": "healthLzText",
                                     "type": "Microsoft.Common.TextBlock",
                                     "visible": true,
                                     "options": {
-                                        "text": "Select recommended policies you will assign to your healthcare landing zones.",
+                                        "text": "Regulatory Compliance in Azure Policy provides built-in initiative definitions to view a list of the controls and compliance domains based on responsibility (Customer, Microsoft, Shared).",
                                         "link": {
                                             "label": "Learn more",
-                                            "uri": "https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/design-principles#policy-driven-governance"
+                                            "uri": "https://docs.microsoft.com/azure/governance/policy/concepts/regulatory-compliance"
                                         }
                                     }
                                 },
                                 {
                                     "name": "eshealthPolicy",
                                     "type": "Microsoft.Common.OptionsGroup",
-                                    "label": "Select compliance requirement for the healthcare landing zones",
+                                    "label": "Select compliance requirements for the healthcare landing zones",
                                     "defaultValue": "None",
                                     "visible": true,
-                                    "toolTip": "Policy will be assigned to enforce specific regulatory compliance for healthcare landing zones.",
+                                    "toolTip": "Policy will be assigned to enforce specific regulatory compliance for the healthcare landing zones.",
                                     "constraints": {
                                         "allowedValues": [
                                             {
@@ -1811,12 +1818,16 @@
                                                 "value": "HIPAAHITRUST"
                                             },
                                             {
-                                                "label": "NIST",
-                                                "value": "NIST"
+                                                "label": "FedRAMP Medium",
+                                                "value": "FEDRAMPMEDIUM"
                                             },
                                             {
-                                                "label": "FedRAMP",
-                                                "value": "FEDRAMP"
+                                                "label": "FedRAMP High",
+                                                "value": "FEDRAMPHIGH"
+                                            },
+                                            {
+                                                "label": "PCI",
+                                                "value": "PCI"
                                             },
                                             {
                                                 "label": "None",
@@ -1824,102 +1835,6 @@
                                             }
                                         ]
                                     }
-                                },
-                                {
-                                    "name": "esHealthApi",
-                                    "type": "Microsoft.Common.OptionsGroup",
-                                    "label": "Enable Diagnostics on Healthcare APIs (FHIR, DICOM, and IoMT)",
-                                    "defaultValue": "Yes (recommended)",
-                                    "toolTip": "If 'Yes' is selected, policy will be assigned to enable diagnostics on Healthcare APIs",
-                                    "constraints": {
-                                        "allowedValues": [
-                                            {
-                                                "label": "Yes (recommended)",
-                                                "value": "Yes"
-                                            },
-                                            {
-                                                "label": "Audit only",
-                                                "value": "Audit"
-                                            },
-                                            {
-                                                "label": "No",
-                                                "value": "No"
-                                            }
-                                        ]
-                                    },
-                                    "visible": true
-                                },
-                                {
-                                    "name": "esDataLakeEnc",
-                                    "type": "Microsoft.Common.OptionsGroup",
-                                    "label": "Enforce Encryption on Data Lake Storage Accounts",
-                                    "defaultValue": "Yes (recommended)",
-                                    "toolTip": "If 'Yes' is selected, policy will be assigned to enforce encryption",
-                                    "constraints": {
-                                        "allowedValues": [
-                                            {
-                                                "label": "Yes (recommended)",
-                                                "value": "Yes"
-                                            },
-                                            {
-                                                "label": "Audit only",
-                                                "value": "Audit"
-                                            },
-                                            {
-                                                "label": "No",
-                                                "value": "No"
-                                            }
-                                        ]
-                                    },
-                                    "visible": true
-                                },
-                                {
-                                    "name": "fhirKey",
-                                    "type": "Microsoft.Common.OptionsGroup",
-                                    "label": "Azure API for FHIR should must use customer-managed key",
-                                    "defaultValue": "Yes (recommended)",
-                                    "toolTip": "If 'Yes' is selected, policy will be assigned to encryption using customer managed key.",
-                                    "constraints": {
-                                        "allowedValues": [
-                                            {
-                                                "label": "Yes (recommended)",
-                                                "value": "Yes"
-                                            },
-                                            {
-                                                "label": "Audit only",
-                                                "value": "Audit"
-                                            },
-                                            {
-                                                "label": "No",
-                                                "value": "No"
-                                            }
-                                        ]
-                                    },
-                                    "visible": true
-                                },
-                                {
-                                    "name": "synapseOutbound",
-                                    "type": "Microsoft.Common.OptionsGroup",
-                                    "label": "Ensure Azure Synapse workspaces can only allow outbound traffic to approved targets",
-                                    "defaultValue": "Yes (recommended)",
-                                    "toolTip": "If 'Yes' is selected, policy will be assigned to govern outbound traffic for Synapse",
-                                    "constraints": {
-                                        "allowedValues": [
-                                            {
-                                                "label": "Yes (recommended)",
-                                                "value": "Yes"
-                                            },
-                                            {
-                                                "label": "Audit only",
-                                                "value": "Audit"
-                                            },
-                                            {
-                                                "label": "No",
-                                                "value": "No"
-                                            }
-                                        ]
-                                    },
-                                    "visible": true
                                 }
                             ],
                             "visible": true
