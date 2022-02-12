@@ -35,7 +35,7 @@ North Star Architecture for Power Platform represents the strategic design path 
 
 ### High-level architecture
 
-The North Star Architecture includes is rooted on key design principles and an evolving set of design considerations and recommendations across the [critical design areas](#critical-design-areas-for-power-platform) for Power Platform. It is modular by design and allows you to start with a foundational architecture that enables construction and operationalization of landing zones (Environments) that supports your industry and business application portfolios, for both pro developers and citizen developers. The architecture will scale regardless your organization scale-point and business requirements.
+The North Star Architecture is rooted on key design principles and an evolving set of design considerations and recommendations across the [critical design areas](#critical-design-areas-for-power-platform) for Power Platform. It is modular by design and allows you to start with a foundational architecture that enables construction and operationalization of landing zones (Environments) that supports your industry and business application portfolios, for both pro developers and citizen developers. The architecture will scale regardless your organization scale-point and business requirements.
 
 Figure 1 depicts the high-level architecture of North Star Architecture for Power Platform
 
