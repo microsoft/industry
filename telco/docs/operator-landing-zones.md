@@ -5,7 +5,7 @@ An Operator Landing Zone is a special type of landing zone, which has significan
 ![Figure 1: Sample Operator Landing Zone](./sample-operator-landing-zone.png)
 _Figure 1: Sample Operator Landing Zone._
 
-It is also not uncommon for applications in the telco industry to have high SLO availability targets usually measured in the 4 (99.99%) or 5 (99.999%) nine's availability of the solution. 
+It is also not uncommon for applications in the telco industry to have high SLO availability targets usually measured in the 4 (99.99%) or 5 (99.999%) nine's availability of the solution.
 
 This section focuses on providing guidance with design considerations and recommendations for deploying mission-critical, carieer-grade telco applications (such as 5G Core, packet core, session boarder control, etc) on Azure on specialized Operator Landing Zones. This section will first introduce the AlwaysOn project, and readers are strongly recommended to familiarize with it before proceeding to the remaining sections of this article which provide additional considerations when deploying and delivering network functions from Azure.
 
@@ -36,12 +36,11 @@ The AlwaysOn project is based on a Design Methodology (which provides easy to fo
   - [Networking and connectivity](https://github.com/Azure/AlwaysOn/blob/main/docs/design-methodology/Networking.md): Networking is a fundamental design topic for an AlwaysOn application, particularly given the recommended globally distributed active-active design approach.
   - [Security](https://github.com/Azure/AlwaysOn/blob/main/docs/design-methodology/Security.md): Security is paramount for any mission-critical application, particularly given the myriad of threat actors that exist in present-day society. Security must therefore be treated as a first-class concern within the AlwaysOn architectural process, to ensure that security services and practices are interwoven within the solution.
   - [Operational procedures](https://github.com/Azure/AlwaysOn/blob/main/docs/design-methodology/Operational-Procedures.md): The AlwaysOn design methodology leans heavily on the principles automation wherever possible and configuration as code to drive reliable and effective operations through DevOps processes, with automated deployment pipelines used to execute versioned application and infrastructure code artifacts within a source repository
-
  - [AlwaysOn Reference Architecture](https://github.com/Azure/AlwaysOn/tree/main/docs/design-methodology/Design-Areas.md#reference-architecture): An AlwaysOn application architecture is defined by the various design decisions required to ensure both functional and non-functional business-requirements are fully satisfied. The target AlwaysOn architecture is therefore greatly influenced by the relevant business requirements, and as a result may vary between different application contexts. The image below represents a target technical state recommended for mission-critical applications on Azure. It leverages a reference set of business requirements to achieve an optimized architecture for different target reliability tiers.
 
- [![AlwaysOn Online Foundational Reference Architecture](./alwayson-architecture-foundational-online.png "AlwaysOn Online Foundational Reference Architecture")](./Design-Areas.md)
- 
- _Figure 1: AlwaysOn Reference Architecture._
+[![AlwaysOn Online Foundational Reference Architecture](./alwayson-architecture-foundational-online.png "AlwaysOn Online Foundational Reference Architecture")](./Design-Areas.md)
+
+_Figure 1: AlwaysOn Reference Architecture._
 
 Readers are strongly advised to familiarize themselves with the AlwaysOn project, its design methodology, its design principles and the critical design areas when designing for and deploying carrier-grade, mission-critical applications and network functions on Microsoft Azure.
 
