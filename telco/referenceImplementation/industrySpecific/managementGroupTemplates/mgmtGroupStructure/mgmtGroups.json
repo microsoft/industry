@@ -32,7 +32,7 @@
         }
     },
     "variables": {
-        "enterpriseScaleManagementGroups": {
+        "managementGroups": {
             "platform": "[concat(parameters('topLevelManagementGroupPrefix'), '-', 'platform')]",
             "landingZone": "[concat(parameters('topLevelManagementGroupPrefix'), '-', 'landingzones')]",
             "decommissioned": "[concat(parameters('topLevelManagementGroupPrefix'), '-', 'decommissioned')]",
@@ -53,12 +53,12 @@
             "type": "Microsoft.Management/managementGroups",
             "apiVersion": "2020-05-01",
             "scope": "/",
-            "name": "[variables('enterpriseScaleManagementGroups').platform]",
+            "name": "[variables('managementGroups').platform]",
             "dependsOn": [
                 "[tenantResourceId('Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]"
             ],
             "properties": {
-                "displayName": "[variables('enterpriseScaleManagementGroups').platform]",
+                "displayName": "[variables('managementGroups').platform]",
                 "details": {
                     "parent": {
                     "id": "[tenantResourceId('Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]"
@@ -71,12 +71,12 @@
             "type": "Microsoft.Management/managementGroups",
             "apiVersion": "2020-05-01",
             "scope": "/",
-            "name": "[variables('enterpriseScaleManagementGroups').landingZone]",
+            "name": "[variables('managementGroups').landingZone]",
             "dependsOn": [
                 "[tenantResourceId('Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]"
             ],
             "properties": {
-                "displayName": "[variables('enterpriseScaleManagementGroups').landingZone]",
+                "displayName": "[variables('managementGroups').landingZone]",
                 "details": {
                     "parent": {
                     "id": "[tenantResourceId('Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]"
@@ -89,12 +89,12 @@
             "type": "Microsoft.Management/managementGroups",
             "apiVersion": "2020-05-01",
             "scope": "/",
-            "name": "[variables('enterpriseScaleManagementGroups').sandboxes]",
+            "name": "[variables('managementGroups').sandboxes]",
             "dependsOn": [
                 "[tenantResourceId('Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]"
             ],
             "properties": {
-                "displayName": "[variables('enterpriseScaleManagementGroups').sandboxes]",
+                "displayName": "[variables('managementGroups').sandboxes]",
                 "details": {
                     "parent": {
                     "id": "[tenantResourceId('Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]"
@@ -107,12 +107,12 @@
             "type": "Microsoft.Management/managementGroups",
             "apiVersion": "2020-05-01",
             "scope": "/",
-            "name": "[variables('enterpriseScaleManagementGroups').decommissioned]",
+            "name": "[variables('managementGroups').decommissioned]",
             "dependsOn": [
                 "[tenantResourceId('Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]"
             ],
             "properties": {
-                "displayName": "[variables('enterpriseScaleManagementGroups').decommissioned]",
+                "displayName": "[variables('managementGroups').decommissioned]",
                 "details": {
                     "parent": {
                     "id": "[tenantResourceId('Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]"
@@ -128,7 +128,7 @@
             "scope": "/",
             "name": "[concat(parameters('topLevelManagementGroupPrefix'), '-', parameters('platformMgs')[copyIndex()])]",
             "dependsOn": [
-                "[tenantResourceId('Microsoft.Management/managementGroups', variables('enterpriseScaleManagementGroups').platform)]"
+                "[tenantResourceId('Microsoft.Management/managementGroups', variables('managementGroups').platform)]"
             ],
             "copy": {
                 "name": "platformMgCopy",
@@ -138,7 +138,7 @@
                 "displayName": "[concat(parameters('topLevelManagementGroupPrefix'), '-', parameters('platformMgs')[copyIndex()])]",
                 "details": {
                     "parent": {
-                        "id": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('enterpriseScaleManagementGroups').platform)]"
+                        "id": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('managementGroups').platform)]"
                     }
                 }
             }
@@ -151,7 +151,7 @@
             "scope": "/",
             "name": "[concat(parameters('topLevelManagementGroupPrefix'), '-', parameters('landingZoneMgs')[copyIndex()])]",
             "dependsOn": [
-                "[tenantResourceId('Microsoft.Management/managementGroups/', variables('enterpriseScaleManagementGroups').landingZone)]"
+                "[tenantResourceId('Microsoft.Management/managementGroups/', variables('managementGroups').landingZone)]"
             ],
             "copy": {
                 "name": "lzMgCopy",
@@ -161,7 +161,7 @@
                 "displayName": "[concat(parameters('topLevelManagementGroupPrefix'), '-', parameters('landingZoneMgs')[copyIndex()])]",
                 "details": {
                     "parent": {
-                        "id": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('enterpriseScaleManagementGroups').landingZone)]"
+                        "id": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('managementGroups').landingZone)]"
                     }
                 }
             }
