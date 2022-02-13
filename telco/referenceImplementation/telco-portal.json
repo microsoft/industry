@@ -741,47 +741,6 @@
                             ],
                             "visible": "[and(not(equals(steps('esConnectivityGoalState').esHub, 'No')), not(equals(steps('lzSettings').subSection.subOrgsOption, 'Single')))]"
                         },
-						{
-							"name": "operatorAnmSection",
-							"type": "Microsoft.Common.Section",
-							"label": "Enable VNet connectivity with Azure Virtual Network Manager (PREVIEW)",
-							"visible": "[equals(steps('esConnectivityGoalState').esHub, 'vhub')]",
-							"elements": [
-								{
-                                    "name": "operatorAnmText",
-                                    "type": "Microsoft.Common.TextBlock",
-                                    "visible": true,
-                                    "options": {
-                                        "text": "Azure Virtual Network Manager is a management service that enables you to group, configure, deploy, and manage virtual networks globally across subscriptions. With Virtual Network Manager, you can define network groups to identify and logically segment your virtual networks. Then you can determine the connectivity and security configurations you want and apply them across all the selected virtual networks in network groups at once.",
-                                        "link": {
-                                            "label": "Learn more",
-                                            "uri": "https://docs.microsoft.com/azure/virtual-network-manager/overview"
-                                        }
-                                    }
-                                },
-								{
-									"name": "anmOption",
-									"type": "Microsoft.Common.OptionsGroup",
-									"label": "Use Azure Virtual Network Manager to manage virtual networks",
-									"defaultValue": "No",
-									"toolTip": "",
-									"constraints": {
-										"allowedValues": [
-											{
-												"label": "Yes",
-												"value": "Yes"
-											},
-											{
-												"label": "No",
-												"value": "No"
-											}
-										],
-										"required": true
-									},
-									"visible": true
-								}
-							]
-						},
                         {
                             "name": "esAddressHubVWAN",
                             "type": "Microsoft.Common.TextBox",
@@ -836,6 +795,47 @@
                             },
                             "visible": "[not(equals(steps('esConnectivityGoalState').esHub, 'No'))]"
                         },
+						{
+							"name": "operatorAnmSection",
+							"type": "Microsoft.Common.Section",
+							"label": "Enable VNet connectivity with Azure Virtual Network Manager (PREVIEW)",
+							"visible": "[and(equals(steps('esConnectivityGoalState').esHub, 'vhub'), contains(split('northcentrals,westus2,eastus,eastus2,northeurope,westeurope,francecentral', ','), steps('esConnectivityGoalState').esNwLocation))]",
+							"elements": [
+								{
+                                    "name": "operatorAnmText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Azure Virtual Network Manager (Preview) is a management service that enables you to group, configure, deploy, and manage virtual networks globally across subscriptions.",
+                                        "link": {
+                                            "label": "Learn more",
+                                            "uri": "https://docs.microsoft.com/azure/virtual-network-manager/overview"
+                                        }
+                                    }
+                                },
+								{
+									"name": "anmOption",
+									"type": "Microsoft.Common.OptionsGroup",
+									"label": "Use Azure Virtual Network Manager to manage virtual networks",
+									"defaultValue": "No",
+									"toolTip": "",
+									"constraints": {
+										"allowedValues": [
+											{
+												"label": "Yes",
+												"value": "Yes"
+											},
+											{
+												"label": "No",
+												"value": "No"
+											}
+										],
+										"required": true
+									},
+									"visible": true
+								}
+							]
+						},						
                         {
                             "name": "esPrivateDns",
                             "type": "Microsoft.Common.OptionsGroup",
