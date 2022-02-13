@@ -46,31 +46,32 @@ _Figure 1: Azure Active Directoy B2B._
 
 Azure Lighthouse is primarily a capability for enterprises with Azure subscriptions spread across multiple Azure AD tenants, as well as for service providers to manage multiple Azure subscriptions across multiple customer Azure AD tenants.
 
-The following picture depicts how the cross-tenant RBAC authorization works, granting principal IDs from the remote Azure AD tenant permissions directly on a subscription or a resource group in a customer tenant.
+Figure 2 below depicts how the cross-tenant RBAC authorization works, granting principal IDs from the remote Azure AD tenant permissions directly on a subscription or a resource group in a customer tenant.
 
 ![lighthouse](./images/lighthouse.png)
+_Figure 2: Azure Lighthouse._
 
-For Telco's considering Azure Lighthouse to manage and operate their customers directly in their Azure subscription(s), the following considerations and recommendations are provided.
+For Operator's considering Azure Lighthouse to manage and operate their customers directly in their Azure subscription(s), the following considerations and recommendations are provided.
 
 ### Design considerations
 
-* Principal IDs in the Telco tenant can only be associated with Azure built-in RBAC, and the highest privilege that can be used is *Contributor*.
-* Azure AD Privileged Identity Management can be leveraged on the Telco Azure AD tenant, providing additional security confirmation to their customers that users are subject to just-in-time access, access reviews, approval process, multi-factor authentication and more.
+* Principal IDs in the Operators tenant can only be associated with Azure built-in RBAC, and the highest privilege that can be used is *Contributor*.
+* Azure AD Privileged Identity Management can be leveraged on the Operator Azure AD tenant, providing additional security confirmation to their customers that users are subject to just-in-time access, access reviews, approval process, multi-factor authentication and more.
 * All *write* operations (create, update, and delete) in the customer subscription(s) is transparent for both parties in the Azure Activity log.
-* Customers can at any point in time remove the permissions given to users from the Telco Azure AD.
-* When a customer grants access (via onboarding of the Telco), an event is written to the Telco's directory (tenant) activity log. The same happens when permission is revoked.
-* Onboarding of a Telco managed service provider can only be done using an Azure Resource Manager template in the customer subscription.
-* Telco's can provide their onboarding Azure Resource Manager template directly to customers, or publish their offerings into Azure Marketplace.
+* Customers can at any point in time remove the permissions given to users from the Operators Azure AD.
+* When a customer grants access (via onboarding of the Operator), an event is written to the Operator's directory (tenant) activity log. The same happens when permission is revoked.
+* Onboarding of an Operator managed service provider can only be done using an Azure Resource Manager template in the customer subscription.
+* Operator's can provide their onboarding Azure Resource Manager template directly to customers, or publish their offerings into Azure Marketplace.
 
 ### Design recommendations
 
-* When using Azure Lighthouse as a Telco managed service provider, ensure you have a good CI/CD approach to maintain and publish the Azure Resource Manager template(s) that are used for customer onboarding.
-* If required by the customer, use Azure AD PIM enabled in the Telco's Azure AD tenant to provide additional, enterprise security capabilities when accessing customer resources.
-* Enable a notification workflow to monitor when new customers are either onboarding to the Telco managed service provider, or are revoking access.
-* Use one or more dedicated subscriptions in the Telco tenant to host and run the requisite management services/tools to operate across multiple customer tenants.
+* When using Azure Lighthouse as an Operator managed service provider, ensure you have a good CI/CD approach to maintain and publish the Azure Resource Manager template(s) that are used for customer onboarding.
+* If required by the customer, use Azure AD PIM enabled in the Operator's Azure AD tenant to provide additional, enterprise security capabilities when accessing customer resources.
+* Enable a notification workflow to monitor when new customers are either onboarding to the Operator managed service provider, or are revoking access.
+* Use one or more dedicated subscriptions in the Operator tenant to host and run the requisite management services/tools to operate across multiple customer tenants.
 * Ensure you have an Azure AD group present in the Azure Resource Manager template that is mapped to the *Managed Services Registration assignment Delete Role*, so you can opt-out from a customer if it's required.
-* Use Azure AD Groups to organize the various personas and access requirements needed to operate the customers, so clear separation of duties from the Telco tenant is established.
-* For updates required to the authorization needed for the Telco identities, the customer must re-deploy the Azure Resource Manager template with the changes for it to be reflected back to the Telco tenant.
+* Use Azure AD Groups to organize the various personas and access requirements needed to operate the customers, so clear separation of duties from the Operator tenant is established.
+* For updates required to the authorization needed for the Operator identities, the customer must re-deploy the Azure Resource Manager template with the changes for it to be reflected back to the Operator tenant.
 
 ## Azure Managed Application
 
