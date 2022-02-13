@@ -1,18 +1,18 @@
-# Telco Services
+# Operator Services
 
-Telcos who are running and hosting their Telco industry solutions on the Azure platform are commonly also managing and servicing other customers, whether it is in their own tenant, or in the customer's tenants.
+Operators who are running and hosting their solutions on the Azure platform are commonly also managing and servicing other customers, whether it is in their own tenant, or in the customer's tenants.
 
-This article enumerates the different methods a Telco on Azure can use in order to provide managed services or/and managed solutions to their customers, directly in the customer environments.
+This article enumerates the different methods an Operator can use on the Azure platform in order to provide managed services and/or managed solutions to their customers, directly in the customer environments.
 
 * [Azure Active Directory B2B](#azure-active-directory-b2b)
 * [Azure Lighthouse](#azure-lighthouse)
 * [Azure Managed Application](#azure-managed-application)
 
-The following table explains the available capabilities, their pros and cons in order to meet the above. Note that all of these capabilities can also be combined and one does not exclude the other.
+The following table describes the available capabilities, their pros and cons in order to meet the above. Note that all of these capabilities can also be combined and one does not exclude the other.
 
 | Service/capability | Description | Pros | Cons |
 |:-------------------------|:-------------|:-------------|------|
-| Azure AD B2B | Azure AD B2B allows customers to directly invite users (guest) accounts from the Telco AAD, and can grant them any permission to manage the tenant as a whole, including Azure resources. | No limitations in terms of what permission that can be granted in the customer tenant across Microsoft Clouds (Azure AD, Office 365, Power Platform, Dynamics). | Requires explicit, manual onboarding from a customer perspective per user. Challenges for the service provider (telco) when they are managing multiple tenants as tenant context must be set explicitly prior to any operation for all clients. Co-admin scenario by design for the customer and the service provider, which can make it hard to have clear separation of duties.
+| Azure AD B2B | Azure AD B2B allows customers to directly invite users (guest) accounts from the Operator Azure AD, and can grant them any permission to manage the tenant as a whole, including Azure resources. | No limitations in terms of what permission that can be granted in the customer tenant across Microsoft Clouds (Azure AD, Office 365, Power Platform, Dynamics). | Requires explicit, manual onboarding from a customer perspective per user. Challenges for the service provider (operator) when they are managing multiple tenants as tenant context must be set explicitly prior to any operation for all clients. Co-admin scenario by design for the customer and the service provider, which can make it hard to have clear separation of duties.
 | Azure Lighthouse | Enables a cross-tenant RBAC assignment so that service providers can manage the customer scopes that are delegated (subscription or resource groups) directly from within their tenant using a single token.  |Optimized for service providers to perform at-scale operations across multiple Azure tenants. Allows service providers to host and secure their intellectual properties in their own subscriptions. Interoperability across tenants from an Azure control plane perspective. Customer is in charge of the access scope given. | Owner RBAC is not supported, so several high privileged operations cannot be executed by the service provider. Limited to Azure ARM only (no Azure AD, Office 365, or Power Platform manageability). Co-admin scenario by design for the customer and the service provider, which can make it hard to have clear separation of duties.
 | Azure Managed Application | Enables service providers and ISVs to publish their solutions into Azure marketplace offerings, where customer deploys into their subscription and the actual Azure resources are projected back to the service provider tenant (cross tenant RBAC assignment) for them to operate on-behalf-of the customers. | Optimized for ISVs/service providers to perform at-scale operations across multiple Azure tenants. Allow ISVs/service providers to host and secure their intellectual properties in their own subscriptions. Interoperability across tenants from an Azure control plane perspective. Service provider can determine the RBAC they need on the managed resource group themselves. Clear separation of duties as the managed resource group in the customer subscription is locked, preventing the customer to potentially cause service disruption. | Permission for ISVs/services are limited to the managed resource group only |
 
@@ -20,7 +20,7 @@ The following table explains the available capabilities, their pros and cons in 
 
 Azure Active Directory (Azure AD) business-to-business (B2B) collaboration is a feature within External Identities that lets you invite guest users to collaborate with your organization. With B2B collaboration, you can securely share your company's applications and services with guest users from any other organization, while maintaining control over your own corporate data.
 
-The diagram below shows that users originating from the Telco Azure Active Directory are invited and projected into the customer's Azure Active Directory. Once the users are added to the customer directory, they can be assigned any Azure AD, Azure, Power Platform, or Microsoft365 role assignment.
+The diagram below shows that users originating from the Operator Azure AD are invited and projected into the customer's Azure AD. Once the users are added to the customer directory, they can be assigned any Azure AD, Azure, Power Platform, or Microsoft365 role assignment.
 
 ![b2b](./images/b2b.png)
 
