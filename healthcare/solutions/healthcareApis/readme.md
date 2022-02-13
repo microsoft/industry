@@ -1,4 +1,4 @@
-# Azure for Healthcare
+# Azure Healthcare APIs
 
 Healthcare APIs with FHIR is essential in many of the Microsoft Cloud for Healthcare scenarios, and is strongly recommended to deploy them into a landing zone in Azure to simplify and expedite the integration with Power Platform (Dataverse and Healthcare applications), and Microsoft Teams.
 

@@ -32,7 +32,7 @@ Microsoft Cloud for Healthcare spans the Microsoft Clouds (Azure, Power Platform
 
 [Healthcare Foundations (Recommended)](./healthcare/prereqs.md)
 - [Power Platform for Healthcare](./foundations/powerPlatform)
-- [Azure for Healthcare](./healthcare/solutions/healthcareApis)
+- [Azure for Healthcare](./healthcare)
 - [Microsoft Teams for Healthcare](./healthcare/solutions/microsoftTeams)
 
 Healthcare Solutions
