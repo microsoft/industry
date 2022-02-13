@@ -77,19 +77,20 @@ For Operator's considering Azure Lighthouse to manage and operate their customer
 
 Azure Managed Application is a capability for ISVs and service providers to deliver turn-key applications to Azure customers directly from the Azure marketplace. Customers deploy via self-service, and once provisioned, the ISV/service provider will have cross-tenant RBAC permission on the *managed resource group*, which contains all the required infrastructure for the services they are delivering, that customers can use and integrate with other Azure services they may have.
 
-The following picture depicts how the Managed Application construct works, and the cross-tenant RBAC authorization at the managed resource group scope, granting principal IDs from the remote Azure AD tenant permissions directly on the managed resource group in a customer tenant's Azure subscription.
+Figure 3 depicts how the Managed Application construct works, and the cross-tenant RBAC authorization at the managed resource group scope, granting principal IDs from the remote Azure AD tenant permissions directly on the managed resource group in a customer tenant's Azure subscription.
 
 ![managedapp](./images/managedapp.png)
+_Figure 3: Azure Managed Application._
 
-For Telco's considering Azure Managed Application as a way to package, distribute, and operate their solutions, we provide the following design considerations and recommendations.
+For Operators considering Azure Managed Application as a way to package, distribute, and operate their solutions, we provide the following design considerations and recommendations.
 
 ### Design considerations
 
 * Managed Application requires Azure Resource Manager template(s) and a User Interface definition, that must be versioned and published to the Azure Marketplace via [Partner Center](https://partner.microsoft.com/dashboard/home).
-* Azure AD Privileged Identity Management can be used on the *customer's* Azure AD tenant where they can approve just-in-time authorization requests by the Telco operators.
+* Azure AD Privileged Identity Management can be used on the *customer's* Azure AD tenant where they can approve just-in-time authorization requests by the telco operators.
 * You can enable any customer subscription to purchase and deploy your Managed Application, or you can enable this per subscription(s) manually.
 * When customer is deploying a Managed Application, they will see two resource groups where the managed resource group cannot be altered by the customer.
-* Due to how the managed resource group is being locked (using deny assignment), only the Telco can access, create, and change the Azure resources within.
+* Due to how the managed resource group is being locked (using deny assignment), only the Operator can access, create, and change the Azure resources within.
 * When publishing a Managed Application, you must provide the users/groups/service principals from your Azure Active Directory who will operate the Managed Application in the customer subscriptions, and map towards built-in role-based access controls in Azure.
 * Managed Applications can connect to your customer relationship management (CRM) system, such as Dynamics 365 Customer Engagement, HTTPS endpoint, Salesforce and more, so you can receive customer contact information when a customer deploys your product.
 * When a customer deletes the Managed Application object, the managed resource group will then also be deleted.
@@ -97,13 +98,13 @@ For Telco's considering Azure Managed Application as a way to package, distribut
 ### Design recommendations
 
 * Establish a CI/CD pipeline and process and treat all artifacts of your Managed Application as infrastructure as code.
-* Allow customers to leverage Azure AD Privileged Identity Management in their Azure AD directory to approve/reject just-in-time authorization requests by your Telco operators.
+* Allow customers to leverage Azure AD Privileged Identity Management in their Azure AD directory to approve/reject just-in-time authorization requests by the Telco operators.
 * Ensure the resource types (Azure services) you have for the application composition can be deployed in the regions that you allow for.
 * Prepare and configure integration with your customer relationship management system so you can track - and provide proactive customer services when your Managed Application is deployed by customers.
 * Allow the customer to provide tags to the resources created during the Managed Application deployment so they can organize, and query resources using Azure Resource Manager.
-* Ensure *Security Reader* built-in role is mapped to your Azure AD Group/user in order to monitor security risks when the customer is using Microsoft Defender for Cloud on the subscription(s)
+* Ensure *Security Reader* built-in role is mapped to your Azure AD Group/user in order to monitor security risks when the customer is using Microsoft Defender for Cloud on the subscription(s).
 * Bring your own storage account when you need encryption using your own keys.
-* Use Azure Virtual Network Service Tags to define network access controls on network security groups or Azure Firewall configured for your Managed Application resources
+* Use Azure Virtual Network Service Tags to define network access controls on network security groups or Azure Firewall configured for your Managed Application resources.
 
 ---
 
