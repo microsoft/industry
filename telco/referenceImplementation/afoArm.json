@@ -629,6 +629,14 @@
                 "Yes",
                 "No"
             ]
+        },
+        "enableAvnm": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
         }
     },
     "variables": {
@@ -1710,6 +1718,9 @@
                     },
                     "erRegionalSku": {
                         "value": "[parameters('erRegionalSku')]"
+                    },
+                    "enableAvnm": {
+                        "value": "[parameters('enableAvnm')]"
                     }
                 }
             }
@@ -3658,6 +3669,9 @@
                     },
                     "erRegionalSku": {
                         "value": "[parameters('erRegionalSku')]"
+                    },
+                    "enableAvnm": {
+                        "value": "[parameters('enableAvnm')]"
                     }
                 }
             }
