@@ -283,10 +283,11 @@ On the *Connectivity for Azure and Distributed Edge* tab, you will configure the
 
 To deploy and configure a "hub and spoke" topology, you must:
 
-- In the *Deploy networking topology for Azure and Distributed Edge* option, select either "Hub and spoke with Azure Firewall" or "Hub and spoke with your own third-party NVA". In this guidance we will select the "Hub and spoke with Azure Firewall".
+- In the *Deploy networking topology for Azure and Distributed Edge* option, select either "Hub and spoke with Azure Firewall" or "Virtual VWAN (Microsoft managed). In this guidance we will select the "Hub and spoke with Azure Firewall".
 - Provide a dedicated (empty) subscription that will be used to host the requisite networking infrastructure.
 - Provide the address space to be assigned to the hub virtual network
 - Select an Azure region where the hub virtual network will be created
+- Depending on the Azure region, you can optionally use Azure Virtual Network Manager to manage your virtual networks at scale and also enable full mesh.
 
  ![img](./media/hubandspoke.PNG)
 
