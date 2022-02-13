@@ -23,6 +23,7 @@ Azure Active Directory (Azure AD) business-to-business (B2B) collaboration is a 
 The diagram below shows that users originating from the Operator Azure AD are invited and projected into the customer's Azure AD. Once the users are added to the customer directory, they can be assigned any Azure AD, Azure, Power Platform, or Microsoft365 role assignment.
 
 ![b2b](./images/b2b.png)
+_Figure 1: Azure Active Directoy B2B._
 
 ### Design considerations
 
