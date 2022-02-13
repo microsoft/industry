@@ -1,8 +1,8 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
         "parameters": {
-        "enterpriseScaleCompanyPrefix": {
+        "telcoPrefix": {
             "type": "string",
             "maxLength": 10,
             "metadata": {
@@ -48,7 +48,7 @@
                 "vwan",
                 "nva"
             ],
-            "defaultValue": "No"
+            "defaultValue": "vhub"
         },
         "enableAzFw": {
             "type": "string",
@@ -145,22 +145,22 @@
             "vWanAzFw": "Telco-Vwan-Scale"
         },
         "platformRgNames": {
-            "connectivityRg": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-vnethub-', parameters('location'))]",
-            "ddosRg": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-ddos')]",
-            "privateDnsRg": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-privatedns')]"
+            "connectivityRg": "[concat(parameters('telcoPrefix'), '-vnethub-', parameters('location'))]",
+            "ddosRg": "[concat(parameters('telcoPrefix'), '-ddos')]",
+            "privateDnsRg": "[concat(parameters('telcoPrefix'), '-privatedns')]"
         },
         // Declaring deterministic names for platform resources that will be created
         "platformResourceNames": {
-            "vpnGwName": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-vpngw-', parameters('location'))]",
-            "erGwName": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-ergw-', parameters('location'))]",
-            "ddosName": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-ddos-', parameters('location'))]",
-            "azFwPolicyName": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-azfwpolicy-', parameters('location'))]",
-            "azFwName": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-fw-', parameters('location'))]",
-            "azErGwIpName": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-erpip-', parameters('location'))]",
-            "hubName": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-hub-', parameters('location'))]",
-            "vwanName": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-vwan-', parameters('location'))]",
-            "azVpnGwIpName": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-gwpip-', parameters('location'))]",
-            "azFwIpName": "[concat(parameters('enterpriseScaleCompanyPrefix'), '-fwpip-', parameters('location'))]"
+            "vpnGwName": "[concat(parameters('telcoPrefix'), '-vpngw-', parameters('location'))]",
+            "erGwName": "[concat(parameters('telcoPrefix'), '-ergw-', parameters('location'))]",
+            "ddosName": "[concat(parameters('telcoPrefix'), '-ddos-', parameters('location'))]",
+            "azFwPolicyName": "[concat(parameters('telcoPrefix'), '-azfwpolicy-', parameters('location'))]",
+            "azFwName": "[concat(parameters('telcoPrefix'), '-fw-', parameters('location'))]",
+            "azErGwIpName": "[concat(parameters('telcoPrefix'), '-erpip-', parameters('location'))]",
+            "hubName": "[concat(parameters('telcoPrefix'), '-hub-', parameters('location'))]",
+            "vwanName": "[concat(parameters('telcoPrefix'), '-vwan-', parameters('location'))]",
+            "azVpnGwIpName": "[concat(parameters('telcoPrefix'), '-gwpip-', parameters('location'))]",
+            "azFwIpName": "[concat(parameters('telcoPrefix'), '-fwpip-', parameters('location'))]"
         },
         "platformResourceIds": {
             "ddosProtectionResourceId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('platformRgNames').ddosRg, '/providers/Microsoft.Network/ddosProtectionPlans/', variables('platformResourceNames').ddosName)]",
@@ -242,7 +242,6 @@
             "name": "[concat(variables('deploymentNames').privateDns, copyIndex())]",
             "subscriptionId": "[parameters('connectivitySubscriptionId')]",
             "resourceGroup": "[variables('platformRgNames').privateDnsRg]",
-            "location": "[parameters('location')]",
             "dependsOn": [
                 "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').privateDnsRg)]"
             ],
@@ -307,7 +306,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('enterpriseScaleCompanyPrefix')]"
+                        "value": "[parameters('telcoPrefix')]"
                     },
                     "addressPrefix": {
                         "value": "[parameters('addressPrefix')]"
@@ -390,7 +389,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('enterpriseScaleCompanyPrefix')]"
+                        "value": "[parameters('telcoPrefix')]"
                     },
                     "ddosPlanResourceId": {
                         "value": "[variables('platformResourceIds').ddosProtectionResourceId]"
