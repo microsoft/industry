@@ -32,9 +32,9 @@ This article provides a reference architecture with prescriptive guidance and re
 
 ## Azure for Operators Landing Zones
 
-This article describes the Azure for Operators (AfO) Landing Zones reference architecture which enables the delivery of telco specialized workloads on Microsoft Azure and at the edge as depicted in figure 1 below:
+This article describes the Azure for Operators (AfO) Landing Zones reference architecture which enables the delivery of telco specialized workloads (such as vEPC, vIMS, SDWAN, vFW, SBC) on Microsoft Azure and at the distributed edge as depicted in figure 1 below:
 
-![AfO Landing Zones overview](./docs/afo-lz-overview-black.png)
+![AfO Landing Zones overview](./docs/afo-lz-overview-white.png)
 _Figure 1:AfO Landing Zones overview._
 
 ### High-level architecture
