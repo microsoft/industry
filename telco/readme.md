@@ -32,14 +32,17 @@ This article provides a reference architecture with prescriptive guidance and re
 
 ## Azure for Operators Landing Zones
 
-This article describes the Azure for Operators (AfO) Landing Zones reference architecture which enables the delivery of telco specialized workloads on Microsoft Azure and at the edge.
+This article describes the Azure for Operators (AfO) Landing Zones reference architecture which enables the delivery of telco specialized workloads on Microsoft Azure and at the edge as depicted in figure 1 below:
+
+![AfO Landing Zones overview](./docs/afo-lz-overview-black.png)
+_Figure 1:AfO Landing Zones overview._
 
 ### High-level architecture
 
-The AfO Landing Zones architecture is based on a [proven, at scale Azure architecture](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/architecture) foundation for the construction and operationalization of landing zones in Azure, which at its core is build upon a set of design principles and critical design areas (as summarized on this [article](../foundations/azure/README.md)). Those design principles and critical design areas are applicable for this AfO Landing Zones architecture. However, due to the unique set of requirements and characteristics of the telecommunications industry (for example, the presence or a large distributed edge), the AfO Landing Zones architecture provides an additional, and very specific, set of recommendations to accommodate telco industry requirements and scenarios as described previously on this article. The AfO Landing Zones architecture is depicted on figure 1 below:
+The AfO Landing Zones architecture is based on a [proven, at scale Azure architecture](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/architecture) foundation for the construction and operationalization of landing zones in Azure, which at its core is build upon a set of design principles and critical design areas (as summarized on this [article](../foundations/azure/README.md)). Those design principles and critical design areas are applicable for this AfO Landing Zones architecture. However, due to the unique set of requirements and characteristics of the telecommunications industry (for example, the presence or a large distributed edge), the AfO Landing Zones architecture provides an additional, and very specific, set of recommendations to accommodate telco industry requirements and scenarios as described previously on this article. The AfO Landing Zones architecture is depicted on figure 2 below:
 
 ![AfO Landing Zones architecture](./docs/telco-industry-reference-architecture.png)
-_Figure 1:AfO Landing Zones architecture._
+_Figure 2:AfO Landing Zones architecture._
 
 As figure 1 depicts, the AfO Landing Zones architecture follows the design principles and recommendations of proven, compliant, and scalable landing zones architecture on Azure, but it provides specific guidance and recommendations in the following areas to accommodate for the typical requirements of operators:
 
