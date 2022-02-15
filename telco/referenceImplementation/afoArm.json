@@ -637,6 +637,14 @@
                 "Yes",
                 "No"
             ]
+        },
+        "denySsh": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
         }
     },
     "variables": {
@@ -736,7 +744,8 @@
             "govAscPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/gov/fairfaxDINE-ASCConfigPolicyAssignment.json')]",
             "logStorageAccount": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/subscriptionTemplates/logStorageAccount.json')]",
             "nwRgPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DINE-NwResourceGroupPolicyAssignment.json')]",
-            "nsgFlowLogPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DINE-NSGFlowLogsPolicyAssignment.json')]"
+            "nsgFlowLogPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DINE-NSGFlowLogsPolicyAssignment.json')]",
+            "sshFromInternetPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DENY-SSHFromInternetPolicyAssignment.json')]"
         },
         // Declaring deterministic deployment names
         "deploymentSuffix": "[concat('-', deployment().location, guid(parameters('telcoPrefix')))]",
@@ -783,6 +792,7 @@
             "privateDnsPolicyDeploymentName": "[take(concat(variables('industry'), '-PrivDNSAssignment', variables('deploymentSuffix')), 64)]",
             "pipPolicyDeploymentName": "[take(concat(variables('industry'), '-PIP', variables('deploymentSuffix')), 64)]",
             "rdpFromInternetPolicyDeploymentName": "[take(concat(variables('industry'), '-RDP', variables('deploymentSuffix')), 64)]",
+            "sshFromInternetPolicyDeploymentName": "[take(concat(variables('industry'), '-SSH', variables('deploymentSuffix')), 64)]",
             "rdpFromInternetIdentityPolicyDeploymentName": "[take(concat(variables('industry'), '-RDPIdentity', variables('deploymentSuffix')), 64)]",
             "storageHttpsPolicyDeploymentName": "[take(concat(variables('industry'), '-StorageHttps', variables('deploymentSuffix')), 64)]",
             "subnetNsgPolicyDeploymentName": "[take(concat(variables('industry'), '-SubnetNsg', variables('deploymentSuffix')), 64)]",
@@ -2588,6 +2598,34 @@
                 "templateLink": {
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').rdpFromInternetPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('telcoPrefix')]"
+                    },
+                    "enforcementMode": {
+                        "value": "Default"
+                    }                    
+                }
+            }
+        },
+        {
+            // Assigning deny ssh from internet policy landing zones management group if condition is true
+            "condition": "[equals(parameters('denySsh'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').sshFromInternetPolicyDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyDeploymentName)]",
+                "policyCompletion"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').sshFromInternetPolicyAssignment]"
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {

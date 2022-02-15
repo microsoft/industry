@@ -2436,6 +2436,30 @@
                                     "visible": true
                                 },
                                 {
+                                    "name": "esDenySsh",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Prevent inbound SSH from internet",
+                                    "defaultValue": "Yes (recommended)",
+                                    "toolTip": "If 'Yes' is selected, Azure Policy will be assigned and prevent inbound SSH from internet",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "Audit only",
+                                                "value": "Audit"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    },
+                                    "visible": true
+                                },
+                                {
                                     "name": "esDenyRdp",
                                     "type": "Microsoft.Common.OptionsGroup",
                                     "label": "Prevent inbound RDP from internet",
@@ -2639,6 +2663,7 @@
                 "denyAksPrivilegedEscalation": "[steps('lzGoalState').lzGov.esAksNoPriv]",
                 "denyHttpIngressForAks": "[steps('lzGoalState').lzGov.esAksIngress]",
                 "denyRdp": "[steps('lzGoalState').lzGov.esDenyRdp]",
+                "denySsh": "[steps('lzGoalState').lzGov.esDenySssh]",
                 "enableStorageHttps": "[steps('lzGoalState').lzGov.esHttpsStorage]",
                 "denyIpForwarding": "[steps('lzGoalState').lzGov.esIpForwarding]",
                 "denySubnetWithoutNsg": "[steps('lzGoalState').lzGov.esNsg]",
