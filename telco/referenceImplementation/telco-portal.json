@@ -17,7 +17,7 @@
                 },
                 {
                     "name": "lzSettings",
-                    "label": "AfO Landing Zones Setup",
+                    "label": "Tenant Setup",
                     "subLabel": {
                         "preValidation": "Provide a company prefix for the management group structure that will be created.",
                         "postValidation": "Done"

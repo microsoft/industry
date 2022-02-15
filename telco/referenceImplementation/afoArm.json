@@ -698,11 +698,6 @@
             "https://management.usgovcloudapi.net": "managementGroupTemplates/policyDefinitions/gov/fairfaxPolicies.json"
         },
         "azPolicyArmTemplate": "[variables('azPolicyPoliciesMapping')[environment().resourceManager]]",
-        "azPrivateDnsPolicyAssignmentMapping": {
-            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyAssignments/gov/fairfaxDINE-PrivateDNSZonesPolicyAssignment.json",
-            "https://management.usgovcloudapi.net": "managementGroupTemplates/policyAssignments/gov/fairfaxDINE-PrivateDNSZonesPolicyAssignment.json"
-        },
-        "azPrivateDnsPolicyAssignment": "[variables('azPrivateDnsPolicyAssignmentMapping')[environment().resourceManager]]",
         "deploymentUris": {
             "managementGroups": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/mgmtGroupStructure/mgmtGroups.json')]",
             "managementGroupsLite": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/mgmtGroupStructure/mgmtGroupsLite.json')]",
@@ -736,7 +731,7 @@
             "publicEndpointPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, variables('azPublicEndpointArmTemplate'))]",
             "publicEndpointPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DENY-PublicEndpointPolicyAssignment.json')]",
             "privateDnsZonePolicySetDefinition": "[uri(deployment().properties.templateLink.uri, variables('azPrivateDnsArmTemplate'))]",
-            "privateDnsZonePolicyAssignment": "[uri(deployment().properties.templateLink.uri, variables('azPrivateDnsPolicyAssignment'))]",
+            "privateDnsZonePolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DINE-PrivateDNSZonesPolicyAssignment.json')]",
             "pipPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DENY-PublicIpAddressPolicyAssignment.json')]",
             "rdpFromInternetPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DENY-RDPFromInternetPolicyAssignment.json')]",
             "storageHttpsPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DENY-StorageWithoutHttpsPolicyAssignment.json')]",
