@@ -817,7 +817,7 @@
             "privateDnsZoneRgDeploymentName": "[take(concat(variables('industry'), '-PrivDNSRG', variables('deploymentSuffix')), 64)]",
             "privateDnsZonesDeploymentName": "[take(concat(variables('industry'), '-PrivDNSZones', variables('deploymentSuffix')), 35)]",
             "dnsZoneRoleAssignmentDeploymentName": "[take(concat(variables('industry'), '-DNSZoneRole', variables('deploymentSuffix')), 64)]",
-            "dnsZoneOperatorRoleAssignmentDeploymentName": "[take(concat(variables('industry'), '-DNSZoneRole', variables('deploymentSuffix')), 64)]",
+            "dnsZoneOperatorRoleAssignmentDeploymentName": "[take(concat(variables('industry'), '-DNSZoneOperatorRole', variables('deploymentSuffix')), 64)]",
             "identityPeeringDeploymentName": "[take(concat(variables('industry'), '-IDPeering', variables('deploymentSuffix')), 64)]",
             "identityVwanPeeringDeploymentName": "[take(concat(variables('industry'), '-IDVwanPeering', variables('deploymentSuffix')), 64)]",
             "corpConnectedLzVwanSubs": "[take(concat(variables('industry'), '-CorpConnLzsVwan', variables('deploymentSuffix')), 50)]",
