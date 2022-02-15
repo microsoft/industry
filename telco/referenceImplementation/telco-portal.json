@@ -2687,7 +2687,7 @@
                 "denyAksPrivilegedEscalation": "[steps('lzGoalState').lzGov.esAksNoPriv]",
                 "denyHttpIngressForAks": "[steps('lzGoalState').lzGov.esAksIngress]",
                 "denyRdp": "[steps('lzGoalState').lzGov.esDenyRdp]",
-                "denySsh": "[steps('lzGoalState').lzGov.esDenySssh]",
+                "denySsh": "[steps('lzGoalState').lzGov.esDenySsh]",
                 "enableStorageHttps": "[steps('lzGoalState').lzGov.esHttpsStorage]",
                 "denyIpForwarding": "[steps('lzGoalState').lzGov.esIpForwarding]",
                 "denySubnetWithoutNsg": "[steps('lzGoalState').lzGov.esNsg]",
