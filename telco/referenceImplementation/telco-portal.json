@@ -1847,6 +1847,30 @@
                                     }
                                 },
                                 {
+                                    "name": "esTelcoPrivateDnsZones",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Ensure private endpoints to Azure PaaS services are integrated with Azure Private DNS Zones in the operator landing zones",
+                                    "defaultValue": "Yes (recommended)",
+                                    "visible": "[equals(steps('esConnectivityGoalState').esPrivateDns, 'Yes')]",
+                                    "toolTip": "If 'Yes' is selected then Azure Policy will ensure private endpoints to Azure PaaS services are integrated with Azure Private DNS Zones in the connectivity subscription on behalf of the users.",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "Audit only",
+                                                "value": "Audit"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
                                     "name": "esTelcoLzExpressRoute",
                                     "type": "Microsoft.Common.OptionsGroup",
                                     "label": "Ensure ExpressRoute Gateways are using Availability Zones",
@@ -2436,6 +2460,30 @@
                                     "visible": true
                                 },
                                 {
+                                    "name": "esDenySsh",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Prevent inbound SSH from internet",
+                                    "defaultValue": "Yes (recommended)",
+                                    "toolTip": "If 'Yes' is selected, Azure Policy will be assigned and prevent inbound SSH from internet",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "Audit only",
+                                                "value": "Audit"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    },
+                                    "visible": true
+                                },
+                                {
                                     "name": "esDenyRdp",
                                     "type": "Microsoft.Common.OptionsGroup",
                                     "label": "Prevent inbound RDP from internet",
@@ -2639,6 +2687,7 @@
                 "denyAksPrivilegedEscalation": "[steps('lzGoalState').lzGov.esAksNoPriv]",
                 "denyHttpIngressForAks": "[steps('lzGoalState').lzGov.esAksIngress]",
                 "denyRdp": "[steps('lzGoalState').lzGov.esDenyRdp]",
+                "denySsh": "[steps('lzGoalState').lzGov.esDenySsh]",
                 "enableStorageHttps": "[steps('lzGoalState').lzGov.esHttpsStorage]",
                 "denyIpForwarding": "[steps('lzGoalState').lzGov.esIpForwarding]",
                 "denySubnetWithoutNsg": "[steps('lzGoalState').lzGov.esNsg]",
@@ -2662,6 +2711,7 @@
                 "vpnGateWayScaleUnit": "[steps('esConnectivityGoalState').esVwanGwScaleUnits]",
                 "enablePrivateDnsZones": "[steps('esConnectivityGoalState').esPrivateDns]",
                 "enablePrivateDnsZonesForLzs": "[steps('lzGoalState').corpLz.esPrivateDnsZones]",
+                "enablePrivateDnsZonesForOperators": "[steps('lzGoalState').operatorLz.esTelcoPrivateDnsZones]",
                 "identityAddressPrefix": "[steps('esIdentityGoalState').esIdentityCidr]",
                 "enableErHa": "[steps('lzGoalState').operatorLz.esTelcoLzExpressRoute]",
                 "enablePipHa": "[steps('lzGoalState').operatorLz.esTelcoLzPipSku]",
