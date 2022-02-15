@@ -493,6 +493,15 @@
                 "No"
             ]
         },
+        "enablePrivateDnsZonesForOperators": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "Audit",
+                "No"
+            ]
+        },
         "subnetMaskForAzFw": {
             "type": "string",
             "defaultValue": ""
@@ -791,6 +800,7 @@
             "publicEndpointPolicyDefinitionName": "[take(concat(variables('industry'), '-Policy-PEndpoints', variables('deploymentSuffix')), 64)]",
             "privateDnsPolicyDefinitionName": "[take(concat(variables('industry'), '-Policy-PrivateDns', variables('deploymentSuffix')), 64)]",
             "privateDnsPolicyDeploymentName": "[take(concat(variables('industry'), '-PrivDNSAssignment', variables('deploymentSuffix')), 64)]",
+            "privateDnsOperatorPolicyDeploymentName": "[take(concat(variables('industry'), '-PrivateDNSOperator',variables('deploymentSuffix')), 64)]",
             "pipPolicyDeploymentName": "[take(concat(variables('industry'), '-PIP', variables('deploymentSuffix')), 64)]",
             "rdpFromInternetPolicyDeploymentName": "[take(concat(variables('industry'), '-RDP', variables('deploymentSuffix')), 64)]",
             "sshFromInternetPolicyDeploymentName": "[take(concat(variables('industry'), '-SSH', variables('deploymentSuffix')), 64)]",
@@ -807,6 +817,7 @@
             "privateDnsZoneRgDeploymentName": "[take(concat(variables('industry'), '-PrivDNSRG', variables('deploymentSuffix')), 64)]",
             "privateDnsZonesDeploymentName": "[take(concat(variables('industry'), '-PrivDNSZones', variables('deploymentSuffix')), 35)]",
             "dnsZoneRoleAssignmentDeploymentName": "[take(concat(variables('industry'), '-DNSZoneRole', variables('deploymentSuffix')), 64)]",
+            "dnsZoneOperatorRoleAssignmentDeploymentName": "[take(concat(variables('industry'), '-DNSZoneRole', variables('deploymentSuffix')), 64)]",
             "identityPeeringDeploymentName": "[take(concat(variables('industry'), '-IDPeering', variables('deploymentSuffix')), 64)]",
             "identityVwanPeeringDeploymentName": "[take(concat(variables('industry'), '-IDVwanPeering', variables('deploymentSuffix')), 64)]",
             "corpConnectedLzVwanSubs": "[take(concat(variables('industry'), '-CorpConnLzsVwan', variables('deploymentSuffix')), 50)]",
@@ -2130,6 +2141,73 @@
                     },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('enablePipHa'), 'Yes'), 'Default', 'DoNotEnforce')]"
+                    }
+                }
+            }
+        },
+        {
+            // Deploying Private DNS Zones policy assignment for PaaS services using built-in policies for operator lzs
+            "condition": "[or(equals(parameters('enablePrivateDnsZonesForOperators'), 'Yes'), equals(parameters('enablePrivateDnsZonesForOperators'), 'Audit'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "name": "[variables('deploymentNames').privateDnsOperatorPolicyDeploymentName]",
+            "location": "[deployment().location]",
+            "scope": "[variables('scopes').telcoManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]",
+                "dnsZones",
+                "dnsZonesLite",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsPolicyDefinitionName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').privateDnsZonePolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('telcoPrefix')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "dnsZoneResourceGroupId": {
+                        "value": "[variables('platformResourceIds').privateDnsRgResourceId]"
+                    },
+                    "enforcementMode": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZonesForOperators'), 'Yes'), 'Default', 'DoNotEnforce')]"
+                    }
+                }
+            }
+        },
+        {
+            // Assigning RBAC for Private DNS Zone Policy assignment to the connectivity hub
+            "condition": "[equals(parameters('enablePrivateDnsZonesForOperators'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "name": "[variables('deploymentNames').dnsZoneOperatorRoleAssignmentDeploymentName]",
+            "location": "[deployment().location]",
+            "subscriptionId": "[variables('singleVsDedicatedConnectivitySub')]",
+            "dependsOn": [
+                "[variables('deploymentNames').privateDnsPolicyDeploymentName]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').roleAssignments]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('telcoPrefix')]"
+                    },
+                    "principalId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZonesForOperators'), 'Yes'), reference(variables('deploymentNames').privateDnsOperatorPolicyDeploymentName).outputs.principalId.value, 'na')]"
+                    },
+                    "roleDefinitionId": {
+                        "value": "[variables('roleDefinitions').networkContributor]"
                     }
                 }
             }
