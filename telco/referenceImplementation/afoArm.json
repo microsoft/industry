@@ -2263,7 +2263,7 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('telcoPrefix')]"
+                        "value": "[concat(parameters('telcoPrefix'), '-conn')]"
                     },
                     "principalId": {
                         "value": "[if(equals(parameters('enablePrivateDnsZonesForLzs'), 'Yes'), reference(variables('deploymentNames').privateDnsPolicyDeploymentName).outputs.principalId.value, 'na')]"
