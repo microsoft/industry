@@ -1,0 +1,14 @@
+---
+name: "Bug report \U0001F41B"
+about: Report errors or unexpected behaviour
+title: 'Bug Report'
+labels: bug
+assignees: 'Enlaces relativos
+Puede definir enlaces relativos y rutas de imágenes en sus archivos renderizados para ayudar a los lectores a navegar a otros archivos en su repositorio.
+
+Un vínculo relativo es un vínculo relativo al archivo actual. Por ejemplo, si tiene un archivo README en la raíz de su repositorio y tiene otro archivo en docs/CONTRIBUTING.md , el enlace relativo a CONTRIBUTING.md en su README podría verse así:
+
+[Contribution guidelines for this project](docs/CONTRIBUTING.md)
+GitHub transformará automáticamente su enlace relativo o la ruta de la imagen en función de la rama en la que se encuentre actualmente, de modo que el enlace o la ruta siempre funcionen. Puede utilizar todos los operandos de enlace relativo, como ./y ../.
+
+Los enlaces relativos son más fáciles para los usuarios que clonan su repositorio. Es posible que los enlaces absolutos no funcionen en clones de su repositorio; recomendamos usar enlaces relativos para hacer referencia a otros archivos dentro de su repositorio.
