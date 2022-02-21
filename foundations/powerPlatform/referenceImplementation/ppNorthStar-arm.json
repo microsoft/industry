@@ -1,3 +1,8 @@
+/*
+    North Star Architecture for Power Platform ARM template.
+    This template will in concert with the portal extension provision and bootstrap 1) Azure infrastructure as prerequisite for monitoring, logging, and security,
+    and the initial Admin environments for Power Platform, to construct and operationalize landing zones for citizen - and professional developers.
+*/
 {
     "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
