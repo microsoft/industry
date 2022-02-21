@@ -1,14 +1,14 @@
-# Azure for Telco industry User Guide
+# AfO Landing Zones User Guide
 
-This user guide explains the Azure for Telco reference implementation, what it is, what it does, how organizations within the telecommunication industry can use it to run their carrier-grade workloads on a sustainable, scalable, and reliable Azure architecture.
+This user guide explains the AfO Landing Zones reference implementation, what it is, what it does, how organizations within the telecommunication industry can use it to run their carrier-grade workloads on a sustainable, scalable, and reliable Azure architecture.
 
 ## Table of Contents
 
-- [What is Azure for Telco industry reference implementation?](#what-is-azure-for-telco-reference-implementation)
+- [What is AfO Landing Zones reference implementation?](#what-is-afo-landing-zones-reference-implementation)
 - [Pricing](#pricing)
 - [What if I already have an existing Azure footprint?](#what-if-i-already-have-an-existing-azure-footprint)
-- [How Azure for Telco reference implementation works](#how-azure-for-telco-reference-implementation-works)
-  - [Azure for Telco design principles](#azure-for-telco-design-principles)
+- [How AfO Landing Zones reference implementation works](#how-afo-landing-zones-reference-implementation-works)
+  - [AfO Landing Zones design principles](#azure-for-telco-design-principles)
     - [Subscription Democratization](#subscription-democratization)
     - [Policy Driven Governance](#policy-driven-governance)
     - [Single Control and Management Plane](#single-control-and-management-plane)
@@ -17,14 +17,14 @@ This user guide explains the Azure for Telco reference implementation, what it i
   - [Separating platform and operator landing zones](#separating-platform-and-operator-landing-zones)
     - [Platform responsibilities and functions](#platform-responsibilities-and-functions)
     - [Operator landing zone owners responsibilities](#operator-landing-zone-owners-responsibilities)
-  - [Azure for Telco Management Group Structure](#azure-for-telco-management-group-structure)
-  - [What happens when you deploy Azure for Telco](#what-happens-when-you-deploy-azure-for-telco)
+  - [Afo Landing Zones Management Group Structure](#afo-landing-zones-management-group-structure)
+  - [What happens when you deploy AfO Landing Zones](#what-happens-when-you-deploy-azure-for-telco)
 - [Deployment instructions](#deployment-instructions)
   - [Pre-requisites](#pre-requisites)
   - [Step-by-step guidance](#step-by-step-guidance)
 
 ---
-Azure for Telco industry reference architecture provides prescriptive guidance coupled with Azure best practices for the telecommunication industry, and it follows 5 design principles across the 8 critical design areas for organizations to define their target state for their Azure architecture.
+AfO Landing Zones reference architecture provides prescriptive guidance coupled with Azure best practices for the telecommunication industry, and it follows 5 design principles across the 8 critical design areas for organizations to define their target state for their Azure architecture.
 
 The reference architecture is modular by design and allows organizations of any size in the telecommunication industry to start with the optimized landing zones that support their operator workloads, and application portfolios.
 
@@ -32,9 +32,9 @@ In particular, it enables the organizations to start as small as needed and scal
 
 ![Telco architecture](./media/telco-architecture-detailed.PNG)
 
-## What is Azure for Telco reference implementation?
+## What is Afo Landing Zones reference implementation?
 
-The Azure for Telco industry reference implementation is an optimized, proven, authoritative, and roadmap aligned architecture that enables the Telco industry to deploy mission-critical, carrier-grade workloads in Azure at scale.
+The AfO Landing Zones reference implementation is an optimized, proven, authoritative, and roadmap aligned architecture that enables the Telco industry to deploy mission-critical, carrier-grade workloads in Azure at scale.
 
 The reference implementation ties together all the Azure platform primitives and creates a proven, well-defined Azure architecture based on a multi-subscription design, leveraging native platform capabilities to ensure organizations in the telecommunication industry can create and operationalize their operator landing zones in Azure at scale.
 
@@ -46,17 +46,17 @@ For example, you don’t pay for the Management Groups or the Azure Policies tha
 
 ## What if I already have an existing Azure footprint?
 
-Azure for Telco industry reference implementation will meet the organizations in the telco industry where they are, and the design has catered for existing subscriptions and workloads in Azure.
+AfO Landing Zones reference implementation will meet the organizations in the telco industry where they are, and the design has catered for existing subscriptions and workloads in Azure.
 
-See the following [article](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/transition) to learn more how you can transition into an Azure architecture based on a multi-subscription design with clear separation of platform and landing zones, such as Azure for Telco.
+See the following [article](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/transition) to learn more how you can transition into an Azure architecture based on a multi-subscription design with clear separation of platform and landing zones, such as AfO Landing Zones.
 
-## How Azure for Telco reference implementation works
+## How AfO Landing Zones reference implementation works
 
-This section describes at a high level how Azure for Telco reference implementation works. Your operator landing zones are the output of a multi-subscription environment for all your Azure services, where compliance, guardrails, security, networking, and identity is provided at scale by the platform.
+This section describes at a high level how AfO Landing Zones reference implementation works. Your operator landing zones are the output of a multi-subscription environment for all your Azure services, where compliance, guardrails, security, networking, and identity is provided at scale by the platform.
 
-## Azure for Telco design principles
+## AfO Landing Zones design principles
 
-The Azure for Telco architecture prescribed in this guidance is based on the design principles described here. These principles serve as a compass for subsequent design decisions across critical technical domains. Familiarize yourself with these principles to better understand their impact and the trade-offs associated with nonadherence, and how them will help you to scale in alignment with the Azure product roadmap.
+The AfO Landing Zones architecture prescribed in this guidance is based on the design principles described here. These principles serve as a compass for subsequent design decisions across critical technical domains. Familiarize yourself with these principles to better understand their impact and the trade-offs associated with nonadherence, and how them will help you to scale in alignment with the Azure product roadmap.
 
 >Note: The design principles for Azure are by design industry agnostic, and applies to all industries. For more details about architecture and design methodologies for Microsoft Clouds, see [this article](../../foundations/README.md).
 
@@ -70,19 +70,19 @@ Azure Policy should be used to provide guardrails and ensure continued complianc
 
 ### Single Control and Management Plane
 
-Azure for Telco architecture shouldn't consider any abstraction layers, such as customer-developed portals or tooling. It should provide a consistent experience for both AppOps (centrally managed operation teams) and DevOps (dedicated application operation teams). Azure provides a unified and consistent control plane across all Azure resources and provisioning channels subject to role-based access and policy-driven controls. Azure can be used to establish a standardized set of policies and controls for governing the entire enterprise application estate in the cloud.
+AfO Landing Zones architecture shouldn't consider any abstraction layers, such as customer-developed portals or tooling. It should provide a consistent experience for both AppOps (centrally managed operation teams) and DevOps (dedicated application operation teams). Azure provides a unified and consistent control plane across all Azure resources and provisioning channels subject to role-based access and policy-driven controls. Azure can be used to establish a standardized set of policies and controls for governing the entire enterprise application estate in the cloud.
 
 ### Application Centric and Archetype-neutral
 
-Azure for Telco architecture should focus on application-centric migrations and development rather than pure infrastructure lift-and-shift migrations, such as moving virtual machines. It shouldn't differentiate between old and new applications, infrastructure as a service, or platform as a service applications. Ultimately, it should provide a safe and secure foundation for all application types to be deployed onto your Azure platform.
+AfO Landing Zones architecture should focus on application-centric migrations and development rather than pure infrastructure lift-and-shift migrations, such as moving virtual machines. It shouldn't differentiate between old and new applications, infrastructure as a service, or platform as a service applications. Ultimately, it should provide a safe and secure foundation for all application types to be deployed onto your Azure platform.
 
 ### Azure native design and aligned with platform roadmap
 
-The Azure for Telco architecture approach advocates using Azure-native platform services and capabilities whenever possible. This approach should align with Azure platform roadmaps to ensure that new capabilities are available within your environments. Azure platform roadmaps should help to inform the migration strategy and Azure for Telco architecture trajectory.
+The AfO Landing Zones architecture approach advocates using Azure-native platform services and capabilities whenever possible. This approach should align with Azure platform roadmaps to ensure that new capabilities are available within your environments. Azure platform roadmaps should help to inform the migration strategy and AfO Landing Zones architecture trajectory.
 
 ## Separating platform and operator landing zones
 
-One of the key tenets of Azure for Telco architecture is to have a clear separation of the Azure *platform* and the *landing zones*. This allows organizations to scale their Azure architecture alongside with their business requirements, while providing autonomy to their application teams for deploying, migrating and doing net-new development of their workloads into their landing zones. This model fully supports workload autonomy and distinguish between central and federated functions.
+One of the key tenets of AfO Landing Zones architecture is to have a clear separation of the Azure *platform* and the *landing zones*. This allows organizations to scale their Azure architecture alongside with their business requirements, while providing autonomy to their application teams for deploying, migrating and doing net-new development of their workloads into their landing zones. This model fully supports workload autonomy and distinguish between central and federated functions.
 
 ## Platform responsibilities and functions
 
@@ -96,15 +96,15 @@ Platform resource are managed by a cross-functional platform team. The team cons
 
 ## Operator landing zone owners responsibilities
 
-Azure for Telco reference implementation enables landing zones supporting a both centralized and federated application DevOps models. Most common model are dedicated **DevOps** team aligned with a single workload. In case of smaller workloads or COTS or third-party application a single **AppDevOps** team is responsible for workload operation. Independent of the model every DevOps team manages several workload staging environments (DEV, UAT, PROD) deployed to individual landing zones/subscriptions. Each landing zone has a set of RBAC permissions managed with Azure AD PIM provided by the Platform SecOps team.
+AfO Landing Zones reference implementation enables landing zones supporting a both centralized and federated application DevOps models. Most common model are dedicated **DevOps** team aligned with a single workload. In case of smaller workloads or COTS or third-party application a single **AppDevOps** team is responsible for workload operation. Independent of the model every DevOps team manages several workload staging environments (DEV, UAT, PROD) deployed to individual landing zones/subscriptions. Each landing zone has a set of RBAC permissions managed with Azure AD PIM provided by the Platform SecOps team.
 
 When the landing zones/subscriptions are handed over to the DevOps team, the team is end-to-end responsible for the workload. They can independently operate within the security guardrails provided by the platform team. If dependency on central teams or functions are discovered, it is highly recommended to review the process and eliminated as soon as possible to unblock DevOps teams.
 
-## Azure for Telco Management Group Structure
+## AfO Landing Zones Management Group Structure
 
-The Management Group structure implemented with Azure for Telco is as follows:
+The Management Group structure implemented with AfO Landing Zones is as follows:
 
-- **Top-level Management Group** (directly under the tenant root group) is created with a prefix provided by the organization, which purposely will avoid the usage of the root group to allow organizations to move existing Azure subscriptions into the hierarchy, and also enables future scenarios. This Management Group is parent to all the other Management Groups created by Azure for Telco
+- **Top-level Management Group** (directly under the tenant root group) is created with a prefix provided by the organization, which purposely will avoid the usage of the root group to allow organizations to move existing Azure subscriptions into the hierarchy, and also enables future scenarios. This Management Group is parent to all the other Management Groups created by AfO Landing Zones
 
 - **Platform:** This Management Group contains all the *platform* child Management Groups, such as Management, Connectivity, and Identity. Common Azure Policies for the entire platform is assigned at this level
 
@@ -123,7 +123,7 @@ The Management Group structure implemented with Azure for Telco is as follows:
 - **Sandboxes:** This is the dedicated Management Group for subscriptions that will solely be used for testing and exploration by an organization’s application teams. These subscriptions will be securely disconnected from the Corp and Online landing zones.
 - **Decommissioned:** This is the dedicated Management Group for landing zones that are being cancelled, which then will be moved to this Management Group before deleted by Azure after 30-60 days.
 
-## What happens when you deploy Azure for Telco reference implementation?
+## What happens when you deploy AfO Landing Zones reference implementation?
 
 By default, all recommended settings and resources recommendations are enabled and deployed, and you must explicitly disable them if you don't want them to be deployed and configured. These resources and configurations include:
 
@@ -188,17 +188,17 @@ By default, all recommended settings and resources recommendations are enabled a
 
 ## Deployment instructions
 
-This section will describe how to deploy Azure for Telco industry reference implementation with traditional "hub and spoke" networking topology in Azure connected to the Distributed Edge and to on-premises datacenters and branch offices.
+This section will describe how to deploy AfO Landing Zones reference implementation with traditional "hub and spoke" networking topology in Azure connected to the Distributed Edge and to on-premises datacenters and branch offices.
 
 ### Pre-requisites
 
-Since Azure for Telco is a complete, end-to-end setup of your Azure tenant as a whole, the user making the deployment requires the "Owner" permission at the Azure tenant root scope. The following instructions explains how a Global Admin in the Azure Active Directory can elevate himself/herself - or others to have the required permissions prior to starting the deployment.
+Since AfO Landing Zones is a complete, end-to-end setup of your Azure tenant as a whole, the user making the deployment requires the "Owner" permission at the Azure tenant root scope. The following instructions explains how a Global Admin in the Azure Active Directory can elevate himself/herself - or others to have the required permissions prior to starting the deployment.
 
 >Note: Both the role assignment as well as the deployment is a one-off exercise, and post deployment you can remove the role assignment from the tenant root scope in Azure.
 
 The pre-requisites requires the following:
 
-- A user that is Global Admin in the Azure Active Directory where Azure for Telco will be deployed.
+- A user that is Global Admin in the Azure Active Directory where AfO Landing Zones will be deployed.
 - Elevation of privileges of a Global Admin that will grant him/her the "User Access Administrator" role assignment at the tenant root scope.
 - An explicit role assignment (Azure RBAC) made at the tenant root scope via Azure CLI or Azure PowerShell (Note: There's currently no graphical user interface to make this role assignment).
 
@@ -216,7 +216,7 @@ The pre-requisites requires the following:
 
 ![elevate](./media/elevate.PNG)
 
-Grant explicit access to the User at the tenant root scope ("/") to deploy Azure for Telco
+Grant explicit access to the User at the tenant root scope ("/") to deploy AfO Landing Zones
 
 You can use either Bash (Azure CLI) or PowerShell (Az.Resources) to create the role assignment for user that will do the deployment.
 
@@ -247,11 +247,11 @@ New-AzRoleAssignment -Scope '/' -RoleDefinitionName 'Owner' -ObjectId $user.Id
 
 ### Optional pre-requisites
 
-The deployment experience in Azure portal allows you to bring in existing (preferably empty) subscriptions dedicated for the platform part of the Azure for Telco architecture. It also allows you to bring existing subscriptions that can be used as the initial operator landing zones for your carrier grade workloads.
+The deployment experience in Azure portal allows you to bring in existing (preferably empty) subscriptions dedicated for the platform part of the AfO Landing Zones architecture. It also allows you to bring existing subscriptions that can be used as the initial operator landing zones for your carrier grade workloads.
 
 ## Step by step guidance
 
-This section will explain the deployment experience and the options provided for Azure for Telco reference implementation.
+This section will explain the deployment experience and the options provided for AfO Landing Zones reference implementation.
 
 When you click on [*Deploy to Microsoft Cloud*](https://aka.ms/afoRi), it will start the deployment experience in the Azure portal into your default Azure tenant. In case you have access to multiple tenants, ensure you are selecting the right one.
 
@@ -261,7 +261,7 @@ On the first page, select the *Region*. This region will primarily be used to pl
 
 ![Deployment location](./media/location.PNG)
 
-### Azure for Telco Architecture setup
+### AfO Landing Zones Architecture setup
 
 Provide a prefix that will be used to create the management group hierarchy and platform resources, and select if you would use dedicated subscriptions or a single subscription for platform resources (please note that dedicates subscriptions are recommended, and single platform subscription is only for PoC and testing purposes). For this scenario, select **Dedicated**.
 
@@ -283,10 +283,11 @@ On the *Connectivity for Azure and Distributed Edge* tab, you will configure the
 
 To deploy and configure a "hub and spoke" topology, you must:
 
-- In the *Deploy networking topology for Azure and Distributed Edge* option, select either "Hub and spoke with Azure Firewall" or "Hub and spoke with your own third-party NVA". In this guidance we will select the "Hub and spoke with Azure Firewall".
+- In the *Deploy networking topology for Azure and Distributed Edge* option, select either "Hub and spoke with Azure Firewall" or "Virtual VWAN (Microsoft managed). In this guidance we will select the "Hub and spoke with Azure Firewall".
 - Provide a dedicated (empty) subscription that will be used to host the requisite networking infrastructure.
 - Provide the address space to be assigned to the hub virtual network
 - Select an Azure region where the hub virtual network will be created
+- Depending on the Azure region, you can optionally use Azure Virtual Network Manager to manage your virtual networks at scale and also enable full mesh.
 
  ![img](./media/hubandspoke.PNG)
 
@@ -314,7 +315,7 @@ For Networking security and monitoring solutions:
 
 On the *Authentication & Authorization* tab you can specify if you want to assign recommended policies to primarily secure and govern domain controllers in Azure, which will have its dedicated subscription to ensure clear separation of concerns, and to provide AuthN/AuthZ to workloads into the landing zones. You can then select which policies you want to get assigned, and you will need to provide the address space for the virtual network that will be deployed on this subscription. Please note that this virtual network will be connected to the hub virtual network via VNet peering.
 
-If you don't need - or plan to host domain controllers in Azure for your telco workloads, you can select *No*. If you later want to add dedicated subscription for these purposes, you can move it manually to the 'identity' management group in the hierarchy created by Azure for Telco.
+If you don't need - or plan to host domain controllers in Azure for your telco workloads, you can select *No*. If you later want to add dedicated subscription for these purposes, you can move it manually to the 'identity' management group in the hierarchy created by AfO Landing Zones.
 
  ![img](./media/auth.PNG)
 

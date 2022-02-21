@@ -8,6 +8,12 @@ The solution allows health providers to create, personalize and enable new care 
 * **Clinical timeline:** See a concise, sequential, and interactive view of patient's clinical occurrences.
 * **Virtual clinic:** Provide your care team members the ability to perform virtual appointments with patients.
 
+| Reference implementation | Description | Deploy |
+|:-------------------------|:------------|--------|
+| IoMT                     | Care management for health providers to create, personalize and enable new care plans for patients and manage care team members. |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/solutioncenter-healthcare) |
+
+## Prerequisites
+
 Before you deploy and configure, verify you have implemented the [prerequisites](../../prereqs.md).
 
 Specifically for care management, you need:

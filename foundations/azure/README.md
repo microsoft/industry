@@ -6,12 +6,12 @@ Each of the respective reference implementations in this repository is based on 
 
 | Azure Cloud Foundations | Description | Deploy |
 |:----------------------|:------------|--------|
-| Azure for Telecommunications | Azure for Telco foundation that provides a full, rich, compliant architecture with scale-out pattern for connectivity and landing zones for Telco industry scenarios |[![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Ftelco%2FreferenceImplementation%2FtelcoArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Ftelco%2FreferenceImplementation%2Ftelco-portal.json)
-| Azure for Healthcare | Azure for Healthcare foundation that provides a full, rich compliant architecture with specific HIPAA/HITRUST compliance requirements, alongside with Healthcare APIs in the landing zones for interoperability with Healthcare solutions in Power Platform | [![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2FhealthArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2Fhealth-portal.json)
+| Azure for Telecommunications | Azure for Telco foundation that provides a full, rich, compliant architecture with scale-out pattern for connectivity and landing zones for Telco industry scenarios |[![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoRi)
+| Azure for Healthcare | Azure for Healthcare foundation that provides a full, rich compliant architecture with specific HIPAA/HITRUST compliance requirements, alongside with Healthcare APIs in the landing zones for interoperability with Healthcare solutions in Power Platform | [![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afhRi)
 
 The architecture and design for the Azure for industries foundation is based on the following design principles:
 
-## Design Principles for Azure for industries
+## Design Principles for Azure Cloud Foundation
 
 These principles serve as a compass for subsequent design decisions across critical technical domains. Readers are strongly advised to familiarize themselves with these principles to better understand their impact and the trade-offs associated with non-adherence.
 

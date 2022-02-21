@@ -32,7 +32,7 @@ Microsoft Cloud for Healthcare spans the Microsoft Clouds (Azure, Power Platform
 
 [Healthcare Foundations (Recommended)](./healthcare/prereqs.md)
 - [Power Platform for Healthcare](./foundations/powerPlatform)
-- [Azure for Healthcare](./healthcare/solutions/healthcareApis)
+- [Azure for Healthcare](./healthcare)
 - [Microsoft Teams for Healthcare](./healthcare/solutions/microsoftTeams)
 
 Healthcare Solutions
@@ -46,8 +46,10 @@ Healthcare Solutions
 - Care Coordination
   - [Care Management](./healthcare/solutions/careManagement)
   - [Home Health](./healthcare/solutions/homeHealth)
+<!--
 - Care Collaboration
   - [Health Assistant](./healthcare/solutions/healthAssistant)
+-->
 - Monitoring & Analytics
   - [Remote Patient Monitoring](./healthcare/solutions/IoMT)
   - [Healthcare Analytics](./healthcare/solutions/clinicalAnalytics)
@@ -68,7 +70,7 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
 <thead>
  <tr>
   <th style="text-align:left" width="25%">Telecommunications Scenario</th>
-  <th style="text-align:left" width="80%">Reference Architecture</th>
+  <th style="text-align:left" width="75%">Reference Architecture</th>
  </tr>
 </thead>
 <tbody>
@@ -80,10 +82,11 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
 - [Power Platform for Telecommunications](./foundations/powerPlatform)
 
 Telco Solutions
-- [Governance for Telco Industry Scenarios](./telco#governance)
+- [Governance for Telco Industry Scenarios](./telco/docs/telco-governance.md)
 - [Networking for Telco Industry Scenarios](./telco/docs/telco-networking.md)
-- [Distributed Edge](./telco#distributed-edge)
-- [Telco services](./telco/solutions/mgmtOptions/readme.md)
+- [Operator Landing Zones](./telco/docs/operator-landing-zones.md)
+- [Distributed Edge](./telco/docs/telco-edge.md)
+- [Operator services](./telco/solutions/mgmtOptions/readme.md)
 <!--  - [Telco Managed Services](./telco/solutions/managedServices)
   - [Telco Managed Solution](./telco/solutions/managedSolutions)-->
 <!--- [Telco Sales](./telco/solutions/sales/readme.md)
@@ -105,8 +108,8 @@ Microsoft Cloud for Financial Services provides capabilities to manage data to d
 <table>
 <thead>
  <tr>
-  <th style="text-align:left" width="25%">Financial Services</th>
-  <th style="text-align:left" width="80%">Reference Architecture</th>
+  <th style="text-align:left" width="30%">Financial Services</th>
+  <th style="text-align:left" width="70%">Reference Architecture</th>
  </tr>
 </thead>
 <tbody>
@@ -124,7 +127,7 @@ Microsoft Cloud for Financial Services provides capabilities to manage data to d
   - [Unified customer profile](./fsi/solutions/unifiedCustomerProfile)
   - [Customer onboarding](./fsi/solutions/customerOnboarding)
   - [Collaboration manager](./fsi/solutions/collaborationManager)
-  - [Banking customer engagement](./fsi/solutions/customerEngagement)
+  - [Banking customer engagement](./fsi/solutions/bankingCustomerEngagement)
 - Financial crime protection
   - [Account protection](./fsi/solutions/accountProtection)
   - [Purchase protection](./fsi/solutions/purchaseProtection)
