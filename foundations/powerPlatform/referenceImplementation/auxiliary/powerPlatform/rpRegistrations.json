@@ -23,20 +23,22 @@
     },
     "variables": {
         "deploymentName": "[take(concat(parameters('rgName'), '-POWERRP', '-', parameters('location')), 64)]",
-        "powerPlatformAccountsName": "[take(concat(parameters('rgName'), '-', 'PP', parameters('location')), 64)]"
+        "powerPlatformAccountsName": "[take(concat(parameters('rgName'), '-', 'PP', parameters('location')), 64)]",
+        "ppAccountsDescription": "Dedicated billing subscription for Power Platform tenant for North Star Architecture"
     },
     "resources": [
         {
             "type": "Microsoft.Resources/resourceGroups",
             "apiVersion": "2021-04-01",
             "name": "[parameters('rgName')]",
-            "location": "[deployment().location]",
+            "location": "[parameters('location')]",
             "properties": {}
         },
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
             "name": "[variables('deploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]"
             ],
@@ -53,13 +55,13 @@
                             "name": "[variables('powerPlatformAccountsName')]",
                             "location": "[parameters('powerPlatformLocation')]",
                             "properties": {
-                                "description": "Dedicated billing subscription for Power Platform tenant for North Star Architecture"
+                                "description": "[variables('ppAccountsDescription')]"
                             }
                         }
                     ]
                 }
-            },
-            "resourceGroup": "[parameters('rgName')]"
+            }
         }
-    ]
+    ],
+    "outputs": {}
 }
