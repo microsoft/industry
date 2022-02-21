@@ -1,0 +1,379 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "ppIdentity": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the resourceId of the User Managed Identity."
+            }
+        },
+        "ppBusinessDlp": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Provide the connectors you will group into business."
+            }
+        },
+        "ppNonBusinessDlp": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Provide the connectors you will group into non-business."
+            }
+        },
+        "ppBlockDlp": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Provide the connectors you will group into blocked."
+            }
+        },
+        "ppGuestMakerSetting": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
+        "ppAppSharingSetting": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
+        "ppEnvCreationSetting": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
+        "ppTrialEnvCreationSetting": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
+        "ppEnvCapacitySetting": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
+        "ppAdminEnvNaming": {
+            "type": "string",
+            "maxLength": 15,
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide naming convention for the Admin environments."
+            }
+        },
+        "ppAdminRegion": {
+            "type": "string",
+            "allowedValues": [
+                "europe",
+                "unitedstates",
+                "asia",
+                "japan",
+                "india",
+                "canada",
+                "southamerica",
+                "unitedkingdom",
+                "france",
+                "germany",
+                "unitedarabemirates"
+            ],
+            "defaultValue": "unitedstates",
+            "metadata": {
+                "description": "Provide location for the Admin environments."
+            }
+        },
+        "ppAdminBilling": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "AZURE-only parameter. SubscriptionId for the billing subscription."
+            }
+        },
+        "ppAdminCoeSetting": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "If yes is selcted, CoE will be bootstrapped in to the admin environments, ready for post-deployment configuration using https://aka.ms/ppac"
+            }
+        },
+        "ppDefaultRenameText": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide new display name for the _default_ Power Platform Environment in the tenant."
+            }
+        },
+        "ppDefaultDlp": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
+        "ppCitizen": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "half",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select environment type. Yes will enable with Dataverse, Half will create without Dataverse."
+            }
+        },
+        "ppCitizenCount": {
+            "type": "int",
+            "maxValue": 10,
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Select how many environments for citizen dev to be created."
+            }
+        },
+        "ppCitizenNaming": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide naming convention for the citizen dev environments."
+            }
+        },
+        "ppCitizenRegion": {
+            "type": "string",
+            "allowedValues": [
+                "europe",
+                "unitedstates",
+                "asia",
+                "japan",
+                "india",
+                "canada",
+                "southamerica",
+                "unitedkingdom",
+                "france",
+                "germany",
+                "unitedarabemirates"
+            ],
+            "defaultValue": "unitedstates",
+            "metadata": {
+                "description": "Provide location for the Admin environments."
+            }
+        },
+        "ppCitizenDlp": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable recommended DLP policies for citizen dev environments."
+            }
+        },
+        "ppCitizenBilling": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "AZURE-only, to provide subscriptionId for the subscription billing."
+            }
+        },
+        "ppPro": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "half",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select environment type. Yes will enable with Dataverse, Half will create without Dataverse."
+            }
+        },
+        "ppProCount": {
+            "type": "int",
+            "maxValue": 10,
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Select how many environments for pro dev to be created."
+            }
+        },
+        "ppProNaming": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide naming convention for the pro dev environments."
+            }
+        },
+        "ppProRegion": {
+            "type": "string",
+            "allowedValues": [
+                "europe",
+                "unitedstates",
+                "asia",
+                "japan",
+                "india",
+                "canada",
+                "southamerica",
+                "unitedkingdom",
+                "france",
+                "germany",
+                "unitedarabemirates"
+            ],
+            "defaultValue": "unitedstates",
+            "metadata": {
+                "description": "Provide location for the pro dev environments."
+            }
+        },
+        "ppProDlp": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable recommended DLP policies for pro dev environments."
+            }
+        },
+        "ppProBilling": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "AZURE-only, to provide subscriptionId for the subscription billing."
+            }
+        },
+        "ppSelectIndustry": {
+            "type": "string",
+            "allowedValues": [
+                "healthcare",
+                "fsi",
+                "retail",
+                "none"
+            ],
+            "defaultValue": "none",
+            "metadata": {
+                "description": "Select if your specific industry to enable in the industry environments."
+            }
+        },
+        "ppIndustryNaming": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide naming convention for the industry environments."
+            }
+        },
+        "ppIndustryRegion": {
+            "type": "string",
+            "allowedValues": [
+                "europe",
+                "unitedstates",
+                "asia",
+                "japan",
+                "india",
+                "canada",
+                "southamerica",
+                "unitedkingdom",
+                "france",
+                "germany"
+            ],
+            "defaultValue": "unitedstates",
+            "metadata": {
+                "description": "Provide location for the pro dev environments."
+            }
+        },
+        "ppIndustryBilling": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "AZURE-only, to provide subscriptionId for the subscription billing."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the Azure location for the deployments"
+            }
+        }
+    },
+    "variables": {
+        "deploymentUris": {
+            "ppRpRegistrationTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/powerPlatform/rpRegistrations.json')]",
+            "logAnalyticsTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitoring/logAnalytics.json')]",
+            "aadDiagnosticsTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitoring/aadDiagnostics.json')]",
+            "dataLakeTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitoring/storageAccountsV2.json')]"
+        },
+        "deploymentNamePrefix": "NorthStar-v1-",
+        "deploymentNameSuffix": "[concat('-', deployment().location, guid(parameters('ppAdminEnvNaming')))]",
+        "deploymentNames": {
+            "ppRegistrationDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPRP', variables('deploymentNameSuffix')), 64)]",
+            "logAnalyticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPLA', variables('deploymentNameSuffix')), 64)]",
+            "aadDiagnosticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'AADDIAG', variables('deploymentNameSuffix')), 64)]",
+            "dataLakeDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'DATALAKE', variables('deploymentNameSuffix')), 64)]"
+        }
+    },
+    "resources": [
+        {
+            // Register the Power Platform 'accounts' resource type if the condition is met, and create the billing object into a new resource group.
+            "condition": "[equals(parameters('ppAdminBilling'), 'yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').ppRegistrationDeploymentName]",
+            "location": "[deployment().location]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').ppRpRegistrationTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "foo"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "powerPlatformLocation": {
+                        "value": "[parameters('ppAdminRegion')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
