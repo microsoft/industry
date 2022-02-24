@@ -41,7 +41,7 @@ The table below summarizes the licenses you may require depending on the retail 
 | Real-time personalization | Intelligent Recommendations | Azure Subscription
 ||Azure Cognitive Search | Azure Subscription
 || Dynamic 365 Marketing | Dynamics 365 Marketing is licensed per tenant and includes a default seeded capacity allotment of 10K Marketing Contacts and 100K Marketing Interactions per month.
-| Digital advertising solutions | Microsoft Advertising | 
+| Digital advertising solutions | Microsoft Advertising |
 | Seamless customer service | Omnichannel for Customer Service | Dynamics 365 license for Customer Service is required. Customer Service is available as either an Enterprise or Professional user license and with several optional add-ins to deliver the capabilities needed for your situation.
 || Power Virtual Agents | Access to Power Virtual Agents license required. The Power Virtual Agents application is licensed per tenant. Power Virtual Agents will be charged according to the unit of ‘billed sessions'. A user license (called Power Virtual Agent User License) is required for each user authoring bots with Power Virtual Agents. Available at no additional cost, the license can be assigned to users by the administrator in the admin portal. We recommend acquiring the tenant license (with capacity add-on if needed) and user licenses as part of a single transaction to simplify onboarding to Power Virtual Agents. Please refer to Power Virtual Agents [licensing guide](https://go.microsoft.com/fwlink/?LinkId=2085130&clcid=0x409)for more details.
 || Dynamic 365 Commerce | Dynamics 365 Commerce license is required for this capability. Commerce is licensed per user.
