@@ -12,7 +12,7 @@ Intelligent Recommendations IR) is one of the features included in Microsoft Clo
 
 The IR service uses input datasets and configuration parameters to determine the type of [recommendation scenarios](https://docs.microsoft.com/en-us/industry/retail/intelligent-recommendations/overview). These are:
 
-- Personalized recommendations for end-users
+- Personalized recommendations for end users
 - Similar items
 - Real-time and session-based recommendations for users
 - Basket completion
@@ -51,7 +51,7 @@ The recommendations process can be broken down into three key steps:
 
 - Can users choose ML/AI models?
 
-    IR is a PaaS and all model management related tasks are managed by Microsoft. As a result, customers do not have visibility of what model(s) were used to generate a set of recommendations. However, end-users can fine-tune the results through [Flexible Filtering](https://docs.microsoft.com/en-us/industry/retail/intelligent-recommendations/fine-tune-results#flexible-filtering) and [Top candidates for recommendation lists](https://docs.microsoft.com/en-us/industry/retail/intelligent-recommendations/fine-tune-results#show-top-candidates-for-recommendations-lists).
+    IR is a PaaS and all model management related tasks are managed by Microsoft. As a result, customers do not have visibility of what model(s) were used to generate a set of recommendations. However, end users can fine-tune the results through [Flexible Filtering](https://docs.microsoft.com/en-us/industry/retail/intelligent-recommendations/fine-tune-results#flexible-filtering) and [Top candidates for recommendation lists](https://docs.microsoft.com/en-us/industry/retail/intelligent-recommendations/fine-tune-results#show-top-candidates-for-recommendations-lists).
 
 - Monitoring the `cooking process`?
 
