@@ -20,9 +20,7 @@ It's composed of indvidual capabilities which are built on Microsoft Dynamics 36
 - Retail media
 - Intelligent fraud prevention
 
-[Microsoft Cloud Solution Center](https://aka.ms/solutioncenter) provides a central place to deploy and configure Microsoft industry cloud solutions. It gives customers and partners a unified view of industry cloud capabilities for a seamless provisioning experience across Microsoft 365, Microsoft Azure, Microsoft Dynamics 365, and Microsoft Power Platform. Solution Center guides you through and simplifies the deployment process. It checks licensing requirements and dependencies to help make sure you have everything you need for your deployment.
-
-Customers have an option to enable one or more products which make up MCR.
+[Microsoft Cloud Solution Center](https://aka.ms/solutioncenter) provides a central place to deploy and configure Microsoft industry cloud solutions. It gives customers and partners a unified view of industry cloud capabilities for a seamless provisioning experience across Microsoft 365, Microsoft Azure, Microsoft Dynamics 365, and Microsoft Power Platform. Solution Center guides you through and simplifies the deployment process. It checks licensing requirements and dependencies to help make sure you have everything you need for your deployment. Customers have an option to enable one or more products which make up MCR.
 
 ## Licensing requirements
 
@@ -71,6 +69,12 @@ The table below summarizes the licenses you may require depending on the retail 
 Several capabilities of MCR rely on Azure-based services. Guidance for these services is to leverage [Azure Landing Zones](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/).
 
 [Prescriptive guidance for Azure landing zone and reference implementation](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/implementation)
+
+At the time of writing this document, following MCR services and products are deployed on Azure:
+
+- [Intelligent Recommendations](https://docs.microsoft.com/industry/retail/intelligent-recommendations/overview). This service is in preview and currently offered free of charge.
+- [Azure Synapse Analytics](https://azure.microsoft.com/services/synapse-analytics/#overview). Synapse offers two pricing models - **pay as you go** and **reservations**.
+- [Azure Cognitive Search](https://docs.microsoft.com/azure/search/). Cognitive Search offers **pay as you go** pricing model.
 
 ## Power Platform
 
