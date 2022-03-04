@@ -29,12 +29,12 @@ Specifically for the banking customer engagement scenario, you need:
     * Omnichannel for Customer Service
     * Customer Insights (optional but required for full experience)
 
-> Note: The implementation of the Banking Customer Engagement solution can currently not be automated, and requires manual implementation and configuration across Solution Center, Power Platform Admin Center.
+> Note: The implementation of the Banking Customer Engagement solution can currently not be automated, and requires manual implementation and configuration across Solution Center and Power Platform Admin Center.
 
 ## Deployment of banking customer engagement solution
 
 To deploy the banking customer engagement solution you first need to create a Power Platform environment. Next, you need to follow a few steps to deploy the financial services specific solution.
-For the deployment, please [follow the steps described here (Step 1, Step 2, Step 3)](https://docs.microsoft.com/en-us/dynamics365/industry/financial-services/deploy#step-1-prepare-environment) and deploy the home banking customer engagement solution.
+For the deployment, please [follow the steps described here (Step 1, Step 2, Step 3)](https://docs.microsoft.com/en-us/dynamics365/industry/financial-services/deploy#step-1-prepare-environment) and deploy the banking customer engagement solution.
 
 The solution can be optionally deployed with sample data. The sample data can only be added when deplyoing the solution through the solution center. There is no capability to remove the sample data. This needs to be done in the application.
 
@@ -98,7 +98,7 @@ This lowers the training cost of customer representatived, while keeping the qua
 
 ## Planning guidelines for banking customer engagement
 
-This section provides prescriptive guidance with design considerations and recommendations across the critical design areas for banking customer engagement for the teams that will deploy and manage the capabilities within the Microsoft Cloud for Fianncial Services.
+This section provides prescriptive guidance with design considerations and recommendations across the critical design areas for banking customer engagement for the teams that will deploy and manage the capabilities within the Microsoft Cloud for Financial Services.
 
 > Note: The design areas for banking customer engagement are lightweight as the critical design areas, considerations and recommendations should be addressed in the Power Platform architecture itself. This is primarily because the banking customer engagement scenario and its dependencies are D365 applications that must only be sequenced and deployed into existing environments.
 
@@ -132,8 +132,8 @@ This section provides prescriptive guidance with design considerations and recom
 
 ### Design recommendations
 
-* If Global Administrator permissions are needed to complete the deployment, ensure this is a joint activity in order to troubleshoot and follow-up with support in case D365 Marketing deployment is having issues.
-* Deploy D365 Marketing to test, development, and production environment to align with the overall [Environment strategy recommendations](../../../foundations/powerPlatform/) for Industry solutions in Power Platform.
+* If Global Administrator permissions are needed to complete the deployment, ensure this is a joint activity in order to troubleshoot and follow-up with support in case D365 Customer Service deployment is having issues.
+* Deploy D365 Customer Service to test, development, and production environment to align with the overall [Environment strategy recommendations](../../../foundations/powerPlatform/) for Industry solutions in Power Platform.
 * Similarly, deploy banking customer engagement (and all other Financial Services solutions) to test, development, and production environments per the above.
 * Unselect the deployment of sample data in the solution center, because there is no one click solution to remove the data afterwards.
 
