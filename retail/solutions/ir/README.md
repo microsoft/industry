@@ -1,8 +1,22 @@
-# Intelligent Recommendations
+# Personalized recommendations with Intelligent Recommendations
 
-Goal of this guidance is to provide prescriptive guidance for enterprise-scale deployment of Intelligent Recommendations (IR) service.
+## Table of Contents
 
-## Overview
+- [Intelligent Recommendations with Shopify](#intelligent-recommendations-with-shopify)
+  - [Table of Contents](#table-of-contents)
+  - [Intelligent Recommendations](#intelligent-recommendations)
+    - [Capabilities](#capabilities)
+    - [Architecture](#architecture)
+    - [Terminology](#terminology)
+    - [Integration points for IR](#integration-points-for-ir)
+    - [Service flow](#service-flow)
+    - [FAQ](#faq)
+  - [Shopify](#shopify)
+  - [Considerations](#considerations)
+  - [Recommended Practices](#recommended-practices)
+  - [Deployment guide](#deployment-guide)
+
+## Intelligent Recommendations
 
 [Intelligent Recommendations](https://docs.microsoft.com/en-us/industry/retail/intelligent-recommendations/overview) democratizes AI and machine learning recommendations through a codeless and powerful experience powered by the same technology that fuels Xbox, Microsoft 365, and Microsoft Azure. Businesses can now provide relevant discovery for customers with this new, innovative AI for personalization and recommendations.
 
@@ -101,10 +115,18 @@ The recommendations process can be broken down into three key steps:
 
     IR is in preview and currently does not have an availability SLA in place. However, this will be in place when service goes GA.
 
+## Shopify
+
+*Coming soon*
+
 ## Considerations
 
-*Work in progress*
+*Coming soon*
 
 ## Recommended Practices
 
-*Work in progress*
+*Coming soon*
+
+## Deployment guide
+
+*Coming soon*
