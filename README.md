@@ -148,7 +148,7 @@ Microsoft Cloud for Financial Services provides capabilities to manage data to d
 
 ### Retail
 
-Microsoft Cloud for Retail is an industry-specific cloud composed of products and services to address retail use-cases. With services across Microsoft Azure, Dynamics 365 and Power Platform, customers can design, build and deploy cross-cloud solutions.
+Microsoft Cloud for Retail is an industry-specific cloud composed of products and services to address retail specific use-cases. With services across Microsoft Azure, Dynamics 365 and Power Platform, customers can design, build and deploy cross-cloud solutions.
 
 <table>
 <thead>
@@ -164,12 +164,10 @@ Microsoft Cloud for Retail is an industry-specific cloud composed of products an
 
 - [Retail Foundations (Recommended)](./retail/prereqs.md)
 - [Reference Implementation](./retail/referenceImplementation/README.md)
-  - [Intelligent Recommendations](./retail/referenceImplementation/ir/README.md)
-  - [Intelligent Order Management](./retail/referenceImplementation/iom/README.md)
 
 - Retail Solutions
-  - IOM integration with BigCommerce
-  - Integrating Intelligent Recommendations with Shopify
+  - [Order lifecycle management scenario with Intelligent Order Management](./retail/solutions/iom/README.md)
+  - [Personalized recommendations with Intelligent Recommendations](./retail/solutions/ir/README.md)
 
   </td>
   <td>

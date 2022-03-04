@@ -1,21 +1,23 @@
-# Azure for Retail
+# Microsoft Cloud for Retail
 
-Goal of the reference architecture is to provide Northstar architecture; provide opinionated considerations and best practices for implementing Microsoft cloud services and products to enable retail use-cases.
+Goal of this documentation is to provide Northstar reference architecture; provide opinionated considerations and best practices for implementing Microsoft cloud services and products for retail use-cases.
 
 ## Table of Contents
 
-- [Azure for Retail](#azure-for-retail)
+- [Microsoft Cloud for Retail](#microsoft-cloud-for-retail)
   - [Table of Contents](#table-of-contents)
-  - [Azure for Retail Reference Implementation](#azure-for-retail-reference-implementation)
-  - [Azure for Retail Solutions](#azure-for-retail-solutions)
+  - [Reference Implementation](#reference-implementation)
+  - [Retail Solutions](#retail-solutions)
 
-## Azure for Retail Reference Implementation
+## Reference Implementation
 
-[Retail reference implementation](./referenceImplementation/README.md) contains guidance, best practices and templates for deploying products and services across Azure, Dynamics 365 and Power Platform required to run a retail online business. The reference implementation inclues services and products across Microsoft cloud (Azure, Power Platform, Dynamics) to enable retail use-cases.
+![reference-implementation](./media/mc4r-reference-architecture.png)
 
-## Azure for Retail Solutions
+*Details coming soon*
 
-[Retail solutions](./solutions/README.md) contains guidance for enabling specific retail use-cases using Microsoft cloud services and products.
+## Retail Solutions
+
+*Details coming soon*
 
 ---
 

@@ -7,6 +7,17 @@ This guide goes through the details of the reference implementation of a set of 
 - [Microsoft Cloud for Retail User Guide](#microsoft-cloud-for-retail-user-guide)
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
+  - [Design principles](#design-principles)
+    - [Subscription Democratization](#subscription-democratization)
+    - [Policy Driven Governance](#policy-driven-governance)
+    - [Single Control and Management Plane](#single-control-and-management-plane)
+    - [Application Centric and Archetype-neutral](#application-centric-and-archetype-neutral)
+    - [Azure native design and aligned with platform roadmap](#azure-native-design-and-aligned-with-platform-roadmap)
+  - [Critical design areas](#critical-design-areas)
+    - [Separating platform and retail landing zones](#separating-platform-and-retail-landing-zones)
+    - [Platform responsibilities and functions](#platform-responsibilities-and-functions)
+    - [Landing zone owners responsibilities](#landing-zone-owners-responsibilities)
+  - [Management Group Structure](#management-group-structure)
   - [Prerequisites](#prerequisites)
     - [Azure](#azure)
       - [Elevate Access to manage Azure resources in the directory](#elevate-access-to-manage-azure-resources-in-the-directory)
@@ -21,11 +32,94 @@ This guide goes through the details of the reference implementation of a set of 
 
 The reference implementation of retail on Microsoft Cloud leverages products and services delpoyed across Azure and Microsoft Cloud for Retail (MCR).
 
-For most part, the deployment experience for reference implementation is automated, however parts of the deployment require manual inputs from an administrator specifically products and services provisioned through [MCR Solution Center](https://docs.microsoft.com/en-us/industry/solution-center-deploy?toc=/industry/retail/toc.json&bc=/industry/retail/breadcrumb/toc.json).
+For most part, the deployment experience for reference implementation is automated, however parts of the deployment require manual inputs from an administrator; specifically, products and services provisioned through [MCR Solution Center](https://docs.microsoft.com/en-us/industry/solution-center-deploy?toc=/industry/retail/toc.json&bc=/industry/retail/breadcrumb/toc.json).
+
+## Design principles
+
+The reference architecture is composed of services on Azure and Power Platform.
+
+For **Azure based services**, we recommend adhering to Cloud Adoption Framework (CAF) landing zones principles. These principles serve as a compass for subsequent design decisions across critical technical domains. Familiarize yourself with these principles to better understand their impact and the trade-offs associated with nonadherence, and how them will help you to scale in alignment with the Azure product roadmap.
+
+>Note: The design principles for Azure, by design, are industry agnostic, and apply to all industries. For more details about architecture and design methodologies for Microsoft Clouds, see [this article](../../foundations/README.md).
+
+### Subscription Democratization
+
+Subscriptions should be used as a unit of management and scale aligned with business needs and priorities to support business areas and portfolio owners to accelerate application migrations and new application development. Subscriptions should be provided to business units to support the design, development, and testing and deployment of new workloads and migration of existing workloads.
+
+### Policy Driven Governance
+
+Azure Policy should be used to provide guardrails and ensure continued compliance with your organization's platform, along with the applications deployed onto it. Azure Policy also provides application owners with sufficient freedom and a secure unhindered path to the cloud.
+
+There are a few common regulatory compliance requirements which retail workloads are eligible for:
+
+- **PCI DSS** The workloads or systems which handle payment card data would require PCI DSS compliance.
+  
+- **GDPR** is a data privacy regulation which is applicable to systems which handle customer data such as e-commerce platforms; customer loyalty applications etc.
+
+### Single Control and Management Plane
+
+Azure provides a unified and consistent control plane across all Azure resources and provisioning channels subject to role-based access and policy-driven controls. Azure can be used to establish a standardized set of policies and controls for governing the entire enterprise application estate in the cloud.
+
+### Application Centric and Archetype-neutral
+
+The architecture for retail should focus on application-centric migrations and development rather than pure infrastructure lift-and-shift migrations, such as migrating virtual machines. It shouldn't differentiate between legacy and modern applications; infrastructure as a service; or platform as a service applications. Ultimately, it should provide a safe and secure foundation for all application types to be deployed onto your Azure platform.
+
+### Azure native design and aligned with platform roadmap
+
+This architecture approach advocates using Azure-native platform services and capabilities whenever possible. This approach should align with Azure platform roadmaps to ensure that new capabilities are available within your environments. Azure platform roadmaps should help to inform the migration strategy and Azure for Healthcare architecture trajectory.
+
+## Critical design areas
+
+### Separating platform and retail landing zones
+
+One of the key for landing zones organisation and architecture is to have a clear separation of the Azure *platform* and the *landing zones*. This allows organizations to scale their Azure architecture alongside with their business requirements, while providing autonomy to their application teams for deploying, migrating and doing net-new development of their workloads into their landing zones. This model fully supports workload autonomy and distinguish between central and federated functions.
+
+### Platform responsibilities and functions
+
+Platform resources are managed by a cross-functional platform team. The team carries out the following functions in a close collaboration with the SME functions across the organization:
+
+- PlatformOps: Responsible for management and deployment of control plane resource types such as subscriptions, management groups via IaC and the respective CI/CD pipelines. Management of the platform related identity resources on Azure AD and cost management for the platform, and Operationalization of the Platform for an organization is under the responsibility of the platform function.
+
+- SecOps: Responsible for definition and management of Azure Policy and RBAC permissions on the platform for landing zones; platform management groups; and subscriptions.
+  
+- NetOps: Definition and management of the common networking components in Azure including the hybrid connectivity and firewall resource to control internet facing networking traffic. NetOps team is responsible for allocating virtual networks to landing zone subscriptions.
+
+### Landing zone owners responsibilities
+
+The reference implementation enables landing zones supporting a both centralized and federated application DevOps models. The most common model is where a dedicated **DevOps** team is aligned to a single workload. In case of smaller workloads or COTS or third-party application, a single **AppDevOps** team is responsible for workload operation. Independent of the model every DevOps team manages several workload staging environments (DEV, UAT, PROD) deployed to individual landing zones/subscriptions. Each landing zone has a set of RBAC permissions managed with Azure AD PIM provided by the Platform SecOps team.
+
+When the landing zones/subscriptions are handed over to the DevOps team, the team is end-to-end responsible for the workloads. They can independently operate within the security guardrails provided by the platform team and overarching policies. If dependency on central team(s) or a function is discovered, it is highly recommended that an organisation reviews the operations process and unblocks the DevOps teams.
+
+## Management Group Structure
+
+The Management Group structure implemented is as follows:
+
+- **Top-level Management Group** (directly under the tenant root group) is created with a prefix provided by the organization, which purposely will avoid the usage of the root group to allow organizations to move existing Azure subscriptions into the hierarchy, and also enables future scenarios. This Management Group is parent to all the other Management Groups created by Azure for Healthcare
+
+- **Platform:** This Management Group contains all the *platform* child Management Groups, such as Management, Connectivity, and Identity. Common Azure Policies for the entire platform is assigned at this level
+
+  - **Management:** This Management Group contains the dedicated subscription for management, monitoring, and security, which will host Azure Log Analytics, Azure Automation, Azure Storage Account for NSG Flow Logs, and Microsoft Sentinel. Specific Azure policies are assigned to harden and manage the resources in the management subscription.
+
+  - **Connectivity:** This Management Group contains the dedicated subscription for connectivity for Azure platform and Distributed Edge, which will host the Azure networking resources required for the platform, such as Azure Virtual WAN/Virtual Network for the hub, Azure Firewall, DNS Private Zones, Express Route circuits, ExpressRoute/VPN Gateways etc among others. Specific Azure policies are assigned to harden and manage the resources in the connectivity subscription. For typical scale-out scenarios for the Healthcare industry, additional connectivity subscriptions can be added and brought to compliant state in an autonomous fashion due to the policy driven guardrails design principle.
+
+  - **Identity:** This Management Group contains the dedicated subscription for identity, which is a placeholder for Windows Server Active Directory Domain Services (AD DS) VMs, or Azure Active Directory Domain Services to enable AuthN/AuthZ for workloads within the landing zones. Specific Azure policies are assigned to harden and manage the resources in the identity subscription.
+
+- **Landing Zones:** This is the parent Management Group for all the landing zone subscriptions and will have workload agnostic Azure Policies assigned to ensure workloads are secure and compliant. Under the parent Management Group will be a set of child Management Groups aligned to common functions performed within a retail setting.
+
+  - **Plan** This is a dedicated Management Group for workloads which are perform planning function such as merchandise planning; financial planning; business intelligence etc.
+  - **Buy** This is a dedicated Management Group for retail landing zones for the workloads which are repsonsible for supply-chain and logistics.
+  - **Move:** This is a dedicated Management Group for landing zones for applications and workloads involved with movement of goods such as warehouse management systems; transport managagement system etc.
+  - **Sell:** This is a dedicated Management Group for landing zones for applications and worklodas responsible for selling goods such as those related to Point of Sale (POS); ecommerce platforms etc. The workloads hosted here maybe required to comply with GDPR and PCI DSS.
+  - **Corp** This is a dedicated management group for grouping subscriptions which are needed for corporate systems and applications such as HR, payroll etc.
+  
+> Note: Azure Landing Zones are industry agnostic and Management Group hierarchy documented here is one of many ways management groups may be structured within retail setting. For purpose of the reference implementation, we have chosen a pattern most commonly seen across retailers which is to structure organisation and applications/workloads based on the function performed in a retail business.
+
+- **Sandboxes:** This is the dedicated Management Group for subscriptions that will solely be used for testing and exploration by an organization’s application teams. These subscriptions will be securely disconnected from the Corp and Online landing zones.
+- **Decommissioned:** This is the dedicated Management Group for landing zones that are being cancelled, which then will be moved to this Management Group before deleted by Azure after 30-60 days.
 
 ## Prerequisites
 
-There are two distinct parts of the deployment - Azure and Solution Center. The section talks to the privileges required to deploy the solution.
+There are two distinct parts of the deployment - Azure and Solution Center.
 
 ### Azure
 
