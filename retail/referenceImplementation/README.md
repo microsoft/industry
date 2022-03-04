@@ -18,11 +18,13 @@ This guide goes through the details of the reference implementation of a set of 
     - [Platform responsibilities and functions](#platform-responsibilities-and-functions)
     - [Landing zone owners responsibilities](#landing-zone-owners-responsibilities)
   - [Management Group Structure](#management-group-structure)
+  - [What happens when you deploy the reference implementation?](#what-happens-when-you-deploy-the-reference-implementation)
+  - [Deployment instructions](#deployment-instructions)
   - [Prerequisites](#prerequisites)
     - [Azure](#azure)
       - [Elevate Access to manage Azure resources in the directory](#elevate-access-to-manage-azure-resources-in-the-directory)
     - [Microsoft Cloud Solution Center](#microsoft-cloud-solution-center)
-  - [Deployment instructions](#deployment-instructions)
+  - [Deployment instructions](#deployment-instructions-1)
     - [Deploy Azure resources](#deploy-azure-resources)
     - [Enable MCR products and services via Microsoft Solution Center](#enable-mcr-products-and-services-via-microsoft-solution-center)
 
@@ -117,6 +119,12 @@ The Management Group structure implemented is as follows:
 - **Sandboxes:** This is the dedicated Management Group for subscriptions that will solely be used for testing and exploration by an organization’s application teams. These subscriptions will be securely disconnected from the Corp and Online landing zones.
 - **Decommissioned:** This is the dedicated Management Group for landing zones that are being cancelled, which then will be moved to this Management Group before deleted by Azure after 30-60 days.
 
+## What happens when you deploy the reference implementation?
+*Details coming soon*
+
+## Deployment instructions
+*Details coming soon*
+
 ## Prerequisites
 
 There are two distinct parts of the deployment - Azure and Solution Center.
@@ -184,8 +192,8 @@ New-AzRoleAssignment -Scope '/' -RoleDefinitionName 'Owner' -ObjectId $user.Id
 
 ### Deploy Azure resources
 
-*coming soon*
+*Details coming soon*
 
 ### Enable MCR products and services via Microsoft Solution Center
 
-*coming soon*
+*Details coming soon*
