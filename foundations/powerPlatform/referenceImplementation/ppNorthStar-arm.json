@@ -512,6 +512,12 @@
                     "ppTrialEnvCreationSetting": {
                         "value": "[parameters('ppTrialEnvCreationSetting')]"
                     },
+                    "ppTenantIsolationSetting": {
+                        "value": "[parameters('ppTenantIsolationSetting')]"
+                    },
+                    "ppTenantIsolationDomains": {
+                        "value": "[parameters('ppTenantIsolationDomains')]"
+                    },
                     "ppEnvCapacitySetting": {
                         "value": "[parameters('ppEnvCapacitySetting')]"
                     },
