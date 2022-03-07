@@ -84,6 +84,26 @@
                 "description": "Select to enable/disable this setting."
             }
         },
+        "ppTenantIsolationSetting": {
+            "type": "string",
+            "defaultValue": "none",
+            "allowedValues": [
+                "inbound",
+                "outbound",
+                "both",
+                "none"
+            ],
+            "metadata": {
+                "description": "Select tenant isolation setting"
+            }
+        },
+        "ppTenantIsolationDomains": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide the tenant names, IDs, or use * for all tenants"
+            }
+        },
         "ppAdminEnvNaming": {
             "type": "string",
             "maxLength": 15,
@@ -392,6 +412,8 @@
                                                     '-PPEnvCreationSetting', ' ', parameters('ppEnvCreationSetting'), ' ',
                                                     '-PPTrialEnvCreationSetting', ' ', parameters('ppTrialEnvCreationSetting'), ' ',
                                                     '-PPEnvCapacitySetting', ' ', parameters('ppEnvCapacitySetting'), ' ',
+                                                    '-PPTenantIsolationSetting', ' ', parameters('ppTenantIsolationSetting'), ' ',
+                                                    '-PPTenantIsolationDomains', ' ', parameters('ppTenantIsolationDomains'), ' ',
                                                     '-PPAdminEnvNaming', ' ', parameters('ppAdminEnvNaming'), ' ',
                                                     '-PPAdminBilling', ' ', parameters('ppAdminBilling'), ' ',
                                                     '-PPAdminRegion', ' ', parameters('ppAdminRegion'), ' ',
