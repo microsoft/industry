@@ -450,7 +450,7 @@
             "securityTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/security.json')]",
             "northStarTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/powerPlatform/ppDeploymentScript.json')]"
         },
-        "deploymentNamePrefix": "[replace(tenant().displayName, ' ', '')]",
+        "deploymentNamePrefix": "[concat(replace(tenant().displayName, ' ', ''), '-')]",
         "deploymentNameSuffix": "[concat('-', deployment().location, guid(parameters('ppAdminEnvNaming')))]",
         "deploymentNames": {
             "ppRegistrationDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-RP-Billing', variables('deploymentNameSuffix')), 64)]",
