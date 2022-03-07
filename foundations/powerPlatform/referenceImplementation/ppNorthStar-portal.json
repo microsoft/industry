@@ -1418,7 +1418,7 @@
                 "ppAdminRegion": "[steps('environments').ppAdminRegion]",
                 "ppAdminBilling": "[steps('environments').ppAdminBilling]",
                 "ppAdminCoeSetting": "[steps('environments').ppAdminCoeSetting]",
-                "ppDefaultRenameText": "[steps('landingZones').ppDefaultRename]",
+                "ppDefaultRenameText": "[steps('landingZones').ppDefaultRenameText]",
                 "ppDefaultDlp": "[steps('landingZones').ppDefaultDlp]",
                 "ppEnableAzureMonitor": "[steps('mgmt').ppEnableAzureMonitor]",
                 "ppEnableAppInsights": "[steps('mgmt').ppEnableAppInsights]",
