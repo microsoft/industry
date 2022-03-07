@@ -1420,9 +1420,9 @@
                             }
                         },
                         {
-                            "name": "ppIndustryBilling",
+                            "name": "ppIndustryAlm",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Create Billing Policy and Use Azure Subscription for pay-as-you-go for the Industry Environments",
+                            "label": "Create Development, Test, and Production environments for each landing zone",
                             "defaultValue": "Yes (recommended)",
                             "toolTip": "If 'Yes' is selected, the setup will enable it",
                             "constraints": {
@@ -1440,9 +1440,9 @@
                             "visible": "[equals(steps('landingZones').ppIndustry, 'yes')]"
                         },
                         {
-                            "name": "ppIndustryAlm",
+                            "name": "ppIndustryBilling",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Create Development, Test, and Production environments for each landing zone",
+                            "label": "Create Billing Policy and Use Azure Subscription for pay-as-you-go for the Industry Environments",
                             "defaultValue": "Yes (recommended)",
                             "toolTip": "If 'Yes' is selected, the setup will enable it",
                             "constraints": {
