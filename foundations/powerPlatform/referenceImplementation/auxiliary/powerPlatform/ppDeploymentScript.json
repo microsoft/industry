@@ -365,7 +365,7 @@
         }
     },
     "variables": {
-        "deploymentName": "[take(concat(parameters('rgName'), '-ppNorthStar', '-', parameters('location')), 64)]"
+        "deploymentName": "[take(concat(parameters('rgName'), '-initialize', '-', parameters('location')), 64)]"
     },
     "resources": [
         {

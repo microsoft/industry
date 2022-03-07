@@ -450,17 +450,17 @@
             "securityTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/security.json')]",
             "northStarTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/powerPlatform/ppDeploymentScript.json')]"
         },
-        "deploymentNamePrefix": "NorthStar-v1-",
+        "deploymentNamePrefix": "[replace(tenant().displayName, ' ', '')]",
         "deploymentNameSuffix": "[concat('-', deployment().location, guid(parameters('ppAdminEnvNaming')))]",
         "deploymentNames": {
-            "ppRegistrationDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPRP', variables('deploymentNameSuffix')), 64)]",
-            "logAnalyticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPLA', variables('deploymentNameSuffix')), 64)]",
-            "aadDiagnosticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'AADDIAG', variables('deploymentNameSuffix')), 64)]",
-            "dataLakeDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'DATALAKE', variables('deploymentNameSuffix')), 64)]",
-            "securityDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'SECURITY', variables('deploymentNameSuffix')), 64)]",
-            "northStarDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'NORTHSTAR', variables('deploymentNameSuffix')), 64)]"
+            "ppRegistrationDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-RP-Billing', variables('deploymentNameSuffix')), 64)]",
+            "logAnalyticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'NorthStar-Azure-Monitoring', variables('deploymentNameSuffix')), 64)]",
+            "aadDiagnosticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-AAD-Logs', variables('deploymentNameSuffix')), 64)]",
+            "dataLakeDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-DataLake-Analytics', variables('deploymentNameSuffix')), 64)]",
+            "securityDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-Sentinel', variables('deploymentNameSuffix')), 64)]",
+            "northStarDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-Setup', variables('deploymentNameSuffix')), 64)]"
         },
-        "resourceNamePrefix": "NorthStar",
+        "resourceNamePrefix": "North-Star",
         "rgNames": {
             "mgmtRg": "[concat(variables('resourceNamePrefix'), '-mgmt')]",
             "billingRg": "[concat(variables('resourceNamePrefix'), '-billing')]"
@@ -591,7 +591,7 @@
                         "value": "[parameters('location')]"
                     },
                     "rgName": {
-                        "value": "North-Star-Setup"
+                        "value": "North-Star-setup"
                     }
                 }
             }
