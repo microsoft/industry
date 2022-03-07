@@ -406,6 +406,39 @@
             "metadata": {
                 "description": "Select if AAD Diagnostics logs should be enabled"
             }
+        },
+        "ppCitizenAlm": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if dedicated environments for Development, Test, and Production should be created for each landing zone"
+            }
+        },
+        "ppProAlm": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if dedicated environments for Development, Test, and Production should be created for each landing zone"
+            }
+        },
+        "ppIndustryAlm": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if dedicated environments for Development, Test, and Production should be created for each landing zone"
+            }
         }
     },
     "variables": {
@@ -438,7 +471,7 @@
             "automationAccount": "[concat(variables('resourceNamePrefix'), '-aauto')]"
             },
         "resourceIds": {
-            "logAnalyticsResourceId": "[concat('/subscriptions/', subscription().id, '/resourceGroups/', variables('rgNames').mgmtRg, '/providers/Microsoft.OperationalInsights/workspaces/', variables('resourceNames').logAnalyticsWorkspace)]"
+            "logAnalyticsResourceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', variables('rgNames').mgmtRg, '/providers/Microsoft.OperationalInsights/workspaces/', variables('resourceNames').logAnalyticsWorkspace)]"
             }
     },
     "resources": [

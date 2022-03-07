@@ -411,7 +411,7 @@
                             "type": "Microsoft.Common.InfoBox",
                             "visible": true,
                             "options": {
-                                "text": "North Star Architecture recommends dedicated Admin Environments in Power Platform. When creating dedicated Admin Environments, you can optionally deploy the 'Center of Excellence Starter-Kit' which provides additional capabilities to scale, manage, and operate your Power Platform tenant. The setup creates dedicated Admin Environments for Test, Development, and Production in order to support maintenance, testing, development, and validation before deploying to production.",
+                                "text": "North Star Architecture recommends dedicated Admin Environments in Power Platform. When creating dedicated Admin Environments, you can optionally deploy the 'Center of Excellence Starter-Kit' which provides additional capabilities to scale, manage, and operate your Power Platform tenant. The setup creates dedicated Admin Environments for Development, Test, and Production in order to support maintenance, testing, development, and validation before deploying to production.",
                                 "link": {
                                     "label": "Learn more about Center of Excellence Starter-kit",
                                     "uri": "https://docs.microsoft.com/power-platform/guidance/coe/starter-kit"
@@ -813,7 +813,7 @@
                             "type": "Microsoft.Common.InfoBox",
                             "visible": true,
                             "options": {
-                                "text": "North Star Architecture can prepare and create Landing Zones (Environments for business apps, industry solutions, and professional apps) in Power Platform optimized for citizen developers, professional developers, and industry solutions. When creating these environments, the setup will instantiate dedicated Environments for Test, Development, and Production in order to support maintenance, testing, development, and validation before deploying to production. Lastly, recommended Data-loss prevention policies are provided to further govern the various scenarios.",
+                                "text": "North Star Architecture can prepare and create Landing Zones (Environments for business apps, industry solutions, and professional apps) in Power Platform optimized for citizen developers, professional developers, and industry solutions. When creating these environments, the setup will instantiate dedicated Environments for Development, Test, and Production in order to support maintenance, testing, development, and validation before deploying to production. Lastly, recommended Data-loss prevention policies are provided to further govern the various scenarios.",
                                 "link": {
                                     "label": "Learn more",
                                     "uri": "https://www.microsoft.com"
@@ -1048,6 +1048,26 @@
                             "visible": "[not(equals(steps('landingZones').ppCitizen, 'no'))]"
                         },
                         {
+                            "name": "ppCitizenAlm",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Create Development, Test, and Production environments for each landing zone",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "If 'Yes' is selected, the setup adhere to best practices and create dedicated environments for sustainable application life-cycle management",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": "[not(equals(steps('landingZones').ppCitizen, 'no'))]"
+                        },
+                        {
                             "name": "ppCitizenBilling",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Create Billing Policy and Use Azure Subscription for pay-as-you-go for the citizen developer Environments",
@@ -1205,6 +1225,26 @@
                             "defaultValue": "Yes (recommended)",
                             "multiSelect": true,
                             "toolTip": "If 'Yes' is selected, the setup will enable this",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": "[not(equals(steps('landingZones').ppPro, 'no'))]"
+                        },
+                        {
+                            "name": "ppProAlm",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Create Development, Test, and Production environments for each landing zone",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "If 'Yes' is selected, the setup will enable it, and adhere to best practices and create dedicated environments for sustainable application life-cycle management",
                             "constraints": {
                                 "allowedValues": [
                                     {
@@ -1398,6 +1438,26 @@
                                 ]
                             },
                             "visible": "[equals(steps('landingZones').ppIndustry, 'yes')]"
+                        },
+                        {
+                            "name": "ppIndustryAlm",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Create Development, Test, and Production environments for each landing zone",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "If 'Yes' is selected, the setup will enable it",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": "[equals(steps('landingZones').ppIndustry, 'yes')]"
                         }
                     ]
                 }
@@ -1430,17 +1490,20 @@
                 "ppCitizenNaming": "[steps('landingZones').ppCitizenNaming]",
                 "ppCitizenRegion": "[steps('landingZones').ppCitizenRegion]",
                 "ppCitizenDlp": "[steps('landingZones').ppCitizenDlp]",
+                "ppCitizenAlm": "[steps('landingZones').ppCitizenAlm]",
                 "ppCitizenBilling": "[steps('landingZones').ppCitizenBilling]",
                 "ppPro": "[steps('landingZones').ppPro]",
                 "ppProCount": "[steps('landingZones').ppProCount]",
                 "ppProNaming": "[steps('landingZones').ppProNaming]",
                 "ppProDlp": "[steps('landingZones').ppProDlp]",
+                "ppProAlm": "[steps('landingZones').ppProAlm]",
                 "ppProRegion": "[steps('landingZones').ppProRegion]",
                 "ppProBilling": "[steps('landingZones').ppProBilling]",
                 "ppSelectIndustry": "[steps('landingZones').ppSelectIndustry]",
                 "ppIndustryNaming": "[steps('landingZones').ppIndustryNaming]",
                 "ppIndustryRegion": "[steps('landingZones').ppIndustryRegion]",
                 "ppIndustryBilling": "[steps('landingZones').ppIndustryBilling]",
+                "ppIndustryAlm": "[steps('landingZones').ppIndustryAlm]",
                 "ppTenantIsolationDomains": "[steps('gov').ppTenantIsolationDomains]",
                 "ppTenantIsolationSetting": "[steps('gov').ppTenantIsolationSetting]"
             },
