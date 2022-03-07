@@ -652,41 +652,6 @@
                             }
                         },
                         {
-                            "name": "apiWorkspace",
-                            "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Use existing Log Analytics workspace",
-                            "defaultValue": "No",
-                            "toolTip": "",
-                            "constraints": {
-                                "allowedValues": [
-                                    {
-                                        "label": "Yes",
-                                        "value": "Yes"
-                                    },
-                                    {
-                                        "label": "No",
-                                        "value": "No"
-                                    }
-                                ],
-                                "required": true
-                            },
-                            "visible": "[equals(steps('mgmt').loggingOption, 'yes')]"
-                        },
-                        {
-                            "name": "workspaceSelector",
-                            "type": "Microsoft.Solutions.ResourceSelector",
-                            "label": "Select existing Log Analytics workspace",
-                            "resourceType": "Microsoft.OperationalInsights/workspaces",
-                            "visible": "[equals(steps('mgmt').apiWorkspace, 'Yes')]",
-                            "required": true,
-                            "options": {
-                                "filter": {
-                                    "subscription": "all",
-                                    "location": "all"
-                                }
-                            }
-                        },
-                        {
                             "name": "compliance",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Enable auditing and integration with M365 Security & Compliance Center",
@@ -707,33 +672,21 @@
                             }
                         },
                         {
-                            "name": "monitoringText",
-                            "type": "Microsoft.Common.TextBlock",
-                            "visible": "[equals(steps('mgmt').loggingOption, 'yes')]",
-                            "options": {
-                                "text": "Configure logging and data retention of sign-in and audit logs from Azure Active Directory. Select whether to use an existing Log Analytics workspace, or create a new.",
-                                "link": {
-                                    "label": "Learn more",
-                                    "uri": "https://www.microsoft.com"
-                                }
-                            }
-                        },
-                        {
                             "name": "enableMonitoring",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Enable Monitoring of Azure AD logs",
-                            "defaultValue": "Yes",
+                            "defaultValue": "Yes (recommended)",
                             "toolTip": "",
                             "constraints": {
                                 "required": false,
                                 "allowedValues": [
                                     {
-                                        "label": "Yes",
-                                        "value": "Yes"
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
                                     },
                                     {
                                         "label": "No",
-                                        "value": "No"
+                                        "value": "no"
                                     }
                                 ]
                             },
@@ -742,7 +695,7 @@
                         {
                             "name": "sentinel",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Enable auditing and integration with Azure Sentinel",
+                            "label": "Enable auditing and integration with Microsoft Sentinel",
                             "defaultValue": "Yes (recommended)",
                             "visible": "[equals(steps('mgmt').loggingOption, 'yes')]",
                             "toolTip": "",
@@ -818,7 +771,7 @@
                             "name": "cicdOption",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Deploy integrated CICD pipeline?",
-                            "defaultValue": "Yes (recommended)",
+                            "defaultValue": "No",
                             "toolTip": "",
                             "constraints": {
                                 "allowedValues": [

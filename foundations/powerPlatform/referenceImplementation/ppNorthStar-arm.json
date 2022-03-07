@@ -334,14 +334,66 @@
             "metadata": {
                 "description": "Provide the Azure location for the deployments"
             }
+        },
+        "ppEnableAzureMonitor": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if you want to enable Azure Monitor"
+            }
+        },
+        "ppEnableAppInsights": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if you want to enable App Insights"
+            }
+        },
+        "ppRetentionInDays": {
+            "type": "string",
+            "defaultValue": "30",
+            "metadata": {
+                "description": "Select the retention period for Workspace logs"
+            }
+        },
+        "ppEnableAzureSecurity": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if Azure Security and Sentinel should be enabled"
+            }
+        },
+        "ppEnableAadLogs": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if AAD Diagnostics logs should be enabled"
+            }
         }
     },
     "variables": {
         "deploymentUris": {
             "ppRpRegistrationTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/powerPlatform/rpRegistrations.json')]",
-            "logAnalyticsTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitoring/logAnalytics.json')]",
-            "aadDiagnosticsTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitoring/aadDiagnostics.json')]",
-            "dataLakeTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitoring/storageAccountsV2.json')]"
+            "logAnalyticsTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/logAnalytics.json')]",
+            "aadDiagnosticsTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/aadDiagnostics.json')]",
+            "dataLakeTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/storageAccountsV2.json')]",
+            "securityTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/security.json')]"
         },
         "deploymentNamePrefix": "NorthStar-v1-",
         "deploymentNameSuffix": "[concat('-', deployment().location, guid(parameters('ppAdminEnvNaming')))]",
@@ -349,8 +401,21 @@
             "ppRegistrationDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPRP', variables('deploymentNameSuffix')), 64)]",
             "logAnalyticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPLA', variables('deploymentNameSuffix')), 64)]",
             "aadDiagnosticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'AADDIAG', variables('deploymentNameSuffix')), 64)]",
-            "dataLakeDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'DATALAKE', variables('deploymentNameSuffix')), 64)]"
-        }
+            "dataLakeDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'DATALAKE', variables('deploymentNameSuffix')), 64)]",
+            "securityDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'SECURITY', variables('deploymentNameSuffix')), 64)]"
+        },
+        "resourceNamePrefix": "NorthStar",
+        "rgNames": {
+            "mgmtRg": "[concat(variables('resourceNamePrefix'), '-mgmt')]",
+            },
+        // Declaring deterministic names for platform resources that will be created
+        "resourceNames": {
+            "logAnalyticsWorkspace": "[concat(variables('resourceNamePrefix'), '-law')]",
+            "automationAccount": "[concat(variables('resourceNamePrefix'), '-aauto')]"
+            },
+        "resourceIds": {
+            "logAnalyticsResourceId": "[concat('/subscriptions/', subscription().id, '/resourceGroups/', variables('rgNames').mgmtRg, '/providers/Microsoft.OperationalInsights/workspaces/', variables('resourceNames').logAnalyticsWorkspace)]"
+            }
     },
     "resources": [
         {
@@ -375,6 +440,96 @@
                     },
                     "powerPlatformLocation": {
                         "value": "[parameters('ppAdminRegion')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('ppEnableAzureMonitor'), 'yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').logAnalyticsDeploymentName]",
+            "location": "[deployment().location]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').logAnalyticsTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('rgNames').mgmtRg]"
+                    },
+                    "workspaceName": {
+                        "value": "[variables('resourceNames').logAnalyticsWorkspace]"
+                    },
+                    "workspaceRegion": {
+                        "value": "[deployment().location]"
+                    },
+                    "ppEnableAppInsights": {
+                        "value": "[parameters('ppEnableAppInsights')]"
+                    },
+                    "automationAccountName": {
+                        "value": "[variables('resourceNames').automationAccount]"
+                    },
+                    "automationRegion": {
+                        "value": "[deployment().location]"
+                    },
+                    "retentionInDays": {
+                        "value": "[parameters('ppRetentionInDays')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[and(equals(parameters('ppEnableAzureMonitor'), 'yes'), equals(parameters('ppEnableAzureSecurity'), 'yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').securityDeploymentName]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logAnalyticsDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').securityTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('rgNames').mgmtRg]"
+                    },
+                    "workspaceName": {
+                        "value": "[variables('resourceNames').logAnalyticsWorkspace]"
+                    },
+                    "workspaceRegion": {
+                        "value": "[deployment().location]"
+                    },
+                    "enableSecuritySolution": {
+                        "value": "[parameters('ppEnableAzureSecurity')]"
+                    }
+                }
+            }            
+        },
+        {
+            "condition": "[and(equals(parameters('ppEnableAzureMonitor'), 'yes'), equals(parameters('ppEnableAadLogs'), 'yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').aadDiagnosticsDeploymentName]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logAnalyticsDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').aadDiagnosticsTemplateUri]"
+                },
+                "parameters": {
+                    "logAnalyticsResourceId": {
+                        "value": "[variables('resourceIds').logAnalyticsResourceId]"
                     }
                 }
             }
