@@ -14,7 +14,7 @@
             "type": "microsoft.aadiam/diagnosticSettings",
             "apiVersion": "2017-04-01",
             "scope": "/",
-            "name": "NorthStarDiag",
+            "name": "[concat(split(parameters('logAnalyticsResourceId'), '/')[8])]",
             "properties": {
                 "workspaceId": "[parameters('logAnalyticsResourceId')]",
                 "logAnalyticsDestinationType": null,

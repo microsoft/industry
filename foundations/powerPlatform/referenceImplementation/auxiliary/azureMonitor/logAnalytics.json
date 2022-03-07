@@ -23,14 +23,14 @@
       "ppEnableAppInsights": {
         "type": "string",
         "allowedValues": [
-          "Yes",
-          "No"
+          "yes",
+          "no"
         ],
         "defaultValue": "No"
       }
     },
     "variables": {
-        "deploymentName": "[concat(deployment().name, '-AZMON-', deployment().location)]"
+        "deploymentName": "[take(concat(deployment().name, '-AZMON-', deployment().location), 64)]"
     },
     "resources": [
       {
@@ -118,7 +118,7 @@
                 }
               },
               {
-                "condition": "[equals(parameters('ppEnableAppInsights'), 'Yes')]",
+                "condition": "[equals(parameters('ppEnableAppInsights'), 'yes')]",
                 "type": "Microsoft.Insights/components",
                 "apiVersion": "2020-02-02-preview",
                 "name": "[concat(parameters('workspaceName'), '-insights')]",

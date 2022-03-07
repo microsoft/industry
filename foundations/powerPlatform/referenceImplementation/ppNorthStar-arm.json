@@ -34,6 +34,26 @@
                 "description": "Provide the connectors you will group into blocked."
             }
         },
+        "ppTenantIsolationSetting": {
+            "type": "string",
+            "defaultValue": "none",
+            "allowedValues": [
+                "inbound",
+                "outbound",
+                "both",
+                "none"
+            ],
+            "metadata": {
+                "description": "Select tenant isolation setting"
+            }
+        },
+        "ppTenantIsolationDomains": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide the tenant names, IDs, or use * for all tenants"
+            }
+        },
         "ppGuestMakerSetting": {
             "type": "string",
             "allowedValues": [
@@ -137,7 +157,7 @@
         },
         "ppDefaultRenameText": {
             "type": "string",
-            "defaultValue": "",
+            "defaultValue": "Personal",
             "metadata": {
                 "description": "Provide new display name for the _default_ Power Platform Environment in the tenant."
             }
@@ -331,6 +351,7 @@
         },
         "location": {
             "type": "string",
+            "defaultValue": "[deployment().location]",
             "metadata": {
                 "description": "Provide the Azure location for the deployments"
             }
@@ -393,7 +414,8 @@
             "logAnalyticsTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/logAnalytics.json')]",
             "aadDiagnosticsTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/aadDiagnostics.json')]",
             "dataLakeTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/storageAccountsV2.json')]",
-            "securityTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/security.json')]"
+            "securityTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/security.json')]",
+            "northStarTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/powerPlatform/ppDeploymentScript.json')]"
         },
         "deploymentNamePrefix": "NorthStar-v1-",
         "deploymentNameSuffix": "[concat('-', deployment().location, guid(parameters('ppAdminEnvNaming')))]",
@@ -402,11 +424,13 @@
             "logAnalyticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPLA', variables('deploymentNameSuffix')), 64)]",
             "aadDiagnosticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'AADDIAG', variables('deploymentNameSuffix')), 64)]",
             "dataLakeDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'DATALAKE', variables('deploymentNameSuffix')), 64)]",
-            "securityDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'SECURITY', variables('deploymentNameSuffix')), 64)]"
+            "securityDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'SECURITY', variables('deploymentNameSuffix')), 64)]",
+            "northStarDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'NORTHSTAR', variables('deploymentNameSuffix')), 64)]"
         },
         "resourceNamePrefix": "NorthStar",
         "rgNames": {
             "mgmtRg": "[concat(variables('resourceNamePrefix'), '-mgmt')]",
+            "billingRg": "[concat(variables('resourceNamePrefix'), '-billing')]"
             },
         // Declaring deterministic names for platform resources that will be created
         "resourceNames": {
@@ -418,6 +442,121 @@
             }
     },
     "resources": [
+        {
+            // Deploying the North Star Power Platform script
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').northStarDeploymentName]",
+            "location": "[deployment().location]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').northStarTemplateUri]"
+                },
+                "parameters": {
+                    "ppIdentity": {
+                        "value": "[parameters('ppIdentity')]"
+                    },
+                    "ppBusinessDlp": {
+                        "value": "[parameters('ppBusinessDlp')]"
+                    },
+                    "ppNonBusinessDlp": {
+                        "value": "[parameters('ppNonBusinessDlp')]"
+                    },
+                    "ppBlockDlp": {
+                        "value": "[parameters('ppBlockDlp')]"
+                    },
+                    "ppGuestMakerSetting": {
+                        "value": "[parameters('ppGuestMakerSetting')]"
+                    },
+                    "ppAppSharingSetting": {
+                        "value": "[parameters('ppAppSharingSetting')]"
+                    },
+                    "ppEnvCreationSetting": {
+                        "value": "[parameters('ppEnvCreationSetting')]"
+                    },
+                    "ppTrialEnvCreationSetting": {
+                        "value": "[parameters('ppTrialEnvCreationSetting')]"
+                    },
+                    "ppEnvCapacitySetting": {
+                        "value": "[parameters('ppEnvCapacitySetting')]"
+                    },
+                    "ppAdminEnvNaming": {
+                        "value": "[parameters('ppAdminEnvNaming')]"
+                    },
+                    "ppAdminRegion": {
+                        "value": "[parameters('ppAdminRegion')]"
+                    },
+                    "ppAdminBilling": {
+                        "value": "[parameters('ppAdminBilling')]"
+                    },
+                    "ppAdminCoeSetting": {
+                        "value": "[parameters('ppAdminCoeSetting')]"
+                    },
+                    "ppDefaultRenameText": {
+                        "value": "[parameters('ppDefaultRenameText')]"
+                    },
+                    "ppDefaultDlp": {
+                        "value": "[parameters('ppDefaultDlp')]"
+                    },
+                    "ppCitizen": {
+                        "value": "[parameters('ppCitizen')]"
+                    },
+                    "ppCitizenCount": {
+                        "value": "[parameters('ppCitizenCount')]"
+                    },
+                    "ppCitizenNaming": {
+                        "value": "[parameters('ppCitizenNaming')]"
+                    },
+                    "ppCitizenRegion": {
+                        "value": "[parameters('ppCitizenRegion')]"
+                    },
+                    "ppCitizenBilling": {
+                        "value": "[parameters('ppCitizenBilling')]"
+                    },
+                    "ppCitizenDlp": {
+                        "value": "[parameters('ppCitizenDlp')]"
+                    },
+                    "ppPro": {
+                        "value": "[parameters('ppPro')]"
+                    },
+                    "ppProNaming": {
+                        "value": "[parameters('ppProNaming')]"
+                    },
+                    "ppProCount": {
+                        "value": "[parameters('ppProCount')]"
+                    },
+                    "ppProRegion": {
+                        "value": "[parameters('ppProRegion')]"
+                    },
+                    "ppProDlp": {
+                        "value": "[parameters('ppProDlp')]"
+                    },
+                    "ppProBilling": {
+                        "value": "[parameters('ppProBilling')]"
+                    },
+                    "ppSelectIndustry": {
+                        "value": "[parameters('ppSelectIndustry')]"
+                    },
+                    "ppIndustryNaming": {
+                        "value": "[parameters('ppIndustryNaming')]"
+                    },
+                    "ppIndustryRegion": {
+                        "value": "[parameters('ppIndustryRegion')]"
+                    },
+                    "ppIndustryBilling": {
+                        "value": "[parameters('ppIndustryBilling')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "rgName": {
+                        "value": "North-Star-Setup"
+                    }
+                }
+            }
+        },
         {
             // Register the Power Platform 'accounts' resource type if the condition is met, and create the billing object into a new resource group.
             "condition": "[equals(parameters('ppAdminBilling'), 'yes')]",
@@ -433,7 +572,7 @@
                 },
                 "parameters": {
                     "rgName": {
-                        "value": "foo"
+                        "value": "[variables('rgNames').billingRg]"
                     },
                     "location": {
                         "value": "[parameters('location')]"
