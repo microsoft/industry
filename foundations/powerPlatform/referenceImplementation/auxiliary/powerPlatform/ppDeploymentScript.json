@@ -298,6 +298,39 @@
                 "description": "AZURE-only, to provide subscriptionId for the subscription billing."
             }
         },
+        "ppCitizenAlm": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if dedicated environments for Development, Test, and Production should be created for each landing zone"
+            }
+        },
+        "ppProAlm": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if dedicated environments for Development, Test, and Production should be created for each landing zone"
+            }
+        },
+        "ppIndustryAlm": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if dedicated environments for Development, Test, and Production should be created for each landing zone"
+            }
+        },
         "ppSelectIndustry": {
             "type": "string",
             "allowedValues": [
@@ -426,15 +459,18 @@
                                                     '-PPCitizenRegion', ' ', parameters('ppCitizenRegion'), ' ',
                                                     '-PPCitizenDlp', ' ', parameters('ppCitizenDlp'), ' ',
                                                     '-PPCitizenBilling', ' ', parameters('ppCitizenBilling'), ' ',
+                                                    '-PPCitizenAlm', ' ', parameters('ppCitizenAlm'), ' ',
                                                     '-PPPro', ' ', parameters('ppPro'), ' ',
                                                     '-PPProCount', ' ', parameters('ppProCount'), ' ',
                                                     '-PPProNaming', ' ', parameters('ppProNaming'), ' ',
                                                     '-PPProRegion', ' ', parameters('ppProRegion'), ' ',
                                                     '-PPProDlp', ' ', parameters('ppProDlp'), ' ',
                                                     '-PPProBilling', ' ', parameters('ppProBilling'), ' ',
+                                                    '-PPProAlm', ' ', parameters('ppProAlm'), ' ',
                                                     '-PPSelectIndustry', ' ', parameters('ppSelectIndustry'), ' ',
                                                     '-PPIndustryNaming', ' ', parameters('ppIndustryNaming'), ' ',
                                                     '-PPIndustryRegion', ' ', parameters('ppIndustryRegion'), ' ',
+                                                    '-PPIndustryAlm', ' ', parameters('ppIndustryAlm'), ' ',
                                                     '-PPIndustryBilling', ' ', parameters('ppIndustryBilling')
                                                     )]",
                                 "azPowerShellVersion": "7.2",

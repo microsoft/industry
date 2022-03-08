@@ -518,6 +518,15 @@
                     "ppTenantIsolationDomains": {
                         "value": "[parameters('ppTenantIsolationDomains')]"
                     },
+                    "ppCitizenAlm": {
+                        "value": "[parameters('ppCitizenAlm')]"
+                    },
+                    "ppProAlm": {
+                        "value": "[parameters('ppProAlm')]"
+                    },
+                    "ppIndustryAlm": {
+                        "value": "[parameters('ppIndustryAlm')]"
+                    },                    
                     "ppEnvCapacitySetting": {
                         "value": "[parameters('ppEnvCapacitySetting')]"
                     },
