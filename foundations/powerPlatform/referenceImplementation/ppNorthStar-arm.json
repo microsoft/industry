@@ -13,25 +13,15 @@
                 "description": "Provide the resourceId of the User Managed Identity."
             }
         },
-        "ppBusinessDlp": {
-            "type": "array",
-            "defaultValue": [],
+        "ppTenantDlp": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
             "metadata": {
-                "description": "Provide the connectors you will group into business."
-            }
-        },
-        "ppNonBusinessDlp": {
-            "type": "array",
-            "defaultValue": [],
-            "metadata": {
-                "description": "Provide the connectors you will group into non-business."
-            }
-        },
-        "ppBlockDlp": {
-            "type": "array",
-            "defaultValue": [],
-            "metadata": {
-                "description": "Provide the connectors you will group into blocked."
+                "description": "Select if recommended DLP policies should be assigned for the tenant."
             }
         },
         "ppTenantIsolationSetting": {
@@ -472,7 +462,8 @@
             },
         "resourceIds": {
             "logAnalyticsResourceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', variables('rgNames').mgmtRg, '/providers/Microsoft.OperationalInsights/workspaces/', variables('resourceNames').logAnalyticsWorkspace)]"
-            }
+        },
+        "emptyString": "''"
     },
     "resources": [
         {
@@ -491,14 +482,8 @@
                     "ppIdentity": {
                         "value": "[parameters('ppIdentity')]"
                     },
-                    "ppBusinessDlp": {
-                        "value": "[parameters('ppBusinessDlp')]"
-                    },
-                    "ppNonBusinessDlp": {
-                        "value": "[parameters('ppNonBusinessDlp')]"
-                    },
-                    "ppBlockDlp": {
-                        "value": "[parameters('ppBlockDlp')]"
+                    "ppTenantDlp": {
+                        "value": "[parameters('ppTenantDlp')]"
                     },
                     "ppGuestMakerSetting": {
                         "value": "[parameters('ppGuestMakerSetting')]"
@@ -516,7 +501,7 @@
                         "value": "[parameters('ppTenantIsolationSetting')]"
                     },
                     "ppTenantIsolationDomains": {
-                        "value": "[parameters('ppTenantIsolationDomains')]"
+                        "value": "[if(empty(parameters('ppTenantIsolationDomains')), variables('emptyString'), parameters('ppTenantIsolationDomains'))]"
                     },
                     "ppCitizenAlm": {
                         "value": "[parameters('ppCitizenAlm')]"
@@ -537,13 +522,13 @@
                         "value": "[parameters('ppAdminRegion')]"
                     },
                     "ppAdminBilling": {
-                        "value": "[parameters('ppAdminBilling')]"
+                        "value": "[if(empty(parameters('ppAdminBilling')), variables('emptystring'), parameters('ppAdminBilling'))]"
                     },
                     "ppAdminCoeSetting": {
                         "value": "[parameters('ppAdminCoeSetting')]"
                     },
                     "ppDefaultRenameText": {
-                        "value": "[parameters('ppDefaultRenameText')]"
+                        "value": "[if(empty(parameters('ppDefaultRenameText')), variables('emptyString'), parameters('ppDefaultRenameText'))]"
                     },
                     "ppDefaultDlp": {
                         "value": "[parameters('ppDefaultDlp')]"
@@ -555,13 +540,13 @@
                         "value": "[parameters('ppCitizenCount')]"
                     },
                     "ppCitizenNaming": {
-                        "value": "[parameters('ppCitizenNaming')]"
+                        "value": "[if(empty(parameters('ppCitizenNaming')), variables('emptyString'), parameters('ppCitizenNaming'))]"
                     },
                     "ppCitizenRegion": {
                         "value": "[parameters('ppCitizenRegion')]"
                     },
                     "ppCitizenBilling": {
-                        "value": "[parameters('ppCitizenBilling')]"
+                        "value": "[if(empty(parameters('ppCitizenBilling')), variables('emptyString'), parameters('ppCitizenBilling'))]"
                     },
                     "ppCitizenDlp": {
                         "value": "[parameters('ppCitizenDlp')]"
@@ -570,7 +555,7 @@
                         "value": "[parameters('ppPro')]"
                     },
                     "ppProNaming": {
-                        "value": "[parameters('ppProNaming')]"
+                        "value": "[if(empty(parameters('ppProNaming')), variables('emptyString'), parameters('ppProNaming'))]"
                     },
                     "ppProCount": {
                         "value": "[parameters('ppProCount')]"
@@ -582,25 +567,25 @@
                         "value": "[parameters('ppProDlp')]"
                     },
                     "ppProBilling": {
-                        "value": "[parameters('ppProBilling')]"
+                        "value": "[if(empty(parameters('ppProBilling')), variables('emptyString'), parameters('ppProBilling'))]"
                     },
                     "ppSelectIndustry": {
                         "value": "[parameters('ppSelectIndustry')]"
                     },
                     "ppIndustryNaming": {
-                        "value": "[parameters('ppIndustryNaming')]"
+                        "value": "[if(empty(parameters('ppIndustryNaming')), variables('emptyString'), parameters('ppIndustryNaming'))]"
                     },
                     "ppIndustryRegion": {
                         "value": "[parameters('ppIndustryRegion')]"
                     },
                     "ppIndustryBilling": {
-                        "value": "[parameters('ppIndustryBilling')]"
+                        "value": "[if(empty(parameters('ppIndustryBilling')), variables('emptyString'), parameters('ppIndustryBilling'))]"
                     },
                     "location": {
                         "value": "[parameters('location')]"
                     },
                     "rgName": {
-                        "value": "North-Star-setup"
+                        "value": "[concat(variables('resourceNamePrefix'), '-setup-', parameters('location'))]"
                     }
                 }
             }

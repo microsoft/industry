@@ -170,115 +170,34 @@
                             "type": "Microsoft.Common.TextBlock",
                             "visible": true,
                             "options": {
-                                "text": "Configure overall Data-loss prevention policy for the tenant. This policy will by default apply to all existing and new environments. Additional policies can be configured in the 'Admin Environment and Tenant settings' tab.",
+                                "text": "Configure overall Data-loss prevention policy for the tenant. This policy will by default apply to all existing and new environments. Additional policies can be configured in the 'Admin Environment and settings' tab.",
                                 "link": {
                                     "label": "Learn more",
                                     "uri": "https://www.microsoft.com"
                                 }
                             }
                         },
-                        {
-                            "name": "ppBusinessDlp",
-                            "type": "Microsoft.Common.DropDown",
-                            "label": "Select recommended Data Loss Prevention Policies to be moved into 'Business Group' for the tenant",
-                            "placeholder": "",
-                            "multiselect": true,
-                            "selectAll": true,
-                            "filter": true,
-                            "filterPlaceholder": "Filter items ...",
-                            "multiLine": true,
-                            "defaultValue": "",
-                            "toolTip": "",
-                            "visible": true,
-                            "constraints": {
-                                "allowedValues": [
-                                    {
-                                        "label": "Adobe Creative Cloud",
-                                        "description": "Connector for Adobe",
-                                        "value": "adobe"
-                                    },
-                                    {
-                                        "label": "DropBox",
-                                        "description": "Connector that allows you to connect to DropBox enterprises",
-                                        "value": "dropbox"
-                                    },
-                                    {
-                                        "label": "Azure Synapse",
-                                        "description": "Connector for Azure Synapse for data scenarios",
-                                        "value": "synapse"
-                                    }
-                                ],
-                                "required": true
-                            }
-                        },
-                        {
-                            "name": "ppNonBusinessDlp",
-                            "type": "Microsoft.Common.DropDown",
-                            "label": "Select recommended Data Loss Prevention Policies to be moved into 'Non-Business Group' for the tenant",
-                            "placeholder": "",
-                            "multiselect": true,
-                            "selectAll": true,
-                            "filter": true,
-                            "filterPlaceholder": "Filter items ...",
-                            "multiLine": true,
-                            "defaultValue": "",
-                            "toolTip": "",
-                            "visible": true,
-                            "constraints": {
-                                "allowedValues": [
-                                    {
-                                        "label": "Adobe Creative Cloud",
-                                        "description": "Connector for Adobe",
-                                        "value": "adobe"
-                                    },
-                                    {
-                                        "label": "DropBox",
-                                        "description": "Connector that allows you to connect to DropBox enterprises",
-                                        "value": "dropbox"
-                                    },
-                                    {
-                                        "label": "Azure Synapse",
-                                        "description": "Connector for Azure Synapse for data scenarios",
-                                        "value": "synapse"
-                                    }
-                                ],
-                                "required": true
-                            }
-                        },
-                        {
-                            "name": "ppBlockDlp",
-                            "type": "Microsoft.Common.DropDown",
-                            "label": "Select recommended Data-loss prevention Policies to be moved into 'Blocked Group' for the tenant",
-                            "placeholder": "",
-                            "multiselect": true,
-                            "selectAll": true,
-                            "filter": true,
-                            "filterPlaceholder": "Filter items ...",
-                            "multiLine": true,
-                            "defaultValue": "",
-                            "toolTip": "",
-                            "visible": true,
-                            "constraints": {
-                                "allowedValues": [
-                                    {
-                                        "label": "Adobe Creative Cloud",
-                                        "description": "Connector for Adobe",
-                                        "value": "adobe"
-                                    },
-                                    {
-                                        "label": "DropBox",
-                                        "description": "Connector that allows you to connect to DropBox enterprises",
-                                        "value": "dropbox"
-                                    },
-                                    {
-                                        "label": "Azure Synapse",
-                                        "description": "Connector for Azure Synapse for data scenarios",
-                                        "value": "synapse"
-                                    }
-                                ],
-                                "required": true
-                            }
-                        },
+						{
+							"name": "ppTenantDlp",
+							"type": "Microsoft.Common.OptionsGroup",
+							"label": "Assign recommended Data-loss prevention policies to the tenant",
+							"defaultValue": "Yes (recommended)",
+							"toolTip": "",
+							"constraints": {
+								"allowedValues": [
+									{
+										"label": "Yes (recommended)",
+										"value": "yes"
+									},
+									{
+										"label": "No",
+										"value": "no"
+									}
+								],
+								"required": true
+							},
+							"visible": true
+						},
 						{
 							"name": "tenantIsolationSetting",
 							"type": "Microsoft.Common.Section",
@@ -1466,9 +1385,7 @@
         "outputs": {
             "parameters": {
                 "ppIdentity": "[steps('powerp').ppIdentity.id]",
-                "ppBusinessDlp": "[steps('gov').ppBusinessDlp]",
-                "ppNonBusinessDlp": "[steps('gov').ppNonBusinessDlp]",
-                "ppBlockDlp": "[steps('gov').ppBlockDlp]",
+				"ppTenantDlp": "[steps('gov').ppTenantDlp]",
                 "ppGuestMakerSetting": "[steps('gov').ppGuestMakerSetting]",
                 "ppAppSharingSetting": "[steps('gov').ppAppSharingSetting]",
                 "ppEnvCreationSetting": "[steps('environments').ppEnvCreationSetting]",

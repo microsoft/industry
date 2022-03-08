@@ -8,25 +8,15 @@
                 "description": "Provide the resourceId of the User Managed Identity."
             }
         },
-        "ppBusinessDlp": {
-            "type": "array",
-            "defaultValue": [],
+        "ppTenantDlp": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
             "metadata": {
-                "description": "Provide the connectors you will group into business."
-            }
-        },
-        "ppNonBusinessDlp": {
-            "type": "array",
-            "defaultValue": [],
-            "metadata": {
-                "description": "Provide the connectors you will group into non-business."
-            }
-        },
-        "ppBlockDlp": {
-            "type": "array",
-            "defaultValue": [],
-            "metadata": {
-                "description": "Provide the connectors you will group into blocked."
+                "description": "Select if recommended DLP policies should be assigned at the tenant."
             }
         },
         "ppGuestMakerSetting": {
@@ -445,6 +435,7 @@
                                                     '-PPEnvCreationSetting', ' ', parameters('ppEnvCreationSetting'), ' ',
                                                     '-PPTrialEnvCreationSetting', ' ', parameters('ppTrialEnvCreationSetting'), ' ',
                                                     '-PPEnvCapacitySetting', ' ', parameters('ppEnvCapacitySetting'), ' ',
+                                                    '-PPTenantDLP', ' ', parameters('ppTenantDlp'), ' ',
                                                     '-PPTenantIsolationSetting', ' ', parameters('ppTenantIsolationSetting'), ' ',
                                                     '-PPTenantIsolationDomains', ' ', parameters('ppTenantIsolationDomains'), ' ',
                                                     '-PPAdminEnvNaming', ' ', parameters('ppAdminEnvNaming'), ' ',
@@ -474,7 +465,7 @@
                                                     '-PPIndustryBilling', ' ', parameters('ppIndustryBilling')
                                                     )]",
                                 "azPowerShellVersion": "7.2",
-                                "timeout": "PT30M",
+                                "timeout": "PT120M",
                                 "cleanupPreference": "Always",
                                 "retentionInterval": "P1D"
                             }
