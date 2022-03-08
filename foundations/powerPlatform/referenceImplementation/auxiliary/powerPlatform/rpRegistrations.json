@@ -23,7 +23,7 @@
     },
     "variables": {
         "deploymentName": "[take(concat(parameters('rgName'), '-POWERRP', '-', parameters('location')), 64)]",
-        "powerPlatformAccountsName": "[take(concat(parameters('rgName'), '-', 'PP', parameters('location')), 64)]",
+        "powerPlatformAccountsName": "[take(concat(parameters('rgName'), '-', 'PP', '-', parameters('location')), 64)]",
         "ppAccountsDescription": "Dedicated billing subscription for Power Platform tenant for North Star Architecture"
     },
     "resources": [

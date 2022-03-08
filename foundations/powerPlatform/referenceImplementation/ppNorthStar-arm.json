@@ -187,7 +187,7 @@
         },
         "ppCitizenCount": {
             "type": "int",
-            "maxValue": 10,
+            "maxValue": 100,
             "defaultValue": 1,
             "metadata": {
                 "description": "Select how many environments for citizen dev to be created."
@@ -252,7 +252,7 @@
         },
         "ppProCount": {
             "type": "int",
-            "maxValue": 10,
+            "maxValue": 100,
             "defaultValue": 1,
             "metadata": {
                 "description": "Select how many environments for pro dev to be created."
