@@ -127,7 +127,7 @@ Microsoft Cloud for Financial Services provides capabilities to manage data to d
   - [Unified customer profile](./fsi/solutions/unifiedCustomerProfile)
   - [Customer onboarding](./fsi/solutions/customerOnboarding/readme.md)
   - [Collaboration manager](./fsi/solutions/collaborationManager)
-  - [Banking customer engagement](./fsi/solutions/customerEngagement)
+  - [Banking customer engagement](./fsi/solutions/bankingCustomerEngagement)
 - Financial crime protection
   - [Account protection](./fsi/solutions/accountProtection)
   - [Purchase protection](./fsi/solutions/purchaseProtection)
