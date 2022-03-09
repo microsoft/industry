@@ -76,3 +76,17 @@ If the deployment options with Sample UI and Data is considered, Power Platform 
 ## Access of Customer Onboarding solution
 
 For details on how to grant users access to an environment you can follow [this guidance](https://docs.microsoft.com/power-platform/admin/add-users-to-environment). For details about security roles, you can follow [this guidance](https://docs.microsoft.com/power-platform/admin/database-security).
+
+### Design considerations
+
+* The retail banking data model is a standalone option for partners and Dataverse customers. It's already included in Microsoft Cloud for Financial Services. Customer onboarding solution comes with its own set of tables from [loan onboarding data model](https://docs.microsoft.com/common-data-model/schema/core/industrycommon/financialservices/loanonboardingdatamodel/overview) but if you  need a broader integration the financial services data model which is not a requirement for Customer Onboarding solution, this has its own deployment process. For more information about deploying the Financial Services Retail Banking  data model, go to [Deploy the Retail banking data model (optional)](https://docs.microsoft.com/dynamics365/industry/financial-services/deploy-data-model).
+
+### Design recommendations
+
+* Ensure user/group mapping for the requisite licenses are done before deploying the solutions to Power Platform.
+* Ensure appropriate RBAC is assigned to the Security group for the dedicated Environment for Finance in Power Platform, ideally as part of the Environment creation process.
+* Any type of additional reporting or dashboard building should be planned within Azure utilizing [Azure Synapse Link for Dataverse](https://docs.microsoft.com/powerapps/maker/data-platform/azure-synapse-link-synapse)
+
+---
+
+[Back to documentation root](../../../README.md)

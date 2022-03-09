@@ -4,7 +4,7 @@ Overall architecture for Microsoft Cloud for Financial Services.
 
 | Industry Architecture | Description | Deploy |
 |:----------------------|:------------|--------|
-| Azure for FSI | Azure for FSI foundation  provides full architecture with landing zones for FSI industry |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2FhealthArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fri%2Fhealth-portal.json)
+| Azure for FSI | Azure for FSI foundation  provides full architecture with landing zones for FSI industry |Coming Soon
 | Power Platform for FSI | Coming Soon | Coming Soon
 | Microsoft Teams for FSI | Coming Soon | Coming Soon
 
@@ -15,7 +15,7 @@ Overall architecture for Microsoft Cloud for Financial Services.
 | [Financial Services Foundations (Recommended)](./fsi/prereqs.md) | Prerequisites
 | Customer and employee experience
 | [Unified customer profile](./solutions/unifiedCustomerProfile) | Help tailor customer experiences via a comprehensive view of the customer's financial situation
-| [Customer onboarding](./solutions/customerOnboarding/readme.md) | Provide customers with easy-access loan apps and self-service tools, streamlining the loan process to help enhance customer experience and loyalty
+| [Customer onboarding](./solutions/customerOnboarding/) | Provide customers with easy-access loan apps and self-service tools, streamlining the loan process to help enhance customer experience and loyalty
 | [Collaboration manager](./solutions/collaborationManager) | Enable automation, collaboration, and communications to help accelerate lending processes, minimize errors, and enhance customer experience
 | [Banking customer engagement](./solutions/customerEngagement) | Help personalize customer interactions with relevant financial information to accelerate time to resolution
 | Financial crime protection
