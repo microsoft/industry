@@ -720,6 +720,65 @@
                                     }
                                 ]
                             }
+                        },
+                        {
+                            "name": "analytics",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Tenant analytics and usage",
+                            "elements": [],
+                            "visible": true
+                        },
+                        {
+                            "name": "tenantAnalyticsText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": true,
+                            "options": {
+                                "text": "Configure tenant level analytics to track all-up usage and adoption within the organization across all Environments for Power Apps and Power Automate. For long-term retention, extensibility and richer analysis, you can create a Data Lake Sorage V2 into an Azure subscription and configure Data Export post deployment.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://www.microsoft.com"
+                                }
+                            }
+                        },
+                        {
+                            "name": "ppEnableTenantAnalytics",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Tenant level analytics for Power Platform",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": true
+                        },
+                        {
+                            "name": "ppEnableDataLake",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Data Lake Storage V2 to store captured data for operational and exploratory analytics",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": "[equals(steps('mgmt').ppEnableTenantAnalytics, 'yes')]"
                         }
                     ]
                 },
@@ -1386,6 +1445,8 @@
             "parameters": {
                 "ppIdentity": "[steps('powerp').ppIdentity.id]",
 				"ppTenantDlp": "[steps('gov').ppTenantDlp]",
+                "ppTenantIsolationDomains": "[steps('gov').ppTenantIsolationDomains]",
+                "ppTenantIsolationSetting": "[steps('gov').ppTenantIsolationSetting]",
                 "ppGuestMakerSetting": "[steps('gov').ppGuestMakerSetting]",
                 "ppAppSharingSetting": "[steps('gov').ppAppSharingSetting]",
                 "ppEnvCreationSetting": "[steps('environments').ppEnvCreationSetting]",
@@ -1401,6 +1462,8 @@
                 "ppEnableAppInsights": "[steps('mgmt').ppEnableAppInsights]",
                 "ppEnableAzureSecurity": "[steps('mgmt').ppEnableAzureSecurity]",
                 "ppEnableAadLogs": "[steps('mgmt').ppEnableAadLogs]",
+                "ppEnableTenantAnalytics": "[steps('mgmt').ppEnableTenantAnalytics]",
+                "ppEnableDataLake": "[steps('mgmt').ppEnableDataLake]",
                 "ppRetentionInDays": "[string(steps('mgmt').ppRetentionInDays)]",
                 "ppCitizen": "[steps('landingZones').ppCitizen]",
                 "ppCitizenCount": "[steps('landingZones').ppCitizenCount]",
@@ -1420,9 +1483,7 @@
                 "ppIndustryNaming": "[steps('landingZones').ppIndustryNaming]",
                 "ppIndustryRegion": "[steps('landingZones').ppIndustryRegion]",
                 "ppIndustryBilling": "[steps('landingZones').ppIndustryBilling]",
-                "ppIndustryAlm": "[steps('landingZones').ppIndustryAlm]",
-                "ppTenantIsolationDomains": "[steps('gov').ppTenantIsolationDomains]",
-                "ppTenantIsolationSetting": "[steps('gov').ppTenantIsolationSetting]"
+                "ppIndustryAlm": "[steps('landingZones').ppIndustryAlm]"
             },
             "kind": "Subscription",
             "location": "[steps('powerp').locationName]",

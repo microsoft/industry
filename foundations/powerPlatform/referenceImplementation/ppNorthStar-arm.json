@@ -429,6 +429,28 @@
             "metadata": {
                 "description": "Select if dedicated environments for Development, Test, and Production should be created for each landing zone"
             }
+        },
+        "ppEnableTenantAnalytics": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if tenant level analytics should be enabled."
+            }
+        },
+        "ppEnableDataLake": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if Data Lake Storage v2 should be created."
+            }
         }
     },
     "variables": {
@@ -436,7 +458,7 @@
             "ppRpRegistrationTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/powerPlatform/rpRegistrations.json')]",
             "logAnalyticsTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/logAnalytics.json')]",
             "aadDiagnosticsTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/aadDiagnostics.json')]",
-            "dataLakeTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/storageAccountsV2.json')]",
+            "dataLakeTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/storageAccountV2.json')]",
             "securityTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/security.json')]",
             "northStarTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/powerPlatform/ppDeploymentScript.json')]"
         },
@@ -452,13 +474,15 @@
         },
         "resourceNamePrefix": "North-Star",
         "rgNames": {
-            "mgmtRg": "[concat(variables('resourceNamePrefix'), '-mgmt')]",
-            "billingRg": "[concat(variables('resourceNamePrefix'), '-billing')]"
+            "mgmtRg": "[concat(variables('resourceNamePrefix'), '-mgmt-', parameters('location'))]",
+            "billingRg": "[concat(variables('resourceNamePrefix'), '-billing-', parameters('location'))]",
+            "analyticsRg": "[concat(variables('resourceNamePrefix'), '-analytics-', parameters('location'))]"
             },
         // Declaring deterministic names for platform resources that will be created
         "resourceNames": {
             "logAnalyticsWorkspace": "[concat(variables('resourceNamePrefix'), '-law')]",
-            "automationAccount": "[concat(variables('resourceNamePrefix'), '-aauto')]"
+            "automationAccount": "[concat(variables('resourceNamePrefix'), '-aauto')]",
+            "storageAccount": "[take(toLower(concat('ns', uniqueString(subscription().subscriptionId))), 23)]"
             },
         "resourceIds": {
             "logAnalyticsResourceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', variables('rgNames').mgmtRg, '/providers/Microsoft.OperationalInsights/workspaces/', variables('resourceNames').logAnalyticsWorkspace)]"
@@ -586,6 +610,32 @@
                     },
                     "rgName": {
                         "value": "[concat(variables('resourceNamePrefix'), '-setup-', parameters('location'))]"
+                    }
+                }
+            }
+        },
+        {
+            // Create Data Lake Storage V2 for Power Platform tenant analytics
+            "condition": "[equals(parameters('ppEnableDataLake'), 'yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').dataLakeDeploymentName]",
+            "location": "[deployment().location]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').dataLakeTemplateUri]"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "storageAccountName": {
+                        "value": "[variables('resourceNames').storageAccount]"
+                    },
+                    "rgName": {
+                        "value": "[variables('rgNames').analyticsRg]"
                     }
                 }
             }
