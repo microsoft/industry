@@ -1,14 +1,18 @@
 # Observability and Analytics for Operators
 
-Devices and equipment on operators on-premises infrastructure (such as radio access networks, or RAN), generate large amounts of logs that not only need to be captured, but also, given the sheer amount of information, operators require a cloud native solution to aggregate, analyze and report the data to embrace data-driven solutions and decisions. For example, a use case would be to collect RAN logs, and analyze them, at scale, to identify annomalies or interference.
+Devices and equipment on operators on-premises infrastructure (such as radio access networks, or RAN), generate large amounts of logs and files that not only need to be captured, but also, given the sheer amount of information, operators require a cloud native solution to aggregate, analyze and report the data to embrace data-driven solutions and decisions. For example, a use case would be to collect RAN logs, and analyze them, at scale, to identify annomalies or interference.
 
 This article describes an observability and analytics pattern and how it can be deployed on an operator landing zone. This article provides also a reference implementation to simplify the deployment of such landing zone.
 
-* [Ingesting on-premises data into Azure](#ingesting-on-premises-data-into-azure)
-* [Data aggregation and analytics on Azure](#data-aggregation-and-analytics-on-azure)
-* [Sample observability landing zone for operators](#sample-observability-landing-zone-for-operators)
+* [Networking](#networking)
+* [ELT](#elt)
+  * [Ingest](#ingest)
+  * [Storage](#storage)
+* [Analytics](#analytics)
+* [Reporting](#reporting)
+* [Sample observability and analytics landing zone for operators](#sample-observability-and-analytics-landing-zone-for-operators)
 
-## Ingesting on-premises data into Azure
+## Networking
 
 Devices and equipment on operators datacenters, as well as on the far and near edge, tend to generate a large amount of logs. When we augment the large number of operator's devices and equipment in their on-premises environment, they generate an enourmous amount of logs daily that not only is difficult to ingest in on-premises systems, but also aggregate and perform analytics on such logs (for example to identify interference on networks), is a cumbersome activity.
 
@@ -36,7 +40,25 @@ The following sections provide design considerations and recommendations for ing
   - Enable FastPath on the ExpressRoute connection. This will remove the ExpressRoute Gateway from the data path. Note that it is still required for control plane operations.
 
 
-## Data aggregation and analytics on Azure
+## ELT
 
-## Sample observability landing zone for operators
+### Ingest
+
+### Storage
+
+#### Raw
+#### Enrich and prepare
+#### Workspace
+
+## Analytics
+
+Logic, algorithms, statistics
+
+
+## Reporting
+
+Visualize
+Explain data
+
+## Sample observability and analytics landing zone for operators
 
