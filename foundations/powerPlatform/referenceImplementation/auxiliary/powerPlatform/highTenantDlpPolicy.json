@@ -1,45 +1,10 @@
 {
-    "displayName": "Default",
-    "defaultConnectorsClassification": "General",
+    "displayName": "North Star High (All Environments)",
+    "defaultConnectorsClassification": "Blocked",
     "connectorGroups": [
         {
             "classification": "Confidential",
             "connectors": [
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_flowmanagement",
-                    "name": "Power Automate Management",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_microsoftflowforadmins",
-                    "name": "Power Automate for Admins",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_office365",
-                    "name": "Office 365 Outlook",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_office365users",
-                    "name": "Office 365 Users",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_powerappsforappmakers",
-                    "name": "Power Apps for Makers",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_office365groups",
-                    "name": "Office 365 Groups",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_powerappsforadmins",
-                    "name": "Power Apps for Admins",
-                    "type": "Microsoft.PowerApps/apis"
-                },
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
                     "name": "SharePoint",
@@ -48,6 +13,151 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness",
                     "name": "OneDrive for Business",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_approvals",
+                    "name": "Approvals",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_excel",
+                    "name": "Excel",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_excelonlinebusiness",
+                    "name": "Excel Online (Business)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_flowpush",
+                    "name": "Notifications",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_microsoftforms",
+                    "name": "Microsoft Forms",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_microsoftformspro",
+                    "name": "Dynamics 365 Customer Voice",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_office365",
+                    "name": "Office 365 Outlook",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_office365groupsmail",
+                    "name": "Office 365 Groups Mail",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_office365users",
+                    "name": "Office 365 Users",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_onenote",
+                    "name": "OneNote (Business)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_planner",
+                    "name": "Planner",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_powerappsnotification",
+                    "name": "Power Apps Notification",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_powerappsnotificationv2",
+                    "name": "Power Apps Notification V2",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_projectonline",
+                    "name": "Project Online",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_shifts",
+                    "name": "Shifts for Microsoft Teams",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_teams",
+                    "name": "Microsoft Teams",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_todo",
+                    "name": "Microsoft To-Do (Business)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_visualstudioteamservices",
+                    "name": "Azure DevOps",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness",
+                    "name": "Word Online (Business)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_yammer",
+                    "name": "Yammer",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "PvaMicrosoftTeams",
+                    "name": "Microsoft Teams channel in Power Virtual Agents (preview)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "PvaCustomDemoMobile",
+                    "name": "Direct Line channels in Power Virtual Agents (preview)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "PvaOmniChannel",
+                    "name": "Omnichannel in Power Virtual Agents (preview)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_conversionservice",
+                    "name": "Content Conversion",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_logicflows",
+                    "name": "Logic flows",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_icm.5f4c1e90cbd0f5e3a0.5f5f3f99b67b0fc567",
+                    "name": "IcM",
+                    "type": "Microsoft.PowerApps/apis"
+                }
+            ]
+        },
+        {
+            "classification": "General",
+            "connectors": [
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_dynamicscrmonline",
+                    "name": "Dynamics 365 (deprecated)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_salesforce",
+                    "name": "Salesforce",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -61,8 +171,173 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_dropbox",
+                    "name": "Dropbox",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_10to8",
+                    "name": "10to8 Appointment Scheduling",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_365training",
+                    "name": "365 Training",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_accountingfreee",
+                    "name": "Accounting freee",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_accuweatherip",
+                    "name": "AccuWeather (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_aci",
                     "name": "Azure Container Instance",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_act",
+                    "name": "Act!",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_actsoft",
+                    "name": "Actsoft Mobile Workforce Plus",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_acumatica",
+                    "name": "Acumatica",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_adobecommerce",
+                    "name": "Adobe Commerce",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_adobecreativecloud",
+                    "name": "Adobe Creative Cloud",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_adobepdftools",
+                    "name": "Adobe PDF Services",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_adobesign",
+                    "name": "Adobe Sign",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_africastalkingairtime",
+                    "name": "Africa's Talking Airtime",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_africastalkingsms",
+                    "name": "Africa's Talking SMS",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_africastalkingvoice",
+                    "name": "Africa's Talking Voice",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_aftershipip",
+                    "name": "AfterShip (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_agilepointnx",
+                    "name": "AgilePoint NX",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_agilite",
+                    "name": "Agilite",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_ahead",
+                    "name": "Ahead",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_aikidocs",
+                    "name": "AikiDocs",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_airlyip",
+                    "name": "Airly (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_airmeet",
+                    "name": "Airmeet",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_airslate",
+                    "name": "airSlate",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_airtable",
+                    "name": "Airtable (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_alembaitsm",
+                    "name": "Alemba ITSM",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_aletheia",
+                    "name": "Aletheia",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_aliru",
+                    "name": "Ally",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_allgeo",
+                    "name": "allGeo",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_almabase",
+                    "name": "Almabase",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_amazonredshift",
+                    "name": "Amazon Redshift",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_amazons3",
+                    "name": "Amazon S3",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_amazonsqs",
+                    "name": "Amazon SQS",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_appfigures",
+                    "name": "Appfigures",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -71,13 +346,103 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_apppowerforms",
+                    "name": "App Power Forms",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_appsforops",
+                    "name": "AppsForOps Timeline",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_appstudioapi",
+                    "name": "Cloud Connect Studio",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_apptigentpowertoolslite",
+                    "name": "Apptigent PowerTools LITE",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_apptigentpowertoolspro",
+                    "name": "Apptigent PowerTools",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_aquaforest",
+                    "name": "Aquaforest PDF",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_arcgis",
+                    "name": "ArcGIS",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_arcgispaas",
+                    "name": "ArcGIS PaaS",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_arm",
                     "name": "Azure Resource Manager",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_asana",
+                    "name": "Asana",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_asite",
+                    "name": "Asite",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_asiteusgov",
+                    "name": "Asite (US Gov.)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_assentlyesign",
+                    "name": "Assently E-Sign",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_assistantstudio",
                     "name": "Dynamics 365 Sales Insights",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_authentiselineitem",
+                    "name": "Authentise Line-Item",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_authentiseorder",
+                    "name": "Authentise Order",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_automationanywhere",
+                    "name": "Automation Anywhere",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_avepointcloudgovernance",
+                    "name": "AvePoint Cloud Governance",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_aweber",
+                    "name": "AWeber",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_axtensioncontentgate",
+                    "name": "AXtension Content Gate",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -171,356 +536,6 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
-                    "name": "Microsoft Dataverse",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_customerinsights",
-                    "name": "Dynamics 365 Customer Insights Connector",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_documentdb",
-                    "name": "Azure Cosmos DB",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_dynamics365ratingsre",
-                    "name": "Dynamics 365 Commerce - Ratings and Reviews",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_dynamicsax",
-                    "name": "Fin & Ops Apps (Dynamics 365)",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_dynamicsfraudprotect",
-                    "name": "Dynamics 365 Fraud Protection",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_dynamicsnavision",
-                    "name": "Dynamics NAV",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_keyvault",
-                    "name": "Azure Key Vault",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_kusto",
-                    "name": "Azure Data Explorer",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_m365messagecenter",
-                    "name": "Microsoft 365 message center",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_microsoft365appshealth",
-                    "name": "Microsoft 365 Apps Health",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_microsoft365compliance",
-                    "name": "Microsoft 365 compliance",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_microsoftforms",
-                    "name": "Microsoft Forms",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_microsoftformspro",
-                    "name": "Dynamics 365 Customer Voice",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_microsoftgraphsecurity",
-                    "name": "Microsoft Graph Security",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_office365video",
-                    "name": "Office 365 Video",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_powerappsnotificationv2",
-                    "name": "Power Apps Notification V2",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_powerbi",
-                    "name": "Power BI",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_powervirtualagents",
-                    "name": "Power Virtual Agents",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_robotsforpowerbi",
-                    "name": "Robots for Power BI",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_sqldw",
-                    "name": "Azure SQL Data Warehouse",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_teams",
-                    "name": "Microsoft Teams",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_visualstudioteamservices",
-                    "name": "Azure DevOps",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_wdatp",
-                    "name": "Microsoft Defender ATP",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_webcontents",
-                    "name": "HTTP with Azure AD",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_dynamics365marketing",
-                    "name": "Dynamics 365 Marketing",
-                    "type": "Microsoft.PowerApps/apis"
-                }
-            ]
-        },
-        {
-            "classification": "General",
-            "connectors": [
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_dynamicscrmonline",
-                    "name": "Dynamics 365 (deprecated)",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_salesforce",
-                    "name": "Salesforce",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_10to8",
-                    "name": "10to8 Appointment Scheduling",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_365training",
-                    "name": "365 Training",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_accuweatherip",
-                    "name": "AccuWeather (Independent Publisher)",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_act",
-                    "name": "Act!",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_acumatica",
-                    "name": "Acumatica",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_adobecreativecloud",
-                    "name": "Adobe Creative Cloud",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_adobepdftools",
-                    "name": "Adobe PDF Services",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_adobesign",
-                    "name": "Adobe Sign",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_africastalkingairtime",
-                    "name": "Africa's Talking Airtime",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_africastalkingsms",
-                    "name": "Africa's Talking SMS",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_africastalkingvoice",
-                    "name": "Africa's Talking Voice",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_aftershipip",
-                    "name": "AfterShip (Independent Publisher)",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_agilepointnx",
-                    "name": "AgilePoint NX",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_agilite",
-                    "name": "Agilite",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_ahead",
-                    "name": "Ahead",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_airmeet",
-                    "name": "Airmeet",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_airslate",
-                    "name": "airSlate",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_airtable",
-                    "name": "Airtable (Independent Publisher)",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_alembaitsm",
-                    "name": "Alemba ITSM",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_aletheia",
-                    "name": "Aletheia",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_aliru",
-                    "name": "Ally",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_almabase",
-                    "name": "Almabase",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_amazonredshift",
-                    "name": "Amazon Redshift",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_amazons3",
-                    "name": "Amazon S3",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_amazonsqs",
-                    "name": "Amazon SQS",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_appfigures",
-                    "name": "Appfigures",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_approvals",
-                    "name": "Approvals",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_appsforops",
-                    "name": "AppsForOps Timeline",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_appstudioapi",
-                    "name": "Cloud Connect Studio",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_apptigentpowertoolslite",
-                    "name": "Apptigent PowerTools LITE",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_apptigentpowertoolspro",
-                    "name": "Apptigent PowerTools",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_aquaforest",
-                    "name": "Aquaforest PDF",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_arcgis",
-                    "name": "ArcGIS",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_arcgispaas",
-                    "name": "ArcGIS PaaS",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_asana",
-                    "name": "Asana",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_asite",
-                    "name": "Asite",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_asiteusgov",
-                    "name": "Asite (US Gov.)",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_assentlyesign",
-                    "name": "Assently E-Sign",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_avepointcloudgovernance",
-                    "name": "AvePoint Cloud Governance",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_aweber",
-                    "name": "AWeber",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_axtensioncontentgate",
-                    "name": "AXtension Content Gate",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_basecamp",
                     "name": "Basecamp 3",
                     "type": "Microsoft.PowerApps/apis"
@@ -586,8 +601,53 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_blackbaudconstituent",
+                    "name": "Blackbaud Raisers Edge NXT Constituents",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_blackbauddocuments",
+                    "name": "Blackbaud Raisers Edge NXT Documents",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_blackbaudevents",
+                    "name": "Blackbaud Raisers Edge NXT Events",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_blackbaudfundraising",
+                    "name": "Blackbaud Raisers Edge NXT Fundraising",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_blackbaudgifts",
+                    "name": "Blackbaud Raisers Edge NXT Gifts",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_blackbaudinteraction",
+                    "name": "Blackbaud Raisers Edge NXT Interactions",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_blackbaudlists",
+                    "name": "Blackbaud Raisers Edge NXT Lists",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_blackbaudprospects",
+                    "name": "Blackbaud Raisers Edge NXT Prospects",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_blackbaudraisersedge",
                     "name": "Blackbaud Raisers Edge NXT",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_blackbaudskyaddins",
+                    "name": "Blackbaud SKY Add-ins",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -611,6 +671,11 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_bot",
+                    "name": "Bot",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_box",
                     "name": "Box",
                     "type": "Microsoft.PowerApps/apis"
@@ -623,6 +688,16 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_buffer",
                     "name": "Buffer",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_buildingminds",
+                    "name": "BuildingMinds DigitalTwin Core",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_buymeacoffeeip",
+                    "name": "Buy Me A Coffee (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -747,7 +822,7 @@
                 },
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_cloudappsecurity",
-                    "name": "Cloud App Security",
+                    "name": "Defender for Cloud Apps",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -811,8 +886,23 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_cloudpki",
+                    "name": "Cloud PKI Management",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_cloudpkimanagement",
                     "name": "Cloud PKI Management",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_cloverlyip",
+                    "name": "Cloverly (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_co2signalip",
+                    "name": "CO2 Signal (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -837,7 +927,7 @@
                 },
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_cognitiveservicestextanalytics",
-                    "name": "Text Analytics",
+                    "name": "Azure Cognitive Service for Language",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -851,6 +941,11 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_commercemerchandising",
+                    "name": "Dynamics 365 Commerce Merchandising",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_commercientcpq",
                     "name": "Commercient",
                     "type": "Microsoft.PowerApps/apis"
@@ -858,6 +953,16 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_commondataservice",
                     "name": "Microsoft Dataverse (legacy)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                    "name": "Microsoft Dataverse",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_companieshouseip",
+                    "name": "Companies House (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -881,6 +986,11 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_covid19jhucsseip",
+                    "name": "COVID-19 JHU CSSE (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_cpqsync",
                     "name": "CPQSync",
                     "type": "Microsoft.PowerApps/apis"
@@ -896,13 +1006,13 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_d7sms",
-                    "name": "D7SMS",
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_customerinsights",
+                    "name": "Dynamics 365 Customer Insights Connector",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_dancharttest",
-                    "name": "Test ARM - DO NOT USE",
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_d7sms",
+                    "name": "D7SMS",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -918,6 +1028,11 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_datascopeforms",
                     "name": "DataScope Forms",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_datelist",
+                    "name": "Datelist",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -981,6 +1096,11 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_documentdb",
+                    "name": "Azure Cosmos DB",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_documentmerge",
                     "name": "Document Merge",
                     "type": "Microsoft.PowerApps/apis"
@@ -1021,8 +1141,33 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_dynamics365marketing",
+                    "name": "Dynamics 365 Marketing",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_dynamics365ratingsre",
+                    "name": "Dynamics 365 Commerce - Ratings and Reviews",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_dynamicsax",
+                    "name": "Fin & Ops Apps (Dynamics 365)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_dynamicsfraudprotect",
+                    "name": "Dynamics 365 Fraud Protection",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_dynamicsignal",
                     "name": "Dynamic Signal",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_dynamicsnavision",
+                    "name": "Dynamics NAV",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -1048,6 +1193,11 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_easyvistaselfhelp",
                     "name": "Easyvista Self Help",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_ecologiip",
+                    "name": "Ecologi (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -1096,8 +1246,18 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_emojihubip",
+                    "name": "EmojiHub (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_enadoc",
                     "name": "Enadoc",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_enate",
+                    "name": "Enate",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -1161,18 +1321,8 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_excel",
-                    "name": "Excel",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_excelonline",
                     "name": "Excel Online (OneDrive)",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_excelonlinebusiness",
-                    "name": "Excel Online (Business)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -1188,6 +1338,11 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_expocad",
                     "name": "EXPOCAD",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_expocadedgewebapi",
+                    "name": "EXPOCAD EDGE Web API Service",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -1241,8 +1396,18 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_flowpush",
-                    "name": "Notifications",
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_flowmanagement",
+                    "name": "Power Automate Management",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_fluidkinnectorzforpr",
+                    "name": "Fluid Kinnectorz for Procore",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_fluidkinnectorztest",
+                    "name": "Fluid Kinnectorz for Procore (Test)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -1283,6 +1448,11 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_ftp",
                     "name": "FTP",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_fulcrum",
+                    "name": "Fulcrum",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -1386,8 +1556,18 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_hashify",
+                    "name": "Hashify (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_hashifyip",
                     "name": "Hashify (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_haveibeenpwnedip",
+                    "name": "Have I Been Pwned (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -1403,6 +1583,11 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_hithorizons",
                     "name": "HitHorizons",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_honeywellforge",
+                    "name": "Honeywell Forge",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -1566,6 +1751,11 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_ineight",
+                    "name": "InEight",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_infobip",
                     "name": "Infobip",
                     "type": "Microsoft.PowerApps/apis"
@@ -1578,6 +1768,11 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_infoshare",
                     "name": "InfoShare",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_infuraethereumip",
+                    "name": "Infura Ethereum (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -1636,6 +1831,16 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_jedoxodatahub",
+                    "name": "Jedox OData Hub",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_jgintegrations",
+                    "name": "JG Integrations",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_jira",
                     "name": "JIRA",
                     "type": "Microsoft.PowerApps/apis"
@@ -1681,6 +1886,11 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_keyvault",
+                    "name": "Azure Key Vault",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_kintone",
                     "name": "kintone",
                     "type": "Microsoft.PowerApps/apis"
@@ -1691,8 +1901,23 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_knowledgeonerecfind6",
+                    "name": "Knowledgeone RecFind6",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_kusto",
+                    "name": "Azure Data Explorer",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_langai",
                     "name": "Lang.ai",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_lansweeperappforsent",
+                    "name": "Lansweeper App For Sentinel",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -1796,6 +2021,16 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_m365messagecenter",
+                    "name": "Microsoft 365 message center",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_magento",
+                    "name": "Adobe Commerce",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_mailboxvalidatorip",
                     "name": "MailboxValidator (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
@@ -1803,6 +2038,11 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_mailchimp",
                     "name": "MailChimp",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_mailjetip",
+                    "name": "MailJet (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -1856,8 +2096,33 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_microblink",
+                    "name": "Microblink",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_microsoft365appshealth",
+                    "name": "Microsoft 365 Apps Health",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_microsoft365compliance",
+                    "name": "Microsoft 365 compliance",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_microsoftd365cev9ip",
                     "name": "Microsoft D365CE v9 OnPrem (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_microsoftflowforadmins",
+                    "name": "Power Automate for Admins",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_microsoftgraphsecurity",
+                    "name": "Microsoft Graph Security",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -1873,6 +2138,11 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_microsofttranslator",
                     "name": "Microsoft Translator",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_miroip",
+                    "name": "Miro (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -1901,6 +2171,11 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_msg91forsmstextvoice",
+                    "name": "MSG91 for SMS Text & Voice",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_msnweather",
                     "name": "MSN Weather",
                     "type": "Microsoft.PowerApps/apis"
@@ -1916,6 +2191,11 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_myhospitalsbyaihwip",
+                    "name": "AIHW MyHospitals (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_mysql",
                     "name": "MySQL",
                     "type": "Microsoft.PowerApps/apis"
@@ -1923,6 +2203,11 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_mystromip",
                     "name": "myStrom (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_nasaivlibraryip",
+                    "name": "NASA Image and Video Library (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -1946,8 +2231,18 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_nistnvdip",
+                    "name": "NIST NVD (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_nitro",
                     "name": "Nitro",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_nodefusionportal",
+                    "name": "Nodefusion Portal",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -1976,8 +2271,13 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_office365groupsmail",
-                    "name": "Office 365 Groups Mail",
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_office365groups",
+                    "name": "Office 365 Groups",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_office365video",
+                    "name": "Office 365 Video",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -1986,13 +2286,23 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_onenote",
-                    "name": "OneNote (Business)",
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_opencagegeocodingip",
+                    "name": "OpenCage Geocoding (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_opencagegeocodingip",
-                    "name": "OpenCage Geocoding (Independent Publisher)",
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_openexperience",
+                    "name": "Open Experience",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_openfdadrugip",
+                    "name": "openFDA Drug (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_opennemip",
+                    "name": "OpenNEM (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -2048,6 +2358,11 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_pagerduty",
                     "name": "PagerDuty",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_pantryip",
+                    "name": "Pantry (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -2136,8 +2451,8 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_planner",
-                    "name": "Planner",
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_placedogip",
+                    "name": "Placedog (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -2191,8 +2506,18 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_powerappsnotification",
-                    "name": "Power Apps Notification",
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_powerappsforadmins",
+                    "name": "Power Apps for Admins",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_powerappsforappmakers",
+                    "name": "Power Apps for Makers",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_powerbi",
+                    "name": "Power BI",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -2201,13 +2526,23 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_powerplatformforadmins",
+                    "name": "Power Platform for Admins",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_powervirtualagents",
+                    "name": "Power Virtual Agents",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_prioritymatrix",
                     "name": "Priority Matrix",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_projectonline",
-                    "name": "Project Online",
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_progressusadvancedpr",
+                    "name": "Progressus Advanced Projects",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -2251,6 +2586,11 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_quickbaseip",
+                    "name": "Quickbase (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_rapidplatform",
                     "name": "RAPID Platform",
                     "type": "Microsoft.PowerApps/apis"
@@ -2286,13 +2626,38 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_rencoreoversight",
+                    "name": "Rencore Oversight",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_replicon",
+                    "name": "Replicon",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_rescocloud",
                     "name": "Resco Cloud",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_restcountriesip",
+                    "name": "REST Countries (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_revelationhelpdesk",
+                    "name": "Revelation helpdesk",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_reversinglabsintelligence",
                     "name": "ReversingLabs Intelligence",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_revueip",
+                    "name": "Revue (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -2316,6 +2681,11 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_robotsforpowerbi",
+                    "name": "Robots for Power BI",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_rspacexip",
                     "name": "r/SpaceX (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
@@ -2326,8 +2696,28 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_runtimeservice-experimental",
+                    "name": "Common Data Service (experimental)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_safetyculture",
                     "name": "iAuditor",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_sage100cloud",
+                    "name": "Sage100cloud-Vente",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_sage100cloudcompta",
+                    "name": "Sage100cloudCompta",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_sage100cloudvente",
+                    "name": "Sage100cloudVente",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -2343,6 +2733,11 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_scriveesign",
                     "name": "Scrive eSign",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_secib",
+                    "name": "SECIB",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -2362,7 +2757,7 @@
                 },
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_seebotrunlink",
-                    "name": "SeeBotRun Link",
+                    "name": "SeeBotRun - Link",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -2411,6 +2806,11 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_serviceobjectslive",
+                    "name": "Service Objects Live",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_serwersms",
                     "name": "SerwerSMS",
                     "type": "Microsoft.PowerApps/apis"
@@ -2431,8 +2831,13 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_shifts",
-                    "name": "Shifts for Microsoft Teams",
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_shieldsioip",
+                    "name": "Shields.io (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_shopify",
+                    "name": "Shopify",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -2501,6 +2906,11 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_smartglobalgovernance",
+                    "name": "Smart Global Governance",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_smartsheet",
                     "name": "Smartsheet",
                     "type": "Microsoft.PowerApps/apis"
@@ -2561,6 +2971,16 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_sproketpoweractions",
+                    "name": "SproketPowerActions",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_sqldw",
+                    "name": "Azure SQL Data Warehouse",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_squarebusinessip",
                     "name": "Square Business (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
@@ -2586,6 +3006,11 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_starwarsip",
+                    "name": "Star Wars (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_stormboard",
                     "name": "Stormboard",
                     "type": "Microsoft.PowerApps/apis"
@@ -2598,6 +3023,11 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_survey123",
                     "name": "Survey123",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_survey123test",
+                    "name": "Survey123 (Test)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -2663,11 +3093,6 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_timeghost",
                     "name": "timeghost",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_todo",
-                    "name": "Microsoft To-Do (Business)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -2766,6 +3191,11 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_uberfreight",
+                    "name": "Uber Freight",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_ubiqodbyskiply",
                     "name": "Ubiqod by Skiply",
                     "type": "Microsoft.PowerApps/apis"
@@ -2783,6 +3213,11 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_unixtimestampip",
                     "name": "Unix Timestamp (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_unsplaship",
+                    "name": "Unsplash (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -2806,6 +3241,11 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_verified",
+                    "name": "Verified",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_videoindexer-v2",
                     "name": "Video Indexer (V2)",
                     "type": "Microsoft.PowerApps/apis"
@@ -2826,13 +3266,28 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_waalia",
+                    "name": "Waaila",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_waywedo",
                     "name": "Way We Do",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_wdatp",
+                    "name": "Microsoft Defender ATP",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_weatherforecastip",
                     "name": "Weather Forecast (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_webcontents",
+                    "name": "HTTP with Azure AD",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -2851,6 +3306,11 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_what3words",
+                    "name": "What3Words (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_what3wordsip",
                     "name": "What3Words (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
@@ -2861,13 +3321,18 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_withoutwireinventoryplatform",
+                    "name": "WithoutWire Inventory Platform (Test)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_witivio",
                     "name": "Witivio",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness",
-                    "name": "Word Online (Business)",
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_wordcloudbytextvisip",
+                    "name": "Word Cloud by Textvis (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -2911,11 +3376,6 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_yammer",
-                    "name": "Yammer",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_yeeflow",
                     "name": "Yeeflow",
                     "type": "Microsoft.PowerApps/apis"
@@ -2923,6 +3383,11 @@
                 {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_yeelight",
                     "name": "Yeelight",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_yelp",
+                    "name": "Yelp (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
@@ -2956,6 +3421,16 @@
                     "type": "Microsoft.PowerApps/apis"
                 },
                 {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_zippopotamusip",
+                    "name": "Zippopotamus (Independent Publisher)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_zohosign",
+                    "name": "Zoho Sign",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
                     "id": "/providers/Microsoft.PowerApps/apis/shared_zoommeetingsip",
                     "name": "Zoom Meetings (Independent Publisher)",
                     "type": "Microsoft.PowerApps/apis"
@@ -2979,23 +3454,282 @@
                     "id": "HttpWebhook",
                     "name": "HTTP Webhook",
                     "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "PvaSkills",
+                    "name": "Skills with Power Virtual Agents (preview)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "PvaAuth",
+                    "name": "Chat without Azure AD authentication in Power Virtual Agents (preview)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "PvaFacebook",
+                    "name": "Facebook channel in Power Virtual Agents (preview)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.ActiveDirectory",
+                    "name": "Active Directory",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.AWS",
+                    "name": "AWS",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Azure",
+                    "name": "Azure",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Clipboard",
+                    "name": "Clipboard",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Cmd",
+                    "name": "CMD session",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Compression",
+                    "name": "Compression",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Cryptography",
+                    "name": "Cryptography",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.CyberArk",
+                    "name": "CyberArk",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Database",
+                    "name": "Database",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Display",
+                    "name": "Message boxes",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Email",
+                    "name": "Email",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Excel",
+                    "name": "Excel",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Exchange",
+                    "name": "Exchange",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.File",
+                    "name": "File",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Folder",
+                    "name": "Folder",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.FTP",
+                    "name": "FTP",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.GoogleCognitive",
+                    "name": "Google cognitive",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.IBMCognitive",
+                    "name": "IBM cognitive",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.MicrosoftCognitive",
+                    "name": "Microsoft cognitive",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.MouseAndKeyboard",
+                    "name": "Mouse and keyboard",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.OCR",
+                    "name": "OCR",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Outlook",
+                    "name": "Outlook",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Pdf",
+                    "name": "PDF",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Runflow",
+                    "name": "Run flow",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Scripting",
+                    "name": "Scripting",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Services",
+                    "name": "Windows Services",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.System",
+                    "name": "System",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.TerminalEmulation",
+                    "name": "Terminal emulation",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.UIAutomation",
+                    "name": "UI automation",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Web",
+                    "name": "HTTP",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.WebAutomation",
+                    "name": "Browser Automation",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.Workstation",
+                    "name": "Workstation",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "providers/Microsoft.ProcessSimple/operationGroups/DesktopFlow.XML",
+                    "name": "XML",
+                    "type": "Microsoft.ProcessSimple/operationGroups"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_fedex",
+                    "name": "FedEx",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_fedexdataworks",
+                    "name": "FedEx Dataworks",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_fedexsupplychainretu",
+                    "name": "FedEx Supply Chain Returns",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_dynamicsnav2016",
+                    "name": "Dynamics NAV 2016",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_shipstation",
+                    "name": "ShipStation",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "PvaOtherChannels",
+                    "name": "Other channels in Power Virtual Agents (preview)",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_officescriptingexcelrings",
+                    "name": "OfficeScripting Excel Rings",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_flexe",
+                    "name": "Flexe",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_orderful",
+                    "name": "Orderful",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_opensupplychainplatf",
+                    "name": "Open Supply Chain Platform",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_iomdatatransformer",
+                    "name": "IOM Data Transformer",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_instagram",
+                    "name": "Instagram",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_facebook",
+                    "name": "Facebook",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_expensyamanagement",
+                    "name": "Expensya Management",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_ocm",
+                    "name": "Outlook Customer Manager",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_africastalkingpayments",
+                    "name": "Africa's Talking Payments",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_mergeshuttleservice",
+                    "name": "Merge Shuttle Service",
+                    "type": "Microsoft.PowerApps/apis"
+                },
+                {
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_microsoftteams",
+                    "name": "shared_microsoftteams",
+                    "type": "Microsoft.PowerApps/apis"
                 }
             ]
         },
         {
             "classification": "Blocked",
-            "connectors": [
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_powerplatformforadmins",
-                    "name": "Power Platform for Admins",
-                    "type": "Microsoft.PowerApps/apis"
-                },
-                {
-                    "id": "/providers/Microsoft.PowerApps/apis/shared_dropbox",
-                    "name": "Dropbox",
-                    "type": "Microsoft.PowerApps/apis"
-                }
-            ]
+            "connectors": []
         }
     ],
     "environmentType": "AllEnvironments",
