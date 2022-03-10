@@ -15,10 +15,12 @@
         },
         "ppTenantDlp": {
             "type": "string",
-            "defaultValue": "no",
+            "defaultValue": "none",
             "allowedValues": [
-                "yes",
-                "no"
+                "high",
+                "medium",
+                "low",
+                "none"
             ],
             "metadata": {
                 "description": "Select if recommended DLP policies should be assigned for the tenant."
@@ -460,7 +462,7 @@
             ],
             "defaultValue": "no",
             "metadata": {
-                "description": "Select if D365 data connector should be added to Microsoft Sentinel"
+                "description": "Select if D365 data connector should be added to Microsoft Sentinel."
             }
         }
     },

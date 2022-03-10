@@ -177,27 +177,35 @@
                                 }
                             }
                         },
-						{
-							"name": "ppTenantDlp",
-							"type": "Microsoft.Common.OptionsGroup",
-							"label": "Assign recommended Data-loss prevention policies to the tenant",
-							"defaultValue": "Yes (recommended)",
-							"toolTip": "",
-							"constraints": {
-								"allowedValues": [
-									{
-										"label": "Yes (recommended)",
-										"value": "yes"
-									},
-									{
-										"label": "No",
-										"value": "no"
-									}
-								],
-								"required": true
-							},
-							"visible": true
-						},
+                        {
+                            "name": "ppTenantDlp",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Assign recommended Data-loss prevention policies to the tenant by selecting the preferred starting baseline.",
+                            "defaultValue": "None",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "High",
+                                        "value": "high"
+                                    },
+                                    {
+                                        "label": "Medium",
+                                        "value": "medium"
+                                    },
+                                    {
+                                        "label": "Low",
+                                        "value": "low"
+                                    },
+                                    {
+                                        "label": "None",
+                                        "value": "none"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": true
+                        },
 						{
 							"name": "tenantIsolationSetting",
 							"type": "Microsoft.Common.Section",
