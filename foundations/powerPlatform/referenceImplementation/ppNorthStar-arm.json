@@ -451,6 +451,17 @@
             "metadata": {
                 "description": "Select if Data Lake Storage v2 should be created."
             }
+        },
+        "ppEnableD365Connector": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if D365 data connector should be added to Microsoft Sentinel"
+            }
         }
     },
     "variables": {
@@ -480,8 +491,8 @@
             },
         // Declaring deterministic names for platform resources that will be created
         "resourceNames": {
-            "logAnalyticsWorkspace": "[concat(variables('resourceNamePrefix'), '-law')]",
-            "automationAccount": "[concat(variables('resourceNamePrefix'), '-aauto')]",
+            "logAnalyticsWorkspace": "[concat(variables('resourceNamePrefix'), '-law-', parameters('location'))]",
+            "automationAccount": "[concat(variables('resourceNamePrefix'), '-aauto-', parameters('location'))]",
             "storageAccount": "[take(toLower(concat('ns', uniqueString(subscription().subscriptionId))), 23)]"
             },
         "resourceIds": {
@@ -667,6 +678,7 @@
             }
         },
         {
+            // Create Azure Monitor infrastructure for security and observability
             "condition": "[equals(parameters('ppEnableAzureMonitor'), 'yes')]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
@@ -730,6 +742,9 @@
                     },
                     "enableSecuritySolution": {
                         "value": "[parameters('ppEnableAzureSecurity')]"
+                    },
+                    "enableD365DataConnector": {
+                        "value": "[parameters('ppEnableD365Connector')]"
                     }
                 }
             }            

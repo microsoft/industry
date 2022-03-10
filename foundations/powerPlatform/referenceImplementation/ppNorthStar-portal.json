@@ -154,7 +154,7 @@
                             "visible": true,
                             "options": {
                                 "icon": "Info",
-                                "text": "Configure tenant security settings and Data-loss prevention policies for Power Platform  to meet your overall security requirements. These settings will apply to all environments in your tenant, and additional restrictions can be configured later in the deployment experience.",
+                                "text": "Configure tenant security settings and Data-loss prevention policies for Power Platform to meet your overall security requirements. These settings will apply to all existing and new environments in your tenant, and additional restrictions can be configured later in the deployment experience.",
                                 "uri": "https://www.microsoft.com"
                             }
                         },
@@ -170,7 +170,7 @@
                             "type": "Microsoft.Common.TextBlock",
                             "visible": true,
                             "options": {
-                                "text": "Configure overall Data-loss prevention policy for the tenant. This policy will by default apply to all existing and new environments. Additional policies can be configured in the 'Admin Environment and settings' tab.",
+                                "text": "Configure overall Data-loss prevention policy for the tenant. This policy will by default apply to all existing and new environments. Additional policies can be configured in the 'Landing Zones' tab.",
                                 "link": {
                                     "label": "Learn more",
                                     "uri": "https://www.microsoft.com"
@@ -249,7 +249,7 @@
 						{
                             "name": "ppTenantIsolationDomains",
                             "type": "Microsoft.Common.TextBox",
-                            "label": "Enter Tenant Domain, ID, or * for all tenants",
+                            "label": "Explicit allow list (enter Tenant Domain, ID, or * for all tenants)",
                             "placeholder": "",
                             "defaultValue": "",
                             "toolTip": "Use only allowed characters",
@@ -702,6 +702,26 @@
                             }
                         },
                         {
+                            "name": "ppEnableD365Connector",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Sentinel Data Connector for Dynamics 365",
+                            "defaultValue": "Yes (recommended)",
+                            "visible": "[and(equals(steps('mgmt').ppEnableAzureMonitor, 'yes'), equals(steps('mgmt').ppEnableAzureSecurity, 'yes'))]",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            }
+                        },
+                        {
                             "name": "ppEnableAppInsights",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Enable integration with Azure Application Insights",
@@ -855,7 +875,7 @@
                         {
                             "name": "ppDefaultDlp",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Assigned recommended Data-loss prevention policies to the Default Environment",
+                            "label": "Assign recommended Data-loss prevention policies to the Default Environment",
                             "defaultValue": "Yes (recommended)",
                             "multiSelect": true,
                             "toolTip": "If 'Yes' is selected, the setup will enable this",
@@ -1461,6 +1481,7 @@
                 "ppEnableAzureMonitor": "[steps('mgmt').ppEnableAzureMonitor]",
                 "ppEnableAppInsights": "[steps('mgmt').ppEnableAppInsights]",
                 "ppEnableAzureSecurity": "[steps('mgmt').ppEnableAzureSecurity]",
+                "ppEnableD365Connector": "[steps('mgmt').ppEnableD365Connector]",
                 "ppEnableAadLogs": "[steps('mgmt').ppEnableAadLogs]",
                 "ppEnableTenantAnalytics": "[steps('mgmt').ppEnableTenantAnalytics]",
                 "ppEnableDataLake": "[steps('mgmt').ppEnableDataLake]",
