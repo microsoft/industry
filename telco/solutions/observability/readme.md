@@ -49,7 +49,7 @@ _Figure 2: Connectivity to Azure storage over VPN._
 
 ### ExpressRoute (Private Peering)
 
-ExpressRoute provides a private connectivity that does not traverses the public internet. Thus, besides ensuring that all data is kept in a private network, predictable throughput and latency can be expected and ExpressRoute availability is backed by a 99.95% SLA. With private peering, all communication between on-premises and Azure is done via private IP addresses (typically RFC1918). This setup is depicted in figure 3 below:
+ExpressRoute provides a private connectivity that does not traverses the public internet. Thus, besides ensuring that network traffic is kept in a private network, predictable throughput and latency can be expected and ExpressRoute availability is backed by a 99.95% SLA. With private peering, all communication between on-premises and Azure is done via private IP addresses (typically RFC1918). This setup is depicted in figure 3 below:
 
 ![ExpressRoutePrivatePeering](./images/afo-observability-er-pp.png)
 
@@ -59,14 +59,27 @@ _Figure 3: Connectivity to Azure via ExpressRoute with private peering_
 
 #### Design recommendations
 
-### ExpressRoute (Microsoft Peering)
-
 - Use ExpressRoute as the main option to connect the on-premises operator network to Azure.
 - Use ExpressRoute direct if you require more than 10Gbps bandwidth.
-- Use ExpressRoute private peering when there is a relatively low amount of data to be ingested.
 - When using ExpressRoute private peering:
   - Ensure the Azure storage service (such as ADLS Gen2) is accesible via a private endpoint.
   - Enable FastPath on the ExpressRoute connection. This will remove the ExpressRoute Gateway from the data path. Note that it is still required for control plane operations.
+
+
+### ExpressRoute (Microsoft Peering)
+
+ExpressRoute provides a private connectivity that does not traverses the public internet. Thus, besides ensuring that network traffic is kept in a private network, predictable throughput and latency can be expected and ExpressRoute availability is backed by a 99.95% SLA. With Microsoft peering, all communication between on-premises and Azure is done via public IP addresses, that need to be verified by Microsoft. With Microsoft peering, it is possible to reach Azure storage services over a private connection and directly to their public endpoint without required any additional infrastructure on Azure. This setup is depicted in figure 4 below:
+
+![ExpressRouteMSFTPeering](./images/afo-observability-er-ms.png)
+
+_Figure 4: Connectivity to Azure via ExpressRoute with Microsoft peering_
+
+#### Design considerations
+
+#### Design recommendations
+
+- Use ExpressRoute as the main option to connect the on-premises operator network to Azure.
+- Use ExpressRoute direct if you require more than 10Gbps bandwidth.
 
 
 ## ELT
