@@ -37,7 +37,21 @@ _Figure 1: Connectivity to Azure storage over the internet._
 
 #### Design considerations
 
+- Internet connections typically don't provide predictable bandwidth or latency.
+- Traffic over the internet can be succeptible to malicious attacks unless traffic is secured for example with a strong encryption algoritm.
+- Many Azure storage services offer the possibility to lock down access to specific public IP addresses.
+- A service or application would required in the on-premises network to be able to push the data to the Azure Storage service.
+
 #### Design recommendations
+
+- Use an internet-based connection for data ingestion scenarios for scenarios such as: 
+  - Small environments with small amounts of data.
+  - Devolpment and testing environments.
+  - There are no requirements or regulations in your organization, industry or region to transmit corporate data over a public internet connection.
+  - It is allowed in your organization to access an Azure storage service over its public endpoint.
+- Always use strong encryption and secure protocols when transmitting data over the internet.
+- Restrict access to only the public IP addresses that you will use to transmit data in the Azure storage service.
+- Ensure no other public access is allowed in the Azure Storage service.
 
 ### VPN
 
@@ -49,7 +63,16 @@ _Figure 2: Connectivity to Azure storage over VPN._
 
 #### Design considerations
 
+- Site-to-Site (IPsec/IKE VPN tunnel) configurations are between your on-premises location and Azure.
+- This type of connection relies on an IPsec VPN appliance (hardware device or soft appliance), which must be deployed at the edge of your network. To create this type of connection, you must have an externally facing IPv4 address.
+- An Azure VPN gateway is required on an Azure VNet. A VPN gateway sends encrypted traffic between your virtual network and your on-premises location across a public connection.
+- Azure VPN gateway has different [SKUs](https://docs.microsoft.com/azure/vpn-gateway/vpn-gateway-about-vpngateways#gwsku) depending on your routing, availability and scalability requirements.
+- The maximum throughput of a site-to-site VPN connection is limtied by IPsec to 1.25Gbps. However, multiple tunnels can be used, up to the maximum number of tunnels or aggregated througput of your VPN gateway SKU.
+- You cannot reach an Azure storage service over its public endpoint using a Site-to-Site VPN connection. Instead, you must make the Azure storage service accesible via a private endpoint, or you need to deploy an Azure resource or service (such as a virtual machine or Azure Data Factory) in an Azure virtual network that has VPN connectivity (directly or via VNet peering) to move the data from on-premises to the Azure storage service accesible over either, its public endpoint or via a private endpoint.
+
 #### Design recommendations
+
+
 
 ### ExpressRoute (Private Peering)
 
