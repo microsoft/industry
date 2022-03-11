@@ -179,26 +179,32 @@
                         },
                         {
                             "name": "ppTenantDlp",
-                            "type": "Microsoft.Common.OptionsGroup",
+                            "type": "Microsoft.Common.DropDown",
+							"multiSelect": false,
+							"multiLine": true,
                             "label": "Assign recommended Data-loss prevention policies to the tenant by selecting the preferred starting baseline.",
                             "defaultValue": "None",
-                            "toolTip": "",
+                            "toolTip": "By select a tenant DLP policy, all existing and new Environments will be governed regarding what connectors can be used, and used together.",
                             "constraints": {
                                 "allowedValues": [
                                     {
                                         "label": "High",
+                                        "description": "A highly restrictive tenant DLP policy that only allows certain Microsoft connectors in the business group. All other connectors are categorized as non-business.",
                                         "value": "high"
                                     },
                                     {
                                         "label": "Medium",
+										"description": "A medium restrictive tenant DLP policy that allows common Microsoft connectors in the business group. All other connectors are categorized as non-business.",
                                         "value": "medium"
                                     },
                                     {
                                         "label": "Low",
+										"description": "A low restrictive tenant DLP policy that allows most Microsoft connectors in the business group. All other connectors are categorized as non-business.",
                                         "value": "low"
                                     },
                                     {
                                         "label": "None",
+										"description": "Do not assign tenant DLP policy.",
                                         "value": "none"
                                     }
                                 ],
