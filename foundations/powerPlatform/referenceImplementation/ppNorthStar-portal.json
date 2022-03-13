@@ -173,7 +173,7 @@
                                 "text": "Configure overall Data-loss prevention policy for the tenant. This policy will by default apply to all existing and new environments. Additional policies can be configured in the 'Landing Zones' tab.",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://www.microsoft.com"
+                                    "uri": "https://docs.microsoft.com/power-platform/admin/wp-data-loss-prevention"
                                 }
                             }
                         },
@@ -227,7 +227,7 @@
 								"text": "Configure tenant isolation to block external tenants from establishing connections into your tenant (inbound isolation) as well as block your tenant from establishing connections to external tenants (outbound isolation).",
 								"link": {
 									"label": "Learn more",
-									"uri": "https://docs.microsoft.com/en-us/power-platform/admin/cross-tenant-restrictions"
+									"uri": "https://docs.microsoft.com/power-platform/admin/cross-tenant-restrictions"
 								}
 							}
 						},
@@ -236,7 +236,7 @@
 							"type": "Microsoft.Common.OptionsGroup",
 							"label": "Enable tenant isolation",
 							"defaultValue": "Do not enable tenant isolation",
-							"toolTip": "",
+							"toolTip": "Select the preferred tenant isolation method by selecting either inbound, outbound, or both.",
 							"constraints": {
 								"allowedValues": [
 									{
@@ -268,7 +268,7 @@
                             "defaultValue": "",
                             "toolTip": "Use only allowed characters",
                             "constraints": {
-                                "required": true
+                                "required": false
                             },
                             "visible": "[not(equals(steps('gov').ppTenantIsolationSetting, 'none'))]"
                         },
@@ -287,7 +287,7 @@
                                 "text": "Configure tenant guest and sharing options.",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://www.microsoft.com"
+                                    "uri": "https://docs.microsoft.com/powerapps/maker/model-driven-apps/share-model-driven-app#app-sharing-privilege-and-licensing-requirements"
                                 }
                             }
                         },
@@ -344,7 +344,7 @@
                             "type": "Microsoft.Common.InfoBox",
                             "visible": true,
                             "options": {
-                                "text": "North Star Architecture recommends dedicated Admin Environments in Power Platform. When creating dedicated Admin Environments, you can optionally deploy the 'Center of Excellence Starter-Kit' which provides additional capabilities to scale, manage, and operate your Power Platform tenant. The setup creates dedicated Admin Environments for Development, Test, and Production in order to support maintenance, testing, development, and validation before deploying to production.",
+                                "text": "It is highly recommended to have dedicated Admin Environments in Power Platform to manage and administer the platform as you scale. When creating dedicated Admin Environments, you can optionally deploy the 'Center of Excellence Starter-Kit' which provides additional capabilities to scale, manage, and operate your Power Platform tenant. The setup creates dedicated Admin Environments for Development, Test, and Production in order to support maintenance, testing, development, and validation before deploying to production.",
                                 "link": {
                                     "label": "Learn more about Center of Excellence Starter-kit",
                                     "uri": "https://docs.microsoft.com/power-platform/guidance/coe/starter-kit"
@@ -366,7 +366,7 @@
                                 "text": "Configure overall Environment settings for the tenant. These settings will allow you to control Environment creation process, and capacity management.",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://www.microsoft.com"
+                                    "uri": "https://docs.microsoft.com/power-platform/admin/environments-overview"
                                 }
                             }
                         },
