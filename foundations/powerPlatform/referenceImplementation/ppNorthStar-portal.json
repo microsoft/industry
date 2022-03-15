@@ -943,6 +943,10 @@
                                         "label": "Yes, without Dataverse",
                                         "value": "half"
                                     },
+									{
+										"label": "Yes, and let me configure each Environment",
+										"value": "custom"
+									},
                                     {
                                         "label": "No",
                                         "value": "no"
@@ -951,6 +955,143 @@
                             },
                             "visible": true
                         },
+						{
+							"name": "ppCitizenConfiguration",
+							"type": "Microsoft.Common.EditableGrid",
+							"ariaLabel": "Create and Configure Citizen Environment",
+							"label": "Citizen Environment configuration",
+							"visible": "[equals(steps('landingZones').ppCitizen, 'custom')]",
+							"constraints": {
+								"width": "Full",
+								"rows": {
+									"count": {
+										"min": 1,
+										"max": 10
+									}
+								},
+								"columns": [
+									{
+										"id": "colName",
+										"header": "Environment Name",
+										"width": "1fr",
+										"element": {
+											"type": "Microsoft.Common.TextBox",
+											"placeholder": "",
+											"constraints": {
+												"required": true,
+												"validations": [
+													{
+														"regex": "^[a-z0-9A-Z]{1,30}$",
+														"message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+													}
+												]
+											}
+										}
+									},
+									{
+										"id": "colRegion",
+										"header": "Region",
+										"width": "1fr",
+										"element": {
+											"name": "ppRegionDropDown",
+											"type": "Microsoft.Common.DropDown",
+											"placeholder": "Select a region...",
+											"constraints": {
+												"allowedValues": [
+ 													{
+														"label": "Europe",
+														"value": "europe"
+													},
+													{
+														"label": "United States",
+														"value": "unitedstates"
+													},
+													{
+														"label": "United Arab Emirates",
+														"value": "unitedarabemirates"
+													},
+													{
+														"label": "Asia",
+														"value": "asia"
+													},
+													{
+														"label": "India",
+														"value": "india"
+													},
+													{
+														"label": "Japan",
+														"value": "japan"
+													},
+													{
+														"label": "France",
+														"value": "france"
+													},
+													{
+														"label": "Germany",
+														"value": "germany"
+													},
+													{
+														"label": "Australia",
+														"value": "australia"
+													},
+													{
+														"label": "Canada",
+														"value": "canada"
+													},
+													{
+														"label": "South America",
+														"value": "southamerica"
+													}
+												],
+												"required": true
+											}
+										}
+									},
+									{
+										"id": "colDataverse",
+										"header": "Create Dataverse",
+										"width": "2fr",
+										"element": {
+											"type": "Microsoft.Common.DropDown",
+											"constraints": {
+												"allowedValues": [
+													{
+														"label": "Yes (recommended)",
+														"value": "yes"
+													},
+													{
+														"label": "No",
+														"value": "no"
+													}
+												],
+												"required": true
+											}
+										}
+									},
+									{
+										"id": "colRbac",
+										"header": "Assign RBAC",
+										"width": "1fr",
+										"element": {
+											"type": "Microsoft.Common.DropDown",
+											"constraints": {
+												"allowedValues": [
+													{
+														"label": "AAD User",
+														"value": "yes"
+													},
+													{
+														"label": "AAD Group",
+														"value": "no"
+													}
+												],
+												"required": true
+											}
+										}
+									}
+								]
+							}
+						},
                         {
                             "name": "ppCitizenCount",
                             "type": "Microsoft.Common.Slider",
@@ -964,7 +1105,7 @@
                             "constraints": {
                                 "required": false
                             },
-                            "visible": "[not(equals(steps('landingZones').ppCitizen, 'no'))]"
+                            "visible": "[or(equals(steps('landingZones').ppCitizen, 'yes'), equals(steps('landingZones').ppCitizen, 'half'))]"
                         },
                         {
                             "name": "ppCitizenNaming",
@@ -978,7 +1119,7 @@
                                 "regex": "^[a-z0-9A-Z]{1,30}$",
                                 "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
                             },
-                            "visible": "[not(equals(steps('landingZones').ppCitizen, 'no'))]"
+                            "visible": "[or(equals(steps('landingZones').ppCitizen, 'yes'), equals(steps('landingZones').ppCitizen, 'half'))]"
                         },
                         {
                             "name": "ppCitizenRegion",
@@ -987,7 +1128,7 @@
                             "placeholder": "",
                             "defaultValue": "",
                             "toolTip": "",
-                            "visible": "[not(equals(steps('landingZones').ppCitizen, 'no'))]",
+                            "visible": "[or(equals(steps('landingZones').ppCitizen, 'yes'), equals(steps('landingZones').ppCitizen, 'half'))]",
                             "constraints": {
                                 "allowedValues": [
                                     {
@@ -1135,6 +1276,10 @@
                                         "label": "Yes, without Dataverse",
                                         "value": "half"
                                     },
+									{
+										"label": "Yes, and let me configure each Environment",
+										"value": "custom"
+									},
                                     {
                                         "label": "No",
                                         "value": "no"
@@ -1143,6 +1288,143 @@
                             },
                             "visible": true
                         },
+						{
+							"name": "ppProConfiguration",
+							"type": "Microsoft.Common.EditableGrid",
+							"ariaLabel": "Create and Configure Pro Environment",
+							"label": "Professional Environment configuration",
+							"visible": "[equals(steps('landingZones').ppPro, 'custom')]",
+							"constraints": {
+								"width": "Full",
+								"rows": {
+									"count": {
+										"min": 1,
+										"max": 10
+									}
+								},
+								"columns": [
+									{
+										"id": "colName",
+										"header": "Environment Name",
+										"width": "1fr",
+										"element": {
+											"type": "Microsoft.Common.TextBox",
+											"placeholder": "",
+											"constraints": {
+												"required": true,
+												"validations": [
+													{
+														"regex": "^[a-z0-9A-Z]{1,30}$",
+														"message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+													}
+												]
+											}
+										}
+									},
+									{
+										"id": "colRegion",
+										"header": "Region",
+										"width": "1fr",
+										"element": {
+											"name": "ppRegionDropDown",
+											"type": "Microsoft.Common.DropDown",
+											"placeholder": "Select a region...",
+											"constraints": {
+												"allowedValues": [
+ 													{
+														"label": "Europe",
+														"value": "europe"
+													},
+													{
+														"label": "United States",
+														"value": "unitedstates"
+													},
+													{
+														"label": "United Arab Emirates",
+														"value": "unitedarabemirates"
+													},
+													{
+														"label": "Asia",
+														"value": "asia"
+													},
+													{
+														"label": "India",
+														"value": "india"
+													},
+													{
+														"label": "Japan",
+														"value": "japan"
+													},
+													{
+														"label": "France",
+														"value": "france"
+													},
+													{
+														"label": "Germany",
+														"value": "germany"
+													},
+													{
+														"label": "Australia",
+														"value": "australia"
+													},
+													{
+														"label": "Canada",
+														"value": "canada"
+													},
+													{
+														"label": "South America",
+														"value": "southamerica"
+													}
+												],
+												"required": true
+											}
+										}
+									},
+									{
+										"id": "colDataverse",
+										"header": "Create Dataverse",
+										"width": "2fr",
+										"element": {
+											"type": "Microsoft.Common.DropDown",
+											"constraints": {
+												"allowedValues": [
+													{
+														"label": "Yes (recommended)",
+														"value": "yes"
+													},
+													{
+														"label": "No",
+														"value": "no"
+													}
+												],
+												"required": true
+											}
+										}
+									},
+									{
+										"id": "colRbac",
+										"header": "Assign RBAC",
+										"width": "1fr",
+										"element": {
+											"type": "Microsoft.Common.DropDown",
+											"constraints": {
+												"allowedValues": [
+													{
+														"label": "AAD User",
+														"value": "yes"
+													},
+													{
+														"label": "AAD Group",
+														"value": "no"
+													}
+												],
+												"required": true
+											}
+										}
+									}
+								]
+							}
+						},
                         {
                             "name": "ppProCount",
                             "type": "Microsoft.Common.Slider",
@@ -1156,7 +1438,7 @@
                             "constraints": {
                                 "required": false
                             },
-                            "visible": "[not(equals(steps('landingZones').ppPro, 'no'))]"
+                            "visible": "[or(equals(steps('landingZones').ppPro, 'yes'), equals(steps('landingZones').ppPro, 'half'))]"
                         },
                         {
                             "name": "ppProNaming",
@@ -1170,7 +1452,7 @@
                                 "regex": "^[a-z0-9A-Z]{1,30}$",
                                 "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
                             },
-                            "visible": "[not(equals(steps('landingZones').ppPro, 'no'))]"
+                            "visible": "[or(equals(steps('landingZones').ppPro, 'yes'), equals(steps('landingZones').ppPro, 'half'))]"
                         },
                         {
                             "name": "ppProRegion",
@@ -1179,7 +1461,7 @@
                             "placeholder": "",
                             "defaultValue": "",
                             "toolTip": "",
-                            "visible": "[not(equals(steps('landingZones').ppPro, 'no'))]",
+                            "visible": "[or(equals(steps('landingZones').ppPro, 'yes'), equals(steps('landingZones').ppPro, 'half'))]",
                             "constraints": {
                                 "allowedValues": [
                                     {
@@ -1501,6 +1783,7 @@
                 "ppEnableDataLake": "[steps('mgmt').ppEnableDataLake]",
                 "ppRetentionInDays": "[string(steps('mgmt').ppRetentionInDays)]",
                 "ppCitizen": "[steps('landingZones').ppCitizen]",
+                "ppCitizenConfiguration": "[replace(replace(replace(replace(string(steps('landingZones').ppCitizenConfiguration), '{', ''), '}', ''), '[', ''), ']', '')]",
                 "ppCitizenCount": "[steps('landingZones').ppCitizenCount]",
                 "ppCitizenNaming": "[steps('landingZones').ppCitizenNaming]",
                 "ppCitizenRegion": "[steps('landingZones').ppCitizenRegion]",
@@ -1508,6 +1791,7 @@
                 "ppCitizenAlm": "[steps('landingZones').ppCitizenAlm]",
                 "ppCitizenBilling": "[steps('landingZones').ppCitizenBilling]",
                 "ppPro": "[steps('landingZones').ppPro]",
+                "ppProConfiguration": "[replace(replace(replace(replace(string(steps('landingZones').ppProConfiguration), '{', ''), '}', ''), '[', ''), ']', '')]",
                 "ppProCount": "[steps('landingZones').ppProCount]",
                 "ppProNaming": "[steps('landingZones').ppProNaming]",
                 "ppProDlp": "[steps('landingZones').ppProDlp]",
