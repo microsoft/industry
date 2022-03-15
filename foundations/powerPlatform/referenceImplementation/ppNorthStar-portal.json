@@ -363,7 +363,7 @@
                             "type": "Microsoft.Common.TextBlock",
                             "visible": true,
                             "options": {
-                                "text": "Configure overall Environment settings for the tenant. These settings will allow you to control Environment creation process, and capacity management.",
+                                "text": "Configure the overall Environment settings for the tenant. These settings will allow you to control Environment creation process, and capacity management.",
                                 "link": {
                                     "label": "Learn more",
                                     "uri": "https://docs.microsoft.com/power-platform/admin/environments-overview"
