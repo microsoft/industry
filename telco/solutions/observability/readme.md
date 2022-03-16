@@ -69,6 +69,7 @@ _Figure 2: Connectivity to Azure storage over VPN._
 - Azure VPN gateway has different [SKUs](https://docs.microsoft.com/azure/vpn-gateway/vpn-gateway-about-vpngateways#gwsku) depending on your routing, availability and scalability requirements.
 - The maximum throughput of a site-to-site VPN connection is limtied by IPsec to 1.25Gbps. However, multiple tunnels can be used, up to the maximum number of tunnels or aggregated througput of your VPN gateway SKU.
 - You cannot reach an Azure storage service over its public endpoint using a Site-to-Site VPN connection. Instead, you must make the Azure storage service accesible via a private endpoint, or you need to deploy an Azure resource or service (such as a virtual machine or Azure Data Factory) in an Azure virtual network that has VPN connectivity (directly or via VNet peering) to move the data from on-premises to the Azure storage service accesible over either, its public endpoint or via a private endpoint.
+- Azure Private Endpoint is a metered service. Make sure you familiarize with its [pricing](https://azure.microsoft.com/pricing/details/private-link/), so that you can estimate expected costs depending on the amount of data to ingest.
 
 #### Design recommendations
 
@@ -112,13 +113,18 @@ _Figure 4: Connectivity to Azure via ExpressRoute with Microsoft peering_
 
 Depending the networking option you select for your observability landing zone for operators, you can create an online, corp or operator landing zone as per the guidance in the table below:
 
-| Connectivity model 	| Landing Zone type 	|
-|---	|---	|
-| Internet 	| Online 	|
-| VPN 	| Corporate 	|
-| ExpressRoute (Private Peering) 	| Corporate, Operator* 	|
-| ExpressRoute (Microsoft Peering) 	| Operator 	|
-
-The * character indicates that, if the ExpressRoute gateway must be deployed within the landing zone itself, then an Operator landing zone is required.
+| Connectivity Model 	| Landing Zone Type 	| Connectivity Provided by 	| Details 	|
+|---	|---	|---	|---	|
+| Internet 	| Online 	| Landing zone owner 	|  	|
+| VPN 	| Corporate 	| Platform 	|  	|
+| ExpressRoute (Private Peering) 	| Corporate 	| Platform 	| When using connectivity provided by hub or virtual hub network and ExpressRoute gateway 	|
+| ExpressRoute (Private Peering) 	| Operator 	| Landing zone owner 	| When deploying ExpressRoute gateway within the landing zone 	|
+| ExpressRoute (Microsoft Peering) 	| Operator 	| Landing zone owner 	|  	|
 
 ## Reference implementation
+
+Figure 5 below depicts a sample observability landing zone for operators deployed by using the ExpressRoute with Microsoft Peering connectivity model and by using an Operator landing zone.
+
+![afoObservabilityLZ](./images/afo-observability-lz.png)
+
+_Figure 5: Observability Landing Zones for Operator with ExpressRoute Microsoft Peering_
