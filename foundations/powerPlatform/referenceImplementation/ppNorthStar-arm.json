@@ -170,7 +170,8 @@
             "allowedValues": [
                 "yes",
                 "half",
-                "no"
+                "no",
+                "custom"
             ],
             "defaultValue": "no",
             "metadata": {
@@ -235,7 +236,8 @@
             "allowedValues": [
                 "yes",
                 "half",
-                "no"
+                "no",
+                "custom"
             ],
             "defaultValue": "no",
             "metadata": {
