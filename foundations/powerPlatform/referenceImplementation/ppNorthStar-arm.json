@@ -464,6 +464,20 @@
             "metadata": {
                 "description": "Select if D365 data connector should be added to Microsoft Sentinel."
             }
+        },
+        "ppCitizenConfiguration": {
+            "type": "string",
+            "defaulValue": "",
+            "metadata": {
+                "description": "Provide strings for custom citizen Environment creation."
+            }
+        },
+        "ppProConfiguration": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide strings for custom pro Environment creation."
+            }
         }
     },
     "variables": {
@@ -623,6 +637,12 @@
                     },
                     "rgName": {
                         "value": "[concat(variables('resourceNamePrefix'), '-setup-', parameters('location'))]"
+                    },
+                    "ppCitizenConfiguration": {
+                        "value": "[if(empty(parameters('ppCitizenConfiguration')), variables('emptyString'), parameters('ppCitizenConfiguration'))]"
+                    },
+                    "ppProConfiguration": {
+                        "value": "[if(empty(parameters('ppProConfiguration')), variables('emptyString'), parameters('ppProConfiguration'))]"
                     }
                 }
             }

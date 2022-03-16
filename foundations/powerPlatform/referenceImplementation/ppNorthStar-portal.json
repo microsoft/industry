@@ -971,7 +971,7 @@
 								},
 								"columns": [
 									{
-										"id": "colName",
+										"id": "ppEnvName",
 										"header": "Environment Name",
 										"width": "1fr",
 										"element": {
@@ -989,11 +989,11 @@
 										}
 									},
 									{
-										"id": "colRegion",
+										"id": "ppRegion",
 										"header": "Region",
 										"width": "1fr",
 										"element": {
-											"name": "ppRegionDropDown",
+											"name": "ppRegion",
 											"type": "Microsoft.Common.DropDown",
 											"placeholder": "Select a region...",
 											"constraints": {
@@ -1048,7 +1048,7 @@
 										}
 									},
 									{
-										"id": "colDataverse",
+										"id": "ppDataverse",
 										"header": "Create Dataverse",
 										"width": "2fr",
 										"element": {
@@ -1069,7 +1069,7 @@
 										}
 									},
 									{
-										"id": "colRbac",
+										"id": "ppRbac",
 										"header": "Assign RBAC",
 										"width": "1fr",
 										"element": {
@@ -1304,7 +1304,7 @@
 								},
 								"columns": [
 									{
-										"id": "colName",
+										"id": "ppEnvName",
 										"header": "Environment Name",
 										"width": "1fr",
 										"element": {
@@ -1322,7 +1322,7 @@
 										}
 									},
 									{
-										"id": "colRegion",
+										"id": "ppRegion",
 										"header": "Region",
 										"width": "1fr",
 										"element": {
@@ -1381,7 +1381,7 @@
 										}
 									},
 									{
-										"id": "colDataverse",
+										"id": "ppDataverse",
 										"header": "Create Dataverse",
 										"width": "2fr",
 										"element": {
@@ -1402,7 +1402,7 @@
 										}
 									},
 									{
-										"id": "colRbac",
+										"id": "ppRbac",
 										"header": "Assign RBAC",
 										"width": "1fr",
 										"element": {
@@ -1783,7 +1783,7 @@
                 "ppEnableDataLake": "[steps('mgmt').ppEnableDataLake]",
                 "ppRetentionInDays": "[string(steps('mgmt').ppRetentionInDays)]",
                 "ppCitizen": "[steps('landingZones').ppCitizen]",
-                "ppCitizenConfiguration": "[replace(replace(replace(replace(string(steps('landingZones').ppCitizenConfiguration), '{', ''), '}', ''), '[', ''), ']', '')]",
+                "ppCitizenConfiguration": "[replace(replace(replace(replace(replace(string(steps('landingZones').ppCitizenConfiguration), '{', ''), '}', ''), '\"', ''), '[', ''), ']', '')]",
                 "ppCitizenCount": "[steps('landingZones').ppCitizenCount]",
                 "ppCitizenNaming": "[steps('landingZones').ppCitizenNaming]",
                 "ppCitizenRegion": "[steps('landingZones').ppCitizenRegion]",
@@ -1791,7 +1791,7 @@
                 "ppCitizenAlm": "[steps('landingZones').ppCitizenAlm]",
                 "ppCitizenBilling": "[steps('landingZones').ppCitizenBilling]",
                 "ppPro": "[steps('landingZones').ppPro]",
-                "ppProConfiguration": "[replace(replace(replace(replace(string(steps('landingZones').ppProConfiguration), '{', ''), '}', ''), '[', ''), ']', '')]",
+                "ppProConfiguration": "[replace(replace(replace(replace(replace(string(steps('landingZones').ppProConfiguration), '{', ''), '}', ''), '\"', ''), '[', ''), ']', '')]",
                 "ppProCount": "[steps('landingZones').ppProCount]",
                 "ppProNaming": "[steps('landingZones').ppProNaming]",
                 "ppProDlp": "[steps('landingZones').ppProDlp]",
