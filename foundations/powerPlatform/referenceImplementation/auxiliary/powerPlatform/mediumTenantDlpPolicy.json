@@ -1,5 +1,5 @@
 {
-    "displayName": "North Star Medium (All Environments)",
+    "displayName": "Tenant (Medium) North Star DLP (All Environments)",
     "defaultConnectorsClassification": "Blocked",
     "connectorGroups": [
       {
