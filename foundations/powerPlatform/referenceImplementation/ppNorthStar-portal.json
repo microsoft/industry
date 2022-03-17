@@ -33,10 +33,10 @@
                             "type": "Microsoft.Common.TextBlock",
                             "visible": true,
                             "options": {
-                                "text": "North Star Architecture for Power Platform setup requires an existing User Assigned Identity that has been granted RBAC to the tenant to complete the deployment.",
+                                "text": "The setup requires an existing User Assigned Identity that has been granted RBAC to the Power Platform to complete the deployment.",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://www.microsoft.com"
+                                    "uri": "https://docs.microsoft.com/power-platform/admin/powerplatform-api-create-service-principal"
                                 }
                             }
                         },
@@ -64,10 +64,10 @@
                             "type": "Microsoft.Common.TextBlock",
                             "visible": true,
                             "options": {
-                                "text": "North Star Architecture for Power Platform setup requires existing Azure subscription to provision the required infrastructure and components, both in Azure and in Power Platform. Select a subscription and a region where the deployment should be placed, and also specify if you want to use this subscription for all Azure services and required configuration.",
+                                "text": "The setup requires an existing Azure subscription to provision the required infrastructure and components, both in Azure and in Power Platform. Select a subscription and a region where the deployment should be placed, and also specify if you want to use this subscription for all Azure services and required configuration.",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://www.microsoft.com"
+                                    "uri": "https://docs.microsoft.com/azure/azure-resource-manager/templates/deploy-to-subscription?tabs=azure-cli"
                                 }
                             }
                         },
@@ -825,7 +825,7 @@
                             "type": "Microsoft.Common.InfoBox",
                             "visible": true,
                             "options": {
-                                "text": "North Star Architecture can prepare and create Landing Zones (Environments for business apps, industry solutions, and professional apps) in Power Platform optimized for citizen developers, professional developers, and industry solutions. When creating these environments, the setup will instantiate dedicated Environments for Development, Test, and Production in order to support maintenance, testing, development, and validation before deploying to production. Lastly, recommended Data-loss prevention policies are provided to further govern the various scenarios.",
+                                "text": "Prepare and create Landing Zones (Environments for business apps, industry solutions, and professional apps) in Power Platform optimized for citizen developers, professional developers, and industry solutions. When creating these environments, the setup will instantiate dedicated Environments for Development, Test, and Production in order to support maintenance, testing, development, and validation before deploying to production. Lastly, recommended Data-loss prevention policies are provided to further govern the various scenarios.",
                                 "link": {
                                     "label": "Learn more",
                                     "uri": "https://www.microsoft.com"
