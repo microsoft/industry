@@ -1,4 +1,4 @@
-# PowerBI
+# Power BI
 
 Work in progress
 
