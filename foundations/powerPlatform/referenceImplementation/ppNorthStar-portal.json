@@ -578,7 +578,7 @@
                             "options": {
                                 "icon": "Info",
                                 "text": "North Star Architecture for Power Platform will deploy and configure the foundation for your Power Platform tenant including all best practices and recommendations from Microsoft. The deployment requires that the user is a Global Admin or Power Platform Admin in the Azure Active Directory.",
-                                "uri": "https://www.microsoft.com"
+                                "uri": "https://aka.ms/NorthStarPowerPlatform"
                             }
                         },
                         {
