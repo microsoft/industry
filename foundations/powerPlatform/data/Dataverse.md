@@ -11,7 +11,7 @@ Each of these columns has a data type. Full list of data types:
 Microsoft Docs Data in a column are limited to the data type of that column. Some columns can be converted into a different data type. This conversion does not change the data. A set of columns together defines a table, similar to what you find in a MS SQL database.
 
 Dataverse has a transactional store. It is optimized for operational applications with frequent CRUD operations (Create Read Update Delete).
-Fixed price pr allocated storage capacity disregarding of use (Tenant Entitlement).
+Fixed price per allocated storage capacity regardless of use (Tenant Entitlement).
 Given the structure of tables, columns and rows, Dataverse requires a normalized data model. Managed service (backup, availability), easy to use with click through designers to create, edit, and interact with data.
 Dataverse is tightly integrated with Biz Apps universe, Power Platform and Dynamics 365. Data is stored and accessible across the applications in that suite of products.
 A Dataverse database currently is limited to 4TB in total size.
@@ -24,9 +24,9 @@ When working with unstructured data like files and images Dataverse has two type
 #### Design considerations
 
 * Data can be integrated into Dataverse as a one-off activity or on a schedule. Alternatively, virtual tables can be used to map data in an external data source so that it appears to exist in Dataverse. Virtual tables do not support many of the security and auditing related features that are offered for non-virtual tables.
-* Custom tables and/or standard, predefined tables can be used as a datasource when creating a Power Platform application.
+* Custom tables and/or standard, predefined tables can be used as a data source when creating a Power Platform application.
 * Ownership type of custom tables can't be changed after creation. Virtual tables are always owned at the organizational level.
-* Row- and column-level security can be used to restrict access to data within tables.
+* Row-level and column-level security can be used to restrict access to data within tables.
 * Dataverse provides the option of automatic and manual backups. Automatic backups are system-initiated and manual backups are user-initiated.
 * Audit Logs can be enabled to track changes to tables and columns over time for security and analytical purposes.
 * Data existing in Dataverse can be continuously integrated into an Azure Data Lake Gen2 for running analytical workloads on the data.
@@ -63,9 +63,9 @@ Microsoft developed connectors for Azure storage solutions:
 -	Synapse (formerly Azure SQL Datawarehouse)
 Full list: List of all connectors published by Microsoft | Microsoft Docs
 Design considerations
-Data from Dynamics are stored in Dataverse. In the case of combining data from multiple sources you will encounter use cases where you have to transfer some of that data to be able to create joins. Dataverse supports Synapse link to create a replica of the selected tables in in Synapse or you can use Azure Data Factory /Data flow / Synapse data integration to extract the data in an ELT/ETL job.  
+Data from Dynamics are stored in Dataverse. In the case of combining data from multiple sources you will encounter use cases where you have to transfer some of that data to be able to create joins. Dataverse supports Synapse link to create a replica of the selected tables in in Synapse or you can use Azure Data Factory/Data flow/Synapse data integration to extract the data in an ELT/ETL job.  
 Structured and unstructured.
-Specialized options PostgreSQL, CosmosDB (Mongo,  Gremlin, Cassandra)
+Specialized options PostgreSQL, Cosmos DB (Mongo,  Gremlin, Cassandra)
 Storage account – flexible size, low cost
 Azure SQL – standard, wide set of integration
 SLA – Availability, response time 
