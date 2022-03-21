@@ -15,6 +15,8 @@ deployment and adoption of industry cloud.
 
 * [Financial Services](#financial-services)
 
+* [Retail](#retail)
+
 ### Healthcare
 
 Microsoft Cloud for Healthcare spans the Microsoft Clouds (Azure, Power Platform and Microsoft 365). This repository provides prescriptive architecture and design guidence together with respective reference implementations for the industry solution as a whole, as well as the various healthcare capabilities.
@@ -138,6 +140,38 @@ Microsoft Cloud for Financial Services provides capabilities to manage data to d
   </td>
   <td>
   <img src="fsi/docs/mc4f-reference-architecture.png" width="99%" height="99%"/>
+  </td>
+
+ </tr>
+</tbody>
+</table>
+
+### Retail
+
+Microsoft Cloud for Retail is an industry-specific cloud composed of products and services to address retail specific use-cases. With services across Microsoft Azure, Dynamics 365 and Power Platform, customers can design, build and deploy cross-cloud solutions.
+
+<table>
+<thead>
+ <tr>
+  <th style="text-align:left" width="30%">Retail Services</th>
+  <th style="text-align:left" width="70%">Reference Architecture</th>
+ </tr>
+</thead>
+<tbody>
+ <tr>
+  <td style="vertical-align:top">
+
+
+- [Retail Foundations (Recommended)](./retail/prereqs.md)
+- [Reference Implementation](./retail/referenceImplementation/README.md)
+
+- Retail Solutions
+  - [Order lifecycle management scenario with Intelligent Order Management](./retail/solutions/iom/README.md)
+  - [Personalized recommendations with Intelligent Recommendations](./retail/solutions/ir/README.md)
+
+  </td>
+  <td>
+  <img src="retail/media/mc4r-reference-architecture.png" width="99%" height="99%"/>
   </td>
 
  </tr>

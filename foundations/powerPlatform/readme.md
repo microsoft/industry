@@ -118,7 +118,7 @@ Organizations can obtain licenses by either licensing Microsoft Power Apps or Mi
 - If Dev/Test/Prod are going to be completely isolated from each other from an identity perspective, separate them at a tenant level (i.e. use multiple Azure AD tenants)
 - Avoid creating multiple Azure AD tenants unless there is a strong IAM justification and processes are already in place.
 - In case organization does not have existing identity infrastructure, then it is recommended to start by implementing Azure AD only identity deployment. Together with Enterprise mobility suite it provides en-to-end protection for SaaS and enterprise applications, as well as devices.
-- Dev/test/prod environments can be isolated and controlled natively in the Power Platform, without needing separation at the identity control plane (AD tenant). For secure usage of connectors related to Microsoft Graph - such as Office 365, Sharepoint etc., ensure a well-defined RBAC model is implemented to meet the security and data classification requirements.
+- Dev/test/prod environments can be isolated and controlled natively in the Power Platform, without needing separation at the identity control plane (AD tenant). For secure usage of connectors related to Microsoft Graph - such as Office 365, SharePoint etc., ensure a well-defined RBAC model is implemented to meet the security and data classification requirements.
 - Use the pay-as-you-go plan for apps that need to be shared with a large user base with infrequent and/or unpredictable use
 - Use an Azure Subscription for Power Apps to reduce license procurement overhead and consolidate with other service purchases
 

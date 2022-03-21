@@ -15,7 +15,7 @@ Overall architecture for Microsoft Cloud for Financial Services.
 | [Financial Services Foundations (Recommended)](./fsi/prereqs.md) | Prerequisites
 | Customer and employee experience
 | [Unified customer profile](./solutions/unifiedCustomerProfile) | Help tailor customer experiences via a comprehensive view of the customer's financial situation
-| [Customer onboarding](./solutions/customerOnboarding/) | Provide customers with easy-access loan apps and self-service tools, streamlining the loan process to help enhance customer experience and loyalty
+| [Customer onboarding](./solutions/customerOnboarding) | Provide customers with easy-access loan apps and self-service tools, streamlining the loan process to help enhance customer experience and loyalty
 | [Collaboration manager](./solutions/collaborationManager) | Enable automation, collaboration, and communications to help accelerate lending processes, minimize errors, and enhance customer experience
 | [Banking customer engagement](./solutions/bankingCustomerEngagement) | Help personalize customer interactions with relevant financial information to accelerate time to resolution
 | Financial crime protection
