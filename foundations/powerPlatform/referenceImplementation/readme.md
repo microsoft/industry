@@ -118,7 +118,7 @@ The deployment experience requires a [User assigned managed identity](https://do
     ![Create Managed Identity](../images/create_umi.png)
 **2.** Navigate to the User assigned managed identity and copy the Client ID from the identity.
     ![Client ID](../images/umi_clientid.png)
-**3.** In a PowerShell core session (local or [Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/overview)), authenticate with Azure and follow instructions below to register the User assigned managed identity as an admin management application.
+**3.** In a PowerShell core session (local or [Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/overview)), authenticate with Azure and follow instructions below to register the User assigned managed identity as a admin management application.
 ```powershell
 # Connect to Azure
 Connect-AzAccount
