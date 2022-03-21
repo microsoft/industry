@@ -44,7 +44,7 @@ This section describes at a high-level how North Star Architecture reference imp
 
 ## North Star Architecture design principles
 
-The design principles outlined in the architecture and design methodology is front and center in the reference implementation, which helps organizations to scale and democratize digital transformation for their citizen - and professional developers. 
+The design principles outlined in the architecture and design methodology is front and center in the reference implementation, which helps organizations to scale and democratize digital transformation for their citizen - and professional developers.
 
 >Note: The design principles are by design industry agnostic, and applies to all industries. For more details about the design principles and how to use it as a compass across the critical design areas, see the following [article](../../powerPlatform/readme.md)
 
@@ -72,7 +72,7 @@ The governance included with North Star Architecture reference implementation wi
 
 - **Admin Environment governance:** The dedicated Environments created for Admin purposes will be governed by its own DLP to ensure required connectors for the *Center of Excellence Starter-Kit* can be successfully imported to provide key utilities and functionality for managing the Power Platform within the organization.
 
-- **Default Environment governance:**  The Default Environment is accessible by default for any user with a license, and is intended for personal productivity. Given the blast radius within an organization, the recommendation provided in the setup is to further restrict available connectors in the Default Environment, governed by a dedidacted DLP policy.
+- **Default Environment governance:**  The Default Environment is accessible by default for any user with a license, and is intended for personal productivity. Given the blast radius within an organization, the recommendation provided in the setup is to further restrict available connectors in the Default Environment, governed by a dedicated DLP policy.
 
 - **Citizen developer landing zones:** When creating landing zones for the citizen developers, you can also assign the recommended DLP policy which will then be scoped to all the Environments you create at this step. This provides recommended starting point to empower citizen developers in the organizations to start on their Power journey in a safe and secure way.
 
@@ -109,7 +109,29 @@ By default, all recommendations which originates from the [North Star architectu
 
 ### Pre-requisites
 
-  **placeholder**
+The deployment experience requires a [User assigned managed identity](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/how-manage-user-assigned-managed-identities?pivots=identity-mi-methods-azp#create-a-user-assigned-managed-identity) registered as a [Power Platform admin management application](https://docs.microsoft.com/en-us/power-platform/admin/powerplatform-api-create-service-principal).
+
+> Note: The actions below must be executed with a user that have at least [Contributor](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#contributor) access to an Azure subscription and [Power Platform Administrator](https://docs.microsoft.com/en-us/power-platform/admin/use-service-admin-role-manage-tenant#power-platform-administrator) or [Global Administrator](https://docs.microsoft.com/en-us/azure/active-directory/roles/permissions-reference#global-administrator) permissions in Azure AD.
+
+**1.** In the Azure Portal, navigate to 'Managed Identities' and create a User Managed Identity in your preferred Subscription/Resource Group/Region.
+    ![Managed Identities](../images/navigate_mi.png)
+    ![Create Managed Identity](../images/create_umi.png)
+**2.** Navigate to the User assigned managed identity and copy the Client ID from the identity.
+    ![Client ID](../images/umi_clientid.png)
+**3.** In a PowerShell core session (local or [Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/overview)), authenticate with Azure and follow instructions below to register the User assigned managed identity as an admin management application.
+```powershell
+# Connect to Azure
+Connect-AzAccount
+
+# Install PowerOps module
+Install-Module -Name PowerOps -Force -AllowPrerelease
+
+# Register Admin management application
+$clientId = '<Replace with client id from UMIlient id>'
+Register-PowerOpsAdminApplication -ClientId $clientId
+```
+  ![Register-AdminApplication](../images/register-adminapplication.png)
+
 
 ### Deployment Setup
 
@@ -136,7 +158,7 @@ On this tab, you can select the overall Tenant settings for Environment creation
 
 ![Tenant Environment Settings](../images/3tenantenvsettings.PNG)
 
-The setup will create 3 dedicate Environments for Admin purposes into the selected Power Platform region, where you can import the Center of Excellence starter-kit in order to manage the Power Platform adoption within the organization, providing core utilities such as advanced usage and analytics, request fullfilment and more. Select if you want to create a billing policy and use the provided Azure subscription for pay-as-you-go for the Admin Environments.
+The setup will create 3 dedicate Environments for Admin purposes into the selected Power Platform region, where you can import the Center of Excellence starter-kit in order to manage the Power Platform adoption within the organization, providing core utilities such as advanced usage and analytics, request fulfillment and more. Select if you want to create a billing policy and use the provided Azure subscription for pay-as-you-go for the Admin Environments.
 
 ![Admin Environment config](../images/4adminenvsettings.PNG)
 
