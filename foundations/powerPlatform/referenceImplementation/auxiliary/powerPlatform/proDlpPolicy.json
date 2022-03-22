@@ -3682,7 +3682,13 @@
         "connectors": []
       }
     ],
-    "environmentType": "AllEnvironments",
-    "environments": []
+    "environmentType": "OnlyEnvironments",
+    "environments": [
+      {
+        "id": "/providers/Microsoft.BusinessAppPlatform/scopes/admin/environments/",
+        "name": "",
+        "type": "Microsoft.BusinessAppPlatform/scopes/environments"
+      }
+    ]
   }
   
