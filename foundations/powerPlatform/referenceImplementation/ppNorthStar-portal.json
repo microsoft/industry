@@ -939,16 +939,12 @@
                                         "label": "Yes, with Dataverse (recommended)",
                                         "value": "yes"
                                     },
-									{
-                                        "label": "Yes, with Dataverse and let me configure each Environment",
-                                        "value": "customdv"
-                                    },
                                     {
                                         "label": "Yes, without Dataverse",
                                         "value": "half"
                                     },
                                     {
-                                        "label": "Yes, without Dataverse and let me configure each Environment",
+                                        "label": "Yes, and let me configure each Environment",
                                         "value": "custom"
                                     },
                                     {
@@ -968,115 +964,6 @@
                                 "transforms": {
                                     "list": "value|[*].{label:displayName, value:id}"
                                 }
-                            }
-                        },
-						{
-                            "name": "ppCitizenConfigurationDv",
-                            "type": "Microsoft.Common.EditableGrid",
-                            "ariaLabel": "Create and Configure Citizen Environment",
-                            "label": "Citizen Environment configuration",
-                            "visible": "[equals(steps('landingZones').ppCitizen, 'customdv')]",
-                            "constraints": {
-                                "width": "Full",
-                                "rows": {
-                                    "count": {
-                                        "min": 1,
-                                        "max": 100
-                                    }
-                                },
-                                "columns": [
-                                    {
-                                        "id": "ppEnvName",
-                                        "header": "Environment Name",
-                                        "width": "1fr",
-                                        "element": {
-                                            "type": "Microsoft.Common.TextBox",
-                                            "placeholder": "",
-                                            "constraints": {
-                                                "required": true,
-                                                "validations": [
-                                                    {
-                                                        "regex": "^[a-z0-9A-Z]{1,30}$",
-                                                        "message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
-                                                    }
-                                                ]
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "ppRegion",
-                                        "header": "Region",
-                                        "width": "1fr",
-                                        "element": {
-                                            "name": "ppRegion",
-                                            "type": "Microsoft.Common.DropDown",
-                                            "placeholder": "Select a region...",
-                                            "constraints": {
-                                                "allowedValues": [
-                                                    {
-                                                        "label": "Europe",
-                                                        "value": "europe"
-                                                    },
-                                                    {
-                                                        "label": "United States",
-                                                        "value": "unitedstates"
-                                                    },
-                                                    {
-                                                        "label": "United Arab Emirates",
-                                                        "value": "unitedarabemirates"
-                                                    },
-                                                    {
-                                                        "label": "Asia",
-                                                        "value": "asia"
-                                                    },
-                                                    {
-                                                        "label": "India",
-                                                        "value": "india"
-                                                    },
-                                                    {
-                                                        "label": "Japan",
-                                                        "value": "japan"
-                                                    },
-                                                    {
-                                                        "label": "France",
-                                                        "value": "france"
-                                                    },
-                                                    {
-                                                        "label": "Germany",
-                                                        "value": "germany"
-                                                    },
-                                                    {
-                                                        "label": "Australia",
-                                                        "value": "australia"
-                                                    },
-                                                    {
-                                                        "label": "Canada",
-                                                        "value": "canada"
-                                                    },
-                                                    {
-                                                        "label": "South America",
-                                                        "value": "southamerica"
-                                                    }
-                                                ],
-                                                "required": true
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "ppRbac",
-                                        "header": "Assign RBAC",
-                                        "width": "2fr",
-										"filter": true,
-										"multiLine": true,
-                                        "element": {
-                                            "type": "Microsoft.Common.DropDown",
-                                            "constraints": {
-                                                "required": true,
-                                                "allowedValues": "[coalesce(steps('landingZones').callGraph.transformed.list, parse('[]'))]"
-                                            }
-                                        }
-                                    }
-                                ]
                             }
                         },
                         {
@@ -1172,11 +1059,32 @@
                                         }
                                     },
                                     {
+                                        "id": "ppDataverse",
+                                        "header": "Create Dataverse",
+                                        "width": "2fr",
+                                        "element": {
+                                            "type": "Microsoft.Common.DropDown",
+                                            "constraints": {
+                                                "allowedValues": [
+                                                    {
+                                                        "label": "Yes (recommended)",
+                                                        "value": "yes"
+                                                    },
+                                                    {
+                                                        "label": "No",
+                                                        "value": "no"
+                                                    }
+                                                ],
+                                                "required": true
+                                            }
+                                        }
+                                    },
+                                    {
                                         "id": "ppRbac",
                                         "header": "Assign RBAC",
                                         "width": "2fr",
-										"filter": true,
-										"multiLine": true,
+                                        "filter": true,
+                                        "multiLine": true,
                                         "element": {
                                             "type": "Microsoft.Common.DropDown",
                                             "constraints": {
@@ -1368,16 +1276,12 @@
                                         "label": "Yes, with Dataverse (recommended)",
                                         "value": "yes"
                                     },
-									{
-                                        "label": "Yes, with Dataverse and let me configure each Environment",
-                                        "value": "customdv"
-                                    },
                                     {
                                         "label": "Yes, without Dataverse",
                                         "value": "half"
                                     },
                                     {
-                                        "label": "Yes, without Dataverse and let me configure each Environment",
+                                        "label": "Yes, and let me configure each Environment",
                                         "value": "custom"
                                     },
                                     {
@@ -1387,115 +1291,6 @@
                                 ]
                             },
                             "visible": true
-                        },
-						{
-                            "name": "ppProConfigurationDv",
-                            "type": "Microsoft.Common.EditableGrid",
-                            "ariaLabel": "Create and Configure Professional Environment",
-                            "label": "Professional Environment configuration",
-                            "visible": "[equals(steps('landingZones').ppPro, 'customdv')]",
-                            "constraints": {
-                                "width": "Full",
-                                "rows": {
-                                    "count": {
-                                        "min": 1,
-                                        "max": 100
-                                    }
-                                },
-                                "columns": [
-                                    {
-                                        "id": "ppEnvName",
-                                        "header": "Environment Name",
-                                        "width": "1fr",
-                                        "element": {
-                                            "type": "Microsoft.Common.TextBox",
-                                            "placeholder": "",
-                                            "constraints": {
-                                                "required": true,
-                                                "validations": [
-                                                    {
-                                                        "regex": "^[a-z0-9A-Z]{1,30}$",
-                                                        "message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
-                                                    }
-                                                ]
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "ppRegion",
-                                        "header": "Region",
-                                        "width": "1fr",
-                                        "element": {
-                                            "name": "ppRegion",
-                                            "type": "Microsoft.Common.DropDown",
-                                            "placeholder": "Select a region...",
-                                            "constraints": {
-                                                "allowedValues": [
-                                                    {
-                                                        "label": "Europe",
-                                                        "value": "europe"
-                                                    },
-                                                    {
-                                                        "label": "United States",
-                                                        "value": "unitedstates"
-                                                    },
-                                                    {
-                                                        "label": "United Arab Emirates",
-                                                        "value": "unitedarabemirates"
-                                                    },
-                                                    {
-                                                        "label": "Asia",
-                                                        "value": "asia"
-                                                    },
-                                                    {
-                                                        "label": "India",
-                                                        "value": "india"
-                                                    },
-                                                    {
-                                                        "label": "Japan",
-                                                        "value": "japan"
-                                                    },
-                                                    {
-                                                        "label": "France",
-                                                        "value": "france"
-                                                    },
-                                                    {
-                                                        "label": "Germany",
-                                                        "value": "germany"
-                                                    },
-                                                    {
-                                                        "label": "Australia",
-                                                        "value": "australia"
-                                                    },
-                                                    {
-                                                        "label": "Canada",
-                                                        "value": "canada"
-                                                    },
-                                                    {
-                                                        "label": "South America",
-                                                        "value": "southamerica"
-                                                    }
-                                                ],
-                                                "required": true
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "ppRbac",
-                                        "header": "Assign RBAC",
-                                        "width": "2fr",
-										"filter": true,
-										"multiLine": true,
-                                        "element": {
-                                            "type": "Microsoft.Common.DropDown",
-                                            "constraints": {
-                                                "required": true,
-                                                "allowedValues": "[coalesce(steps('landingZones').callGraph.transformed.list, parse('[]'))]"
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
                         },
                         {
                             "name": "ppProConfiguration",
@@ -1590,11 +1385,32 @@
                                         }
                                     },
                                     {
+                                        "id": "ppDataverse",
+                                        "header": "Create Dataverse",
+                                        "width": "2fr",
+                                        "element": {
+                                            "type": "Microsoft.Common.DropDown",
+                                            "constraints": {
+                                                "allowedValues": [
+                                                    {
+                                                        "label": "Yes (recommended)",
+                                                        "value": "yes"
+                                                    },
+                                                    {
+                                                        "label": "No",
+                                                        "value": "no"
+                                                    }
+                                                ],
+                                                "required": true
+                                            }
+                                        }
+                                    },
+                                    {
                                         "id": "ppRbac",
                                         "header": "Assign RBAC",
                                         "width": "2fr",
-										"filter": true,
-										"multiLine": true,
+                                        "filter": true,
+                                        "multiLine": true,
                                         "element": {
                                             "type": "Microsoft.Common.DropDown",
                                             "constraints": {
@@ -1964,7 +1780,7 @@
                 "ppEnableDataLake": "[steps('mgmt').ppEnableDataLake]",
                 "ppRetentionInDays": "[string(steps('mgmt').ppRetentionInDays)]",
                 "ppCitizen": "[steps('landingZones').ppCitizen]",
-                "ppCitizenConfiguration": "[coalesce(replace(replace(replace(replace(replace(string(steps('landingZones').ppCitizenConfiguration), '{', ''), '}', ''), '\"', ''), '[', ''), ']', ''), replace(replace(replace(replace(replace(string(steps('landingZones').ppCitizenConfigurationDv), '{', ''), '}', ''), '\"', ''), '[', ''), ']', ''), '')]",
+                "ppCitizenConfiguration": "[replace(replace(replace(replace(replace(string(steps('landingZones').ppCitizenConfiguration), '{', ''), '}', ''), '\"', ''), '[', ''), ']', '')]",
                 "ppCitizenCount": "[steps('landingZones').ppCitizenCount]",
                 "ppCitizenNaming": "[steps('landingZones').ppCitizenNaming]",
                 "ppCitizenRegion": "[steps('landingZones').ppCitizenRegion]",
@@ -1972,7 +1788,7 @@
                 "ppCitizenAlm": "[steps('landingZones').ppCitizenAlm]",
                 "ppCitizenBilling": "[steps('landingZones').ppCitizenBilling]",
                 "ppPro": "[steps('landingZones').ppPro]",
-                "ppProConfiguration": "[coalesce(replace(replace(replace(replace(replace(string(steps('landingZones').ppProConfiguration), '{', ''), '}', ''), '\"', ''), '[', ''), ']', ''), replace(replace(replace(replace(replace(string(steps('landingZones').ppProConfigurationDv), '{', ''), '}', ''), '\"', ''), '[', ''), ']', ''), '')]",
+                "ppProConfiguration": "[replace(replace(replace(replace(replace(string(steps('landingZones').ppProConfiguration), '{', ''), '}', ''), '\"', ''), '[', ''), ']', '')]",
                 "ppProCount": "[steps('landingZones').ppProCount]",
                 "ppProNaming": "[steps('landingZones').ppProNaming]",
                 "ppProDlp": "[steps('landingZones').ppProDlp]",
