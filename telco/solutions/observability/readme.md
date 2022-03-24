@@ -92,7 +92,7 @@ _Figure 3: Connectivity to Azure via ExpressRoute with private peering_
 #### Design considerations
 
 - ExpressRoute lets you extend your on-premises networks into the Microsoft cloud over a private connection.
-- ExpressRoute connections don't go over the public Internet. This allows ExpressRoute connections to offer more reliability, faster speeds, consistent latencies, and higher security than typical connections over the Internet.
+- ExpressRoute connections don't go over the public internet. This allows ExpressRoute connections to offer more reliability, faster speeds, consistent latencies, and higher security than typical connections over the internet.
 - Azure compute services, namely virtual machines (IaaS) and cloud services (PaaS), that are deployed within a virtual network can be connected through the private peering domain. The private peering domain is considered to be a trusted extension of your core network into Microsoft Azure. You can set up bi-directional connectivity between your core network and Azure virtual networks (VNets). This peering lets you connect to virtual machines and cloud services directly on their private IP addresses.
   - To access Azure PaaS services from on-premises via ExpressRoute private peering, they must be either deployed in the VNet or they must be accessible using a private endpoint.
   - Note that private endpoints is a metered Azure service. Make sure you familiarize with its [pricing](https://azure.microsoft.com/pricing/details/private-link/), so that you can estimate expected costs depending on the amount of data to ingest.
@@ -127,11 +127,11 @@ _Figure 4: Connectivity to Azure via ExpressRoute with Microsoft peering_
 #### Design considerations
 
 - ExpressRoute lets you extend your on-premises networks into the Microsoft cloud over a private connection.
-- ExpressRoute connections don't go over the public Internet. This allows ExpressRoute connections to offer more reliability, faster speeds, consistent latencies, and higher security than typical connections over the Internet.
+- ExpressRoute connections don't go over the public internet. This allows ExpressRoute connections to offer more reliability, faster speeds, consistent latencies, and higher security than typical connections over the internet.
 - Connectivity to Microsoft online services (Microsoft 365 and Azure PaaS services) occurs through Microsoft peering. We enable bi-directional connectivity between your WAN and Microsoft cloud services through the Microsoft peering routing domain.
 - With ExpressRoute Microsoft peering you don't need an ExpressRoute gateway as you can access Azure PaaS services directly over their public endpoint.
   - This setup may reduce your data transfer costs, as you don't need a private endpoint for the purpose of uploading data from on-premises into an Azure storage service (such as ADLS Gen2).
-- With ExpressRoute Microsoft peering, you must use public IP addresses that you own for setting up the BGP sessions. Microsoft must be able to verify the ownership of the IP addresses through Routing Internet Registries and Internet Routing Registries.
+- With ExpressRoute Microsoft peering, you must use public IP addresses that you own for setting up the BGP sessions. Microsoft must be able to verify the ownership of the IP addresses through routing internet registries and internet routing registries.
 - When Microsoft peering gets configured in an ExpressRoute circuit, all prefixes related to these services gets advertised through the BGP sessions that are established. A BGP community value is attached to every prefix to identify the service that is offered through the prefix.
 - If you plan to consume only a subset of services offered through Microsoft peering, you can reduce the size of your route tables in two ways. You can:
   - Filter out unwanted prefixes by applying route filters on BGP communities.
