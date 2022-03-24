@@ -20,12 +20,12 @@ It is essential to define the network connectivity model to an operator landing 
 
 There are multiple ways to connect an on-premises environmetn to Azure with the purpose of ingesting large amounts of data into an Azure data service (such as Azure Datalake Storage Gen2). The following table summarizes the options available:
 
-| Option 	| Pros 	| Cons 	|
-|---	|---	|---	|
-| Internet 	| Simple to implement. No additional Azure networking costs involved. No Azure networking infrastructure required. 	| Traffic traverses the public internet. Latency and bandwidth not guaranteed. Traffic is not encrypted by default.	|
-| VPN 	| Traffic is encrypted via IPSec tunnels. Traffic to an Azure storage service can be kept private within an Azure VNet. 	| Traffic traverses the public internet. It requires and Azure VPN gateway. The maximum bandwidth per IPSec tunnel is about 1Gbps and there are limits on the maximum number of tunnels. Azure storage service must be accesible via a private endpoint unless additional infrastructure is deployed in the Azure VNet. 	|
-| ExpressRoute (Private Peering) 	| Traffic is not exposed to the public internet as it traverses a private connection. Predictable bandwidth and latency. 99.95% SLA availability. Scalable bandwidth up to 100 Gbps. FastPath can be enabled to remove the ExpressRoute Gateway from the data path. 	| More complex to implement compared to an internet-based or VPN connection. It requires and ExpressRoute gateway. Azure storage service must be accesible via a private endpoint unless additional infrastructure is deployed in the Azure VNet. 	|
-| ExpressRoute (Microsoft Peering) 	| Traffic is not exposed to the public internet, as it traverses a private connection. Predictable bandwidth and latency. 99.95% SLA availability. Scalable bandwidth up to 100 Gbps. It does not require an ExpressRoute gateway. The Azure storage service can be reached over its public endpoint via a private connection. 	| More complex to implement compared to an internet-based or VPN connection. It requires usage of public IPs (although traffic traverses a private connection). 	|
+| Option  | Pros  | Cons  |
+|--- |--- |--- |
+| Internet  | Simple to implement. No additional Azure networking costs involved. No Azure networking infrastructure required.  | Traffic traverses the public internet. Latency and bandwidth not guaranteed. Traffic is not encrypted by default. |
+| VPN  | Traffic is encrypted via IPSec tunnels. Traffic to an Azure storage service can be kept private within an Azure VNet. 	| Traffic traverses the public internet. It requires and Azure VPN gateway. The maximum bandwidth per IPSec tunnel is about 1Gbps and there are limits on the maximum number of tunnels. Azure storage service must be accesible via a private endpoint unless additional infrastructure is deployed in the Azure VNet. 	|
+| ExpressRoute (Private Peering)  | Traffic is not exposed to the public internet as it traverses a private connection. Predictable bandwidth and latency. 99.95% SLA availability. Scalable bandwidth up to 100 Gbps. FastPath can be enabled to remove the ExpressRoute Gateway from the data path. 	| More complex to implement compared to an internet-based or VPN connection. It requires and ExpressRoute gateway. Azure storage service must be accesible via a private endpoint unless additional infrastructure is deployed in the Azure VNet. 	|
+| ExpressRoute (Microsoft Peering)  | Traffic is not exposed to the public internet, as it traverses a private connection. Predictable bandwidth and latency. 99.95% SLA availability. Scalable bandwidth up to 100 Gbps. It does not require an ExpressRoute gateway. The Azure storage service can be reached over its public endpoint via a private connection.  | More complex to implement compared to an internet-based or VPN connection. It requires usage of public IPs (although traffic traverses a private connection). 	|
 
 ### Internet
 
@@ -44,7 +44,7 @@ _Figure 1: Connectivity to Azure storage over the internet._
 
 #### Design recommendations
 
-- Use an internet-based connection for data ingestion into an Azure storage service for scenarios such as: 
+- Use an internet-based connection for data ingestion into an Azure storage service for scenarios such as:
   - Small environments with small amounts of data.
   - Devolpment and testing environments.
   - There are no requirements or regulations in your organization, industry or region to transmit corporate data over a public internet connection.
@@ -74,7 +74,7 @@ _Figure 2: Connectivity to Azure storage over VPN._
 
 #### Design recommendations
 
-- Use a site-to-site VPN connection over the internet for data ingestion into an Azure storage service for scenarios such as: 
+- Use a site-to-site VPN connection over the internet for data ingestion into an Azure storage service for scenarios such as:
   - Envrionments where the maximum aggregated throughput required is less than 10 Gbps.
   - There are no requirements or regulations in your organization, industry or region to transmit corporate data over a public internet connection as long as the connection is always encrypted.
   - In your organizations, it is not allowed to access an Azure storage service over its public endpoint. Access to Azure PaaS services must be done privately either by deploying them in the VNet or by accesing them via private endpoints.
@@ -105,7 +105,7 @@ _Figure 3: Connectivity to Azure via ExpressRoute with private peering_
 
 #### Design recommendations
 
-- Use a private connection based on ExpressRoute with private peering for data ingestion into an Azure storage service for scenarios such as: 
+- Use a private connection based on ExpressRoute with private peering for data ingestion into an Azure storage service for scenarios such as:
   - Large environments with large amounts of data.
   - Production environments.
   - There are requirements or regulations in your organization, industry or region that require you to transmit corporate data over private connections exclusively, avoiding internet-based connections.
@@ -140,11 +140,11 @@ _Figure 4: Connectivity to Azure via ExpressRoute with Microsoft peering_
 
 #### Design recommendations
 
-- Use a private connection based on ExpressRoute with Microsoft peering for data ingestion into an Azure storage service for scenarios such as: 
+- Use a private connection based on ExpressRoute with Microsoft peering for data ingestion into an Azure storage service for scenarios such as:
   - Large environments with large amounts of data.
   - Production environments.
   - There are requirements or regulations in your organization, industry or region that require you to transmit corporate data over private connections exclusively, avoiding internet-based connections.
-  - Access to Azure storage services over their public endpoint is allowed. 
+  - Access to Azure storage services over their public endpoint is allowed.
 - Ensure Azure storage service is configured to only accept traffic from the public IP addresses that you use for your ExpressRoute Microsoft peering connection.
 - Use Azure route filters and configure them to the Azure service and region that you require. This will ensure that Microsoft will only advertise the IP prefixes required (instead of advertising prefixes for all services).
 - Use ExpressRoute direct if you require more than 10Gbps bandwidth.
