@@ -169,9 +169,7 @@ _Table 1: Observability Landing Zones depending on the network connectivity mode
 |---	|---	|---	|
 | Observability Landing Zone for Operators 	| Observability and analytics landing zone for operators workloads 	| ![Deploy to Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg) 	|
 
-This reference implementation allows you to deploy Observability Landing Zones for Operators. These are the two last options listed in Table 1.
-
-Figure 5 below depicts a sample observability landing zone for operators deployed by using the ExpressRoute with Microsoft Peering connectivity model and by using an Operator landing zone.
+This reference implementation allows landing zone owners to deploy observability landing zones for operators. Figure 5 below depicts a sample observability landing zone for operators deployed by using the ExpressRoute with Microsoft Peering connectivity model.
 
 ![afoObservabilityLZ](./images/afo-observability-lz.png)
 
