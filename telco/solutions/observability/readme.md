@@ -75,9 +75,7 @@ _Figure 2: Connectivity to Azure storage over VPN._
 #### Design recommendations
 
 - Use a site-to-site VPN connection over the internet for data ingestion into an Azure storage service for scenarios such as: 
-  - Small environments with small amounts of data.
-  - Devolpment and testing environments.
-  - Maximum aggregated throughput required is less than 10 Gbps.
+  - Envrionments where the maximum aggregated throughput required is less than 10 Gbps.
   - There are no requirements or regulations in your organization, industry or region to transmit corporate data over a public internet connection as long as the connection is always encrypted.
   - In your organizations, it is not allowed to access an Azure storage service over its public endpoint. Access to Azure PaaS services must be done privately either by deploying them in the VNet or by accesing them via private endpoints.
 - Plan carefully the Azure VPN Gateway [SKU](https://docs.microsoft.com/azure/vpn-gateway/vpn-gateway-about-vpngateways#gwsku) to deploy as each SKU have support for different features (like availability zones support), scalability and throughput numbers.
@@ -93,9 +91,22 @@ _Figure 3: Connectivity to Azure via ExpressRoute with private peering_
 
 #### Design considerations
 
+- ExpressRoute lets you extend your on-premises networks into the Microsoft cloud over a private connection.
+- ExpressRoute connections don't go over the public Internet. This allows ExpressRoute connections to offer more reliability, faster speeds, consistent latencies, and higher security than typical connections over the Internet.
+- Azure compute services, namely virtual machines (IaaS) and cloud services (PaaS), that are deployed within a virtual network can be connected through the private peering domain. The private peering domain is considered to be a trusted extension of your core network into Microsoft Azure. You can set up bi-directional connectivity between your core network and Azure virtual networks (VNets). This peering lets you connect to virtual machines and cloud services directly on their private IP addresses.
+- To connect your Azure virtual network and your on-premises network via ExpressRoute, you must create a virtual network gateway first. A virtual network gateway serves two purposes: exchange IP routes between the networks and route network traffic.
+- Before you create an ExpressRoute gateway, you must create a gateway subnet, which must be named _GatewaySubnet_.
+- The ExpressRoute gateway  can be deployed as regional, [zonal or zone-redundant](https://docs.microsoft.com/azure/expressroute/expressroute-about-virtual-network-gateways#gwsub).
+- FastPath, when enabled, sends network traffic directly to virtual machines in the virtual network, bypassing the gateway.
+  - Please note that FastPath have some [limitations](https://docs.microsoft.com/azure/expressroute/about-fastpath#limitations)
+
 #### Design recommendations
 
-- Use ExpressRoute as the main option to connect the on-premises operator network to Azure.
+- Use a private connection based on ExpressRoute with Microsoft peering for data ingestion into an Azure storage service for scenarios such as: 
+  - Large environments with large amounts of data.
+  - Production environments.
+  - There are requirements or regulations in your organization, industry or region that require you to transmit corporate data over private connections exclusively, avoiding internet-based connections.
+  - It is not allowed in your organization to access an Azure storage service over its public endpoint. Access to Azure storage services must be done over private endpoints.
 - Use ExpressRoute direct if you require more than 10Gbps bandwidth.
 - When using ExpressRoute private peering:
   - Ensure the Azure storage service (such as ADLS Gen2) is accesible via a private endpoint.
