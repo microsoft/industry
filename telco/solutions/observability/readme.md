@@ -20,12 +20,12 @@ It is essential to define the network connectivity model to an operator landing 
 
 There are multiple ways to connect an on-premises environment to Azure with the purpose of ingesting large amounts of data into an Azure data service (such as Azure Data Lake Storage Gen2). The following table summarizes the options available:
 
-| Option 	| Pros 	| Cons 	|
-|---	|---	|---	|
-| Internet 	| Simple to implement. No additional Azure networking costs involved. No Azure networking infrastructure required. 	| Traffic traverses the public internet. Latency and bandwidth not guaranteed. Traffic is not encrypted by default.	|
-| VPN 	| Traffic is encrypted via IPSec tunnels. Traffic to an Azure storage service can be kept private within an Azure VNet. 	| Traffic traverses the public internet. It requires and Azure VPN gateway. The maximum bandwidth per IPSec tunnel is about 1Gbps and there are limits on the maximum number of tunnels. Azure storage service must be accessible via a private endpoint unless additional infrastructure is deployed in the Azure VNet. 	|
-| ExpressRoute (Private Peering) 	| Traffic is not exposed to the public internet as it traverses a private connection. Predictable bandwidth and latency. 99.95% SLA availability. Scalable bandwidth up to 100 Gbps. FastPath can be enabled to remove the ExpressRoute Gateway from the data path. 	| More complex to implement compared to an internet-based or VPN connection. It requires and ExpressRoute gateway. Azure storage service must be accessible via a private endpoint unless additional infrastructure is deployed in the Azure VNet. 	|
-| ExpressRoute (Microsoft Peering) 	| Traffic is not exposed to the public internet, as it traverses a private connection. Predictable bandwidth and latency. 99.95% SLA availability. Scalable bandwidth up to 100 Gbps. It does not require an ExpressRoute gateway. The Azure storage service can be reached over its public endpoint via a private connection. 	| More complex to implement compared to an internet-based or VPN connection. It requires usage of public IPs (although traffic traverses a private connection). 	|
+| Option  | Pros  | Cons  |
+|--- |--- |--- |
+| Internet  | Simple to implement. No additional Azure networking costs involved. No Azure networking infrastructure required.  | Traffic traverses the public internet. Latency and bandwidth not guaranteed. Traffic is not encrypted by default. |
+| VPN  | Traffic is encrypted via IPSec tunnels. Traffic to an Azure storage service can be kept private within an Azure VNet.  | Traffic traverses the public internet. It requires and Azure VPN gateway. The maximum bandwidth per IPSec tunnel is about 1Gbps and there are limits on the maximum number of tunnels. Azure storage service must be accessible via a private endpoint unless additional infrastructure is deployed in the Azure VNet.  |
+| ExpressRoute (Private Peering)  | Traffic is not exposed to the public internet as it traverses a private connection. Predictable bandwidth and latency. 99.95% SLA availability. Scalable bandwidth up to 100 Gbps. FastPath can be enabled to remove the ExpressRoute Gateway from the data path.  | More complex to implement compared to an internet-based or VPN connection. It requires and ExpressRoute gateway. Azure storage service must be accessible via a private endpoint unless additional infrastructure is deployed in the Azure VNet.  |
+| ExpressRoute (Microsoft Peering)  | Traffic is not exposed to the public internet, as it traverses a private connection. Predictable bandwidth and latency. 99.95% SLA availability. Scalable bandwidth up to 100 Gbps. It does not require an ExpressRoute gateway. The Azure storage service can be reached over its public endpoint via a private connection.  | More complex to implement compared to an internet-based or VPN connection. It requires usage of public IPs (although traffic traverses a private connection).  |
 
 ### Internet
 
@@ -153,21 +153,21 @@ _Figure 4: Connectivity to Azure via ExpressRoute with Microsoft peering_
 
 Depending the networking option you select for your observability landing zone for operators, you can create an online, corp or operator landing zone as per the guidance in the table below:
 
-| Connectivity Model 	| Landing Zone Type 	| Connectivity Provided by 	| Details 	|
-|---	|---	|---	|---	|
-| Internet 	| Online 	| Landing Zone owner 	|  	|
-| VPN 	| Corporate 	| Platform 	|  	|
-| ExpressRoute (Private Peering) 	| Corporate 	| Platform 	| When using connectivity provided by hub or virtual hub network 	|
-| ExpressRoute (Private Peering) 	| Operator 	| Landing Zone owner 	| When deploying ExpressRoute gateway within the landing zone 	|
-| ExpressRoute (Microsoft Peering) 	| Operator 	| Landing Zone owner 	|  	|
+| Connectivity Model  | Landing Zone Type  | Connectivity Provided by  | Details  |
+|--- |--- |--- |--- |
+| Internet  | Online  | Landing Zone owner  |   |
+| VPN  | Corporate  | Platform  |   |
+| ExpressRoute (Private Peering)  | Corporate  | Platform  | When using connectivity provided by hub or virtual hub network  |
+| ExpressRoute (Private Peering)  | Operator  | Landing Zone owner  | When deploying ExpressRoute gateway within the landing zone  |
+| ExpressRoute (Microsoft Peering)  | Operator  | Landing Zone owner  |   |
 
 _Table 1: Observability Landing Zones depending on the network connectivity model_
 
 ## Reference implementation
 
-| Reference implementation 	| Description 	| Deploy 	|
-|---	|---	|---	|
-| Observability Landing Zone for Operators 	| Observability and analytics landing zone for operators workloads 	| ![Deploy to Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg) 	|
+| Reference implementation  | Description  | Deploy  |
+|--- |--- |--- |
+| Observability Landing Zone for Operators  | Observability and analytics landing zone for operators workloads  | ![Deploy to Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)  |
 
 This reference implementation allows landing zone owners to deploy observability landing zones for operators. Figure 5 below depicts a sample observability landing zone for operators deployed by using the ExpressRoute with Microsoft Peering connectivity model.
 
@@ -177,18 +177,18 @@ _Figure 5: Observability Landing Zones for Operator with ExpressRoute Microsoft 
 
 The following table describes the resources that are deployed by this reference implementation, and which resources would typically be deployed by the landing zone owner once the landing zone has been provisioned:
 
-| Azure Resource 	| Deployed by 	| Details 	|
-|---	|---	|---	|
-| Subscription 	| Reference implementation 	|  	|
-| ExpressRoute circuit 	| Reference implementation 	| Optional, as operator can provide an existing ExpressRoute circuit 	|
-| Route filter 	| Reference implementation 	| In case of implementing ExpressRoute Microsoft Peering 	|
-| ExpressRoute gateway 	| Reference implementation 	| In case of implementing ExpressRoute Private Peering 	|
-| ExpressRoute connection 	| Reference implementation 	| In case of implementing ExpressRoute Private Peering 	|
-| Virtual network 	| Reference implementation 	|  	|
-| NSGs 	| Reference implementation 	|  	|
-| Azure Bastion 	| Reference implementation 	|  	|
-| Azure storage services 	| Landing Zone owner 	| Any Azure storage services required by the landing zone owner (for example Azure Data Lake Storage Gen2) 	|
-| Private Endpoints 	| Landing Zone owner 	|  	|
-| Analytics services 	| Landing Zone owner 	| Any analytics service as required by the landing zone owner (for example, Azure Synapse) 	|
+| Azure Resource  | Deployed by  | Details  |
+|--- |--- |--- |
+| Subscription  | Reference implementation  |   |
+| ExpressRoute circuit  | Reference implementation  | Optional, as operator can provide an existing ExpressRoute circuit  |
+| Route filter  | Reference implementation  | In case of implementing ExpressRoute Microsoft Peering  |
+| ExpressRoute gateway  | Reference implementation  | In case of implementing ExpressRoute Private Peering  |
+| ExpressRoute connection  | Reference implementation  | In case of implementing ExpressRoute Private Peering  |
+| Virtual network  | Reference implementation  |   |
+| NSGs  | Reference implementation  |   |
+| Azure Bastion  | Reference implementation  |   |
+| Azure storage services  | Landing Zone owner  | Any Azure storage services required by the landing zone owner (for example Azure Data Lake Storage Gen2)  |
+| Private Endpoints  | Landing Zone owner  |   |
+| Analytics services  | Landing Zone owner  | Any analytics service as required by the landing zone owner (for example, Azure Synapse)  |
 
 _Table 2: Resources deployed by the Obervability Landing Zones reference implementation_
