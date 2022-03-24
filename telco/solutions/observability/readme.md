@@ -94,15 +94,18 @@ _Figure 3: Connectivity to Azure via ExpressRoute with private peering_
 - ExpressRoute lets you extend your on-premises networks into the Microsoft cloud over a private connection.
 - ExpressRoute connections don't go over the public Internet. This allows ExpressRoute connections to offer more reliability, faster speeds, consistent latencies, and higher security than typical connections over the Internet.
 - Azure compute services, namely virtual machines (IaaS) and cloud services (PaaS), that are deployed within a virtual network can be connected through the private peering domain. The private peering domain is considered to be a trusted extension of your core network into Microsoft Azure. You can set up bi-directional connectivity between your core network and Azure virtual networks (VNets). This peering lets you connect to virtual machines and cloud services directly on their private IP addresses.
+  - To access Azure PaaS services from on-premises via ExpressRoute private peering, they must be either deployed in the VNet or they must be accessible using a private endpoint.
+  - Note that private endpoints is a metered Azure service. Make sure you familiarize with its [pricing](https://azure.microsoft.com/pricing/details/private-link/), so that you can estimate expected costs depending on the amount of data to ingest.
 - To connect your Azure virtual network and your on-premises network via ExpressRoute, you must create a virtual network gateway first. A virtual network gateway serves two purposes: exchange IP routes between the networks and route network traffic.
 - Before you create an ExpressRoute gateway, you must create a gateway subnet, which must be named _GatewaySubnet_.
 - The ExpressRoute gateway  can be deployed as regional, [zonal or zone-redundant](https://docs.microsoft.com/azure/expressroute/expressroute-about-virtual-network-gateways#gwsub).
 - FastPath, when enabled, sends network traffic directly to virtual machines in the virtual network, bypassing the gateway.
   - Please note that FastPath have some [limitations](https://docs.microsoft.com/azure/expressroute/about-fastpath#limitations)
+- ExpressRoute Direct gives you the ability to connect directly into Microsoft’s global network at peering locations strategically distributed around the world. ExpressRoute Direct provides dual 100 Gbps or 10-Gbps connectivity, which supports Active/Active connectivity at scale.
 
 #### Design recommendations
 
-- Use a private connection based on ExpressRoute with Microsoft peering for data ingestion into an Azure storage service for scenarios such as: 
+- Use a private connection based on ExpressRoute with private peering for data ingestion into an Azure storage service for scenarios such as: 
   - Large environments with large amounts of data.
   - Production environments.
   - There are requirements or regulations in your organization, industry or region that require you to transmit corporate data over private connections exclusively, avoiding internet-based connections.
@@ -123,9 +126,27 @@ _Figure 4: Connectivity to Azure via ExpressRoute with Microsoft peering_
 
 #### Design considerations
 
+- ExpressRoute lets you extend your on-premises networks into the Microsoft cloud over a private connection.
+- ExpressRoute connections don't go over the public Internet. This allows ExpressRoute connections to offer more reliability, faster speeds, consistent latencies, and higher security than typical connections over the Internet.
+- Connectivity to Microsoft online services (Microsoft 365 and Azure PaaS services) occurs through Microsoft peering. We enable bi-directional connectivity between your WAN and Microsoft cloud services through the Microsoft peering routing domain.
+- With ExpressRoute Microsoft peering you don't need an ExpressRoute gateway as you can access Azure PaaS services directly over their public endpoint.
+  - This setup may reduce your data transfer costs, as you don't need a private endpoint for the purpose of uploading data from on-premises into an Azure storage service (such as ADLS Gen2).
+- With ExpressRoute Microsoft peering, you must use public IP addresses that you own for setting up the BGP sessions. Microsoft must be able to verify the ownership of the IP addresses through Routing Internet Registries and Internet Routing Registries.
+- When Microsoft peering gets configured in an ExpressRoute circuit, all prefixes related to these services gets advertised through the BGP sessions that are established. A BGP community value is attached to every prefix to identify the service that is offered through the prefix.
+- If you plan to consume only a subset of services offered through Microsoft peering, you can reduce the size of your route tables in two ways. You can:
+  - Filter out unwanted prefixes by applying route filters on BGP communities.
+  - Define route filters and apply them to your ExpressRoute circuit. A [route filter](https://docs.microsoft.com/azure/expressroute/how-to-routefilter-portal) is a new resource that lets you select the list of services you plan to consume through Microsoft peering. ExpressRoute routers only send the list of prefixes that belong to the services identified in the route filter.
+- ExpressRoute Direct gives you the ability to connect directly into Microsoft’s global network at peering locations strategically distributed around the world. ExpressRoute Direct provides dual 100 Gbps or 10-Gbps connectivity, which supports Active/Active connectivity at scale.
+
 #### Design recommendations
 
-- Use ExpressRoute as the main option to connect the on-premises operator network to Azure.
+- Use a private connection based on ExpressRoute with Microsoft peering for data ingestion into an Azure storage service for scenarios such as: 
+  - Large environments with large amounts of data.
+  - Production environments.
+  - There are requirements or regulations in your organization, industry or region that require you to transmit corporate data over private connections exclusively, avoiding internet-based connections.
+  - Access to Azure storage services over their public endpoint is allowed. 
+- Ensure Azure storage service is configured to only accept traffic from the public IP addresses that you use for your ExpressRoute Microsoft peering connection.
+- Use Azure route filters and configure them to the Azure service and region that you require. This will ensure that Microsoft will only advertise the IP prefixes required (instead of advertising prefixes for all services).
 - Use ExpressRoute direct if you require more than 10Gbps bandwidth.
 
 ## Landing Zone type
@@ -146,7 +167,7 @@ _Table 1: Observability Landing Zones depending on the network connectivity mode
 
 | Reference implementation 	| Description 	| Deploy 	|
 |---	|---	|---	|
-| Observability Landing Zone for Operators 	| Observability and analytics landing zone for operators workloads 	| [![Deploy to Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoRi) 	|
+| Observability Landing Zone for Operators 	| Observability and analytics landing zone for operators workloads 	| ![Deploy to Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg) 	|
 
 This reference implementation allows you to deploy Observability Landing Zones for Operators. These are the two last options listed in Table 1.
 
