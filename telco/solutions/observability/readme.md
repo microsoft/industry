@@ -179,8 +179,6 @@ The following table describes the resources that are deployed by this reference 
 
 | Azure resource | Deployed by | Details | Deploy |
 |---|---|---|---|
-| Subscription | Platform team | Subscription will be provisioned by the Azure for Operators Landing Zones team, and placed in the corresponding management group (online, corp or operator) | [![Deploy to Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoRi) |
-| DNS | Platform team | DNS name resolution is provided by the platform team via VNet peering to central hub VNet. Note that landing zone owners can optionally deploy a dedicated DNS infrastructure within the observability landing zone if required. | [![Deploy to Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoRi) |
 | ExpressRoute circuit | Observability Landing Zone reference implementation | Optional, as an existing ExpressRoute circuit can be used | User guide (coming soon) |
 | Route filter | Observability Landing Zone reference implementation | Deployed in case of implementing ExpressRoute with Microsoft peering | User guide (coming soon) |
 | ExpressRoute gateway | Observability Landing Zone reference implementation | Deployed in case of implementing ExpressRoute with Private peering | User guide (coming soon) |
