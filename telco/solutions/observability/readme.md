@@ -179,13 +179,15 @@ The following table describes the resources that are deployed by this reference 
 
 | Azure resource | Deployed by | Details | Deploy |
 |---|---|---|---|
-| ExpressRoute circuit | Observability Landing Zone reference implementation | Optional, as an existing ExpressRoute circuit can be used | User guide (coming soon) |
-| Route filter | Observability Landing Zone reference implementation | Deployed in case of implementing ExpressRoute with Microsoft peering | User guide (coming soon) |
-| ExpressRoute gateway | Observability Landing Zone reference implementation | Deployed in case of implementing ExpressRoute with Private peering | User guide (coming soon) |
-| ExpressRoute connection | Observability Landing Zone reference implementation | Deployed in case of implementing ExpressRoute with Private peering | User guide (coming soon) |
-| Virtual network | Observability Landing Zone reference implementation |  | User guide (coming soon) |
-| NSGs | Observability Landing Zone reference implementation |  | User guide (coming soon) |
-| Azure Bastion | Observability Landing Zone reference implementation |  | User guide (coming soon) |
+| Azure subscription | Platform team |  | [AfO Landing Zones User Guide](../../referenceImplementation/readme.md) |
+| DNS | Platform team | DNS name resolution is provided by the platform team via VNet peering to central hub VNet. Note that landing zone owners can optionally deploy a dedicated DNS infrastructure within the observability landing zone if required. | [AfO Landing Zones User Guide](../../referenceImplementation/readme.md) |
+| ExpressRoute circuit | Landing Zone owner | Optional, as an existing ExpressRoute circuit can be used | Observability Landing Zones User Guide (coming soon)  |
+| Route filter | Landing Zone owner | Deployed in case of implementing ExpressRoute with Microsoft peering | Observability Landing Zones User Guide (coming soon) |
+| ExpressRoute gateway | Landing Zone owner | Deployed in case of implementing ExpressRoute with Private peering | Observability Landing Zones User guide (coming soon) |
+| ExpressRoute connection | Landing Zone owner | Deployed in case of implementing ExpressRoute with Private peering | Observability Landing Zones User guide (coming soon) |
+| Virtual network | Landing Zone owner |  | Observability Landing Zones User guide (coming soon) |
+| NSGs | Landing Zone owner |  | Observability Landing Zones User guide (coming soon) |
+| Azure Bastion | Landing Zone owner |  | Observability Landing Zones User guide (coming soon) |
 | Azure storage service(s) | Landing Zone owner | Any Azure storage service(s) required by the landing zone owner (such as Azure Data Lake Storage Gen2) | Solution Accelerator (coming soon) |
 | Private Endpoints | Landing Zone owner |  | Solution Accelerator (coming soon) |
 | Analytics services | Landing Zone owner | Any analytics service(s) as required by the landing zone owner (for example Azure Synapse) | Solution Accelerator (coming soon) |
