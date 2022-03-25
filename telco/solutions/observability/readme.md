@@ -167,7 +167,7 @@ _Table 1: Observability Landing Zones depending on the network connectivity mode
 
 | Reference implementation  | Description  | Deploy  |
 |--- |--- |--- |
-| Observability Landing Zone for Operators  | Observability and analytics landing zone for operators workloads  | ![Deploy to Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)  |
+| Observability Landing Zone for Operators  | Observability landing zone for operators with required infrastructure for data ingestion into an Azure storage service and ready for deployment of an analytics solution.   | User guide (coming soon)  |
 
 This reference implementation allows landing zone owners to deploy observability landing zones for operators. Figure 5 below depicts a sample observability landing zone for operators deployed by using the ExpressRoute with Microsoft Peering connectivity model.
 
@@ -177,18 +177,19 @@ _Figure 5: Observability Landing Zones for Operator with ExpressRoute Microsoft 
 
 The following table describes the resources that are deployed by this reference implementation, and which resources would typically be deployed by the landing zone owner once the landing zone has been provisioned:
 
-| Azure Resource  | Deployed by  | Details  |
-|--- |--- |--- |
-| Subscription  | Reference implementation  |   |
-| ExpressRoute circuit  | Reference implementation  | Optional, as operator can provide an existing ExpressRoute circuit  |
-| Route filter  | Reference implementation  | In case of implementing ExpressRoute Microsoft Peering  |
-| ExpressRoute gateway  | Reference implementation  | In case of implementing ExpressRoute Private Peering  |
-| ExpressRoute connection  | Reference implementation  | In case of implementing ExpressRoute Private Peering  |
-| Virtual network  | Reference implementation  |   |
-| NSGs  | Reference implementation  |   |
-| Azure Bastion  | Reference implementation  |   |
-| Azure storage services  | Landing Zone owner  | Any Azure storage services required by the landing zone owner (for example Azure Data Lake Storage Gen2)  |
-| Private Endpoints  | Landing Zone owner  |   |
-| Analytics services  | Landing Zone owner  | Any analytics service as required by the landing zone owner (for example, Azure Synapse)  |
+| Azure resource | Deployed by | Details | Deploy |
+|---|---|---|---|
+| Subscription | Platform team | Subscription will be provisioned by the Azure for Operators Landing Zones team, and placed in the corresponding management group (online, corp or operator) | [![Deploy to Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoRi) |
+| DNS | Platform team | DNS name resolution is provided by the platform team via VNet peering to central hub VNet. Note that landing zone owners can optionally deploy a dedicated DNS infrastructure within the observability landing zone if required. | [![Deploy to Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoRi) |
+| ExpressRoute circuit | Observability Landing Zone reference implementation | Optional, as an existing ExpressRoute circuit can be used | User guide (coming soon) |
+| Route filter | Observability Landing Zone reference implementation | Deployed in case of implementing ExpressRoute with Microsoft peering | User guide (coming soon) |
+| ExpressRoute gateway | Observability Landing Zone reference implementation | Deployed in case of implementing ExpressRoute with Private peering | User guide (coming soon) |
+| ExpressRoute connection | Observability Landing Zone reference implementation | Deployed in case of implementing ExpressRoute with Private peering | User guide (coming soon) |
+| Virtual network | Observability Landing Zone reference implementation |  | User guide (coming soon) |
+| NSGs | Observability Landing Zone reference implementation |  | User guide (coming soon) |
+| Azure Bastion | Observability Landing Zone reference implementation |  | User guide (coming soon) |
+| Azure storage service(s) | Landing Zone owner | Any Azure storage service(s) required by the landing zone owner (such as Azure Data Lake Storage Gen2) | Solution Accelerator (coming soon) |
+| Private Endpoints | Landing Zone owner |  | Solution Accelerator (coming soon) |
+| Analytics services | Landing Zone owner | Any analytics service(s) as required by the landing zone owner (for example Azure Synapse) | Solution Accelerator (coming soon) |
 
 _Table 2: Resources deployed by the Obervability Landing Zones reference implementation_
