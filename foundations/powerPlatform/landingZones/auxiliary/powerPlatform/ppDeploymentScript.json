@@ -1,0 +1,333 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "ppIdentity": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the resourceId of the User Managed Identity."
+            }
+        },
+        "ppCitizen": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "half",
+                "no",
+                "custom"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select environment type. Yes will enable with Dataverse, Half will create without Dataverse."
+            }
+        },
+        "ppCitizenCount": {
+            "type": "int",
+            "maxValue": 200,
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Select how many environments for citizen dev to be created."
+            }
+        },
+        "ppCitizenNaming": {
+            "type": "string",
+            "defaultValue": "''",
+            "metadata": {
+                "description": "Provide naming convention for the citizen dev environments."
+            }
+        },
+        "ppCitizenRegion": {
+            "type": "string",
+            "allowedValues": [
+                "europe",
+                "unitedstates",
+                "asia",
+                "japan",
+                "india",
+                "canada",
+                "southamerica",
+                "unitedkingdom",
+                "france",
+                "germany",
+                "unitedarabemirates"
+            ],
+            "defaultValue": "unitedstates",
+            "metadata": {
+                "description": "Provide location for the Admin environments."
+            }
+        },
+        "ppPro": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "half",
+                "no",
+                "custom"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select environment type. Yes will enable with Dataverse, Half will create without Dataverse."
+            }
+        },
+        "ppProCount": {
+            "type": "int",
+            "maxValue": 200,
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Select how many environments for pro dev to be created."
+            }
+        },
+        "ppProNaming": {
+            "type": "string",
+            "defaultValue": "''",
+            "metadata": {
+                "description": "Provide naming convention for the pro dev environments."
+            }
+        },
+        "ppProRegion": {
+            "type": "string",
+            "allowedValues": [
+                "europe",
+                "unitedstates",
+                "asia",
+                "japan",
+                "india",
+                "canada",
+                "southamerica",
+                "unitedkingdom",
+                "france",
+                "germany",
+                "unitedarabemirates"
+            ],
+            "defaultValue": "unitedstates",
+            "metadata": {
+                "description": "Provide location for the pro dev environments."
+            }
+        },
+        "ppCitizenAlm": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if dedicated environments for Development, Test, and Production should be created for each landing zone"
+            }
+        },
+        "ppProAlm": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if dedicated environments for Development, Test, and Production should be created for each landing zone"
+            }
+        },
+        "ppIndustryAlm": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if dedicated environments for Development, Test, and Production should be created for each landing zone"
+            }
+        },
+        "ppSelectIndustry": {
+            "type": "string",
+            "allowedValues": [
+                "healthcare",
+                "fsi",
+                "retail",
+                "none"
+            ],
+            "defaultValue": "none",
+            "metadata": {
+                "description": "Select if your specific industry to enable in the industry environments."
+            }
+        },
+        "ppIndustryNaming": {
+            "type": "string",
+            "defaultValue": "''",
+            "metadata": {
+                "description": "Provide naming convention for the industry environments."
+            }
+        },
+        "ppIndustryRegion": {
+            "type": "string",
+            "allowedValues": [
+                "europe",
+                "unitedstates",
+                "asia",
+                "japan",
+                "india",
+                "canada",
+                "southamerica",
+                "unitedkingdom",
+                "france",
+                "germany"
+            ],
+            "defaultValue": "unitedstates",
+            "metadata": {
+                "description": "Provide location for the pro dev environments."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the Azure location for the deployments"
+            }
+        },
+        "rgName": {
+            "type": "string",
+            "metadata": {
+                "description": "Resource Group where the deploymentScript will be provisioned"
+            }
+        },
+        "scriptUri": {
+            "type": "string",
+            "defaultValue": "https://raw.githubusercontent.com/daltondhcp/Azure/nsppscript/nsPowerPlatform.ps1",
+            "metadata": {
+                "description": "The uri pointing to the PowerShell script used in the deploymentScript"
+            }
+        },
+        "ppCitizenConfiguration": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide strings for custom citizen Environment creation."
+            }
+        },
+        "ppProConfiguration": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide strings for pro citizen Environment creation."
+            }
+        },
+        "ppCitizenLanguage": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select language for the environments."
+            }
+        },
+        "ppCitizenCurrency": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select the currency for the environments."
+            }
+        },
+        "ppCitizenDescription": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide description for the environments."
+            }
+        },
+        "ppProLanguage": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select language for the environments."
+            }
+        },
+        "ppProCurrency": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select the currency for the environments."
+            }
+        },
+        "ppProDescription": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide description for the environments."
+            }
+        }
+    },
+    "variables": {
+        "deploymentName": "[take(concat(parameters('rgName'), '-initialize', '-', parameters('location')), 64)]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2021-04-01",
+            "name": "[parameters('rgName')]",
+            "location": "[parameters('location')]",
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('deploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.Resources/deploymentScripts",
+                            "apiVersion": "2020-10-01",
+                            "name": "[concat(parameters('rgName'), '-ppNorthStar')]",
+                            "location": "[parameters('location')]",
+                            "kind": "AzurePowerShell",
+                            "identity": {
+                                "type": "userAssigned",
+                                "userAssignedIdentities": {
+                                    "[parameters('ppIdentity')]": {}
+                                }
+                            },
+                            "dependsOn": [
+
+                            ],
+                            "properties": {
+                                "primaryScriptUri": "[parameters('scriptUri')]",
+                                "arguments": "[concat('-PPCitizen', ' ', parameters('ppCitizen'), ' ',
+                                                    '-PPCitizenConfiguration', ' ', parameters('ppCitizenConfiguration'), ' ',
+                                                    '-PPCitizenCount', ' ', parameters('ppCitizenCount'), ' ',
+                                                    '-PPCitizenNaming', ' ', parameters('ppCitizenNaming'), ' ',
+                                                    '-PPCitizenDescription', ' ', parameters('ppCitizenDescription'), ' ',
+                                                    '-PPCitizenLanguage', ' ', parameters('ppCitizenLanguage'), ' ',
+                                                    '-PPCitizenCurrency', ' ', parameters('ppCitizenCurrency'), ' ',
+                                                    '-PPCitizenRegion', ' ', parameters('ppCitizenRegion'), ' ',
+                                                    '-PPCitizenAlm', ' ', parameters('ppCitizenAlm'), ' ',
+                                                    '-PPPro', ' ', parameters('ppPro'), ' ',
+                                                    '-PPProConfiguration', ' ', parameters('ppProConfiguration'), ' ',
+                                                    '-PPProCount', ' ', parameters('ppProCount'), ' ',
+                                                    '-PPProNaming', ' ', parameters('ppProNaming'), ' ',
+                                                    '-PPProDescription', ' ', parameters('ppProDescription'), ' ',
+                                                    '-PPProLanguage', ' ', parameters('ppProLanguage'), ' ',
+                                                    '-PPProCurrency', ' ', parameters('ppProCurrency'), ' ' ,
+                                                    '-PPProRegion', ' ', parameters('ppProRegion'), ' ',
+                                                    '-PPProAlm', ' ', parameters('ppProAlm'), ' ',
+                                                    '-PPSelectIndustry', ' ', parameters('ppSelectIndustry'), ' ',
+                                                    '-PPIndustryNaming', ' ', parameters('ppIndustryNaming'), ' ',
+                                                    '-PPIndustryRegion', ' ', parameters('ppIndustryRegion'), ' ',
+                                                    '-PPIndustryAlm', ' ', parameters('ppIndustryAlm')
+                                                    )]",
+                                "azPowerShellVersion": "7.2",
+                                "timeout": "PT120M",
+                                "cleanupPreference": "Always",
+                                "retentionInterval": "P1D"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
