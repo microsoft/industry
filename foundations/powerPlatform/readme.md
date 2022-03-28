@@ -7,7 +7,7 @@ In addition to being application, persona, and industry agnostic, North Star Arc
 | Reference implementation | Description | Deploy | Documentation
 |:----------------------|:------------|--------|--------------|
 | North Star Architecture for Power Platform | All up architecture for Power Platform with landing zones (Environments) configured with security, governance, and compliance for scalable business applications - and industry solutions for professional and citizen developers | [![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/ppnorthstar) | [User Guide](./referenceImplementation/readme.md)
-| North Star Landing Zones for Power Platform | Deployment experience to create N landing zones for citizen - and professional developers at scale, into an existing North Star Architecture for Power Platform | [![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/ppnorthstarlz) | [User Guide](./landingZones/readme.md)
+| North Star Landing Zones for Power Platform | Create N landing zones for citizen - and professional developers at scale, into an existing North Star Architecture for Power Platform | [![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/ppnorthstarlz) | [User Guide](./landingZones/readme.md)
 
 ## Table of content
 
