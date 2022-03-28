@@ -105,7 +105,7 @@ By default, all recommendations which originates from the [North Star architectu
 
 ## Deployment instructions
 
-  This session will describe how to deploy the North Star Architecture reference implementation.
+  This section will describe how to deploy the North Star Architecture reference implementation.
 
 ### Pre-requisites
 
