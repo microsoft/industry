@@ -124,8 +124,6 @@ An enterprise-scale deployment of IR will consist of multiple instances of Model
 
 > Note: Adoption and implementation of DMA is not mandatory for deploying IR and its complimentary services, however DMA architecture and recommendations have been built for at-scale deployment encompassing principles of security, governance and self-serve. Hence, we are using DMA as for reference implementation.
 
-***
-
 ***One or multiple IR and ADLS instances?***
 
 From a deployment perspective, we recommend having separate instances of IR and ADLS for each environment (production, dev, test). Having separate environments will allow you to experiment and optimize the recommendations without risking any downtime or impact to production environment.
@@ -137,50 +135,65 @@ There maybe reasons where you may instantiate more than one instance in an envir
 - Security and/or compliance
 - Co-location of resources
 
-***
-
-***Deployment recommendations***
-
-- **Azure billing and Azure Active Directory tenant**  
+**Azure billing and Azure Active Directory tenant**  
 There are no IR specific deployment recommendations from EA and Billing perspective; however, we recommend customers to review the considerations and follow the recommendations for ESLZ available [here](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/azure-billing-ad-tenant).
 
-- **Identity and Access Management**
+**Identity and Access Management**
 
-    IR supports AAD and Azure RBAC. For an enterprise deployment, we recommend having separate instances of IR for each environment (production, development etc.). Within each instance of IR, you may choose to use one or more instances of ADLS, Modeling Instance (MI) and/or Service Endpoint (SE).
+IR supports AAD and Azure RBAC. For an enterprise deployment, we recommend having separate instances of IR for each environment (production, development etc.). Within each instance of IR, you may choose to use one or more instances of ADLS, Modeling Instance (MI) and/or Service Endpoint (SE).
 
-    There are 2 principles we follow:
-  - Principle of least privilege
-  - Segregation of duties
+There are 2 principles which apply here:
+
+- Principle of least privilege
+- Segregation of duties
+
+There are two types of access planes - control plane and data plane.
+
+For **control plane** access, we recommend leveraging Azure RBAC. The control plane strategy outlined below applies to IR and it's dependent services.
+
+For each instance of ADLS, MI and SE, following AAD groups must be created and then users, Managed Identities or Service Principals must be added to these groups. The rationale behind this is that each application which consumes data from IR will most likely have different lifecycle; security requirements; possibly different teams involved etc. Having separate user groups aligned per application per environment will enable you to administer and treat each dependent application differently.
+
+- mi_\<app>\_\<env>\_readers
+- se_\<app>\_\<env>\_readers
+- adls_\<app>\_\<env>\_\<app>\_readers
+- mi_\<app>\_\<env>\_\<region>\_\<app>\_writers
+- se_\<app>\_\<env>\_\<region>\_\<app>\_writers
+- adls_\<app>\_\<env>\_\<region>\_\<app>\_writers
+- mi_\<app>\_\<env>\_\<region>\_\<app>\_admins
+- se_\<app>\_\<env>\_\<region>\_\<app>\_admins
+- adls_\<app>\_\<env>\_\<region>\_\<app>\_admins  
+
+For Azure RBAC, unless you have specific security and access control requirements, we recommend using built-in roles for readers, writers and admins.
+
+For automation, we recommend using AAD Managed Identity (MI) and assigning them appropriate Azure RBAC to for operational tasks. It's common to use multiple MI to control the blast radius and assign MI to each individual instance of IR.
+
+For **data plane** access, we have apps which consume data from IR using Service Endpoints. This is enabled by `Endpoint Authentication` feature of IR which is configured at IR Account level. It is backed by Azure AD (AAD).
+
+The figure below shows the hierarchy of an IR account and the access flow from external application perspective. External applications (A) will use AAD-backed identity to get an access token from Azure Identity Platform. The access token is then used to access the Service Endpoints (D) and Modeling Resources (E).
+
+Endpoint Authentication basically binds an AAD SPN to an IR Account for data plane access. Even though we recommend using separate AAD-backed SPN for each external application accessing IR Account, it's worth highlighting that once Endpoint Authentication is configured for a given SPN, it can perform GET and POST actions on all of the Service Endpoints and Modeling Resources belonging to that IR Account.
+
+![Endpoint Authentication](./media/ir_authc_access_apps.png)
+
+The default behaviour of Endpoint Authentication assignment belonging to an IR account is that the assigned user, by default, gets read access to all Modeling and Service API endpoints as shown in the figure above. There is no feature to change this behaviour.
+
+> Note: It's not possible to modify this assignment through Azure RBAC as this binding is done at the backend.
+
+There are a few strategies to address the risk associated with access to all endpoints belonging to an IR Account:
+
+- Instantiate a separate IR Account per external application. Basically, you adopt the model where there is 1:1 mapping between an external app (consumer) and an IR Account.
+- 
 
 
-  ***Recommendations***
 
-    For each instance of ADLS, MI and SE, following AAD groups must be created and then users, Managed Identities or Service Principals must be added to these groups. The rationale behind this is that each application which consumes data from IR will most likely have different lifecycle; security requirements; possibly different teams involved etc. Having separate user groups aligned per application per environment will enable you to administer and treat each dependent application differently.
-
-  - mi_\<app>\_\<env>\_readers
-  - se_\<app>\_\<env>\_readers
-  - adls_\<app>\_\<env>\_\<app>\_readers
-  - mi_\<app>\_\<env>\_\<region>\_\<app>\_writers
-  - se_\<app>\_\<env>\_\<region>\_\<app>\_writers
-  - adls_\<app>\_\<env>\_\<region>\_\<app>\_writers
-  - mi_\<app>\_\<env>\_\<region>\_\<app>\_admins
-  - se_\<app>\_\<env>\_\<region>\_\<app>\_admins
-  - adls_\<app>\_\<env>\_\<region>\_\<app>\_admins  
-
-  For Azure RBAC, unless you have specific security and access control requirements, we recommend using built-in roles for readers, writers and admins.
-
-  For automation, we recommend using AAD Managed Identity (MI) and assigning them appropriate Azure RBAC to for operational tasks. It's common to use multiple MI to control the blast radius and assign MI to each individual instance of IR.
-
-  > Note: For external apps which will interact with IR Service Endpoint for reading the recommendations, we recommend using separate [AAD backed app principal](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal) for each individual app. This will allow you to control access granted to individual apps and change privileges without impacting other applications.
-  
-  > Note: As with any resource on Azure, we recommend using principle of least privilege and enforce segregation of duties with Azure RBAC to meet security requirements of your organization. The best practices are published on [Microsoft Docs](https://docs.microsoft.com/en-us/azure/role-based-access-control/best-practices#only-grant-the-access-users-need).
+---
 
 - **DevOps and Automation**
 
     As with other Azure services, we recommend using IaC approach to deploying and managing IR Account and its complementary services such as ADLS.
 
     > Note: At the time of writing this document, IR doesn't ship with Bicep support, however this will be available in future.
-    
+
     > Note: IR, just like any other Azure-based resource, supports ARM however, at the time of writing of this documentation, the `Export template` experience from Azure Portal is not supported.
 
     ***Model Management and MLOps***
@@ -199,24 +212,40 @@ There are no IR specific deployment recommendations from EA and Billing perspect
     - Model training
 
   ***Release Management***
+
+  This section focus on release management in context of Intelligent Recommendations service. IR offers following levers to fine tune results and experiment with the recommendations:
+
+  - [Flexible filtering](https://docs.microsoft.com/en-us/industry/retail/intelligent-recommendations/fine-tune-results)
+  - [Data Contracts and entities defined in](https://docs.microsoft.com/en-us/industry/retail/intelligent-recommendations/data-contract#data-contracts) `model.json`
+
+  > Note: We are not focusing on release management in context of applications which are consuming output of IR as there is plenty of documentation out in public domain which talks to those themes.
+
+  There are fundamental building blocks and capabilities which enable various release management strategies such as Canary; Blue-Green deployments; and A/B testing. These are:
+  - Ability of an IR account to support multiple Modeling resources and Service Endpoints.
+  - DevOps tooling such as Azure DevOps (ADO) and its features Pipelines and Repos.
+  - Runtime environment such as AKS along with networking capabilities which supports balancing traffic between multiple application endpoints.
+
+  > Note: In addition to parameters in `model.json`, customers can also experiment with different types of Modeling Endpoints (Basic, Standard or Premium) and adopt deployment strategies discussed below.
   
-  An IR account can have multiple Modeling and Service Endpoints. For same set of inputs, customers can experiment with attributes in `model.json` to test recommendations. The results produced by the two versions of model.json can then be served through separate Service Endpoints. This enables advanced deployment strategies discussed here.
+  ![Modeling Tiers](./media/modeling_endpoint_tiers.png)
 
-  > Note: Customers can also experiment with different types of Modeling Endpoints (Basic, Standard or Premium) and adopt deployment strategies discussed below. ![Modeling Tiers](./media/modeling_endpoint_tiers.png)
+  Using the setup depicted in the figure shown below, customers can build and deploy complex release strategies.
+  
+  An application (shown as F) has > 1 instances hosted on a runtime environment (H) which supports layer 7 load balancing. Each application instance is connecting to two separate Service Endpoints (D and E). The overarching idea is that each Service Endpoint is using different Modeling Reource each of which is driven by parameters declared in `model.json` files (C). Driving the recommendations are datasets hosted inside two separate Azure storage containers (A).
 
-  - *Canary deployment* strategy means deploying new versions of an application next to stable, production versions. You can then see how the canary version compares to the baseline, before promoting or rejecting the deployment. In context of IR, customers can instantiate a single instance of IR Account but with separate instances of Modeling and Service Endpoints to test out recommendation results generated by IR.
+  ![deployment strategy](./media/deployment_strategy.png)
 
-  - A *Blue-Green deployment* release strategy means new version of the software to a limited set of users and expanding that user base gradually until everyone is using the new version. If at any time the new version is causing issues, all the users can be instantly* redirected to the old version. In context of IR, 
+  Customers can experiment with input datasets and variables defined in `model.json` to fine tune the recommendations. This IR deployment model combined with capabilities of application runtime environment such as AKS (H) enables customers to implement release management strategies such as Canary; Blue-Green deployments; and A/B Testing.
 
-![deployment strategy](./media/deployment_strategy.png)
+  > Note: IR supports multiple endpoints, however one would require external capabilities such as network load balancing (such as Azure Application Gateway) and application runtime environment to enable end-to-end release management scenarios discussed here.
 
 - **Network Topology and Connectivity**
 
-    At the time of writing this guidance, IR didn't support Azure Private Endpoints. The APIs published by IR for Modeling and Service Endpoints are routable over the public internet, however a key is required to access them.
+    At the time of writing this guidance, IR didn't support Azure Private Endpoints. The APIs published by IR for Modeling Resources and Service Endpoints are routable over the public internet, however a key is required to access them which provides another layer of security.
 
     To secure the deployment and to keep the surface area of services with addresses routable over the public internet to a minimum, there are a few strategies available.
-
   - ADLS account must have Private Endpoint enabled so that it's not accessible over the internet.
+  - Separate Azure Storage account which is accessible by
   - Separate containers per external app will ensure that the blast radius is restricted to a container in case of a breach.
 
 - **Operations and Monitoring**
