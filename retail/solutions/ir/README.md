@@ -12,6 +12,14 @@
     - [Service flow](#service-flow)
     - [FAQ](#faq)
   - [Considerations and Recommended Practices](#considerations-and-recommended-practices)
+    - [One or multiple IR and ADLS instances](#one-or-multiple-ir-and-adls-instances)
+    - [Azure billing and Azure Active Directory tenant](#azure-billing-and-azure-active-directory-tenant)
+    - [Identity and Access Management](#identity-and-access-management)
+    - [DevOps and Automation](#devops-and-automation)
+    - [Network Topology and Connectivity](#network-topology-and-connectivity)
+    - [Operations and Monitoring](#operations-and-monitoring)
+    - [Security](#security)
+    - [HA and DR](#ha-and-dr)
   - [Deployment guide](#deployment-guide)
   - [Automated Deployment](#automated-deployment)
 
@@ -124,7 +132,7 @@ An enterprise-scale deployment of IR will consist of multiple instances of Model
 
 > Note: Adoption and implementation of DMA is not mandatory for deploying IR and its complimentary services, however DMA architecture and recommendations have been built for at-scale deployment encompassing principles of security, governance and self-serve. Hence, we are using DMA as for reference implementation.
 
-***One or multiple IR and ADLS instances?***
+### One or multiple IR and ADLS instances
 
 From a deployment perspective, we recommend having separate instances of IR and ADLS for each environment (production, dev, test). Having separate environments will allow you to experiment and optimize the recommendations without risking any downtime or impact to production environment.
 
@@ -135,10 +143,16 @@ There maybe reasons where you may instantiate more than one instance in an envir
 - Security and/or compliance
 - Co-location of resources
 
-**Azure billing and Azure Active Directory tenant**  
-There are no IR specific deployment recommendations from EA and Billing perspective; however, we recommend customers to review the considerations and follow the recommendations for ESLZ available [here](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/azure-billing-ad-tenant).
+An IR account can support multiple `Modeling Resources` and `Service Endpoints`, however the apps which are configured to access **a single IR account** can access **all** the APIs for `Modeling` and `Service Endpoints` belonging to that account. This could be one of the reasons why you may choose to have a separate IR Account per consumer app.
 
-**Identity and Access Management**
+***
+
+### Azure billing and Azure Active Directory tenant
+
+There are no IR specific deployment recommendations from EA and Billing perspective; however, we recommend customers to review the considerations and follow the recommendations for ESLZ available [here](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/azure-billing-ad-tenant).
+***
+
+### Identity and Access Management
 
 IR supports AAD and Azure RBAC. For an enterprise deployment, we recommend having separate instances of IR for each environment (production, development etc.). Within each instance of IR, you may choose to use one or more instances of ADLS, Modeling Instance (MI) and/or Service Endpoint (SE).
 
@@ -177,18 +191,26 @@ Endpoint Authentication basically binds an AAD SPN to an IR Account for data pla
 
 The default behaviour of Endpoint Authentication assignment belonging to an IR account is that the assigned user, by default, gets read access to all Modeling and Service API endpoints as shown in the figure above. There is no feature to change this behaviour.
 
-> Note: It's not possible to modify this assignment through Azure RBAC as this binding is done at the backend.
+> Note: It's not possible to modify this assignment through Azure RBAC as this binding between an IR Account and an App ID is done at the backend and not visibile under role assignment. Feedack has been passed on to the product engineering team.
 
-There are a few strategies to address the risk associated with access to all endpoints belonging to an IR Account:
+The section discusses the risks and mitigation strategies:
 
-- Instantiate a separate IR Account per external application. Basically, you adopt the model where there is 1:1 mapping between an external app (consumer) and an IR Account.
-- 
+- **Risk - An App ID may trigger `cooking process` for a Modeling resource.**
+  By default, once an App ID is granted access to API via Endpoint Authentication process, it can access all APIs under Modeling and Service Endpoints. Whilst most of the APIs offer read access via `GET`, some such as those configured to trigger the `cooking process` means that an App can start the cooking process at the backend for a given Modeling resource. The impact here is that once cooking process has been initiated, it will process the data which is present in the storage account at that point in time. This may lead to different results and also have a cost impact.
 
+  > Note: A Modeling resource has a cap on number of times the Cooking Process can be manually triggered within a 24-hour window. This cap is currently set to 1.
+  
+  If the credenntials have been compromised, then a malicious external or internal actor can also initiate a volume attack on Modeling and Service Endpoints thereby exhausting the limits associated with a given set of endpoints. This will impact parts of your web app which rely on recommendations
 
+  To mitigate this risk, we recommend protecting the authentication keys using Azure Key Vault, and to configure consuming apps to access them at runtime. In addition, we also recommend configuring an appropriate timeout value for the authorization token issued by AAD identity platform.
 
----
+  We also recommend having separate App ID per consumer app because it will provide clear auditability and also enable administrators to limit blast radius to a single app in case of a compromise. Example - you can revoke access for an App ID associated with a single app thereby not impacting other apps which rely on the same instance of IR Account.
 
-- **DevOps and Automation**
+- **Risk - Data Exfiltration and Manipulation of Data.** The data which is accessible via the endpoints is already meant for public consumption. There is no PII data or fields exposed by IR APIs. Having said that, measures such as using separate app ID; rotation of secret etc. must be implemented as these are best practices for handling application credentials. As far as data modification risks are concerned, it's worth noting that manority of the IR REST APIs support `GET` request, however there are a few which use `POST`. The APIs which use `POST` are built for triggering backend processes such as `Cooking process`, however these cannot manipulate data.
+
+***
+
+### DevOps and Automation
 
     As with other Azure services, we recommend using IaC approach to deploying and managing IR Account and its complementary services such as ADLS.
 
@@ -201,29 +223,30 @@ There are a few strategies to address the risk associated with access to all end
     MLOps is a relatively new trend and it is targeted at data scientists similar to what DevOps does for developers and engineers. This section highlights key areas of MLOps and how they apply to Intelligent Recommendations (IR).
 
     > Note: A key thing to remember here is that IR is a PaaS which means that a large surface area associated with general technical operations and model management are obfuscated from end-users. As a result, some aspects of MLOps do not apply to IR.
-
-  - **Source Control** The code behind models used for recommendations is not accessible to end-users or customers. However, customers can experiment by modifiying data entities and their attributes defined in `model.json` file. The changes committed to `model.json` can be tracked via version control such as Azure DevOps Repo or GitHub.
-
-  - Following aspects of MLOps are managed by Microsoft.
-    - Training pipeline
-    - Model packaging
-    - Model validation
-    - Model deployment
-    - Model training
+    
+    - **Source Control** The code behind models used for recommendations is not accessible to end-users or customers. However, customers can experiment by modifiying data entities and their attributes defined in `model.json` file. The changes committed to `model.json` can be tracked via version control such as Azure DevOps Repo or GitHub.
+    - Following aspects of MLOps are managed by Microsoft.
+      - Training pipeline
+      - Model packaging
+      - Model validation
+      - Model deployment
+      - Model training
 
   ***Release Management***
 
   This section focus on release management in context of Intelligent Recommendations service. IR offers following levers to fine tune results and experiment with the recommendations:
-
-  - [Flexible filtering](https://docs.microsoft.com/en-us/industry/retail/intelligent-recommendations/fine-tune-results)
-  - [Data Contracts and entities defined in](https://docs.microsoft.com/en-us/industry/retail/intelligent-recommendations/data-contract#data-contracts) `model.json`
+  
+- [Flexible filtering](https://docs.microsoft.com/en-us/industry/retail/intelligent-recommendations/fine-tune-results)
+  
+- [Data Contracts and entities defined in](https://docs.microsoft.com/en-us/industry/retail/intelligent-recommendations/data-contract#data-contracts) `model.json`
 
   > Note: We are not focusing on release management in context of applications which are consuming output of IR as there is plenty of documentation out in public domain which talks to those themes.
 
   There are fundamental building blocks and capabilities which enable various release management strategies such as Canary; Blue-Green deployments; and A/B testing. These are:
-  - Ability of an IR account to support multiple Modeling resources and Service Endpoints.
-  - DevOps tooling such as Azure DevOps (ADO) and its features Pipelines and Repos.
-  - Runtime environment such as AKS along with networking capabilities which supports balancing traffic between multiple application endpoints.
+
+- Ability of an IR account to support multiple Modeling resources and Service Endpoints.
+- DevOps tooling such as Azure DevOps (ADO) and its features Pipelines and Repos.
+- Runtime environment such as AKS along with networking capabilities which supports balancing traffic between multiple application endpoints.
 
   > Note: In addition to parameters in `model.json`, customers can also experiment with different types of Modeling Endpoints (Basic, Standard or Premium) and adopt deployment strategies discussed below.
   
@@ -239,26 +262,39 @@ There are a few strategies to address the risk associated with access to all end
 
   > Note: IR supports multiple endpoints, however one would require external capabilities such as network load balancing (such as Azure Application Gateway) and application runtime environment to enable end-to-end release management scenarios discussed here.
 
-- **Network Topology and Connectivity**
+***
+
+### Network Topology and Connectivity
 
     At the time of writing this guidance, IR didn't support Azure Private Endpoints. The APIs published by IR for Modeling Resources and Service Endpoints are routable over the public internet, however a key is required to access them which provides another layer of security.
 
     To secure the deployment and to keep the surface area of services with addresses routable over the public internet to a minimum, there are a few strategies available.
-  - ADLS account must have Private Endpoint enabled so that it's not accessible over the internet.
-  - Separate Azure Storage account which is accessible by
-  - Separate containers per external app will ensure that the blast radius is restricted to a container in case of a breach.
 
-- **Operations and Monitoring**
+- ADLS account must have Private Endpoint enabled so that it's not accessible over the internet.
+- Separate Azure Storage account which is accessible by
+- Separate containers per external app will ensure that the blast radius is restricted to a container in case of a breach.
 
-    At the time of writing of this guidance, IR doesn't ship with observability feature to track progress of its `Cooking Process` or how APIs are responding to user requests from external systems. At the moment, `Cooking process`, depending on size of data inputs, the cooking process can take up to 72 hours.
+***
 
-    As with other Azure services, we recommend Activity Logs for IR to a Log Analytics Workspace (LA Workspace).
+### Operations and Monitoring
 
-    IR generates logging report and error reports which are written back to the ADLS account configured for use with the Modeling instance. THe logs are generated in JSON and currently no turnkey feature exists to integrate them with Azure Monitor. To address this, we recommend piping the logs through Log Analytics Agent v1.1.0-217+. The details are captured [here](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/data-sources-json).
+  *Control plane* actions are captured in the `Activity Logs` and can be exportd to a Log Analytics Workspace; Event Hubs; Azure Storage Account or a third-party solution.
+
+  In terms of observability, at the time of writing of this guidance, IR offers limited features to monitor various aspects of an IR Account such as status of model processing; requests/sec hitting a `Service Endpoint`; resource usage etc.
+  
+  > Note: Although there is no SLA for the `Cooking process`, depending on size of data inputs, the cooking process can take up to a maximum of 72 hours.
+  
+  IR generates logging and error reports which are written back to the ADLS account configured for use with the Modeling instance. THe logs are generated in JSON and currently no turnkey feature exists to integrate them with Azure Monitor. To address this, we recommend piping the logs through Log Analytics Agent v1.1.0-217+. The details are captured [here](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/data-sources-json). This would require provisioning an Azure VM with Log Analytics Agent installed to process and parse the logs before writing them to LA Workspace as Custom Logs. The [error logs](https://docs.microsoft.com/en-us/industry/retail/intelligent-recommendations/error-logging) track the following metrics and messages:
+    - Total Record Count
+    - Total Dropped Records
+    - Error messages
+    -
 
     For all other services such as ADLS, ADF etc. we recommend enabling collection of Activity Logs and Diagnostic Logs which can be enabled by implementing Azure Policy.
 
-- **Security**
+***
+
+### Security
   
    This guidance assumes that the source systems and data stores which support Private Endpoints have this (PE) feature enabled. This guidance focuses on threat surface area associated with the resources and services have a publicily routable IP address. This includes -
 
@@ -277,44 +313,45 @@ There are a few strategies to address the risk associated with access to all end
 
     > **Note:** Network access is one layer of security. Authentication and Azure RBAC provides another layer of security to protect against malicious actors.
 
-    We also recomomend enabling [Network Routing preference for Azure Storage](https://docs.microsoft.com/en-us/azure/storage/common/network-routing-preference?toc=/azure/storage/blobs/toc.json). This feature ensures that traffic from the internet is routed to the public endpoint of your storage account over the Microsoft global network. Azure Storage provides additional options for configuring how traffic is routed to your storage account.
+    We also recommend enabling [Network Routing preference for Azure Storage](https://docs.microsoft.com/en-us/azure/storage/common/network-routing-preference?toc=/azure/storage/blobs/toc.json). This feature ensures that traffic from the internet is routed to the public endpoint of your storage account over the Microsoft global network. Azure Storage provides additional options for configuring how traffic is routed to your storage account.
 
     At a bare minimum, we recommend using separate ADLS accounts for each environment with separate containers per app. To further reduce the blast radius and risks associated with exfiltration of data, we recommend a dedicated Storage Account for use with IR which only houses datasets required for Intelligent Recommendations.
 
     You may also want to consider multiple ADLS accounts for a single IR account for the following reasons:
 
-  - Scale - there are scale limits associated with each storage account. Perhaps you might want to scale beyond limits supported by a single instance.
-  - Regulatory - region of deployment is determined by a Storage Account and a customer may have regulatory or data residency requirements.
-  - Domain alignment - if your organisation is structured around domains, then you may choose to have domain-aligned storage accounts. This also provides a boundary between different teams.
-  - Security - having separate Storage Accounts can help you spread the risk across multiple accounts.
+- Scale - there are scale limits associated with each storage account. Perhaps you might want to scale beyond limits supported by a single instance.
+- Regulatory - region of deployment is determined by a Storage Account and a customer may have regulatory or data residency requirements.
+- Domain alignment - if your organisation is structured around domains, then you may choose to have domain-aligned storage accounts. This also provides a boundary between different teams.
+- Security - having separate Storage Accounts can help you spread the risk across multiple accounts.
   
    ***IR Account***
 
   An IR account is an instance of service and provides control plane for deploying and configuring Modeling and Service endpoints. An IR account itself doesn't doesn't handle data per se. Instances of Modeling and Service endpoints belonging to an IR account handle the actual data. From threat surface area perspective, IR account can be modified via one of the following Azure Portal, CLI or SDK by a malicious actor. Hence, Azure RBAC must be configured to control access to IR account.
 
-  - Each environment must have separate IR accounts. This is allow for separation between environments and give flexibility around implementing different RBAC across environments.
-  - You may also consider separate IR accounts from `Endpoint Authentication` perspective. `Endpoint Authentication` is the authentication mechanism which allows external applications and users to connect to Service Endpoints attached to an IR account. By design, once an `application ID` is granted access to IR Account, it inherits read access to all of the Service and Modelling Endpoints associated with that IR.
-  - You may also consider deploying multiple IR acconts if your application has different CORS requirements. Similar to `Endpoint Authentication`, CORS configuration is tied to an instance of IR account and thus, all endpoints belonging to an IR account inherit CORS configuration.
+- Each environment must have separate IR accounts. This is allow for separation between environments and give flexibility around implementing different RBAC across environments.
+- You may also consider separate IR accounts from `Endpoint Authentication` perspective. `Endpoint Authentication` is the authentication mechanism which allows external applications and users to connect to Service Endpoints attached to an IR account. By design, once an `application ID` is granted access to IR Account, it inherits read access to all of the Service and Modelling Endpoints associated with that IR.
+- You may also consider deploying multiple IR acconts if your application has different CORS requirements. Similar to `Endpoint Authentication`, CORS configuration is tied to an instance of IR account and thus, all endpoints belonging to an IR account inherit CORS configuration.
   
   ***Modeling Endpoint***
 
   As discussed earlier, data plane access to Modeling Endpoint is configured at IR Account level through `Endpoint Authentication` parameter.
-  - Access to the control plane for a Modeling Endpoint is configured by Azure RBAC.
-  - Access to the data plane for a Modeling Endpoint is configured via Endpoint Authentication configured at IR account level.
-  - We recommend organisations to review the input datasets which IR relies upon for building recommendations and then assign an appropriate security risk rating to an IR deployment.
-  - An external application interacts with Modeling Endpoint via a set of [REST APIs](https://docs.microsoft.com/en-us/rest/api/industry/intelligent-recommendations/). As such, security risks associated with REST APIs must be considered for Modeling Endpoints. Here are the top risks and a brief commentary on how these are addressed:
+
+- Access to the control plane for a Modeling Endpoint is configured by Azure RBAC.
+- Access to the data plane for a Modeling Endpoint is configured via Endpoint Authentication configured at IR account level.
+- We recommend organisations to review the input datasets which IR relies upon for building recommendations and then assign an appropriate security risk rating to an IR deployment.
+- An external application interacts with Modeling Endpoint via a set of [REST APIs](https://docs.microsoft.com/en-us/rest/api/industry/intelligent-recommendations/). As such, security risks associated with REST APIs must be considered for Modeling Endpoints. Here are the top risks and a brief commentary on how these are addressed:
   
-    - Support for HTTPS: These are enabled by default and cannot be disabled. All API calls take place over HTTPS.
+  - Support for HTTPS: These are enabled by default and cannot be disabled. All API calls take place over HTTPS.
 
-    - Rate limiting and throttling: A `Modeling Endpoint` exposes API which allows customers to resubmit jobs. The API can only be called once every 24 hours.
+  - Rate limiting and throttling: A `Modeling Endpoint` exposes API which allows customers to resubmit jobs. The API can only be called once every 24 hours.
   
-    - Unprotected identity and keys: An external app an interact with a Modeling Endpoint using AAD backed app identity. As a best practice, we recommend storing the secret in Azure Key Vault which an application can access at runtime.
+  - Unprotected identity and keys: An external app an interact with a Modeling Endpoint using AAD backed app identity. As a best practice, we recommend storing the secret in Azure Key Vault which an application can access at runtime.
 
-    - Unencrypted payload: The interaction and data exchange between ADLS and Modeling Endpoint takes place over Microsoft's network backbone using HTTPS protocol.
+  - Unencrypted payload: The interaction and data exchange between ADLS and Modeling Endpoint takes place over Microsoft's network backbone using HTTPS protocol.
 
-    - Weak API keys: As highlighed earlier, AAD backed app ID and secret to call the Modeling Endpoint APIs.
-
-    - Injection: APIs validate inputs from the applications to reduce risk associated with injection vectors.
+- Weak API keys: As highlighed earlier, AAD backed app ID and secret to call the Modeling Endpoint APIs.
+  
+- Injection: APIs validate inputs from the applications to reduce risk associated with injection vectors.
 
   ***Service Endpoints***
   
@@ -323,6 +360,16 @@ There are a few strategies to address the risk associated with access to all end
   - To ensure QoS, Service Endpoints an instance is instantiated with a pre-allocated capacity which controls maximum transactions-per-second allowed for a given endpoint.
 
   - In a scenario where a single IR account has multiple Modeling and Service Endpoints, it's worth noting that the applications granted access to the endpoints through `Endpoint Authentication` feature, have read access to all the APIs belonging to all Modeling and Service Endpoints belonging to an IR account.
+
+***
+
+### HA and DR
+
+Availability SLA for an IR account and its components (Modeling Resource and Service Endpoint) was not available at the time of writing of this guidance.
+
+For the underlying storage account, we recommend best practices for Azure Storage. The rest of this section focuses on various strategies for enabling HA and DR for an IR deployment.
+
+***
 
 ## Deployment guide
 
