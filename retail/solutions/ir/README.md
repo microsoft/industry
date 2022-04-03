@@ -19,7 +19,7 @@
     - [Network Topology and Connectivity](#network-topology-and-connectivity)
     - [Operations and Monitoring](#operations-and-monitoring)
     - [Security](#security)
-    - [HA and DR](#ha-and-dr)
+    - [High Availability and Disaster Recovery](#high-availability-and-disaster-recovery)
   - [Deployment guide](#deployment-guide)
   - [Automated Deployment](#automated-deployment)
 
@@ -282,13 +282,12 @@ The section discusses the risks and mitigation strategies:
 
   In terms of observability, at the time of writing of this guidance, IR offers limited features to monitor various aspects of an IR Account such as status of model processing; requests/sec hitting a `Service Endpoint`; resource usage etc.
   
-  > Note: Although there is no SLA for the `Cooking process`, depending on size of data inputs, the cooking process can take up to a maximum of 72 hours.
+  > Note: Although there is no SLA for the `Cooking Process`, depending on size of data inputs, the cooking process can take up to a maximum of 72 hours.
   
   IR generates logging and error reports which are written back to the ADLS account configured for use with the Modeling instance. THe logs are generated in JSON and currently no turnkey feature exists to integrate them with Azure Monitor. To address this, we recommend piping the logs through Log Analytics Agent v1.1.0-217+. The details are captured [here](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/data-sources-json). This would require provisioning an Azure VM with Log Analytics Agent installed to process and parse the logs before writing them to LA Workspace as Custom Logs. The [error logs](https://docs.microsoft.com/en-us/industry/retail/intelligent-recommendations/error-logging) track the following metrics and messages:
     - Total Record Count
     - Total Dropped Records
     - Error messages
-    -
 
     For all other services such as ADLS, ADF etc. we recommend enabling collection of Activity Logs and Diagnostic Logs which can be enabled by implementing Azure Policy.
 
@@ -363,11 +362,27 @@ The section discusses the risks and mitigation strategies:
 
 ***
 
-### HA and DR
+### High Availability and Disaster Recovery
 
-Availability SLA for an IR account and its components (Modeling Resource and Service Endpoint) was not available at the time of writing of this guidance.
+For a highly available deployment of IR, we recommend deploying at least two separate instances of IR account in a region. This must be co-located with Azure Storage and all downstream apps which will consume insights from IR for performance reasons.
 
-For the underlying storage account, we recommend best practices for Azure Storage. The rest of this section focuses on various strategies for enabling HA and DR for an IR deployment.
+> Note: For Azure Storage account (ADLS), recommendations for HA-DR are published [here](https://docs.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance).
+
+![Single region HA](./media/ha-single-region.png)
+
+> Note: The aforementioned model can also be extended to support HA across multiple regions.
+
+For DR, the above scenario can be extended to multiple regions so that services operate across multiple regions. Whilst Azure Storage ships with native in-built capabilities to failover to secondary region, IR currently does not ship with this feature. Depending on recovery targets, customers may choose to either pre-provision IR in a second region or keep it in an active standby state.
+
+As shown in the figure below, IR along with Azure Storage and application runtime environment can be deployed to a second region for high availability and DR. In this scenario, we are leveraging Azure Storage's native replication feature to copy data to secondary region. If the first region is unavailable, source system and ADF pipelines pre-provisioned in the second region will become active and start feeding input datasets to the Storage Account in the second region.
+
+![DR for IR](./media/dr_option_for_ir.png)
+
+- From DR perspective, depending on recovery target for your workload, you may choose to pre-provision a second instance of IR. This will typically be the recommended approach if your recovery target are in order of minutes or hours. In context of IR, the `Cooking Process` is the part which takes the longest. Pre-provisioning an instance of IR in a second region can address this challenge.
+
+- If RTO of your application workload is in order of days, you may choose to deploy IR in the second region **after** a disaster has been declared by your business and IT teams. Point to call out here is that the `Cooking process` will run once a Modeling Resource has been configured and this can take a few hours to complete depending on volume of input datasets. This is only recommended if your workloads have a generous RTO target.
+
+> Note: The difference between pre-provisioning IR versus provisioning IR post disaster has been declared is that the `Cooking process`, which is responsible for processing and generating recommendations, will only run once a Modeling resource has been configured and deployed.
 
 ***
 
