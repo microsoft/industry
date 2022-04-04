@@ -376,7 +376,7 @@ The Service Endpoint (SE) supports the APIs which are referenced by applications
 
 ### High Availability and Disaster Recovery
 
-For a highly available deployment of IR, we recommend deploying at least two separate instances of IR account in a region. This must be co-located with Azure Storage and all downstream apps which will consume insights from IR for performance reasons.
+For a highly available deployment of IR, we recommend deploying at least two separate instances of IR account in a region. This must be colocated with Azure Storage and all downstream apps which will consume insights from IR for performance reasons.
 
 > Note: For Azure Storage account (ADLS), recommendations for HA-DR are published [here](https://docs.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance).
 
