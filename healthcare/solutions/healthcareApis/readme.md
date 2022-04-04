@@ -1,33 +1,33 @@
-# Azure Healthcare APIs
+# Azure Health Data Services
 
-Healthcare APIs with FHIR is essential in many of the Microsoft Cloud for Healthcare scenarios, and is strongly recommended to deploy them into a landing zone in Azure to simplify and expedite the integration with Power Platform (Dataverse and Healthcare applications), and Microsoft Teams.
+Azure Health Data Services with FHIR is essential in many of the Microsoft Cloud for Healthcare scenarios, and is strongly recommended to deploy them into a landing zone in Azure to simplify and expedite the integration with Power Platform (Dataverse and Healthcare applications), and Microsoft Teams.
 
 | Industry Architecture | Description | Deploy |
 |:----------------------|:------------|--------|
-| Azure Healthcare APIs | Healthcare APIs architecture with FHIR, Dicom, IoT connectors, and requisite infrastructure that can be deployed into an existing landing zone in Azure |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
+| Azure Health Data Services | Azure Health Data Services architecture with FHIR, Dicom, IoT connectors, and requisite infrastructure that can be deployed into an existing landing zone in Azure |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
 
 ![Healthcare Industry Reference Architecture](./images/mc4h-reference-architecture.png)
 
-## Critical design areas for Healthcare APIs
+## Critical design areas for Azure Health Data Services
 
-The core of enterprise-scale architecture for Healthcare APIs contains a critical design path comprised of fundamental design topics with heavily interrelated and dependent design decisions. This repository provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the enterprise-scale architecture. For each of the design areas, review the provided considerations and recommendations and use them to structure and drive designs within each area.
+The core of enterprise-scale architecture for Azure Health Data Services contains a critical design path comprised of fundamental design topics with heavily interrelated and dependent design decisions. This repository provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the enterprise-scale architecture. For each of the design areas, review the provided considerations and recommendations and use them to structure and drive designs within each area.
 
-* [Composition of the Healthcare APIs](#Azure-Healthcare-APIs)
+* [Composition of the Azure Health Data Services](#Azure-Health-Data-Services)
 * [Access Control](#Access-Control)
 * [Data ingress and egress](#Data-ingress-and-egress)
 * [Observability and logging](#observability-and-logging)
 * [Networking](#networking)
 * [Regulatory compliance](#regulatory-compliance)
 
-### Composition of the Healthcare APIs
+### Composition of the Azure Health Data Services
 
-Azure Healthcare APIs enables rapid exchange of data through APIs, backed by a managed Platform-as-a Service (PaaS) offering in the cloud. It makes it easier for anyone working with health data to ingest, manage, and persist protected health information (PHI) in the cloud using an industry standard. The healthcare APIs consist of a workspace that enables several services such as [FHIR](https://docs.microsoft.com/azure/healthcare-apis/fhir/), [DICOM](https://docs.microsoft.com/azure/healthcare-apis/dicom/), and [IoT Connector](https://docs.microsoft.com/azure/healthcare-apis/iot/).
+Azure Health Data Services enables rapid exchange of data through APIs, backed by a managed Platform-as-a Service (PaaS) offering in the cloud. It makes it easier for anyone working with health data to ingest, manage, and persist protected health information (PHI) in the cloud using an industry standard. The Azure Health Data Services consist of a workspace that enables several services such as [FHIR](https://docs.microsoft.com/azure/healthcare-apis/fhir/), [DICOM](https://docs.microsoft.com/azure/healthcare-apis/dicom/), and [IoT Connector](https://docs.microsoft.com/azure/healthcare-apis/iot/).
 
-![Healthcare API architecture ](./images/healthcareapi.png "Healthcare API")
+![Azure Health Data Services architecture ](./images/healthcareapi.png "Azure Health Data Services")
 
-#### Healthcare API Workspace
+#### Azure Health Data Services Workspace
 
-The Healthcare API workspace is a logical construct. All your healthcare service instances, such as FHIR services, DICOM services, and IoT Connectors are deployed within the workspace. Inside the workspace you can provision one or multiple instances of the FHIR service, DICOM service or IoT Connector. The workspace can also be used as a compliance boundary for HIPAA, HITRUST, CCPA, GDPR. Each service within the workspace has its own endpoint and can share common workspace-level configurations, like keys data encryption, or RBAC. Deployment region is defined in the workspace and all services within the workspace will be hosted in that region.
+The Healthcare workspace is a logical construct. All your healthcare service instances, such as FHIR services, DICOM services, and IoT Connectors are deployed within the workspace. Inside the workspace you can provision one or multiple instances of the FHIR service, DICOM service or IoT Connector. The workspace can also be used as a compliance boundary for HIPAA, HITRUST, CCPA, GDPR. Each service within the workspace has its own endpoint and can share common workspace-level configurations, like keys data encryption, or RBAC. Deployment region is defined in the workspace and all services within the workspace will be hosted in that region.
 
 #### FHIR Service
 
@@ -58,7 +58,7 @@ The recommended way to configure access control is using Azure role-based access
 
 #### Data ingress
 
-Ingesting data into the Azure Healthcare services for FHIR or DICOM is performed in an ETL/ELT or using the IoT Connector. Pulling data from the source system and converting if required.
+Ingesting data into the Azure Health Data Services for FHIR or DICOM is performed in an ETL/ELT or using the IoT Connector. Pulling data from the source system and converting if required.
 
 > FHIR Converter and Loader are released under MIT License and are not supported by Microsoft Support.
 
@@ -102,25 +102,25 @@ The $export command can also be used to export de-identified data from the FHIR 
 
 ### Observability and logging
 
-Having access to diagnostic logs is essential for monitoring a service and providing compliance reports. Azure API for FHIR allows you to do these actions through diagnostic logs. Access to diagnostic logs is  a compliance requirement with regulatory such as HIPAA. Diagnostic settings are applied as part of the service deployment. Log data is streamed to the Log Analytics workspace in Azure Monitor.
+Having access to diagnostic logs is essential for monitoring a service and providing compliance reports. Azure Health Data Services for FHIR allows you to do these actions through diagnostic logs. Access to diagnostic logs is  a compliance requirement with regulatory such as HIPAA. Diagnostic settings are applied as part of the service deployment. Log data is streamed to the Log Analytics workspace in Azure Monitor.
 
 ### Networking
 
-Please note that [Azure Private Link](https://docs.microsoft.com/azure/private-link/) is currently not available for the Healthcare API FHIR service.
+Please note that [Azure Private Link](https://docs.microsoft.com/azure/private-link/) is currently not available for the Azure Health Data FHIR service.
 
 ### Regulatory compliance
 
-Please refer to the this page for regulatory compliance in the Healthcare API's: [Compliance in Microsoft Cloud for Healthcare](https://docs.microsoft.com/en-us/industry/healthcare/compliance-overview)
+Please refer to the this page for regulatory compliance in the Azure Health Data Services: [Compliance in Microsoft Cloud for Healthcare](https://docs.microsoft.com/en-us/industry/healthcare/compliance-overview)
 
 ## Deployment instructions
 
-Click this button to deploy the reference implementation for Healthcare APIs, and sign into your Azure tenant.
+Click this button to deploy the reference implementation for Azure Health Data Services, and sign into your Azure tenant.
 
 [![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
 
-The deployment requires you to select the subscription you will create the Healthcare APIs into, and a location.
+The deployment requires you to select the subscription you will create the Azure Health Data Services into, and a location.
 
-Once provided, navigate to the Healthcare APIs configuration tab, and provide inputs for the following:
+Once provided, navigate to the Azure Health Data Services configuration tab, and provide inputs for the following:
 
 * Resource group name. A resource group will be created to logically group all the Healthcare APIs resources and additional infrastructure, such as monitoring, storage accounts, managed identities etc.
 
