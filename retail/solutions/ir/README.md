@@ -182,7 +182,7 @@ For Azure RBAC, unless you have specific security and access control requirement
 
 For automation, we recommend using AAD Managed Identity (MI) and assigning them appropriate Azure RBAC to for operational tasks. It's common to use multiple MI to control the blast radius and assign MI to each individual instance of IR.
 
-For **data plane** access, we have apps which consume data from IR using Service Endpoints. This is enabled and controlled by `Endpoint Authentication` feature of IR which is configured at IR Account level. It is backed by Azure AD (AAD). Once configured, by default, it allows all accounts to read all of the data plane REST APIs belonging to that IR account. 
+For **data plane** access, we have apps which consume data from IR using Service Endpoints. This is enabled and controlled by `Endpoint Authentication` feature of IR which is configured at IR Account level. It is backed by Azure AD (AAD). Once configured, by default, it allows all accounts to read all of the data plane REST APIs belonging to that IR account.
 
 The figure below shows the hierarchy of an IR account and the access flow from external application perspective. External applications (A) will use AAD-backed identity to get an access token from Azure Identity Platform. The access token is then used to access the Service Endpoints (D) and Modeling Resources (E).
 
@@ -217,7 +217,7 @@ As with other Azure services, we recommend using IaC approach to deploying and m
 
 > Note: At the time of writing this document, IR doesn't ship with Bicep support. This may become available at a point in time in future.
 
-> Note: IR, just like any other Azure-based resource, supports ARM however, at the time of writing of this documentation, the `Export template` experience from Azure Portal is not supported.
+IR, just like any other Azure-based resource, supports ARM however, at the time of writing of this documentation, the `Export template` experience from Azure Portal is not supported.
 
 ***Model Management and MLOps***
 
@@ -348,7 +348,7 @@ As discussed earlier, data plane access to Modeling Endpoint is configured at IR
 - Access to the control plane for a Modeling Endpoint is configured by Azure RBAC.
 - Access to the data plane for a Modeling Endpoint is configured via Endpoint Authentication configured at IR account level.
 - We recommend organisations to review the input datasets which IR relies upon for building recommendations and then assign an appropriate security risk rating to an IR deployment.
-- An external application interacts with Modeling Endpoint via a set of [REST APIs](https://docs.microsoft.com/en-us/rest/api/industry/intelligent-recommendations/). As such, security risks associated with REST APIs must be considered for Modeling Endpoints. 
+- An external application interacts with Modeling Endpoint via a set of [REST APIs](https://docs.microsoft.com/en-us/rest/api/industry/intelligent-recommendations/). As such, security risks associated with REST APIs must be considered for Modeling Endpoints.
 
 Here are the top risks and a commentary on how these are addressed:
   
