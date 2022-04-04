@@ -223,9 +223,9 @@ As with other Azure services, we recommend using IaC approach to deploying and m
 
 MLOps is a relatively new trend and it is targeted at data scientists similar to what DevOps does for developers and engineers. This section highlights key areas of MLOps and how they apply to Intelligent Recommendations (IR).
 
-> Note: A key thing to remember here is that IR is a PaaS which means that a large surface area associated with general technical operations and model management are obfuscated from end-users. As a result, some aspects of MLOps do not apply to IR.
+> Note: A key thing to remember here is that IR is a PaaS which means that a large surface area associated with general technical operations and model management are obfuscated from end users. As a result, some aspects of MLOps do not apply to IR.
 
-- **Source Control** The code behind models used for recommendations is not accessible to end-users or customers. However, customers can experiment by modifiying data entities and their attributes defined in `model.json` file. The changes committed to `model.json` can be tracked via version control such as Azure DevOps Repo or GitHub.
+- **Source Control** The code behind models used for recommendations is not accessible to end users or customers. However, customers can experiment by modifiying data entities and their attributes defined in `model.json` file. The changes committed to `model.json` can be tracked via version control.
 
 - Following aspects of MLOps are managed by Microsoft:
   - Training pipeline
