@@ -20,11 +20,9 @@ This guide goes through the details of the reference implementation of a set of 
   - [Management Group Structure](#management-group-structure)
   - [What happens when you deploy the reference implementation?](#what-happens-when-you-deploy-the-reference-implementation)
   - [Deployment instructions](#deployment-instructions)
-  - [Prerequisites](#prerequisites)
-    - [Azure](#azure)
+    - [**Azure**](#azure)
       - [Elevate Access to manage Azure resources in the directory](#elevate-access-to-manage-azure-resources-in-the-directory)
     - [Microsoft Solution Center](#microsoft-solution-center)
-  - [Deployment instructions](#deployment-instructions-1)
     - [Deploy Azure resources](#deploy-azure-resources)
     - [Enable MCR products and services via Microsoft Solution Center](#enable-mcr-products-and-services-via-microsoft-solution-center)
 
@@ -170,7 +168,7 @@ By default, all recommended settings and resources recommendations are enabled a
 
 - Landing zone subscriptions for **retail** for regulated retail applications and resources.
 - Azure Policies for retail landing zones, which include:
-  - Enable particular regulatory compliance, such as FedRAMP Medium, FedRAMP High, or HIPAA/HITRUST. This will enable at-scale compliance reporting for all your retail application and resources.
+  - Enable particular regulatory compliance, such as PCI DSS. This will enable at-scale compliance reporting for all your retail application and resources.
 
 - Landing zone subscriptions for **Corp** connected applications and resources, including a virtual network that will be connected to the hub via VNet peering.
 - Azure Policies for online and corp-connected landing zones, which include:
