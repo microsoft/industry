@@ -48,6 +48,10 @@ For **Azure based services**, we recommend adhering to Cloud Adoption Framework 
 
 Subscriptions should be used as a unit of management and scale aligned with business needs and priorities to support business areas and portfolio owners to accelerate application migrations and new application development. Subscriptions should be provided to business units to support the design, development, and testing and deployment of new workloads and migration of existing workloads.
 
+For the reference implementation we are using function strategy for subscription and MG layout.
+
+> Note: There are several strategies for defining and organizing subscriptions and management groups which are documented [here](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/decision-guides/subscriptions/).
+
 ### Policy Driven Governance
 
 Azure Policy should be used to provide guardrails and ensure continued compliance with your organization's platform, along with the applications deployed onto it. Azure Policy also provides application owners with sufficient freedom and a secure unhindered path to the cloud.
@@ -120,6 +124,8 @@ The Management Group structure implemented is as follows:
 - **Sandboxes:** This is the dedicated Management Group for subscriptions that will solely be used for testing and exploration by an organization’s application teams. These subscriptions will be securely disconnected from the Corp and Online landing zones.
 - **Decommissioned:** This is the dedicated Management Group for landing zones that are being cancelled, which then will be moved to this Management Group before deleted by Azure after 30-60 days.
 
+> Note: Azure Enterprise Scale Landing Zones (ESLZ) uses Subscription as a unit of scale and management boundary. We recommend instantiating as many Subscriptions as required to meet the scale requirements. However, with large number of subscriptions, structuring and layout of Management Group (MG) becomes important as they will predicate how policies are structured. Goal is to structure MG in a way that the policies which have a large surface area are applied at higher levels of hierarchy with policies with smaller more specific applications get applied at a lower levels of hierarchy.
+
 ## What happens when you deploy the reference implementation?
 
 By default, all recommended settings and resources recommendations are enabled and deployed, and you must explicitly disable them if you don't want them to be deployed and configured. These resources and configurations include:
@@ -183,15 +189,18 @@ By default, all recommended settings and resources recommendations are enabled a
 
 ## Deployment instructions
 
-*Details coming soon*
+The end-to-end deployment spans two parts of Microsoft cloud:
 
-## Prerequisites
+- Azure
+- Microsoft Solution Center
 
-There are two distinct parts of the deployment - Azure and Solution Center.
+> Note - The steps documented here have been tested on Azure public cloud. There may be some steps which may not be applicable to Azure Sovereign cloud.
 
-### Azure
+### **Azure**
 
 The user making the deployment requires the "Owner" permission at the Azure tenant root scope. The following instructions explains how a Global Admin in the Azure Active Directory can elevate a role to the appropriate permissions prior to starting the deployment.
+
+> Note - This privilege is required to bootstrap Azure environment.
 
 The pre-requisites requires the following:
 
@@ -240,15 +249,15 @@ $user = Get-AzADUser -UserPrincipalName (Get-AzContext).Account
 New-AzRoleAssignment -Scope '/' -RoleDefinitionName 'Owner' -ObjectId $user.Id
 ```
 
-> Please note: it can take up to 15 minutes for permission to propagate at tenant root scope. It is therefore recommended that you log out and log back in to refresh the token before you proceed with the deployment.*
+> Note: It can take up to 15 minutes for permission to propagate at tenant root scope. It is therefore recommended that you log out and log back in to refresh the token before you proceed with the deployment.*
 
 ### Microsoft Solution Center
+
+To deploy Microsoft Cloud for Retail capabilities, following are required:
 
 - You must have a Microsoft account.
 - You must be a Microsoft Power Platform admin, Dynamics 365 admin, or a tenant admin.
 - You must have licenses for the solutions and apps you’re deploying. If your organization doesn't have the necessary licenses, you’ll be notified during the deployment process.
-
-## Deployment instructions
 
 ### Deploy Azure resources
 
