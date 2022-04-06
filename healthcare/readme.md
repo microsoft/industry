@@ -4,21 +4,23 @@ This article provides a reference architecture with prescriptive guidance and re
 
 ## Table of Contents
 
-- [Azure for Healthcare Reference Implementations](#azure-for-healthcare-reference-implementations)
-- [Azure for Healthcare Reference Architecture](#azure-for-healthcare-reference-architecture)
-- [Regulatory Compliance](#regulatory-compliance)
-- [Architecture composition](#architecture-composition)
-  - [Healthcare Landing Zones](#healthcare-landing-zones)
-  - [Azure Healthcare API](#azure-healthcare-api)
-  - [Healthcare Analytics](#healthcare-analytics)
+- [Azure for Healthcare](#azure-for-healthcare)
+  - [Table of Contents](#table-of-contents)
+  - [Azure for Healthcare Reference Implementations](#azure-for-healthcare-reference-implementations)
+  - [Azure for Healthcare Reference Architecture](#azure-for-healthcare-reference-architecture)
+  - [Regulatory Compliance](#regulatory-compliance)
+  - [Architecture composition](#architecture-composition)
+    - [Healthcare Landing Zones](#healthcare-landing-zones)
+    - [Azure Health Data Services](#azure-health-data-services)
+    - [Healthcare Analytics](#healthcare-analytics)
 
 ## Azure for Healthcare Reference Implementations
 
 | Industry Architecture | Description | Deploy | Documentation
 |:----------------------|:------------|--------|--------------|
 | Azure for Healthcare | Azure for Healthcare foundation that provides a full, rich, compliant architecture which caters for highly regulated landing zones for Healthcare industry scenarios |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afhRI) | [User Guide](./referenceImplementation/readme.md)
-| Azure Healthcare APIs | Reference implementation for Healthcare APIs |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afhApis) | [User Guide](./solutions/healthcareApis)
-| Healthcare Analytics | Reference implementation for data and analytics specifically for Healthcare industry |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afhAnalytics) | [User Guide](./solutions/clinicalAnalytics)
+| Azure Azure Health Data Services | Reference implementation for Azure Health Data Services |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/mcfh/api) | [User Guide](./solutions/healthcareApis)
+| Healthcare Analytics | Reference implementation for data and analytics specifically for Healthcare industry |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/mcfh/analytics) | [User Guide](./solutions/clinicalAnalytics)
 
 ## Azure for Healthcare Reference Architecture
 
@@ -45,7 +47,7 @@ Audit reports can be found here: [Azure & O365 Audit Reports](https://servicetru
 
 ## Architecture composition
 
-The composition of the end to end Microsoft Cloud For Healthcare deployment is layered in a set of steps. This gives you flexibility with deploying the relevant components and allow for different teams in the organization to be responsible for deployment and continuous ownership of additional development, configuration and maintenance needs. In the overall architecture for Microsoft Cloud for Healthcare, the Healthcare APIs components enable organizations to use standards based data models e.g. Fast Healthcare Interoperability Resources (FHIR) standards frameworks and Dicom image library.
+The composition of the end to end Microsoft Cloud For Healthcare deployment is layered in a set of steps. This gives you flexibility with deploying the relevant components and allow for different teams in the organization to be responsible for deployment and continuous ownership of additional development, configuration and maintenance needs. In the overall architecture for Microsoft Cloud for Healthcare, the Azure Health Data Services enable organizations to use standards based data models e.g. Fast Healthcare Interoperability Resources (FHIR) standards frameworks and Dicom image library.
 
 ### Healthcare Landing Zones
 
@@ -53,17 +55,17 @@ The composition of the end to end Microsoft Cloud For Healthcare deployment is l
 
 The architecture in the Healthcare Industry reference implementation establishes the essentials for a scalable, secure environment following the compliance requirements of the industry globally.
 
-### Azure Healthcare APIs
+### Azure Health Data Services
 
-- [Azure Healthcare API](./solutions/healthcareApis/readme.md)
+- [Azure Health Data Services](./solutions/healthcareApis/readme.md)
 
-Building on the secure foundation established in Healthcare Landing Zone an essential part of a healthcare cloud environment are the Azure Healthcare API's.
+Building on the secure foundation established in Healthcare Landing Zone an essential part of a healthcare cloud environment are the API's for Azure Health Data Services.
 
 ### Healthcare Analytics
 
 - [Healthcare Analytics](./solutions/clinicalAnalytics/readme.md)
   
-The solution for Healthcare Analytics will harness data and discover insights to deliver value. In this guidance we show how you can persist data in the Healthcare API, export de-identified data to an analytical store, enable large scale analytical query capabilities and leverage insights from AI assisted imaging analysis and population health metrics to determine course of care. The analytical solution enable you to search through large amounts of data from sources like electronic medical records, smart medical devices, patient and population demographics, and the public domain to find hidden patterns and trends and predict outcomes.
+The solution for Healthcare Analytics will harness data and discover insights to deliver value. In this guidance we show how you can persist data in the Azure Health Data Services, export de-identified data to an analytical store, enable large scale analytical query capabilities and leverage insights from AI assisted imaging analysis and population health metrics to determine course of care. The analytical solution enable you to search through large amounts of data from sources like electronic medical records, smart medical devices, patient and population demographics, and the public domain to find hidden patterns and trends and predict outcomes.
 
 ---
 
