@@ -11,15 +11,14 @@ This user guide explains the North Star Landing Zones for Power Platform referen
   - [Separating platform and landing zones](#separating-platform-and-landing-zones)
     - [Platform responsibilities and functions](#platform-responsibilities-and-functions)
     - [Landing zone owners responsibilities](#landing-zone-owners-responsibilities)
-  - [North Star Architecture Governance Structure](#north-star-architecture-governance-structure)
-  - [What happens when you deploy North Star Landing Zones Architecture](#what-happens-when-you-deploy-north-star-landing-zones)
+  - [What happens when you deploy North Star Landing Zones](#what-happens-when-you-deploy-north-star-landing-zones)
 - [Deployment instructions](#deployment-instructions)
   - [Pre-requisites](#pre-requisites)
   - [Step-by-step guidance](#step-by-step-guidance)
 
 ---
 
-![North Star Architecture](../images/architecture.png)
+![North Star Architecture](../images/landingzone.png)
 
 ## What is North Star Landing Zones reference implementation?
 
@@ -33,21 +32,9 @@ There's no cost associated with the reference implementation itself, besides req
 
 North Star Landing Zones for Power Platform is designed to meet organizations where they are, whether there's already usage of Power Platform, or if it is a net new deployment. Additional guidance for existing customers will be provided at a later stage.
 
-## How North Star Architecture reference implementation works
+## How North Star Landing Zones reference implementation works
 
 This section describes at a high-level how North Star Landing Zones reference implementation works. The landing zones created are the output of a multi-environment setup for the platform which will account for compliance, guardrails, security, connectivity and interoperability, and identity, at scale.
-
-## Separating platform and landing zones
-
-One of the key tenets of North Star Architecture is to have a clear separation of the Power *Platform* and the *landing zones*. This allows organizations to scale their architecture and deployment alongside with their business requirements, while providing autonomy to the citizen and professional develops for deploying and doing net-new development into their landing zones. This model fully supports application autonomy and distinguish between central and federated functions.
-
-## Platform responsibilities and functions
-
-Platform resources and shared capabilities should ideally be managed by a cross-functional platform team. The team consists mainly out of the following functions. These functions working in close collaboration with the SME functions across the organization:
-
-- PlatformOps: Responsible for management and deployment of the overall platform, such as Environments, Data-loss prevention policies, billing policies, tenant settings, and related identity resources on Azure AD and cost management for the platform.
-- SecOps: Responsible for definition and management of overall policies and IAM permissions on the platform. Security operations includes monitoring and the definition and the operation of reporting and auditing.
-- NetOps: Definition and management of the common networking components and integration from on-premises and Azure to Power Platform.
 
 ## Landing zone owners responsibilities
 
@@ -59,7 +46,7 @@ The deployment will allow you to create Landing Zones for citizen developers and
 
 ## Deployment instructions
 
-  This section will describe how to deploy the North Star Architecture reference implementation.
+This section will describe how to deploy the North Star Architecture reference implementation.
 
 ### Pre-requisites
 
@@ -89,7 +76,7 @@ Register-PowerOpsAdminApplication -ClientId $clientId
 
 ### Deployment Setup
 
-The first tab in the experience is where you configure the Deployment Setup. Provide the User Managed Identity you created in the pre-requisites, as this identity will be used to bootstrap and configure the Power Platform.
+The first tab in the experience is where you configure the Deployment Setup. Provide the User Managed Identity you created in the pre-requisites, as this identity will be used to bootstrap and configure the Power Platform landing zones.
 Also, a subscription is required in order to place the deployment that is being created, targeting an Azure region.
 
 Optionally you can select if the subscription provided at this step should be used for all the Azure services that you will create as part of th deployment.
@@ -98,15 +85,7 @@ Optionally you can select if the subscription provided at this step should be us
 
 ### Landing Zones
 
-Once you have configured the previous tabs, you have effectively configure the **platform** side of the setup. On the **Landing Zones** tab, this is where you will configure and create the Environments that will be used as landing zones for your organization's citizen and professional developers.
-
-- **Default environment**
-
-You can optionally rename the Default Environment in your tenant so the intent of this Environment is clear for all users with an assigned license, which will have access.
-
-It is also recommended to further restrict what connectors can be used here, by assigning a dedicated DLP policy scoped to the Default Environment only.
-
-![Default Environment](../images/8lzdefault.PNG)
+On the **Landing Zones** tab, you will configure and create the Environments that will be used as landing zones for your organization's citizen and professional developers.
 
 - **Landing Zones for citizen developers**
 
