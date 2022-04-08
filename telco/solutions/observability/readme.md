@@ -167,11 +167,19 @@ _Table 1: Observability Landing Zones depending on the network connectivity mode
 
 | Reference implementation  | Description  | Deploy  |
 |--- |--- |--- |
-| Observability Landing Zone for Operators  | Observability landing zone for operators with required infrastructure for data ingestion into an Azure storage service and ready for deployment of an analytics solution.   | User guide (coming soon)  |
+| Observability Landing Zone for Operators  | Observability landing zone for operators with required infrastructure for data ingestion into an Azure storage service and ready for deployment of storage services (such as ADLS Gen2) an analytics solutions (such as Azure Synapse).   | User guide (coming soon)  |
 
-This reference implementation allows landing zone owners to deploy observability landing zones for operators. Figure 5 below depicts a sample observability landing zone for operators deployed by using the ExpressRoute with Microsoft Peering connectivity model.
+This reference implementation is intended for landing zone owners for them to deploy observability landing zones for operators. This reference implementation allows the deployment of observability landing zones for operators using two network connectiviity models:
 
-![afoObservabilityLZ](./images/afo-observability-lz.png)
+- ExpressRoute with Microsoft Peering (as depicted in figure 5 below).
+
+![afoObservabilityLZMSFT](./images/afo-observability-lz-er-msft.png)
+
+_Figure 5: Observability Landing Zones for Operator with ExpressRoute Microsoft Peering_
+
+- ExpressRoute with Private Peering (as depicted in figure 6 below).
+
+![afoObservabilityLZPP](./images/afo-observability-lz-er-pp.png)
 
 _Figure 5: Observability Landing Zones for Operator with ExpressRoute Microsoft Peering_
 
