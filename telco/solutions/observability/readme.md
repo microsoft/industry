@@ -16,7 +16,7 @@ This article provides design considerations and recommendations for observabilit
 
 ## Networking options
 
-It is essential to define the network connectivity model to be used for the observability landing zone for operators, as it will provide the connectivity required to allow you to ingest (potentially) large amounts of data from your on-premises network into an Azure storage service. 
+It is essential to define the network connectivity model to be used for the observability landing zone for operators, as it will provide the connectivity required to allow you to ingest (potentially) large amounts of data from your on-premises network into an Azure storage service.
 
 While there are many multiple ways to connect an on-premises network to a landing zone in Azure, this section provides design considerations and recommendations to help you define the right network connectivity model for based on your scenarios and requirements. The following table summarizes the network connectivity options available:
 
@@ -183,7 +183,7 @@ _Figure 5: Observability Landing Zones for Operator with ExpressRoute Microsoft 
 
 _Figure 6: Observability Landing Zones for Operator with ExpressRoute Microsoft Peering_
 
-As figures 5 and 6 depict, the Observability Landing Zones reference implementation deploys and configures several Azure resources. The list of resources are described in table 2 below along with a description. Once the Observability Landing Zones reference implementation deploys those resources, the landing zone is ready for the deployment of Azure storage and Azure analytical services that you would require for your own environment. 
+As figures 5 and 6 depict, the Observability Landing Zones reference implementation deploys and configures several Azure resources. The list of resources are described in table 2 below along with a description. Once the Observability Landing Zones reference implementation deploys those resources, the landing zone is ready for the deployment of Azure storage and Azure analytical services that you would require for your own environment.
 
 Table 2 below also provides links to the deployment guides which include step-by-step deployment instructions for your observability landing zone. Table 2 also provides links to the observability solution accelerator to help you deploy and configure data and analitical services in your landing zone.
 
