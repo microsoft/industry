@@ -1,0 +1,354 @@
+/*
+    North Star Landing Zones for Power Platform ARM template.
+    This template will in concert with the portal extension provision and bootstrap Landing Zones into your North Star Architecture Power Platform tenant.
+*/
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "ppIdentity": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the resourceId of the User Managed Identity."
+            }
+        },
+        "ppCitizen": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "half",
+                "no",
+                "custom"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select environment type. Yes will enable with Dataverse, Half will create without Dataverse."
+            }
+        },
+        "ppCitizenCount": {
+            "type": "int",
+            "maxValue": 200,
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Select how many environments for citizen dev to be created."
+            }
+        },
+        "ppCitizenNaming": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide naming convention for the citizen dev environments."
+            }
+        },
+        "ppCitizenRegion": {
+            "type": "string",
+            "allowedValues": [
+                "europe",
+                "unitedstates",
+                "asia",
+                "japan",
+                "india",
+                "canada",
+                "southamerica",
+                "unitedkingdom",
+                "france",
+                "germany",
+                "unitedarabemirates"
+            ],
+            "defaultValue": "unitedstates",
+            "metadata": {
+                "description": "Provide location for the Admin environments."
+            }
+        },
+        "ppPro": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "half",
+                "no",
+                "custom"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select environment type. Yes will enable with Dataverse, Half will create without Dataverse."
+            }
+        },
+        "ppProCount": {
+            "type": "int",
+            "maxValue": 200,
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Select how many environments for pro dev to be created."
+            }
+        },
+        "ppProNaming": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide naming convention for the pro dev environments."
+            }
+        },
+        "ppProRegion": {
+            "type": "string",
+            "allowedValues": [
+                "europe",
+                "unitedstates",
+                "asia",
+                "japan",
+                "india",
+                "canada",
+                "southamerica",
+                "unitedkingdom",
+                "france",
+                "germany",
+                "unitedarabemirates"
+            ],
+            "defaultValue": "unitedstates",
+            "metadata": {
+                "description": "Provide location for the pro dev environments."
+            }
+        },
+        "ppSelectIndustry": {
+            "type": "string",
+            "allowedValues": [
+                "healthcare",
+                "fsi",
+                "retail",
+                "none"
+            ],
+            "defaultValue": "none",
+            "metadata": {
+                "description": "Select if your specific industry to enable in the industry environments."
+            }
+        },
+        "ppIndustryNaming": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide naming convention for the industry environments."
+            }
+        },
+        "ppIndustryRegion": {
+            "type": "string",
+            "allowedValues": [
+                "europe",
+                "unitedstates",
+                "asia",
+                "japan",
+                "india",
+                "canada",
+                "southamerica",
+                "unitedkingdom",
+                "france",
+                "germany"
+            ],
+            "defaultValue": "unitedstates",
+            "metadata": {
+                "description": "Provide location for the pro dev environments."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[deployment().location]",
+            "metadata": {
+                "description": "Provide the Azure location for the deployments"
+            }
+        },
+        "ppCitizenAlm": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if dedicated environments for Development, Test, and Production should be created for each landing zone"
+            }
+        },
+        "ppProAlm": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if dedicated environments for Development, Test, and Production should be created for each landing zone"
+            }
+        },
+        "ppIndustryAlm": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if dedicated environments for Development, Test, and Production should be created for each landing zone"
+            }
+        },
+        "ppCitizenConfiguration": {
+            "type": "string",
+            "defaulValue": "",
+            "metadata": {
+                "description": "Provide strings for custom citizen Environment creation."
+            }
+        },
+        "ppProConfiguration": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide strings for custom pro Environment creation."
+            }
+        },
+        "ppCitizenLanguage": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select language for the environments."
+            }
+        },
+        "ppCitizenCurrency": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select the currency for the environments."
+            }
+        },
+        "ppCitizenDescription": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide description for the environments."
+            }
+        },
+        "ppProLanguage": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select language for the environments."
+            }
+        },
+        "ppProCurrency": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select the currency for the environments."
+            }
+        },
+        "ppProDescription": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide description for the environments."
+            }
+        }
+    },
+    "variables": {
+        "deploymentUris": {
+            "northStarTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/powerPlatform/ppDeploymentScript.json')]"
+        },
+        "deploymentNamePrefix": "[concat(replace(tenant().displayName, ' ', ''), '-')]",
+        "deploymentNameSuffix": "[concat('-', deployment().location, guid(parameters('ppCitizenNaming')))]",
+        "deploymentNames": {
+            "northStarDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-Setup', variables('deploymentNameSuffix')), 64)]"
+        },
+        "resourceNamePrefix": "North-Star",
+        // Declaring deterministic names for platform resources that will be created
+        "emptyString": "''"
+    },
+    "resources": [
+        {
+            // Deploying the North Star Power Platform script
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').northStarDeploymentName]",
+            "location": "[deployment().location]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').northStarTemplateUri]"
+                },
+                "parameters": {
+                    "ppIdentity": {
+                        "value": "[parameters('ppIdentity')]"
+                    },
+                    "ppCitizenAlm": {
+                        "value": "[parameters('ppCitizenAlm')]"
+                    },
+                    "ppProAlm": {
+                        "value": "[parameters('ppProAlm')]"
+                    },
+                    "ppIndustryAlm": {
+                        "value": "[parameters('ppIndustryAlm')]"
+                    },                    
+                    "ppCitizen": {
+                        "value": "[parameters('ppCitizen')]"
+                    },
+                    "ppCitizenCount": {
+                        "value": "[parameters('ppCitizenCount')]"
+                    },
+                    "ppCitizenNaming": {
+                        "value": "[if(empty(parameters('ppCitizenNaming')), variables('emptyString'), parameters('ppCitizenNaming'))]"
+                    },
+                    "ppCitizenRegion": {
+                        "value": "[parameters('ppCitizenRegion')]"
+                    },
+                    "ppPro": {
+                        "value": "[parameters('ppPro')]"
+                    },
+                    "ppProNaming": {
+                        "value": "[if(empty(parameters('ppProNaming')), variables('emptyString'), parameters('ppProNaming'))]"
+                    },
+                    "ppProCount": {
+                        "value": "[parameters('ppProCount')]"
+                    },
+                    "ppProRegion": {
+                        "value": "[parameters('ppProRegion')]"
+                    },
+                    "ppSelectIndustry": {
+                        "value": "[parameters('ppSelectIndustry')]"
+                    },
+                    "ppIndustryNaming": {
+                        "value": "[if(empty(parameters('ppIndustryNaming')), variables('emptyString'), parameters('ppIndustryNaming'))]"
+                    },
+                    "ppIndustryRegion": {
+                        "value": "[parameters('ppIndustryRegion')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "rgName": {
+                        "value": "[concat(variables('resourceNamePrefix'), '-setup-', parameters('location'))]"
+                    },
+                    "ppCitizenConfiguration": {
+                        "value": "[if(empty(parameters('ppCitizenConfiguration')), variables('emptyString'), parameters('ppCitizenConfiguration'))]"
+                    },
+                    "ppProConfiguration": {
+                        "value": "[if(empty(parameters('ppProConfiguration')), variables('emptyString'), parameters('ppProConfiguration'))]"
+                    },
+                    "ppCitizenDescription": {
+                        "value": "[if(empty(parameters('ppCitizenDescription')), variables('emptyString'), parameters('ppCitizenDescription'))]"
+                    },
+                    "ppCitizenLanguage": {
+                        "value": "[if(empty(parameters('ppCitizenLanguage')), variables('emptyString'), parameters('ppCitizenLanguage'))]"
+                    },
+                    "ppCitizenCurrency": {
+                        "value": "[if(empty(parameters('ppCitizenCurrency')), variables('emptyString'), parameters('ppCitizenCurrency'))]"
+                    },
+                    "ppProDescription": {
+                        "value": "[if(empty(parameters('ppProDescription')), variables('emptyString'), parameters('ppProDescription'))]"
+                    },
+                    "ppProLanguage": {
+                        "value": "[if(empty(parameters('ppProLanguage')), variables('emptyString'), parameters('ppProLanguage'))]"
+                    },
+                    "ppProCurrency": {
+                        "value": "[if(empty(parameters('ppProCurrency')), variables('emptyString'), parameters('ppProCurrency'))]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
