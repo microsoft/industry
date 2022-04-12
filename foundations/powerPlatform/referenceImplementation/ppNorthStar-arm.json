@@ -317,25 +317,6 @@
                 "description": "Provide naming convention for the industry environments."
             }
         },
-        "ppIndustryRegion": {
-            "type": "string",
-            "allowedValues": [
-                "europe",
-                "unitedstates",
-                "asia",
-                "japan",
-                "india",
-                "canada",
-                "southamerica",
-                "unitedkingdom",
-                "france",
-                "germany"
-            ],
-            "defaultValue": "unitedstates",
-            "metadata": {
-                "description": "Provide location for the pro dev environments."
-            }
-        },
         "ppIndustryBilling": {
             "type": "string",
             "defaultValue": "",
@@ -627,9 +608,6 @@
                     },
                     "ppIndustryNaming": {
                         "value": "[if(empty(parameters('ppIndustryNaming')), variables('emptyString'), parameters('ppIndustryNaming'))]"
-                    },
-                    "ppIndustryRegion": {
-                        "value": "[parameters('ppIndustryRegion')]"
                     },
                     "ppIndustryBilling": {
                         "value": "[if(empty(parameters('ppIndustryBilling')), variables('emptyString'), parameters('ppIndustryBilling'))]"

@@ -3462,64 +3462,6 @@
                             "visible": "[not(equals(steps('landingZones').ppIndustry, 'no'))]"
                         },
                         {
-                            "name": "ppIndustryRegion",
-                            "type": "Microsoft.Common.DropDown",
-                            "label": "Select region for the new Environments for the industry clouds",
-                            "placeholder": "",
-                            "defaultValue": "",
-                            "toolTip": "",
-                            "visible": "[equals(steps('landingZones').ppIndustry, 'yes')]",
-                            "constraints": {
-                                "allowedValues": [
-                                    {
-                                        "label": "Europe",
-                                        "value": "europe"
-                                    },
-                                    {
-                                        "label": "United States",
-                                        "value": "unitedstates"
-                                    },
-                                    {
-                                        "label": "United Arab Emirates",
-                                        "value": "unitedarabemirates"
-                                    },
-                                    {
-                                        "label": "Asia",
-                                        "value": "asia"
-                                    },
-                                    {
-                                        "label": "India",
-                                        "value": "india"
-                                    },
-                                    {
-                                        "label": "Japan",
-                                        "value": "japan"
-                                    },
-                                    {
-                                        "label": "France",
-                                        "value": "france"
-                                    },
-                                    {
-                                        "label": "Germany",
-                                        "value": "germany"
-                                    },
-                                    {
-                                        "label": "Australia",
-                                        "value": "australia"
-                                    },
-                                    {
-                                        "label": "Canada",
-                                        "value": "canada"
-                                    },
-                                    {
-                                        "label": "South America",
-                                        "value": "southamerica"
-                                    }
-                                ],
-                                "required": true
-                            }
-                        },
-                        {
                             "name": "ppIndustryAlm",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Create Development, Test, and Production environments for each landing zone",
@@ -3566,7 +3508,6 @@
                 "ppProRegion": "[steps('landingZones').ppProRegion]",
                 "ppSelectIndustry": "[steps('landingZones').ppSelectIndustry]",
                 "ppIndustryNaming": "[steps('landingZones').ppIndustryNaming]",
-                "ppIndustryRegion": "[steps('landingZones').ppIndustryRegion]",
                 "ppIndustryAlm": "[steps('landingZones').ppIndustryAlm]"
             },
             "kind": "Subscription",
