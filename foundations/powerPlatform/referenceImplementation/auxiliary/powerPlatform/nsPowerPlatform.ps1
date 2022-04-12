@@ -257,18 +257,20 @@ if ($PPTenantIsolationSetting -in 'inbound', 'outbound', 'both') {
 #endregion set tenant settings
 
 #region default environment
-# Rename default environment
+# Get default environment
+# Retry logic to handle green field deployments
+$defaultEnvAttempts = 0
+do {
+    $defaultEnvAttempts++
+    $defaultEnvironment = Get-PowerOpsEnvironment | Where-Object { $_.Properties.environmentSku -eq "Default" }
+    if (-not ($defaultEnvironment)) {
+        Write-Host "Getting default environment - attempt $defaultEnvAttempts"
+        Start-Sleep -Seconds 15
+    }
+} until ($defaultEnvironment -or $defaultEnvAttempts -eq 15)
+
+# Rename default environment if parameter provided
 if (-not [string]::IsNullOrEmpty($PPDefaultRenameText)) {
-    # Retry logic to handle green field deployments
-    $defaultEnvAttempts = 0
-    do {
-        $defaultEnvAttempts++
-        $defaultEnvironment = Get-PowerOpsEnvironment | Where-Object { $_.Properties.environmentSku -eq "Default" }
-        if (-not ($defaultEnvironment)) {
-            Write-Host "Getting default environment - attempt $defaultEnvAttempts"
-            Start-Sleep -Seconds 15
-        }
-    } until ($defaultEnvironment -or $defaultEnvAttempts -eq 15)
     # Get old default environment name
     $oldDefaultName = $defaultEnvironment.properties.displayName
     if ($PPDefaultRenameText -ne $oldDefaultName) {
@@ -459,21 +461,28 @@ if ($PPPro -in "yes", "half" -and $PPProCount -ge 1 -or $PPPro -eq 'custom') {
 if (-not[string]::IsNullOrEmpty($PPIndustryNaming)) {
     #TODO Add template support for the different industries
     $environmentName = $PPIndustryNaming
+    $PPIndustryRegion = $defaultEnvironment.location
+    $indEnvHt = @{
+        # Location always need to be set to default for environments with D365 templates
+        Location  = $PPIndustryRegion
+        Dataverse = $true
+        Templates = 'D365_DeveloperEdition'
+    }
     try {
         if ($PPIndustryAlm -eq 'Yes') {
             foreach ($envTier in $envTiers) {
                 $almEnvironmentName = "{0}-{1}" -f $environmentName, $envTier
-                $null = New-PowerOpsEnvironment -Name $almEnvironmentName -Location $PPIndustryRegion -Dataverse $true
+                $null = New-PowerOpsEnvironment -Name $almEnvironmentName @indEnvHt
                 Write-Host "Created industry environment $almEnvironmentName in $PPIndustryRegion"
             }
         }
         else {
-            $null = New-PowerOpsEnvironment -Name $environmentName -Location $PPIndustryRegion -Dataverse $true
+            $null = New-PowerOpsEnvironment -Name $environmentName @indEnvHt
             Write-Host "Created industry environment $environmentName in $PPIndustryRegion"
         }
     }
     catch {
-        throw "Failed to deploy industry environment $environmentName"
+        throw "Failed to deploy industry environment $environmentName`r`n$_"
     }
 }
 #endregion create industry landing zones
