@@ -1,19 +1,19 @@
-# North Star Architecture for Power Platform
+# Power Platform Landing Zones
 
-North Star Architecture for Power Platform is an architecture and design methodology, as well as a reference implementation to deploy into your on Power Platform tenant. It enables effective construction and operationalization of landing zones (environments) on Power Platform, at scale. This approach aligns with the platform and product roadmap and the Center of Excellence adoption framework.
+Power Platform Landing Zones is an architecture and design methodology, as well as a reference implementation to deploy into your on Power Platform tenant. It enables effective construction and operationalization of landing zones (environments) on Power Platform, at scale. This approach aligns with the platform and product roadmap and the Center of Excellence adoption framework.
 
-In addition to being application, persona, and industry agnostic, North Star Architecture will also address the specific recommendations for Microsoft Cloud for Industries (e.g., Healthcare, Financial Services), where Microsoft Power Platform is an essential platform for the overall industry solutions. These curated industry solutions are primarily D365 applications that are deployed into Power Platform environments, and this prescriptive guidance aims to provide you with best practices and recommendations across the critical design areas for Power Platform to host and integrate the various industry applications.
+In addition to being application, persona, and industry agnostic, Power Platform Landing Zones will also address the specific recommendations for Microsoft Cloud for Industries (e.g., Healthcare, Financial Services), where Microsoft Power Platform is an essential platform for the overall industry solutions. These curated industry solutions are primarily D365 applications that are deployed into Power Platform environments, and this prescriptive guidance aims to provide you with best practices and recommendations across the critical design areas for Power Platform to host and integrate the various industry applications.
 
 | Reference implementation | Description | Deploy | Documentation
 |:----------------------|:------------|--------|--------------|
-| North Star Architecture for Power Platform | All up architecture for Power Platform with landing zones (Environments) configured with security, governance, and compliance for scalable business applications - and industry solutions for professional and citizen developers | [![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/ppnorthstar) | [User Guide](./referenceImplementation/readme.md)
-| North Star Landing Zones for Power Platform | Create N landing zones for citizen - and professional developers at scale, into an existing North Star Architecture for Power Platform | [![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/ppnorthstarlz) | [User Guide](./landingZones/readme.md)
+| Power Platform Landing Zones | All up architecture for Power Platform with landing zones (Environments) configured with security, governance, and compliance for scalable business applications - and industry solutions for professional and citizen developers | [![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/ppnorthstar) | [User Guide](./referenceImplementation/readme.md)
+| Landing Zones vending machine | Create N landing zones for citizen - and professional developers at scale, into an existing architecture for Power Platform Landing Zones | [![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/ppnorthstarlz) | [User Guide](./landingZones/readme.md)
 
 ## Table of content
 
 - [Architecture overview](#architecture-overview)
-  - [Landing zones in North Star Architecture for Power Platform](#landing-zone-in-north-star-architecture-for-power-platform)
-- [Design Principles](#azure-for-telco-design-principles)
+  - [Landing zones](#landing-zones)
+- [Design Principles](#design-principles)
   - [Environment Democratization](#environment-democratization)
   - [Policy Driven Governance](#policy-driven-governance)
   - [Single Control and Management Plane](#single-control-and-management-plane)
@@ -32,19 +32,19 @@ In addition to being application, persona, and industry agnostic, North Star Arc
 
 ## Architecture overview
 
-North Star Architecture for Power Platform represents the strategic design path and target technical state for an organizations Power Platform environment. It continues to evolve alongside the Power Platform product roadmap. Various design decisions define the architecture that your organization must make to map your Power Platform journey.
+Power Platform Landing Zones represents the strategic design path and target technical state for an organizations Power Platform environment. It continues to evolve alongside the Power Platform product roadmap. Various design decisions define the architecture that your organization must make to map your Power Platform journey.
 
 ### High-level architecture
 
-The North Star Architecture is rooted on key design principles and an evolving set of design considerations and recommendations across the [critical design areas](#critical-design-areas-for-power-platform) for Power Platform. It is modular by design and allows you to start with a foundational architecture that enables construction and operationalization of landing zones (Environments) that supports your industry and business application portfolios, for both pro developers and citizen developers. The architecture will scale regardless your organization scale-point and business requirements.
+The Power Platform Landing Zones architecture is rooted on key design principles and an evolving set of design considerations and recommendations across the [critical design areas](#critical-design-areas-for-power-platform) for Power Platform. It is modular by design and allows you to start with a foundational architecture that enables construction and operationalization of landing zones (Environments) that supports your industry and business application portfolios, for both pro developers and citizen developers. The architecture will scale regardless your organization scale-point and business requirements.
 
-Figure 1 depicts the high-level architecture of North Star Architecture for Power Platform
+Figure 1 depicts the high-level architecture of the architecture for Power Platform Landing Zones
 
 ![power platform architecture](./images/architecture.png)
 
-### Landing zone in North Star Architecture for Power Platform
+### Landing zones
 
-Within the context of the North Star Architecture, a "Landing Zone" (Environment) is a logical construct capturing everything that *must be true* to enable application innovation and digital transformation regardless of citizen developer or professional developer persona. It considers all the requisite platform utilities, and accounts for:
+Within the context of the Power Platform, a "Landing Zone" (Environment) is a logical construct capturing everything that *must be true* to enable application innovation and digital transformation regardless of citizen developer or professional developer persona. It considers all the requisite platform utilities, and accounts for:
 
 - Access Management
 - Scale
@@ -59,7 +59,7 @@ Figure 2 shows the landing zone (environment) in Power Platform.
 
 ## Design Principles
 
-The North Star Architecture is based on the design principles described in this section. These principles serve as a compass for subsequent design decisions across critical technical domains. Readers are strongly advised to familiarize themselves with these principles to better understand their impact and the trade-offs associated with non-adherence.
+The Power Platform Landing Zones architecture is based on the design principles described in this section. These principles serve as a compass for subsequent design decisions across critical technical domains. Readers are strongly advised to familiarize themselves with these principles to better understand their impact and the trade-offs associated with non-adherence.
 
 ### Environment Democratization
 
@@ -71,15 +71,15 @@ Data-loss prevention (DLP) policies are used to provide the guard-rails and ensu
 
 ### Single Control and Management Plane
 
-The North Star Architecture does not use any abstraction layers such as custom developed portals or tooling and ensures a consistent experience for both Platform admins and developers, subject to role-based access controls, and policy-driven controls by Data-loss prevention (DLP) policies.
+The Power Platform Landing Zones architecture does not use any abstraction layers such as custom developed portals or tooling and ensures a consistent experience for both Platform admins and developers, subject to role-based access controls, and policy-driven controls by Data-loss prevention (DLP) policies.
 
 ### Persona Agnostic
 
-The North Star Architecture is Persona agnostic, and does not treat anyone differently from an architecture and capability perspective, and provides a safe and secure foundation for all developer personas an organization may have.
+The Power Platform Landing Zones architecture is Persona agnostic, and does not treat anyone differently from an architecture and capability perspective, and provides a safe and secure foundation for all developer personas an organization may have.
 
 ### Power Platform Native Design and Platform Roadmap Alignment
 
-The North Star Architecture approach advocates using Power Platform's native services and capabilities whenever possible. This approach aligns with the product roadmap to ensure that new capabilities are available within your environments, and can be adopoted in a predictable fashion. The Power Platform roadmap helps to inform the adoption strategy and North Star trajectory.
+The Power Platform Landing Zones approach advocates using Power Platform's native services and capabilities whenever possible. This approach aligns with the product roadmap to ensure that new capabilities are available within your environments, and can be adopoted in a predictable fashion. The Power Platform roadmap helps to inform the adoption strategy and landing zone trajectory.
 
 ### Recommendations
 
@@ -88,7 +88,7 @@ The North Star Architecture approach advocates using Power Platform's native ser
 
 ## Critical design areas for Power Platform
 
-Together with the design principles, the core of North Star Architecture for Power Platform also contains a critical design path comprised of fundamental design areas with heavily interrelated and dependent design decisions. This repository provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the North Star Architecture. For each of the key design areas listed below, review the considerations and recommendations provided and use them to structure and drive design decisions within each area.
+Together with the design principles, the core of Power PLatform Landing Zones architecture also contains a critical design path comprised of fundamental design areas with heavily interrelated and dependent design decisions. This repository provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the Power Platform Landing Zones architecture. For each of the key design areas listed below, review the considerations and recommendations provided and use them to structure and drive design decisions within each area.
 
 - [Licensing and AD tenants](#licensing-and-azure-ad-tenants)
 - [Identity and access management](#identity-and-access-management)
