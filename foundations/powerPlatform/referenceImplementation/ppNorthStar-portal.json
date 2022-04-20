@@ -418,7 +418,7 @@
                             "label": "Restrict capacity allocation to specific Admins",
                             "defaultValue": "Yes (recommended)",
                             "multiSelect": true,
-                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Healthcare solutions",
+                            "toolTip": "If 'Yes' is selected, the setup will configure this option.",
                             "constraints": {
                                 "allowedValues": [
                                     {
@@ -550,7 +550,7 @@
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Create Billing Policy and Use Azure Subscription for pay-as-you-go for the environments",
                             "defaultValue": "Yes (recommended)",
-                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Healthcare solutions",
+                            "toolTip": "If 'Yes' is selected, the setup will configure this option.",
                             "constraints": {
                                 "allowedValues": [
                                     {
@@ -660,7 +660,7 @@
                             "label": "Enable auditing and integration with M365 Security & Compliance Center",
                             "defaultValue": "Yes (recommended)",
                             "visible": "[equals(steps('mgmt').ppEnableAzureMonitor, 'yes')]",
-                            "toolTip": "If 'Yes' is selected, the setup will create or use existing Power Platform environment for Healthcare solutions",
+                            "toolTip": "If 'Yes' is selected, the setup will configure this option.",
                             "constraints": {
                                 "allowedValues": [
                                     {
