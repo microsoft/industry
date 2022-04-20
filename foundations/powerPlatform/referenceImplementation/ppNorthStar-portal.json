@@ -3,7 +3,7 @@
     "view": {
         "kind": "Form",
         "properties": {
-            "title": "North Star Architecture for Power Platform",
+            "title": "Power Platform Landing Zones",
             "steps": [
                 {
                     "name": "powerp",
@@ -17,8 +17,8 @@
                             "visible": true,
                             "options": {
                                 "icon": "Info",
-                                "text": "North Star Architecture for Power Platform will deploy and configure the foundation for your Power Platform tenant including all best practices and recommendations from Microsoft, and create the initial landing zones for citizen- and professional developers. The deployment requires that the user is a Global Admin or Power Platform Admin in the Azure Active Directory.",
-                                "uri": "https://www.microsoft.com"
+                                "text": "Power Platform Landing Zones will deploy and configure the foundation for your Power Platform tenant including all best practices and recommendations from Microsoft, and create the initial landing zones for citizen- and professional developers. The deployment requires that the user is a Global Admin or Power Platform Admin in the Azure Active Directory.",
+                                "uri": "https://aka.ms/NorthStarPowerPlatform"
                             }
                         },
                         {
@@ -85,7 +85,7 @@
                             "type": "Microsoft.Common.DropDown",
                             "visible": true,
                             "defaultValue": "",
-                            "toolTip": "Select the Subscription for your North Star deployment.",
+                            "toolTip": "Select the Subscription for the deployment.",
                             "multiselect": false,
                             "selectAll": false,
                             "filter": true,
@@ -110,7 +110,7 @@
                             "type": "Microsoft.Common.DropDown",
                             "visible": true,
                             "defaultValue": "",
-                            "toolTip": "Select the Location for your North Star deployment.",
+                            "toolTip": "Select the Location for the deployment.",
                             "multiselect": false,
                             "selectAll": false,
                             "filter": true,
@@ -155,7 +155,7 @@
                             "options": {
                                 "icon": "Info",
                                 "text": "Configure tenant security settings and Data-loss prevention policies for Power Platform to meet your overall security requirements. These settings will apply to all existing and new environments in your tenant, and additional restrictions can be configured later in the deployment experience.",
-                                "uri": "https://www.microsoft.com"
+                                "uri": "https://aka.ms/NorthStarPowerPlatform"
                             }
                         },
                         {
@@ -448,7 +448,7 @@
                                 "text": "Create new dedicated Admin Environments that should be used to operate and manage the overall Power Platform tenant, such as Environment creation, DLP management, Identity and Access, and analytics.",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://www.microsoft.com"
+                                    "uri": "https://aka.ms/NorthStarPowerPlatform"
                                 }
                             }
                         },
@@ -577,7 +577,7 @@
                             "visible": true,
                             "options": {
                                 "icon": "Info",
-                                "text": "North Star Architecture for Power Platform will deploy and configure the foundation for your Power Platform tenant including all best practices and recommendations from Microsoft. The deployment requires that the user is a Global Admin or Power Platform Admin in the Azure Active Directory.",
+                                "text": "Configure management and monitoring services for your Power Platform tenant, using recommended Azure services.",
                                 "uri": "https://aka.ms/NorthStarPowerPlatform"
                             }
                         },
@@ -596,7 +596,7 @@
                                 "text": "Configure critical security and observability options for the Power Platform tenant. These options requires an Azure subscription and Azure services.",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://www.microsoft.com"
+                                    "uri": "https://aka.ms/NorthStarPowerPlatform"
                                 }
                             }
                         },
@@ -650,7 +650,7 @@
                                 "text": "Configure Azure Monitor solutions that will be integrated to enhance the security posture of your Power Platform tenant.",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://www.microsoft.com"
+                                    "uri": "https://aka.ms/NorthStarPowerPlatform"
                                 }
                             }
                         },
@@ -770,7 +770,7 @@
                                 "text": "Configure tenant level analytics to track all-up usage and adoption within the organization across all Environments for Power Apps and Power Automate. For long-term retention, extensibility and richer analysis, you can create a Data Lake Sorage V2 into an Azure subscription and configure Data Export post deployment.",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://www.microsoft.com"
+                                    "uri": "https://aka.ms/NorthStarPowerPlatform"
                                 }
                             }
                         },
@@ -828,7 +828,7 @@
                                 "text": "Prepare and create Landing Zones (Environments for business apps, industry solutions, and professional apps) in Power Platform optimized for citizen developers, professional developers, and industry solutions. When creating these environments, the setup will instantiate dedicated Environments for Development, Test, and Production in order to support maintenance, testing, development, and validation before deploying to production. Lastly, recommended Data-loss prevention policies are provided to further govern the various scenarios.",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://www.microsoft.com"
+                                    "uri": "https://aka.ms/NorthStarPowerPlatform"
                                 }
                             }
                         },
@@ -847,7 +847,7 @@
                                 "text": "The Default Environment is available for all users with a license. It is recommended to rename this Environment to clarify the intent of it, such as 'Personal Productivity', and add further restrictions using Data-lose prevention policies scoped to the Default Environment",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://www.microsoft.com"
+                                    "uri": "https://aka.ms/NorthStarPowerPlatform"
                                 }
                             }
                         },
@@ -922,7 +922,7 @@
                                 "text": "The Landing Zones for citizen developrs will be optimized for no code/low code scenarios, and provide them with the required agility and simplicity to rapidly build modern business applications. You can grant business units or indivuduals access to the Environments post creation.",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://www.microsoft.com"
+                                    "uri": "https://aka.ms/NorthStarPowerPlatform"
                                 }
                             }
                         },
@@ -1259,7 +1259,7 @@
                                 "text": "The Landing Zones for professional developrs will be optimized for enterprise application scenarios, and provide them with the required agility and simplicity to rapidly build robust enterprise applications with mature application lifecycle management. You can grant business units or indivuduals access to the Environments post creation.",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://www.microsoft.com"
+                                    "uri": "https://aka.ms/NorthStarPowerPlatform"
                                 }
                             }
                         },

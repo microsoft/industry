@@ -1,34 +1,34 @@
-# North Star Architecture for Power Platform Reference Implementation
+# Power Platform Landing Zones Reference Implementation
 
-This user guide explains the North Star Architecture for Power Platform reference implementation, what it is, what it does, and how organizations can use it to enable "landing zones" at scale to support their digital transformation for citizen developers, professional developers, and Microsoft Cloud for industries.
+This user guide explains the Power Platform Landing Zones reference implementation, what it is, what it does, and how organizations can use it to enable "landing zones" at scale to support their digital transformation for citizen developers, professional developers, and Microsoft Cloud for industries.
 
 ## Table of Contents
 
-- [What is North Star Architecture reference implementation?](#what-is-north-star-architecture-reference-implementation)
+- [What is Power Platform Landing Zones reference implementation?](#what-is-power-platform-landing-zones-reference-implementation)
 - [Pricing](#pricing)
 - [What if I already have an existing Power Platform footprint?](#what-if-i-already-have-an-existing-power-platform-footprint)
-- [How North Star Architecture reference implementation works](#how-north-star-architecture-reference-implementation-works)
+- [How Power Platform Landing Zones reference implementation works](#how-power-platform-landing-zones-reference-implementation-works)
   - [Separating platform and landing zones](#separating-platform-and-landing-zones)
     - [Platform responsibilities and functions](#platform-responsibilities-and-functions)
     - [Landing zone owners responsibilities](#landing-zone-owners-responsibilities)
-  - [North Star Architecture Governance Structure](#north-star-architecture-governance-structure)
-  - [What happens when you deploy North Star Architecture](#what-happens-when-you-deploy-north-star-architecture)
+  - [Power Platform Landing Zones Governance Structure](#power-platform-landing-zones-governance-structure)
+  - [What happens when you deploy Power Platform Landing Zones](#what-happens-when-you-deploy-power-platform-landing-zones)
 - [Deployment instructions](#deployment-instructions)
   - [Pre-requisites](#pre-requisites)
   - [Step-by-step guidance](#step-by-step-guidance)
 
 ---
-North Star Architecture for Power Platform reference architecture provides prescriptive guidance coupled with Power Platform best practices for organizations - regardless of industry and business application scenarios, and it follows 5 design principles across the 8 critical design areas for organizations to define their target state for their Power Platform tenant.
+Power Platform Landing Zones reference architecture provides prescriptive guidance coupled with Power Platform best practices for organizations - regardless of industry and business application scenarios, and it follows 5 design principles across the 8 critical design areas for organizations to define their target state for their Power Platform tenant.
 
 The reference architecture is modular by design and allows organizations of any size to start with the optimized landing zones that support their digital transformation and application portfolios.
 
 In particular, it enables the organizations to start as small as needed and scale alongside their requirements regardless of scale-point.
 
-![North Star Architecture](../images/architecture.png)
+![Power Platform Landing Zones architecture](../images/architecture.png)
 
-## What is North Star Architecture reference implementation?
+## What is Power Platform Landing Zones reference implementation?
 
-The North Star Architecture reference implementation is an optimized, proven, authoritative, and roadmap aligned architecture that enables organizations to rapidly modernize their business applications, and enables citizens and professional developers to accelerate their digital transformation.
+The Power Platform Landing Zones reference implementation is an optimized, proven, authoritative, and roadmap aligned architecture that enables organizations to rapidly modernize their business applications, and enables citizens and professional developers to accelerate their digital transformation.
 
 ## Pricing
 
@@ -36,13 +36,13 @@ There's no cost associated with the reference implementation itself, besides req
 
 ## What if I already have an existing Power Platform footprint?
 
-North Star Architecture for Power Platform is designed to meet organizations where they are, whether there's already usage of Power Platform, or if it is a net new deployment. Additional guidance for existing customers will be provided at a later stage.
+Power Platform Landing Zones is designed to meet organizations where they are, whether there's already usage of Power Platform, or if it is a net new deployment. Additional guidance for existing customers will be provided at a later stage.
 
-## How North Star Architecture reference implementation works
+## How Power Platform Landing Zones reference implementation works
 
-This section describes at a high-level how North Star Architecture reference implementation works. The landing zones created are the output of a multi-environment setup for the platform which will account for compliance, guardrails, security, connectivity and interoperability, and identity, at scale.
+This section describes at a high-level how Power Platform Landing Zones reference implementation works. The landing zones created are the output of a multi-environment setup for the platform which will account for compliance, guardrails, security, connectivity and interoperability, and identity, at scale.
 
-## North Star Architecture design principles
+## Power Platform Landing Zones design principles
 
 The design principles outlined in the architecture and design methodology is front and center in the reference implementation, which helps organizations to scale and democratize digital transformation for their citizen - and professional developers.
 
@@ -50,7 +50,7 @@ The design principles outlined in the architecture and design methodology is fro
 
 ## Separating platform and landing zones
 
-One of the key tenets of North Star Architecture is to have a clear separation of the Power *Platform* and the *landing zones*. This allows organizations to scale their architecture and deployment alongside with their business requirements, while providing autonomy to the citizen and professional develops for deploying and doing net-new development into their landing zones. This model fully supports application autonomy and distinguish between central and federated functions.
+One of the key tenets of Power Platform Landing Zones is to have a clear separation of the Power *Platform* and the *landing zones*. This allows organizations to scale their architecture and deployment alongside with their business requirements, while providing autonomy to the citizen and professional develops for deploying and doing net-new development into their landing zones. This model fully supports application autonomy and distinguish between central and federated functions.
 
 ## Platform responsibilities and functions
 
@@ -64,9 +64,9 @@ Platform resources and shared capabilities should ideally be managed by a cross-
 
 When a maker (citizen or/and professional developer) gets a landing zone, the user/team is end-to-end responsible for the components created and running in the Environments. They can independently operate within the security guardrails provided by the platform team. If dependency on central teams or functions are discovered, it is highly recommended to review the process and eliminate as soon as possible to unblock adoption.
 
-## North Star Architecture governance structure
+## Power Platform Landing Zones governance structure
 
-The governance included with North Star Architecture reference implementation will ensure a secure-by-default baseline as starting point, covering the tenant, Admin Environments and the different landing zones.
+The governance included with Power Platform Landing Zones reference implementation will ensure a secure-by-default baseline as starting point, covering the tenant, Admin Environments and the different landing zones.
 
 - **Tenant governance:** The setup enables organizations to secure and hardening their tenant from a Power Platform perspective, by assigning a tenant scoped DLP policy. You can select between High, Medium, and Low restrictive DLP policies.
 
@@ -78,9 +78,9 @@ The governance included with North Star Architecture reference implementation wi
 
 - **Professional developer landing zones:** Similar to citizen developer, you can assign the recommended DLP policy for these landing zones that will enable your professional developers to rapidly contribute by leveraging key connectors among Power Platform, Azure, and Microsoft 365.
 
-## What happens when you deploy North Star Architecture reference implementation?
+## What happens when you deploy Power Platform Landing Zones reference implementation?
 
-By default, all recommendations which originates from the [North Star architecture and design methodology](https://aka.ms/NorthStarPowerPlatform) will be enabled by default, and called out as a recommendation. If you would opt out from these, you must explicitly do so in the deployment experience. The deployment will create and configure the following when all options are enabled:
+By default, all recommendations which originates from the [Power Platform Landing Zones architecture and design methodology](https://aka.ms/NorthStarPowerPlatform) will be enabled by default, and called out as a recommendation. If you would opt out from these, you must explicitly do so in the deployment experience. The deployment will create and configure the following when all options are enabled:
 
 - Security, Governance, and Compliance for Tenant settings:
   - Tenant DLP policies. Select between High, Medium, or Low restricted policy as starting point.
@@ -105,7 +105,7 @@ By default, all recommendations which originates from the [North Star architectu
 
 ## Deployment instructions
 
-  This section will describe how to deploy the North Star Architecture reference implementation.
+  This section will describe how to deploy the Power Platform Landing Zones reference implementation.
 
 ### Pre-requisites
 
