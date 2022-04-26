@@ -142,7 +142,7 @@ Register-PowerOpsAdminApplication -ClientId $clientId
 The first tab in the experience is where you configure the Deployment Setup. Provide the User Managed Identity you created in the pre-requisites, as this identity will be used to bootstrap and configure the Power Platform.
 Also, a subscription is required in order to place the deployment that is being created, targeting an Azure region.
 
-Optionally you can select if the subscription provided at this step should be used for all the Azure services that you will create as part of th deployment.
+Optionally you can select if the subscription provided at this step should be used for all the Azure services that you will create as part of the deployment.
 
 ![Deployment setup](../images/1deploymentsetup.PNG)
 
