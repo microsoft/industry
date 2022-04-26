@@ -39,6 +39,10 @@ Figure 1 - Observability Landing Zone using ExpressRoute with Microsoft Peering 
 
 Table 1 - Observability Landing Zone using ExpressRoute with Microsoft Peering connectivity
 
+![afoObservabilityLZPP](../images/afo-observability-lz-er-pp.png)
+
+Figure 2 - Observability Landing Zone using ExpressRoute with Private Peering connectivity
+
 | Resource | Required | Description |
 |---|---|---|
 | ExpressRoute circuit (Private Peering) | Yes | The reference implementation allows you to bring an existing pre-configured ExpressRoute circuit with Private Peering, or it allows you to create a new ExpressRoute circuit. |
@@ -49,10 +53,7 @@ Table 1 - Observability Landing Zone using ExpressRoute with Microsoft Peering c
 | Log Analytics Workspace | Optional | Log Analytics workspace to monitor the resources in your observability landing zone. |
 | Azure Managed Grafana (Preview) | Optional | Azure Managed Grafana lets you bring together all your telemetry data into one place. |
 
-
-![afoObservabilityLZPP](../images/afo-observability-lz-er-pp.png)
-
-Figure 2 - Observability Landing Zone using ExpressRoute with Private Peering connectivity
+Table 2 - Observability Landing Zone using ExpressRoute with Microsoft Peering connectivit
 
 Once the Observability Landing Zones for Operators reference implementation completes (independently of which network connectivity model you choose), your landing zone will be ready for you to simply deploy the Azure storage and Analytical services of your choice to light-up your observability landing zone.
 
