@@ -83,7 +83,7 @@ This section will explain the deployment experience and the options provided for
   - The service provider to use
   - The provider location
   - ExpressRoute circuit **bandwidth**
-  - ExpressRoute circuit **SKU** (Standard or Premium)
+  - ExpressRoute circuit **SKU** (Local, Standard or Premium)
   - ExpressRoute circuit **billing model** (Metered or Unlimited)
   ![ExpressRoute_MSFTPeering_Provider](../images/afo-observability-ri-msft-provider.png)
 5. In the **Auxiliary Services** tab, provide a name and a valid CIDR range for the virtual network that will be created in the observability landing zone. 
@@ -97,8 +97,10 @@ This section will explain the deployment experience and the options provided for
   - Route filter (to only receive prefixes of the Azure storage services and regions you want instead of all Azure prefixes)
   ![ExpressRoute_MSFTPeering_RouteFilter](../images/afo-observability-ri-msft-routefilter.png)
 7. Once you have selected the auxiliary services to deploy, click on **Next**
-8. On the **Review + create** tab review the services to be deployed and their configuration, and click on **Create**. This will initiate the deployment and configuration of your observability landing zone.
+8. On the **Review + create** tab, after ensuring that the validation is successful and after reviewing the services to be deployed, click on **Create**. This will initiate the deployment and configuration of your observability landing zone.
 ![ExpressRoute_MSFTPeering_Create](../images/afo-observability-ri-msft-create.png)
+
+Depending on the options you select the deployment experience will take some time to create and configured your desired resources. Once the deployment experience is complete, you can review your observability landing zone in the Azure portal simply by selecting your subscription an browsing through the resources deployed.
 
 ### ExpressRoute with Private Peering
 
