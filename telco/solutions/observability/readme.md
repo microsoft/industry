@@ -168,7 +168,7 @@ _Table 1: Observability Landing Zones depending on the network connectivity mode
 
 | Reference implementation  | Description  | Deploy  |
 |--- |--- |--- |
-| Observability Landing Zone for Operators  | Observability landing zone for operators with required infrastructure for data ingestion into an Azure storage service and ready for deployment of storage services (such as ADLS Gen2) an analytics solutions (such as Azure Synapse).   | User guide (coming soon)  |
+| Observability Landing Zone for Operators  | Observability landing zone for operators with required infrastructure for data ingestion into an Azure storage service and ready for deployment of storage services (such as ADLS Gen2) an analytics solutions (such as Azure Synapse).   | [User guide](./userGuide/readme.md)   |
 
 This reference implementation is intended for landing zone owners for them to deploy observability landing zones for operators. This reference implementation allows the deployment of observability landing zones for operators using two network connectiviity models:
 
@@ -191,13 +191,13 @@ Table 2 below also provides links to the deployment guides which include step-by
 |---|---|---|---|
 | Azure subscription | Platform team | Azure subscription is provided by the platform team and deployed under the Operator management group | [AfO Landing Zones User Guide](../../referenceImplementation/readme.md) |
 | DNS | Platform team | DNS name resolution is provided by the platform team via VNet peering to central hub VNet. Note that landing zone owners can optionally deploy a dedicated DNS infrastructure within the observability landing zone if required | [AfO Landing Zones User Guide](../../referenceImplementation/readme.md) |
-| ExpressRoute circuit | Landing Zone owner | Optional, as an existing ExpressRoute circuit can be used | Observability Landing Zones User Guide (coming soon)  |
-| Route filter | Landing Zone owner | Deployed in case of implementing ExpressRoute with Microsoft peering | Observability Landing Zones User Guide (coming soon) |
-| ExpressRoute gateway | Landing Zone owner | Deployed in case of implementing ExpressRoute with Private peering | Observability Landing Zones User guide (coming soon) |
-| ExpressRoute connection | Landing Zone owner | Deployed in case of implementing ExpressRoute with Private peering | Observability Landing Zones User guide (coming soon) |
-| Virtual network | Landing Zone owner |  | Observability Landing Zones User guide (coming soon) |
-| NSGs | Landing Zone owner |  | Observability Landing Zones User guide (coming soon) |
-| Azure Bastion | Landing Zone owner |  | Observability Landing Zones User guide (coming soon) |
+| ExpressRoute circuit | Landing Zone owner | Optional, as an existing ExpressRoute circuit can be used | [Observability Landing Zones User Guide](./userGuide/readme.md)   |
+| Route filter | Landing Zone owner | Deployed in case of implementing ExpressRoute with Microsoft peering | [Observability Landing Zones User Guide](./userGuide/readme.md) |
+| ExpressRoute gateway | Landing Zone owner | Deployed in case of implementing ExpressRoute with Private peering | [Observability Landing Zones User Guide](./userGuide/readme.md) |
+| ExpressRoute connection | Landing Zone owner | Deployed in case of implementing ExpressRoute with Private peering | [Observability Landing Zones User Guide](./userGuide/readme.md) |
+| Virtual network | Landing Zone owner |  | [Observability Landing Zones User Guide](./userGuide/readme.md) |
+| NSGs | Landing Zone owner |  | [Observability Landing Zones User Guide](./userGuide/readme.md) |
+| Azure Bastion | Landing Zone owner |  | [Observability Landing Zones User guide](./userGuide/readme.md) |
 | Azure storage service(s) | Landing Zone owner | Any Azure storage service(s) required by the landing zone owner (such as Azure Data Lake Storage Gen2) | Solution Accelerator (coming soon) |
 | Private Endpoints | Landing Zone owner |  | Solution Accelerator (coming soon) |
 | Analytics services | Landing Zone owner | Any analytics service(s) as required by the landing zone owner (for example Azure Synapse) | Solution Accelerator (coming soon) |

@@ -2,6 +2,10 @@
 
 This user guide explains the Observability Landing Zone for Operators reference implementation, what it is, what it does, how organizations within the telecommunication industry can use it to run their carrier-grade observability workloads on a sustainable, scalable, and reliable Azure architecture.
 
+| Reference Implementation | Description | Deploy |
+|:----------------------|:------------|--------|
+| Observability Landing Zones | An observability landing zone for operators provides the required foundational services on Azure to ingest large amounts of data into Azure storage services |[![Deploy To Microsoft Cloud](../../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/observabilitylz)
+
 ## Table of contents
 
 - [What is the Observability Landing Zone for Operators reference implementation?](#what-is-the-observability-landing-zone-for-operators-reference-implementation)
@@ -62,6 +66,8 @@ Once the Observability Landing Zones for Operators reference implementation comp
 ## Deployment instructions
 
 This section will explain the deployment experience and the options provided for the Observability Landing Zone for Operators reference implementation.
+
+[![Deploy To Microsoft Cloud](../../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/observabilitylz)
 
 1. When you click on [Deploy to Microsoft Cloud](https://aka.ms/observabilitylz), the Azure portal will load and it will start the deployment experience into your default Azure tenant. In case you have access to multiple tenants, ensure you are selecting the right one.
 2. On the **Deployment Setup** tab, select the Azure subscription that you want to use as your observability landing zone, and select the Azure region where the Azure resources will be deployed. Once you have made your selections, click on Next.
