@@ -11,9 +11,7 @@ This article provides a reference architecture with prescriptive guidance and re
 
 ## Table of contents
 
-* [Azure for Telecommunications Reference Implementation](#azure-for-telecommunications-reference-implementation)
-* [Azure for Telecommunications Reference Architecture](#azure-for-telecommunications-reference-architecture)
-* [Azure for Operators Landing Zones Reference Implementation](#azure-for-operators-landing-zones-reference-implementation)
+* [Azure for Operators Landing Zones Reference Implementations](#azure-for-operators-landing-zones-reference-implementations)
 * [Azure for Operators Landing Zones](#azure-for-operators-landing-zones)
 * [High-level architecture](#high-level-architecture)
   * [Governance for Telco Industry Scenarios](#letter-a)
@@ -21,6 +19,8 @@ This article provides a reference architecture with prescriptive guidance and re
   * [Operator Landing Zones](#letter-c)
   * [Distributed Edge](#letter-d)
   * [Operator Services](#letter-e)
+* [Solutions](#solutions)
+  * [Observability Landing Zones for Operators](#observability-landing-zones-for-operators)
 * [Next Steps](#next-steps)
 
 ## Azure for Operators Landing Zones Reference Implementation
@@ -29,6 +29,7 @@ This article provides a reference architecture with prescriptive guidance and re
 |:----------------------|:------------|--------|--------------|
 | AfO Landing Zones foundation | Azure for Operators (AfO) Landing Zones foundation that provides a full, rich, compliant architecture with scale-out pattern for connectivity and landing zones for operators |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoRI) | [User Guide](./referenceImplementation/readme.md)
 | AfO Landing Zones networking scale-out | When the AfO Landing Zones foundation is in place, you can use this reference implementation to scale-out the hub virtual network and configure the corresponding networking infrastructure |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoScaleOut) | [User Guide](./referenceImplementation/readme.md)
+| Observability Landing Zones for Operators | An observability landing zone for operators provides the required foundational services on Azure to ingest large amounts of data into Azure storage services |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoScaleOut) | [User Guide](./solutions/observability/userGuide/readme.md)
 
 ## Azure for Operators Landing Zones
 
@@ -56,15 +57,27 @@ As figure 1 depicts, the AfO Landing Zones architecture follows the design princ
 
 <a id="letter-e"></a>![The letter E](./docs/e.png) [Operator Services](./solutions/mgmtOptions/readme.md). In addition to providing networking services to their customers, operators also provide managed services and managed solutions to their customers either from the operators own Azure AD tenant, or directly in their customer's Azure AD tenants.
 
-### Next Steps
+## Solutions
+
+### Observability Landing Zones for Operators
+
+An observability landing zone for operators provides the required foundational services on Azure to ingest large amounts of data into Azure storage services (such as Azure Data Lake Storage Gen2). Once this landing zone is provisioned, operators can simply deploy whichever data and analytics services and solutions they prefer to analyze the data.
+
+* [Architectural guidance](./solutions/observability/readme.md)
+* [User guide](./solutions/observability/userGuide/readme.md)
+
+## Next Steps
 The following articles will provide detailed design considerations and recommendations for AfO Landing Zones key design areas.
 
+**Platform**
 * [Governance for Telco Industry Scenarios](./docs/telco-governance.md)
 * [Networking for Telco Industry Scenarios](./docs/telco-networking.md)
 * [Operator Landing Zones](./docs/operator-landing-zones.md)
 * [Distributed Edge](./docs/telco-edge.md)
 * [Operator Services](./solutions/mgmtOptions/readme.md)
 
+**Solutions**
+* [Observability Landing Zones for Operators](./solutions/observability/readme.md)
 ---
 
 [Back to documentation root](../README.md)
