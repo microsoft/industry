@@ -81,28 +81,28 @@ This section will explain the deployment experience and the options provided for
 2. After you selected **ExpressRoute with Microsoft Peering**, select whether you want to create a new ExpressRoute circuit or if you want to use an existing one. If you want to use an existing circuit, select **Existing** under the **Select new or existing ExpressRoute circuit** section (please ensure the circuit is configured with Microsoft peering and ready to use) and click on **Next**. If you want to create a new circuit, select **New** under the **Select new or existing ExpressRoute circuit** section and the **Configure new ExpressRoute Circuit with Microsoft Peering** section will be displayed
 ![ExpressRoute_MSFTPeering_New](../images/afo-observability-ri-msft-new.png)
 3. If you want to create a new ExpressRoute circuit from an existing ExpressRoute Direct port pair, select **Direct** under **Port type**. Then provide the following information and click on **Next**.
-  - In the **ExpressRoute Direct resource** field select the ExpressRoute Direct resource where the new ExpressRoute circuit will be created.   
-  - ExpressRoute circuit **SKU** (Local, Standard or Premium)
-  - Note that the **Billing model** is set to Metered for ExpressRoute Direct circuits with Standard or Premium SKU, and Unlimited for Local SKU.
+- In the **ExpressRoute Direct resource** field select the ExpressRoute Direct resource where the new ExpressRoute circuit will be created.
+- ExpressRoute circuit **SKU** (Local, Standard or Premium)
+- Note that the **Billing model** is set to Metered for ExpressRoute Direct circuits with Standard or Premium SKU, and Unlimited for Local SKU.
 ![ExpressRoute_MSFTPeering_Direct](../images/afo-observability-ri-msft-direct.png)
 4. If you want to create a new ExpressRoute circuit using a service provider, select **Provider** under **Port type**. Then provide the following information and click on **Next**.
-  - A name for the new ExpressRoute circuit
-  - The service provider to use
-  - The provider location
-  - ExpressRoute circuit **bandwidth**
-  - ExpressRoute circuit **SKU** (Local, Standard or Premium)
-  - ExpressRoute circuit **billing model** (Metered or Unlimited)
-  ![ExpressRoute_MSFTPeering_Provider](../images/afo-observability-ri-msft-provider.png)
-5. In the **Auxiliary Services** tab, provide a name and a valid CIDR range for the virtual network that will be created in the observability landing zone. 
+- A name for the new ExpressRoute circuit
+- The service provider to use
+- The provider location
+- ExpressRoute circuit **bandwidth**
+- ExpressRoute circuit **SKU** (Local, Standard or Premium)
+- ExpressRoute circuit **billing model** (Metered or Unlimited)
+![ExpressRoute_MSFTPeering_Provider](../images/afo-observability-ri-msft-provider.png)
+5. In the **Auxiliary Services** tab, provide a name and a valid CIDR range for the virtual network that will be created in the observability landing zone.
 ![ExpressRoute_MSFTPeering_VNet](../images/afo-observability-ri-msft-vnet.png)
 6. Still in the **Auxiliary Services** tab, select the optional resources that you would like to deploy in the observability landing zone. Note that these resources are optional, but highly recommended:
-  - Azure Bastion (to have secure remote access to Windows and Linux virtual machines that you deploy on this landing zone)
-  ![ExpressRoute_MSFTPeering_Bastion](../images/afo-observability-ri-msft-bastion.png)
-  - Azure Monitor (to monitor the resources you deploy in the landing zone)
-  - Azure Managed Grafana (to provide extensible visualization and dashboards)
-  ![ExpressRoute_MSFTPeering_Monitor](../images/afo-observability-ri-msft-monitor.png)
-  - Route filter (to only receive prefixes of the Azure storage services and regions you want instead of all Azure prefixes)
-  ![ExpressRoute_MSFTPeering_RouteFilter](../images/afo-observability-ri-msft-routefilter.png)
+- Azure Bastion (to have secure remote access to Windows and Linux virtual machines that you deploy on this landing zone)
+![ExpressRoute_MSFTPeering_Bastion](../images/afo-observability-ri-msft-bastion.png)
+- Azure Monitor (to monitor the resources you deploy in the landing zone)
+- Azure Managed Grafana (to provide extensible visualization and dashboards)
+![ExpressRoute_MSFTPeering_Monitor](../images/afo-observability-ri-msft-monitor.png)
+- Route filter (to only receive prefixes of the Azure storage services and regions you want instead of all Azure prefixes)
+![ExpressRoute_MSFTPeering_RouteFilter](../images/afo-observability-ri-msft-routefilter.png)
 7. Once you have selected the auxiliary services to deploy, click on **Next**
 8. On the **Review + create** tab, after ensuring that the validation is successful and after reviewing the services to be deployed, click on **Create**. This will initiate the deployment and configuration of your observability landing zone.
 ![ExpressRoute_MSFTPeering_Create](../images/afo-observability-ri-msft-create.png)
