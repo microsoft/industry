@@ -4,7 +4,7 @@ This user guide explains the Observability Landing Zone for Operators reference 
 
 | Reference Implementation | Description | Deploy |
 |:----------------------|:------------|--------|
-| Observability Landing Zones | An observability landing zone for operators provides the required foundational services on Azure to ingest large amounts of data into Azure storage services |[![Deploy To Microsoft Cloud](../../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/observabilitylz)
+| Observability Landing Zone | An observability landing zone for operators provides the required foundational services on Azure to ingest large amounts of data into Azure storage services |[![Deploy To Microsoft Cloud](../../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/observabilitylz)
 
 ## Table of contents
 
@@ -111,4 +111,4 @@ Depending on the options you select the deployment experience will take some tim
 
 ### ExpressRoute with Private Peering
 
-Coming soon ;)
+Coming soon
