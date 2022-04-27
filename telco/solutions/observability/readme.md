@@ -152,15 +152,15 @@ _Figure 4: Connectivity to Azure via ExpressRoute with Microsoft peering_
 
 ## Observability Landing Zone types
 
-Depending the networking option you select for your observability landing, you would require an _online_, _corporate_ or _operator_ landing zone as per the guidance in table 1 below:
+Depending the networking option you select for your observability landing, you would require a traditional Azure landing zone, or a especialized Operator Landing Zone as per the guidance in table 1 below:
 
-| Connectivity Model  | Landing Zone Type  | Connectivity Provided by  | Details  |
+| Connectivity Model  | Landing Zone Type  | Connectivity provided from  | Details  |
 |--- |--- |--- |--- |
-| Internet  | Online  | Landing Zone owner  |   |
-| VPN  | Corporate  | Platform  |   |
-| ExpressRoute (Private Peering)  | Corporate  | Platform  | When using connectivity provided by hub or virtual hub network  |
-| ExpressRoute (Private Peering)  | Operator  | Landing Zone owner  | When deploying ExpressRoute gateway within the landing zone  |
-| ExpressRoute (Microsoft Peering)  | Operator  | Landing Zone owner  |   |
+| Internet  | Azure Landing Zone  | Landing Zone  |   |
+| VPN  | Azure Landing Zone  | Landing Zones Platform  |   |
+| ExpressRoute (Private Peering)  | Azure Landing Zone  | Landing Zones Platform  | When using connectivity provided by hub or virtual hub network  |
+| ExpressRoute (Private Peering)  | Operator Landing Zone  | Landing Zone  | When deploying ExpressRoute gateway within the landing zone  |
+| ExpressRoute (Microsoft Peering)  | Operator Landing Zone  | Landing Zone  |   |
 
 _Table 1: Observability Landing Zones depending on the network connectivity model_
 
