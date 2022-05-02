@@ -5,6 +5,7 @@ This user guide explains the Network Analytics Landing Zone for Operators refere
 ## Table of contents
 
 - [What is the Network Analytics Landing Zone for Operators reference implementation?](#what-is-the-network-analytics-landing-zone-for-operators-reference-implementation)
+- [Pricing](#pricing)
 - [What happens when you deploy the Network Analytics Landing Zone for Operators reference implementation?](#what-happens-when-you-deploy-the-network-analytics-landing-zone-for-operators-reference-implementation)
 - [Deployment instructions](#deployment-instructions)
   - [ExpressRoute with Microsoft Peering](#expressroute-with-microsoft-peering)
@@ -20,6 +21,14 @@ The reference implementation ties together all the Azure platform primitives and
 
 ---
 
+## Pricing
+
+There’s no cost associated with the reference implementation itself, as it is just an architecture that is constructed using existing Azure products and services. Therefore you only pay for the Azure products and services that you choose to enable, and also the products and services your organization will deploy into the Network Analytics landing zone.
+
+The following section will provide links to the costs of each of the services that will be deployed into your Network Analytics Landing Zone. Please note that some of the services deployed are free (for example the virtual network).
+
+---
+
 ## What happens when you deploy the Network Analytics Landing Zone for Operators reference implementation?
 
 The Network Analytics Landing Zone for Operators reference implementation will configure an Azure subscription that has been deployed (or moved under) the **Landing Zones > Operator** Management Group and deploy all required infrastructure so that you can simply deploy and configure the analytics workload of your preference. The reference implementation allows you to choose from two networking connectivity models. Depending on the network connectivy model, certain infrastructure will be deployed and configured. Figure 1 and table 1 below describes the resources that are deployed when you choose the ExpressRoute with Microsoft Peering connectivity model, while figure 2 and table 2 below describe the resources that are deployed when you choose the ExpressRoute with Private Peering connectivity model
@@ -28,14 +37,14 @@ The Network Analytics Landing Zone for Operators reference implementation will c
 
 Figure 1 - Network Analytics Landing Zone using ExpressRoute with Microsoft Peering connectivity
 
-| Resource | Required | Description |
-|---|---|---|
-| ExpressRoute circuit (Microsoft Peering) | Yes | The reference implementation allows you to bring an existing pre-configured ExpressRoute circuit with Microsoft Peering, or it allows you to create a new ExpressRoute circuit. |
-| Route Filter | Optional | Optional resource in case a new ExpressRoute circuit is created. The route filter can be configured to only receive the prefixes of the Azure Storage service and Azure region that you require. |
-| Virtual Network | Yes | Azure virtual network where you will deploy your observability resources (for example, Azure Data Factory or a Spark cluster). |
-| Azure Bastion | Optional | Azure Bastion host to allow you to connect to any virtual machines that you deploy in the virtual network. |
-| Log Analytics Workspace | Optional | Log Analytics workspace to monitor the resources in your Network Analytics Landing Zone. |
-| Azure Managed Grafana (Preview) | Optional | Azure Managed Grafana lets you bring together all your telemetry data into one place. |
+| Resource | Required | Description | Pricing |
+|---|---|---|---|
+| ExpressRoute circuit (Microsoft Peering) | Yes | The reference implementation allows you to bring an existing pre-configured ExpressRoute circuit with Microsoft Peering, or it allows you to create a new ExpressRoute circuit. | [Azure ExpressRoute pricing](https://azure.microsoft.com/pricing/details/expressroute/) |
+| Route Filter | Optional | Optional resource in case a new ExpressRoute circuit is created. The route filter can be configured to only receive the prefixes of the Azure Storage service and Azure region that you require. | Free |
+| Virtual Network | Yes | Azure virtual network where you will deploy your observability resources (for example, Azure Data Factory or a Spark cluster). | Free |
+| Azure Bastion | Optional | Azure Bastion host to allow you to connect to any virtual machines that you deploy in the virtual network. | [Azure Bastion pricing](https://azure.microsoft.com/pricing/details/azure-bastion/) |
+| Log Analytics Workspace | Optional | Log Analytics workspace to monitor the resources in your Network Analytics Landing Zone. | [Azure Monitor pricing](https://azure.microsoft.com/pricing/details/monitor/) |
+| Azure Managed Grafana (Preview) | Optional | Azure Managed Grafana lets you bring together all your telemetry data into one place. | [Azure Managed Grafana pricing](https://azure.microsoft.com/pricing/details/managed-grafana/) |
 
 Table 1 - Network Analytics Landing Zone using ExpressRoute with Microsoft Peering connectivity
 
@@ -43,15 +52,15 @@ Table 1 - Network Analytics Landing Zone using ExpressRoute with Microsoft Peeri
 
 Figure 2 - Network Analytics Landing Zone using ExpressRoute with Private Peering connectivity
 
-| Resource | Required | Description |
-|---|---|---|
-| ExpressRoute circuit (Private Peering) | Yes | The reference implementation allows you to bring an existing pre-configured ExpressRoute circuit with Private Peering, or it allows you to create a new ExpressRoute circuit. |
-| ExpressRoute Gateway | Optional | ExpressRoute Gateway deployed within the Network Analytics Landing Zone. If the gateway is deployed on a region that supports availability zones, the reference implementation will allow you to deploy the gateway as zone redundant. |
-| Connection | Optional | If you bring an existing pre-configured ExpressRoute circuit with Private Peering, the reference implementation allows you to deploy a new ExpressRoute connection. |
-| Virtual Network | Yes | Azure virtual network where you will deploy your observability resources (for example, Azure Data Factory or a Spark cluster). |
-| Azure Bastion | Optional | Azure Bastion host to allow you to connect to any virtual machines that you deploy in the virtual network. |
-| Log Analytics Workspace | Optional | Log Analytics workspace to monitor the resources in your Network Analytics Landing Zone. |
-| Azure Managed Grafana (Preview) | Optional | Azure Managed Grafana lets you bring together all your telemetry data into one place. |
+| Resource | Required | Description | Pricing |
+|---|---|---|---|
+| ExpressRoute circuit (Private Peering) | Yes | The reference implementation allows you to bring an existing pre-configured ExpressRoute circuit with Private Peering, or it allows you to create a new ExpressRoute circuit. | [Azure ExpressRoute pricing](https://azure.microsoft.com/pricing/details/expressroute/) |
+| ExpressRoute Gateway | Optional | ExpressRoute Gateway deployed within the Network Analytics Landing Zone. If the gateway is deployed on a region that supports availability zones, the reference implementation will allow you to deploy the gateway as zone redundant. | [Azure ExpressRoute Gateway pricing](https://azure.microsoft.com/pricing/details/expressroute/) |
+| Connection | Optional | If you bring an existing pre-configured ExpressRoute circuit with Private Peering, the reference implementation allows you to deploy a new ExpressRoute connection. | Free |
+| Virtual Network | Yes | Azure virtual network where you will deploy your observability resources (for example, Azure Data Factory or a Spark cluster). | Free |
+| Azure Bastion | Optional | Azure Bastion host to allow you to connect to any virtual machines that you deploy in the virtual network. | [Azure Bastion pricing](https://azure.microsoft.com/pricing/details/azure-bastion/) |
+| Log Analytics Workspace | Optional | Log Analytics workspace to monitor the resources in your Network Analytics Landing Zone. | [Azure Monitor pricing](https://azure.microsoft.com/pricing/details/monitor/) |
+| Azure Managed Grafana (Preview) | Optional | Azure Managed Grafana lets you bring together all your telemetry data into one place. | [Azure Managed Grafana pricing](https://azure.microsoft.com/pricing/details/managed-grafana/) |
 
 Table 2 - Network Analytics Landing Zone using ExpressRoute with Microsoft Peering connectivit
 
