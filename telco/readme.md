@@ -20,7 +20,7 @@ This article provides a reference architecture with prescriptive guidance and re
   * [Distributed Edge](#letter-d)
   * [Operator Services](#letter-e)
 * [Solutions](#solutions)
-  * [Observability Landing Zones for Operators](#observability-landing-zones-for-operators)
+  * [Network Analytics Landing Zones for Operators](#network-analytics-landing-zones-for-operators)
 * [Next Steps](#next-steps)
 
 ## Azure for Operators Landing Zones Reference Implementations
@@ -59,7 +59,7 @@ As figure 1 depicts, the AfO Landing Zones architecture follows the design princ
 
 ## Solutions
 
-### Observability Landing Zones for Operators
+### Network Analytics Landing Zones for Operators
 
 An observability landing zone for operators provides the required foundational services on Azure to ingest large amounts of data into Azure storage services (such as Azure Data Lake Storage Gen2). Once this landing zone is provisioned, operators can simply deploy whichever data and analytics services and solutions they prefer to analyze the data.
 
@@ -77,7 +77,7 @@ The following articles will provide detailed design considerations and recommend
 * [Operator Services](./solutions/mgmtOptions/readme.md)
 
 **Solutions**
-* [Observability Landing Zones for Operators](./solutions/observability/readme.md)
+* [Network Analytics Landing Zones for Operators](./solutions/observability/readme.md)
 ---
 
 [Back to documentation root](../README.md)

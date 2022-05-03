@@ -6,6 +6,12 @@ A Network Analytics landing zone for operators provides the required foundationa
 
 This article provides design considerations and recommendations for Network Analytics landing zones for operators, and it also provides a reference implementation to accelerate and simplify the deployment of those landing zones.
 
+| Reference implementation  | Description  | Deploy  | Documentation  |
+|--- |--- |--- | --- |
+| Network Analytics Landing Zone for Operators  | Network Analytics landing zone for operators with required infrastructure for data ingestion into an Azure storage service and ready for deployment of storage services (such as ADLS Gen2) an analytics solutions (such as Azure Synapse).   | [![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/observabilitylz)   | [User guide](./userGuide/readme.md)   |
+
+## Table of contents
+
 * [Networking options](#networking-options)
   * [Internet](#internet)
   * [VPN](#vpn)
@@ -166,9 +172,9 @@ _Table 1: Network Analytics Landing Zones depending on the network connectivity 
 
 ## Reference implementation
 
-| Reference implementation  | Description  | Deploy  |
-|--- |--- |--- |
-| Network Analytics Landing Zone for Operators  | Network Analytics landing zone for operators with required infrastructure for data ingestion into an Azure storage service and ready for deployment of storage services (such as ADLS Gen2) an analytics solutions (such as Azure Synapse).   | [User guide](./userGuide/readme.md)   |
+| Reference implementation  | Description  | Deploy  | Documentation  |
+|--- |--- |--- | --- |
+| Network Analytics Landing Zone for Operators  | Network Analytics landing zone for operators with required infrastructure for data ingestion into an Azure storage service and ready for deployment of storage services (such as ADLS Gen2) an analytics solutions (such as Azure Synapse).   | [![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/observabilitylz)   | [User guide](./userGuide/readme.md)   |
 
 This reference implementation is intended for landing zone owners for them to deploy Network Analytics landing zones for operators. This reference implementation allows the deployment of Network Analytics landing zones for operators using two network connectiviity models:
 
