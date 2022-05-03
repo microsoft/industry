@@ -118,4 +118,29 @@ Depending on the options you select the deployment experience will take some tim
 
 ### ExpressRoute with Private Peering
 
-Coming soon
+1. In the **Networking Connectivity Model** tab, select **ExpressRoute with Private Peering** option under **Network Connectivity Model** section.
+![ExpressRoute_PrivatePeering](../images/afo-netanalytics-ri-pp.png)
+2. After you selected **ExpressRoute with Private Peering**, select whether you want to create a new ExpressRoute circuit or if you want to use an existing one.
+   * If you want to use an existing circuit, select **Existing** under the **Select new or existing ExpressRoute circuit** section (please ensure the circuit is configured with Private peering and ready to use). Select the **existing ExpressRoute circuit** and provide the **authorization key**  and click on **Next**.
+   ![ExpressRoute_PrivatePeering_Existing](../images/afo-netanalytics-ri-pp-existing.png) 
+   * If you want to create a new circuit, proceed to step 3 on this section.
+3. If you want to create a new ExpressRoute circuit, select **New** under the **Select new or existing ExpressRoute circuit** section and the **Configure new ExpressRoute Circuit with Private Peering** section will be displayed, and you will need to select the port type for your new ExpressRoute circuit
+![ExpressRoute_PrivatePeering_New](../images/afo-netanalytics-ri-pp-new.png)
+   * If you select the **Provider** port type, you will have to provide the **ExpressRoute circuit name**, the **Provider**, **Provider location**, **Bandwidth**, **SKU** (Local, Standard or Premium) and **Billing model** (Metered or Unlimited) for your new ExpressRoute circuit.
+   ![ExpressRoute_PrivatePeering_New_Provider](../images/afo-netanalytics-ri-pp-new-provider.png)
+   * If you select the **Direct** port type, you will have to provide the **ExpressRoute Direct resource**, select a **SKU** (Local, Standard or Premium) and select the **Billing model** (Metered or Unlimited) for your new ExpressRoute circuit.
+   ![ExpressRoute_PrivatePeering_New_Direct](../images/afo-netanalytics-ri-pp-new-direct.png)
+   Once you have made your selection click on **Next**.
+4. In the **Auxiliary Services** tab, provide a name and a valid CIDR range for the virtual network that will be created in the Network Analytics Landing Zone.
+![ExpressRoute_MSFTPeering_VNet](../images/afo-observability-ri-msft-vnet.png)
+5. Still in the **Auxiliary Services** tab, select the optional resources that you would like to deploy in the Network Analytics Landing Zone. Note that these resources are optional, but highly recommended:
+- Azure Bastion (to have secure remote access to Windows and Linux virtual machines that you deploy on this landing zone)
+![ExpressRoute_PrivatePeering_Bastion](../images/afo-observability-ri-msft-bastion.png)
+- Azure Monitor (to monitor the resources you deploy in the landing zone)
+- Azure Managed Grafana (to provide extensible visualization and dashboards)
+![ExpressRoute_PrivatePeering_Monitor](../images/afo-observability-ri-msft-monitor.png)
+- ExpressRoute Gateway (to provide connectivity from your VNet to your on-premises network via the ExpressRoute circuit with Private Peering configured)
+![ExpressRoute_PrivatePeering_ERGW](../images/afo-netanalytics-ri-pp-ergw.png)
+6. Once you have selected the auxiliary services to deploy, click on **Next**
+7. On the **Review + create** tab, after ensuring that the validation is successful and after reviewing the services to be deployed, click on **Create**. This will initiate the deployment and configuration of your Network Analytics Landing Zone.
+![ExpressRoute_MSFTPeering_Create](../images/afo-observability-ri-msft-create.png)
