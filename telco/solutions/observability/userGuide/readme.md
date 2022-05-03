@@ -2,7 +2,7 @@
 
 This user guide explains the Network Analytics Landing Zone for Operators reference implementation, what it is, what it does, how organizations within the telecommunication industry can use it to run their carrier-grade observability workloads on a sustainable, scalable, and reliable Azure architecture.
 
-| Reference implementation  | Description  | Deploy  | 
+| Reference implementation  | Description  | Deploy  |
 |--- |--- |--- |
 | Network Analytics Landing Zone for Operators  | Network Analytics landing zone for operators with required infrastructure for data ingestion into an Azure storage service and ready for deployment of storage services (such as ADLS Gen2) an analytics solutions (such as Azure Synapse).   | [![Deploy To Microsoft Cloud](../../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/observabilitylz)   |
 
