@@ -122,7 +122,7 @@ Depending on the options you select the deployment experience will take some tim
 ![ExpressRoute_PrivatePeering](../images/afo-netanalytics-ri-pp.png)
 2. After you selected **ExpressRoute with Private Peering**, select whether you want to create a new ExpressRoute circuit or if you want to use an existing one.
    * If you want to use an existing circuit, select **Existing** under the **Select new or existing ExpressRoute circuit** section (please ensure the circuit is configured with Private peering and ready to use). Select the **existing ExpressRoute circuit** and provide the **authorization key**  and click on **Next**.
-   ![ExpressRoute_PrivatePeering_Existing](../images/afo-netanalytics-ri-pp-existing.png) 
+   ![ExpressRoute_PrivatePeering_Existing](../images/afo-netanalytics-ri-pp-existing.png)
    * If you want to create a new circuit, proceed to step 3 on this section.
 3. If you want to create a new ExpressRoute circuit, select **New** under the **Select new or existing ExpressRoute circuit** section and the **Configure new ExpressRoute Circuit with Private Peering** section will be displayed, and you will need to select the port type for your new ExpressRoute circuit
 ![ExpressRoute_PrivatePeering_New](../images/afo-netanalytics-ri-pp-new.png)
