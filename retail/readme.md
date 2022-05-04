@@ -17,7 +17,8 @@ Goal of this documentation is to provide Northstar reference architecture; provi
 
 ## Retail Solutions
 
-*Details coming soon*
+- [Real-time personalization](./solutions/realtimePersonalization/README.md)
+- [Flexible Fulfillment](./solutions/flexibleFulfillment/README.md)
 
 ---
 
