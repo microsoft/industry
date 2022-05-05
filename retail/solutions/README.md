@@ -9,3 +9,4 @@ The solutions covered here were created based on feedback captured from various 
 
 - [Flexible Fulfillment](./flexibleFulfillment/README.md)
 - [Realtime personalization](./realtimePersonalization/README.md)
+- [Frontline worker](./frontline-worker/README.MD)
