@@ -3,7 +3,7 @@
 | Reference implementation | Description | Deploy |
 |:----------------------|:------------|--------|
 | IOM | Deployment guidance | [Prerequisites](#d365-iom-prerequisites) and [Deployment steps](#intelligent-order-management-deployment)
-| BigCommerce | In this reference implementation, we are using BigCommerce as point of generation for customer orders. IOM is an order management application and it itself cannot generate orders, hence it requires an external application to generate orders which it can then manage once they arrive at IOM via Providers. | [Prerequisites](#) and [Deployment steps](#bigcommerce-deployment)
+| BigCommerce | In this reference implementation, we are using BigCommerce as point of generation for customer orders. IOM is an order management application and it itself cannot generate orders, hence it requires an external application to generate orders which it can then manage once they arrive at IOM via Providers. | [Prerequisites](#bigcommerce-prerequisites) and [Deployment steps](#bigcommerce-deployment)
 
 ## Overview of IOM
 IOM is a Dynamics 365 app designed and built on Microsoft Dataverse. It relies on Power Platform capabilities to enable key features such as -
@@ -185,13 +185,13 @@ An `Environment` provides a container for scale and management boundary in Power
 
 > Note: In this guidance, `environment` refers to [Power Platform environments](https://docs.microsoft.com/power-platform/admin/environments-overview) unless otherwise called out explicitly.
 
--  A deployment of IOM resides within an environment.![iom environments](./media/iom-environments.png)
+- A deployment of IOM resides within an environment.![iom environments](./media/iom-environments.png)
 
     A tenant can support multiple environments which in turn offer a container to deploy reources such as Flow, Dataverse etc. to support a D365 app such as IOM.
 
     > Note: Dynamics 365 apps can only be deployed to an environment that was created with a database with a Dynamics 365 apps enabled during the environment creation. A valid Dynamics 365 license is also required to enable Dynamics 365 apps during the environment creation.
 
-- Each environment has its own Dataverse instance. If you have multiple D365 applications which must share data, flows etc. ensure that all apps are deployed within the same environment for seamless 
+- Each environment has its own Dataverse instance. If you have multiple D365 applications which must share data, flows, Dataverse model etc. then those apps must be deployed within the same environment.
 
 #### Recommendations
 
@@ -305,10 +305,11 @@ IOM is a D365 SaaS application which is deployed on Power Platform. As a prerequ
 
     ![Environment listing](./media/iom-3-envListing.png).
 4. To access IOM instance, click on the environment name and then click on the application URL. ![Env URL](./media/iom-4-envUrl.png).
-5. You may be prompted again to enter your credentials. Please continue using the admin credentials which were used to deploy Power Platform Environment in the first place. You should now see a *Published Apps* screen. ![Published apps](./media/iom-5-pubApps.png).
+5. You may be prompted again to enter your credentials. Please continue using the admin credentials which were used to deploy Power Platform Environment in the first place. You should now see a *Published Apps* screen.
+
+    ![Published apps](./media/iom-5-pubApps.png)
 6. Select Intelligent Order Management on the **Published Apps** screen (see image above).
-7. You should now see IOM Welcome screen. 
-    
+7. You should now see IOM Welcome screen.
     ![iom welcome](./media/iom-7-welcome.png).
 
 #### Configure system connections for the IOM deployment
@@ -325,10 +326,10 @@ System connections are used for IOM application to operate.
    ![IOM sys conns](./media/iom-9-sysConnections.png)
 
 3. Click on **IOM Data Transformer** and then select **Create**.
-   
+
    ![IOM transformer setup](./media/iom-10-sysConnIOM.png)
 
-4. Click on **Retrieve Link** and this will take you to Power Automate where you can configure connection and then bind it to **IOM Data Transformer**. 
+4. Click on **Retrieve Link** and this will take you to Power Automate where you can configure connection and then bind it to **IOM Data Transformer**.
 
     ![IOM Data Transformer Conn](./media/iom-11-iomDataTransfConn.png)
 5. In Power Automate, click on **Data > Connections** and then click on **New connection**. ![Automate New Connection](./media/iom-12-conn%20dataTransformerConn.png)
@@ -343,7 +344,7 @@ System connections are used for IOM application to operate.
 
     ![Automate dataverse conn](./media/iom-18-automateConnDataverse.png)
 13. Click on **Create** to initiate creation of a Dataverse connection. This will create a connection to the Dataverse database within that Power Platform Environment.
-    
+
     ![DV create connection](./media/iom-19-automate%20dv%20create.png)
 
 14. Once Dataverse connection has been created, it will be listed under the list of connections active for your environment.
@@ -356,7 +357,6 @@ System connections are used for IOM application to operate.
   
     ![All DV conn references](./media/iom-24-allDvConnRef.png)
 19. To configure **Power Automate Management** connection reference, click on **Retrieve Link** and this will open up Power Automate portal.
-    
     ![PA retrieve link](./media/iom-25-paConnRef.png)
 20. In the Power Automate portal, go to **Data > Connections** and then select **Power Automate Management** connection.
 
@@ -369,16 +369,14 @@ System connections are used for IOM application to operate.
   
     ![PA URL ref](./media/iom-28-paMgmtUrl.png)
 23. Paste the URL to **Connection URL** textbox and then click on *Save & close**.
-    
     ![PA Conn reference](./media/iom-29-iomConnRefPowerAutomate.png)
 
 24. You should now have 5 system connection references.
 25. Click on **Activate System** button on the top of the screen to active the connections and complete configuration of system connections.
-    
     ![Activate sys conn](./media/iom-30-activateSysConn.png)
   
 26. You should see the following message on your screen.
-    
+
     ![activating](./media/iom-31-notificationActivateSys.png)
 
     > Note: It can take 2-3 minutes to activate. You may also encounter a timeout error during the activation process. Simply click on **Activate System** button again and wait for activation process to complete. In our experience, it can sometimes take 2-3 retries before all connections are activated. The current activation process doesn't issue a separate notification once it has completed activation. The message simply disappears once activation is complete.

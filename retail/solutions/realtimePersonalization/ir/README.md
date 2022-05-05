@@ -171,7 +171,7 @@ Customers can experiment with input datasets and variables defined in `model.jso
 
 This section discusses networking considerations and strategies for an IR deployment.
 
-- At the time of writing this guidance, IR doesn't support Azure Private Endpoints or a feature to disable connectivity over public endpoint. The APIs published by IR for Modeling Resources and Service Endpoints are accessed over a public endpoint managed by Microsoft. Whilst endpoint is routable over public network, however a key is required by consumer apps to access these endpoints and this adds another layer of security. 
+- At the time of writing this guidance, IR doesn't support Azure Private Endpoints or a feature to disable connectivity over public endpoint. The APIs published by IR for Modeling Resources and Service Endpoints are accessed over a public endpoint managed by Microsoft. Whilst endpoint is routable over public network, however a key is required by consumer apps to access these endpoints and this adds another layer of security.
 
 - For a deployment of IR to function, it requires access to a Storage Account which supports public endpoint where customers will host input datasets. The same Storage Account is also used by IR to write processing logs.
 
@@ -185,17 +185,17 @@ This section discusses networking considerations and strategies for an IR deploy
 
 ### Operations and Monitoring
 
-  - *Control plane* actions are captured in the `Activity Logs` and should be exported to a Log Analytics Workspace similar to any other Azure service. This can be enabled via Azure Policy.
+- *Control plane* actions are captured in the `Activity Logs` and should be exported to a Log Analytics Workspace similar to any other Azure service. This can be enabled via Azure Policy.
   
-  - There is no SLA for the `Cooking Process`, depending on size of data inputs, the cooking process can take up to a maximum of 72 hours. The `Cooking process`, once deployed, continues to process data through a periodic cooking cycle. By default, the data cooking cycle occurs every 36 hours.
+- There is no SLA for the `Cooking Process`, depending on size of data inputs, the cooking process can take up to a maximum of 72 hours. The `Cooking process`, once deployed, continues to process data through a periodic cooking cycle. By default, the data cooking cycle occurs every 36 hours.
 
-  - IR writes operational logs to [ADLS](https://docs.microsoft.com/industry/retail/intelligent-recommendations/write-back). We recommend using a separate container for storing logs. Operations team woud
+- IR writes operational logs to [ADLS](https://docs.microsoft.com/industry/retail/intelligent-recommendations/write-back). We recommend using a separate container for storing logs. Operations team woud
   
-  - IR generates logging and error reports which are written back to the ADLS account configured for use with the Modeling instance. The logs are generated in JSON and currently no turnkey feature exists to integrate them with Azure Monitor. To address this, an option could be to pipe the logs through to Log Analytics Agent v1.1.0-217+. The details are captured [here](https://docs.microsoft.com/azure/azure-monitor/agents/data-sources-json). This would require provisioning an Azure VM with Log Analytics Agent installed to process and parse the logs before writing them to LA Workspace as Custom Logs. The [error logs](https://docs.microsoft.com/industry/retail/intelligent-recommendations/error-logging) capture the following metrics and messages:
+- IR generates logging and error reports which are written back to the ADLS account configured for use with the Modeling instance. The logs are generated in JSON and currently no turnkey feature exists to integrate them with Azure Monitor. To address this, an option could be to pipe the logs through to Log Analytics Agent v1.1.0-217+. The details are captured [here](https://docs.microsoft.com/azure/azure-monitor/agents/data-sources-json). This would require provisioning an Azure VM with Log Analytics Agent installed to process and parse the logs before writing them to LA Workspace as Custom Logs. The [error logs](https://docs.microsoft.com/industry/retail/intelligent-recommendations/error-logging) capture the following metrics and messages:
 
-    - Total Record Count
-    - Total Dropped Records
-    - Error messages
+  - Total Record Count
+  - Total Dropped Records
+  - Error messages
 
 - An alternate approach could be to store the logs in native format (JSON), however it does mean that a runtime environment is required to analyse the logs in case of an operational issues or technical investigations.
 
@@ -207,19 +207,20 @@ This section discusses networking considerations and strategies for an IR deploy
 
   ![IR features](./media/ir_features.png)
 
-    `Basic` tier includes modeling of:
-    - People also buy
-    - Frequently bought together
-    - New
-    - Trending
-    - Best Selling
+  `Basic` tier includes modeling of:
+  
+  - People also buy
+  - Frequently bought together
+  - New
+  - Trending
+  - Best Selling
 
-    `Standard` tier includes modeling scenaros under `Basic` plus:
-    - Picks for you (personalization)
+  `Standard` tier includes modeling scenaros under `Basic` plus:
+  - Picks for you (personalization)
 
-    `Premium` tier includes modeling scenarios under `Standard` plus:
-    - Similar look (Visual similarity)
-    - Similar description (NLP similarity)
+  `Premium` tier includes modeling scenarios under `Standard` plus:
+  - Similar look (Visual similarity)
+  - Similar description (NLP similarity)
 
 - `User interactions` must be in CSV format. The structure of input CSV files is covered in detail under [Data Contracts](https://docs.microsoft.com/industry/retail/intelligent-recommendations/data-contract).
 
@@ -286,9 +287,9 @@ As discussed earlier, data plane access to Modeling Endpoint is configured at IR
 
 The Service Endpoint (SE) supports the APIs which are referenced by applications to fetch recommendations generated by IR. The same set of risks highlighted for Modeling Endpoint apply to SE REST APIs. There are a few differences which are called out here:
 
-  - To ensure QoS, Service Endpoints an instance is instantiated with a pre-allocated capacity which controls maximum transactions-per-second allowed for a given endpoint. 
+- To ensure QoS, Service Endpoints an instance is instantiated with a pre-allocated capacity which controls maximum transactions-per-second allowed for a given endpoint.
 
-  - In a scenario where a single IR account has multiple Modeling and Service Endpoints, it's worth noting that the applications granted access to the endpoints through `Endpoint Authentication` feature, have read access to all the APIs belonging to all Modeling and Service Endpoints belonging to an IR account.
+- In a scenario where a single IR account has multiple Modeling and Service Endpoints, it's worth noting that the applications granted access to the endpoints through `Endpoint Authentication` feature, have read access to all the APIs belonging to all Modeling and Service Endpoints belonging to an IR account.
 
 ### High Availability and Disaster Recovery
 
