@@ -23,7 +23,7 @@ Here are some of the key features that the Commerce and Microsoft Teams integrat
 
 ### Architecture
 
-![Teams Integration Architecture](./media/secret-value.pngTeamsIntegration-Architecture.png)
+![Teams Integration Architecture](./media/TeamsIntegration-Architecture.png)
 
 ### Terminology
 
@@ -62,15 +62,15 @@ This deployment guide provides detailed steps on how to setup the Microsoft Team
 
 1. In the Azure Portal search bar, search for “Active Directory”, the Azure Active Directory will show up in the services. Choose it to Open Azure Active Directory. 
 
-![Search Azure AD](./media/secret-value.pngsearch-azure-ad.png)
+![Search Azure AD](./media/search-azure-ad.png)
 
 2. In the Azure Active Directory, Click on App registrations
 
-![Search Azure AD](./media/secret-value.pngazure-ad-registration.png)
+![Search Azure AD](./media/azure-ad-registration.png)
 
 3. In the App registrations, click on add New registration. 
 
-![New App Registration](./media/secret-value.pngnew-registration.png)
+![New App Registration](./media/new-registration.png)
 
 4.	Name the App registration as “Microsoft Teams Commerce” 
 
@@ -80,61 +80,61 @@ This deployment guide provides detailed steps on how to setup the Microsoft Team
 
 7.	Click in Register to complete. 
 
-![App Registration Name](./media/secret-value.pngapp-registration-name.png)
+![App Registration Name](./media/app-registration-name.png)
 
 **Important**
 
 8.	Save the Application (client) ID in the text editor of your preference. It will be used in later steps. 
 
-![App Client ID](./media/secret-value.pngapp-client-id.png)
+![App Client ID](./media/app-client-id.png)
 
 
 ### Add a Secret to the registered App
 
 1. In the Microsoft Teams Commerce registered App. Click in Certificates & Secrets 
 
-![App Secret](./media/secret-value.pngapp-secret.png)
+![App Secret](./media/app-secret.png)
 
 2. Click Add New Client Secret 
 
-![New Secret](./media/secret-value.pngnew-secret.png)
+![New Secret](./media/new-secret.png)
 
 3. In the Description, provide a name of your choice for the client secret and click Add. 
 
-![Secret Description](./media/secret-value.pngsecret-description.png)
+![Secret Description](./media/secret-description.png)
 
 4. Copy the key value generated for the client secret and save it in and text editor of your choice. The client secret value will be used in future steps. After closing this window, it will not be possible to retrieve the key again and it will require generating a new client secret. 
 
-![Secret-Value](./media/secret-value.pngsecret-value.png)
+![Secret-Value](./media/)
 
 
 ### Adding API permissions to the registered App 
 
 1.	Click on API permissions in the left tab, then click on + Add a permission
 
-![Registered App Permissions](./media/secret-value.pngregisteredapp-permissions.png)
+![Registered App Permissions](./media/registeredapp-permissions.png)
 
 2.	In the Request API permissions pop-up and select Microsoft Graph.
 
-![request api permissions](./media/secret-value.pngrequest-api-permissions.png)
+![request api permissions](./media/request-api-permissions.png)
 
 3.	Select Delegated permissions, then in Select permission type Group to filter results. 
 
 4.	Under Group and check Group.ReadWrite.All, then click Add permissions button.  
 
-![graph-group-permissions](./media/secret-value.pnggraph-group-permissions.png)
+![graph-group-permissions](./media/graph-group-permissions.png)
 
 5.	Click on + Add permission again to add additional permissions. 
 
-![App api permissions](./media/secret-value.pngapp-api-permissions.png)
+![App api permissions](./media/app-api-permissions.png)
 
 6.	In the Request API permissions pop-up and choose Microsoft Graph.
 
-![msgraph API- Permissions](./media/secret-value.pngmsgraph-api-permissions.png)
+![msgraph API- Permissions](./media/msgraph-api-permissions.png)
 
 7.	Select Application permissions
 
-![Application Permissions](./media/secret-value.pngapplication-permissions.png)
+![Application Permissions](./media/application-permissions.png)
 
 8.	With Application permissions selected, then in Select permissions search field type Group to filter results. 
 
