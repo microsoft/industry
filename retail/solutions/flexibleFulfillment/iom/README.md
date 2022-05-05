@@ -274,9 +274,9 @@ To setup a BigCommerce instance, we will register a new admin account and use it
 
 > Note: We are using trial version of BigCommerce for this deployment.
 
-1. Go to [BigCommerce](https://www.bigcommerce.com/) website and create a new account. By default, the credentials used for creation of BigCommerce instance have admin rights to that instance. ![Setup BC store](./media/bc-setup-store-1.png)
+1. Go to [BigCommerce](https://www.bigcommerce.com/) site and create a new account. By default, the credentials used for creation of BigCommerce instance have admin rights to that instance. ![Setup BC store](./media/bc-setup-store-1.png)
 
-    > Note: As far as this deployment goes, there is no link between AAD IdP and BigCommerce. You can use any email address for BigCommerce setup, however for a production deployment, we recommend enabling SSO. BigCommerce supports SSO but that requires additional development. More details are available on [BigCommerce website](https://support.bigcommerce.com/s/article/Logging-Into-Your-Store?#sso-help).
+    > Note: As far as this deployment goes, there is no link between AAD IdP and BigCommerce. You can use any email address for BigCommerce setup, however for a production deployment, we recommend enabling SSO. BigCommerce supports SSO but that requires additional development. More details are available on [BigCommerce site](https://support.bigcommerce.com/s/article/Logging-Into-Your-Store?#sso-help).
 
 2. Enter email address to use for creation. This email account, by default, will have administrative privileges to BigCommerce instance. Post deployment, one can then create different accounts for separation of duties.
 
