@@ -19,7 +19,7 @@ The table below lists the building blocks for solution and contains a link to th
 
 **Important Note about this deployment guidance**
 
-- This guidance uses a single AAD tenant which is used across Azure, Power Platform etc. Please DO NOT use separate AAD tenants for end to end deployment of this solution.
+- This guidance uses a single AAD tenant which is used across Azure, Power Platform etc. Please DO NOT use separate AAD tenants for end-to-end deployment of this solution.
 - In context of Power Platform Environments, a solution which consists of multiple D365 apps which require access to a common Dataverse instance and other components such as Power Apps; Automate etc., we will use a a single Power Platform environment so that components belonging to an environment can be shared across application boundaries.
 - The deployment experience of Flexible Fulfillment is not fully automated and it consists of manual steps which must be performed across Solution Center; Power Platform Admin Center (PPAC) and third-party (3P) BigCommerce platform. There are certain aspects of the deployment primarily those relating to Azure which have been automated for a programmatic and repeatable deployment.
 - BigCommerce is a third-party ecommerce platform. For authoratative guidance on deploying BigCommerce and technical support, we recommend reaching out to [BigCommerce](https://www.bigcommerce.com/dm/microsoft/).

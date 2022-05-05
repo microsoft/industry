@@ -18,7 +18,7 @@ IOM is a Dynamics 365 app designed and built on Microsoft Dataverse. It relies o
 
 IOM has following application goals:
 
-- IOM is designed to provide single pane of glass for managing end to end lifecycle of an order across disparate applications and platforms. It’s a common scenario for enterprises to have disparate systems for ecommerce, fulfillment, and shipping/delivery. IOM bridges these disparities and provides a single pane of glass to manage end-to-end lifecycle of an Order. [Extensibility features](https://docs.microsoft.com/dynamics365/intelligent-order-management/extensibility) allow customers to integrate IOM with their existing ecosystem of applications.
+- IOM is designed to provide single pane of glass for managing end-to-end lifecycle of an order across disparate applications and platforms. It’s a common scenario for enterprises to have disparate systems for ecommerce, fulfillment, and shipping/delivery. IOM bridges these disparities and provides a single pane of glass to manage end-to-end lifecycle of an Order. [Extensibility features](https://docs.microsoft.com/dynamics365/intelligent-order-management/extensibility) allow customers to integrate IOM with their existing ecosystem of applications.
 
 - It provides the flexibility organisations need today to capture orders from any order source such as online e-commerce, marketplace, mobile apps, or traditional sources like EDI and fulfill them from their own warehouse, 3PL (third-party logistics), stores, or drop-ship with vendors or other delivery fulfillment partners.
 
@@ -55,7 +55,7 @@ If you do not have a license for BigCommerce, you can create a new trial account
 
 1. An **admin account** for BigCommerce. This account should have privileges to configure the ecommerce store and generate sample orders for to test the integration between BigCommerce and IOM. This account will also be used to generate an API key which is to be used by IOM to interact with BigCommerce. The steps below show how to setup a brand new BigCommerce instance. The credentials used at the time of creation, by default, assigned administrative privileges.
 
-2. Go to [BigCommerce](https://www.bigcommerce.com/) website and create a new account. By default, the credentials used for creation of BigCommerce instance have admin rights to that instance. ![Setup BC store](./media/bc-setup-store-1.png)
+2. Go to [BigCommerce](https://www.bigcommerce.com/) site and create a new account. By default, the credentials used for creation of BigCommerce instance have admin rights to that instance. ![Setup BC store](./media/bc-setup-store-1.png)
 
 3. Enter email address to use for creation. This email account, by default, will have administrative privileges to BigCommerce instance.
 
@@ -199,7 +199,7 @@ An `Environment` provides a container for scale and management boundary in Power
 - Keeping in line with the [North Star Architecture for Power Platform](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#environments), as a principle, we recommend using Power Platform `Environments` as the scale-unit and management boundary. An `environment` will also dictate region.
 - Within a retail setting, IOM plays a role of **providing a single pane of glass** to manage order lifecycle. IOM provides a unique opportunity to consolidate order management operations across all businesses in an engerprise and as such, a single instance of IOM should suffice business requirements.Business acquisitions can be consolidated and leverage common partnerships for fulfillment; logistics etc. There may be scenarios where more than one instance of IOM could be deployed in a production setting. Some of the scenarios could be:
   - A customer may have multiple different businesses where each business has its own separate applications; platforms; and processes for ordering and fulfillment. In such a sceanrio, a customer may choose to deploy separate of IOM instances to align with different businesses to have a clear boundary between IOM instances.
-  - A Power Platform environment construct is also tied back to a region. If a customer has businesses operating out of different geographic regions, they may choose to co-locate an IOM instance where other ecosystem; source and consumer applications are deployed.
+  - A Power Platform environment construct is also tied back to a region. If a customer has businesses operating out of different geographic regions, they may choose to colocate an IOM instance where other ecosystem; source and consumer applications are deployed.
 
 ### Management and Monitoring
 
@@ -469,7 +469,7 @@ Inventory Visibility provider enables you to use [Inventory Visibility capabilit
 
 #### Configure Bing Maps and Timeline features (Optional)
 
-There are optional features available within IOM which are targeted at improving end-user experience through integration with Bing Maps and Timeline features.
+There are optional features available within IOM which are targeted at improving end user experience through integration with Bing Maps and Timeline features.
 
 #### Bing Maps Integration
 
@@ -519,7 +519,7 @@ This feature (once enabled) displays business events raised by an [IOM orchestra
 
 - To troubleshoot technical issues related to the scope; network connectivity or authentication of BigCommerce APIs, we recommend using tools such as [Postman](https://www.postman.com/) or CLI utility such as `curl`. Using the `access token` and `store hash` values, one can test the API. The `store hash` can be extracted from the web address or API configuration screen in BigCommerce.![bc-store-hash](./media/bc-setup-store-9-storeHash.png)
 
-In the example shown below, we use `curl` command line utility to test BigCommerce's product API to test whether or not endpoint and/or API key works.
+In the example shown below, we use `curl` command-line utility to test BigCommerce's product API to test whether or not endpoint and/or API key works.
 
 ```bash
 #Testing if the API key works using CURL command. In this example, we are accessing the API endpoint for products. 
