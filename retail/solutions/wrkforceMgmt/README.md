@@ -54,13 +54,11 @@ This deployment guide provides detailed steps on how to setup the Microsoft Team
 
 1. Under Supported account types: Choose “Accounts in this organizational directory only” (Microsoft only – Single tenant)
 
-1. Under Redirect URI: Select Web and provide the Commerce Finance and Operations URL and add the “oath” suffix.  The full URL should look like https://fabrikam.sandbox.operations.dynamics.com/oath
+1. Under Redirect URI: Select Web and provide the Commerce Finance and Operations URL and add the “oath” suffix.  The full URL should look like `https://fabrikam.sandbox.operations.dynamics.com/oath`
 
 1. Click in Register to complete.
 
     ![App Registration Name](./media/app-registration-name.png)
-
-**Important**
 
 1. Save the Application (client) ID in the text editor of your preference. It will be used in later steps.
 
@@ -145,7 +143,7 @@ This deployment guide provides detailed steps on how to setup the Microsoft Team
 1. Select Expose an API and then Add a scope.
      ![Owned Applications](./media/expose-api.png)
 
-1. You can use the default value provided, which is in the form api://`<application-client-id>`, or specify a more readable URI like https://contoso.com/api.
+1. You can use the default value provided, which is in the form api://`<application-client-id>`, or specify a more readable URI like `https://contoso.com/api`.
 
     ![Owned Applications](./media/add-scope.png)
 
@@ -169,5 +167,3 @@ This deployment guide provides detailed steps on how to setup the Microsoft Team
 1. The final result should be similar to the picture below.
 
        ![Owned Applications](./media/final-scopes.png)
-
-### Configure a client application to access a web API
