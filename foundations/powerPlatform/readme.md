@@ -193,7 +193,7 @@ The following section describes the design considerations and the design recomme
 
 ### Design considerations
 
-- An environment must be pinned to a location (abstraction of Azure regions), and is determined during creation by the maker/admin, and cannot be changed post creation.
+- An environment must be pinned to a location (abstraction of Azure regions), and is determined during creation by the maker/admin. Location cannot be changed post creation by maker/admin, if such change is needed it can be initiated as request through Microsoft Support.
 - Environments are defined out of the box to serve different audiences and purposes like dev, test, production, and personal exploration/development. Depending on what type of environment that is created, it will determine what you can do with the environment as well as the apps within.
 - Each tenant has a default environment and it is created in the region closest to the default region of the Azure AD tenant.
 - Data Loss Prevention (DLP) policies can be applied to individual environments or the tenant root ("/") level.
