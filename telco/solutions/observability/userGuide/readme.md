@@ -103,7 +103,7 @@ This section will explain the deployment experience and the options provided for
 
 ![Deployment_setup](../images/afo-observability-ri-setup.png)
 
-3. On the **Network Connectivity Model** tab, specify if your Network Analytics Landing Zone will use [Internet](#internet), [ExpressRoute with Microsoft Peering](#expressroute-with-microsoft-peering) or [ExpressRoute with Private Peering](#expressroute-with-private-peering) for connectivity from the on-premises network. Depending on your selection, proceed to the corresponding section.
+3. On the **Network Connectivity Model** tab, specify if your Network Analytics Landing Zone will use [internet](#internet), [ExpressRoute with Microsoft Peering](#expressroute-with-microsoft-peering) or [ExpressRoute with Private Peering](#expressroute-with-private-peering) for connectivity from the on-premises network. Depending on your selection, proceed to the corresponding section.
 
 ### Internet
 
