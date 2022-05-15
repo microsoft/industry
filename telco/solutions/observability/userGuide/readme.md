@@ -38,7 +38,7 @@ The following section will provide links to the costs of each of the services th
 
 The Network Analytics Landing Zone for Operators reference implementation will configure an Azure subscription that has been deployed (or moved under) the **Landing Zones > Operator** Management Group and deploy all required infrastructure so that you can simply deploy and configure the analytics workload of your preference. The reference implementation allows you to choose from two networking connectivity models. Depending on the network connectivy model, certain infrastructure will be deployed and configured. Figure 1 and table 1 below describes the resources that are deployed when you choose the ExpressRoute with Microsoft Peering connectivity model, while figure 2 and table 2 below describe the resources that are deployed when you choose the ExpressRoute with Private Peering connectivity model.
 
-### Internet
+### Connectivity via internet
 
 ![afoObservabilityLZMSFT](../images/afo-observability-lz-internet.png)
 
@@ -53,7 +53,7 @@ Figure 1 - Network Analytics Landing Zone using internet connectivity
 
 Table 1 - Network Analytics Landing Zone using internet connectivity
 
-### ExpressRoute with Microsoft Peering
+### Connectivity via ExpressRoute with Microsoft Peering
 
 ![afoObservabilityLZMSFT](../images/afo-observability-lz-er-msft.png)
 
@@ -70,7 +70,7 @@ Figure 2 - Network Analytics Landing Zone using ExpressRoute with Microsoft Peer
 
 Table 2 - Network Analytics Landing Zone using ExpressRoute with Microsoft Peering connectivity
 
-### ExpressRoute with Private Peering
+### Connectivity via ExpressRoute with Private Peering
 
 ![afoObservabilityLZPP](../images/afo-observability-lz-er-pp.png)
 
@@ -103,7 +103,7 @@ This section will explain the deployment experience and the options provided for
 
 ![Deployment_setup](../images/afo-observability-ri-setup.png)
 
-3. On the **Network Connectivity Model** tab, specify if your Network Analytics Landing Zone will use Internet, ExpressRoute with Microsoft Peering or ExpressRoute with Private Peering for connectivity from the on-premises network. Depending on your selection, proceed to the corresponding section.
+3. On the **Network Connectivity Model** tab, specify if your Network Analytics Landing Zone will use [Internet](#internet), [ExpressRoute with Microsoft Peering](#expressroute-with-microsoft-peering) or [ExpressRoute with Private Peering](#expressroute-with-private-peering) for connectivity from the on-premises network. Depending on your selection, proceed to the corresponding section.
 
 ### Internet
 
