@@ -12,6 +12,7 @@ This user guide explains the Network Analytics Landing Zone for Operators refere
 - [Pricing](#pricing)
 - [What happens when you deploy the Network Analytics Landing Zone for Operators reference implementation?](#what-happens-when-you-deploy-the-network-analytics-landing-zone-for-operators-reference-implementation)
 - [Deployment instructions](#deployment-instructions)
+  - [Internet](#internet)
   - [ExpressRoute with Microsoft Peering](#expressroute-with-microsoft-peering)
   - [ExpressRoute with Private Peering](#expressroute-with-private-peering)
 
@@ -35,11 +36,28 @@ The following section will provide links to the costs of each of the services th
 
 ## What happens when you deploy the Network Analytics Landing Zone for Operators reference implementation?
 
-The Network Analytics Landing Zone for Operators reference implementation will configure an Azure subscription that has been deployed (or moved under) the **Landing Zones > Operator** Management Group and deploy all required infrastructure so that you can simply deploy and configure the analytics workload of your preference. The reference implementation allows you to choose from two networking connectivity models. Depending on the network connectivy model, certain infrastructure will be deployed and configured. Figure 1 and table 1 below describes the resources that are deployed when you choose the ExpressRoute with Microsoft Peering connectivity model, while figure 2 and table 2 below describe the resources that are deployed when you choose the ExpressRoute with Private Peering connectivity model
+The Network Analytics Landing Zone for Operators reference implementation will configure an Azure subscription that has been deployed (or moved under) the **Landing Zones > Operator** Management Group and deploy all required infrastructure so that you can simply deploy and configure the analytics workload of your preference. The reference implementation allows you to choose from two networking connectivity models. Depending on the network connectivy model, certain infrastructure will be deployed and configured. Figure 1 and table 1 below describes the resources that are deployed when you choose the ExpressRoute with Microsoft Peering connectivity model, while figure 2 and table 2 below describe the resources that are deployed when you choose the ExpressRoute with Private Peering connectivity model.
+
+### Internet
+
+![afoObservabilityLZMSFT](../images/afo-observability-lz-internet.png)
+
+Figure 1 - Network Analytics Landing Zone using internet connectivity
+
+| Resource | Required | Description | Pricing |
+|---|---|---|---|
+| Virtual Network | Yes | Azure virtual network where you will deploy your observability resources (for example, Azure Data Factory or a Spark cluster). | Free |
+| Azure Bastion | Optional | Azure Bastion host to allow you to connect to any virtual machines that you deploy in the virtual network. | [Azure Bastion pricing](https://azure.microsoft.com/pricing/details/azure-bastion/) |
+| Log Analytics Workspace | Optional | Log Analytics workspace to monitor the resources in your Network Analytics Landing Zone. | [Azure Monitor pricing](https://azure.microsoft.com/pricing/details/monitor/) |
+| Azure Managed Grafana (Preview) | Optional | Azure Managed Grafana lets you bring together all your telemetry data into one place. | [Azure Managed Grafana pricing](https://azure.microsoft.com/pricing/details/managed-grafana/) |
+
+Table 1 - Network Analytics Landing Zone using internet connectivity
+
+### ExpressRoute with Microsoft Peering
 
 ![afoObservabilityLZMSFT](../images/afo-observability-lz-er-msft.png)
 
-Figure 1 - Network Analytics Landing Zone using ExpressRoute with Microsoft Peering connectivity
+Figure 2 - Network Analytics Landing Zone using ExpressRoute with Microsoft Peering connectivity
 
 | Resource | Required | Description | Pricing |
 |---|---|---|---|
@@ -50,11 +68,13 @@ Figure 1 - Network Analytics Landing Zone using ExpressRoute with Microsoft Peer
 | Log Analytics Workspace | Optional | Log Analytics workspace to monitor the resources in your Network Analytics Landing Zone. | [Azure Monitor pricing](https://azure.microsoft.com/pricing/details/monitor/) |
 | Azure Managed Grafana (Preview) | Optional | Azure Managed Grafana lets you bring together all your telemetry data into one place. | [Azure Managed Grafana pricing](https://azure.microsoft.com/pricing/details/managed-grafana/) |
 
-Table 1 - Network Analytics Landing Zone using ExpressRoute with Microsoft Peering connectivity
+Table 2 - Network Analytics Landing Zone using ExpressRoute with Microsoft Peering connectivity
+
+### ExpressRoute with Private Peering
 
 ![afoObservabilityLZPP](../images/afo-observability-lz-er-pp.png)
 
-Figure 2 - Network Analytics Landing Zone using ExpressRoute with Private Peering connectivity
+Figure 3 - Network Analytics Landing Zone using ExpressRoute with Private Peering connectivity
 
 | Resource | Required | Description | Pricing |
 |---|---|---|---|
@@ -66,7 +86,7 @@ Figure 2 - Network Analytics Landing Zone using ExpressRoute with Private Peerin
 | Log Analytics Workspace | Optional | Log Analytics workspace to monitor the resources in your Network Analytics Landing Zone. | [Azure Monitor pricing](https://azure.microsoft.com/pricing/details/monitor/) |
 | Azure Managed Grafana (Preview) | Optional | Azure Managed Grafana lets you bring together all your telemetry data into one place. | [Azure Managed Grafana pricing](https://azure.microsoft.com/pricing/details/managed-grafana/) |
 
-Table 2 - Network Analytics Landing Zone using ExpressRoute with Microsoft Peering connectivit
+Table 3 - Network Analytics Landing Zone using ExpressRoute with Microsoft Peering connectivit
 
 Once the Network Analytics Landing Zone for Operators reference implementation completes (independently of which network connectivity model you choose), your landing zone will be ready for you to simply deploy the Azure storage and Analytical services of your choice to light-up your Network Analytics Landing Zone.
 
@@ -83,12 +103,28 @@ This section will explain the deployment experience and the options provided for
 
 ![Deployment_setup](../images/afo-observability-ri-setup.png)
 
-3. On the **Network Connectivity Model** tab, specify whether your Network Analytics Landing Zone will use ExpressRoute with Microsoft Peering or Private Peering for connectivity to the on-premises network. Depending on your selection, proceed to either the ExpressRoute with Microsoft Peering or ExpressRoute with Private Peering sections.
+3. On the **Network Connectivity Model** tab, specify if your Network Analytics Landing Zone will use Internet, ExpressRoute with Microsoft Peering or ExpressRoute with Private Peering for connectivity from the on-premises network. Depending on your selection, proceed to the corresponding section.
+
+### Internet
+
+1. In the **Networking Connectivity Model** tab, select the **Internet** option under **Network Connectivity Model** section and click on **Next**.
+![Internet](../images/afo-observability-ri-internet.png)
+2. In the **Auxiliary Services** tab, provide a name and a valid CIDR range for the virtual network that will be created in the Network Analytics Landing Zone.
+![Internet_VNet](../images/afo-observability-ri-msft-vnet.png)
+3. Still in the **Auxiliary Services** tab, select the optional resources that you would like to deploy in the Network Analytics Landing Zone. Note that these resources are optional, but highly recommended:
+- Azure Bastion (to have secure remote access to Windows and Linux virtual machines that you deploy on this landing zone)
+![Internet_Bastion](../images/afo-observability-ri-msft-bastion.png)
+- Azure Monitor (to monitor the resources you deploy in the landing zone)
+- Azure Managed Grafana (to provide extensible visualization and dashboards). Please note that this option will only be shown when you deploy your landing zone in an Azure Managed Grafana supported region.
+![Internet_Monitor](../images/afo-observability-ri-msft-monitor.png)
+4. Once you have selected the auxiliary services to deploy, click on **Next**
+5. On the **Review + create** tab, after ensuring that the validation is successful and after reviewing the services to be deployed, click on **Create**. This will initiate the deployment and configuration of your Network Analytics Landing Zone.
+![Internet_Create](../images/afo-observability-ri-msft-create.png)
 
 ### ExpressRoute with Microsoft Peering
 
 1. In the **Networking Connectivity Model** tab, select **ExpressRoute with Microsoft Peering** option under **Network Connectivity Model** section.
-![ExpressRoute_MSFTPeering](../images/afo-observability-ri-msft.png)
+![ExpressRoute_MSFTPeering](../images/afo-observability-er-ms.png)
 2. After you selected **ExpressRoute with Microsoft Peering**, select whether you want to create a new ExpressRoute circuit or if you want to use an existing one. If you want to use an existing circuit, select **Existing** under the **Select new or existing ExpressRoute circuit** section (please ensure the circuit is configured with Microsoft peering and ready to use) and click on **Next**. If you want to create a new circuit, select **New** under the **Select new or existing ExpressRoute circuit** section and the **Configure new ExpressRoute Circuit with Microsoft Peering** section will be displayed
 ![ExpressRoute_MSFTPeering_New](../images/afo-observability-ri-msft-new.png)
 3. If you want to create a new ExpressRoute circuit from an existing ExpressRoute Direct port pair, select **Direct** under **Port type**. Then provide the following information and click on **Next**.
