@@ -162,7 +162,7 @@ Depending the networking option you select for your Network Analytics landing zo
 
 | Connectivity Model  | Landing Zone Type  | Connectivity provided from  | Details  |
 |--- |--- |--- |--- |
-| Internet  | Azure Landing Zone  | Landing Zone  | You can implement this landing zone as an [Azure Landing Zone](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/)  |
+| Internet  | Azure Landing Zone and Operator Landing Zone  | Landing Zone  | You can implement this landing zone as an [Azure Landing Zone](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/) or as an Operator Landing Zone |
 | VPN  | Azure Landing Zone  | Landing Zones Platform  |  You can implement this landing zone as an [Azure Landing Zone](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/) |
 | ExpressRoute (Private Peering)  | Azure Landing Zone  | Landing Zones Platform  | When using connectivity provided by hub or virtual hub network. You can implement this landing zone as an [Azure Landing Zone](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/)  |
 | ExpressRoute (Private Peering)  | Operator Landing Zone  | Landing Zone  | When deploying ExpressRoute gateway within the landing zone  |
@@ -176,22 +176,19 @@ _Table 1: Network Analytics Landing Zones depending on the network connectivity 
 |--- |--- |--- | --- |
 | Network Analytics Landing Zone for Operators  | Network Analytics landing zone for operators with required infrastructure for data ingestion into an Azure storage service and ready for deployment of storage services (such as ADLS Gen2) an analytics solutions (such as Azure Synapse).   | [![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/observabilitylz)   | [User guide](./userGuide/readme.md)   |
 
-This reference implementation is intended for landing zone owners for them to deploy Network Analytics landing zones for operators. This reference implementation allows the deployment of Network Analytics landing zones for operators using two network connectiviity models:
+This reference implementation is intended for landing zone owners for them to deploy Network Analytics landing zones for operators. This reference implementation allows the deployment of Network Analytics landing zones for operators using three network connectiviity models:
 
-- ExpressRoute with Microsoft Peering (see figure 5).
-- ExpressRoute with Private Peering (see figure 6).
+| Connectivity Model  | Network Analytics Landing Zone composition  |
+|--- |--- |
+| Internet  |  [![Internet](./images/afo-observability-internet.png)]  |
+| ExpressRoute with Microsoft Peering  | ![ExpressRoute_Microsoft_Peering](./images/afo-observability-lz-er-msft.png)  |
+| ExpressRoute with Private Peering  | ![ExpressRoute_Private_Peering](./images/afo-observability-lz-er-pp.png)  |
 
-![afoObservabilityLZMSFT](./images/afo-observability-lz-er-msft.png)
+_Table 2: Network connectivity models in the Network Analytics Landing Zone reference implementation_
 
-_Figure 5: Network Analytics Landing Zones for Operator with ExpressRoute Microsoft Peering_
+As table 2 depicts, the Network Analytics Landing Zones reference implementation deploys and configures several Azure resources. The list of resources are described in table 3 below along with a description. Once the Network Analytics Landing Zones reference implementation deploys those resources, the landing zone is ready for the deployment of Azure storage and Azure analytical services that you would require for your own environment.
 
-![afoObservabilityLZPP](./images/afo-observability-lz-er-pp.png)
-
-_Figure 6: Network Analytics Landing Zones for Operator with ExpressRoute Microsoft Peering_
-
-As figures 5 and 6 depict, the Network Analytics Landing Zones reference implementation deploys and configures several Azure resources. The list of resources are described in table 2 below along with a description. Once the Network Analytics Landing Zones reference implementation deploys those resources, the landing zone is ready for the deployment of Azure storage and Azure analytical services that you would require for your own environment.
-
-Table 2 below also provides links to the deployment guides which include step-by-step deployment instructions for your Network Analytics landing zone. Table 2 also provides links to the Network Analytics solution accelerator to help you deploy and configure data and analitical services in your landing zone.
+Table 3 below also provides links to the deployment guides which include step-by-step deployment instructions for your Network Analytics landing zone. Table 2 also provides links to the Network Analytics solution accelerator to help you deploy and configure data and analitical services in your landing zone.
 
 | Azure resource | Deployed by | Details | Deploy |
 |---|---|---|---|
@@ -208,4 +205,4 @@ Table 2 below also provides links to the deployment guides which include step-by
 | Private Endpoints | Landing Zone owner |  | Solution Accelerator (coming soon) |
 | Analytics services | Landing Zone owner | Any analytics service(s) as required by the landing zone owner (for example Azure Synapse) | Solution Accelerator (coming soon) |
 
-_Table 2: Resources deployed by the Obervability Landing Zones reference implementation_
+_Table 3: Resources deployed by the Obervability Landing Zones reference implementation_
