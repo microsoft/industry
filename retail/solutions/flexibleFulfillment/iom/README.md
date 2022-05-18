@@ -162,7 +162,7 @@ IOM is an application built on Power Platform and Dataverse. For most part, it w
 
 - If you operate out of different geographies and each business unit has separate operations, we recommend using separate tenants and capacity licenses should be implemented.
 - Instantiate tenant in the same region as the applications and services which IOM would be interacting with for day to day operations.
-- We recommend familiarising yourself with [North Star Architecture for Power Platform](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#licensing-and-azure-ad-tenants) from AAD tenancy perspective.
+- We recommend familiarising yourself with [Power Platform Landing Zones](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#licensing-and-azure-ad-tenants) from AAD tenancy perspective.
 
 ### Security, Governance and Compliance
 
@@ -181,7 +181,7 @@ IOM is an app which is deployed inside an `Environment` on Power Platform. From 
 
 #### Considerations
 
-An `Environment` provides a container for scale and management boundary in Power Platform. The platform considerations and recommendations are documented as part of [North Star Architecture for Power Platform](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#environments).
+An `Environment` provides a container for scale and management boundary in Power Platform. The platform considerations and recommendations are documented as part of [Power Platform Landing Zones architecture methodology](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#environments).
 
 > Note: In this guidance, `environment` refers to [Power Platform environments](https://docs.microsoft.com/power-platform/admin/environments-overview) unless otherwise called out explicitly.
 
@@ -196,7 +196,7 @@ An `Environment` provides a container for scale and management boundary in Power
 #### Recommendations
 
 - At a bare minimum, we recommend having at separate instances of IOM for development, test and production environments.
-- Keeping in line with the [North Star Architecture for Power Platform](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#environments), as a principle, we recommend using Power Platform `Environments` as the scale-unit and management boundary. An `environment` will also dictate region.
+- Keeping in line with the [Power Platform Landing Zones architecture methodology](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#environments), as a principle, we recommend using Power Platform `Environments` as the scale-unit and management boundary. An `environment` will also dictate region.
 - Within a retail setting, IOM plays a role of **providing a single pane of glass** to manage order lifecycle. IOM provides a unique opportunity to consolidate order management operations across all businesses in an engerprise and as such, a single instance of IOM should suffice business requirements.Business acquisitions can be consolidated and leverage common partnerships for fulfillment; logistics etc. There may be scenarios where more than one instance of IOM could be deployed in a production setting. Some of the scenarios could be:
   - A customer may have multiple different businesses where each business has its own separate applications; platforms; and processes for ordering and fulfillment. In such a sceanrio, a customer may choose to deploy separate of IOM instances to align with different businesses to have a clear boundary between IOM instances.
   - A Power Platform environment construct is also tied back to a region. If a customer has businesses operating out of different geographic regions, they may choose to colocate an IOM instance where other ecosystem; source and consumer applications are deployed.
@@ -231,7 +231,7 @@ For monitoring the underlying platform, the considerations and recommendations d
 
 ### Business Continuity and Disaster Recovery (BCDR)
 
-BCDR for underlying Power Platform is covered here under [North Star Architecture](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#business-continuity-and-disaster-recovery).
+BCDR for underlying Power Platform is covered here under [Power Platform Landing Zones](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#business-continuity-and-disaster-recovery).
 
 #### Recommendations
 
@@ -242,11 +242,11 @@ BCDR for underlying Power Platform is covered here under [North Star Architectur
 
 ### Connectivity and Interoperability
 
-The network related decisions are a platform level concern and these are covered under [North Star Architecture for Power Platform](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#connectivity-and-interoperability).
+The network related decisions are a platform level concern and these are covered under [Power Platform Landing Zones](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#connectivity-and-interoperability).
 
 ### Platform Automation and DevOps
 
-Automation and DevOps are a platform level concern and these are covered under [North Star Architecture for Power Platform](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#platform-automation-and-devops). The design and processes implemented for automation at platform level will be inherited by IOM which itself is built on Power Platform.
+Automation and DevOps are a platform level concern and these are covered under [Power Platform Landing Zones](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#platform-automation-and-devops). The design and processes implemented for automation at platform level will be inherited by IOM which itself is built on Power Platform.
 
 ## Deployment Guide
 
@@ -295,7 +295,7 @@ The deployment experience of IOM consists of scripted/automated and manual steps
 
 ### Deploy Power Platform Environment and D365 IOM
 
-IOM is a D365 SaaS application which is deployed on Power Platform. As a prerequisite, we will first deploy [North Star Architecture for Power Platform](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform/referenceImplementation#what-is-north-star-architecture-reference-implementation). This will provide the foundations to deploy one or more `Environments` where D365 IOM application can be deployed.
+IOM is a D365 SaaS application which is deployed on Power Platform. As a prerequisite, we will first deploy [Power Platform Landing Zones](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform/referenceImplementation#what-is-north-star-architecture-reference-implementation). This will provide the foundations to deploy one or more `Environments` where D365 IOM application can be deployed.
 
 1. Access the IOM app from Power Platform Admin Center. The link is published under Environments tab in [Power Platform Admin Center](https://admin.powerplatform.microsoft.com/).
 2. Create a new environment. You can enter your own details for Name and Purpose fields. As a best practice, we recommend naming the instance of IOM to include environment; location; and business unit using the instance.
