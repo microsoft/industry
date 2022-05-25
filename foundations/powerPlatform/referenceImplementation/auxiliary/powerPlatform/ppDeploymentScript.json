@@ -345,6 +345,25 @@
                 "description": "Provide naming convention for the industry environments."
             }
         },
+        "ppIndustryRegion": {
+            "type": "string",
+            "allowedValues": [
+                "europe",
+                "unitedstates",
+                "asia",
+                "japan",
+                "india",
+                "canada",
+                "southamerica",
+                "unitedkingdom",
+                "france",
+                "germany"
+            ],
+            "defaultValue": "unitedstates",
+            "metadata": {
+                "description": "Provide location for the pro dev environments."
+            }
+        },
         "ppIndustryBilling": {
             "type": "string",
             "defaultValue": "''",
@@ -366,7 +385,7 @@
         },
         "scriptUri": {
             "type": "string",
-            "defaultValue": "https://raw.githubusercontent.com/microsoft/industry/main/foundations/powerPlatform/referenceImplementation/auxiliary/powerPlatform/nsPowerPlatform.ps1",
+            "defaultValue": "https://raw.githubusercontent.com/daltondhcp/Azure/nsppscript/nsPowerPlatform.ps1",
             "metadata": {
                 "description": "The uri pointing to the PowerShell script used in the deploymentScript"
             }
@@ -383,6 +402,48 @@
             "defaultValue": "",
             "metadata": {
                 "description": "Provide strings for pro citizen Environment creation."
+            }
+        },
+        "ppCitizenLanguage": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select language for the environments."
+            }
+        },
+        "ppCitizenCurrency": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select the currency for the environments."
+            }
+        },
+        "ppCitizenDescription": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide description for the environments."
+            }
+        },
+        "ppProLanguage": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select language for the environments."
+            }
+        },
+        "ppProCurrency": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select the currency for the environments."
+            }
+        },
+        "ppProDescription": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide description for the environments."
             }
         }
     },
@@ -447,6 +508,9 @@
                                                     '-PPCitizenConfiguration', ' ', parameters('ppCitizenConfiguration'), ' ',
                                                     '-PPCitizenCount', ' ', parameters('ppCitizenCount'), ' ',
                                                     '-PPCitizenNaming', ' ', parameters('ppCitizenNaming'), ' ',
+                                                    '-PPCitizenDescription', ' ', parameters('ppCitizenDescription'), ' ',
+                                                    '-PPCitizenLanguage', ' ', parameters('ppCitizenLanguage'), ' ',
+                                                    '-PPCitizenCurrency', ' ', parameters('ppCitizenCurrency'), ' ',
                                                     '-PPCitizenRegion', ' ', parameters('ppCitizenRegion'), ' ',
                                                     '-PPCitizenDlp', ' ', parameters('ppCitizenDlp'), ' ',
                                                     '-PPCitizenBilling', ' ', parameters('ppCitizenBilling'), ' ',
@@ -455,12 +519,16 @@
                                                     '-PPProConfiguration', ' ', parameters('ppProConfiguration'), ' ',
                                                     '-PPProCount', ' ', parameters('ppProCount'), ' ',
                                                     '-PPProNaming', ' ', parameters('ppProNaming'), ' ',
+                                                    '-PPProDescription', ' ', parameters('ppProDescription'), ' ',
+                                                    '-PPProLanguage', ' ', parameters('ppProLanguage'), ' ',
+                                                    '-PPProCurrency', ' ', parameters('ppProCurrency'), ' ' ,
                                                     '-PPProRegion', ' ', parameters('ppProRegion'), ' ',
                                                     '-PPProDlp', ' ', parameters('ppProDlp'), ' ',
                                                     '-PPProBilling', ' ', parameters('ppProBilling'), ' ',
                                                     '-PPProAlm', ' ', parameters('ppProAlm'), ' ',
                                                     '-PPSelectIndustry', ' ', parameters('ppSelectIndustry'), ' ',
                                                     '-PPIndustryNaming', ' ', parameters('ppIndustryNaming'), ' ',
+                                                    '-PPIndustryRegion', ' ', parameters('ppIndustryRegion'), ' ',
                                                     '-PPIndustryAlm', ' ', parameters('ppIndustryAlm'), ' ',
                                                     '-PPIndustryBilling', ' ', parameters('ppIndustryBilling')
                                                     )]",

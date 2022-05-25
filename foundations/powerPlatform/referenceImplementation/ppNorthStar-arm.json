@@ -317,6 +317,25 @@
                 "description": "Provide naming convention for the industry environments."
             }
         },
+        "ppIndustryRegion": {
+            "type": "string",
+            "allowedValues": [
+                "europe",
+                "unitedstates",
+                "asia",
+                "japan",
+                "india",
+                "canada",
+                "southamerica",
+                "unitedkingdom",
+                "france",
+                "germany"
+            ],
+            "defaultValue": "unitedstates",
+            "metadata": {
+                "description": "Provide location for the pro dev environments."
+            }
+        },
         "ppIndustryBilling": {
             "type": "string",
             "defaultValue": "",
@@ -335,6 +354,7 @@
             "type": "string",
             "allowedValues": [
                 "yes",
+                "existing",
                 "no"
             ],
             "defaultValue": "no",
@@ -460,6 +480,48 @@
             "defaultValue": "",
             "metadata": {
                 "description": "Provide strings for custom pro Environment creation."
+            }
+        },
+        "ppCitizenLanguage": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select language for the environments."
+            }
+        },
+        "ppCitizenCurrency": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select the currency for the environments."
+            }
+        },
+        "ppCitizenDescription": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide description for the environments."
+            }
+        },
+        "ppProLanguage": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select language for the environments."
+            }
+        },
+        "ppProCurrency": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select the currency for the environments."
+            }
+        },
+        "ppProDescription": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide description for the environments."
             }
         }
     },
@@ -609,6 +671,9 @@
                     "ppIndustryNaming": {
                         "value": "[if(empty(parameters('ppIndustryNaming')), variables('emptyString'), parameters('ppIndustryNaming'))]"
                     },
+                    "ppIndustryRegion": {
+                        "value": "[parameters('ppIndustryRegion')]"
+                    },
                     "ppIndustryBilling": {
                         "value": "[if(empty(parameters('ppIndustryBilling')), variables('emptyString'), parameters('ppIndustryBilling'))]"
                     },
@@ -623,6 +688,24 @@
                     },
                     "ppProConfiguration": {
                         "value": "[if(empty(parameters('ppProConfiguration')), variables('emptyString'), parameters('ppProConfiguration'))]"
+                    },
+                    "ppCitizenDescription": {
+                        "value": "[if(empty(parameters('ppCitizenDescription')), variables('emptyString'), parameters('ppCitizenDescription'))]"
+                    },
+                    "ppCitizenLanguage": {
+                        "value": "[if(empty(parameters('ppCitizenLanguage')), variables('emptyString'), parameters('ppCitizenLanguage'))]"
+                    },
+                    "ppCitizenCurrency": {
+                        "value": "[if(empty(parameters('ppCitizenCurrency')), variables('emptyString'), parameters('ppCitizenCurrency'))]"
+                    },
+                    "ppProDescription": {
+                        "value": "[if(empty(parameters('ppProDescription')), variables('emptyString'), parameters('ppProDescription'))]"
+                    },
+                    "ppProLanguage": {
+                        "value": "[if(empty(parameters('ppProLanguage')), variables('emptyString'), parameters('ppProLanguage'))]"
+                    },
+                    "ppProCurrency": {
+                        "value": "[if(empty(parameters('ppProCurrency')), variables('emptyString'), parameters('ppProCurrency'))]"
                     }
                 }
             }
