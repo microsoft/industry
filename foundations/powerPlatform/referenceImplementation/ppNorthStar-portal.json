@@ -828,7 +828,7 @@
                                 "text": "Prepare and create Landing Zones (Environments for business apps, industry solutions, and professional apps) in Power Platform optimized for citizen developers, professional developers, and industry solutions. When creating these environments, the setup will instantiate dedicated Environments for Development, Test, and Production in order to support maintenance, testing, development, and validation before deploying to production. Lastly, recommended Data-loss prevention policies are provided to further govern the various scenarios.",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://aka.ms/NorthStarPowerPlatform"
+                                    "uri": "https://www.microsoft.com"
                                 }
                             }
                         },
@@ -847,7 +847,7 @@
                                 "text": "The Default Environment is available for all users with a license. It is recommended to rename this Environment to clarify the intent of it, such as 'Personal Productivity', and add further restrictions using Data-lose prevention policies scoped to the Default Environment",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://aka.ms/NorthStarPowerPlatform"
+                                    "uri": "https://www.microsoft.com"
                                 }
                             }
                         },
@@ -922,7 +922,7 @@
                                 "text": "The Landing Zones for citizen developrs will be optimized for no code/low code scenarios, and provide them with the required agility and simplicity to rapidly build modern business applications. You can grant business units or indivuduals access to the Environments post creation.",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://aka.ms/NorthStarPowerPlatform"
+                                    "uri": "https://www.microsoft.com"
                                 }
                             }
                         },
@@ -930,18 +930,14 @@
                             "name": "ppCitizen",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Create Environments for citizen developer scenarios",
-                            "defaultValue": "Yes, with Dataverse (recommended)",
+                            "defaultValue": "Yes",
                             "multiSelect": true,
                             "toolTip": "If 'Yes' is selected, the setup will create new environments for citizen developer scenarios",
                             "constraints": {
                                 "allowedValues": [
                                     {
-                                        "label": "Yes, with Dataverse (recommended)",
+                                        "label": "Yes",
                                         "value": "yes"
-                                    },
-                                    {
-                                        "label": "Yes, without Dataverse",
-                                        "value": "half"
                                     },
                                     {
                                         "label": "Yes, and let me configure each Environment",
@@ -960,7 +956,7 @@
                             "type": "Microsoft.Solutions.GraphApiControl",
                             "request": {
                                 "method": "GET",
-                                "path": "/beta/users?&select=displayName,id",
+                                "path": "/beta/groups?&select=displayName,id",
                                 "transforms": {
                                     "list": "value|[*].{label:displayName, value:id}"
                                 }
@@ -977,7 +973,7 @@
                                 "rows": {
                                     "count": {
                                         "min": 1,
-                                        "max": 100
+                                        "max": 10
                                     }
                                 },
                                 "columns": [
@@ -1000,12 +996,31 @@
                                         }
                                     },
                                     {
+                                        "id": "ppEnvDescription",
+                                        "header": "Description",
+                                        "width": "1fr",
+                                        "element": {
+                                            "type": "Microsoft.Common.TextBox",
+                                            "placeholder": "",
+                                            "constraints": {
+                                                "required": true,
+                                                "validations": [
+                                                    {
+                                                        "regex": "^[a-z0-9A-Z]{1,30}$",
+                                                        "message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
                                         "id": "ppRegion",
                                         "header": "Region",
                                         "width": "1fr",
                                         "element": {
-                                            "name": "ppRegion",
+                                            "name": "ppRegionDropDown",
                                             "type": "Microsoft.Common.DropDown",
+                                            "filter": true,
                                             "placeholder": "Select a region...",
                                             "constraints": {
                                                 "allowedValues": [
@@ -1059,20 +1074,659 @@
                                         }
                                     },
                                     {
-                                        "id": "ppDataverse",
-                                        "header": "Create Dataverse",
-                                        "width": "2fr",
+                                        "id": "ppLanguage",
+                                        "header": "Language",
+                                        "width": "1fr",
                                         "element": {
+                                            "name": "ppLanguageDropDown",
                                             "type": "Microsoft.Common.DropDown",
+                                            "placeholder": "Select a currency...",
+                                            "filter": true,
                                             "constraints": {
                                                 "allowedValues": [
                                                     {
-                                                        "label": "Yes (recommended)",
-                                                        "value": "yes"
+                                                        "label": "Arabic",
+                                                        "value": "1025"
                                                     },
                                                     {
-                                                        "label": "No",
-                                                        "value": "no"
+                                                        "label": "Bulgarian",
+                                                        "value": "1026"
+                                                    },
+                                                    {
+                                                        "label": "Catalan",
+                                                        "value": "1027"
+                                                    },
+                                                    {
+                                                        "label": "Chinese (Taiwan)",
+                                                        "value": "1028"
+                                                    },
+                                                    {
+                                                        "label": "Czech",
+                                                        "value": "1029"
+                                                    },
+                                                    {
+                                                        "label": "Danish",
+                                                        "value": "1030"
+                                                    },
+                                                    {
+                                                        "label": "German",
+                                                        "value": "1031"
+                                                    },
+                                                    {
+                                                        "label": "Greek",
+                                                        "value": "1032"
+                                                    },
+                                                    {
+                                                        "label": "English (United States)",
+                                                        "value": "1033"
+                                                    },
+                                                    {
+                                                        "label": "Finnish",
+                                                        "value": "1035"
+                                                    },
+                                                    {
+                                                        "label": "French",
+                                                        "value": "1036"
+                                                    },
+                                                    {
+                                                        "label": "Hebrew",
+                                                        "value": "1037"
+                                                    },
+                                                    {
+                                                        "label": "Hungarian",
+                                                        "value": "1038"
+                                                    },
+                                                    {
+                                                        "label": "Italian",
+                                                        "value": "1040"
+                                                    },
+                                                    {
+                                                        "label": "Japanese",
+                                                        "value": "1041"
+                                                    },
+                                                    {
+                                                        "label": "Korean",
+                                                        "value": "1042"
+                                                    },
+                                                    {
+                                                        "label": "Dutch",
+                                                        "value": "1043"
+                                                    },
+                                                    {
+                                                        "label": "Norwegian",
+                                                        "value": "1044"
+                                                    },
+                                                    {
+                                                        "label": "Polish",
+                                                        "value": "1045"
+                                                    },
+                                                    {
+                                                        "label": "Brazilian",
+                                                        "value": "1046"
+                                                    },
+                                                    {
+                                                        "label": "Romanian",
+                                                        "value": "1048"
+                                                    },
+                                                    {
+                                                        "label": "Russian",
+                                                        "value": "1049"
+                                                    },
+                                                    {
+                                                        "label": "Croatian",
+                                                        "value": "1050"
+                                                    },
+                                                    {
+                                                        "label": "Slovak",
+                                                        "value": "1051"
+                                                    },
+                                                    {
+                                                        "label": "Swedish",
+                                                        "value": "1053"
+                                                    },
+                                                    {
+                                                        "label": "Thai",
+                                                        "value": "1054"
+                                                    },
+                                                    {
+                                                        "label": "Turkish",
+                                                        "value": "1055"
+                                                    },
+                                                    {
+                                                        "label": "Indonesian",
+                                                        "value": "1057"
+                                                    },
+                                                    {
+                                                        "label": "Ukrainian",
+                                                        "value": "1058"
+                                                    },
+                                                    {
+                                                        "label": "Slovenian",
+                                                        "value": "1060"
+                                                    },
+                                                    {
+                                                        "label": "Estonian",
+                                                        "value": "1061"
+                                                    },
+                                                    {
+                                                        "label": "Latvian",
+                                                        "value": "1062"
+                                                    },
+                                                    {
+                                                        "label": "Lithuanian",
+                                                        "value": "1063"
+                                                    },
+                                                    {
+                                                        "label": "Viatnamese",
+                                                        "value": "1066"
+                                                    },
+                                                    {
+                                                        "label": "Basque (Spain)",
+                                                        "value": "1069"
+                                                    },
+                                                    {
+                                                        "label": "Hindi (Latin)",
+                                                        "value": "1081"
+                                                    },
+                                                    {
+                                                        "label": "Malay",
+                                                        "value": "1086"
+                                                    },
+                                                    {
+                                                        "label": "Kazakh",
+                                                        "value": "1087"
+                                                    },
+                                                    {
+                                                        "label": "Galician (Spain)",
+                                                        "value": "1110"
+                                                    },
+                                                    {
+                                                        "label": "Chinese (Simplified)",
+                                                        "value": "2052"
+                                                    },
+                                                    {
+                                                        "label": "Portuguese",
+                                                        "value": "2070"
+                                                    },
+                                                    {
+                                                        "label": "Serbian (Latin)",
+                                                        "value": "2074"
+                                                    },
+                                                    {
+                                                        "label": "Chinese (Traditional)",
+                                                        "value": "3076"
+                                                    },
+                                                    {
+                                                        "label": "Modern Spanish (Spain)",
+                                                        "value": "3082"
+                                                    },
+                                                    {
+                                                        "label": "Serbian (Cyrillic)",
+                                                        "value": "3089"
+                                                    }
+                                                ],
+                                                "required": true
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "ppCurrency",
+                                        "header": "Currency",
+                                        "width": "1fr",
+                                        "element": {
+                                            "name": "ppCurrencyDropDown",
+                                            "type": "Microsoft.Common.DropDown",
+                                            "placeholder": "Select a currency...",
+                                            "filter": true,
+                                            "constraints": {
+                                                "allowedValues": [
+                                                    {
+                                                        "label": "AED",
+                                                        "value": "aed"
+                                                    },
+                                                    {
+                                                        "label": "AFN",
+                                                        "value": "afn"
+                                                    },
+                                                    {
+                                                        "label": "ALL",
+                                                        "value": "all"
+                                                    },
+                                                    {
+                                                        "label": "AMD",
+                                                        "value": "amd"
+                                                    },
+                                                    {
+                                                        "label": "ARS",
+                                                        "value": "ars"
+                                                    },
+                                                    {
+                                                        "label": "AUD",
+                                                        "value": "aud"
+                                                    },
+                                                    {
+                                                        "label": "AZN",
+                                                        "value": "azn"
+                                                    },
+                                                    {
+                                                        "label": "BAM",
+                                                        "value": "bam"
+                                                    },
+                                                    {
+                                                        "label": "BDT",
+                                                        "value": "bdt"
+                                                    },
+                                                    {
+                                                        "label": "BGN",
+                                                        "value": "bgn"
+                                                    },
+                                                    {
+                                                        "label": "BHD",
+                                                        "value": "bhd"
+                                                    },
+                                                    {
+                                                        "label": "BND",
+                                                        "value": "bmd"
+                                                    },
+                                                    {
+                                                        "label": "BOB",
+                                                        "value": "bob"
+                                                    },
+                                                    {
+                                                        "label": "BRL",
+                                                        "value": "brl"
+                                                    },
+                                                    {
+                                                        "label": "BTN",
+                                                        "value": "btn"
+                                                    },
+                                                    {
+                                                        "label": "BWP",
+                                                        "value": "bwp"
+                                                    },
+                                                    {
+                                                        "label": "BYN",
+                                                        "value": "byn"
+                                                    },
+                                                    {
+                                                        "label": "BZD",
+                                                        "value": "bzd"
+                                                    },
+                                                    {
+                                                        "label": "CAD",
+                                                        "value": "cad"
+                                                    },
+                                                    {
+                                                        "label": "CDF",
+                                                        "value": "cdf"
+                                                    },
+                                                    {
+                                                        "label": "CHF",
+                                                        "value": "chf"
+                                                    },
+                                                    {
+                                                        "label": "CLP",
+                                                        "value": "clp"
+                                                    },
+                                                    {
+                                                        "label": "CNY",
+                                                        "value": "cny"
+                                                    },
+                                                    {
+                                                        "label": "COP",
+                                                        "value": "cop"
+                                                    },
+                                                    {
+                                                        "label": "CRC",
+                                                        "value": "crc"
+                                                    },
+                                                    {
+                                                        "label": "CUP",
+                                                        "value": "cup"
+                                                    },
+                                                    {
+                                                        "label": "CZK",
+                                                        "value": "czk"
+                                                    },
+                                                    {
+                                                        "label": "DJF",
+                                                        "value": "djf"
+                                                    },
+                                                    {
+                                                        "label": "DKK",
+                                                        "value": "dkk"
+                                                    },
+                                                    {
+                                                        "label": "DOP",
+                                                        "value": "dop"
+                                                    },
+                                                    {
+                                                        "label": "DZD",
+                                                        "value": "dzd"
+                                                    },
+                                                    {
+                                                        "label": "EGP",
+                                                        "value": "EGP"
+                                                    },
+                                                    {
+                                                        "label": "ERN",
+                                                        "value": "ERN"
+                                                    },
+                                                    {
+                                                        "label": "ETB",
+                                                        "value": "etb"
+                                                    },
+                                                    {
+                                                        "label": "EUR",
+                                                        "value": "eur"
+                                                    },
+                                                    {
+                                                        "label": "GBP",
+                                                        "value": "gbp"
+                                                    },
+                                                    {
+                                                        "label": "GEL",
+                                                        "value": "gel"
+                                                    },
+                                                    {
+                                                        "label": "GTQ",
+                                                        "value": "gtq"
+                                                    },
+                                                    {
+                                                        "label": "HKD",
+                                                        "value": "hkd"
+                                                    },
+                                                    {
+                                                        "label": "HNL",
+                                                        "value": "hnl"
+                                                    },
+                                                    {
+                                                        "label": "HRK",
+                                                        "value": "hrk"
+                                                    },
+                                                    {
+                                                        "label": "HTG",
+                                                        "value": "htg"
+                                                    },
+                                                    {
+                                                        "label": "HUF",
+                                                        "value": "huf"
+                                                    },
+                                                    {
+                                                        "label": "IDR",
+                                                        "value": "idr"
+                                                    },
+                                                    {
+                                                        "label": "ILS",
+                                                        "value": "ils"
+                                                    },
+                                                    {
+                                                        "label": "INR",
+                                                        "value": "inr"
+                                                    },
+                                                    {
+                                                        "label": "IQD",
+                                                        "value": "iqd"
+                                                    },
+                                                    {
+                                                        "label": "IRR",
+                                                        "value": "irr"
+                                                    },
+                                                    {
+                                                        "label": "ISK",
+                                                        "value": "isk"
+                                                    },
+                                                    {
+                                                        "label": "JMD",
+                                                        "value": "jmd"
+                                                    },
+                                                    {
+                                                        "label": "JOD",
+                                                        "value": "jod"
+                                                    },
+                                                    {
+                                                        "label": "JPY",
+                                                        "value": "jpy"
+                                                    },
+                                                    {
+                                                        "label": "KES",
+                                                        "value": "kes"
+                                                    },
+                                                    {
+                                                        "label": "KGS",
+                                                        "value": "kgs"
+                                                    },
+                                                    {
+                                                        "label": "KHR",
+                                                        "value": "khr"
+                                                    },
+                                                    {
+                                                        "label": "KWR",
+                                                        "value": "kwr"
+                                                    },
+                                                    {
+                                                        "label": "KWD",
+                                                        "value": "kwd"
+                                                    },
+                                                    {
+                                                        "label": " KZT",
+                                                        "value": "kzt"
+                                                    },
+                                                    {
+                                                        "label": "LAK",
+                                                        "value": "lak"
+                                                    },
+                                                    {
+                                                        "label": "LBP",
+                                                        "value": "lbp"
+                                                    },
+                                                    {
+                                                        "label": "LKR",
+                                                        "value": "lkr"
+                                                    },
+                                                    {
+                                                        "label": "LYD",
+                                                        "value": "lyd"
+                                                    },
+                                                    {
+                                                        "label": "MAD",
+                                                        "value": "mad"
+                                                    },
+                                                    {
+                                                        "label": "MDL",
+                                                        "value": "mdl"
+                                                    },
+                                                    {
+                                                        "label": "MKD",
+                                                        "value": "mkd"
+                                                    },
+                                                    {
+                                                        "label": "MMK",
+                                                        "value": "mmk"
+                                                    },
+                                                    {
+                                                        "label": "MNT",
+                                                        "value": "mnt"
+                                                    },
+                                                    {
+                                                        "label": "MOP",
+                                                        "value": "mop"
+                                                    },
+                                                    {
+                                                        "label": "MVR",
+                                                        "value": "mvr"
+                                                    },
+                                                    {
+                                                        "label": "MXN",
+                                                        "value": "mxn"
+                                                    },
+                                                    {
+                                                        "label": "MYR",
+                                                        "value": "myr"
+                                                    },
+                                                    {
+                                                        "label": "NGN",
+                                                        "value": "ngn"
+                                                    },
+                                                    {
+                                                        "label": "NIO",
+                                                        "value": " nio"
+                                                    },
+                                                    {
+                                                        "label": "NOK",
+                                                        "value": "nok"
+                                                    },
+                                                    {
+                                                        "label": "NPR",
+                                                        "value": "npr"
+                                                    },
+                                                    {
+                                                        "label": "NZD",
+                                                        "value": "nzd"
+                                                    },
+                                                    {
+                                                        "label": "OMR",
+                                                        "value": "omr"
+                                                    },
+                                                    {
+                                                        "label": "PAB",
+                                                        "value": "pab"
+                                                    },
+                                                    {
+                                                        "label": "PEN",
+                                                        "value": "pen"
+                                                    },
+                                                    {
+                                                        "label": "PHP",
+                                                        "value": "php"
+                                                    },
+                                                    {
+                                                        "label": "PKR",
+                                                        "value": "pkr"
+                                                    },
+                                                    {
+                                                        "label": "PLN",
+                                                        "value": "pln"
+                                                    },
+                                                    {
+                                                        "label": "PYG",
+                                                        "value": "pyg"
+                                                    },
+                                                    {
+                                                        "label": "QAR",
+                                                        "value": "qar"
+                                                    },
+                                                    {
+                                                        "label": "RON",
+                                                        "value": "ron"
+                                                    },
+                                                    {
+                                                        "label": "RSD",
+                                                        "value": "rds"
+                                                    },
+                                                    {
+                                                        "label": "RUB",
+                                                        "value": "rub"
+                                                    },
+                                                    {
+                                                        "label": "RWF",
+                                                        "value": "rwf"
+                                                    },
+                                                    {
+                                                        "label": "SAR",
+                                                        "value": "sar"
+                                                    },
+                                                    {
+                                                        "label": "SEK",
+                                                        "value": "sek"
+                                                    },
+                                                    {
+                                                        "label": "SGD",
+                                                        "value": "sgd"
+                                                    },
+                                                    {
+                                                        "label": "SOS",
+                                                        "value": "sos"
+                                                    },
+                                                    {
+                                                        "label": "SYP",
+                                                        "value": "syp"
+                                                    },
+                                                    {
+                                                        "label": "THB",
+                                                        "value": "thb"
+                                                    },
+                                                    {
+                                                        "label": "TJS",
+                                                        "value": "tjs"
+                                                    },
+                                                    {
+                                                        "label": "TMT",
+                                                        "value": "tmt"
+                                                    },
+                                                    {
+                                                        "label": "TND",
+                                                        "value": "tnd"
+                                                    },
+                                                    {
+                                                        "label": "TRY",
+                                                        "value": "try"
+                                                    },
+                                                    {
+                                                        "label": "TTD",
+                                                        "value": "ttd"
+                                                    },
+                                                    {
+                                                        "label": "TWD",
+                                                        "value": "twd"
+                                                    },
+                                                    {
+                                                        "label": "UAH",
+                                                        "value": "uah"
+                                                    },
+                                                    {
+                                                        "label": "USD",
+                                                        "value": "usd"
+                                                    },
+                                                    {
+                                                        "label": "UYU",
+                                                        "value": "uyu"
+                                                    },
+                                                    {
+                                                        "label": "UZS",
+                                                        "value": "uzs"
+                                                    },
+                                                    {
+                                                        "label": "VES",
+                                                        "value": "ves"
+                                                    },
+                                                    {
+                                                        "label": "VND",
+                                                        "value": "vnd"
+                                                    },
+                                                    {
+                                                        "label": "XAF",
+                                                        "value": "xaf"
+                                                    },
+                                                    {
+                                                        "label": "XCD",
+                                                        "value": "xcd"
+                                                    },
+                                                    {
+                                                        "label": "XDR",
+                                                        "value": "xdr"
+                                                    },
+                                                    {
+                                                        "label": "XOF",
+                                                        "value": "xof"
+                                                    },
+                                                    {
+                                                        "label": "YER",
+                                                        "value": "yer"
+                                                    },
+                                                    {
+                                                        "label": "ZAR",
+                                                        "value": "zar"
                                                     }
                                                 ],
                                                 "required": true
@@ -1100,7 +1754,7 @@
                             "name": "ppCitizenCount",
                             "type": "Microsoft.Common.Slider",
                             "min": 1,
-                            "max": 100,
+                            "max": 10,
                             "label": "Number of Environments for citizen developers to be created",
                             "subLabel": "Environments",
                             "defaultValue": 1,
@@ -1109,7 +1763,7 @@
                             "constraints": {
                                 "required": false
                             },
-                            "visible": "[or(equals(steps('landingZones').ppCitizen, 'yes'), equals(steps('landingZones').ppCitizen, 'half'))]"
+                            "visible": "[equals(steps('landingZones').ppCitizen, 'yes')]"
                         },
                         {
                             "name": "ppCitizenNaming",
@@ -1123,7 +1777,20 @@
                                 "regex": "^[a-z0-9A-Z]{1,30}$",
                                 "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
                             },
-                            "visible": "[or(equals(steps('landingZones').ppCitizen, 'yes'), equals(steps('landingZones').ppCitizen, 'half'))]"
+                            "visible": "[equals(steps('landingZones').ppCitizen, 'yes')]"
+                        },
+                        {
+                            "name": "ppCitizenDescription",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Provide a description for the citizen developers environments",
+                            "placeholder": "",
+                            "defaultValue": "",
+                            "toolTip": "Provide general description for these Environments",
+                            "constraints": {
+                                "required": false,
+                                "regex": "^[a-z0-9A-Z]{1,30}$"
+                            },
+                            "visible": "[equals(steps('landingZones').ppCitizen, 'yes')]"
                         },
                         {
                             "name": "ppCitizenRegion",
@@ -1132,7 +1799,8 @@
                             "placeholder": "",
                             "defaultValue": "",
                             "toolTip": "",
-                            "visible": "[or(equals(steps('landingZones').ppCitizen, 'yes'), equals(steps('landingZones').ppCitizen, 'half'))]",
+                            "filter": true,
+                            "visible": "[equals(steps('landingZones').ppCitizen, 'yes')]",
                             "constraints": {
                                 "allowedValues": [
                                     {
@@ -1178,6 +1846,664 @@
                                     {
                                         "label": "South America",
                                         "value": "southamerica"
+                                    }
+                                ],
+                                "required": true
+                            }
+                        },
+                        {
+                            "name": "ppCitizenLanguage",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select language for the new Environments for citizen developers",
+                            "placeholder": "",
+                            "defaultValue": "",
+                            "toolTip": "",
+                            "filter": true,
+                            "visible": "[equals(steps('landingZones').ppCitizen, 'yes')]",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Arabic",
+                                        "value": "1025"
+                                    },
+                                    {
+                                        "label": "Bulgarian",
+                                        "value": "1026"
+                                    },
+                                    {
+                                        "label": "Catalan",
+                                        "value": "1027"
+                                    },
+                                    {
+                                        "label": "Chinese (Taiwan)",
+                                        "value": "1028"
+                                    },
+                                    {
+                                        "label": "Czech",
+                                        "value": "1029"
+                                    },
+                                    {
+                                        "label": "Danish",
+                                        "value": "1030"
+                                    },
+                                    {
+                                        "label": "German",
+                                        "value": "1031"
+                                    },
+                                    {
+                                        "label": "Greek",
+                                        "value": "1032"
+                                    },
+                                    {
+                                        "label": "English (United States)",
+                                        "value": "1033"
+                                    },
+                                    {
+                                        "label": "Finnish",
+                                        "value": "1035"
+                                    },
+                                    {
+                                        "label": "French",
+                                        "value": "1036"
+                                    },
+                                    {
+                                        "label": "Hebrew",
+                                        "value": "1037"
+                                    },
+                                    {
+                                        "label": "Hungarian",
+                                        "value": "1038"
+                                    },
+                                    {
+                                        "label": "Italian",
+                                        "value": "1040"
+                                    },
+                                    {
+                                        "label": "Japanese",
+                                        "value": "1041"
+                                    },
+                                    {
+                                        "label": "Korean",
+                                        "value": "1042"
+                                    },
+                                    {
+                                        "label": "Dutch",
+                                        "value": "1043"
+                                    },
+                                    {
+                                        "label": "Norwegian",
+                                        "value": "1044"
+                                    },
+                                    {
+                                        "label": "Polish",
+                                        "value": "1045"
+                                    },
+                                    {
+                                        "label": "Brazilian",
+                                        "value": "1046"
+                                    },
+                                    {
+                                        "label": "Romanian",
+                                        "value": "1048"
+                                    },
+                                    {
+                                        "label": "Russian",
+                                        "value": "1049"
+                                    },
+                                    {
+                                        "label": "Croatian",
+                                        "value": "1050"
+                                    },
+                                    {
+                                        "label": "Slovak",
+                                        "value": "1051"
+                                    },
+                                    {
+                                        "label": "Swedish",
+                                        "value": "1053"
+                                    },
+                                    {
+                                        "label": "Thai",
+                                        "value": "1054"
+                                    },
+                                    {
+                                        "label": "Turkish",
+                                        "value": "1055"
+                                    },
+                                    {
+                                        "label": "Indonesian",
+                                        "value": "1057"
+                                    },
+                                    {
+                                        "label": "Ukrainian",
+                                        "value": "1058"
+                                    },
+                                    {
+                                        "label": "Slovenian",
+                                        "value": "1060"
+                                    },
+                                    {
+                                        "label": "Estonian",
+                                        "value": "1061"
+                                    },
+                                    {
+                                        "label": "Latvian",
+                                        "value": "1062"
+                                    },
+                                    {
+                                        "label": "Lithuanian",
+                                        "value": "1063"
+                                    },
+                                    {
+                                        "label": "Viatnamese",
+                                        "value": "1066"
+                                    },
+                                    {
+                                        "label": "Basque (Spain)",
+                                        "value": "1069"
+                                    },
+                                    {
+                                        "label": "Hindi (Latin)",
+                                        "value": "1081"
+                                    },
+                                    {
+                                        "label": "Malay",
+                                        "value": "1086"
+                                    },
+                                    {
+                                        "label": "Kazakh",
+                                        "value": "1087"
+                                    },
+                                    {
+                                        "label": "Galician (Spain)",
+                                        "value": "1110"
+                                    },
+                                    {
+                                        "label": "Chinese (Simplified)",
+                                        "value": "2052"
+                                    },
+                                    {
+                                        "label": "Portuguese",
+                                        "value": "2070"
+                                    },
+                                    {
+                                        "label": "Serbian (Latin)",
+                                        "value": "2074"
+                                    },
+                                    {
+                                        "label": "Chinese (Traditional)",
+                                        "value": "3076"
+                                    },
+                                    {
+                                        "label": "Modern Spanish (Spain)",
+                                        "value": "3082"
+                                    },
+                                    {
+                                        "label": "Serbian (Cyrillic)",
+                                        "value": "3089"
+                                    }
+                                ],
+                                "required": true
+                            }
+                        },
+                        {
+                            "name": "ppCitizenCurrency",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select currency for the new Environments for professional developers",
+                            "placeholder": "",
+                            "defaultValue": "",
+                            "toolTip": "",
+                            "filter": true,
+                            "visible": "[equals(steps('landingZones').ppCitizen, 'yes')]",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "AED",
+                                        "value": "aed"
+                                    },
+                                    {
+                                        "label": "AFN",
+                                        "value": "afn"
+                                    },
+                                    {
+                                        "label": "ALL",
+                                        "value": "all"
+                                    },
+                                    {
+                                        "label": "AMD",
+                                        "value": "amd"
+                                    },
+                                    {
+                                        "label": "ARS",
+                                        "value": "ars"
+                                    },
+                                    {
+                                        "label": "AUD",
+                                        "value": "aud"
+                                    },
+                                    {
+                                        "label": "AZN",
+                                        "value": "azn"
+                                    },
+                                    {
+                                        "label": "BAM",
+                                        "value": "bam"
+                                    },
+                                    {
+                                        "label": "BDT",
+                                        "value": "bdt"
+                                    },
+                                    {
+                                        "label": "BGN",
+                                        "value": "bgn"
+                                    },
+                                    {
+                                        "label": "BHD",
+                                        "value": "bhd"
+                                    },
+                                    {
+                                        "label": "BND",
+                                        "value": "bmd"
+                                    },
+                                    {
+                                        "label": "BOB",
+                                        "value": "bob"
+                                    },
+                                    {
+                                        "label": "BRL",
+                                        "value": "brl"
+                                    },
+                                    {
+                                        "label": "BTN",
+                                        "value": "btn"
+                                    },
+                                    {
+                                        "label": "BWP",
+                                        "value": "bwp"
+                                    },
+                                    {
+                                        "label": "BYN",
+                                        "value": "byn"
+                                    },
+                                    {
+                                        "label": "BZD",
+                                        "value": "bzd"
+                                    },
+                                    {
+                                        "label": "CAD",
+                                        "value": "cad"
+                                    },
+                                    {
+                                        "label": "CDF",
+                                        "value": "cdf"
+                                    },
+                                    {
+                                        "label": "CHF",
+                                        "value": "chf"
+                                    },
+                                    {
+                                        "label": "CLP",
+                                        "value": "clp"
+                                    },
+                                    {
+                                        "label": "CNY",
+                                        "value": "cny"
+                                    },
+                                    {
+                                        "label": "COP",
+                                        "value": "cop"
+                                    },
+                                    {
+                                        "label": "CRC",
+                                        "value": "crc"
+                                    },
+                                    {
+                                        "label": "CUP",
+                                        "value": "cup"
+                                    },
+                                    {
+                                        "label": "CZK",
+                                        "value": "czk"
+                                    },
+                                    {
+                                        "label": "DJF",
+                                        "value": "djf"
+                                    },
+                                    {
+                                        "label": "DKK",
+                                        "value": "dkk"
+                                    },
+                                    {
+                                        "label": "DOP",
+                                        "value": "dop"
+                                    },
+                                    {
+                                        "label": "DZD",
+                                        "value": "dzd"
+                                    },
+                                    {
+                                        "label": "EGP",
+                                        "value": "EGP"
+                                    },
+                                    {
+                                        "label": "ERN",
+                                        "value": "ERN"
+                                    },
+                                    {
+                                        "label": "ETB",
+                                        "value": "etb"
+                                    },
+                                    {
+                                        "label": "EUR",
+                                        "value": "eur"
+                                    },
+                                    {
+                                        "label": "GBP",
+                                        "value": "gbp"
+                                    },
+                                    {
+                                        "label": "GEL",
+                                        "value": "gel"
+                                    },
+                                    {
+                                        "label": "GTQ",
+                                        "value": "gtq"
+                                    },
+                                    {
+                                        "label": "HKD",
+                                        "value": "hkd"
+                                    },
+                                    {
+                                        "label": "HNL",
+                                        "value": "hnl"
+                                    },
+                                    {
+                                        "label": "HRK",
+                                        "value": "hrk"
+                                    },
+                                    {
+                                        "label": "HTG",
+                                        "value": "htg"
+                                    },
+                                    {
+                                        "label": "HUF",
+                                        "value": "huf"
+                                    },
+                                    {
+                                        "label": "IDR",
+                                        "value": "idr"
+                                    },
+                                    {
+                                        "label": "ILS",
+                                        "value": "ils"
+                                    },
+                                    {
+                                        "label": "INR",
+                                        "value": "inr"
+                                    },
+                                    {
+                                        "label": "IQD",
+                                        "value": "iqd"
+                                    },
+                                    {
+                                        "label": "IRR",
+                                        "value": "irr"
+                                    },
+                                    {
+                                        "label": "ISK",
+                                        "value": "isk"
+                                    },
+                                    {
+                                        "label": "JMD",
+                                        "value": "jmd"
+                                    },
+                                    {
+                                        "label": "JOD",
+                                        "value": "jod"
+                                    },
+                                    {
+                                        "label": "JPY",
+                                        "value": "jpy"
+                                    },
+                                    {
+                                        "label": "KES",
+                                        "value": "kes"
+                                    },
+                                    {
+                                        "label": "KGS",
+                                        "value": "kgs"
+                                    },
+                                    {
+                                        "label": "KHR",
+                                        "value": "khr"
+                                    },
+                                    {
+                                        "label": "KWR",
+                                        "value": "kwr"
+                                    },
+                                    {
+                                        "label": "KWD",
+                                        "value": "kwd"
+                                    },
+                                    {
+                                        "label": " KZT",
+                                        "value": "kzt"
+                                    },
+                                    {
+                                        "label": "LAK",
+                                        "value": "lak"
+                                    },
+                                    {
+                                        "label": "LBP",
+                                        "value": "lbp"
+                                    },
+                                    {
+                                        "label": "LKR",
+                                        "value": "lkr"
+                                    },
+                                    {
+                                        "label": "LYD",
+                                        "value": "lyd"
+                                    },
+                                    {
+                                        "label": "MAD",
+                                        "value": "mad"
+                                    },
+                                    {
+                                        "label": "MDL",
+                                        "value": "mdl"
+                                    },
+                                    {
+                                        "label": "MKD",
+                                        "value": "mkd"
+                                    },
+                                    {
+                                        "label": "MMK",
+                                        "value": "mmk"
+                                    },
+                                    {
+                                        "label": "MNT",
+                                        "value": "mnt"
+                                    },
+                                    {
+                                        "label": "MOP",
+                                        "value": "mop"
+                                    },
+                                    {
+                                        "label": "MVR",
+                                        "value": "mvr"
+                                    },
+                                    {
+                                        "label": "MXN",
+                                        "value": "mxn"
+                                    },
+                                    {
+                                        "label": "MYR",
+                                        "value": "myr"
+                                    },
+                                    {
+                                        "label": "NGN",
+                                        "value": "ngn"
+                                    },
+                                    {
+                                        "label": "NIO",
+                                        "value": " nio"
+                                    },
+                                    {
+                                        "label": "NOK",
+                                        "value": "nok"
+                                    },
+                                    {
+                                        "label": "NPR",
+                                        "value": "npr"
+                                    },
+                                    {
+                                        "label": "NZD",
+                                        "value": "nzd"
+                                    },
+                                    {
+                                        "label": "OMR",
+                                        "value": "omr"
+                                    },
+                                    {
+                                        "label": "PAB",
+                                        "value": "pab"
+                                    },
+                                    {
+                                        "label": "PEN",
+                                        "value": "pen"
+                                    },
+                                    {
+                                        "label": "PHP",
+                                        "value": "php"
+                                    },
+                                    {
+                                        "label": "PKR",
+                                        "value": "pkr"
+                                    },
+                                    {
+                                        "label": "PLN",
+                                        "value": "pln"
+                                    },
+                                    {
+                                        "label": "PYG",
+                                        "value": "pyg"
+                                    },
+                                    {
+                                        "label": "QAR",
+                                        "value": "qar"
+                                    },
+                                    {
+                                        "label": "RON",
+                                        "value": "ron"
+                                    },
+                                    {
+                                        "label": "RSD",
+                                        "value": "rds"
+                                    },
+                                    {
+                                        "label": "RUB",
+                                        "value": "rub"
+                                    },
+                                    {
+                                        "label": "RWF",
+                                        "value": "rwf"
+                                    },
+                                    {
+                                        "label": "SAR",
+                                        "value": "sar"
+                                    },
+                                    {
+                                        "label": "SEK",
+                                        "value": "sek"
+                                    },
+                                    {
+                                        "label": "SGD",
+                                        "value": "sgd"
+                                    },
+                                    {
+                                        "label": "SOS",
+                                        "value": "sos"
+                                    },
+                                    {
+                                        "label": "SYP",
+                                        "value": "syp"
+                                    },
+                                    {
+                                        "label": "THB",
+                                        "value": "thb"
+                                    },
+                                    {
+                                        "label": "TJS",
+                                        "value": "tjs"
+                                    },
+                                    {
+                                        "label": "TMT",
+                                        "value": "tmt"
+                                    },
+                                    {
+                                        "label": "TND",
+                                        "value": "tnd"
+                                    },
+                                    {
+                                        "label": "TRY",
+                                        "value": "try"
+                                    },
+                                    {
+                                        "label": "TTD",
+                                        "value": "ttd"
+                                    },
+                                    {
+                                        "label": "TWD",
+                                        "value": "twd"
+                                    },
+                                    {
+                                        "label": "UAH",
+                                        "value": "uah"
+                                    },
+                                    {
+                                        "label": "USD",
+                                        "value": "usd"
+                                    },
+                                    {
+                                        "label": "UYU",
+                                        "value": "uyu"
+                                    },
+                                    {
+                                        "label": "UZS",
+                                        "value": "uzs"
+                                    },
+                                    {
+                                        "label": "VES",
+                                        "value": "ves"
+                                    },
+                                    {
+                                        "label": "VND",
+                                        "value": "vnd"
+                                    },
+                                    {
+                                        "label": "XAF",
+                                        "value": "xaf"
+                                    },
+                                    {
+                                        "label": "XCD",
+                                        "value": "xcd"
+                                    },
+                                    {
+                                        "label": "XDR",
+                                        "value": "xdr"
+                                    },
+                                    {
+                                        "label": "XOF",
+                                        "value": "xof"
+                                    },
+                                    {
+                                        "label": "YER",
+                                        "value": "yer"
+                                    },
+                                    {
+                                        "label": "ZAR",
+                                        "value": "zar"
                                     }
                                 ],
                                 "required": true
@@ -1259,7 +2585,7 @@
                                 "text": "The Landing Zones for professional developrs will be optimized for enterprise application scenarios, and provide them with the required agility and simplicity to rapidly build robust enterprise applications with mature application lifecycle management. You can grant business units or indivuduals access to the Environments post creation.",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://aka.ms/NorthStarPowerPlatform"
+                                    "uri": "https://www.microsoft.com"
                                 }
                             }
                         },
@@ -1267,18 +2593,14 @@
                             "name": "ppPro",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Create Environments for professional developer scenarios",
-                            "defaultValue": "Yes, with Dataverse (recommended)",
+                            "defaultValue": "Yes",
                             "multiSelect": true,
                             "toolTip": "If 'Yes' is selected, the setup will create new environments for professional developer scenarios",
                             "constraints": {
                                 "allowedValues": [
                                     {
-                                        "label": "Yes, with Dataverse (recommended)",
+                                        "label": "Yes",
                                         "value": "yes"
-                                    },
-                                    {
-                                        "label": "Yes, without Dataverse",
-                                        "value": "half"
                                     },
                                     {
                                         "label": "Yes, and let me configure each Environment",
@@ -1303,7 +2625,7 @@
                                 "rows": {
                                     "count": {
                                         "min": 1,
-                                        "max": 100
+                                        "max": 10
                                     }
                                 },
                                 "columns": [
@@ -1326,12 +2648,31 @@
                                         }
                                     },
                                     {
+                                        "id": "ppEnvDescription",
+                                        "header": "Description",
+                                        "width": "1fr",
+                                        "element": {
+                                            "type": "Microsoft.Common.TextBox",
+                                            "placeholder": "",
+                                            "constraints": {
+                                                "required": true,
+                                                "validations": [
+                                                    {
+                                                        "regex": "^[a-z0-9A-Z]{1,30}$",
+                                                        "message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
                                         "id": "ppRegion",
                                         "header": "Region",
                                         "width": "1fr",
                                         "element": {
                                             "name": "ppRegionDropDown",
                                             "type": "Microsoft.Common.DropDown",
+                                            "filter": true,
                                             "placeholder": "Select a region...",
                                             "constraints": {
                                                 "allowedValues": [
@@ -1385,20 +2726,659 @@
                                         }
                                     },
                                     {
-                                        "id": "ppDataverse",
-                                        "header": "Create Dataverse",
-                                        "width": "2fr",
+                                        "id": "ppLanguage",
+                                        "header": "Language",
+                                        "width": "1fr",
                                         "element": {
+                                            "name": "ppLanguageDropDown",
                                             "type": "Microsoft.Common.DropDown",
+                                            "placeholder": "Select a currency...",
+                                            "filter": true,
                                             "constraints": {
                                                 "allowedValues": [
                                                     {
-                                                        "label": "Yes (recommended)",
-                                                        "value": "yes"
+                                                        "label": "Arabic",
+                                                        "value": "1025"
                                                     },
                                                     {
-                                                        "label": "No",
-                                                        "value": "no"
+                                                        "label": "Bulgarian",
+                                                        "value": "1026"
+                                                    },
+                                                    {
+                                                        "label": "Catalan",
+                                                        "value": "1027"
+                                                    },
+                                                    {
+                                                        "label": "Chinese (Taiwan)",
+                                                        "value": "1028"
+                                                    },
+                                                    {
+                                                        "label": "Czech",
+                                                        "value": "1029"
+                                                    },
+                                                    {
+                                                        "label": "Danish",
+                                                        "value": "1030"
+                                                    },
+                                                    {
+                                                        "label": "German",
+                                                        "value": "1031"
+                                                    },
+                                                    {
+                                                        "label": "Greek",
+                                                        "value": "1032"
+                                                    },
+                                                    {
+                                                        "label": "English (United States)",
+                                                        "value": "1033"
+                                                    },
+                                                    {
+                                                        "label": "Finnish",
+                                                        "value": "1035"
+                                                    },
+                                                    {
+                                                        "label": "French",
+                                                        "value": "1036"
+                                                    },
+                                                    {
+                                                        "label": "Hebrew",
+                                                        "value": "1037"
+                                                    },
+                                                    {
+                                                        "label": "Hungarian",
+                                                        "value": "1038"
+                                                    },
+                                                    {
+                                                        "label": "Italian",
+                                                        "value": "1040"
+                                                    },
+                                                    {
+                                                        "label": "Japanese",
+                                                        "value": "1041"
+                                                    },
+                                                    {
+                                                        "label": "Korean",
+                                                        "value": "1042"
+                                                    },
+                                                    {
+                                                        "label": "Dutch",
+                                                        "value": "1043"
+                                                    },
+                                                    {
+                                                        "label": "Norwegian",
+                                                        "value": "1044"
+                                                    },
+                                                    {
+                                                        "label": "Polish",
+                                                        "value": "1045"
+                                                    },
+                                                    {
+                                                        "label": "Brazilian",
+                                                        "value": "1046"
+                                                    },
+                                                    {
+                                                        "label": "Romanian",
+                                                        "value": "1048"
+                                                    },
+                                                    {
+                                                        "label": "Russian",
+                                                        "value": "1049"
+                                                    },
+                                                    {
+                                                        "label": "Croatian",
+                                                        "value": "1050"
+                                                    },
+                                                    {
+                                                        "label": "Slovak",
+                                                        "value": "1051"
+                                                    },
+                                                    {
+                                                        "label": "Swedish",
+                                                        "value": "1053"
+                                                    },
+                                                    {
+                                                        "label": "Thai",
+                                                        "value": "1054"
+                                                    },
+                                                    {
+                                                        "label": "Turkish",
+                                                        "value": "1055"
+                                                    },
+                                                    {
+                                                        "label": "Indonesian",
+                                                        "value": "1057"
+                                                    },
+                                                    {
+                                                        "label": "Ukrainian",
+                                                        "value": "1058"
+                                                    },
+                                                    {
+                                                        "label": "Slovenian",
+                                                        "value": "1060"
+                                                    },
+                                                    {
+                                                        "label": "Estonian",
+                                                        "value": "1061"
+                                                    },
+                                                    {
+                                                        "label": "Latvian",
+                                                        "value": "1062"
+                                                    },
+                                                    {
+                                                        "label": "Lithuanian",
+                                                        "value": "1063"
+                                                    },
+                                                    {
+                                                        "label": "Viatnamese",
+                                                        "value": "1066"
+                                                    },
+                                                    {
+                                                        "label": "Basque (Spain)",
+                                                        "value": "1069"
+                                                    },
+                                                    {
+                                                        "label": "Hindi (Latin)",
+                                                        "value": "1081"
+                                                    },
+                                                    {
+                                                        "label": "Malay",
+                                                        "value": "1086"
+                                                    },
+                                                    {
+                                                        "label": "Kazakh",
+                                                        "value": "1087"
+                                                    },
+                                                    {
+                                                        "label": "Galician (Spain)",
+                                                        "value": "1110"
+                                                    },
+                                                    {
+                                                        "label": "Chinese (Simplified)",
+                                                        "value": "2052"
+                                                    },
+                                                    {
+                                                        "label": "Portuguese",
+                                                        "value": "2070"
+                                                    },
+                                                    {
+                                                        "label": "Serbian (Latin)",
+                                                        "value": "2074"
+                                                    },
+                                                    {
+                                                        "label": "Chinese (Traditional)",
+                                                        "value": "3076"
+                                                    },
+                                                    {
+                                                        "label": "Modern Spanish (Spain)",
+                                                        "value": "3082"
+                                                    },
+                                                    {
+                                                        "label": "Serbian (Cyrillic)",
+                                                        "value": "3089"
+                                                    }
+                                                ],
+                                                "required": true
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "ppCurrency",
+                                        "header": "Currency",
+                                        "width": "1fr",
+                                        "element": {
+                                            "name": "ppCurrencyDropDown",
+                                            "type": "Microsoft.Common.DropDown",
+                                            "placeholder": "Select a currency...",
+                                            "filter": true,
+                                            "constraints": {
+                                                "allowedValues": [
+                                                    {
+                                                        "label": "AED",
+                                                        "value": "aed"
+                                                    },
+                                                    {
+                                                        "label": "AFN",
+                                                        "value": "afn"
+                                                    },
+                                                    {
+                                                        "label": "ALL",
+                                                        "value": "all"
+                                                    },
+                                                    {
+                                                        "label": "AMD",
+                                                        "value": "amd"
+                                                    },
+                                                    {
+                                                        "label": "ARS",
+                                                        "value": "ars"
+                                                    },
+                                                    {
+                                                        "label": "AUD",
+                                                        "value": "aud"
+                                                    },
+                                                    {
+                                                        "label": "AZN",
+                                                        "value": "azn"
+                                                    },
+                                                    {
+                                                        "label": "BAM",
+                                                        "value": "bam"
+                                                    },
+                                                    {
+                                                        "label": "BDT",
+                                                        "value": "bdt"
+                                                    },
+                                                    {
+                                                        "label": "BGN",
+                                                        "value": "bgn"
+                                                    },
+                                                    {
+                                                        "label": "BHD",
+                                                        "value": "bhd"
+                                                    },
+                                                    {
+                                                        "label": "BND",
+                                                        "value": "bmd"
+                                                    },
+                                                    {
+                                                        "label": "BOB",
+                                                        "value": "bob"
+                                                    },
+                                                    {
+                                                        "label": "BRL",
+                                                        "value": "brl"
+                                                    },
+                                                    {
+                                                        "label": "BTN",
+                                                        "value": "btn"
+                                                    },
+                                                    {
+                                                        "label": "BWP",
+                                                        "value": "bwp"
+                                                    },
+                                                    {
+                                                        "label": "BYN",
+                                                        "value": "byn"
+                                                    },
+                                                    {
+                                                        "label": "BZD",
+                                                        "value": "bzd"
+                                                    },
+                                                    {
+                                                        "label": "CAD",
+                                                        "value": "cad"
+                                                    },
+                                                    {
+                                                        "label": "CDF",
+                                                        "value": "cdf"
+                                                    },
+                                                    {
+                                                        "label": "CHF",
+                                                        "value": "chf"
+                                                    },
+                                                    {
+                                                        "label": "CLP",
+                                                        "value": "clp"
+                                                    },
+                                                    {
+                                                        "label": "CNY",
+                                                        "value": "cny"
+                                                    },
+                                                    {
+                                                        "label": "COP",
+                                                        "value": "cop"
+                                                    },
+                                                    {
+                                                        "label": "CRC",
+                                                        "value": "crc"
+                                                    },
+                                                    {
+                                                        "label": "CUP",
+                                                        "value": "cup"
+                                                    },
+                                                    {
+                                                        "label": "CZK",
+                                                        "value": "czk"
+                                                    },
+                                                    {
+                                                        "label": "DJF",
+                                                        "value": "djf"
+                                                    },
+                                                    {
+                                                        "label": "DKK",
+                                                        "value": "dkk"
+                                                    },
+                                                    {
+                                                        "label": "DOP",
+                                                        "value": "dop"
+                                                    },
+                                                    {
+                                                        "label": "DZD",
+                                                        "value": "dzd"
+                                                    },
+                                                    {
+                                                        "label": "EGP",
+                                                        "value": "EGP"
+                                                    },
+                                                    {
+                                                        "label": "ERN",
+                                                        "value": "ERN"
+                                                    },
+                                                    {
+                                                        "label": "ETB",
+                                                        "value": "etb"
+                                                    },
+                                                    {
+                                                        "label": "EUR",
+                                                        "value": "eur"
+                                                    },
+                                                    {
+                                                        "label": "GBP",
+                                                        "value": "gbp"
+                                                    },
+                                                    {
+                                                        "label": "GEL",
+                                                        "value": "gel"
+                                                    },
+                                                    {
+                                                        "label": "GTQ",
+                                                        "value": "gtq"
+                                                    },
+                                                    {
+                                                        "label": "HKD",
+                                                        "value": "hkd"
+                                                    },
+                                                    {
+                                                        "label": "HNL",
+                                                        "value": "hnl"
+                                                    },
+                                                    {
+                                                        "label": "HRK",
+                                                        "value": "hrk"
+                                                    },
+                                                    {
+                                                        "label": "HTG",
+                                                        "value": "htg"
+                                                    },
+                                                    {
+                                                        "label": "HUF",
+                                                        "value": "huf"
+                                                    },
+                                                    {
+                                                        "label": "IDR",
+                                                        "value": "idr"
+                                                    },
+                                                    {
+                                                        "label": "ILS",
+                                                        "value": "ils"
+                                                    },
+                                                    {
+                                                        "label": "INR",
+                                                        "value": "inr"
+                                                    },
+                                                    {
+                                                        "label": "IQD",
+                                                        "value": "iqd"
+                                                    },
+                                                    {
+                                                        "label": "IRR",
+                                                        "value": "irr"
+                                                    },
+                                                    {
+                                                        "label": "ISK",
+                                                        "value": "isk"
+                                                    },
+                                                    {
+                                                        "label": "JMD",
+                                                        "value": "jmd"
+                                                    },
+                                                    {
+                                                        "label": "JOD",
+                                                        "value": "jod"
+                                                    },
+                                                    {
+                                                        "label": "JPY",
+                                                        "value": "jpy"
+                                                    },
+                                                    {
+                                                        "label": "KES",
+                                                        "value": "kes"
+                                                    },
+                                                    {
+                                                        "label": "KGS",
+                                                        "value": "kgs"
+                                                    },
+                                                    {
+                                                        "label": "KHR",
+                                                        "value": "khr"
+                                                    },
+                                                    {
+                                                        "label": "KWR",
+                                                        "value": "kwr"
+                                                    },
+                                                    {
+                                                        "label": "KWD",
+                                                        "value": "kwd"
+                                                    },
+                                                    {
+                                                        "label": " KZT",
+                                                        "value": "kzt"
+                                                    },
+                                                    {
+                                                        "label": "LAK",
+                                                        "value": "lak"
+                                                    },
+                                                    {
+                                                        "label": "LBP",
+                                                        "value": "lbp"
+                                                    },
+                                                    {
+                                                        "label": "LKR",
+                                                        "value": "lkr"
+                                                    },
+                                                    {
+                                                        "label": "LYD",
+                                                        "value": "lyd"
+                                                    },
+                                                    {
+                                                        "label": "MAD",
+                                                        "value": "mad"
+                                                    },
+                                                    {
+                                                        "label": "MDL",
+                                                        "value": "mdl"
+                                                    },
+                                                    {
+                                                        "label": "MKD",
+                                                        "value": "mkd"
+                                                    },
+                                                    {
+                                                        "label": "MMK",
+                                                        "value": "mmk"
+                                                    },
+                                                    {
+                                                        "label": "MNT",
+                                                        "value": "mnt"
+                                                    },
+                                                    {
+                                                        "label": "MOP",
+                                                        "value": "mop"
+                                                    },
+                                                    {
+                                                        "label": "MVR",
+                                                        "value": "mvr"
+                                                    },
+                                                    {
+                                                        "label": "MXN",
+                                                        "value": "mxn"
+                                                    },
+                                                    {
+                                                        "label": "MYR",
+                                                        "value": "myr"
+                                                    },
+                                                    {
+                                                        "label": "NGN",
+                                                        "value": "ngn"
+                                                    },
+                                                    {
+                                                        "label": "NIO",
+                                                        "value": " nio"
+                                                    },
+                                                    {
+                                                        "label": "NOK",
+                                                        "value": "nok"
+                                                    },
+                                                    {
+                                                        "label": "NPR",
+                                                        "value": "npr"
+                                                    },
+                                                    {
+                                                        "label": "NZD",
+                                                        "value": "nzd"
+                                                    },
+                                                    {
+                                                        "label": "OMR",
+                                                        "value": "omr"
+                                                    },
+                                                    {
+                                                        "label": "PAB",
+                                                        "value": "pab"
+                                                    },
+                                                    {
+                                                        "label": "PEN",
+                                                        "value": "pen"
+                                                    },
+                                                    {
+                                                        "label": "PHP",
+                                                        "value": "php"
+                                                    },
+                                                    {
+                                                        "label": "PKR",
+                                                        "value": "pkr"
+                                                    },
+                                                    {
+                                                        "label": "PLN",
+                                                        "value": "pln"
+                                                    },
+                                                    {
+                                                        "label": "PYG",
+                                                        "value": "pyg"
+                                                    },
+                                                    {
+                                                        "label": "QAR",
+                                                        "value": "qar"
+                                                    },
+                                                    {
+                                                        "label": "RON",
+                                                        "value": "ron"
+                                                    },
+                                                    {
+                                                        "label": "RSD",
+                                                        "value": "rds"
+                                                    },
+                                                    {
+                                                        "label": "RUB",
+                                                        "value": "rub"
+                                                    },
+                                                    {
+                                                        "label": "RWF",
+                                                        "value": "rwf"
+                                                    },
+                                                    {
+                                                        "label": "SAR",
+                                                        "value": "sar"
+                                                    },
+                                                    {
+                                                        "label": "SEK",
+                                                        "value": "sek"
+                                                    },
+                                                    {
+                                                        "label": "SGD",
+                                                        "value": "sgd"
+                                                    },
+                                                    {
+                                                        "label": "SOS",
+                                                        "value": "sos"
+                                                    },
+                                                    {
+                                                        "label": "SYP",
+                                                        "value": "syp"
+                                                    },
+                                                    {
+                                                        "label": "THB",
+                                                        "value": "thb"
+                                                    },
+                                                    {
+                                                        "label": "TJS",
+                                                        "value": "tjs"
+                                                    },
+                                                    {
+                                                        "label": "TMT",
+                                                        "value": "tmt"
+                                                    },
+                                                    {
+                                                        "label": "TND",
+                                                        "value": "tnd"
+                                                    },
+                                                    {
+                                                        "label": "TRY",
+                                                        "value": "try"
+                                                    },
+                                                    {
+                                                        "label": "TTD",
+                                                        "value": "ttd"
+                                                    },
+                                                    {
+                                                        "label": "TWD",
+                                                        "value": "twd"
+                                                    },
+                                                    {
+                                                        "label": "UAH",
+                                                        "value": "uah"
+                                                    },
+                                                    {
+                                                        "label": "USD",
+                                                        "value": "usd"
+                                                    },
+                                                    {
+                                                        "label": "UYU",
+                                                        "value": "uyu"
+                                                    },
+                                                    {
+                                                        "label": "UZS",
+                                                        "value": "uzs"
+                                                    },
+                                                    {
+                                                        "label": "VES",
+                                                        "value": "ves"
+                                                    },
+                                                    {
+                                                        "label": "VND",
+                                                        "value": "vnd"
+                                                    },
+                                                    {
+                                                        "label": "XAF",
+                                                        "value": "xaf"
+                                                    },
+                                                    {
+                                                        "label": "XCD",
+                                                        "value": "xcd"
+                                                    },
+                                                    {
+                                                        "label": "XDR",
+                                                        "value": "xdr"
+                                                    },
+                                                    {
+                                                        "label": "XOF",
+                                                        "value": "xof"
+                                                    },
+                                                    {
+                                                        "label": "YER",
+                                                        "value": "yer"
+                                                    },
+                                                    {
+                                                        "label": "ZAR",
+                                                        "value": "zar"
                                                     }
                                                 ],
                                                 "required": true
@@ -1426,7 +3406,7 @@
                             "name": "ppProCount",
                             "type": "Microsoft.Common.Slider",
                             "min": 1,
-                            "max": 100,
+                            "max": 10,
                             "label": "Number of Environments for professional developers to be created",
                             "subLabel": "Environments",
                             "defaultValue": 1,
@@ -1435,7 +3415,7 @@
                             "constraints": {
                                 "required": false
                             },
-                            "visible": "[or(equals(steps('landingZones').ppPro, 'yes'), equals(steps('landingZones').ppPro, 'half'))]"
+                            "visible": "[equals(steps('landingZones').ppPro, 'yes')]"
                         },
                         {
                             "name": "ppProNaming",
@@ -1449,7 +3429,20 @@
                                 "regex": "^[a-z0-9A-Z]{1,30}$",
                                 "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
                             },
-                            "visible": "[or(equals(steps('landingZones').ppPro, 'yes'), equals(steps('landingZones').ppPro, 'half'))]"
+                            "visible": "[equals(steps('landingZones').ppPro, 'yes')]"
+                        },
+                        {
+                            "name": "ppProDescription",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Provide a description for the professional developers environments",
+                            "placeholder": "",
+                            "defaultValue": "",
+                            "toolTip": "Provide general description for these Environments",
+                            "constraints": {
+                                "required": false,
+                                "regex": "^[a-z0-9A-Z]{1,30}$"
+                            },
+                            "visible": "[equals(steps('landingZones').ppPro, 'yes')]"
                         },
                         {
                             "name": "ppProRegion",
@@ -1458,7 +3451,7 @@
                             "placeholder": "",
                             "defaultValue": "",
                             "toolTip": "",
-                            "visible": "[or(equals(steps('landingZones').ppPro, 'yes'), equals(steps('landingZones').ppPro, 'half'))]",
+                            "visible": "[equals(steps('landingZones').ppPro, 'yes')]",
                             "constraints": {
                                 "allowedValues": [
                                     {
@@ -1504,6 +3497,664 @@
                                     {
                                         "label": "South America",
                                         "value": "southamerica"
+                                    }
+                                ],
+                                "required": true
+                            }
+                        },
+                        {
+                            "name": "ppProLanguage",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select language for the new Environments for professional developers",
+                            "placeholder": "",
+                            "defaultValue": "",
+                            "toolTip": "",
+                            "filter": true,
+                            "visible": "[equals(steps('landingZones').ppPro, 'yes')]",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Arabic",
+                                        "value": "1025"
+                                    },
+                                    {
+                                        "label": "Bulgarian",
+                                        "value": "1026"
+                                    },
+                                    {
+                                        "label": "Catalan",
+                                        "value": "1027"
+                                    },
+                                    {
+                                        "label": "Chinese (Taiwan)",
+                                        "value": "1028"
+                                    },
+                                    {
+                                        "label": "Czech",
+                                        "value": "1029"
+                                    },
+                                    {
+                                        "label": "Danish",
+                                        "value": "1030"
+                                    },
+                                    {
+                                        "label": "German",
+                                        "value": "1031"
+                                    },
+                                    {
+                                        "label": "Greek",
+                                        "value": "1032"
+                                    },
+                                    {
+                                        "label": "English (United States)",
+                                        "value": "1033"
+                                    },
+                                    {
+                                        "label": "Finnish",
+                                        "value": "1035"
+                                    },
+                                    {
+                                        "label": "French",
+                                        "value": "1036"
+                                    },
+                                    {
+                                        "label": "Hebrew",
+                                        "value": "1037"
+                                    },
+                                    {
+                                        "label": "Hungarian",
+                                        "value": "1038"
+                                    },
+                                    {
+                                        "label": "Italian",
+                                        "value": "1040"
+                                    },
+                                    {
+                                        "label": "Japanese",
+                                        "value": "1041"
+                                    },
+                                    {
+                                        "label": "Korean",
+                                        "value": "1042"
+                                    },
+                                    {
+                                        "label": "Dutch",
+                                        "value": "1043"
+                                    },
+                                    {
+                                        "label": "Norwegian",
+                                        "value": "1044"
+                                    },
+                                    {
+                                        "label": "Polish",
+                                        "value": "1045"
+                                    },
+                                    {
+                                        "label": "Brazilian",
+                                        "value": "1046"
+                                    },
+                                    {
+                                        "label": "Romanian",
+                                        "value": "1048"
+                                    },
+                                    {
+                                        "label": "Russian",
+                                        "value": "1049"
+                                    },
+                                    {
+                                        "label": "Croatian",
+                                        "value": "1050"
+                                    },
+                                    {
+                                        "label": "Slovak",
+                                        "value": "1051"
+                                    },
+                                    {
+                                        "label": "Swedish",
+                                        "value": "1053"
+                                    },
+                                    {
+                                        "label": "Thai",
+                                        "value": "1054"
+                                    },
+                                    {
+                                        "label": "Turkish",
+                                        "value": "1055"
+                                    },
+                                    {
+                                        "label": "Indonesian",
+                                        "value": "1057"
+                                    },
+                                    {
+                                        "label": "Ukrainian",
+                                        "value": "1058"
+                                    },
+                                    {
+                                        "label": "Slovenian",
+                                        "value": "1060"
+                                    },
+                                    {
+                                        "label": "Estonian",
+                                        "value": "1061"
+                                    },
+                                    {
+                                        "label": "Latvian",
+                                        "value": "1062"
+                                    },
+                                    {
+                                        "label": "Lithuanian",
+                                        "value": "1063"
+                                    },
+                                    {
+                                        "label": "Viatnamese",
+                                        "value": "1066"
+                                    },
+                                    {
+                                        "label": "Basque (Spain)",
+                                        "value": "1069"
+                                    },
+                                    {
+                                        "label": "Hindi (Latin)",
+                                        "value": "1081"
+                                    },
+                                    {
+                                        "label": "Malay",
+                                        "value": "1086"
+                                    },
+                                    {
+                                        "label": "Kazakh",
+                                        "value": "1087"
+                                    },
+                                    {
+                                        "label": "Galician (Spain)",
+                                        "value": "1110"
+                                    },
+                                    {
+                                        "label": "Chinese (Simplified)",
+                                        "value": "2052"
+                                    },
+                                    {
+                                        "label": "Portuguese",
+                                        "value": "2070"
+                                    },
+                                    {
+                                        "label": "Serbian (Latin)",
+                                        "value": "2074"
+                                    },
+                                    {
+                                        "label": "Chinese (Traditional)",
+                                        "value": "3076"
+                                    },
+                                    {
+                                        "label": "Modern Spanish (Spain)",
+                                        "value": "3082"
+                                    },
+                                    {
+                                        "label": "Serbian (Cyrillic)",
+                                        "value": "3089"
+                                    }
+                                ],
+                                "required": true
+                            }
+                        },
+                        {
+                            "name": "ppProCurrency",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select currency for the new Environments for professional developers",
+                            "placeholder": "",
+                            "defaultValue": "",
+                            "toolTip": "",
+                            "filter": true,
+                            "visible": "[equals(steps('landingZones').ppPro, 'yes')]",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "AED",
+                                        "value": "aed"
+                                    },
+                                    {
+                                        "label": "AFN",
+                                        "value": "afn"
+                                    },
+                                    {
+                                        "label": "ALL",
+                                        "value": "all"
+                                    },
+                                    {
+                                        "label": "AMD",
+                                        "value": "amd"
+                                    },
+                                    {
+                                        "label": "ARS",
+                                        "value": "ars"
+                                    },
+                                    {
+                                        "label": "AUD",
+                                        "value": "aud"
+                                    },
+                                    {
+                                        "label": "AZN",
+                                        "value": "azn"
+                                    },
+                                    {
+                                        "label": "BAM",
+                                        "value": "bam"
+                                    },
+                                    {
+                                        "label": "BDT",
+                                        "value": "bdt"
+                                    },
+                                    {
+                                        "label": "BGN",
+                                        "value": "bgn"
+                                    },
+                                    {
+                                        "label": "BHD",
+                                        "value": "bhd"
+                                    },
+                                    {
+                                        "label": "BND",
+                                        "value": "bmd"
+                                    },
+                                    {
+                                        "label": "BOB",
+                                        "value": "bob"
+                                    },
+                                    {
+                                        "label": "BRL",
+                                        "value": "brl"
+                                    },
+                                    {
+                                        "label": "BTN",
+                                        "value": "btn"
+                                    },
+                                    {
+                                        "label": "BWP",
+                                        "value": "bwp"
+                                    },
+                                    {
+                                        "label": "BYN",
+                                        "value": "byn"
+                                    },
+                                    {
+                                        "label": "BZD",
+                                        "value": "bzd"
+                                    },
+                                    {
+                                        "label": "CAD",
+                                        "value": "cad"
+                                    },
+                                    {
+                                        "label": "CDF",
+                                        "value": "cdf"
+                                    },
+                                    {
+                                        "label": "CHF",
+                                        "value": "chf"
+                                    },
+                                    {
+                                        "label": "CLP",
+                                        "value": "clp"
+                                    },
+                                    {
+                                        "label": "CNY",
+                                        "value": "cny"
+                                    },
+                                    {
+                                        "label": "COP",
+                                        "value": "cop"
+                                    },
+                                    {
+                                        "label": "CRC",
+                                        "value": "crc"
+                                    },
+                                    {
+                                        "label": "CUP",
+                                        "value": "cup"
+                                    },
+                                    {
+                                        "label": "CZK",
+                                        "value": "czk"
+                                    },
+                                    {
+                                        "label": "DJF",
+                                        "value": "djf"
+                                    },
+                                    {
+                                        "label": "DKK",
+                                        "value": "dkk"
+                                    },
+                                    {
+                                        "label": "DOP",
+                                        "value": "dop"
+                                    },
+                                    {
+                                        "label": "DZD",
+                                        "value": "dzd"
+                                    },
+                                    {
+                                        "label": "EGP",
+                                        "value": "EGP"
+                                    },
+                                    {
+                                        "label": "ERN",
+                                        "value": "ERN"
+                                    },
+                                    {
+                                        "label": "ETB",
+                                        "value": "etb"
+                                    },
+                                    {
+                                        "label": "EUR",
+                                        "value": "eur"
+                                    },
+                                    {
+                                        "label": "GBP",
+                                        "value": "gbp"
+                                    },
+                                    {
+                                        "label": "GEL",
+                                        "value": "gel"
+                                    },
+                                    {
+                                        "label": "GTQ",
+                                        "value": "gtq"
+                                    },
+                                    {
+                                        "label": "HKD",
+                                        "value": "hkd"
+                                    },
+                                    {
+                                        "label": "HNL",
+                                        "value": "hnl"
+                                    },
+                                    {
+                                        "label": "HRK",
+                                        "value": "hrk"
+                                    },
+                                    {
+                                        "label": "HTG",
+                                        "value": "htg"
+                                    },
+                                    {
+                                        "label": "HUF",
+                                        "value": "huf"
+                                    },
+                                    {
+                                        "label": "IDR",
+                                        "value": "idr"
+                                    },
+                                    {
+                                        "label": "ILS",
+                                        "value": "ils"
+                                    },
+                                    {
+                                        "label": "INR",
+                                        "value": "inr"
+                                    },
+                                    {
+                                        "label": "IQD",
+                                        "value": "iqd"
+                                    },
+                                    {
+                                        "label": "IRR",
+                                        "value": "irr"
+                                    },
+                                    {
+                                        "label": "ISK",
+                                        "value": "isk"
+                                    },
+                                    {
+                                        "label": "JMD",
+                                        "value": "jmd"
+                                    },
+                                    {
+                                        "label": "JOD",
+                                        "value": "jod"
+                                    },
+                                    {
+                                        "label": "JPY",
+                                        "value": "jpy"
+                                    },
+                                    {
+                                        "label": "KES",
+                                        "value": "kes"
+                                    },
+                                    {
+                                        "label": "KGS",
+                                        "value": "kgs"
+                                    },
+                                    {
+                                        "label": "KHR",
+                                        "value": "khr"
+                                    },
+                                    {
+                                        "label": "KWR",
+                                        "value": "kwr"
+                                    },
+                                    {
+                                        "label": "KWD",
+                                        "value": "kwd"
+                                    },
+                                    {
+                                        "label": " KZT",
+                                        "value": "kzt"
+                                    },
+                                    {
+                                        "label": "LAK",
+                                        "value": "lak"
+                                    },
+                                    {
+                                        "label": "LBP",
+                                        "value": "lbp"
+                                    },
+                                    {
+                                        "label": "LKR",
+                                        "value": "lkr"
+                                    },
+                                    {
+                                        "label": "LYD",
+                                        "value": "lyd"
+                                    },
+                                    {
+                                        "label": "MAD",
+                                        "value": "mad"
+                                    },
+                                    {
+                                        "label": "MDL",
+                                        "value": "mdl"
+                                    },
+                                    {
+                                        "label": "MKD",
+                                        "value": "mkd"
+                                    },
+                                    {
+                                        "label": "MMK",
+                                        "value": "mmk"
+                                    },
+                                    {
+                                        "label": "MNT",
+                                        "value": "mnt"
+                                    },
+                                    {
+                                        "label": "MOP",
+                                        "value": "mop"
+                                    },
+                                    {
+                                        "label": "MVR",
+                                        "value": "mvr"
+                                    },
+                                    {
+                                        "label": "MXN",
+                                        "value": "mxn"
+                                    },
+                                    {
+                                        "label": "MYR",
+                                        "value": "myr"
+                                    },
+                                    {
+                                        "label": "NGN",
+                                        "value": "ngn"
+                                    },
+                                    {
+                                        "label": "NIO",
+                                        "value": " nio"
+                                    },
+                                    {
+                                        "label": "NOK",
+                                        "value": "nok"
+                                    },
+                                    {
+                                        "label": "NPR",
+                                        "value": "npr"
+                                    },
+                                    {
+                                        "label": "NZD",
+                                        "value": "nzd"
+                                    },
+                                    {
+                                        "label": "OMR",
+                                        "value": "omr"
+                                    },
+                                    {
+                                        "label": "PAB",
+                                        "value": "pab"
+                                    },
+                                    {
+                                        "label": "PEN",
+                                        "value": "pen"
+                                    },
+                                    {
+                                        "label": "PHP",
+                                        "value": "php"
+                                    },
+                                    {
+                                        "label": "PKR",
+                                        "value": "pkr"
+                                    },
+                                    {
+                                        "label": "PLN",
+                                        "value": "pln"
+                                    },
+                                    {
+                                        "label": "PYG",
+                                        "value": "pyg"
+                                    },
+                                    {
+                                        "label": "QAR",
+                                        "value": "qar"
+                                    },
+                                    {
+                                        "label": "RON",
+                                        "value": "ron"
+                                    },
+                                    {
+                                        "label": "RSD",
+                                        "value": "rds"
+                                    },
+                                    {
+                                        "label": "RUB",
+                                        "value": "rub"
+                                    },
+                                    {
+                                        "label": "RWF",
+                                        "value": "rwf"
+                                    },
+                                    {
+                                        "label": "SAR",
+                                        "value": "sar"
+                                    },
+                                    {
+                                        "label": "SEK",
+                                        "value": "sek"
+                                    },
+                                    {
+                                        "label": "SGD",
+                                        "value": "sgd"
+                                    },
+                                    {
+                                        "label": "SOS",
+                                        "value": "sos"
+                                    },
+                                    {
+                                        "label": "SYP",
+                                        "value": "syp"
+                                    },
+                                    {
+                                        "label": "THB",
+                                        "value": "thb"
+                                    },
+                                    {
+                                        "label": "TJS",
+                                        "value": "tjs"
+                                    },
+                                    {
+                                        "label": "TMT",
+                                        "value": "tmt"
+                                    },
+                                    {
+                                        "label": "TND",
+                                        "value": "tnd"
+                                    },
+                                    {
+                                        "label": "TRY",
+                                        "value": "try"
+                                    },
+                                    {
+                                        "label": "TTD",
+                                        "value": "ttd"
+                                    },
+                                    {
+                                        "label": "TWD",
+                                        "value": "twd"
+                                    },
+                                    {
+                                        "label": "UAH",
+                                        "value": "uah"
+                                    },
+                                    {
+                                        "label": "USD",
+                                        "value": "usd"
+                                    },
+                                    {
+                                        "label": "UYU",
+                                        "value": "uyu"
+                                    },
+                                    {
+                                        "label": "UZS",
+                                        "value": "uzs"
+                                    },
+                                    {
+                                        "label": "VES",
+                                        "value": "ves"
+                                    },
+                                    {
+                                        "label": "VND",
+                                        "value": "vnd"
+                                    },
+                                    {
+                                        "label": "XAF",
+                                        "value": "xaf"
+                                    },
+                                    {
+                                        "label": "XCD",
+                                        "value": "xcd"
+                                    },
+                                    {
+                                        "label": "XDR",
+                                        "value": "xdr"
+                                    },
+                                    {
+                                        "label": "XOF",
+                                        "value": "xof"
+                                    },
+                                    {
+                                        "label": "YER",
+                                        "value": "yer"
+                                    },
+                                    {
+                                        "label": "ZAR",
+                                        "value": "zar"
                                     }
                                 ],
                                 "required": true
@@ -1653,6 +4304,64 @@
                             "visible": "[not(equals(steps('landingZones').ppIndustry, 'no'))]"
                         },
                         {
+                            "name": "ppIndustryRegion",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select region for the new Environments for the industry clouds",
+                            "placeholder": "",
+                            "defaultValue": "",
+                            "toolTip": "",
+                            "visible": "[equals(steps('landingZones').ppIndustry, 'yes')]",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Europe",
+                                        "value": "europe"
+                                    },
+                                    {
+                                        "label": "United States",
+                                        "value": "unitedstates"
+                                    },
+                                    {
+                                        "label": "United Arab Emirates",
+                                        "value": "unitedarabemirates"
+                                    },
+                                    {
+                                        "label": "Asia",
+                                        "value": "asia"
+                                    },
+                                    {
+                                        "label": "India",
+                                        "value": "india"
+                                    },
+                                    {
+                                        "label": "Japan",
+                                        "value": "japan"
+                                    },
+                                    {
+                                        "label": "France",
+                                        "value": "france"
+                                    },
+                                    {
+                                        "label": "Germany",
+                                        "value": "germany"
+                                    },
+                                    {
+                                        "label": "Australia",
+                                        "value": "australia"
+                                    },
+                                    {
+                                        "label": "Canada",
+                                        "value": "canada"
+                                    },
+                                    {
+                                        "label": "South America",
+                                        "value": "southamerica"
+                                    }
+                                ],
+                                "required": true
+                            }
+                        },
+                        {
                             "name": "ppIndustryAlm",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Create Development, Test, and Production environments for each landing zone",
@@ -1725,6 +4434,9 @@
                 "ppCitizenConfiguration": "[replace(replace(replace(replace(replace(string(steps('landingZones').ppCitizenConfiguration), '{', ''), '}', ''), '\"', ''), '[', ''), ']', '')]",
                 "ppCitizenCount": "[steps('landingZones').ppCitizenCount]",
                 "ppCitizenNaming": "[steps('landingZones').ppCitizenNaming]",
+                "ppCitizenDescription": "[steps('landingZones').ppCitizenDescription]",
+                "ppCitizenLanguage": "[steps('landingZones').ppCitizenLanguage]",
+                "ppCitizenCurrency": "[steps('landingZones').ppCitizenCurrency]",
                 "ppCitizenRegion": "[steps('landingZones').ppCitizenRegion]",
                 "ppCitizenDlp": "[steps('landingZones').ppCitizenDlp]",
                 "ppCitizenAlm": "[steps('landingZones').ppCitizenAlm]",
@@ -1733,12 +4445,16 @@
                 "ppProConfiguration": "[replace(replace(replace(replace(replace(string(steps('landingZones').ppProConfiguration), '{', ''), '}', ''), '\"', ''), '[', ''), ']', '')]",
                 "ppProCount": "[steps('landingZones').ppProCount]",
                 "ppProNaming": "[steps('landingZones').ppProNaming]",
+                "ppProDescription": "[steps('landingZones').ppProDescription]",
+                "ppProLanguage": "[steps('landingZones').ppProLanguage]",
+                "ppProCurrency": "[steps('landingZones').ppProCurrency]",
                 "ppProDlp": "[steps('landingZones').ppProDlp]",
                 "ppProAlm": "[steps('landingZones').ppProAlm]",
                 "ppProRegion": "[steps('landingZones').ppProRegion]",
                 "ppProBilling": "[steps('landingZones').ppProBilling]",
                 "ppSelectIndustry": "[steps('landingZones').ppSelectIndustry]",
                 "ppIndustryNaming": "[steps('landingZones').ppIndustryNaming]",
+                "ppIndustryRegion": "[steps('landingZones').ppIndustryRegion]",
                 "ppIndustryBilling": "[steps('landingZones').ppIndustryBilling]",
                 "ppIndustryAlm": "[steps('landingZones').ppIndustryAlm]"
             },
