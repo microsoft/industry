@@ -122,7 +122,8 @@
                 "unitedkingdom",
                 "france",
                 "germany",
-                "unitedarabemirates"
+                "unitedarabemirates",
+                "australia"
             ],
             "defaultValue": "unitedstates",
             "metadata": {
@@ -206,7 +207,8 @@
                 "unitedkingdom",
                 "france",
                 "germany",
-                "unitedarabemirates"
+                "unitedarabemirates",
+                "australia"
             ],
             "defaultValue": "unitedstates",
             "metadata": {
@@ -272,7 +274,8 @@
                 "unitedkingdom",
                 "france",
                 "germany",
-                "unitedarabemirates"
+                "unitedarabemirates",
+                "australia"
             ],
             "defaultValue": "unitedstates",
             "metadata": {
@@ -329,7 +332,8 @@
                 "southamerica",
                 "unitedkingdom",
                 "france",
-                "germany"
+                "germany",
+                "australia"
             ],
             "defaultValue": "unitedstates",
             "metadata": {
