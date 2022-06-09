@@ -43,12 +43,12 @@ The considerations listed here are for TFW apps in the context of flexible fulfi
   - Location and operational activities associated with handling of [Shifts data](https://docs.microsoft.com/microsoftteams/expand-teams-across-your-org/shifts/shifts-data-faq).
 
 - [Walkie Talkie](https://docs.microsoft.com/en-us/microsoftteams/walkie-talkie)
-  - Walkie Talkie works with WiFi and cellular internet connectivity.
+  - Walkie Talkie works with Wi-Fi and cellular internet connectivity.
   - It is supported on Android devices with Google Mobile Services (GMS) and iOS.
   - [Networking considerations](https://docs.microsoft.com/microsoftteams/walkie-talkie#network-documentation)
   - [Devices](https://docs.microsoft.com/en-us/microsoftteams/walkie-talkie#walkie-talkie-devices) which have been validated to work with Teams Walkie Talkie.
   - Walkie Talkie app honours app policies and that can be used to control who has access to this app.
-  - A network (either WiFi or cellular) is required for Walkie Talkie app to work. The app won't work when there's no connectivity.
+  - A network (either Wi-Fi or cellular) is required for Walkie Talkie app to work. The app won't work when there's no connectivity.
   - Walkie Talkie uses the same network method used by Teams. If Teams communicates over a cellular network, then Walkie Talkie will also use the same method.
   - One must be connected to a channel to hear any Walkie Talkie communications.
   - One-to-one communication is not available in Walkie Talkie app.
