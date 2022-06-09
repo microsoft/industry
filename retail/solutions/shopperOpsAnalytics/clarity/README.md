@@ -33,7 +33,7 @@ All these capabilities  can simply summarized as tracking your website usage beh
 ## Prerequisites
 
 * You need to have the URL of your website ready.
-* In order to start using Microsoft Clarity to track your website usage behavior you need to have **sufficient rights to access and change to your webpages source** and be able to **redeploy**.
+* In order to start using Microsoft Clarity to track your website usage behavior you need to have **sufficient rights to access and change to your web pages source** and be able to **redeploy**.
 What you will do in the source code depends on the technology you use for your web page.
 For example,
 
