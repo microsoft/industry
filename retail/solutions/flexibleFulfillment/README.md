@@ -10,7 +10,7 @@ The table below lists the building blocks for solution and contains a link to th
 
 | Components | Role | Deploy |
 |:----------------------|:------------|--------|
-| D365 Intelligent Order Management (IOM) | D365 IOM is a Dataverse application which provides retail organization a single pane of glass to provide end to end view of order lifecycle management. Organizations can build workflows to handle orders based on business events. This includes routing orders based on customer preferences etc. through various fulfillment channels.| [End-to-end deployment and configuration of D365 IOM and BigCommerce](./iom/README.md)
+| D365 Intelligent Order Management (IOM) | D365 IOM is a Dataverse application which provides retail organization a single pane of glass to provide end-to-end view of order lifecycle management. Organizations can build workflows to handle orders based on business events. This includes routing orders based on customer preferences etc. through various fulfillment channels.| [End-to-end deployment and configuration of D365 IOM and BigCommerce](./iom/README.md)
 | D365 Supply Chain Management (SCM) |Enables capabilities for managing a supply chain such as warehouse management; transportation management; procurement; demand forecasting etc.|*Coming soon*
 | D365 Commerce |Omnichannel solution that unifies back-office, in-store, call center, and digital experiences. |*Coming soon*
 | Teams for Frontline Workers | Enables frontline workers to collaborate and provides a building block for scenarios such as BOPIS etc.| *Coming soon*
