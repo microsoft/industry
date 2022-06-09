@@ -1,4 +1,3 @@
-
 # Microsoft Clarity
 
 [Microsoft Clarity](https://clarity.microsoft.com/) is a **free** a behavioral analysis tool focuses on the **Maximize the value of your data,
