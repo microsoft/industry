@@ -13,7 +13,7 @@
 Shopper and operational analytics scenario of Microsoft Cloud for Retail focuses on providing the best possible solution provided by Microsoft technologies to obtain  and analyze the shopper data and therefore by understanding the customer behavior, to provide the best possible experience to customer.
 
 The scenario implementation bases on various Microsoft solutions:
--  [D365 Customer Insights](https://dynamics.microsoft.com/ai/customer-insights/) with  power platform and focuses on providing the 365 view of the existing customer data on Power Platform Dataverse by combining the customer data fetched from D365 Commerce and other possible channels.
+- [D365 Customer Insights](https://dynamics.microsoft.com/ai/customer-insights/) with  power platform and focuses on providing the 365 view of the existing customer data on Power Platform Dataverse by combining the customer data fetched from D365 Commerce and other possible channels.
 - [Microsoft Clarity](https://clarity.microsoft.com/) focuses on analyzing anonymized user session experience with various different views to provide Insight on how you can improve your  website. It can collect data from custom, various 3rdparty or D365 commerce websites.
 - [Azure Synapse Analytics](https://docs.microsoft.com/azure/synapse-analytics/overview-what-is) is a multi capability analytics platform with native connectors called [Synapse Link](https://docs.microsoft.com/en-us/power-apps/maker/data-platform/azure-synapse-link-synapse?context=/azure/synapse-analytics/context/context) to various Microsoft Data platforms like Dataverse and CosmosDB
 which provides extensive analytics and data enrichment possibilities.
@@ -22,11 +22,10 @@ In addition to above mentioned key solution components connecting D35 retail sol
 you can discover more on this in [Microsoft Cloud  for Retail - Shopper and operations analytics Reference Architecture](#microsoft-cloud-for-retail---shopper-and-operations-analytics-reference-architecture) section.
 
 ## Shopper and operations analytics Reference Implementations
- 
+
 | Industry Architecture | Description | Deploy | Documentation
 |:----------------------|:------------|--------|--------------|
-| Shopper and operations analytics | Shopper and operations analytics provides a full, rich, compliant architecture for landing zones for retail industry scenarios |[![Deploy To Microsoft Cloud](./media/deploytomicrosoftcloud.svg)](https://solutions.microsoft.com/Microsoft%20Cloud%20for%20Retail) | [User Guide](./referenceImplementation/readme.md)
- 
+| Shopper and operations analytics | Shopper and operations analytics provides a full, rich, compliant architecture for landing zones for retail industry scenarios |[![Deploy To Microsoft Cloud](./media/deploytomicrosoftcloud.svg)](https://solutions.microsoft.com/Microsoft%20Cloud%20for%20Retail) | [User Guide](./referenceImplementation/readme.md) 
 
 ## Prerequisites
 
