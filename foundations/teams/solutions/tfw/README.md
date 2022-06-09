@@ -76,7 +76,7 @@ Solutions surfaced via Teams using buiding blocks .. we can think of experience 
 
 ## Design Recommendations
 
-- Microsoft has published [Teams for Frontline Workers solutions success kit](https://github.com/TeamsFLW/Teams-FLW-Solutions-Success-Kit) which has assets to help any frontline digital enablement project end-to-end. It covers end to end journey implementing Teams for Frontline Workers (TFW) and the approach is aligned to delivering a valuable solution for frontline workers.
+- Microsoft has published [Teams for Frontline Workers solutions success kit](https://github.com/TeamsFLW/Teams-FLW-Solutions-Success-Kit) which has assets to help any frontline digital enablement project end-to-end. It covers end-to-end journey implementing Teams for Frontline Workers (TFW) and the approach is aligned to delivering a valuable solution for frontline workers.
 
 - We recommend that your deployment plan must include:
   - Understanding of Teams architecture
