@@ -52,9 +52,9 @@ There are three key consideration areas for the clarity integration.
     1. Have the website URL ready. You **can not** change the **URL** after creating the Clarity project.
     1. Introduce the website to Microsoft Clarity: Create the Clarity project using the website URL. Do not underestimate the power of the Site Category in the tracked elements and provided reports. You **can** change the **Site category** after creating the Clarity project. *By the time of creation of this document available Site categories were: E-Commerce, SaaS, Blog, Marketing, Consulting, Media, Education, Community, Non-profit, Other.*
     ![view of site categories](./media/image35.png)
-    1. Introduce Microsoft Clarity to the website: Retrieve the Clarity tracking code with the unique key created for the website url from Clarity project and add it to the designated code block.
+    1. Introduce Microsoft Clarity to the website: Retrieve the Clarity tracking code with the unique key created for the website URL from Clarity project and add it to the designated code block.
 1. Making sure to keep the privacy level high.
-1. Eliminating the traffic test, admin and maintenance URLS from trackings to be able to capture real customer experience.
+1. Eliminating the traffic test, admin and maintenance URLs from trackings to be able to capture real customer experience.
 
 ## Key product capabilities
 
@@ -84,7 +84,7 @@ e.  Rage Clicks: ratio of sessions where user rapidly clicked or tapped
 f.  Quick Backs: ratio of sessions when user navigated to a page then
     quickly returned to the previous one
 
-g.  Javascript errors: ratio of sessions which had a Javascript error
+g.  JavaScript errors: ratio of sessions which had a JavaScript error
 
 h.  The ranked popularity of your application's sub pages
 
