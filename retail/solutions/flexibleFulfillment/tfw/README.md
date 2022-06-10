@@ -75,7 +75,7 @@ The considerations listed here are for TFW apps in the context of flexible fulfi
   - The first approval created from the Approvals app will trigger the provisioning of the Approval Solution in the default Microsoft Dataverse environment. Approvals created from the Approvals app will be stored in the default Microsoft Dataverse environment.
   - Considerations for [licensing](https://docs.microsoft.com/en-us/microsoftteams/approval-admin#required-permissions-and-licenses); [storage with MS Dataverse](https://docs.microsoft.com/en-us/microsoftteams/approval-admin#storage-with-microsoft-dataverse); [app permissions](https://docs.microsoft.com/en-us/microsoftteams/approval-admin#storage-with-microsoft-dataverse); [retention policy](https://docs.microsoft.com/en-us/microsoftteams/approval-admin#retention-policy); [limitations](https://docs.microsoft.com/en-us/microsoftteams/approval-admin#data-limitations); and [auditing](https://docs.microsoft.com/en-us/microsoftteams/approval-admin#auditing) are available on Microsoft Docs.
   - Deploy scoped Approval templates. Scope could be at org-level (templates could be either available to everyone in an org or a subset of users across org) OR team-wide (templates will be accessible to members of a team).
-  - Org-scoped templates share the same lifetime of the tenant and team-scoped templates share the same lifetime of the team. 
+  - Org-scoped templates share the same lifetime of the tenant and team-scoped templates share the same lifetime of the team.
 
 ## Deployment
 

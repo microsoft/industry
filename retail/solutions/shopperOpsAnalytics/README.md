@@ -25,23 +25,23 @@ you can discover more on this in [Microsoft Cloud  for Retail - Shopper and oper
 
 | Industry Architecture | Description | Deploy | Documentation
 |:----------------------|:------------|--------|--------------|
-| Shopper and operations analytics | Shopper and operations analytics provides a full, rich, compliant architecture for landing zones for retail industry scenarios |[![Deploy To Microsoft Cloud](./media/deploytomicrosoftcloud.svg)](https://solutions.microsoft.com/Microsoft%20Cloud%20for%20Retail) | [User Guide](./referenceImplementation/readme.md) 
+| Shopper and operations analytics | Shopper and operations analytics provides a full, rich, compliant architecture for landing zones for retail industry scenarios |[![Deploy To Microsoft Cloud](./media/deploytomicrosoftcloud.svg)](https://solutions.microsoft.com/Microsoft%20Cloud%20for%20Retail) | [User Guide](./referenceImplementation/readme.md)
 
 ## Prerequisites
 
 Before you  any piece of existing deploy and configure, verify:
 
-* [Power Platform environments](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform)
-  * Power Platform Environment be created upfront
-  * Power Platform Environment must have Dataverse enabled
-  * Dynamics 365 AI for Customer Insights​(Intelligence)​ needs to be created upfront but it is only available at US(Central,East,West) Europe(North, West) Switzerland North, UAE North, UK south​.
- * Storage Account​ accessed via Dynamics 365 AI for Customer Insights​  needs to be assigned below Service Principals:
-     * Dynamics 365 AI for Customer Insights​
-     * Dynamics 365 AI for Customer Insights engagement insights​
+- [Power Platform environments](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform)
+  - Power Platform Environment be created upfront
+  - Power Platform Environment must have Dataverse enabled
+  - Dynamics 365 AI for Customer Insights​(Intelligence)​ needs to be created upfront but it is only available at US(Central,East,West) Europe(North, West) Switzerland North, UAE North, UK south​.
+- Storage Account​ accessed via Dynamics 365 AI for Customer Insights​  needs to be assigned below Service Principals:
+  - Dynamics 365 AI for Customer Insights​
+  - Dynamics 365 AI for Customer Insights engagement insights​
 
-  * Power platform environments and Azure environments must be created in the intersect of there MC4R supported regions (*As of latest update in this document, supported regions can be found at: [MC4R docs international availability page](https://docs.microsoft.com/en-us/industry/retail/availability) and Customer Insights(Intelligence)​ available environments*
+- Power platform environments and Azure environments must be created in the intersect of there MC4R supported regions (*As of latest update in this document, supported regions can be found at: [MC4R docs international availability page](https://docs.microsoft.com/en-us/industry/retail/availability) and Customer Insights(Intelligence)​ available environments*
 
-* For the Microsoft Clarity perquisites you can refer to [Clarity Prerequisites](clarity/README.md#prerequisites)
+- For the Microsoft Clarity perquisites you can refer to [Clarity Prerequisites](clarity/README.md#prerequisites)
 
 ## Microsoft Cloud  for Retail - Shopper and operations analytics Reference Architecture
 
@@ -61,12 +61,12 @@ You need something that brings together these different data sources across the 
 
 ### Design Recommendations
 
-* With Microsoft Cloud for Retail, we recommend using pre agreed/defined data models to bring multiple systems and applications together by providing a shared language for your applications. This simplifies data management and app development by unifying data into common formats and applying consistency across multiple apps and deployments. Microsoft Cloud for Retail provides Retail Data Model as part of [Industry based Lake Database Templates (Industry Data Models-IDM)](https://techcommunity.microsoft.com/t5/azure-synapse-analytics-blog/database-templates-in-azure-synapse-analytics/ba-p/2929112) of [Azure Synapse Analytics](https://docs.microsoft.com/azure/synapse-analytics/overview-what-is). Using Industry Data Models provides benefits listed as below:
+- With Microsoft Cloud for Retail, we recommend using pre agreed/defined data models to bring multiple systems and applications together by providing a shared language for your applications. This simplifies data management and app development by unifying data into common formats and applying consistency across multiple apps and deployments. Microsoft Cloud for Retail provides Retail Data Model as part of [Industry based Lake Database Templates (Industry Data Models-IDM)](https://techcommunity.microsoft.com/t5/azure-synapse-analytics-blog/database-templates-in-azure-synapse-analytics/ba-p/2929112) of [Azure Synapse Analytics](https://docs.microsoft.com/azure/synapse-analytics/overview-what-is). Using Industry Data Models provides benefits listed as below:
 
-- Industry specificity: Leverage data models with retail-specific semantics
-- Interoperability: Data models ingest, enrich, and unify data to break down data silos and ease interoperability through industry specific pre-built connectors
-- Faster innovation: Extend the value of the platform with additional solutions, analytics, and predictions.
-- Refer to [Clarity Guidance](clarity/README.md#prerequisites) for the recommendations and considerations in collecting and analyzing the website usage data.
+  - Industry specificity: Leverage data models with retail-specific semantics
+  - Interoperability: Data models ingest, enrich, and unify data to break down data silos and ease interoperability through industry specific pre-built connectors
+  - Faster innovation: Extend the value of the platform with additional solutions, analytics, and predictions.
+  - Refer to [Clarity Guidance](clarity/README.md#prerequisites) for the recommendations and considerations in collecting and analyzing the website usage data.
 
 ### Design Considerations
 
@@ -75,7 +75,7 @@ the environments to read and process sensory data, social media data etc has dif
 
 When planning the  Azure footprint of these applications and analytics environments consider:
 
- - Complying with [Cloud Adoption Framework - Enterprise Scale Landing Zones (ESLZ)](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/)
- - Complying with [Cloud Scale Analytics principles(CSA)](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/cloud-scale-analytics/) with analytics environments
- - There is different options of streaming and time series data processing in azure all may answer same/similar and different use-case needs, pick the right tool for the right job.
- - Decide the boundaries of your online and corporate world. Due to regulations on personal data processing the environment where you merge all various sources and perform analytics to be governed and protected well.
+- Complying with [Cloud Adoption Framework - Enterprise Scale Landing Zones (ESLZ)](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/)
+- Complying with [Cloud Scale Analytics principles(CSA)](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/cloud-scale-analytics/) with analytics environments
+- There is different options of streaming and time series data processing in azure all may answer same/similar and different use-case needs, pick the right tool for the right job.
+- Decide the boundaries of your online and corporate world. Due to regulations on personal data processing the environment where you merge all various sources and perform analytics to be governed and protected well.
