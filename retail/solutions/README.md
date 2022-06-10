@@ -8,9 +8,7 @@ Goal of solutions is to provide prescriptive design recommendations and referenc
 
 The solutions covered here were created based on feedback captured from various groups working across retail engagements. We will continue adding more solutions to this list as part of industry guidance.
 
-- [Intelligent Order Managment and BigCommerce for order management](./iom/README.md)
-- [Intelligent Recommendations with Shopify](./ir/README.md)
-- [Retail channel churn predictive model](./churn/README.md)
 
----
-**Note** - the retail solutions listed here are not to be confused with the **cloud solutions** one can deploy using [Microsoft Cloud Solution Center](https://docs.microsoft.com/en-us/industry/solution-center-deploy?toc=/industry/retail/toc.json&bc=/industry/retail/breadcrumb/toc.json).
+- [Flexible Fulfillment](./flexibleFulfillment/README.md)
+- [Realtime personalization](./realtimePersonalization/README.md)
+- [Shopper and Operational Analytics](./shopperOpsAnalytics/README.md)

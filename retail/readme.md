@@ -11,9 +11,9 @@ Goal of this documentation is to provide Northstar reference architecture; provi
 
 ## Reference Implementation
 
-![reference-implementation](./media/mc4r-reference-architecture.png)
+*Coming soon*
 
-*Details coming soon*
+![reference-implementation](./media/mc4r-reference-architecture.png)
 
 ## Retail Solutions
 
