@@ -19,7 +19,7 @@ Goal of this documentation is to provide Northstar reference architecture; provi
 
 - [Real-time personalization](./solutions/realtimePersonalization/README.md)
 - [Flexible Fulfillment](./solutions/flexibleFulfillment/README.md)
-- [Retail channel churn predictive model](./solutions/churn/README.md)
+- [Retail channel churn predictive model](./solutions/unifiedCustomerProfile/README.md)
 
 ---
 
