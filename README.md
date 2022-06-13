@@ -84,12 +84,8 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
 - [Power Platform for Telecommunications](./foundations/powerPlatform)
 
 Telco Solutions
-- [Governance for Telco Industry Scenarios](./telco/docs/telco-governance.md)
-- [Networking for Telco Industry Scenarios](./telco/docs/telco-networking.md)
-- [Operator Landing Zones](./telco/docs/operator-landing-zones.md)
-- [Network Analytics Landing Zones for Operators](./telco/solutions/observability/readme.md)
-- [Distributed Edge](./telco/docs/telco-edge.md)
 - [Operator services](./telco/solutions/mgmtOptions/readme.md)
+- [Network Analytics Landing Zones](./telco/solutions/observability/readme.md)
 <!--  - [Telco Managed Services](./telco/solutions/managedServices)
   - [Telco Managed Solution](./telco/solutions/managedSolutions)-->
 <!--- [Telco Sales](./telco/solutions/sales/readme.md)

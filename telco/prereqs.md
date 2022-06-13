@@ -14,7 +14,7 @@ The table below summarizes the licenses you may require depending on the Telecom
 
 ## Azure subscription (landing zone)
 
-The [Azure for Telecommunications industry reference architecture](./readme.md) requires an Azure platform specialized and optimized for Telcos and a set of subscriptions (landing zones) in Microsoft Azure that will host the Telco workloads for internal IT systems as well as carrier-grade Telco solutions (such as SBC or SD-WAN solutions).
+The [Azure for Operators Landing Zones](./readme.md) reference architecture requires an Azure platform specialized and optimized for Operators and a set of subscriptions (landing zones) in Microsoft Azure that will host the Operator workloads for internal IT systems as well as carrier-grade Operator solutions (such as SBC or SD-WAN solutions).
 
 ## Power Platform
 

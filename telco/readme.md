@@ -1,4 +1,4 @@
-# Azure for Telecommunications
+# Azure for Operators Landing Zones
 
 Due to the network centric nature of their business, organizations in the Telecommunications (or Telco) industry have a unique set of requirements compared to other organizations of similar scale. Such requirements include:
 
@@ -12,8 +12,8 @@ This article provides a reference architecture with prescriptive guidance and re
 ## Table of contents
 
 * [Azure for Operators Landing Zones Reference Implementations](#azure-for-operators-landing-zones-reference-implementations)
-* [Azure for Operators Landing Zones](#azure-for-operators-landing-zones)
-* [High-level architecture](#high-level-architecture)
+* [Azure for Operators Landing Zones Reference Architecture](#azure-for-operators-landing-zones)
+  * [High-level architecture](#high-level-architecture)
   * [Governance for Telco Industry Scenarios](#letter-a)
   * [Networking for Telco Industry Scenarios](#letter-b)
   * [Operator Landing Zones](#letter-c)
@@ -31,7 +31,7 @@ This article provides a reference architecture with prescriptive guidance and re
 | AfO Landing Zones networking scale-out | When the AfO Landing Zones foundation is in place, you can use this reference implementation to scale-out the hub virtual network and configure the corresponding networking infrastructure |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoScaleOut) | [User Guide](./referenceImplementation/readme.md)
 | Observability Landing Zones for Operators | An observability landing zone for operators provides the required foundational services on Azure to ingest large amounts of data into Azure storage services |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/observabilitylz) | [User Guide](./solutions/observability/userGuide/readme.md)
 
-## Azure for Operators Landing Zones
+## Azure for Operators Landing Zones Reference Architecture
 
 This article describes the Azure for Operators (AfO) Landing Zones reference architecture which enables the delivery of telco specialized workloads (such as vEPC, vIMS, SDWAN, vFW, SBC) on Microsoft Azure and at the operator's distributed edge as depicted in figure 1 below:
 
