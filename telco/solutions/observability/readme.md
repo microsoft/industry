@@ -201,8 +201,8 @@ Table 3 below also provides links to the deployment guides which include step-by
 | Virtual network | Landing Zone owner |  | [Network Analytics Landing Zones User Guide](./userGuide/readme.md) |
 | NSGs | Landing Zone owner |  | [Network Analytics Landing Zones User Guide](./userGuide/readme.md) |
 | Azure Bastion | Landing Zone owner |  | [Network Analytics Landing Zones User guide](./userGuide/readme.md) |
-| Azure storage service(s) | Landing Zone owner | Any Azure storage service(s) required by the landing zone owner (such as Azure Data Lake Storage Gen2) | [Azure for Operators Observability Solution Accelerator](https://github.com/microsoft/operators-data-and-ai) |
-| Private Endpoints | Landing Zone owner | As required by the solution | [Azure for Operators Observability Solution Accelerator](https://github.com/microsoft/operators-data-and-ai) |
-| Analytics services | Landing Zone owner | Any analytics service(s) as required by the landing zone owner (for example Azure Synapse) | [Azure for Operators Observability Solution Accelerator](https://github.com/microsoft/operators-data-and-ai) |
+| Azure storage service(s) | Landing Zone owner | Any Azure storage service(s) required by the landing zone owner (such as Azure Data Lake Storage Gen2) | Solution Accelerator (coming soon) |
+| Private Endpoints | Landing Zone owner | As required by the solution | Solution Accelerator (coming soon) |
+| Analytics services | Landing Zone owner | Any analytics service(s) as required by the landing zone owner (for example Azure Synapse) | Solution Accelerator (coming soon) |
 
 _Table 3: Resources deployed by the Obervability Landing Zones reference implementation_
