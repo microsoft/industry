@@ -11,14 +11,14 @@ Goal of this documentation is to provide Northstar reference architecture; provi
 
 ## Reference Implementation
 
-*Coming soon*
-
 ![reference-implementation](./media/mc4r-reference-architecture.png)
 
 ## Retail Solutions
 
 - [Real-time personalization](./solutions/realtimePersonalization/README.md)
 - [Flexible Fulfillment](./solutions/flexibleFulfillment/README.md)
+- [Shopper and operations analytics](./solutions/shopperOpsAnalytics/README.md)
+- [Churn](./solutions/churn/readme.md)
 
 ---
 
