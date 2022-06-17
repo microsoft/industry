@@ -1,4 +1,4 @@
-# Microsoft cloud for retail
+# Microsoft cloud for retail (MCR)
 
 Microsoft Cloud for Retail (MCR) accelerates business growth by providing trusted retail industry solutions that integrate with retailers’ existing systems. It brings together different data sources across the retail value chain and uniquely connects experiences across the end-to-end shopper journey though a set of capabilities that deliver more relevant personalized experiences and operational excellence for sustained profitability.
 
