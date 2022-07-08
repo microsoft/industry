@@ -2,7 +2,7 @@
 
 Microsoft Cloud for Retail (MCR) accelerates business growth by providing trusted retail industry solutions that integrate with retailers’ existing systems. It brings together different data sources across the retail value chain and uniquely connects experiences across the end-to-end shopper journey though a set of capabilities that deliver more relevant personalized experiences and operational excellence for sustained profitability.
 
-It's composed of indvidual capabilities which are built on Microsoft Dynamics 365, Microsoft Power Platform, Microsoft 365, and Microsoft Azure.
+It's composed of individual capabilities which are built on Microsoft Dynamics 365, Microsoft Power Platform, Microsoft 365, and Microsoft Azure.
 
 - Shopper and operations analytics
 - Unified customer profile
@@ -13,7 +13,7 @@ It's composed of indvidual capabilities which are built on Microsoft Dynamics 36
 - Seamless customer service
 - Demand planning and operations
 - Supply chain visibility
-- Flexible fufillment
+- Flexible fulfillment
 - Process automation and career development
 - Retail workforce management
 - Real-time store communications and collaborations
@@ -33,7 +33,7 @@ The table below summarizes the licenses you may require depending on the retail 
 || Microsoft Clarity | Free - no additional license required; however, registration is required.
 | Unified customer profile | Unified customer profile ||
 || Dynamics 365 Customer Insights |
-| Intelligent stores | Dynamics 365 Connected Spaces (Public Preview) | Preview offers a free 180-day trial. Dynamics 365 Connected Spaces is currently offered for Preview. When the product is released for general availability (GA), you'll be able to convert the trial to a [paid license](https://docs.microsoft.com/en-us/dynamics365/connected-spaces/trial-faq#can-i-convert-the-trial-to-a-paid-license).
+| Intelligent stores | Dynamics 365 Connected Spaces (Public Preview) | Preview offers a free 180-day trial. Dynamics 365 Connected Spaces is currently offered for Preview. When the product is released for general availability (GA), you'll be able to convert the trial to a [paid license](https://docs.microsoft.com/dynamics365/connected-spaces/trial-faq#can-i-convert-the-trial-to-a-paid-license).
 | Unified commerce | Dynamics 365 Commerce | Commerce is licensed per user. Note - When you license Commerce, you automatically become entitled to the Fraud Protection capabilities and transaction capacities noted below. Once you have Commerce, you may also buy additional capacity licenses for Fraud Protection.
 || Azure Cognitive Search | Azure Subscription
 | Real-time personalization | Intelligent Recommendations | Azure Subscription
@@ -84,7 +84,7 @@ Several applications which are part of MCR ecosystem rely upon Dataverse. The ta
 
 ## Azure landing zones
 
-Several capabilities of MCR rely on Azure-based services. Guidance for these services is to leverage [Azure Landing Zones](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/).
+Several capabilities of MCR rely on Azure-based services. Guidance for these services is to leverage [Azure Landing Zones](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/).
 
 ## Power Platform
 

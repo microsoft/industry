@@ -13,9 +13,10 @@
 Shopper and operational analytics scenario of Microsoft Cloud for Retail focuses on providing the best possible solution provided by Microsoft technologies to obtain  and analyze the shopper data and therefore by understanding the customer behavior, to provide the best possible experience to customer.
 
 The scenario implementation bases on various Microsoft solutions:
+
 - [D365 Customer Insights](https://dynamics.microsoft.com/ai/customer-insights/) with  power platform and focuses on providing the 365 view of the existing customer data on Power Platform Dataverse by combining the customer data fetched from D365 Commerce and other possible channels.
 - [Microsoft Clarity](https://clarity.microsoft.com/) focuses on analyzing anonymized user session experience with various different views to provide Insight on how you can improve your  website. It can collect data from custom, various 3rdparty or D365 commerce websites.
-- [Azure Synapse Analytics](https://docs.microsoft.com/azure/synapse-analytics/overview-what-is) is a multi capability analytics platform with native connectors called [Synapse Link](https://docs.microsoft.com/en-us/power-apps/maker/data-platform/azure-synapse-link-synapse?context=/azure/synapse-analytics/context/context) to various Microsoft Data platforms like Dataverse and CosmosDB
+- [Azure Synapse Analytics](https://docs.microsoft.com/azure/synapse-analytics/overview-what-is) is a multi capability analytics platform with native connectors called [Synapse Link](https://docs.microsoft.com/power-apps/maker/data-platform/azure-synapse-link-synapse?context=/azure/synapse-analytics/context/context) to various Microsoft Data platforms like Dataverse and CosmosDB
 which provides extensive analytics and data enrichment possibilities.
 
 In addition to above mentioned key solution components connecting D35 retail solution world with azure opens endless analytics possibilities. You can combine sensor data, social media data and many more data from various different channels.
@@ -39,7 +40,7 @@ Before you  any piece of existing deploy and configure, verify:
   - Dynamics 365 AI for Customer Insights​
   - Dynamics 365 AI for Customer Insights engagement insights​
 
-- Power platform environments and Azure environments must be created in the intersect of there MC4R supported regions (*As of latest update in this document, supported regions can be found at: [MC4R docs international availability page](https://docs.microsoft.com/en-us/industry/retail/availability) and Customer Insights(Intelligence)​ available environments*
+- Power platform environments and Azure environments must be created in the intersect of there MC4R supported regions (*As of latest update in this document, supported regions can be found at: [MC4R docs international availability page](https://docs.microsoft.com/industry/retail/availability) and Customer Insights(Intelligence)​ available environments*
 
 - For the Microsoft Clarity perquisites you can refer to [Clarity Prerequisites](clarity/README.md#prerequisites)
 
@@ -75,7 +76,7 @@ the environments to read and process sensory data, social media data etc has dif
 
 When planning the  Azure footprint of these applications and analytics environments consider:
 
-- Complying with [Cloud Adoption Framework - Enterprise Scale Landing Zones (ESLZ)](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/)
-- Complying with [Cloud Scale Analytics principles(CSA)](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/cloud-scale-analytics/) with analytics environments
+- Complying with [Cloud Adoption Framework - Enterprise Scale Landing Zones (ESLZ)](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/)
+- Complying with [Cloud Scale Analytics principles(CSA)](https://docs.microsoft.com/azure/cloud-adoption-framework/scenarios/cloud-scale-analytics/) with analytics environments
 - There is different options of streaming and time series data processing in azure all may answer same/similar and different use-case needs, pick the right tool for the right job.
 - Decide the boundaries of your online and corporate world. Due to regulations on personal data processing the environment where you merge all various sources and perform analytics to be governed and protected well.

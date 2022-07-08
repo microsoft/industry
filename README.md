@@ -104,6 +104,41 @@ Telco Solutions
 </tbody>
 </table>
 
+### Retail
+
+Microsoft Cloud for Retail is an industry-specific cloud composed of products and services to address retail specific use-cases. With services across Microsoft Azure, Dynamics 365 and Power Platform, customers can design, build and deploy cross-cloud solutions.
+
+<table>
+<thead>
+ <tr>
+  <th style="text-align:left" width="30%">Retail Services</th>
+  <th style="text-align:left" width="70%">Reference Architecture</th>
+ </tr>
+</thead>
+<tbody>
+ <tr>
+  <td style="vertical-align:top">
+
+
+- [Retail Foundations (Recommended)](./retail/prereqs.md)
+- [Reference Implementation](./retail/referenceImplementation/README.md)
+
+- Retail Solutions
+    - [Workforce Management with Teams](./retail/solutions/wrkforceMgmt/README.md)
+    - [Real-time personalization](./retail/solutions/realtimePersonalization/README.md)
+    - [Supply chain and Order lifecycle management](./retail/solutions/flexibleFulfillment/README.md)
+    - [Shopper and operations analytics](./retail/solutions/shopperOpsAnalytics/README.md)
+    - [Unified Customer profile and Retail churn model](./retail/solutions/unifiedCustomerProfile/README.md)
+
+  </td>
+  <td>
+  <img src="retail/media/mc4r-reference-architecture.png" width="99%" height="99%"/>
+  </td>
+
+ </tr>
+</tbody>
+</table>
+
 ### Financial services
 
 Microsoft Cloud for Financial Services provides capabilities to manage data to deliver differentiated experiences, empower employees, and combat financial crime while facilitating security, compliance, and interoperability.
@@ -147,37 +182,6 @@ Microsoft Cloud for Financial Services provides capabilities to manage data to d
 </tbody>
 </table>
 
-### Retail
-
-Microsoft Cloud for Retail is an industry-specific cloud composed of products and services to address retail specific use-cases. With services across Microsoft Azure, Dynamics 365 and Power Platform, customers can design, build and deploy cross-cloud solutions.
-
-<table>
-<thead>
- <tr>
-  <th style="text-align:left" width="30%">Retail Services</th>
-  <th style="text-align:left" width="70%">Reference Architecture</th>
- </tr>
-</thead>
-<tbody>
- <tr>
-  <td style="vertical-align:top">
-
-
-- [Retail Foundations (Recommended)](./retail/prereqs.md)
-- [Reference Implementation](./retail/referenceImplementation/README.md)
-
-- Retail Solutions
-  - [Order lifecycle management scenario with Intelligent Order Management](./retail/solutions/iom/README.md)
-  - [Personalized recommendations with Intelligent Recommendations](./retail/solutions/ir/README.md)
-
-  </td>
-  <td>
-  <img src="retail/media/mc4r-reference-architecture.png" width="99%" height="99%"/>
-  </td>
-
- </tr>
-</tbody>
-</table>
 
 ## Contributing
 

@@ -142,7 +142,7 @@ This deployment guide provides detailed steps on how to setup the Microsoft Team
 
 1. In Azure Portal go to Azure Active Directory
 
-1. App registrations, and then select your API's app registration.
+1. App registrations, and then select your APIs app registration.
 
   ![Owned Applications](./media/owned-applications.png)
 
@@ -178,7 +178,7 @@ This deployment guide provides detailed steps on how to setup the Microsoft Team
 
 1. In Azure Portal go to Azure Active Directory
 
-1. App registrations, and then select your API's app registration.
+1. App registrations, and then select your APIs app registration.
 
 1. Select API permissions, Add a permission, and then My APIs.
 
@@ -200,7 +200,7 @@ This deployment guide provides detailed steps on how to setup the Microsoft Team
 
 1. In Azure Portal go to Azure Active Directory
 
-1. App registrations, and then select your API's app registration.
+1. App registrations, and then select your APIs app registration.
 
 ![Owned Applications](./media/owned-applications.png)
 
@@ -246,7 +246,7 @@ This deployment guide provides detailed steps on how to setup the Microsoft Team
 
 1. In Azure Portal go to Azure Active Directory
 
-1. App registrations, and then select your API's app registration.
+1. App registrations, and then select your APIs app registration.
 
 ![Request API delegated permission](./media/owned-application.png)
 
@@ -437,7 +437,7 @@ PSVersionTable.PSVersion
 |**ErrorDetails** |Details if there's an upload error. For more information about the error details, see the Troubleshooting section. If there's no error, this field is blank.|
 |**LastUpdatedAt** | Timestamp and date of when the file was last updated.|
 |**LastModifiedBy**|The ID of the last user who modified the file.|
-|**FileName** |The file name of the CSV. |
+|**FileName** |The filename of the CSV. |
 
 ## Link POS and Teams for task management
 
