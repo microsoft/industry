@@ -19,6 +19,7 @@ Goal of this documentation is to provide Northstar reference architecture; provi
 - [Flexible Fulfillment](./solutions/flexibleFulfillment/README.md)
 - [Shopper and operations analytics](./solutions/shopperOpsAnalytics/README.md)
 - [Unified Customer profile and Retail churn model](./solutions/unifiedCustomerProfile/README.md)
+- [Workforce Management with Teams](./solutions/wrkforceMgmt/README.md)
 
 ---
 

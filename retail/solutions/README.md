@@ -8,7 +8,8 @@ Goal of solutions is to provide prescriptive design recommendations and referenc
 
 The solutions covered here were created based on feedback captured from various groups working across retail engagements. We will continue adding more solutions to this list as part of industry guidance.
 
-
 - [Flexible Fulfillment](./flexibleFulfillment/README.md)
 - [Realtime personalization](./realtimePersonalization/README.md)
+- [Unified Customer Profile and Churn Model](./unifiedCustomerProfile/README.md)
+- [Teams for Frontline Workers](./wrkforceMgmt/README.md)
 - [Shopper and Operational Analytics](./shopperOpsAnalytics/README.md)

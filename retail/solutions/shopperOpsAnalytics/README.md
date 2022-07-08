@@ -45,7 +45,7 @@ Before you  any piece of existing deploy and configure, verify:
 
 ## Microsoft Cloud  for Retail - Shopper and operations analytics Reference Architecture
 
-![Shopper and operations analytics Reference Architecture](./media/rsoas_architecture.png)
+![Shopper and operations analytics Reference Architecture](./media/shooperanalytics.png)
 
 ## Unlock Omnichannel insights with advanced analytics
 

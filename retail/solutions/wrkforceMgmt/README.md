@@ -24,6 +24,12 @@ D365 Commerce and Microsoft Teams Integration key features.
 
 - Integrate task management between Commerce and Teams to help store workers, store managers, regional managers, and communications managers handle task management from either application.
 
+The functional flow for the **Teams for Frontline Workers** scenario can be observed as below:
+
+![Teams Integration Architecture](./media/TeamsIntegration-ArchitectureFunctional.png)
+
+The suggested physical architecture for the  implementation of the **Teams for Frontline Workers** scenario is as following:
+
 ![Teams Integration Architecture](./media/TeamsIntegration-Architecture.png)
 
 ## Considerations and Recommendations
