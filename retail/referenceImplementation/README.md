@@ -1,266 +1,76 @@
-# Microsoft Cloud for Retail User Guide
+# Reference architecture for Microsoft Cloud for Retail
 
-This guide goes through the details of the reference implementation of a set of services and products across Microsoft Cloud to enable retail use-cases. The documentation will cover in detail the considerations, recommendations and implementation details in deploying cross-cloud landing zone for retail-specific scenarios.
-
-## Table of Contents
-
-- [Microsoft Cloud for Retail User Guide](#microsoft-cloud-for-retail-user-guide)
-  - [Table of Contents](#table-of-contents)
-  - [Overview](#overview)
-  - [Design principles](#design-principles)
-    - [Subscription Democratization](#subscription-democratization)
-    - [Policy Driven Governance](#policy-driven-governance)
-    - [Single Control and Management Plane](#single-control-and-management-plane)
-    - [Application Centric and Archetype-neutral](#application-centric-and-archetype-neutral)
-    - [Azure native design and aligned with platform roadmap](#azure-native-design-and-aligned-with-platform-roadmap)
-  - [Critical design areas](#critical-design-areas)
-    - [Separating platform and retail landing zones](#separating-platform-and-retail-landing-zones)
-    - [Platform responsibilities and functions](#platform-responsibilities-and-functions)
-    - [Landing zone owners responsibilities](#landing-zone-owners-responsibilities)
-  - [Management Group Structure](#management-group-structure)
-  - [What happens when you deploy the reference implementation?](#what-happens-when-you-deploy-the-reference-implementation)
-  - [Deployment instructions](#deployment-instructions)
-    - [**Azure**](#azure)
-      - [Elevate Access to manage Azure resources in the directory](#elevate-access-to-manage-azure-resources-in-the-directory)
-    - [Microsoft Solution Center](#microsoft-solution-center)
-    - [Deploy Azure resources](#deploy-azure-resources)
-    - [Enable MCR products and services via Microsoft Solution Center](#enable-mcr-products-and-services-via-microsoft-solution-center)
-
----
+The reference architecture for retail provides opinionated guidance for deploying foundational building blocks for enabling retail-specific use-cases.
 
 ## Overview
 
-The reference implementation of retail on Microsoft Cloud leverages products and services delpoyed across Azure and Microsoft Cloud for Retail (MCR).
+The building blocks which reference implementation builds upon are:
 
-For most part, the deployment experience for reference implementation is automated, however parts of the deployment require manual inputs from an administrator; specifically, products and services provisioned through [MCR Solution Center](https://docs.microsoft.com/en-us/industry/solution-center-deploy?toc=/industry/retail/toc.json&bc=/industry/retail/breadcrumb/toc.json).
+- Microsoft cloud for Retail (MCR)
+- Power Platform Landing Zones
+- Azure Landing Zones
+- Microsoft 365 (M365)
+- Dynamics 365 (D365)
 
-## Design principles
+As a fundamental principle, the rerference deployment follows considerations and recommendations for [Azure Enterprise Scale Landing Zones](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-principles); [Power Platform](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform); [MS Teams](https://github.com/microsoft/industry/tree/main/foundations/teams); and [Azure Cloud Scale analytics](https://docs.microsoft.com/azure/cloud-adoption-framework/scenarios/cloud-scale-analytics/).
 
-The reference architecture is composed of services on Azure and Power Platform.
+The reference implementation (Figure 1) highlights the following areas:
 
-For **Azure based services**, we recommend adhering to Cloud Adoption Framework (CAF) landing zones principles. These principles serve as a compass for subsequent design decisions across critical technical domains. Familiarize yourself with these principles to better understand their impact and the trade-offs associated with nonadherence, and how them will help you to scale in alignment with the Azure product roadmap.
+- Personas
+- Data flow between components
+- Individual components
+- Dependency and integration points between components
 
->Note: The design principles for Azure, by design, are industry agnostic, and apply to all industries. For more details about architecture and design methodologies for Microsoft Clouds, see [this article](../../foundations/README.md).
+![Figure 1](./media/mcr-ref-arch.png)
+*Figure 1 - Reference implementation*
 
-### Subscription Democratization
+The table below lists and briefly describes the role of various components deployed as part of the reference implementation.
 
-Subscriptions should be used as a unit of management and scale aligned with business needs and priorities to support business areas and portfolio owners to accelerate application migrations and new application development. Subscriptions should be provided to business units to support the design, development, and testing and deployment of new workloads and migration of existing workloads.
+|Legend|Component|Role|
+|:-|:-|:-|
+**A**|MS Graph|[Microsoft Graph](https://docs.microsoft.com/graph/overview) is the gateway to data and intelligence in Microsoft 365. It provides a [unified programmability model and ships with REST APIs and client libraries](https://docs.microsoft.com/en-us/graph/overview-major-services) that developers can use to access data in Microsoft 365. Example - Teams for Frontline Worker apps use MS Graph to access data and enable collaboration between frontline and information workers.
+**B**|MS Teams|MS Teams provides collaboration capabilities for information and frontline workers. Teams' integration with MS Graph; Power Platform; Teams developer platform enables retailers to build complex apps and experiences surfaced via MS Teams.<br/><br/>Several Teams-based solutions - Teams for Frontline Workers; Teams integration with D365 Commerce; and Teams integration with Dynamics 365 Dataverse apps use MS Teams.
+**C**|Viva|Microsoft Viva is an employee experience platform that brings together communications, knowledge, learning, resources, and insights in the flow of work. Powered by Microsoft 365 and experienced through Microsoft Teams. Apart from being a learning platform, it's one of the application platforms which could be used to build applications and experiences targeted at frontline workers.
+**D**|MS Clarity|Clarity is a standalone application which tracks how end users and customers are interacting with a web page. Goal is to drive engagement by providing insights on how users navigate a website. Based on the insights, you may choose to make appropriate changes to UI. From reference architecture perspective, Clarity can be embedded on web applications hosted on AKS, Azure Service Environment (ASE) or as a web app.
+**E**|MS Advertising|Formerly known as BingAds, Microsoft Advertising is a pay-per-click (PPC) advertising platform used to display ads based on the keywords used in a user's search query.</br></br> Within reference architecture, retailers would use Microsoft Advertising to setup Ad campaigns for ecommerce sites hosted on one of the Azure runtime environments such as App Service Environments (ASE); Azure Kubernetes Service (AKS) etc.
+**F**|Promote IQ|
+**G**|Dataverse and its dependent apps|[Dataverse](https://docs.microsoft.com/power-apps/maker/data-platform/data-platform-intro) lets you securely store and manage data that's used by business applications.</br></br>Within the reference architecture, Dataverse serves two roles - as a foundational building block for deploying Dataverse Dynamics 365 apps such as Intelligent Order Management; Customer Service etc. See the following [link](https://github.com/microsoft/industry/blob/main/retail/prereqs.md#mcr-and-dataverse-dependencies) for full details of D365 apps which require Dataverse.<br/><br/>The second role which Dataverse plays within the reference architecture is that of a building block for developing and deploying custom or 3P [model-driven](https://docs.microsoft.com/power-apps/maker/model-driven-apps/model-driven-app-overview) and [Canvas](https://docs.microsoft.com/power-apps/maker/canvas-apps/getting-started) apps.
+**H**|D365 Finance and Operations apps|The reference architecture includes deployment of D365 Supply Chain Management and D365 Commerce. Both these D365 applications are part of D365 Finance and Operations apps. [D365 Supply Chain](https://docs.microsoft.com/dynamics365/supply-chain/) enables supply chain functions such as cost management; inventory managemenet; warehouse and transportation management etc. [D365 Commerce](https://docs.microsoft.com/dynamics365/commerce/) enables retail functions such as customer management; order management; financial management; products and services management etc.
+**I**|Power Platform Landing Zones| The reference architecture uses all of Power Platform components (Automate, Power BI, Virtual Agents, Power Apps) to enable other applications such as Dataverse-based apps (D365 Intelligent Order Management, D365 Fraud Protection etc.). Power Platform components also enable other capabilities across the reference architecture such as automation (Power Automate); reporting and analytics (Power BI). Key point to call-out is that Power Platform components are deployed in line with [Power Platform Landing Zones](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#power-platform-landing-zones) guidance.
+**J**|Azure Landing Zones| The reference architecture deploys several Azure services to enable retail-specific capabilities. The services are on Azure are deployed adhering to [Azure Landing Zones](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-principles) principles.<br/><br/> It's worth noting that some services are deployed as an explicit dependency for a parent product or application in Dynamics 365 such as Storage Account is required for D365 Intelligent Order Management (IOM); Intelligent Recommendations requires a storage account (ADLS); D365 Commerce and Supply Chain requires several services compute, storage etc. which are deployed as part of [LCS](https://docs.microsoft.com/dynamics365/fin-ops-core/dev-itpro/lifecycle-services/lcs). In line with design principles for landing zones on Azure, these are deployed across different subscriptions.<br/><br/> The reference architecture has several landing zones:<br/>- **Retail data management landing zone** and **Retail analytics data landing zones**. These landing zones are built on [Cloud-Scale Analytics (CSA)](https://docs.microsoft.com/azure/cloud-adoption-framework/scenarios/cloud-scale-analytics/#architectures) and support use-cases for data engineering and analytics.<br/>- **Retail online application landing zone** houses Azure services (primarily runtime environments) integrate with headless services such as Intelligent Recommendations; Clarity; MS Advertising etc. and support ecommerce functions i.e. ecommerce website which uses recommendations to provide personalized experiences for customers etc. Any public-facing ecommerce sites will be hosted inside this subscription. To deploy highly available mission critical workloads at scale, we recommend [Azure Mission-Critical](https://github.com/Azure/Mission-Critical).<br/>- **Retail D365FO Landing Zone** is for hosting Azure services required for deploying Dynamics 365 Finance and Operations application dependencies. The reference implementation uses a customer-managed [cloud-hosted [deployment](https://docs.microsoft.com/dynamics365/fin-ops-core/dev-itpro/deployment/cloud-deployment-overview?toc=%2Fdynamics365%2Fcommerce%2Ftoc.json).
+**K**|Azure DevOps and GitHub|Azure DevOps and GitHub enable DevOps and automation toolchain.
+**L**|External systems|The reference architecture depicts external applications/systems which could either be deployed on-premises or another 3P public cloud. The reference architecture proposes using ExpressRoute for network connectivity between on-premises and resources deployed on Azure.
 
-For the reference implementation we are using function strategy for subscription and MG layout.
+## Design Considerations
 
-> Note: There are several strategies for defining and organizing subscriptions and management groups which are documented [here](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/decision-guides/subscriptions/).
+- It's not mandatory to deploy all of the components listed here. If you have specific scenario which requires you to deploy a subset of products and/or services, please refer to [solutions](./solutions/README.md)
 
-### Policy Driven Governance
+- There are two networking models available for connecting resources deployed on-premises to services on Azure. Depending on your requirements, you may choose one of the two networking models:
+  - **ExpressRoute circuit between head-office and Azure**. To enable connectivity between indiviual stores and Azure, you must route traffic to the head-office and from there the traffic goes to Azure. In such a setup, one must deploy more than one circuit for high availability. Since the traffic to Azure from individual stores must go via the head-office, it will add latency. This will be proportional to the distance between individual stores and the head-office. Since stores are at a different distance from the head-office, not all stores would have the same response time for scenarios where they must interact with services/applications hosted on Azure. For bandwidth, size of provisioned ExpressRoute circuit must be considered. However, from cost perspective, this may be cheaper option compared to the other connectivity model.
+  - **ExpressRoute connecivity between Azure and head-office(s)** and **Site to site VPN** for individual stores to connect to Azure.
 
-Azure Policy should be used to provide guardrails and ensure continued compliance with your organization's platform, along with the applications deployed onto it. Azure Policy also provides application owners with sufficient freedom and a secure unhindered path to the cloud.
+    > Note: Refer to the [planning table](https://docs.microsoft.com/azure/vpn-gateway/vpn-gateway-about-vpngateways#planningtable) to choose the right solution for your deployment.
 
-There are a few common regulatory compliance requirements which retail workloads are eligible for:
+- Services such as Power Platform, D365, M365 are designed to be consumed over the internet. As such, the following [considerations](https://docs.microsoft.com/power-platform/guidance/expressroute/things-to-consider) must be factored-in before enabling ExpressRoute to connect to thse services.
 
-- **PCI DSS** The workloads or systems which handle payment card data would require PCI DSS compliance.
-  
-- **GDPR** is a data privacy regulation which is applicable to systems which handle customer data such as e-commerce platforms; customer loyalty applications etc.
+- For mission-critical applications and workloads, factor-in design considerations, recommendations and practices outlined in [Azure mission-critical guidance](https://github.com/Azure/Mission-Critical).
 
-### Single Control and Management Plane
+- There are applications which require access to one or more Azure services over public endpoint from deployment and operational perspective. Few notable examples are Intelligent Recommendations which connects to ADLS over public endpoint. Similarly, D365 IOM Inventory Visibility provider requires access to Azure Storage over a public endpoint. Consider using separate storage accounts in these scenarios where the account with public endpoint enabled only stores relevant data which is required for parent service such as IR, IOM etc. to operate. The storage account with Private Endpoint(s) enabled sits behind a virtual network.
 
-Azure provides a unified and consistent control plane across all Azure resources and provisioning channels subject to role-based access and policy-driven controls. Azure can be used to establish a standardized set of policies and controls for governing the entire enterprise application estate in the cloud.
+## Design Recommendations
 
-### Application Centric and Archetype-neutral
+- We recommend following principles for deploying [Azure](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-areas) and [Power Platform](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#power-platform-landing-zones) landing zones.
 
-The architecture for retail should focus on application-centric migrations and development rather than pure infrastructure lift-and-shift migrations, such as migrating virtual machines. It shouldn't differentiate between legacy and modern applications; infrastructure as a service; or platform as a service applications. Ultimately, it should provide a safe and secure foundation for all application types to be deployed onto your Azure platform.
+- We do not recommend ExpressRoute for Microsoft 365 because it does not provide the best connectivity model for the service in most circumstances. As such, Microsoft authorization is required to use this connectivity model for Microsoft 365.
 
-### Azure native design and aligned with platform roadmap
+- Microsoft Defender for Endpoint does not provide integration with Azure ExpressRoute. While this does not stop customers from defining ExpressRoute rules that enable connectivity from a private network to Microsoft Defender for Endpoint cloud services, it is up to the customer to maintain rules as the service or cloud infrastructure evolves.
 
-This architecture approach advocates using Azure-native platform services and capabilities whenever possible. This approach should align with Azure platform roadmaps to ensure that new capabilities are available within your environments. Azure platform roadmaps should help to inform the migration strategy and Azure for retail architecture trajectory.
+- The choice of having a separate subscription for Managed D365FO Azure App artifacts was done due to the authorization to managed app is required in subscription level. So every resource created to the subscription hosting D365FO will be visible to Microsoft. Due to the same reason it is suggested to use a separate Storage account hosted in the same subscription for Export to Data Lake feature of D365FO, but only use it for current export and move the data to  Raw Data Lake to create an history and further processing.
 
-## Critical design areas
+- Any API hosting Machine Learning Models should stay in the Retail Analytics Data Landing zone subscription. This recommendation covers both Azure Machine Learning(AML) and Intelligent recommendations(IR). IR is no different than an ML model in AML producing an output and serving as an API. One difference for IR is that the service requires the Storage Account it reads and writes to be public. Therefore we recommend having a separate dedicated storage account for IR. If the access requirements in the service changes in the future this recommendation may be reconsidered.
 
-### Separating platform and retail landing zones
+- Synapse link for Dataverse intentionally designed to sink into a dedicated database instead of Raw Data Lake. The reasoning behind that is that the Linked data changes in sync with the changes in the Power App /Dataverse. In principle Raw should have the unchanging history/snapshots of data to enable reproducible/rerunnable data pipelines. The Workspace Data Lake is also not used since the Workspace Data Lake should only be accessed and used by the Synapse.
 
-One of the key for landing zones organisation and architecture is to have a clear separation of the Azure *platform* and the *landing zones*. This allows organizations to scale their Azure architecture alongside with their business requirements, while providing autonomy to their application teams for deploying, migrating and doing net-new development of their workloads into their landing zones. This model fully supports workload autonomy and distinguish between central and federated functions.
+## Deployment Steps
 
-### Platform responsibilities and functions
-
-Platform resources are managed by a cross-functional platform team. The team carries out the following functions in a close collaboration with the SME functions across the organization:
-
-- PlatformOps: Responsible for management and deployment of control plane resource types such as subscriptions, management groups via IaC and the respective CI/CD pipelines. Management of the platform related identity resources on Azure AD and cost management for the platform, and Operationalization of the Platform for an organization is under the responsibility of the platform function.
-
-- SecOps: Responsible for definition and management of Azure Policy and RBAC permissions on the platform for landing zones; platform management groups; and subscriptions.
-  
-- NetOps: Definition and management of the common networking components in Azure including the hybrid connectivity and firewall resource to control internet facing networking traffic. NetOps team is responsible for allocating virtual networks to landing zone subscriptions.
-
-### Landing zone owners responsibilities
-
-The reference implementation enables landing zones supporting a both centralized and federated application DevOps models. The most common model is where a dedicated **DevOps** team is aligned to a single workload. In case of smaller workloads or COTS or third-party application, a single **AppDevOps** team is responsible for workload operation. Independent of the model every DevOps team manages several workload staging environments (DEV, UAT, PROD) deployed to individual landing zones/subscriptions. Each landing zone has a set of RBAC permissions managed with Azure AD PIM provided by the Platform SecOps team.
-
-When the landing zones/subscriptions are handed over to the DevOps team, the team is end-to-end responsible for the workloads. They can independently operate within the security guardrails provided by the platform team and overarching policies. If dependency on central team(s) or a function is discovered, it is highly recommended that an organisation reviews the operations process and unblocks the DevOps teams.
-
-## Management Group Structure
-
-The Management Group structure implemented is as follows:
-
-- **Top-level Management Group** (directly under the tenant root group) is created with a prefix provided by the organization, which purposely will avoid the usage of the root group to allow organizations to move existing Azure subscriptions into the hierarchy, and also enables future scenarios. This Management Group is parent to all the other Management Groups created by Azure for retail
-
-- **Platform:** This Management Group contains all the *platform* child Management Groups, such as Management, Connectivity, and Identity. Common Azure Policies for the entire platform is assigned at this level
-
-  - **Management:** This Management Group contains the dedicated subscription for management, monitoring, and security, which will host Azure Log Analytics, Azure Automation, Azure Storage Account for NSG Flow Logs, and Microsoft Sentinel. Specific Azure policies are assigned to harden and manage the resources in the management subscription.
-
-  - **Connectivity:** This Management Group contains the dedicated subscription for connectivity for Azure platform and Distributed Edge, which will host the Azure networking resources required for the platform, such as Azure Virtual WAN/Virtual Network for the hub, Azure Firewall, DNS Private Zones, Express Route circuits, ExpressRoute/VPN Gateways etc among others. Specific Azure policies are assigned to harden and manage the resources in the connectivity subscription. For typical scale-out scenarios for the retail industry, additional connectivity subscriptions can be added and brought to compliant state in an autonomous fashion due to the policy driven guardrails design principle.
-
-  - **Identity:** This Management Group contains the dedicated subscription for identity, which is a placeholder for Windows Server Active Directory Domain Services (AD DS) VMs, or Azure Active Directory Domain Services to enable AuthN/AuthZ for workloads within the landing zones. Specific Azure policies are assigned to harden and manage the resources in the identity subscription.
-
-- **Landing Zones:** This is the parent Management Group for all the landing zone subscriptions and will have workload agnostic Azure Policies assigned to ensure workloads are secure and compliant. Under the parent Management Group will be a set of child Management Groups aligned to functions performed by a retailer.
-
-  - **Plan** This is a dedicated Management Group for workloads which are perform planning function such as merchandise planning; financial planning; business intelligence etc.
-  - **Buy** This is a dedicated Management Group for retail landing zones for the workloads which are repsonsible for supply-chain and logistics.
-  - **Move:** This is a dedicated Management Group for landing zones for applications and workloads involved with movement of goods such as warehouse management systems; transport managagement system etc.
-  - **Sell:** This is a dedicated Management Group for landing zones for applications and worklodas responsible for selling goods such as those related to Point of Sale (POS); ecommerce platforms etc. The workloads hosted here maybe required to comply with GDPR and PCI DSS.
-  - **Corp** This is a dedicated management group for grouping subscriptions which host corporate systems and applications such as HR, payroll, property, finance etc.
-  - **Corp
-  
-> Note: Azure Landing Zones are industry agnostic and Management Group hierarchy documented here is one of many ways management groups may be structured within retail setting. For purpose of the reference implementation, we have chosen a pattern most commonly seen across retailers which is to structure the teams and applications/workloads based aligned to the function performed within a retail business.
-
-- **Sandboxes:** This is the dedicated Management Group for subscriptions that will solely be used for testing and exploration by an organization’s application teams. These subscriptions will be securely disconnected from the Corp and Online landing zones.
-- **Decommissioned:** This is the dedicated Management Group for landing zones that are being cancelled, which then will be moved to this Management Group before deleted by Azure after 30-60 days.
-
-> Note: Azure Enterprise Scale Landing Zones (ESLZ) uses Subscription as a unit of scale and management boundary. We recommend instantiating as many Subscriptions as required to meet the scale requirements. However, with large number of subscriptions, structuring and layout of Management Group (MG) becomes important as they will predicate how policies are structured. Goal is to structure MG in a way that the policies which have a large surface area are applied at higher levels of hierarchy with policies with smaller more specific applications get applied at a lower levels of hierarchy.
-
-## What happens when you deploy the reference implementation?
-
-By default, all recommended settings and resources recommendations are enabled and deployed, and you must explicitly disable them if you don't want them to be deployed and configured. These resources and configurations include:
-
-- A scalable Management Group hierarchy aligned to core platform capabilities, allowing you to operationalize at scale using centrally managed Azure RBAC and Azure Policy where platform and workloads have clear separation.
-
-- Azure Policies that will enable autonomy for the platform and the landing zones.
-- An Azure subscription dedicated for **Security, Governance, and Compliance**, which enables core platform capabilities at scale using Azure Policy such as:
-
-  - A Log Analytics workspace and an Automation account
-  - Microsoft Sentinel
-  - Microsoft Defender for Cloud
-  - Storage Account for the NSG Flow Logs setup
-  - Diagnostics settings for Activity Logs, VMs, and PaaS resources sent to Log Analytics
-
-- An Azure subscription dedicated for **Connectivity** for Azure platform networking and On-Premises connectivity, which deploys core Azure networking resources such as:
-
-  - A hub virtual network
-  - Azure Firewall
-  - ExpressRoute Gateway
-  - VPN Gateway
-  - Azure Private DNS Zones for Private Link
-
-- In addition, network security monitoring can be enabled which includes:
-
-  - Enable DDoS Standard protection
-  - Network Watcher
-  - NSG Flow Logs
-  
-- (Optionally) An Azure subscription dedicated for **Identity** in case your organization requires to have Active Directory Domain Controllers to provide authorization and authentication for workloads deployed into the landing zones.
-
-- Landing Zone Management Group for **retail** for regulated retail applications that has unique requirements for security, governance, compliance, and connectivity.
-  - This is where you will create your subscriptions that will host your retail workloads.
-
-- Landing Zone Management Group for **Corp** connected applications that require connectivity to on-premises, to other landing zones or to the internet via shared services provided in the hub virtual network.
-  - This is where you will create your subscriptions that will host your corp-connected workloads.
-
-- Landing Zone Management Group for **Online** applications that will be internet-facing, where a virtual network is optional and hybrid connectivity is not required.
-  - This is where you will create your Subscriptions that will host your online workloads.
-
-- Landing zone subscriptions for Azure native, internet-facing **Online** applications and resources.
-
-- Landing zone subscriptions for **retail** for regulated retail applications and resources.
-- Azure Policies for retail landing zones, which include:
-  - Enable particular regulatory compliance, such as PCI DSS. This will enable at-scale compliance reporting for all your retail application and resources.
-
-- Landing zone subscriptions for **Corp** connected applications and resources, including a virtual network that will be connected to the hub via VNet peering.
-- Azure Policies for online and corp-connected landing zones, which include:
-  - Enforce VM monitoring (Windows & Linux)
-  - Enforce VMSS monitoring (Windows & Linux)
-  - Enforce Azure Arc VM monitoring (Windows & Linux)
-  - Enforce DDoS on Virtual Networks
-  - Enforce VM backup (Windows & Linux)
-  - Enforce secure access (HTTPS) to storage accounts
-  - Enforce auditing for Azure SQL
-  - Enforce encryption for Azure SQL
-  - Prevent IP forwarding
-  - Prevent inbound RDP from internet
-  - Ensure subnets are associated with Network Security Groups
-  - Ensure subnets are associated with User-Defined routes
-
-## Deployment instructions
-
-The end-to-end deployment spans two parts of Microsoft cloud:
-
-- Azure
-- Microsoft Solution Center
-
-> Note - The steps documented here have been tested on Azure public cloud. There may be some steps which may not be applicable to Azure Sovereign cloud.
-
-### **Azure**
-
-The user making the deployment requires the "Owner" permission at the Azure tenant root scope. The following instructions explains how a Global Admin in the Azure Active Directory can elevate a role to the appropriate permissions prior to starting the deployment.
-
-> Note - This privilege is required to bootstrap Azure environment.
-
-The pre-requisites requires the following:
-
-- A user that is Global Admin in the Azure Active Directory where Azure landing zones for retail will be deployed.
-- Elevation of privileges of a Global Admin to "User Access Administrator" role at the tenant root scope.
-- An explicit role assignment (Azure RBAC) made at the tenant root scope via Azure CLI or Azure PowerShell (Note: There's currently no graphical user interface to make this role assignment).
-
-#### Elevate Access to manage Azure resources in the directory
-
-1.1 Sign into the Azure portal as the user being Global Admin.
-
-1.2 Open Azure Active Directory.
-
-1.3 Under 'Manage', select 'Properties'.
-
-![properties](./media/properties.PNG)
-
-1.4 Under 'Access management for Azure resources' set the toggle to *Yes.
-
-![elevate](./media/elevate.PNG)
-
-Grant explicit access to the User at the tenant root scope ("/") to deploy Azure for retail
-
-You can use either Bash (Azure CLI) or PowerShell (Az.Resources) to create the role assignment for user that will do the deployment.
-
-Bash:
-
-```bash
-#sign  into AZ CLI, this will redirect you to a web browser for authentication, if required
-az login
-
-#assign Owner role to Tenant root scope  ("/") as a Owner (gets object Id of the current user (az login))
-az role assignment create --scope '/'  --role 'Owner' --assignee-object-id $(az ad signed-in-user show --query "objectId" --output tsv)
-```
-
-Powershell:
-
-```powershell
-#sign in to Azure  from Powershell, this will redirect you to a web browser for authentication, if required
-Connect-AzAccount
-
-#get object Id of  the current user (that is used above)
-$user = Get-AzADUser -UserPrincipalName (Get-AzContext).Account
-
-#assign Owner  role to Tenant root scope ("/") as a User Access Administrator
-New-AzRoleAssignment -Scope '/' -RoleDefinitionName 'Owner' -ObjectId $user.Id
-```
-
-> Note: It can take up to 15 minutes for permission to propagate at tenant root scope. It is therefore recommended that you log out and log back in to refresh the token before you proceed with the deployment.*
-
-### Microsoft Solution Center
-
-To deploy Microsoft Cloud for Retail capabilities, following are required:
-
-- You must have a Microsoft account.
-- You must be a Microsoft Power Platform admin, Dynamics 365 admin, or a tenant admin.
-- You must have licenses for the solutions and apps you’re deploying. If your organization doesn't have the necessary licenses, you’ll be notified during the deployment process.
-
-### Deploy Azure resources
-
-*Details coming soon*
-
-### Enable MCR products and services via Microsoft Solution Center
-
-*Details coming soon*
+*Coming soon*
