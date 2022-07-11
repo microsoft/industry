@@ -6,6 +6,7 @@
 | BigCommerce | In this reference implementation, we are using BigCommerce as point of generation for customer orders. IOM is an order management application and it itself cannot generate orders, hence it requires an external application to generate orders which it can then manage once they arrive at IOM via Providers. | [Prerequisites](#bigcommerce-prerequisites) and [Deployment steps](#bigcommerce-deployment)
 
 ## Overview of IOM
+
 IOM is a Dynamics 365 app designed and built on Microsoft Dataverse. It relies on Power Platform capabilities to enable key features such as -
 
 - Providers
@@ -18,9 +19,9 @@ IOM is a Dynamics 365 app designed and built on Microsoft Dataverse. It relies o
 
 IOM has following application goals:
 
-- IOM is designed to provide single pane of glass for managing end-to-end lifecycle of an order across disparate applications and platforms. It’s a common scenario for enterprises to have disparate systems for ecommerce, fulfillment, and shipping/delivery. IOM bridges these disparities and provides a single pane of glass to manage end-to-end lifecycle of an Order. [Extensibility features](https://docs.microsoft.com/dynamics365/intelligent-order-management/extensibility) allow customers to integrate IOM with their existing ecosystem of applications.
+- IOM is designed to provide single pane of glass for managing end-to-end lifecycle of an order across disparate applications and platforms. It’s a common scenario for enterprises to have disparate systems for E-Commerce, fulfillment, and shipping/delivery. IOM bridges these disparities and provides a single pane of glass to manage end-to-end lifecycle of an Order. [Extensibility features](https://docs.microsoft.com/dynamics365/intelligent-order-management/extensibility) allow customers to integrate IOM with their existing ecosystem of applications.
 
-- It provides the flexibility organisations need today to capture orders from any order source such as online e-commerce, marketplace, mobile apps, or traditional sources like EDI and fulfill them from their own warehouse, 3PL (third-party logistics), stores, or drop-ship with vendors or other delivery fulfillment partners.
+- It provides the flexibility organizations need today to capture orders from any order source such as online e-commerce, marketplace, mobile apps, or traditional sources like EDI and fulfill them from their own warehouse, 3PL (third-party logistics), stores, or drop-ship with vendors or other delivery fulfillment partners.
 
 - It's designed for a low-code, no-code experience. IOM’s orchestration designer tools allow users to model and automate the response to fulfillment constraints and leverage machine learning to influence & optimize the flow of the orders.
 
@@ -30,7 +31,7 @@ This section breaksdown prerequisites for **D365 IOM** and **BigCommerce** as th
 
 ### D365 IOM prerequisites
 
-**Licensing**
+#### Licensing
 
 [IOM is currently in preview](https://docs.microsoft.com/dynamics365/intelligent-order-management/deploy#deployment-options). The preview  can be deployed in one of two ways:
 
@@ -40,20 +41,20 @@ This section breaksdown prerequisites for **D365 IOM** and **BigCommerce** as th
 
 - Deploy trial version of IOM through [D365 IOM Marketing page](https://dynamics.microsoft.com/intelligent-order-management/).
 
-**Credentials**
+#### Credentials
 
 1. Tenant administrator access to Power Platform Admin center to provision an `Environment`. As noted above, since IOM is in preview, one can only deploy it in `Trial (Subscription-based)` environment type.
 2. An administrator for D365 IOM to configure the deployment and setup Providers.
 
 ### BigCommerce prerequisites
 
-**Licensing**
+#### Licensing
 
 If you do not have a license for BigCommerce, you can create a new trial account. Trial account is valid for 14-day period. It can be converted to a licensed account before 14-day period expires. For production deployments, as with any software, we recommend having an appropriate license and support agreement in place for BigCommerce platform.
 
-**BigCommerce Adminstrator Account**
+#### BigCommerce Administrator Account
 
-1. An **admin account** for BigCommerce. This account should have privileges to configure the ecommerce store and generate sample orders for to test the integration between BigCommerce and IOM. This account will also be used to generate an API key which is to be used by IOM to interact with BigCommerce. The steps below show how to setup a brand new BigCommerce instance. The credentials used at the time of creation, by default, assigned administrative privileges.
+1. An **admin account** for BigCommerce. This account should have privileges to configure the E-Commerce store and generate sample orders for to test the integration between BigCommerce and IOM. This account will also be used to generate an API key which is to be used by IOM to interact with BigCommerce. The steps below show how to setup a brand new BigCommerce instance. The credentials used at the time of creation, by default, assigned administrative privileges.
 
 2. Go to [BigCommerce](https://www.bigcommerce.com/) site and create a new account. By default, the credentials used for creation of BigCommerce instance have admin rights to that instance. ![Setup BC store](./media/bc-setup-store-1.png)
 
@@ -68,15 +69,15 @@ If you do not have a license for BigCommerce, you can create a new trial account
     ![bc-wait-screen](./media/bc-setup-store-4-wait.png)
 6. After your online store is ready, you’ll be welcomed by a store summary screen. In this case, we have named our demo store as “Contoso”. ![bc-store-welcome](./media/bc-setup-store-5-welcome.png)You can choose a different name. This is a pre-populated demo environment and ships with sample data i.e., product master data. In a production scenario, you'll add your own item lines (or products) to the store which you could sell through the online store. The steps to add products to a BigCommerce store are covered [here](https://support.bigcommerce.com/s/article/Adding-Products-v3?language=en_US).
 
-**BigCommerce API Key**
+#### BigCommerce API Key
 
 This API key will be used by IOM Provider to fetch order data from BigCommerce.
 
 1. An **API key** generated by the admin account configured in (1). This key will be used by IOM Provider for pulling customer orders created on Bigcommerce platform.
 
-> Note: BigCommerce uses its own proprietary authentication and authorization mechanism independent of Azure AD (AAD). Hence, separate privileged account is required to configure and deploy BigCommerce ecommerce store.
+    > Note: BigCommerce uses its own proprietary authentication and authorization mechanism independent of Azure AD (AAD). Hence, separate privileged account is required to configure and deploy BigCommerce E-Commerce  store.
 
-2. Login to [BigCommerce portal](https://login.bigcommerce.com/login) using adminstrator credentials for BigCommerce. These were configured previously.
+2. Login to [BigCommerce portal](https://login.bigcommerce.com/login) using administrator credentials for BigCommerce. These were configured previously.
 ![Admin login to BC portal](./media/bc-api-login.png)
 
 3. Go to **Advanced Settings > API Accounts**.
@@ -98,7 +99,7 @@ This API key will be used by IOM Provider to fetch order data from BigCommerce.
 
 6. This completes the process of creating BigCommerce API account. This will now enable the BigCommerce IOM provider to BigCommerce and fetch orders. We will now switch to IOM portal and carry out of the steps there to complete rest of the configuration setup.
 
-    > Note: At this stage, BigCommerce instance should have a sample store in place. In a production setting, you will be required to configure your store and load products etc. which you are selling through BigCommerce ecommerce platform. Instructions for setting up store are available [here](https://support.bigcommerce.com/s/knowledge).
+    > Note: At this stage, BigCommerce instance should have a sample store in place. In a production setting, you will be required to configure your store and load products etc. which you are selling through BigCommerce E-Commerce  platform. Instructions for setting up store are available [here](https://support.bigcommerce.com/s/knowledge).
 
 ## Key Capabilities and Architecture of IOM
 
@@ -127,18 +128,18 @@ Provider composition and details are covered in detail [here](https://docs.micro
 - You can have more than one instance of a given Provider type within a given instance of IOM in a single `Environment`. Some of the scenarios where you may end up with multiple instances of same Provider type are:
   - You have may have multiple separate instances of a source system type which warrants setting up separate instances Provider for each instance of source system even though the source type is the same. Main reason is that connection configuration is bound to an instance of Provider and if you want to configure connectivity between an instance of IOM and two or more separate instances of a source system then separate Provider instances will be required.
     > Note: There are additional steps which must be taken to address mapping values between a source and IOM if you are connecting to multiple instances of same source system type. `Mapping` (discussed later) enables IOM to translate values between external systems and IOM.
-- Provider use Power Automate platform and offer low-code experience and inherit scale characterstics from the underlying platform. We recommend familiarising with [Power Automate scale limits](https://docs.microsoft.com/power-automate/limits-and-config.)
+- Provider use Power Automate platform and offer low-code experience and inherit scale characteristics from the underlying platform. We recommend familiarizing with [Power Automate scale limits](https://docs.microsoft.com/power-automate/limits-and-config.)
 - The default set of Providers which ship with IOM do not support runtime access to a keystore which means that credentials (username; passwords; and/or API keys) must be configured beforehand at the time of setting up a Provider.
 - Providers which connect to cloud-based Microsoft applications and platforms support AAD. Example - `D365 Inventory Visibility Provider` leverage AAD to perform for authentication and authorization operations on Azure Data Lake Storage (ADLS).
 
 ### Provider Categories
 
-Out of the box (OOTB) Providers can be categorised based on the function/role they play in order management lifecycle. A customer deployment may use one or more OOTB Providers of a given type depending on type of external systems/platforms that an IOM deployment interacts with. The Providers can be categorised as:
+Out of the box (OOTB) Providers can be categorized based on the function/role they play in order management lifecycle. A customer deployment may use one or more OOTB Providers of a given type depending on type of external systems/platforms that an IOM deployment interacts with. The Providers can be categorized as:
 
 - Order intake
 - Fulfillment
 - Delivery
-- Optimisation
+- Optimization
 - Tax calculation
 
 ![Provider categories](./media/provider-categories.png)
@@ -147,7 +148,7 @@ Out of the box (OOTB) Providers can be categorised based on the function/role th
 
 IOM is an application built on Power Platform and Dataverse. For most part, it will inherit design decisions adopted for the the `environment` where IOM is provisioned. This section focuses on calling out areas specific to IOM.
 
-> Note: Reference to `Environment` here is in context of Power Platform. More details are available [here](https://docs.microsoft.com/power-platform/admin/environments-overview). An environment is a space to store, manage, and share your organization's business data, apps, chatbots, and flows.
+> Note: Reference to `Environment` here is in context of Power Platform. More details are available [here](https://docs.microsoft.com/power-platform/admin/environments-overview). An environment is a space to store, manage, and share your organization's business data, apps, chat bots, and flows.
 
 ### Licensing and Tenancy
 
@@ -162,11 +163,11 @@ IOM is an application built on Power Platform and Dataverse. For most part, it w
 
 - If you operate out of different geographies and each business unit has separate operations, we recommend using separate tenants and capacity licenses should be implemented.
 - Instantiate tenant in the same region as the applications and services which IOM would be interacting with for day to day operations.
-- We recommend familiarising yourself with [Power Platform Landing Zones](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#licensing-and-azure-ad-tenants) from AAD tenancy perspective.
+- We recommend familiarizing yourself with [Power Platform Landing Zones](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#licensing-and-azure-ad-tenants) from AAD tenancy perspective.
 
 ### Security, Governance and Compliance
 
-IOM is an app which is deployed inside an `Environment` on Power Platform. From application security perspective, IOM inherits implementation characterstics from the underlying deployment of Power Platform. Considerations and recommendations for Power Platform are discussed in detail [here](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#security-governance-and-compliance).
+IOM is an app which is deployed inside an `Environment` on Power Platform. From application security perspective, IOM inherits implementation characteristics from the underlying deployment of Power Platform. Considerations and recommendations for Power Platform are discussed in detail [here](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#security-governance-and-compliance).
 
 #### Considerations
 
@@ -187,7 +188,7 @@ An `Environment` provides a container for scale and management boundary in Power
 
 - A deployment of IOM resides within an environment.![iom environments](./media/iom-environments.png)
 
-    A tenant can support multiple environments which in turn offer a container to deploy reources such as Flow, Dataverse etc. to support a D365 app such as IOM.
+    A tenant can support multiple environments which in turn offer a container to deploy resources such as Flow, Dataverse etc. to support a D365 app such as IOM.
 
     > Note: Dynamics 365 apps can only be deployed to an environment that was created with a database with a Dynamics 365 apps enabled during the environment creation. A valid Dynamics 365 license is also required to enable Dynamics 365 apps during the environment creation.
 
@@ -197,8 +198,8 @@ An `Environment` provides a container for scale and management boundary in Power
 
 - At a bare minimum, we recommend having at separate instances of IOM for development, test and production environments.
 - Keeping in line with the [Power Platform Landing Zones architecture methodology](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform#environments), as a principle, we recommend using Power Platform `Environments` as the scale-unit and management boundary. An `environment` will also dictate region.
-- Within a retail setting, IOM plays a role of **providing a single pane of glass** to manage order lifecycle. IOM provides a unique opportunity to consolidate order management operations across all businesses in an engerprise and as such, a single instance of IOM should suffice business requirements.Business acquisitions can be consolidated and leverage common partnerships for fulfillment; logistics etc. There may be scenarios where more than one instance of IOM could be deployed in a production setting. Some of the scenarios could be:
-  - A customer may have multiple different businesses where each business has its own separate applications; platforms; and processes for ordering and fulfillment. In such a sceanrio, a customer may choose to deploy separate of IOM instances to align with different businesses to have a clear boundary between IOM instances.
+- Within a retail setting, IOM plays a role of **providing a single pane of glass** to manage order lifecycle. IOM provides a unique opportunity to consolidate order management operations across all businesses in an enterprise and as such, a single instance of IOM should suffice business requirements.Business acquisitions can be consolidated and leverage common partnerships for fulfillment; logistics etc. There may be scenarios where more than one instance of IOM could be deployed in a production setting. Some of the scenarios could be:
+  - A customer may have multiple different businesses where each business has its own separate applications; platforms; and processes for ordering and fulfillment. In such a scenario, a customer may choose to deploy separate of IOM instances to align with different businesses to have a clear boundary between IOM instances.
   - A Power Platform environment construct is also tied back to a region. If a customer has businesses operating out of different geographic regions, they may choose to colocate an IOM instance where other ecosystem; source and consumer applications are deployed.
 
 ### Management and Monitoring
@@ -207,7 +208,7 @@ For monitoring the underlying platform, the considerations and recommendations d
 
 #### Design Considerations
 
-- IOM builds upon monitoring and management capabilities of the underlying platform to surface metrics and observability data relevant to IOM components such as Providers; requests per Provider etc. This feature must be enabled before users can access metrics via **Insights** feature of IOM. Once enabled, it takes approximately 24 hours for backend processes to analyse and aggregate data and populate these dashboards.
+- IOM builds upon monitoring and management capabilities of the underlying platform to surface metrics and observability data relevant to IOM components such as Providers; requests per Provider etc. This feature must be enabled before users can access metrics via **Insights** feature of IOM. Once enabled, it takes approximately 24 hours for backend processes to analyze and aggregate data and populate these dashboards.
 - IOM ships with Insights dashboard which tracks metrics such as daily events, system monitoring etc. Dynamics 365 Intelligent Order Management provides insights for the business data moving through the system. The insights are critical for business users to monitor key metrics, respond to issues, and take actions to move orders through their business process.
   - **Daily Events** tracks events flowing through an Orchestration pipeline etc.
         ![iom-daily-events](./media/iom-daily-events.png)
@@ -260,7 +261,7 @@ The image (below) shows the components which we will deploy as part of this depl
 
 ## BigCommerce Deployment
 
-BigCommerce is a popular SaaS ecommerce platform and offers several capabilities such as Cross-Channel Ecommerce; Headless Commerce etc. Full details of BigCommerce product features and services is available [here](https://www.bigcommerce.com/product/). Within a retail setting, it's a SaaS platform which allows you to setup an ecommerce site.
+BigCommerce is a popular SaaS E-Commerce  platform and offers several capabilities such as Cross-Channel E-Commerce ; Headless Commerce etc. Full details of BigCommerce product features and services is available [here](https://www.bigcommerce.com/product/). Within a retail setting, it's a SaaS platform which allows you to setup an E-Commerce  site.
 
 The process of setting up a new store on BigCommerce is manual, however operational tasks can be automated via [BigCommerce REST APIs](https://developer.bigcommerce.com/docs/ZG9jOjIyMDYxMg-big-commerce-ap-is-quick-start).
 
@@ -461,7 +462,7 @@ Inventory Visibility provider enables you to use [Inventory Visibility capabilit
 
     ![provider-save-storage](./media/ivp-9-parameters.png)
 
-    > Note: Here we have used an arbitrary value for OrganizationID but in a production setting, this should align to your organisation. For more information on Organization entity, please refer to [Dataverse developer guide](https://docs.microsoft.com/power-apps/developer/data-platform/reference/entities/organization).
+    > Note: Here we have used an arbitrary value for OrganizationID but in a production setting, this should align to your organization. For more information on Organization entity, please refer to [Dataverse developer guide](https://docs.microsoft.com/power-apps/developer/data-platform/reference/entities/organization).
 
 11. This completes configuration for IOM Inventory Visibility provider.
 
