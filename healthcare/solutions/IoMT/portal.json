@@ -1,0 +1,776 @@
+{
+    "$schema": "<relative path to createFormUI.schema.json>",
+    "view": {
+        "kind": "Form",
+        "properties": {
+            "title": "Healthcare APIs - Internet of Medical Things (IoMT)",
+            "steps": [
+                {
+                    "name": "basics",
+                    "label": "IoMT",
+                    "elements": [
+                        {
+                            "name": "deploymentDetails",
+                            "label": "Deployment Details",
+                            "type": "Microsoft.Common.Section",
+                            "visible": true,
+                            "elements": [
+                                {
+                                    "name": "deploymentDetailsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select the subscription and resource group as well as the location to specify the scope of your deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "subscriptionApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "subscriptions?api-version=2020-01-01"
+                                    }
+                                },
+                                {
+                                    "name": "subscriptionId",
+                                    "label": "Subscription",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Subscription for your Deployment.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(steps('basics').deploymentDetails.subscriptionApi.value, (item) => parse(concat('{\"label\":\"', item.displayName, '\",\"value\":\"', item.id, '\",\"description\":\"', 'ID: ', item.subscriptionId, '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "resourceGroupApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/resourcegroups?api-version=2020-01-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "resourceGroupId",
+                                    "label": "Resource Group",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Resource Group for your Deployment.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(steps('basics').deploymentDetails.resourceGroupApi.value, (item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Subscription ID: ', last(take(split(item.id, '/'), 3)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxLocation",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "The reference implementation is only available in a subset of Azure regions, because not all services and features are available in all regions.",
+                                        "style": "Info"
+                                    }
+                                },
+                                {
+                                    "name": "locationsApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "locations?api-version=2019-11-01"
+                                    }
+                                },
+                                {
+                                    "name": "locationName",
+                                    "label": "Location",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Location for your Deployment.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('basics').deploymentDetails.locationsApi.value,(item) => contains(split('australiaeast,canadacentral,eastus,eastus2,northeurope,southcentralus,uksouth,westeurope,westus2', ','), item.name)),(item) => parse(concat('{\"label\":\"', item.regionalDisplayName, '\",\"value\":\"', item.name, '\"}')))]",
+                                        "required": true
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "deploymentName",
+                            "label": "Deployment Name",
+                            "type": "Microsoft.Common.Section",
+                            "visible": true,
+                            "elements": [
+                                {
+                                    "name": "deploymentNameText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Specify a prefix and select an environment (Development, Test, Production) which will both be used as a prefix for all resource names. Independent of the environment, the same resources get deployed.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "environment",
+                                    "label": "Environment",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "Development",
+                                    "toolTip": "Select the environment for the deployment. This is currently only used for the naming of resources.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Development",
+                                                "description": "Select if you want to deploy a development environment.",
+                                                "value": "dev"
+                                            },
+                                            {
+                                                "label": "Test",
+                                                "description": "Select if you want to deploy a test environment.",
+                                                "value": "tst"
+                                            },
+                                            {
+                                                "label": "Production",
+                                                "description": "Select if you want to deploy a production environment.",
+                                                "value": "prd"
+                                            }
+                                        ],
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "deploymentPrefix",
+                                    "label": "Prefix",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Specify a prefix (min 1 and max 10 lowercase characters and numbers).",
+                                    "constraints": {
+                                        "required": true,
+                                        "validations": [
+                                            {
+                                                "regex": "^[a-z0-9]{1,10}$",
+                                                "message": "The prefix must be between 1-10 lowercase characters and numbers."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').deploymentName.healthcareapiNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').deploymentName.eventHubNamespaceNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').deploymentName.containerRegistryNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "healthcareapiNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.HealthcareApis/checkNameAvailability?api-version=2019-09-16')]",
+                                        "body": {
+                                            "name": "[toLower(concat(steps('basics').deploymentName.deploymentPrefix, steps('basics').deploymentName.environment, 'hapi001'))]",
+                                            "type": "Microsoft.HealthcareApis/workspaces"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "eventHubNamespaceNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.EventHub/checkNameAvailability?api-version=2017-04-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').deploymentName.deploymentPrefix, '-', steps('basics').deploymentName.environment, '-eventhub001')]"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "containerRegistryNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.ContainerRegistry/checkNameAvailability?api-version=2019-05-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').deploymentName.deploymentPrefix, steps('basics').deploymentName.environment, 'containerregistry001')]",
+                                            "type": "Microsoft.ContainerRegistry/registries"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "generalSettings",
+                    "label": "General Settings",
+                    "subLabel": {
+                        "preValidation": "Provide settings for your Deployment.",
+                        "postValidation": "Done"
+                    },
+                    "bladeTitle": "General Settings",
+                    "bladeSubtitle": "General Settings",
+                    "elements": [
+                        {
+                            "name": "healthcareApiSettings",
+                            "label": "Healthcare API Settings",
+                            "type": "Microsoft.Common.Section",
+                            "visible": true,
+                            "elements": [
+                                {
+                                    "name": "healthcareApiSettingsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Specify the settings for your Azure Healthcare API.",
+                                        "link": {
+                                            "label": "Learn more",
+                                            "uri": "https://docs.microsoft.com/azure/healthcare-apis/healthcare-apis-overview"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxFhirExportStorageAccountFileSystemId",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Please select a storage account that will be used for exports from the FHIR API.",
+                                        "style": "Info",
+                                        "uri": "https://docs.microsoft.com/azure/healthcare-apis/data-transformation/configure-export-data"
+                                    }
+                                },
+                                {
+                                    "name": "fhirExportStorageAccountApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Storage/storageAccounts?api-version=2021-04-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "fhirExportStorageAccountId",
+                                    "label": "Storage Account",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Storage account to which you want to connect FHIR.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('generalSettings').healthcareApiSettings.fhirExportStorageAccountApi.value,(item) => and(equals(item.location, steps('basics').deploymentDetails.locationName), equals(item.properties.isHnsEnabled, true))),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "fhirExportStorageAccountFileSystemApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('generalSettings').healthcareApiSettings.fhirExportStorageAccountId, '/blobServices/default/containers?api-version=2021-04-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "fhirExportStorageAccountFileSystemId",
+                                    "label": "FHIR Default Storage Account Container",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Default storage container for FHIR. If no option is shown, please make sure that a container exists within the storage account selected above.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(steps('generalSettings').healthcareApiSettings.fhirExportStorageAccountFileSystemApi.value, (item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxIotDeviceMapping",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Please specify the Device Mapping. For more details, please visit the link.",
+                                        "style": "Info",
+                                        "uri": "https://docs.microsoft.com/azure/healthcare-apis/iot/how-to-use-device-mapping-iot"
+                                    }
+                                },
+                                {
+                                    "name": "iotDeviceMapping",
+                                    "label": "IoT Device Mapping",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Specify an IoT Device Mapping.",
+                                    "multiLine": true,
+                                    "placeholder": "[string(parse('{\"templateType\": \"CollectionContent\",\"template\": []}'))]",
+                                    "constraints": {
+                                        "required": false,
+                                        "validations": [
+                                            {
+                                                "isValid": "[and(not(empty(steps('generalSettings').healthcareApiSettings.iotDeviceMapping)), contains(parse(steps('generalSettings').healthcareApiSettings.iotDeviceMapping), 'templateType'))]",
+                                                "message": "Please provide the template type."
+                                            },
+                                            {
+                                                "isValid": "[and(not(empty(steps('generalSettings').healthcareApiSettings.iotDeviceMapping)), contains(parse(steps('generalSettings').healthcareApiSettings.iotDeviceMapping), 'template'))]",
+                                                "message": "Please provide the template."
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxIotFhirMapping",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Please specify the FHIR Mapping. For more details, please visit the link.",
+                                        "style": "Info",
+                                        "uri": "https://docs.microsoft.com/azure/healthcare-apis/iot/how-to-use-fhir-mapping-iot"
+                                    }
+                                },
+                                {
+                                    "name": "iotFhirMapping",
+                                    "label": "IoT FHIR Mapping",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Specify an IoT FHIR Mapping.",
+                                    "multiLine": true,
+                                    "placeholder": "[string(parse('{\"templateType\": \"CollectionFhirTemplate\",\"template\": []}'))]",
+                                    "constraints": {
+                                        "required": false,
+                                        "validations": [
+                                            {
+                                                "isValid": "[and(not(empty(steps('generalSettings').healthcareApiSettings.iotFhirMapping)), contains(parse(steps('generalSettings').healthcareApiSettings.iotFhirMapping), 'templateType'))]",
+                                                "message": "Please provide the template type."
+                                            },
+                                            {
+                                                "isValid": "[and(not(empty(steps('generalSettings').healthcareApiSettings.iotFhirMapping)), contains(parse(steps('generalSettings').healthcareApiSettings.iotFhirMapping), 'template'))]",
+                                                "message": "Please provide the template."
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "generalSettings",
+                            "label": "General Settings",
+                            "type": "Microsoft.Common.Section",
+                            "visible": true,
+                            "elements": [
+                                {
+                                    "name": "generalSettingsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Specify general settings for this deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "ingestionService",
+                                    "label": "Ingestion Service",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "IoT Hub",
+                                    "toolTip": "Select the ingestion service for your IoMT data.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "IoT Hub",
+                                                "description": "Select if you want to deploy an IoT Hub for ingestion of IoMT data.",
+                                                "value": "iothub"
+                                            },
+                                            {
+                                                "label": "Event Hub",
+                                                "description": "Select if you want to deploy an Event Hub for ingestion of IoMT data.",
+                                                "value": "eventhub"
+                                            }
+                                        ],
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxRoleAssignment",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "The role assignment is optional and will assign the Azure Healthcare APIs FHIR service to the referenced storage account (Storage Blob Data Contributor).",
+                                        "style": "Info"
+                                    }
+                                },
+                                {
+                                    "name": "enableRoleAssignments",
+                                    "label": "Enable role assignments",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "Yes (recommended)",
+                                    "toolTip": "Enable role assignments as mentioned in the infobox above.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "description": "Select if you want to enable role assignments.",
+                                                "value": true
+                                            },
+                                            {
+                                                "label": "No",
+                                                "description": "Select if you want to disable role assignments.",
+                                                "value": false
+                                            }
+                                        ],
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "enableHealthBot",
+                                    "label": "Enable Health Bot Deployment",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "Yes (recommended)",
+                                    "toolTip": "Enable deployment of the Azure Health Bot.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "description": "Select if you want to enable the Azure Health Bot Deployment.",
+                                                "value": true
+                                            },
+                                            {
+                                                "label": "No",
+                                                "description": "Select if you want to disable the Azure Health Bot Deployment.",
+                                                "value": false
+                                            }
+                                        ],
+                                        "required": true
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "connectivitySettings",
+                    "label": "Connectivity Settings",
+                    "subLabel": {
+                        "preValidation": "Provide the connectivity settings that should be used for the Deployment.",
+                        "postValidation": "Done"
+                    },
+                    "bladeTitle": "Connectivity Settings",
+                    "bladeSubtitle": "Connectivity Settings",
+                    "elements": [
+                        {
+                            "name": "virtualNetwork",
+                            "label": "Virtual Network",
+                            "type": "Microsoft.Common.Section",
+                            "visible": true,
+                            "elements": [
+                                {
+                                    "name": "virtualNetworkText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select the Virtual Network and Subnet for your deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxVirtualNetwork",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Please select the Virtual Network for your Deployment and select a Subnet within the Virtual Network. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled.",
+                                        "style": "Info"
+                                    }
+                                },
+                                {
+                                    "name": "virtualNetworkApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Network/virtualNetworks?api-version=2020-11-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "virtualNetworkId",
+                                    "label": "Virtual Network",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Virtual Network for your Deployment.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').virtualNetwork.virtualNetworkApi.value,(item) => equals(item.location, steps('basics').deploymentDetails.locationName)),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "subnetApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('connectivitySettings').virtualNetwork.virtualNetworkId, '/subnets?api-version=2020-11-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "subnetId",
+                                    "label": "Subnet",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Subnet for your Deployment. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').virtualNetwork.subnetApi.value,(item) => and(equals(item.properties.privateEndpointNetworkPolicies, 'Disabled'), equals(item.properties.privateLinkServiceNetworkPolicies, 'Disabled'), lessOrEquals(int(last(split(item.properties.addressPrefix, '/'))), 27))),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "privateDnsZones",
+                            "label": "Private DNS Zones",
+                            "type": "Microsoft.Common.Section",
+                            "visible": true,
+                            "elements": [
+                                {
+                                    "name": "privateDnsZonesText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select the Private DNS Zone settings for your deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxPrivateDnsZone",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "We are deploying all services with private endpoints and disabled public network access to reduce the data exfiltration risk. For each private endpoint, DNS A-records need to be created in a Private DNS Zones. Therefore, these either need to deployed through Azure Policies or you have to provide the Private DNS Zones that should be used for this deployment. We are assuming that all Private DNS Zones are created in the same subscription. Deploying DNS A-Records through Private Endpoints is the recommended solution.",
+                                        "style": "Info",
+                                        "uri": "https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/private-link-and-dns-integration-at-scale"
+                                    }
+                                },
+                                {
+                                    "name": "automatedPrivateDnsZoneGroups",
+                                    "label": "DNS A-Records are deployed through Azure Policy",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "visible": true,
+                                    "toolTip": "If 'No' is selected, you will have to choose private DNS Zones that will be used for the A-Record deployment of the private DNS Zones.",
+                                    "defaultValue": "Yes",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "no"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "subscriptionApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "subscriptions?api-version=2020-01-01"
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZonesSub",
+                                    "label": "Private DNS Zone Subscription",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Subscription of your Private DNS Zones.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(steps('connectivitySettings').privateDnsZones.subscriptionApi.value, (item) => parse(concat('{\"label\":\"', item.displayName, '\",\"value\":\"', item.id, '\",\"description\":\"', 'ID: ', item.subscriptionId, '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZonesApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('connectivitySettings').privateDnsZones.privateDnsZonesSub, '/providers/Microsoft.Network/privateDnsZones?api-version=2018-09-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZoneIdEventhubNamespace",
+                                    "label": "Private DNS Zone EventHub Namespace (privatelink.servicebus.windows.net)",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Private DNS Zone for EventHub Namespace (privatelink.servicebus.windows.net).",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').privateDnsZones.privateDnsZonesApi.value,(item) => contains(item.name, 'privatelink.servicebus.windows.net')),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZoneIdContainerRegistry",
+                                    "label": "Private DNS Zone Container Registry (privatelink.azurecr.io)",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Private DNS Zone for Container Registry (privatelink.azurecr.io).",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').privateDnsZones.privateDnsZonesApi.value,(item) => contains(item.name, 'privatelink.azurecr.io')),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZoneIdHealthcareApi",
+                                    "label": "Private DNS Zone Azure Healthcare API ()",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": false,
+                                    "defaultValue": "",
+                                    "toolTip": "Private DNS Zone for Azure Healthcare API ().",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').privateDnsZones.privateDnsZonesApi.value,(item) => contains(item.name, '')),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "tags",
+                    "label": "Tags",
+                    "subLabel": {
+                        "preValidation": "Provide tags that will be used for all resources.",
+                        "postValidation": "Done"
+                    },
+                    "bladeTitle": "Tags",
+                    "bladeSubtitle": "Tags",
+                    "elements": [
+                        {
+                            "name": "tagsByResource",
+                            "label": "Tags by Resource",
+                            "type": "Microsoft.Common.TagsByResource",
+                            "visible": true,
+                            "resources": [
+                                "Healthcare"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "outputs": {
+            "kind": "ResourceGroup",
+            "location": "[steps('basics').deploymentDetails.locationName]",
+            "resourceGroupId": "[steps('basics').deploymentDetails.resourceGroupId]",
+            "parameters": {
+                "location": "[if(empty(steps('basics').deploymentDetails.locationName), '', steps('basics').deploymentDetails.locationName)]",
+                "environment": "[if(empty(steps('basics').deploymentName.environment), '', steps('basics').deploymentName.environment)]",
+                "prefix": "[if(empty(steps('basics').deploymentName.deploymentPrefix), '', steps('basics').deploymentName.deploymentPrefix)]",
+                "tags": "[if(not(contains(steps('tags').tagsByResource, 'Healthcare')), parse('{}'), first(map(parse(concat('[', string(steps('tags').tagsByResource), ']')), (item) => item.Healthcare)))]",
+                "ingestionService": "[if(empty(steps('generalSettings').generalSettings.ingestionService), '', steps('generalSettings').generalSettings.ingestionService)]",
+                "enableRoleAssignments": "[steps('generalSettings').generalSettings.enableRoleAssignments]",
+                "enableHealthBot": "[steps('generalSettings').generalSettings.enableHealthBot]",
+                "fhirExportStorageAccountFileSystemId": "[if(empty(steps('generalSettings').healthcareApiSettings.fhirExportStorageAccountFileSystemId), '', steps('generalSettings').healthcareApiSettings.fhirExportStorageAccountFileSystemId)]",
+                "iotDeviceMapping": "[if(empty(steps('generalSettings').healthcareApiSettings.iotDeviceMapping), parse('{}'), steps('generalSettings').healthcareApiSettings.iotDeviceMapping)]",
+                "iotFhirMapping": "[if(empty(steps('generalSettings').healthcareApiSettings.iotFhirMapping), parse('{}'), steps('generalSettings').healthcareApiSettings.iotFhirMapping)]",
+                "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",
+                "privateDnsZoneIdEventhubNamespace": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdEventhubNamespace), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdEventhubNamespace)]",
+                "privateDnsZoneIdContainerRegistry": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdContainerRegistry), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdContainerRegistry)]",
+                "privateDnsZoneIdHealthcareApi": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdHealthcareApi), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdHealthcareApi)]"
+            }
+        }
+    }
+}

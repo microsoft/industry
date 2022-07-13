@@ -106,6 +106,26 @@ Security across different technical layers is another core construct for each an
 * Use Synapse Link for Dataverse to transfer data from Dataverse to Azure.
 * Access Azure services hosted with private endpoints securely using VPN, ExpressRoute or Azure Bastion.
 
+This allows customers to leverage datasets, collected in IoMT sceanrios, in Dynamics 365 to further enhance the patients experience and quality of results. Additional applications and data-driven solutions can be built to simplify the end-to-end experience for all participants and reduce the time to diagnosis.
+
+## Reference Implementation
+
+The Infrastructure as Code (IaC) templates in this solution folder can be used for the implementation of IoMT scenarios as well as the Dynamics 365 synch described above. The solution will deploy the following resources into a single resource group (resource-group level deployment):
+
+- [Azure Healthcare APIs](https://docs.microsoft.com/en-us/azure/healthcare-apis/healthcare-apis-overview)
+- [Azure Health Bot (optional)](https://docs.microsoft.com/en-us/azure/health-bot/)
+- [Azure Event Hub (optional)](https://docs.microsoft.com/azure/event-hubs/) or
+- [Azure IoT Hub (optional)](https://docs.microsoft.com/azure/iot-hub/about-iot-hub)
+- [Azure Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/)
+- [Azure Service Bus](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview)
+- [Azure Function](https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview)
+
+Please use the following "Deploy to Microsoft Cloud" button to get started with the reference implementation:
+
+[![Deploy To Microsoft Cloud](/docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Findustry%2Fmain%2FHealthcare%2Fsolutions%2FIoMT%2Fmain.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Findustry%2Fmain%2FHealthcare%2Fsolutions%2FIoMT%2Fportal.json)
+
+The deployment outputs will provide the details required to setup the synch between Azure Healthcare APIs and Dataverse in Dynamics 365 via the FHIR Synch Agent.
+
 ---
 
 [Back to documentation root](../../../README.md)
