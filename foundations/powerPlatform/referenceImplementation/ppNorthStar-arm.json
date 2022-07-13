@@ -1,0 +1,865 @@
+/*
+    North Star Architecture for Power Platform ARM template.
+    This template will in concert with the portal extension provision and bootstrap 1) Azure infrastructure as prerequisite for monitoring, logging, and security,
+    and the initial Admin environments for Power Platform, to construct and operationalize landing zones for citizen - and professional developers.
+*/
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "ppIdentity": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the resourceId of the User Managed Identity."
+            }
+        },
+        "ppTenantDlp": {
+            "type": "string",
+            "defaultValue": "none",
+            "allowedValues": [
+                "high",
+                "medium",
+                "low",
+                "none"
+            ],
+            "metadata": {
+                "description": "Select if recommended DLP policies should be assigned for the tenant."
+            }
+        },
+        "ppTenantIsolationSetting": {
+            "type": "string",
+            "defaultValue": "none",
+            "allowedValues": [
+                "inbound",
+                "outbound",
+                "both",
+                "none"
+            ],
+            "metadata": {
+                "description": "Select tenant isolation setting"
+            }
+        },
+        "ppTenantIsolationDomains": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide the tenant names, IDs, or use * for all tenants"
+            }
+        },
+        "ppGuestMakerSetting": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
+        "ppAppSharingSetting": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
+        "ppEnvCreationSetting": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
+        "ppTrialEnvCreationSetting": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
+        "ppEnvCapacitySetting": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
+        "ppAdminEnvNaming": {
+            "type": "string",
+            "maxLength": 15,
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide naming convention for the Admin environments."
+            }
+        },
+        "ppAdminRegion": {
+            "type": "string",
+            "allowedValues": [
+                "europe",
+                "unitedstates",
+                "asia",
+                "japan",
+                "india",
+                "canada",
+                "southamerica",
+                "unitedkingdom",
+                "france",
+                "germany",
+                "unitedarabemirates",
+                "australia"
+            ],
+            "defaultValue": "unitedstates",
+            "metadata": {
+                "description": "Provide location for the Admin environments."
+            }
+        },
+        "ppAdminBilling": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "AZURE-only parameter. SubscriptionId for the billing subscription."
+            }
+        },
+        "ppAdminCoeSetting": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "If yes is selcted, CoE will be bootstrapped in to the admin environments, ready for post-deployment configuration using https://aka.ms/ppac"
+            }
+        },
+        "ppDefaultRenameText": {
+            "type": "string",
+            "defaultValue": "Personal",
+            "metadata": {
+                "description": "Provide new display name for the _default_ Power Platform Environment in the tenant."
+            }
+        },
+        "ppDefaultDlp": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
+        "ppCitizen": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "half",
+                "no",
+                "custom"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select environment type. Yes will enable with Dataverse, Half will create without Dataverse."
+            }
+        },
+        "ppCitizenCount": {
+            "type": "int",
+            "maxValue": 200,
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Select how many environments for citizen dev to be created."
+            }
+        },
+        "ppCitizenNaming": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide naming convention for the citizen dev environments."
+            }
+        },
+        "ppCitizenRegion": {
+            "type": "string",
+            "allowedValues": [
+                "europe",
+                "unitedstates",
+                "asia",
+                "japan",
+                "india",
+                "canada",
+                "southamerica",
+                "unitedkingdom",
+                "france",
+                "germany",
+                "unitedarabemirates",
+                "australia"
+            ],
+            "defaultValue": "unitedstates",
+            "metadata": {
+                "description": "Provide location for the Admin environments."
+            }
+        },
+        "ppCitizenDlp": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable recommended DLP policies for citizen dev environments."
+            }
+        },
+        "ppCitizenBilling": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "AZURE-only, to provide subscriptionId for the subscription billing."
+            }
+        },
+        "ppPro": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "half",
+                "no",
+                "custom"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select environment type. Yes will enable with Dataverse, Half will create without Dataverse."
+            }
+        },
+        "ppProCount": {
+            "type": "int",
+            "maxValue": 200,
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Select how many environments for pro dev to be created."
+            }
+        },
+        "ppProNaming": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide naming convention for the pro dev environments."
+            }
+        },
+        "ppProRegion": {
+            "type": "string",
+            "allowedValues": [
+                "europe",
+                "unitedstates",
+                "asia",
+                "japan",
+                "india",
+                "canada",
+                "southamerica",
+                "unitedkingdom",
+                "france",
+                "germany",
+                "unitedarabemirates",
+                "australia"
+            ],
+            "defaultValue": "unitedstates",
+            "metadata": {
+                "description": "Provide location for the pro dev environments."
+            }
+        },
+        "ppProDlp": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable recommended DLP policies for pro dev environments."
+            }
+        },
+        "ppProBilling": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "AZURE-only, to provide subscriptionId for the subscription billing."
+            }
+        },
+        "ppSelectIndustry": {
+            "type": "string",
+            "allowedValues": [
+                "healthcare",
+                "fsi",
+                "retail",
+                "none"
+            ],
+            "defaultValue": "none",
+            "metadata": {
+                "description": "Select if your specific industry to enable in the industry environments."
+            }
+        },
+        "ppIndustryNaming": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide naming convention for the industry environments."
+            }
+        },
+        "ppIndustryRegion": {
+            "type": "string",
+            "allowedValues": [
+                "europe",
+                "unitedstates",
+                "asia",
+                "japan",
+                "india",
+                "canada",
+                "southamerica",
+                "unitedkingdom",
+                "france",
+                "germany",
+                "australia"
+            ],
+            "defaultValue": "unitedstates",
+            "metadata": {
+                "description": "Provide location for the pro dev environments."
+            }
+        },
+        "ppIndustryBilling": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "AZURE-only, to provide subscriptionId for the subscription billing."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[deployment().location]",
+            "metadata": {
+                "description": "Provide the Azure location for the deployments"
+            }
+        },
+        "ppEnableAzureMonitor": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "existing",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if you want to enable Azure Monitor"
+            }
+        },
+        "ppEnableAppInsights": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if you want to enable App Insights"
+            }
+        },
+        "ppRetentionInDays": {
+            "type": "string",
+            "defaultValue": "30",
+            "metadata": {
+                "description": "Select the retention period for Workspace logs"
+            }
+        },
+        "ppEnableAzureSecurity": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if Azure Security and Sentinel should be enabled"
+            }
+        },
+        "ppEnableAadLogs": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if AAD Diagnostics logs should be enabled"
+            }
+        },
+        "ppCitizenAlm": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if dedicated environments for Development, Test, and Production should be created for each landing zone"
+            }
+        },
+        "ppProAlm": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if dedicated environments for Development, Test, and Production should be created for each landing zone"
+            }
+        },
+        "ppIndustryAlm": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if dedicated environments for Development, Test, and Production should be created for each landing zone"
+            }
+        },
+        "ppEnableTenantAnalytics": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if tenant level analytics should be enabled."
+            }
+        },
+        "ppEnableDataLake": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if Data Lake Storage v2 should be created."
+            }
+        },
+        "ppEnableD365Connector": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if D365 data connector should be added to Microsoft Sentinel."
+            }
+        },
+        "ppCitizenConfiguration": {
+            "type": "string",
+            "defaulValue": "",
+            "metadata": {
+                "description": "Provide strings for custom citizen Environment creation."
+            }
+        },
+        "ppProConfiguration": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide strings for custom pro Environment creation."
+            }
+        },
+        "ppCitizenLanguage": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select language for the environments."
+            }
+        },
+        "ppCitizenCurrency": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select the currency for the environments."
+            }
+        },
+        "ppCitizenDescription": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide description for the environments."
+            }
+        },
+        "ppProLanguage": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select language for the environments."
+            }
+        },
+        "ppProCurrency": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select the currency for the environments."
+            }
+        },
+        "ppProDescription": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide description for the environments."
+            }
+        }
+    },
+    "variables": {
+        "deploymentUris": {
+            "ppRpRegistrationTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/powerPlatform/rpRegistrations.json')]",
+            "logAnalyticsTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/logAnalytics.json')]",
+            "aadDiagnosticsTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/aadDiagnostics.json')]",
+            "dataLakeTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/storageAccountV2.json')]",
+            "securityTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azureMonitor/security.json')]",
+            "northStarTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/powerPlatform/ppDeploymentScript.json')]"
+        },
+        "deploymentNamePrefix": "[concat(replace(tenant().displayName, ' ', ''), '-')]",
+        "deploymentNameSuffix": "[concat('-', deployment().location, guid(parameters('ppAdminEnvNaming')))]",
+        "deploymentNames": {
+            "ppRegistrationDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-RP-Billing', variables('deploymentNameSuffix')), 64)]",
+            "logAnalyticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-Azure-Monitoring', variables('deploymentNameSuffix')), 64)]",
+            "aadDiagnosticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-AAD-Logs', variables('deploymentNameSuffix')), 64)]",
+            "dataLakeDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-DataLake-Analytics', variables('deploymentNameSuffix')), 64)]",
+            "securityDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-Sentinel', variables('deploymentNameSuffix')), 64)]",
+            "northStarDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-Setup', variables('deploymentNameSuffix')), 64)]"
+        },
+        "resourceNamePrefix": "North-Star",
+        "rgNames": {
+            "mgmtRg": "[concat(variables('resourceNamePrefix'), '-mgmt-', parameters('location'))]",
+            "billingRg": "[concat(variables('resourceNamePrefix'), '-billing-', parameters('location'))]",
+            "analyticsRg": "[concat(variables('resourceNamePrefix'), '-analytics-', parameters('location'))]"
+            },
+        // Declaring deterministic names for platform resources that will be created
+        "resourceNames": {
+            "logAnalyticsWorkspace": "[concat(variables('resourceNamePrefix'), '-law-', parameters('location'))]",
+            "automationAccount": "[concat(variables('resourceNamePrefix'), '-aauto-', parameters('location'))]",
+            "storageAccount": "[take(toLower(concat('ns', uniqueString(subscription().subscriptionId))), 23)]"
+            },
+        "resourceIds": {
+            "logAnalyticsResourceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', variables('rgNames').mgmtRg, '/providers/Microsoft.OperationalInsights/workspaces/', variables('resourceNames').logAnalyticsWorkspace)]"
+        },
+        "emptyString": "''"
+    },
+    "resources": [
+        {
+            // Deploying the North Star Power Platform script
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').northStarDeploymentName]",
+            "location": "[deployment().location]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').northStarTemplateUri]"
+                },
+                "parameters": {
+                    "ppIdentity": {
+                        "value": "[parameters('ppIdentity')]"
+                    },
+                    "ppTenantDlp": {
+                        "value": "[parameters('ppTenantDlp')]"
+                    },
+                    "ppGuestMakerSetting": {
+                        "value": "[parameters('ppGuestMakerSetting')]"
+                    },
+                    "ppAppSharingSetting": {
+                        "value": "[parameters('ppAppSharingSetting')]"
+                    },
+                    "ppEnvCreationSetting": {
+                        "value": "[parameters('ppEnvCreationSetting')]"
+                    },
+                    "ppTrialEnvCreationSetting": {
+                        "value": "[parameters('ppTrialEnvCreationSetting')]"
+                    },
+                    "ppTenantIsolationSetting": {
+                        "value": "[parameters('ppTenantIsolationSetting')]"
+                    },
+                    "ppTenantIsolationDomains": {
+                        "value": "[if(empty(parameters('ppTenantIsolationDomains')), variables('emptyString'), parameters('ppTenantIsolationDomains'))]"
+                    },
+                    "ppCitizenAlm": {
+                        "value": "[parameters('ppCitizenAlm')]"
+                    },
+                    "ppProAlm": {
+                        "value": "[parameters('ppProAlm')]"
+                    },
+                    "ppIndustryAlm": {
+                        "value": "[parameters('ppIndustryAlm')]"
+                    },                    
+                    "ppEnvCapacitySetting": {
+                        "value": "[parameters('ppEnvCapacitySetting')]"
+                    },
+                    "ppAdminEnvNaming": {
+                        "value": "[parameters('ppAdminEnvNaming')]"
+                    },
+                    "ppAdminRegion": {
+                        "value": "[parameters('ppAdminRegion')]"
+                    },
+                    "ppAdminBilling": {
+                        "value": "[if(empty(parameters('ppAdminBilling')), variables('emptystring'), parameters('ppAdminBilling'))]"
+                    },
+                    "ppAdminCoeSetting": {
+                        "value": "[parameters('ppAdminCoeSetting')]"
+                    },
+                    "ppDefaultRenameText": {
+                        "value": "[if(empty(parameters('ppDefaultRenameText')), variables('emptyString'), parameters('ppDefaultRenameText'))]"
+                    },
+                    "ppDefaultDlp": {
+                        "value": "[parameters('ppDefaultDlp')]"
+                    },
+                    "ppCitizen": {
+                        "value": "[parameters('ppCitizen')]"
+                    },
+                    "ppCitizenCount": {
+                        "value": "[parameters('ppCitizenCount')]"
+                    },
+                    "ppCitizenNaming": {
+                        "value": "[if(empty(parameters('ppCitizenNaming')), variables('emptyString'), parameters('ppCitizenNaming'))]"
+                    },
+                    "ppCitizenRegion": {
+                        "value": "[parameters('ppCitizenRegion')]"
+                    },
+                    "ppCitizenBilling": {
+                        "value": "[if(empty(parameters('ppCitizenBilling')), variables('emptyString'), parameters('ppCitizenBilling'))]"
+                    },
+                    "ppCitizenDlp": {
+                        "value": "[parameters('ppCitizenDlp')]"
+                    },
+                    "ppPro": {
+                        "value": "[parameters('ppPro')]"
+                    },
+                    "ppProNaming": {
+                        "value": "[if(empty(parameters('ppProNaming')), variables('emptyString'), parameters('ppProNaming'))]"
+                    },
+                    "ppProCount": {
+                        "value": "[parameters('ppProCount')]"
+                    },
+                    "ppProRegion": {
+                        "value": "[parameters('ppProRegion')]"
+                    },
+                    "ppProDlp": {
+                        "value": "[parameters('ppProDlp')]"
+                    },
+                    "ppProBilling": {
+                        "value": "[if(empty(parameters('ppProBilling')), variables('emptyString'), parameters('ppProBilling'))]"
+                    },
+                    "ppSelectIndustry": {
+                        "value": "[parameters('ppSelectIndustry')]"
+                    },
+                    "ppIndustryNaming": {
+                        "value": "[if(empty(parameters('ppIndustryNaming')), variables('emptyString'), parameters('ppIndustryNaming'))]"
+                    },
+                    "ppIndustryRegion": {
+                        "value": "[parameters('ppIndustryRegion')]"
+                    },
+                    "ppIndustryBilling": {
+                        "value": "[if(empty(parameters('ppIndustryBilling')), variables('emptyString'), parameters('ppIndustryBilling'))]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "rgName": {
+                        "value": "[concat(variables('resourceNamePrefix'), '-setup-', parameters('location'))]"
+                    },
+                    "ppCitizenConfiguration": {
+                        "value": "[if(empty(parameters('ppCitizenConfiguration')), variables('emptyString'), parameters('ppCitizenConfiguration'))]"
+                    },
+                    "ppProConfiguration": {
+                        "value": "[if(empty(parameters('ppProConfiguration')), variables('emptyString'), parameters('ppProConfiguration'))]"
+                    },
+                    "ppCitizenDescription": {
+                        "value": "[if(empty(parameters('ppCitizenDescription')), variables('emptyString'), parameters('ppCitizenDescription'))]"
+                    },
+                    "ppCitizenLanguage": {
+                        "value": "[if(empty(parameters('ppCitizenLanguage')), variables('emptyString'), parameters('ppCitizenLanguage'))]"
+                    },
+                    "ppCitizenCurrency": {
+                        "value": "[if(empty(parameters('ppCitizenCurrency')), variables('emptyString'), parameters('ppCitizenCurrency'))]"
+                    },
+                    "ppProDescription": {
+                        "value": "[if(empty(parameters('ppProDescription')), variables('emptyString'), parameters('ppProDescription'))]"
+                    },
+                    "ppProLanguage": {
+                        "value": "[if(empty(parameters('ppProLanguage')), variables('emptyString'), parameters('ppProLanguage'))]"
+                    },
+                    "ppProCurrency": {
+                        "value": "[if(empty(parameters('ppProCurrency')), variables('emptyString'), parameters('ppProCurrency'))]"
+                    }
+                }
+            }
+        },
+        {
+            // Create Data Lake Storage V2 for Power Platform tenant analytics
+            "condition": "[equals(parameters('ppEnableDataLake'), 'yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').dataLakeDeploymentName]",
+            "location": "[deployment().location]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').dataLakeTemplateUri]"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "storageAccountName": {
+                        "value": "[variables('resourceNames').storageAccount]"
+                    },
+                    "rgName": {
+                        "value": "[variables('rgNames').analyticsRg]"
+                    }
+                }
+            }
+        },
+        {
+            // Register the Power Platform 'accounts' resource type if the condition is met, and create the billing object into a new resource group.
+            "condition": "[equals(parameters('ppAdminBilling'), 'yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').ppRegistrationDeploymentName]",
+            "location": "[deployment().location]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').ppRpRegistrationTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('rgNames').billingRg]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "powerPlatformLocation": {
+                        "value": "[parameters('ppAdminRegion')]"
+                    }
+                }
+            }
+        },
+        {
+            // Create Azure Monitor infrastructure for security and observability
+            "condition": "[equals(parameters('ppEnableAzureMonitor'), 'yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').logAnalyticsDeploymentName]",
+            "location": "[deployment().location]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').logAnalyticsTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('rgNames').mgmtRg]"
+                    },
+                    "workspaceName": {
+                        "value": "[variables('resourceNames').logAnalyticsWorkspace]"
+                    },
+                    "workspaceRegion": {
+                        "value": "[deployment().location]"
+                    },
+                    "ppEnableAppInsights": {
+                        "value": "[parameters('ppEnableAppInsights')]"
+                    },
+                    "automationAccountName": {
+                        "value": "[variables('resourceNames').automationAccount]"
+                    },
+                    "automationRegion": {
+                        "value": "[deployment().location]"
+                    },
+                    "retentionInDays": {
+                        "value": "[parameters('ppRetentionInDays')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[and(equals(parameters('ppEnableAzureMonitor'), 'yes'), equals(parameters('ppEnableAzureSecurity'), 'yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').securityDeploymentName]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logAnalyticsDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').securityTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('rgNames').mgmtRg]"
+                    },
+                    "workspaceName": {
+                        "value": "[variables('resourceNames').logAnalyticsWorkspace]"
+                    },
+                    "workspaceRegion": {
+                        "value": "[deployment().location]"
+                    },
+                    "enableSecuritySolution": {
+                        "value": "[parameters('ppEnableAzureSecurity')]"
+                    },
+                    "enableD365DataConnector": {
+                        "value": "[parameters('ppEnableD365Connector')]"
+                    }
+                }
+            }            
+        },
+        {
+            "condition": "[and(equals(parameters('ppEnableAzureMonitor'), 'yes'), equals(parameters('ppEnableAadLogs'), 'yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').aadDiagnosticsDeploymentName]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logAnalyticsDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').aadDiagnosticsTemplateUri]"
+                },
+                "parameters": {
+                    "logAnalyticsResourceId": {
+                        "value": "[variables('resourceIds').logAnalyticsResourceId]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

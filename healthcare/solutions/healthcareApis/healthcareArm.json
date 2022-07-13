@@ -60,6 +60,12 @@
             ],
             "defaultValue": "No"
         },
+        "storageAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the storage account."
+            }
+        },
         "enableMonitoring": {
             "type": "string",
             "allowedValues": [
@@ -122,7 +128,7 @@
         }
     },
     "variables": {
-        "apiName": "[toLower(parameters('healthCareApiName'))]",
+        "apiName": "[toLower(replace(parameters('healthCareApiName'), '-', ''))]",
         "deploymentName": "[concat('MC4H-HealthCare-', parameters('location'))]",
         "fhirDeploymentName": "[concat('MC4H-FHIR-', parameters('location'))]",
         "dicomDeploymentName": "[concat('MC4H-DICOM-', parameters('location'))]",
@@ -437,7 +443,7 @@
                 },
                 "parameters": {
                     "storageAccountName": {
-                        "value": "[concat(variables('apiName'),uniqueString(variables('apiName')))]"
+                        "value": "[parameters('storageAccountName')]"
                     },
                     "location": {
                         "value": "[parameters('location')]"
@@ -553,7 +559,7 @@
         {
             "condition": "[equals(parameters('enableMonitoring'), 'Yes')]",
             "type": "microsoft.insights/diagnosticSettings",
-            "apiVersion": "2017-05-01-preview",
+            "apiVersion": "2021-05-01-preview",
             "name": "[concat(variables('apiName'), '-subdiag')]",
             "location": "Global",
             "dependsOn": [
@@ -615,7 +621,7 @@
                 },
                 "parameters": {
                     "healthbotname": {
-                        "value": "[concat(variables('apiName'), '-bot')]"
+                        "value": "[parameters('healthBotName')]"
                     },
                     "location": {
                         "value": "[parameters('location')]"

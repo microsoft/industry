@@ -1,0 +1,41 @@
+name: "Feature Request & Ideas 🚀"
+description: Suggest a new feature or improvement (this does not mean you have to implement it)
+title: "Feature: "
+labels:
+  - feature
+  - backlog
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this report! Before submitting, please make sure to [search through existing issues](https://github.com/microsoft/industry).
+
+  - type: textarea
+    id: feature_description
+    attributes:
+      label: Feature or Idea - What?
+      placeholder: Briefly describe what the new feature, idea or enhancement entails.
+    validations:
+      required: true
+
+  - type: textarea
+    id: feature_reason
+    attributes:
+      label: Feature or Idea - Why?
+      placeholder: Briefly describe why the new feature, idea or enhancement is required and what outcome you are trying to achieve.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: code_of_conduct
+    attributes:
+      label: Code of Conduct
+      description: The Code of Conduct helps create a safe space for everyone. We require that everyone must abide by it.
+      options:
+        - label: I agree to follow this project's [Code of Conduct](https://github.com/microsoft/industry/blob/main/CODE_OF_CONDUCT.md)
+          required: true
+
+  - type: markdown
+    attributes:
+      value: "Thanks for completing this form!"

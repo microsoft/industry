@@ -1,23 +1,31 @@
-# Pre-requisites for Telecommunications
+# Telecommunications Foundations (Recommended)
 
 To setup the Telecommunications capabilities that spans the Microsoft Clouds, the following pre-requisites are required.
 
 ## Licensing requirements
 
-| Product name | Description |
-|:----------------------|:------------|
-|Power BI Pro | placeholder
-|Power Apps for Dynamics 365 | placeholder
-|Microsoft Teams | placeholder
+The table below summarizes the licenses you may require depending on the Telecommunications scenarios you want to deploy. See specific requirements in the respective documentation and implementation guide for each scenario.
 
-## Azure platform and subscriptions for Telco workloads 
+| Product name |
+|:----------------------:|
+|Power BI Pro
+|Power Apps for Dynamics 365
+|Microsoft Teams
 
-The [Telecommunications industry reference architecture for Azure](./readme.md) requires an Azure platform specialized for Telcos and a set of subscriptions (landing zones) in Microsoft Azure that will host the Telco workloads for internal IT systems as well as carrier-grade Telco workloads (such as SD-WAN solutions).
+## Azure subscription (landing zone)
+
+The [Azure for Telecommunications industry reference architecture](./readme.md) requires an Azure platform specialized and optimized for Telcos and a set of subscriptions (landing zones) in Microsoft Azure that will host the Telco workloads for internal IT systems as well as carrier-grade Telco solutions (such as SBC or SD-WAN solutions).
 
 ## Power Platform
 
-Coming soon.
+Power Platform is optional, but recommended when additional reporting, analysis, and modern business application and integration is needed to enhance and accelerate digital transformation for the telecommunications industry.
+
+[Prescriptive guidance and design recommendations for Power Platform for Telecommunications industry](../foundations/powerPlatform)
 
 ## Microsoft Teams
 
-Coming soon.
+> Coming soon.
+
+---
+
+[Back to documentation root](../README.md)

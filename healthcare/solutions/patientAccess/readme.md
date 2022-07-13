@@ -5,7 +5,7 @@ It provides patients with access to their health data, knowledge articles, and i
 
 | Reference implementation | Description | Deploy |
 |:----------------------|:------------|--------|
-| Monitoring for Patient Access | End-2-end deployment and configuration of Application Insights and Log Analytics to monitor Patient Access portal |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
+| Monitoring for Patient Access | End-to-end deployment and configuration of Application Insights and Log Analytics to monitor Patient Access portal |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
 
 >Note: The implementation of the Patient Access solution can currently not be automated, and requires manual implementation and configuration across Solution Center, Power Platform Admin Center, and portal for Power Apps. See the [implementation guide](#implementation-guide-for-patient-access) for detailed instructions.
 
@@ -15,7 +15,7 @@ Before you deploy and configure, verify you have implemented the [prerequisites]
 
 Specifically for patient access, you need:
 
-* [Power Platform environments](../powerPlatform/)
+* [Power Platform environments](../../../foundations/powerPlatform/)
   * Must be created upfront, in United States with Dataverse and D365 Apps enabled
   * Power Apps Portal app deployed and configured in the targeted environment(s)
 
@@ -34,11 +34,15 @@ This section provide prescriptive guidance with design considerations and recomm
 * There are licensing implications with the number of loggins on the self-service portal.
 * You can use local identities or centralized-managed identities for patient access.
 * There are multiple identity providers for patients when accesing the self-service portal, including Azure AD B2B, Microsoft Accounts and others.
+* When using Azure B2C, it requires a subscription (landing zone) in Azure that should comply with organizations compliance requirements
 
 ### Design recommendations
 
 * Allow self-service capabilities for patients via the patient access portal.
   * Those self-service capabilities include booking an appointment, searching for a practicioner, as well as review current appointments.
+* Use Azure B2C to enable patients to register, sign-in, and reset password via self-service
+* Have separated B2C tenants (instances) for different environments (dev, test, prod)
+* Use conditional access policies with MFA for users who are accessing the Patient Access portal
 
 ## Monitoring
 
@@ -50,9 +54,9 @@ This section provide prescriptive guidance with design considerations and recomm
 
 ### Design recommendations
 
-* Use a dedicated Azure Application Insights instance, connected with Log Analytics to capture key telemetry, metrics, and logs for the portal apps.
+* Use a dedicated Azure Application Insights instance, connected with Log Analytics to capture key telemetry, metrics, and logs for the Patient Access Portal application
 * Create alerts and views to monitor usage, such as logins, performance, and response time in order to make informed decision around need for additional add-on licensing.
-* If portal apps are used externally, ensure you have purchased required add-on capacity to meet expected peak.
+* If Patient Access Portal application is used externally, ensure you have purchased required add-on capacity to meet expected peak
 
 ## Security
 
@@ -64,6 +68,7 @@ This section provide prescriptive guidance with design considerations and recomm
 
 * Ensure portal authentication is configured to your chosen identity provider.
 * Restrict portal access from a list of IP addresses and CIDR ranges to limit portal access as described on this [article](https://docs.microsoft.com/powerapps/maker/portals/admin/ip-address-restrict).
+* Create required policies and flows for user sign-up if integrating the portal application with Azure AD B2C
 
 ## Implementation guide for Patient Access
 
@@ -107,7 +112,7 @@ Once the portal application has been provisioned, go to <https://solutions.micro
 
 ![powerapps](./images/patientaccess7.png)
 
-## Configure Portal application
+## Configure Patient Access Portal application
 
 To complete the configuration of the portal application you created before deploying the “Patient access” solution, you must navigate to <https://make.powerapps.com> and change the bindings, and optionally customize the portal per your organizations requiremenents.
 
@@ -122,6 +127,22 @@ To complete the configuration of the portal application you created before deplo
 4. Once the changes are saved, access the patient access portal via its URL.
 
 ![powerapps](./images/patientaccess9.png)
+
+### Configure Azure AD B2C for Patient Access Portal
+
+Azure Active Directory B2C provider is the preferred method for user authentication in Power Apps portals, that enables organizations to provide sign-up, login, and password reset via self service for their users/customers. Specifically for Patient Access, this will enable the patients to use their preferred social, enterprise, or local account identities to get single sign-on access to the Patient Access Portal application.
+
+Pre-requisites:
+
+* [Create an Azure AD B2C tenant](https://docs.microsoft.com/azure/active-directory-b2c/tutorial-create-tenant)
+
+Once you have created your Azure AD B2C tenant, you must create and register an application that must support accounts in any identity provider or organization directory for users to authenticate with user flows.
+
+For detailed deployment instructions for Azure AD B2C setup with Portal Apps:
+
+* [Configure Azure AD B2C manually](https://docs.microsoft.com/powerapps/maker/portals/configure/configure-azure-ad-b2c-provider-manual)
+
+* [Configure Azure AD B2C using interface in preview](https://docs.microsoft.com/powerapps/maker/portals/configure/configure-azure-ad-b2c-provider)
 
 ## Update Healthcare administration
 
@@ -138,3 +159,7 @@ Once the portal has been created and configured, you must update the Healthcare 
 3. Provide the URL for your patient access portal you created earlier, and save.
 
 ![powerapps](./images/patientaccess12.png)
+
+---
+
+[Back to documentation root](../../../README.md)
