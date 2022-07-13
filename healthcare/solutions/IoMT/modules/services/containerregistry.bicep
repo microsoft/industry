@@ -16,7 +16,7 @@ var containerRegistryNameCleaned = replace(containerRegistryName, '-', '')
 var containerRegistryPrivateEndpointName = '${containerRegistry.name}-private-endpoint'
 
 // Resources
-resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-06-01-preview' = {
+resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
   name: containerRegistryNameCleaned
   location: location
   tags: tags
@@ -28,13 +28,11 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-06-01-pr
   }
   properties: {
     adminUserEnabled: true
-    anonymousPullEnabled: false
     dataEndpointEnabled: false
     networkRuleBypassOptions: 'AzureServices'
     networkRuleSet: {
       defaultAction: 'Deny'
       ipRules: []
-      virtualNetworkRules: []
     }
     policies: {
       quarantinePolicy: {

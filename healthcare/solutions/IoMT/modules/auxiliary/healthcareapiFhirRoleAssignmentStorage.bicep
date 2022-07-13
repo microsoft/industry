@@ -31,17 +31,17 @@ resource storageAccountFileSystem 'Microsoft.Storage/storageAccounts/blobService
   parent: storageAccountBlobServices
 }
 
-resource healthcareapi 'Microsoft.HealthcareApis/workspaces@2021-06-01-preview' existing = {
+resource healthcareapi 'Microsoft.HealthcareApis/workspaces@2022-05-15' existing = {
   name: healthcareapiName
   scope: resourceGroup(healthcareapiSubscriptionId, healthcareapiResourceGroupName)
 }
 
-resource healthcareapiFhir 'Microsoft.HealthcareApis/workspaces/fhirservices@2021-06-01-preview' existing = {
+resource healthcareapiFhir 'Microsoft.HealthcareApis/workspaces/fhirservices@2022-05-15' existing = {
   name: healthcareapiFhirName
   parent: healthcareapi
 }
 
-resource healthcareapiFhirRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+resource healthcareapiFhirRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
   name: guid(uniqueString(storageAccountFileSystem.id, healthcareapiFhir.id))
   scope: storageAccountFileSystem
   properties: {

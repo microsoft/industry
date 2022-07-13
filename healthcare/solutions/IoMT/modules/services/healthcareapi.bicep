@@ -35,7 +35,7 @@ var healthcareapiIotName = '${healthcareapiNameCleaned}iot'
 var healthcareapiPrivateEndpointName = '${healthcareapiNameCleaned}-private-endpoint'
 
 // Resources
-resource healthcareapi 'Microsoft.HealthcareApis/workspaces@2021-06-01-preview' = {
+resource healthcareapi 'Microsoft.HealthcareApis/workspaces@2022-05-15' = {
   name: healthcareapiNameCleaned
   location: location
   tags: tags
@@ -81,7 +81,7 @@ resource healthcareapiPrivateEndpointARecord 'Microsoft.Network/privateEndpoints
   }
 }
 
-resource healthcareapiFhir 'Microsoft.HealthcareApis/workspaces/fhirservices@2021-06-01-preview' = {
+resource healthcareapiFhir 'Microsoft.HealthcareApis/workspaces/fhirservices@2022-05-15' = {
   name: healthcareapiFhirName
   parent: healthcareapi
   location: location
@@ -94,7 +94,7 @@ resource healthcareapiFhir 'Microsoft.HealthcareApis/workspaces/fhirservices@202
     accessPolicies: []
     authenticationConfiguration: {
       audience: 'https://${healthcareapiNameCleaned}-stu3.fhir.azurehealthcareapis.com'
-      authority: 'https://login.microsoftonline.com/${subscription().tenantId}'
+      authority: '${environment().authentication.loginEndpoint}${subscription().tenantId}'
       smartProxyEnabled: false
     }
     acrConfiguration: {
@@ -124,7 +124,7 @@ resource healthcareapiFhir 'Microsoft.HealthcareApis/workspaces/fhirservices@202
   }
 }
 
-resource healthcareapiDicom 'Microsoft.HealthcareApis/workspaces/dicomservices@2021-06-01-preview' = {
+resource healthcareapiDicom 'Microsoft.HealthcareApis/workspaces/dicomservices@2022-05-15' = {
   name: healthcareapiDicomName
   parent: healthcareapi
   location: location
@@ -134,7 +134,7 @@ resource healthcareapiDicom 'Microsoft.HealthcareApis/workspaces/dicomservices@2
   }
 }
 
-resource healthcareapiIot 'Microsoft.HealthcareApis/workspaces/iotconnectors@2021-06-01-preview' = if(!empty(healthcareapiIotDeviceMapping) && !empty(healthcareapiIotFhirMapping)) {
+resource healthcareapiIot 'Microsoft.HealthcareApis/workspaces/iotconnectors@2022-05-15' = if(!empty(healthcareapiIotDeviceMapping) && !empty(healthcareapiIotFhirMapping)) {
   name: healthcareapiIotName
   parent: healthcareapi
   location: location
@@ -154,7 +154,7 @@ resource healthcareapiIot 'Microsoft.HealthcareApis/workspaces/iotconnectors@202
   }
 }
 
-resource healthcareapiIotFhirConnection 'Microsoft.HealthcareApis/workspaces/iotconnectors/fhirdestinations@2021-06-01-preview' = if(!empty(healthcareapiIotDeviceMapping) && !empty(healthcareapiIotFhirMapping)) {
+resource healthcareapiIotFhirConnection 'Microsoft.HealthcareApis/workspaces/iotconnectors/fhirdestinations@2022-05-15' = if(!empty(healthcareapiIotDeviceMapping) && !empty(healthcareapiIotFhirMapping)) {
   name: healthcareapiFhir.name
   parent: healthcareapiIot
   location: location

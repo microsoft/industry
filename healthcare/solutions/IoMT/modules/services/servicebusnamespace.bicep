@@ -25,7 +25,7 @@ var servicebusQueue001SharedAccessPolicyName = 'fhir-synch-agent'
 var servicebusNamespacePrivateEndpointName = '${servicebusNamespace.name}-private-endpoint'
 
 // Resources
-resource servicebusNamespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' = {
+resource servicebusNamespace 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
   name: servicebusnamespaceName
   location: location
   tags: tags
@@ -43,7 +43,7 @@ resource servicebusNamespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview
   }
 }
 
-resource servicebusNamespaceNetworkRuleSets 'Microsoft.ServiceBus/namespaces/networkRuleSets@2021-06-01-preview' = {
+resource servicebusNamespaceNetworkRuleSets 'Microsoft.ServiceBus/namespaces/networkRuleSets@2021-11-01' = {
   name: 'default'
   parent: servicebusNamespace
   properties: {
@@ -55,7 +55,7 @@ resource servicebusNamespaceNetworkRuleSets 'Microsoft.ServiceBus/namespaces/net
   }
 }
 
-resource servicebusQueue001 'Microsoft.ServiceBus/namespaces/queues@2021-06-01-preview' = {
+resource servicebusQueue001 'Microsoft.ServiceBus/namespaces/queues@2021-11-01' = {
   name: servicebusQueue001Name
   parent: servicebusNamespace
   properties: {
@@ -74,7 +74,7 @@ resource servicebusQueue001 'Microsoft.ServiceBus/namespaces/queues@2021-06-01-p
   }
 }
 
-resource servicebusQueue001SharedAccessPolicy 'Microsoft.ServiceBus/namespaces/queues/authorizationRules@2021-06-01-preview' = {
+resource servicebusQueue001SharedAccessPolicy 'Microsoft.ServiceBus/namespaces/queues/authorizationRules@2021-11-01' = {
   name: servicebusQueue001SharedAccessPolicyName
   parent: servicebusQueue001
   properties: {
@@ -127,4 +127,5 @@ resource servicebusNamespacePrivateEndpointARecord 'Microsoft.Network/privateEnd
 output serviceBusUrl string = servicebusNamespace.properties.serviceBusEndpoint
 output serviceBusQueue001Name string = servicebusQueue001.name
 output serviceBusQueue001SharedAccessPolicyName string = servicebusQueue001SharedAccessPolicy.name
+#disable-next-line outputs-should-not-contain-secrets
 output serviceBusQueue001SharedAccessPolicyKey string = listKeys(servicebusQueue001SharedAccessPolicy.id, servicebusQueue001SharedAccessPolicy.apiVersion).primaryKey

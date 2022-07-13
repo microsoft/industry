@@ -23,7 +23,7 @@ var eventHub001ConsumerGroupName = 'healthcareapiiot'
 var eventhubNamespacePrivateEndpointName = '${eventhubNamespace.name}-private-endpoint'
 
 // Resources
-resource eventhubNamespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' = {
+resource eventhubNamespace 'Microsoft.EventHub/namespaces@2021-11-01' = {
   name: eventhubnamespaceName
   location: location
   tags: tags
@@ -44,7 +44,7 @@ resource eventhubNamespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' = 
   }
 }
 
-resource eventhubNamespaceNetworkRuleSets 'Microsoft.EventHub/namespaces/networkRuleSets@2021-06-01-preview' = {
+resource eventhubNamespaceNetworkRuleSets 'Microsoft.EventHub/namespaces/networkRuleSets@2021-11-01' = {
   name: 'default'
   parent: eventhubNamespace
   properties: {
@@ -56,7 +56,7 @@ resource eventhubNamespaceNetworkRuleSets 'Microsoft.EventHub/namespaces/network
   }
 }
 
-resource eventhub001 'Microsoft.EventHub/namespaces/eventhubs@2021-06-01-preview' = {
+resource eventhub001 'Microsoft.EventHub/namespaces/eventhubs@2021-11-01' = {
   parent: eventhubNamespace
   name: eventhub001Name
   properties: {
@@ -81,7 +81,7 @@ resource eventhub001 'Microsoft.EventHub/namespaces/eventhubs@2021-06-01-preview
   }
 }
 
-resource eventHub001ConsumerGroup 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2021-06-01-preview' = {
+resource eventHub001ConsumerGroup 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2021-11-01' = {
   name: eventHub001ConsumerGroupName
   parent: eventhub001
   properties: {}

@@ -22,7 +22,7 @@ var iothubEventhubEndpointConsumerGroupName = 'healthcareapiiot'
 var iothubPrivateEndpointName = '${iothub.name}-private-endpoint'
 
 // Resources
-resource iothub 'Microsoft.Devices/IotHubs@2021-03-31' = {
+resource iothub 'Microsoft.Devices/IotHubs@2021-07-02' = {
   name: iothubName
   location: location
   tags: tags
@@ -91,7 +91,7 @@ resource iothub 'Microsoft.Devices/IotHubs@2021-03-31' = {
   }
 }
 
-resource iothubEvenhubEndpointConsumerGroup 'Microsoft.Devices/IotHubs/eventHubEndpoints/ConsumerGroups@2021-07-01' = {
+resource iothubEvenhubEndpointConsumerGroup 'Microsoft.Devices/IotHubs/eventHubEndpoints/ConsumerGroups@2021-07-02' = {
   name: '${iothub.name}/${iothubEventhubEndpointName}/${iothubEventhubEndpointConsumerGroupName}'
   properties: {
     name: iothubEventhubEndpointConsumerGroupName

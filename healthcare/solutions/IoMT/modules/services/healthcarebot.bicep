@@ -18,7 +18,7 @@ param healthcarebotSku string = 'S1'
 // Variables
 
 // Resources
-resource healthbot 'Microsoft.HealthBot/healthBots@2020-12-08' = {
+resource healthbot 'Microsoft.HealthBot/healthBots@2021-08-24' = {
   name: healthcarebotName
   location: location
   tags: tags

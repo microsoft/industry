@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.4.1008.15138",
-      "templateHash": "10756026143161844453"
+      "version": "0.8.9.13224",
+      "templateHash": "8322019635770462247"
     }
   },
   "parameters": {
@@ -115,7 +115,6 @@
       }
     }
   },
-  "functions": [],
   "variables": {
     "name": "[toLower(format('{0}-{1}', parameters('prefix'), parameters('environment')))]",
     "eventhubNamespace001Name": "[format('{0}-ehnamepspace001', variables('name'))]",
@@ -132,7 +131,7 @@
     {
       "condition": "[equals(parameters('ingestionService'), 'eventhub')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "eventhubNamespace001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -168,8 +167,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "4622470327164745009"
+              "version": "0.8.9.13224",
+              "templateHash": "9189067070571096498"
             }
           },
           "parameters": {
@@ -200,7 +199,6 @@
               "defaultValue": ""
             }
           },
-          "functions": [],
           "variables": {
             "eventhub001Name": "[format('{0}-eh001', parameters('eventhubnamespaceName'))]",
             "eventHub001ConsumerGroupName": "healthcareapiiot",
@@ -209,7 +207,7 @@
           "resources": [
             {
               "type": "Microsoft.EventHub/namespaces",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2021-11-01",
               "name": "[parameters('eventhubnamespaceName')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -231,7 +229,7 @@
             },
             {
               "type": "Microsoft.EventHub/namespaces/networkRuleSets",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2021-11-01",
               "name": "[format('{0}/{1}', parameters('eventhubnamespaceName'), 'default')]",
               "properties": {
                 "defaultAction": "Deny",
@@ -246,7 +244,7 @@
             },
             {
               "type": "Microsoft.EventHub/namespaces/eventhubs",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2021-11-01",
               "name": "[format('{0}/{1}', parameters('eventhubnamespaceName'), variables('eventhub001Name'))]",
               "properties": {
                 "messageRetentionInDays": 3,
@@ -259,12 +257,11 @@
             },
             {
               "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2021-11-01",
               "name": "[format('{0}/{1}/{2}', parameters('eventhubnamespaceName'), variables('eventhub001Name'), variables('eventHub001ConsumerGroupName'))]",
               "properties": {},
               "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('eventhubnamespaceName'), variables('eventhub001Name'))]",
-                "[resourceId('Microsoft.EventHub/namespaces', parameters('eventhubnamespaceName'))]"
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('eventhubnamespaceName'), variables('eventhub001Name'))]"
               ]
             },
             {
@@ -339,7 +336,7 @@
     {
       "condition": "[equals(parameters('ingestionService'), 'iothub')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "iotHub001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -366,8 +363,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "11544471407504467354"
+              "version": "0.8.9.13224",
+              "templateHash": "12230231838642514032"
             }
           },
           "parameters": {
@@ -402,7 +399,6 @@
               "defaultValue": ""
             }
           },
-          "functions": [],
           "variables": {
             "iothubEventhubEndpointName": "events",
             "iothubEventhubEndpointConsumerGroupName": "healthcareapiiot",
@@ -411,7 +407,7 @@
           "resources": [
             {
               "type": "Microsoft.Devices/IotHubs",
-              "apiVersion": "2021-03-31",
+              "apiVersion": "2021-07-02",
               "name": "[parameters('iothubName')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -480,7 +476,7 @@
             },
             {
               "type": "Microsoft.Devices/IotHubs/eventHubEndpoints/ConsumerGroups",
-              "apiVersion": "2021-07-01",
+              "apiVersion": "2021-07-02",
               "name": "[format('{0}/{1}/{2}', parameters('iothubName'), variables('iothubEventhubEndpointName'), variables('iothubEventhubEndpointConsumerGroupName'))]",
               "properties": {
                 "name": "[variables('iothubEventhubEndpointConsumerGroupName')]"
@@ -566,7 +562,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "servicebusNamespace001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -599,8 +595,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "1878090162968991529"
+              "version": "0.8.9.13224",
+              "templateHash": "766641961312437394"
             }
           },
           "parameters": {
@@ -632,7 +628,6 @@
               "defaultValue": ""
             }
           },
-          "functions": [],
           "variables": {
             "servicebusQueue001Name": "eventHub001",
             "servicebusQueue001SharedAccessPolicyName": "fhir-synch-agent",
@@ -641,7 +636,7 @@
           "resources": [
             {
               "type": "Microsoft.ServiceBus/namespaces",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2021-11-01",
               "name": "[parameters('servicebusnamespaceName')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -660,7 +655,7 @@
             },
             {
               "type": "Microsoft.ServiceBus/namespaces/networkRuleSets",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2021-11-01",
               "name": "[format('{0}/{1}', parameters('servicebusnamespaceName'), 'default')]",
               "properties": {
                 "defaultAction": "Deny",
@@ -675,7 +670,7 @@
             },
             {
               "type": "Microsoft.ServiceBus/namespaces/queues",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2021-11-01",
               "name": "[format('{0}/{1}', parameters('servicebusnamespaceName'), variables('servicebusQueue001Name'))]",
               "properties": {
                 "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
@@ -697,7 +692,7 @@
             },
             {
               "type": "Microsoft.ServiceBus/namespaces/queues/authorizationRules",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2021-11-01",
               "name": "[format('{0}/{1}/{2}', parameters('servicebusnamespaceName'), variables('servicebusQueue001Name'), variables('servicebusQueue001SharedAccessPolicyName'))]",
               "properties": {
                 "rights": [
@@ -705,7 +700,6 @@
                 ]
               },
               "dependsOn": [
-                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('servicebusnamespaceName'))]",
                 "[resourceId('Microsoft.ServiceBus/namespaces/queues', parameters('servicebusnamespaceName'), variables('servicebusQueue001Name'))]"
               ]
             },
@@ -772,7 +766,7 @@
             },
             "serviceBusQueue001SharedAccessPolicyKey": {
               "type": "string",
-              "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/queues/authorizationRules', parameters('servicebusnamespaceName'), variables('servicebusQueue001Name'), variables('servicebusQueue001SharedAccessPolicyName')), '2021-06-01-preview').primaryKey]"
+              "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/queues/authorizationRules', parameters('servicebusnamespaceName'), variables('servicebusQueue001Name'), variables('servicebusQueue001SharedAccessPolicyName')), '2021-11-01').primaryKey]"
             }
           }
         }
@@ -780,7 +774,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "containerRegistry001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -810,8 +804,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "1583816395521370740"
+              "version": "0.8.9.13224",
+              "templateHash": "3063364502951142251"
             }
           },
           "parameters": {
@@ -832,7 +826,6 @@
               "defaultValue": ""
             }
           },
-          "functions": [],
           "variables": {
             "containerRegistryNameCleaned": "[replace(parameters('containerRegistryName'), '-', '')]",
             "containerRegistryPrivateEndpointName": "[format('{0}-private-endpoint', variables('containerRegistryNameCleaned'))]"
@@ -840,7 +833,7 @@
           "resources": [
             {
               "type": "Microsoft.ContainerRegistry/registries",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2021-09-01",
               "name": "[variables('containerRegistryNameCleaned')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -852,13 +845,11 @@
               },
               "properties": {
                 "adminUserEnabled": true,
-                "anonymousPullEnabled": false,
                 "dataEndpointEnabled": false,
                 "networkRuleBypassOptions": "AzureServices",
                 "networkRuleSet": {
                   "defaultAction": "Deny",
-                  "ipRules": [],
-                  "virtualNetworkRules": []
+                  "ipRules": []
                 },
                 "policies": {
                   "quarantinePolicy": {
@@ -939,7 +930,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "healthcareApi001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -970,17 +961,17 @@
           },
           "healthcareapiFhirContainerRegistryLoginServers": {
             "value": [
-              "[reference(resourceId('Microsoft.Resources/deployments', 'containerRegistry001'), '2020-06-01').outputs.containerRegistryLoginServer.value]"
+              "[reference(resourceId('Microsoft.Resources/deployments', 'containerRegistry001')).outputs.containerRegistryLoginServer.value]"
             ]
           },
           "healthcareapiIotEventhubName": {
-            "value": "[if(equals(parameters('ingestionService'), 'iothub'), reference(resourceId('Microsoft.Resources/deployments', 'iotHub001'), '2020-06-01').outputs.iothubEvenhubEndpointName.value, reference(resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001'), '2020-06-01').outputs.eventhub001Name.value)]"
+            "value": "[if(equals(parameters('ingestionService'), 'iothub'), reference(resourceId('Microsoft.Resources/deployments', 'iotHub001'), '2020-10-01').outputs.iothubEvenhubEndpointName.value, reference(resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001'), '2020-10-01').outputs.eventhub001Name.value)]"
           },
           "healthcareapiIotEventhubConsumerGroupName": {
-            "value": "[if(equals(parameters('ingestionService'), 'iothub'), reference(resourceId('Microsoft.Resources/deployments', 'iotHub001'), '2020-06-01').outputs.iothubEvenhubEndpointConsumerGroupName.value, reference(resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001'), '2020-06-01').outputs.eventhub001ConsumerGroupName.value)]"
+            "value": "[if(equals(parameters('ingestionService'), 'iothub'), reference(resourceId('Microsoft.Resources/deployments', 'iotHub001'), '2020-10-01').outputs.iothubEvenhubEndpointConsumerGroupName.value, reference(resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001'), '2020-10-01').outputs.eventhub001ConsumerGroupName.value)]"
           },
           "healthcareapiIotEventhubNamespaceFqdn": {
-            "value": "[if(equals(parameters('ingestionService'), 'iothub'), reference(resourceId('Microsoft.Resources/deployments', 'iotHub001'), '2020-06-01').outputs.iothubEvenhubEndpointFqdn.value, reference(resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001'), '2020-06-01').outputs.eventhubNamespaceFqdn.value)]"
+            "value": "[if(equals(parameters('ingestionService'), 'iothub'), reference(resourceId('Microsoft.Resources/deployments', 'iotHub001'), '2020-10-01').outputs.iothubEvenhubEndpointFqdn.value, reference(resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001'), '2020-10-01').outputs.eventhubNamespaceFqdn.value)]"
           },
           "healthcareapiIotDeviceMapping": {
             "value": "[parameters('iotDeviceMapping')]"
@@ -995,8 +986,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "4896577151663051230"
+              "version": "0.8.9.13224",
+              "templateHash": "4254792522619330546"
             }
           },
           "parameters": {
@@ -1048,7 +1039,6 @@
               "type": "string"
             }
           },
-          "functions": [],
           "variables": {
             "healthcareapiNameCleaned": "[toLower(replace(parameters('healthcareapiName'), '-', ''))]",
             "healthcareapiFhirName": "[format('{0}fhir', variables('healthcareapiNameCleaned'))]",
@@ -1059,7 +1049,7 @@
           "resources": [
             {
               "type": "Microsoft.HealthcareApis/workspaces",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2022-05-15",
               "name": "[variables('healthcareapiNameCleaned')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -1115,7 +1105,7 @@
             },
             {
               "type": "Microsoft.HealthcareApis/workspaces/fhirservices",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2022-05-15",
               "name": "[format('{0}/{1}', variables('healthcareapiNameCleaned'), variables('healthcareapiFhirName'))]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -1127,7 +1117,7 @@
                 "accessPolicies": [],
                 "authenticationConfiguration": {
                   "audience": "[format('https://{0}-stu3.fhir.azurehealthcareapis.com', variables('healthcareapiNameCleaned'))]",
-                  "authority": "[format('https://login.microsoftonline.com/{0}', subscription().tenantId)]",
+                  "authority": "[format('{0}{1}', environment().authentication.loginEndpoint, subscription().tenantId)]",
                   "smartProxyEnabled": false
                 },
                 "acrConfiguration": {
@@ -1161,7 +1151,7 @@
             },
             {
               "type": "Microsoft.HealthcareApis/workspaces/dicomservices",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2022-05-15",
               "name": "[format('{0}/{1}', variables('healthcareapiNameCleaned'), variables('healthcareapiDicomName'))]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -1175,7 +1165,7 @@
             {
               "condition": "[and(not(empty(parameters('healthcareapiIotDeviceMapping'))), not(empty(parameters('healthcareapiIotFhirMapping'))))]",
               "type": "Microsoft.HealthcareApis/workspaces/iotconnectors",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2022-05-15",
               "name": "[format('{0}/{1}', variables('healthcareapiNameCleaned'), variables('healthcareapiIotName'))]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -1199,7 +1189,7 @@
             {
               "condition": "[and(not(empty(parameters('healthcareapiIotDeviceMapping'))), not(empty(parameters('healthcareapiIotFhirMapping'))))]",
               "type": "Microsoft.HealthcareApis/workspaces/iotconnectors/fhirdestinations",
-              "apiVersion": "2021-06-01-preview",
+              "apiVersion": "2022-05-15",
               "name": "[format('{0}/{1}/{2}', variables('healthcareapiNameCleaned'), variables('healthcareapiIotName'), variables('healthcareapiFhirName'))]",
               "location": "[parameters('location')]",
               "properties": {
@@ -1210,7 +1200,6 @@
                 "fhirServiceResourceId": "[resourceId('Microsoft.HealthcareApis/workspaces/fhirservices', variables('healthcareapiNameCleaned'), variables('healthcareapiFhirName'))]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.HealthcareApis/workspaces', variables('healthcareapiNameCleaned'))]",
                 "[resourceId('Microsoft.HealthcareApis/workspaces/fhirservices', variables('healthcareapiNameCleaned'), variables('healthcareapiFhirName'))]",
                 "[resourceId('Microsoft.HealthcareApis/workspaces/iotconnectors', variables('healthcareapiNameCleaned'), variables('healthcareapiIotName'))]"
               ]
@@ -1233,7 +1222,7 @@
     {
       "condition": "[parameters('enableRoleAssignments')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "healthcareApi001RoleAssignmentStorage",
       "subscriptionId": "[variables('fhirStorageAccountSubscriptionId')]",
       "resourceGroup": "[variables('fhirStorageAccountResourceGroupName')]",
@@ -1244,7 +1233,7 @@
         "mode": "Incremental",
         "parameters": {
           "healthcareapiFhirId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'healthcareApi001'), '2020-06-01').outputs.healthcareapiFhirId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'healthcareApi001')).outputs.healthcareapiFhirId.value]"
           },
           "storageAccountFileSystemId": {
             "value": "[parameters('fhirExportStorageAccountFileSystemId')]"
@@ -1256,8 +1245,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "13147579481037871468"
+              "version": "0.8.9.13224",
+              "templateHash": "7558774887200492394"
             }
           },
           "parameters": {
@@ -1268,7 +1257,6 @@
               "type": "string"
             }
           },
-          "functions": [],
           "variables": {
             "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), split(parameters('storageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]",
             "storageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), last(split(parameters('storageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
@@ -1280,12 +1268,12 @@
           "resources": [
             {
               "type": "Microsoft.Authorization/roleAssignments",
-              "apiVersion": "2020-04-01-preview",
+              "apiVersion": "2020-10-01-preview",
               "scope": "[format('Microsoft.Storage/storageAccounts/{0}/blobServices/{1}/containers/{2}', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName'))]",
               "name": "[guid(uniqueString(resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName')), extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('healthcareapiSubscriptionId'), variables('healthcareapiResourceGroupName')), 'Microsoft.HealthcareApis/workspaces/fhirservices', variables('healthcareapiName'), variables('healthcareapiFhirName'))))]",
               "properties": {
                 "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
-                "principalId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('healthcareapiSubscriptionId'), variables('healthcareapiResourceGroupName')), 'Microsoft.HealthcareApis/workspaces/fhirservices', variables('healthcareapiName'), variables('healthcareapiFhirName')), '2021-06-01-preview', 'full').identity.principalId]"
+                "principalId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('healthcareapiSubscriptionId'), variables('healthcareapiResourceGroupName')), 'Microsoft.HealthcareApis/workspaces/fhirservices', variables('healthcareapiName'), variables('healthcareapiFhirName')), '2022-05-15', 'full').identity.principalId]"
               }
             }
           ]
@@ -1298,7 +1286,7 @@
     {
       "condition": "[parameters('enableHealthBot')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "healthcareBot001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1322,8 +1310,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "13484037326022618872"
+              "version": "0.8.9.13224",
+              "templateHash": "2762361806356176863"
             }
           },
           "parameters": {
@@ -1346,11 +1334,10 @@
               ]
             }
           },
-          "functions": [],
           "resources": [
             {
               "type": "Microsoft.HealthBot/healthBots",
-              "apiVersion": "2020-12-08",
+              "apiVersion": "2021-08-24",
               "name": "[parameters('healthcarebotName')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -1367,19 +1354,19 @@
   "outputs": {
     "serviceBusUrl": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'servicebusNamespace001'), '2020-06-01').outputs.serviceBusUrl.value]"
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'servicebusNamespace001')).outputs.serviceBusUrl.value]"
     },
     "serviceBusQueue001Name": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'servicebusNamespace001'), '2020-06-01').outputs.serviceBusQueue001Name.value]"
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'servicebusNamespace001')).outputs.serviceBusQueue001Name.value]"
     },
     "serviceBusQueue001SharedAccessPolicyName": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'servicebusNamespace001'), '2020-06-01').outputs.serviceBusQueue001SharedAccessPolicyName.value]"
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'servicebusNamespace001')).outputs.serviceBusQueue001SharedAccessPolicyName.value]"
     },
     "serviceBusQueue001SharedAccessPolicyKey": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'servicebusNamespace001'), '2020-06-01').outputs.serviceBusQueue001SharedAccessPolicyKey.value]"
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'servicebusNamespace001')).outputs.serviceBusQueue001SharedAccessPolicyKey.value]"
     }
   }
 }
