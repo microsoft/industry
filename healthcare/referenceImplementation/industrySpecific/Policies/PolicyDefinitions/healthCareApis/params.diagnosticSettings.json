@@ -125,7 +125,7 @@
         "policyMetadata": {
             "value": {
                 "version": "1.0.0",
-                "category": "Cognitive Services",
+                "category": "Healthcare APIs",
                 "preview": false,
                 "deprecated": false
             }
