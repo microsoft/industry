@@ -1,0 +1,1784 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.4.613.9944",
+      "templateHash": "7729186315494720054"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the location for all resources."
+      }
+    },
+    "environment": {
+      "type": "string",
+      "defaultValue": "dev",
+      "metadata": {
+        "description": "Specifies the environment of the deployment."
+      },
+      "allowedValues": [
+        "dev",
+        "tst",
+        "prd"
+      ]
+    },
+    "prefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the prefix for all resources created in this deployment."
+      },
+      "maxLength": 10,
+      "minLength": 2
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Specifies the tags that you want to apply to all resources."
+      }
+    },
+    "administratorPassword": {
+      "type": "secureString",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the administrator password of the sql servers in Synapse."
+      }
+    },
+    "powerPlatformServicePrincipalObjectId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the object ID of the Enterprise Application \"Microsoft Power Query\"."
+      }
+    },
+    "dataverseServicePrincipalObjectId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the object ID of the Enterprise Application \"Export to data lake\"."
+      }
+    },
+    "purviewId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the resource ID of the central purview instance to connect Purviw with Data Factory or Synapse. If you do not want to setup a connection to Purview, leave this value empty as is."
+      }
+    },
+    "enableRoleAssignments": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Specifies whether role assignments should be enabled for Synapse (Blob Storage Contributor to default storage account)."
+      }
+    },
+    "subnetId": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the resource ID of the subnet to which all services will connect."
+      }
+    },
+    "privateDnsZoneIdBlob": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the resource ID of the private DNS zone for Blob Storage."
+      }
+    },
+    "privateDnsZoneIdDfs": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the resource ID of the private DNS zone for Datalake Storage."
+      }
+    },
+    "privateDnsZoneIdKeyVault": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the resource ID of the private DNS zone for KeyVault."
+      }
+    },
+    "privateDnsZoneIdSynapseDev": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the resource ID of the private DNS zone for Synapse Dev."
+      }
+    },
+    "privateDnsZoneIdSynapseSql": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the resource ID of the private DNS zone for Synapse Sql."
+      }
+    }
+  },
+  "functions": [],
+  "variables": {
+    "name": "[toLower(format('{0}-{1}', parameters('prefix'), parameters('environment')))]",
+    "tagsDefault": {
+      "Project": "Dataverse - Data Integration",
+      "Environment": "[parameters('environment')]",
+      "Toolkit": "bicep",
+      "Name": "[variables('name')]"
+    },
+    "tagsJoined": "[union(variables('tagsDefault'), parameters('tags'))]",
+    "administratorUsername": "SqlServerMainUser",
+    "keyvault001Name": "[format('{0}-vault001', variables('name'))]",
+    "storage001Name": "[format('{0}-storage001', variables('name'))]",
+    "synapse001Name": "[format('{0}-synapse001', variables('name'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "keyVault001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[variables('tagsJoined')]"
+          },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
+          "keyvaultName": {
+            "value": "[variables('keyvault001Name')]"
+          },
+          "privateDnsZoneIdKeyVault": {
+            "value": "[parameters('privateDnsZoneIdKeyVault')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "11855677596500727104"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "subnetId": {
+              "type": "string"
+            },
+            "keyvaultName": {
+              "type": "string"
+            },
+            "privateDnsZoneIdKeyVault": {
+              "type": "string",
+              "defaultValue": ""
+            }
+          },
+          "functions": [],
+          "variables": {
+            "keyVaultPrivateEndpointName": "[format('{0}-private-endpoint', parameters('keyvaultName'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.KeyVault/vaults",
+              "apiVersion": "2021-04-01-preview",
+              "name": "[parameters('keyvaultName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "accessPolicies": [],
+                "createMode": "default",
+                "enabledForDeployment": false,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": false,
+                "enablePurgeProtection": true,
+                "enableRbacAuthorization": true,
+                "enableSoftDelete": true,
+                "networkAcls": {
+                  "bypass": "AzureServices",
+                  "defaultAction": "Deny",
+                  "ipRules": [],
+                  "virtualNetworkRules": []
+                },
+                "sku": {
+                  "family": "A",
+                  "name": "standard"
+                },
+                "softDeleteRetentionInDays": 7,
+                "tenantId": "[subscription().tenantId]"
+              }
+            },
+            {
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2020-11-01",
+              "name": "[variables('keyVaultPrivateEndpointName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "manualPrivateLinkServiceConnections": [],
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "[variables('keyVaultPrivateEndpointName')]",
+                    "properties": {
+                      "groupIds": [
+                        "vault"
+                      ],
+                      "privateLinkServiceId": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyvaultName'))]",
+                      "requestMessage": ""
+                    }
+                  }
+                ],
+                "subnet": {
+                  "id": "[parameters('subnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyvaultName'))]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('privateDnsZoneIdKeyVault')))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2020-11-01",
+              "name": "[format('{0}/{1}', variables('keyVaultPrivateEndpointName'), 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "[format('{0}-arecord', variables('keyVaultPrivateEndpointName'))]",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('privateDnsZoneIdKeyVault')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('keyVaultPrivateEndpointName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "keyvaultId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyvaultName'))]"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "storage001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[variables('tagsJoined')]"
+          },
+          "fileSystemNames": {
+            "value": [
+              "synapse",
+              "power-platform-dataflows",
+              "dataverse"
+            ]
+          },
+          "storageName": {
+            "value": "[variables('storage001Name')]"
+          },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
+          "privateDnsZoneIdBlob": {
+            "value": "[parameters('privateDnsZoneIdBlob')]"
+          },
+          "privateDnsZoneIdDfs": {
+            "value": "[parameters('privateDnsZoneIdDfs')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "11213770733626231232"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "subnetId": {
+              "type": "string"
+            },
+            "storageName": {
+              "type": "string"
+            },
+            "privateDnsZoneIdDfs": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "privateDnsZoneIdBlob": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "fileSystemNames": {
+              "type": "array"
+            }
+          },
+          "functions": [],
+          "variables": {
+            "storageNameCleaned": "[replace(parameters('storageName'), '-', '')]",
+            "storagePrivateEndpointNameBlob": "[format('{0}-blob-private-endpoint', variables('storageNameCleaned'))]",
+            "storagePrivateEndpointNameDfs": "[format('{0}-dfs-private-endpoint', variables('storageNameCleaned'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Storage/storageAccounts",
+              "apiVersion": "2021-02-01",
+              "name": "[variables('storageNameCleaned')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "sku": {
+                "name": "Standard_ZRS"
+              },
+              "kind": "StorageV2",
+              "properties": {
+                "accessTier": "Hot",
+                "allowBlobPublicAccess": false,
+                "allowSharedKeyAccess": true,
+                "encryption": {
+                  "keySource": "Microsoft.Storage",
+                  "requireInfrastructureEncryption": false,
+                  "services": {
+                    "blob": {
+                      "enabled": true,
+                      "keyType": "Account"
+                    },
+                    "file": {
+                      "enabled": true,
+                      "keyType": "Account"
+                    },
+                    "queue": {
+                      "enabled": true,
+                      "keyType": "Service"
+                    },
+                    "table": {
+                      "enabled": true,
+                      "keyType": "Service"
+                    }
+                  }
+                },
+                "isHnsEnabled": true,
+                "isNfsV3Enabled": false,
+                "largeFileSharesState": "Disabled",
+                "minimumTlsVersion": "TLS1_2",
+                "networkAcls": {
+                  "bypass": "AzureServices",
+                  "defaultAction": "Allow",
+                  "ipRules": [],
+                  "virtualNetworkRules": [],
+                  "resourceAccessRules": []
+                },
+                "supportsHttpsTrafficOnly": true
+              }
+            },
+            {
+              "type": "Microsoft.Storage/storageAccounts/managementPolicies",
+              "apiVersion": "2021-02-01",
+              "name": "[format('{0}/{1}', variables('storageNameCleaned'), 'default')]",
+              "properties": {
+                "policy": {
+                  "rules": [
+                    {
+                      "enabled": true,
+                      "name": "default",
+                      "type": "Lifecycle",
+                      "definition": {
+                        "actions": {
+                          "baseBlob": {
+                            "tierToCool": {
+                              "daysAfterModificationGreaterThan": 90
+                            }
+                          },
+                          "snapshot": {
+                            "tierToCool": {
+                              "daysAfterCreationGreaterThan": 90
+                            }
+                          },
+                          "version": {
+                            "tierToCool": {
+                              "daysAfterCreationGreaterThan": 90
+                            }
+                          }
+                        },
+                        "filters": {
+                          "blobTypes": [
+                            "blockBlob"
+                          ],
+                          "prefixMatch": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageNameCleaned'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Storage/storageAccounts/blobServices",
+              "apiVersion": "2021-02-01",
+              "name": "[format('{0}/{1}', variables('storageNameCleaned'), 'default')]",
+              "properties": {
+                "containerDeleteRetentionPolicy": {
+                  "enabled": true,
+                  "days": 7
+                },
+                "cors": {
+                  "corsRules": []
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageNameCleaned'))]"
+              ]
+            },
+            {
+              "copy": {
+                "name": "storageFileSystems",
+                "count": "[length(parameters('fileSystemNames'))]"
+              },
+              "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+              "apiVersion": "2021-02-01",
+              "name": "[format('{0}/{1}/{2}', variables('storageNameCleaned'), 'default', parameters('fileSystemNames')[copyIndex()])]",
+              "properties": {
+                "publicAccess": "None",
+                "metadata": {}
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageNameCleaned'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageNameCleaned'), 'default')]"
+              ]
+            },
+            {
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2020-11-01",
+              "name": "[variables('storagePrivateEndpointNameBlob')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "manualPrivateLinkServiceConnections": [],
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "[variables('storagePrivateEndpointNameBlob')]",
+                    "properties": {
+                      "groupIds": [
+                        "blob"
+                      ],
+                      "privateLinkServiceId": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageNameCleaned'))]",
+                      "requestMessage": ""
+                    }
+                  }
+                ],
+                "subnet": {
+                  "id": "[parameters('subnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageNameCleaned'))]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('privateDnsZoneIdBlob')))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2020-11-01",
+              "name": "[format('{0}/{1}', variables('storagePrivateEndpointNameBlob'), 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "[format('{0}-arecord', variables('storagePrivateEndpointNameBlob'))]",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('privateDnsZoneIdBlob')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('storagePrivateEndpointNameBlob'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2020-11-01",
+              "name": "[variables('storagePrivateEndpointNameDfs')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "manualPrivateLinkServiceConnections": [],
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "[variables('storagePrivateEndpointNameDfs')]",
+                    "properties": {
+                      "groupIds": [
+                        "dfs"
+                      ],
+                      "privateLinkServiceId": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageNameCleaned'))]",
+                      "requestMessage": ""
+                    }
+                  }
+                ],
+                "subnet": {
+                  "id": "[parameters('subnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageNameCleaned'))]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('privateDnsZoneIdDfs')))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2020-11-01",
+              "name": "[format('{0}/{1}', variables('storagePrivateEndpointNameDfs'), 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "[format('{0}-arecord', variables('storagePrivateEndpointNameDfs'))]",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('privateDnsZoneIdDfs')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('storagePrivateEndpointNameDfs'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "storageId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageNameCleaned'))]"
+            },
+            "storageFileSystemIds": {
+              "type": "array",
+              "copy": {
+                "count": "[length(parameters('fileSystemNames'))]",
+                "input": {
+                  "storageFileSystemId": "[resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', variables('storageNameCleaned'), 'default', parameters('fileSystemNames')[copyIndex()])]"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "synapse001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[variables('tagsJoined')]"
+          },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
+          "synapseName": {
+            "value": "[variables('synapse001Name')]"
+          },
+          "administratorUsername": {
+            "value": "[variables('administratorUsername')]"
+          },
+          "administratorPassword": {
+            "value": "[parameters('administratorPassword')]"
+          },
+          "synapseSqlAdminGroupName": {
+            "value": ""
+          },
+          "synapseSqlAdminGroupObjectID": {
+            "value": ""
+          },
+          "privateDnsZoneIdSynapseDev": {
+            "value": "[parameters('privateDnsZoneIdSynapseDev')]"
+          },
+          "privateDnsZoneIdSynapseSql": {
+            "value": "[parameters('privateDnsZoneIdSynapseSql')]"
+          },
+          "purviewId": {
+            "value": "[parameters('purviewId')]"
+          },
+          "synapseComputeSubnetId": {
+            "value": ""
+          },
+          "synapseDefaultStorageAccountFileSystemId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2019-10-01').outputs.storageFileSystemIds.value[0].storageFileSystemId]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "13182141804118079952"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "subnetId": {
+              "type": "string"
+            },
+            "synapseName": {
+              "type": "string"
+            },
+            "administratorUsername": {
+              "type": "string",
+              "defaultValue": "SqlServerMainUser"
+            },
+            "administratorPassword": {
+              "type": "secureString"
+            },
+            "synapseSqlAdminGroupName": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "synapseSqlAdminGroupObjectID": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "synapseDefaultStorageAccountFileSystemId": {
+              "type": "string"
+            },
+            "synapseComputeSubnetId": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "privateDnsZoneIdSynapseSql": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "privateDnsZoneIdSynapseDev": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "purviewId": {
+              "type": "string",
+              "defaultValue": ""
+            }
+          },
+          "functions": [],
+          "variables": {
+            "synapseDefaultStorageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), last(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
+            "synapseDefaultStorageAccountName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]",
+            "synapsePrivateEndpointNameSql": "[format('{0}-sql-private-endpoint', parameters('synapseName'))]",
+            "synapsePrivateEndpointNameSqlOnDemand": "[format('{0}-sqlondemand-private-endpoint', parameters('synapseName'))]",
+            "synapsePrivateEndpointNameDev": "[format('{0}-dev-private-endpoint', parameters('synapseName'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Synapse/workspaces",
+              "apiVersion": "2021-03-01",
+              "name": "[parameters('synapseName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "properties": {
+                "defaultDataLakeStorage": {
+                  "accountUrl": "[format('https://{0}.dfs.{1}', variables('synapseDefaultStorageAccountName'), environment().suffixes.storage)]",
+                  "filesystem": "[variables('synapseDefaultStorageAccountFileSystemName')]"
+                },
+                "managedResourceGroupName": "[parameters('synapseName')]",
+                "managedVirtualNetwork": "default",
+                "managedVirtualNetworkSettings": {
+                  "allowedAadTenantIdsForLinking": [],
+                  "linkedAccessCheckOnTargetResource": true,
+                  "preventDataExfiltration": true
+                },
+                "publicNetworkAccess": "Enabled",
+                "purviewConfiguration": {
+                  "purviewResourceId": "[parameters('purviewId')]"
+                },
+                "sqlAdministratorLogin": "[parameters('administratorUsername')]",
+                "sqlAdministratorLoginPassword": "[parameters('administratorPassword')]",
+                "virtualNetworkProfile": {
+                  "computeSubnetId": "[parameters('synapseComputeSubnetId')]"
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Synapse/workspaces/bigDataPools",
+              "apiVersion": "2021-05-01",
+              "name": "[format('{0}/{1}', parameters('synapseName'), 'bigDataPool001')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "autoPause": {
+                  "enabled": true,
+                  "delayInMinutes": 15
+                },
+                "autoScale": {
+                  "enabled": true,
+                  "minNodeCount": 3,
+                  "maxNodeCount": 10
+                },
+                "customLibraries": [],
+                "defaultSparkLogFolder": "logs/",
+                "dynamicExecutorAllocation": {
+                  "enabled": true,
+                  "minExecutors": 1,
+                  "maxExecutors": 9
+                },
+                "nodeSize": "Small",
+                "nodeSizeFamily": "MemoryOptimized",
+                "sessionLevelPackagesEnabled": true,
+                "sparkEventsFolder": "events/",
+                "sparkVersion": "3.1"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('synapseName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Synapse/workspaces/managedIdentitySqlControlSettings",
+              "apiVersion": "2021-03-01",
+              "name": "[format('{0}/{1}', parameters('synapseName'), 'default')]",
+              "properties": {
+                "grantSqlControlToManagedIdentity": {
+                  "desiredState": "Enabled"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('synapseName'))]"
+              ]
+            },
+            {
+              "condition": "[and(not(empty(parameters('synapseSqlAdminGroupName'))), not(empty(parameters('synapseSqlAdminGroupObjectID'))))]",
+              "type": "Microsoft.Synapse/workspaces/administrators",
+              "apiVersion": "2021-03-01",
+              "name": "[format('{0}/{1}', parameters('synapseName'), 'activeDirectory')]",
+              "properties": {
+                "administratorType": "ActiveDirectory",
+                "login": "[parameters('synapseSqlAdminGroupName')]",
+                "sid": "[parameters('synapseSqlAdminGroupObjectID')]",
+                "tenantId": "[subscription().tenantId]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('synapseName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Synapse/workspaces/firewallRules",
+              "apiVersion": "2021-06-01-preview",
+              "name": "[format('{0}/{1}', parameters('synapseName'), 'allowAll')]",
+              "properties": {
+                "startIpAddress": "0.0.0.0",
+                "endIpAddress": "255.255.255.255"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('synapseName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2020-11-01",
+              "name": "[variables('synapsePrivateEndpointNameSql')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "manualPrivateLinkServiceConnections": [],
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "[variables('synapsePrivateEndpointNameSql')]",
+                    "properties": {
+                      "groupIds": [
+                        "Sql"
+                      ],
+                      "privateLinkServiceId": "[resourceId('Microsoft.Synapse/workspaces', parameters('synapseName'))]",
+                      "requestMessage": ""
+                    }
+                  }
+                ],
+                "subnet": {
+                  "id": "[parameters('subnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('synapseName'))]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('privateDnsZoneIdSynapseSql')))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2020-11-01",
+              "name": "[format('{0}/{1}', variables('synapsePrivateEndpointNameSql'), 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "[format('{0}-arecord', variables('synapsePrivateEndpointNameSql'))]",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('privateDnsZoneIdSynapseSql')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('synapsePrivateEndpointNameSql'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2020-11-01",
+              "name": "[variables('synapsePrivateEndpointNameSqlOnDemand')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "manualPrivateLinkServiceConnections": [],
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "[variables('synapsePrivateEndpointNameSqlOnDemand')]",
+                    "properties": {
+                      "groupIds": [
+                        "SqlOnDemand"
+                      ],
+                      "privateLinkServiceId": "[resourceId('Microsoft.Synapse/workspaces', parameters('synapseName'))]",
+                      "requestMessage": ""
+                    }
+                  }
+                ],
+                "subnet": {
+                  "id": "[parameters('subnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('synapseName'))]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('privateDnsZoneIdSynapseSql')))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2020-11-01",
+              "name": "[format('{0}/{1}', variables('synapsePrivateEndpointNameSqlOnDemand'), 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "[format('{0}-arecord', variables('synapsePrivateEndpointNameSqlOnDemand'))]",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('privateDnsZoneIdSynapseSql')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('synapsePrivateEndpointNameSqlOnDemand'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2020-11-01",
+              "name": "[variables('synapsePrivateEndpointNameDev')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "manualPrivateLinkServiceConnections": [],
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "[variables('synapsePrivateEndpointNameDev')]",
+                    "properties": {
+                      "groupIds": [
+                        "Dev"
+                      ],
+                      "privateLinkServiceId": "[resourceId('Microsoft.Synapse/workspaces', parameters('synapseName'))]",
+                      "requestMessage": ""
+                    }
+                  }
+                ],
+                "subnet": {
+                  "id": "[parameters('subnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Synapse/workspaces', parameters('synapseName'))]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('privateDnsZoneIdSynapseDev')))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2020-11-01",
+              "name": "[format('{0}/{1}', variables('synapsePrivateEndpointNameDev'), 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "[format('{0}-arecord', variables('synapsePrivateEndpointNameDev'))]",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('privateDnsZoneIdSynapseDev')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('synapsePrivateEndpointNameDev'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "synapseId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Synapse/workspaces', parameters('synapseName'))]"
+            },
+            "synapseBigDataPool001Id": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Synapse/workspaces/bigDataPools', parameters('synapseName'), 'bigDataPool001')]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'storage001')]"
+      ]
+    },
+    {
+      "condition": "[parameters('enableRoleAssignments')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "synapse001RoleAssignmentStorageFileSystem",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "storageAccountFileSystemId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2019-10-01').outputs.storageFileSystemIds.value[0].storageFileSystemId]"
+          },
+          "synapseId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2019-10-01').outputs.synapseId.value]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "11818523926389760461"
+            }
+          },
+          "parameters": {
+            "storageAccountFileSystemId": {
+              "type": "string"
+            },
+            "synapseId": {
+              "type": "string"
+            }
+          },
+          "functions": [],
+          "variables": {
+            "storageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), last(split(parameters('storageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
+            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), split(parameters('storageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]",
+            "synapseSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseId'), '/')), 9), split(parameters('synapseId'), '/')[2], subscription().subscriptionId)]",
+            "synapseResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseId'), '/')), 9), split(parameters('synapseId'), '/')[4], resourceGroup().name)]",
+            "synapseName": "[if(greaterOrEquals(length(split(parameters('synapseId'), '/')), 9), last(split(parameters('synapseId'), '/')), 'incorrectSegmentLength')]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2020-04-01-preview",
+              "scope": "[format('Microsoft.Storage/storageAccounts/{0}/blobServices/{1}/containers/{2}', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName'))]",
+              "name": "[guid(uniqueString(resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName')), extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('synapseSubscriptionId'), variables('synapseResourceGroupName')), 'Microsoft.Synapse/workspaces', variables('synapseName'))))]",
+              "properties": {
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
+                "principalId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('synapseSubscriptionId'), variables('synapseResourceGroupName')), 'Microsoft.Synapse/workspaces', variables('synapseName')), '2021-03-01', 'full').identity.principalId]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'storage001')]",
+        "[resourceId('Microsoft.Resources/deployments', 'synapse001')]"
+      ]
+    },
+    {
+      "condition": "[and(parameters('enableRoleAssignments'), not(empty(parameters('powerPlatformServicePrincipalObjectId'))))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "powerPlatformRoleAssignmentStorage001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "servicePrincipalObjectId": {
+            "value": "[parameters('powerPlatformServicePrincipalObjectId')]"
+          },
+          "storageAccountId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2019-10-01').outputs.storageId.value]"
+          },
+          "roleId": {
+            "value": "c12c1c16-33a1-487b-954d-41c89c60f349"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "907671850504535586"
+            }
+          },
+          "parameters": {
+            "storageAccountId": {
+              "type": "string"
+            },
+            "servicePrincipalObjectId": {
+              "type": "string"
+            },
+            "roleId": {
+              "type": "string",
+              "metadata": {
+                "Owner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+                "Storage Blob Data Owner": "b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
+                "Storage Blob Data Contributor": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+                "Storage Account Contributor": "17d1049b-9a84-46fb-8f53-869881c3d3ab",
+                "Reader and Data Access": "c12c1c16-33a1-487b-954d-41c89c60f349"
+              }
+            }
+          },
+          "functions": [],
+          "variables": {
+            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountId'), '/')), 9), last(split(parameters('storageAccountId'), '/')), 'incorrectSegmentLength')]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2020-04-01-preview",
+              "scope": "[format('Microsoft.Storage/storageAccounts/{0}', variables('storageAccountName'))]",
+              "name": "[guid(uniqueString(parameters('roleId'), resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), parameters('servicePrincipalObjectId')))]",
+              "properties": {
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', parameters('roleId'))]",
+                "principalId": "[parameters('servicePrincipalObjectId')]",
+                "principalType": "ServicePrincipal"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'storage001')]"
+      ]
+    },
+    {
+      "condition": "[and(parameters('enableRoleAssignments'), not(empty(parameters('powerPlatformServicePrincipalObjectId'))))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "powerPlatformRoleAssignmentStorageFileSystem001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "servicePrincipalObjectId": {
+            "value": "[parameters('powerPlatformServicePrincipalObjectId')]"
+          },
+          "storageAccountFileSystemId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2019-10-01').outputs.storageFileSystemIds.value[1].storageFileSystemId]"
+          },
+          "roleId": {
+            "value": "b7e6dc6d-f1e8-4753-8033-0f276bb0955b"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "13299270416843528420"
+            }
+          },
+          "parameters": {
+            "storageAccountFileSystemId": {
+              "type": "string"
+            },
+            "servicePrincipalObjectId": {
+              "type": "string"
+            },
+            "roleId": {
+              "type": "string",
+              "metadata": {
+                "Owner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+                "Storage Blob Data Owner": "b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
+                "Storage Blob Data Contributor": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+                "Storage Account Contributor": "17d1049b-9a84-46fb-8f53-869881c3d3ab",
+                "Reader and Data Access": "c12c1c16-33a1-487b-954d-41c89c60f349"
+              }
+            }
+          },
+          "functions": [],
+          "variables": {
+            "storageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), last(split(parameters('storageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
+            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), split(parameters('storageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2020-04-01-preview",
+              "scope": "[format('Microsoft.Storage/storageAccounts/{0}/blobServices/{1}/containers/{2}', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName'))]",
+              "name": "[guid(uniqueString(parameters('roleId'), resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName')), parameters('servicePrincipalObjectId')))]",
+              "properties": {
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', parameters('roleId'))]",
+                "principalId": "[parameters('servicePrincipalObjectId')]",
+                "principalType": "ServicePrincipal"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'storage001')]"
+      ]
+    },
+    {
+      "condition": "[and(parameters('enableRoleAssignments'), not(empty(parameters('dataverseServicePrincipalObjectId'))))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "dataverseRoleAssignmentStorage001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "servicePrincipalObjectId": {
+            "value": "[parameters('dataverseServicePrincipalObjectId')]"
+          },
+          "storageAccountId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2019-10-01').outputs.storageId.value]"
+          },
+          "roleId": {
+            "value": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "907671850504535586"
+            }
+          },
+          "parameters": {
+            "storageAccountId": {
+              "type": "string"
+            },
+            "servicePrincipalObjectId": {
+              "type": "string"
+            },
+            "roleId": {
+              "type": "string",
+              "metadata": {
+                "Owner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+                "Storage Blob Data Owner": "b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
+                "Storage Blob Data Contributor": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+                "Storage Account Contributor": "17d1049b-9a84-46fb-8f53-869881c3d3ab",
+                "Reader and Data Access": "c12c1c16-33a1-487b-954d-41c89c60f349"
+              }
+            }
+          },
+          "functions": [],
+          "variables": {
+            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountId'), '/')), 9), last(split(parameters('storageAccountId'), '/')), 'incorrectSegmentLength')]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2020-04-01-preview",
+              "scope": "[format('Microsoft.Storage/storageAccounts/{0}', variables('storageAccountName'))]",
+              "name": "[guid(uniqueString(parameters('roleId'), resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), parameters('servicePrincipalObjectId')))]",
+              "properties": {
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', parameters('roleId'))]",
+                "principalId": "[parameters('servicePrincipalObjectId')]",
+                "principalType": "ServicePrincipal"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'storage001')]"
+      ]
+    },
+    {
+      "condition": "[and(parameters('enableRoleAssignments'), not(empty(parameters('dataverseServicePrincipalObjectId'))))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "dataverseRoleAssignmentStorage002",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "servicePrincipalObjectId": {
+            "value": "[parameters('dataverseServicePrincipalObjectId')]"
+          },
+          "storageAccountId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2019-10-01').outputs.storageId.value]"
+          },
+          "roleId": {
+            "value": "b7e6dc6d-f1e8-4753-8033-0f276bb0955b"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "907671850504535586"
+            }
+          },
+          "parameters": {
+            "storageAccountId": {
+              "type": "string"
+            },
+            "servicePrincipalObjectId": {
+              "type": "string"
+            },
+            "roleId": {
+              "type": "string",
+              "metadata": {
+                "Owner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+                "Storage Blob Data Owner": "b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
+                "Storage Blob Data Contributor": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+                "Storage Account Contributor": "17d1049b-9a84-46fb-8f53-869881c3d3ab",
+                "Reader and Data Access": "c12c1c16-33a1-487b-954d-41c89c60f349"
+              }
+            }
+          },
+          "functions": [],
+          "variables": {
+            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountId'), '/')), 9), last(split(parameters('storageAccountId'), '/')), 'incorrectSegmentLength')]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2020-04-01-preview",
+              "scope": "[format('Microsoft.Storage/storageAccounts/{0}', variables('storageAccountName'))]",
+              "name": "[guid(uniqueString(parameters('roleId'), resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), parameters('servicePrincipalObjectId')))]",
+              "properties": {
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', parameters('roleId'))]",
+                "principalId": "[parameters('servicePrincipalObjectId')]",
+                "principalType": "ServicePrincipal"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'storage001')]"
+      ]
+    },
+    {
+      "condition": "[and(parameters('enableRoleAssignments'), not(empty(parameters('dataverseServicePrincipalObjectId'))))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "dataverseRoleAssignmentStorage003",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "servicePrincipalObjectId": {
+            "value": "[parameters('dataverseServicePrincipalObjectId')]"
+          },
+          "storageAccountId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2019-10-01').outputs.storageId.value]"
+          },
+          "roleId": {
+            "value": "ba92f5b4-2d11-453d-a403-e96b0029c9fe"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "907671850504535586"
+            }
+          },
+          "parameters": {
+            "storageAccountId": {
+              "type": "string"
+            },
+            "servicePrincipalObjectId": {
+              "type": "string"
+            },
+            "roleId": {
+              "type": "string",
+              "metadata": {
+                "Owner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+                "Storage Blob Data Owner": "b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
+                "Storage Blob Data Contributor": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+                "Storage Account Contributor": "17d1049b-9a84-46fb-8f53-869881c3d3ab",
+                "Reader and Data Access": "c12c1c16-33a1-487b-954d-41c89c60f349"
+              }
+            }
+          },
+          "functions": [],
+          "variables": {
+            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountId'), '/')), 9), last(split(parameters('storageAccountId'), '/')), 'incorrectSegmentLength')]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2020-04-01-preview",
+              "scope": "[format('Microsoft.Storage/storageAccounts/{0}', variables('storageAccountName'))]",
+              "name": "[guid(uniqueString(parameters('roleId'), resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), parameters('servicePrincipalObjectId')))]",
+              "properties": {
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', parameters('roleId'))]",
+                "principalId": "[parameters('servicePrincipalObjectId')]",
+                "principalType": "ServicePrincipal"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'storage001')]"
+      ]
+    },
+    {
+      "condition": "[and(parameters('enableRoleAssignments'), not(empty(parameters('dataverseServicePrincipalObjectId'))))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "dataverseRoleAssignmentStorage004",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "servicePrincipalObjectId": {
+            "value": "[parameters('dataverseServicePrincipalObjectId')]"
+          },
+          "storageAccountId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2019-10-01').outputs.storageId.value]"
+          },
+          "roleId": {
+            "value": "17d1049b-9a84-46fb-8f53-869881c3d3ab"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "907671850504535586"
+            }
+          },
+          "parameters": {
+            "storageAccountId": {
+              "type": "string"
+            },
+            "servicePrincipalObjectId": {
+              "type": "string"
+            },
+            "roleId": {
+              "type": "string",
+              "metadata": {
+                "Owner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+                "Storage Blob Data Owner": "b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
+                "Storage Blob Data Contributor": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+                "Storage Account Contributor": "17d1049b-9a84-46fb-8f53-869881c3d3ab",
+                "Reader and Data Access": "c12c1c16-33a1-487b-954d-41c89c60f349"
+              }
+            }
+          },
+          "functions": [],
+          "variables": {
+            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountId'), '/')), 9), last(split(parameters('storageAccountId'), '/')), 'incorrectSegmentLength')]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2020-04-01-preview",
+              "scope": "[format('Microsoft.Storage/storageAccounts/{0}', variables('storageAccountName'))]",
+              "name": "[guid(uniqueString(parameters('roleId'), resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), parameters('servicePrincipalObjectId')))]",
+              "properties": {
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', parameters('roleId'))]",
+                "principalId": "[parameters('servicePrincipalObjectId')]",
+                "principalType": "ServicePrincipal"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'storage001')]"
+      ]
+    },
+    {
+      "condition": "[and(parameters('enableRoleAssignments'), not(empty(parameters('dataverseServicePrincipalObjectId'))))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "dataverseRoleAssignmentStorageFileSystem001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "servicePrincipalObjectId": {
+            "value": "[parameters('dataverseServicePrincipalObjectId')]"
+          },
+          "storageAccountFileSystemId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2019-10-01').outputs.storageFileSystemIds.value[2].storageFileSystemId]"
+          },
+          "roleId": {
+            "value": "17d1049b-9a84-46fb-8f53-869881c3d3ab"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "13299270416843528420"
+            }
+          },
+          "parameters": {
+            "storageAccountFileSystemId": {
+              "type": "string"
+            },
+            "servicePrincipalObjectId": {
+              "type": "string"
+            },
+            "roleId": {
+              "type": "string",
+              "metadata": {
+                "Owner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+                "Storage Blob Data Owner": "b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
+                "Storage Blob Data Contributor": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+                "Storage Account Contributor": "17d1049b-9a84-46fb-8f53-869881c3d3ab",
+                "Reader and Data Access": "c12c1c16-33a1-487b-954d-41c89c60f349"
+              }
+            }
+          },
+          "functions": [],
+          "variables": {
+            "storageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), last(split(parameters('storageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
+            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), split(parameters('storageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2020-04-01-preview",
+              "scope": "[format('Microsoft.Storage/storageAccounts/{0}/blobServices/{1}/containers/{2}', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName'))]",
+              "name": "[guid(uniqueString(parameters('roleId'), resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName')), parameters('servicePrincipalObjectId')))]",
+              "properties": {
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', parameters('roleId'))]",
+                "principalId": "[parameters('servicePrincipalObjectId')]",
+                "principalType": "ServicePrincipal"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'storage001')]"
+      ]
+    },
+    {
+      "condition": "[and(parameters('enableRoleAssignments'), not(empty(parameters('dataverseServicePrincipalObjectId'))))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "dataverseRoleAssignmentStorageFileSystem002",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "servicePrincipalObjectId": {
+            "value": "[parameters('dataverseServicePrincipalObjectId')]"
+          },
+          "storageAccountFileSystemId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2019-10-01').outputs.storageFileSystemIds.value[2].storageFileSystemId]"
+          },
+          "roleId": {
+            "value": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "13299270416843528420"
+            }
+          },
+          "parameters": {
+            "storageAccountFileSystemId": {
+              "type": "string"
+            },
+            "servicePrincipalObjectId": {
+              "type": "string"
+            },
+            "roleId": {
+              "type": "string",
+              "metadata": {
+                "Owner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+                "Storage Blob Data Owner": "b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
+                "Storage Blob Data Contributor": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+                "Storage Account Contributor": "17d1049b-9a84-46fb-8f53-869881c3d3ab",
+                "Reader and Data Access": "c12c1c16-33a1-487b-954d-41c89c60f349"
+              }
+            }
+          },
+          "functions": [],
+          "variables": {
+            "storageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), last(split(parameters('storageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
+            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), split(parameters('storageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2020-04-01-preview",
+              "scope": "[format('Microsoft.Storage/storageAccounts/{0}/blobServices/{1}/containers/{2}', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName'))]",
+              "name": "[guid(uniqueString(parameters('roleId'), resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName')), parameters('servicePrincipalObjectId')))]",
+              "properties": {
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', parameters('roleId'))]",
+                "principalId": "[parameters('servicePrincipalObjectId')]",
+                "principalType": "ServicePrincipal"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'storage001')]"
+      ]
+    },
+    {
+      "condition": "[and(parameters('enableRoleAssignments'), not(empty(parameters('dataverseServicePrincipalObjectId'))))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "dataverseRoleAssignmentStorageFileSystem003",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "servicePrincipalObjectId": {
+            "value": "[parameters('dataverseServicePrincipalObjectId')]"
+          },
+          "storageAccountFileSystemId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2019-10-01').outputs.storageFileSystemIds.value[2].storageFileSystemId]"
+          },
+          "roleId": {
+            "value": "b7e6dc6d-f1e8-4753-8033-0f276bb0955b"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "13299270416843528420"
+            }
+          },
+          "parameters": {
+            "storageAccountFileSystemId": {
+              "type": "string"
+            },
+            "servicePrincipalObjectId": {
+              "type": "string"
+            },
+            "roleId": {
+              "type": "string",
+              "metadata": {
+                "Owner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+                "Storage Blob Data Owner": "b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
+                "Storage Blob Data Contributor": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+                "Storage Account Contributor": "17d1049b-9a84-46fb-8f53-869881c3d3ab",
+                "Reader and Data Access": "c12c1c16-33a1-487b-954d-41c89c60f349"
+              }
+            }
+          },
+          "functions": [],
+          "variables": {
+            "storageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), last(split(parameters('storageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
+            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), split(parameters('storageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2020-04-01-preview",
+              "scope": "[format('Microsoft.Storage/storageAccounts/{0}/blobServices/{1}/containers/{2}', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName'))]",
+              "name": "[guid(uniqueString(parameters('roleId'), resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName')), parameters('servicePrincipalObjectId')))]",
+              "properties": {
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', parameters('roleId'))]",
+                "principalId": "[parameters('servicePrincipalObjectId')]",
+                "principalType": "ServicePrincipal"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'storage001')]"
+      ]
+    },
+    {
+      "condition": "[and(parameters('enableRoleAssignments'), not(empty(parameters('dataverseServicePrincipalObjectId'))))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "dataverseRoleAssignmentStorageFileSystem004",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "servicePrincipalObjectId": {
+            "value": "[parameters('dataverseServicePrincipalObjectId')]"
+          },
+          "storageAccountFileSystemId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2019-10-01').outputs.storageFileSystemIds.value[2].storageFileSystemId]"
+          },
+          "roleId": {
+            "value": "ba92f5b4-2d11-453d-a403-e96b0029c9fe"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "13299270416843528420"
+            }
+          },
+          "parameters": {
+            "storageAccountFileSystemId": {
+              "type": "string"
+            },
+            "servicePrincipalObjectId": {
+              "type": "string"
+            },
+            "roleId": {
+              "type": "string",
+              "metadata": {
+                "Owner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+                "Storage Blob Data Owner": "b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
+                "Storage Blob Data Contributor": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+                "Storage Account Contributor": "17d1049b-9a84-46fb-8f53-869881c3d3ab",
+                "Reader and Data Access": "c12c1c16-33a1-487b-954d-41c89c60f349"
+              }
+            }
+          },
+          "functions": [],
+          "variables": {
+            "storageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), last(split(parameters('storageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
+            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), split(parameters('storageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2020-04-01-preview",
+              "scope": "[format('Microsoft.Storage/storageAccounts/{0}/blobServices/{1}/containers/{2}', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName'))]",
+              "name": "[guid(uniqueString(parameters('roleId'), resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName')), parameters('servicePrincipalObjectId')))]",
+              "properties": {
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', parameters('roleId'))]",
+                "principalId": "[parameters('servicePrincipalObjectId')]",
+                "principalType": "ServicePrincipal"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'storage001')]"
+      ]
+    }
+  ],
+  "outputs": {
+    "synapseId": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2019-10-01').outputs.synapseId.value]"
+    },
+    "dataverseDataLakeFileSystemId": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2019-10-01').outputs.storageFileSystemIds.value[2].storageFileSystemId]"
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "eastus"
+        },
+        "environment": {
+            "value": "dev"
+        },
+        "prefix": {
+            "value": "mydverse"
+        },
+        "tags": {
+            "value": {}
+        },
+        "administratorPassword": {
+            "value": "<your-secure-password>"
+        },
+        "powerPlatformServicePrincipalObjectId": {
+            "value": ""
+        },
+        "dataverseServicePrincipalObjectId": {
+            "value": ""
+        },
+        "purviewId": {
+            "value": ""
+        },
+        "enableRoleAssignments": {
+            "value": true
+        },
+        "subnetId": {
+            "value": "/subscriptions/1f6c9a98-a387-420d-853c-9d27cfda0f33/resourceGroups/mabuss-dataverse/providers/Microsoft.Network/virtualNetworks/mydverse-dev-vnet/subnets/default"
+        },
+        "privateDnsZoneIdKeyVault": {
+            "value": "/subscriptions/1f6c9a98-a387-420d-853c-9d27cfda0f33/resourceGroups/mabuss-dataverse/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
+        },
+        "privateDnsZoneIdSynapseDev": {
+            "value": "/subscriptions/1f6c9a98-a387-420d-853c-9d27cfda0f33/resourceGroups/mabuss-dataverse/providers/Microsoft.Network/privateDnsZones/privatelink.dev.azuresynapse.net"
+        },
+        "privateDnsZoneIdSynapseSql": {
+            "value": "/subscriptions/1f6c9a98-a387-420d-853c-9d27cfda0f33/resourceGroups/mabuss-dataverse/providers/Microsoft.Network/privateDnsZones/privatelink.sql.azuresynapse.net"
+        },
+        "privateDnsZoneIdBlob": {
+            "value": "/subscriptions/1f6c9a98-a387-420d-853c-9d27cfda0f33/resourceGroups/mabuss-dataverse/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+        },
+        "privateDnsZoneIdDfs": {
+            "value": "/subscriptions/1f6c9a98-a387-420d-853c-9d27cfda0f33/resourceGroups/mabuss-dataverse/providers/Microsoft.Network/privateDnsZones/privatelink.dfs.core.windows.net"
+        }
+    }
+}
