@@ -171,7 +171,7 @@ _Figure 5: Using an existing hub and spoke platform._
 - On a hub and spoke architecture, all spokes share the same ExpressRoute (or VPN) connection, and it is not possible to allocate dedicated bandwidth per spoke.
   - Such scenarios are suceptible to noisy-neighbor scenarios, where an application that consumes large amounts of bandwidth could negatively impact other applications sharing the same ExpressRoute connection.
   - Azure does not provide a metric to identify the ExpressRoute traffic being consumed by a specific application.
-- On a hub and spoke architecture, hubs also share common resources in the hub, such as Azure Firewall (or a 3rd party NVA) and the ExpressRoute (or VPN) gateway.
+- On a hub and spoke architecture, hubs also share common resources in the hub, such as Azure Firewall (or a third-party NVA) and the ExpressRoute (or VPN) gateway.
 - FastPath is available to remove the ExpressRoute Gateway from the data path and only be used for control plane operations. While this feature would allow to prevent the ExpressRoute Gateway from becoming a bottleneck for network intense applications, FastPath has currently some [limitations](https://docs.microsoft.com/azure/expressroute/about-fastpath#limitations).
   - If you connect to a private endpoint in your virtual network from your on-premises network, over a non-100Gbps ExpressRoute Direct circuit, the connection will go through the virtual network gateway. FastPath Connectivity to a private endpoint over a 100Gb ExpressRoute Direct circuit is supported.
   - Note that Private Link Connectivity for 10Gbps ExpressRoute Direct Connectivity is currently in [public preview](https://docs.microsoft.com/azure/expressroute/about-fastpath#public-preview).
@@ -190,7 +190,7 @@ _Figure 5: Using an existing hub and spoke platform._
 - Consider ExpressRoute Direct for high-bandwidth network analytics scenarios. ExpressRoute Direct would provide additional benefits compared to partner ExpressRoute circuits, including:
   - Higher bandwidth (up to 100 Gbps).
   - Possibility to create multiple ExpressRoute circuits from your assigned port pair (for example, to isolate traffic).
-  - FastPath connectivity to a private endpoint over a 100Gb ExpressRoute Direct circuit is supported. 
+  - FastPath connectivity to a private endpoint over a 100Gb ExpressRoute Direct circuit is supported.
   - (Public preview) Private Link Connectivity for 10Gbps ExpressRoute Direct connectivity.
 - Enable FastPath and (preview) VNet peering support for FastPath if you are using (or will use) a 100 Gbps ExpressRoute connection. This will ensure the ExpressRoute gateway is not on the data path, and you can reach your private endpoints by maximizing bandwidth available on the ExpressRoute circuit.
 
