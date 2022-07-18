@@ -158,11 +158,11 @@ _Figure 4: Connectivity to Azure via ExpressRoute with Microsoft peering_
 
 ## Using an existing hub and spoke platform
 
-While the previous section depicted the network connectivity options into an isolated landing zone, some operators may want to leverage their existing hub and spoke (or Azure Virtual WAN) network platform on Azure and deploy a network analytics solution of their choice on a spoke VNet that is connected via VNet peering to the hub VNet. In this way, operators can reuse and share existing ExpressRoute or VPN connectivity between on-premises and their hub VNet.
+While the previous section depicted the network connectivity options into an isolated landing zone, some operators may want to leverage their existing hub and spoke (or Azure Virtual WAN) network platform on Azure and deploy a network analytics solution of their choice on a spoke VNet that is connected to the hub VNet via VNet peering. In this way, operators can reuse and share existing ExpressRoute or VPN connectivity between on-premises and Azure.
 
 This architecture is depicted in figure 5 below:
 
-![ExpressRouteMSFTPeering](./images/afo-netanalytics-hub-spoke.png)
+![HubAndSpoke](./images/afo-netanalytics-hub-spoke.png)
 
 _Figure 5: Using an existing hub and spoke platform._
 
@@ -184,8 +184,11 @@ _Figure 5: Using an existing hub and spoke platform._
 ### Design recommendations
 
 - To copy/upload data into an Azure storage PaaS service (such as ADLS Gen2), you have the following options:
-  - (Recommneded) Create a private endpoint to the Azure storage PaaS service, and it will be accesible from on-premises. You can then copy/upload data using any tool/system either on-premises (push) or from Azure (pull). This is the most secure option, as the storage service is only reachable via the private endpoint, but it will generate costs as private endpoint is a metered service.
-  - Enable VNet service endpoint on a subnet for the Azure storage service you will use. Then, you need to deploy a service on the same subnet which will be the responsible to pull the data from on-premises and upload it into the storage account. While this option will not incur into data transfers fees (VNet service endpoint is a free service), this option is not as secure as private endpoint, as storage service requires to be accesible over its public endpoint (which can be secured), but also, the subnet enabled for private endpoints can reach other storage accounts and not only your designated one.
+  - (Recommneded) Create a private endpoint to the Azure storage PaaS service, and it will be accesible from on-premises. You can then copy/upload data using any tool/system either on-premises (push) or from Azure (pull). This is the most secure option, as the storage service is only reachable via the private endpoint, but it will generate costs as private endpoint is a metered service. See figure 5 for more details.
+  - Enable VNet service endpoint on a subnet for the Azure storage service you will use. Then, you need to deploy a service on the same subnet which will be the responsible to pull the data from on-premises and upload it into the storage account, as Azure storage services exposed via VNet service endpoints are not accesible from on-premises. While private endpoint as described previously is a metered service, VNet service endpoint is a free service. VNet service endpoint is not as secure as private endpoint, as storage service requires to be accesible over its public endpoint (which can be secured), but also, the subnet enabled for private endpoints can reach other storage accounts and not only your designated ones. See figure 6 for more details.
+  ![HubAndSpoke](./images/afo-netanalytics-hub-spoke-svc-endpoint.png)
+
+    _Figure 6: Using an existing hub and spoke platform and accessing storage service via Service Endpoint._
 - Plan carefully for the bandwidth utilization of your network analytics solution. Depending on the amount of traffic, it could saturate the bandwidth available on the ExpressRoute circuit or the ExpressRoute gateway. This in turn, could cause a negative effect on the rest of the applications that use the same ExpressRoute circuit and gateway (spoke VNets).
 - Consider ExpressRoute Direct for high-bandwidth network analytics scenarios. ExpressRoute Direct would provide additional benefits compared to partner ExpressRoute circuits, including:
   - Higher bandwidth (up to 100 Gbps).
