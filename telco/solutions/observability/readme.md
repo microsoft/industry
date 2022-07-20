@@ -17,7 +17,7 @@ This article provides design considerations and recommendations for Network Anal
   * [VPN](#vpn)
   * [ExpressRoute (Private Peering)](#expressroute-private-peering)
   * [ExpressRoute (Microsoft Peering)](#expressroute-microsoft-peering)
-* [Network Analytics Landing Zone types](#network-analytics-landing-zone-types)
+* [Using an existing hub and spoke platform](#using-an-existing-hub-and-spoke-platform)
 * [Reference implementation](#reference-implementation)
 
 ## Networking options
@@ -156,19 +156,46 @@ _Figure 4: Connectivity to Azure via ExpressRoute with Microsoft peering_
 - Use Azure route filters and configure them to the Azure service and region that you require. This will ensure that Microsoft will only advertise the IP prefixes required (instead of advertising prefixes for all services).
 - Use ExpressRoute direct if you require more than 10Gbps bandwidth.
 
-## Network Analytics Landing Zone types
+## Using an existing hub and spoke platform
 
-Depending the networking option you select for your Network Analytics landing zone, you would require a traditional Azure landing zone, or a especialized Operator Landing Zone as per the guidance in table 1 below:
+While the previous section depicted the network connectivity options into an isolated landing zone, some operators may want to leverage their existing hub and spoke (or Azure Virtual WAN) network platform on Azure and deploy a network analytics solution of their choice on a spoke VNet that is connected to the hub VNet via VNet peering. In this way, operators can reuse and share existing ExpressRoute or VPN connectivity between on-premises and Azure.
 
-| Connectivity Model  | Landing Zone Type  | Connectivity provided from  | Details  |
-|--- |--- |--- |--- |
-| Internet  | Azure Landing Zone and Operator Landing Zone  | Landing Zone  | You can implement this landing zone as an [Azure Landing Zone](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/) or as an Operator Landing Zone |
-| VPN  | Azure Landing Zone  | Landing Zones Platform  |  You can implement this landing zone as an [Azure Landing Zone](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/) |
-| ExpressRoute (Private Peering)  | Azure Landing Zone  | Landing Zones Platform  | When using connectivity provided by hub or virtual hub network. You can implement this landing zone as an [Azure Landing Zone](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/)  |
-| ExpressRoute (Private Peering)  | Operator Landing Zone  | Landing Zone  | When deploying ExpressRoute gateway within the landing zone  |
-| ExpressRoute (Microsoft Peering)  | Operator Landing Zone  | Landing Zone  |   |
+This architecture is depicted in figure 5 below:
 
-_Table 1: Network Analytics Landing Zones depending on the network connectivity model_
+![HubAndSpoke](./images/afo-netanalytics-hub-spoke.png)
+
+_Figure 5: Using an existing hub and spoke platform._
+
+### Design considerations
+
+- On a hub and spoke architecture, all spokes share the same ExpressRoute (or VPN) connection, and it is not possible to allocate dedicated bandwidth per spoke.
+  - Such scenarios are suceptible to noisy-neighbor scenarios, where an application that consumes large amounts of bandwidth could negatively impact other applications sharing the same ExpressRoute connection.
+  - Azure does not provide a metric to identify the ExpressRoute traffic being consumed by a specific application.
+- On a hub and spoke architecture, hubs also share common resources in the hub, such as Azure Firewall (or a third-party NVA) and the ExpressRoute (or VPN) gateway.
+- FastPath is available to remove the ExpressRoute Gateway from the data path and only be used for control plane operations. While this feature would allow to prevent the ExpressRoute Gateway from becoming a bottleneck for network intense applications, FastPath has currently some [limitations](https://docs.microsoft.com/azure/expressroute/about-fastpath#limitations).
+  - If you connect to a private endpoint in your virtual network from your on-premises network, over a non-100Gbps ExpressRoute Direct circuit, the connection will go through the virtual network gateway. FastPath Connectivity to a private endpoint over a 100Gb ExpressRoute Direct circuit is supported.
+  - Note that Private Link Connectivity for 10Gbps ExpressRoute Direct Connectivity is currently in [public preview](https://docs.microsoft.com/azure/expressroute/about-fastpath#public-preview).
+- Currently there is a [limitation](https://docs.microsoft.com/azure/private-link/private-endpoint-overview#limitations) with private endpoints in which traffic that's destined for a private endpoint through a user-defined route (UDR) might be asymmetric.
+  - On this case, return traffic from a private endpoint bypasses a network virtual appliance (NVA) and attempts to return to the source virtual machine.
+  - Note that there is a public preview of [Private Link UDR Support](https://azure.microsoft.com/updates/public-preview-of-private-link-udr-support/). This feature enhancement will provide you with the ability to apply custom routes to traffic destined to a private endpoint with a wider subnet range.
+- Note that both, VNet peering and private endpoints are metered services. Thus, there will be charges depending on the amount of traffic through them.
+  - When accessing Private Endpoints from a peered Network, you will only be charged for Private Link Premium. You will not be charged for Peering.
+
+### Design recommendations
+
+- To copy/upload data into an Azure storage PaaS service (such as ADLS Gen2), you have the following options:
+  - (Recommneded) Create a private endpoint to the Azure storage PaaS service, and it will be accesible from on-premises. You can then copy/upload data using any tool/system either on-premises (push) or from Azure (pull). This is the most secure option, as the storage service is only reachable via the private endpoint, but it will generate costs as private endpoint is a metered service. See figure 5 for more details.
+  - Enable VNet service endpoint on a subnet for the Azure storage service you will use. Then, you need to deploy a service on the same subnet which will be the responsible to pull the data from on-premises and upload it into the storage account, as Azure storage services exposed via VNet service endpoints are not accesible from on-premises. While private endpoint as described previously is a metered service, VNet service endpoint is a free service. VNet service endpoint is not as secure as private endpoint, as storage service requires to be accesible over its public endpoint (which can be secured), but also, the subnet enabled for private endpoints can reach other storage accounts and not only your designated ones. See figure 6 for more details.
+  ![HubAndSpoke](./images/afo-netanalytics-hub-spoke-svc-endpoint.png)
+
+    _Figure 6: Using an existing hub and spoke platform and accessing storage service via Service Endpoint._
+- Plan carefully for the bandwidth utilization of your network analytics solution. Depending on the amount of traffic, it could saturate the bandwidth available on the ExpressRoute circuit or the ExpressRoute gateway. This in turn, could cause a negative effect on the rest of the applications that use the same ExpressRoute circuit and gateway (spoke VNets).
+- Consider ExpressRoute Direct for high-bandwidth network analytics scenarios. ExpressRoute Direct would provide additional benefits compared to partner ExpressRoute circuits, including:
+  - Higher bandwidth (up to 100 Gbps).
+  - Possibility to create multiple ExpressRoute circuits from your assigned port pair (for example, to isolate traffic).
+  - FastPath connectivity to a private endpoint over a 100Gb ExpressRoute Direct circuit is supported.
+  - (Public preview) Private Link Connectivity for 10Gbps ExpressRoute Direct connectivity.
+- Enable FastPath and (preview) VNet peering support for FastPath if you are using (or will use) a 100 Gbps ExpressRoute connection. This will ensure the ExpressRoute gateway is not on the data path, and you can reach your private endpoints by maximizing bandwidth available on the ExpressRoute circuit.
 
 ## Reference implementation
 
@@ -184,11 +211,11 @@ This reference implementation is intended for landing zone owners for them to de
 | ExpressRoute with Microsoft Peering  | ![ExpressRoute_Microsoft_Peering](./images/afo-observability-lz-er-msft.png)  |
 | ExpressRoute with Private Peering  | ![ExpressRoute_Private_Peering](./images/afo-observability-lz-er-pp.png)  |
 
-_Table 2: Network connectivity models in the Network Analytics Landing Zone reference implementation_
+_Table 1: Network connectivity models in the Network Analytics Landing Zone reference implementation_
 
-As table 2 depicts, the Network Analytics Landing Zones reference implementation deploys and configures several Azure resources. The list of resources are described in table 3 below along with a description. Once the Network Analytics Landing Zones reference implementation deploys those resources, the landing zone is ready for the deployment of Azure storage and Azure analytical services that you would require for your own environment.
+As table 1 depicts, the Network Analytics Landing Zones reference implementation deploys and configures several Azure resources. The list of resources are described in table 2 below along with a description. Once the Network Analytics Landing Zones reference implementation deploys those resources, the landing zone is ready for the deployment of Azure storage and Azure analytical services that you would require for your own environment.
 
-Table 3 below also provides links to the deployment guides which include step-by-step deployment instructions for your Network Analytics landing zone. Table 2 also provides links to the Network Analytics solution accelerator to help you deploy and configure data and analitical services in your landing zone.
+Table 2 below also provides links to the deployment guides which include step-by-step deployment instructions for your Network Analytics landing zone. Table 1 also provides links to the Network Analytics solution accelerator to help you deploy and configure data and analitical services in your landing zone.
 
 | Azure resource | Deployed by | Details | Deploy |
 |---|---|---|---|
@@ -205,4 +232,4 @@ Table 3 below also provides links to the deployment guides which include step-by
 | Private Endpoints | Landing Zone owner |  | Solution Accelerator (coming soon) |
 | Analytics services | Landing Zone owner | Any analytics service(s) as required by the landing zone owner (for example Azure Synapse) | Solution Accelerator (coming soon) |
 
-_Table 3: Resources deployed by the Obervability Landing Zones reference implementation_
+_Table 2: Resources deployed by the Obervability Landing Zones reference implementation_
