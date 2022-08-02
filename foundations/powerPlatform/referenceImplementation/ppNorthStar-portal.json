@@ -546,6 +546,27 @@
                             "visible": true
                         },
                         {
+                            "name": "ppAdminManagedEnv",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Managed Environments (Preview) for the Admin Environments",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "Managed Environments is a suite of capabilities that allows admins to manage Power Platform at scale with more control, less effort, and more insights",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": true
+                        },
+                        {
                             "name": "ppAdminBilling",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Create Billing Policy and Use Azure Subscription for pay-as-you-go for the environments",
@@ -904,6 +925,27 @@
                                         "value": "no"
                                     }
                                 ]
+                            },
+                            "visible": "[equals(steps('landingZones').ppDefaultRename, 'yes')]"
+                        },
+                        {
+                            "name": "ppDefaultManagedEnv",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Managed Environments (Preview) for the Default Environment",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "Managed Environments is a suite of capabilities that allows admins to manage Power Platform at scale with more control, less effort, and more insights",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ],
+                                "required": true
                             },
                             "visible": "[equals(steps('landingZones').ppDefaultRename, 'yes')]"
                         },
@@ -2531,6 +2573,27 @@
                             "visible": "[not(equals(steps('landingZones').ppCitizen, 'no'))]"
                         },
                         {
+                            "name": "ppCitizenManagedEnv",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Managed Environments (Preview) for the Environments for citizen development",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "Managed Environments is a suite of capabilities that allows admins to manage Power Platform at scale with more control, less effort, and more insights",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[not(equals(steps('landingZones').ppCitizen, 'no'))]"
+                        },
+                        {
                             "name": "ppCitizenAlm",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Create Development, Test, and Production environments for each landing zone",
@@ -2582,7 +2645,7 @@
                             "type": "Microsoft.Common.TextBlock",
                             "visible": true,
                             "options": {
-                                "text": "The Landing Zones for professional developrs will be optimized for enterprise application scenarios, and provide them with the required agility and simplicity to rapidly build robust enterprise applications with mature application lifecycle management. You can grant business units or indivuduals access to the Environments post creation.",
+                                "text": "The Landing Zones for professional developers will be optimized for enterprise application scenarios, and provide them with the required agility and simplicity to rapidly build robust enterprise applications with mature application lifecycle management. You can grant business units or indivuduals access to the Environments post creation.",
                                 "link": {
                                     "label": "Learn more",
                                     "uri": "https://www.microsoft.com"
@@ -4182,6 +4245,27 @@
                             "visible": "[not(equals(steps('landingZones').ppPro, 'no'))]"
                         },
                         {
+                            "name": "ppProManagedEnv",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Managed Environments (Preview) for the Environments for professional development",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "Managed Environments is a suite of capabilities that allows admins to manage Power Platform at scale with more control, less effort, and more insights",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[not(equals(steps('landingZones').ppPro, 'no'))]"
+                        },
+                        {
                             "name": "ppProAlm",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Create Development, Test, and Production environments for each landing zone",
@@ -4362,6 +4446,27 @@
                             }
                         },
                         {
+                            "name": "ppIndustryManagedEnv",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Managed Environments (Preview) for the Environments for industry cloud",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "Managed Environments is a suite of capabilities that allows admins to manage Power Platform at scale with more control, less effort, and more insights",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[not(equals(steps('landingZones').ppIndustry, 'no'))]"
+                        },
+                        {
                             "name": "ppIndustryAlm",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Create Development, Test, and Production environments for each landing zone",
@@ -4418,10 +4523,12 @@
                 "ppEnvCapacitySetting": "[steps('environments').ppEnvCapacitySetting]",
                 "ppAdminEnvNaming": "[steps('environments').ppAdminEnvNaming]",
                 "ppAdminRegion": "[steps('environments').ppAdminRegion]",
+                "ppAdminManagedEnv": "[steps('environments').ppAdminManagedEnv]",
                 "ppAdminBilling": "[steps('environments').ppAdminBilling]",
                 "ppAdminCoeSetting": "[steps('environments').ppAdminCoeSetting]",
                 "ppDefaultRenameText": "[steps('landingZones').ppDefaultRenameText]",
                 "ppDefaultDlp": "[steps('landingZones').ppDefaultDlp]",
+                "ppDefaultManagedEnv": "[steps('landingZones').ppDefaultManagedEnv]",
                 "ppEnableAzureMonitor": "[steps('mgmt').ppEnableAzureMonitor]",
                 "ppEnableAppInsights": "[steps('mgmt').ppEnableAppInsights]",
                 "ppEnableAzureSecurity": "[steps('mgmt').ppEnableAzureSecurity]",
@@ -4439,6 +4546,7 @@
                 "ppCitizenCurrency": "[steps('landingZones').ppCitizenCurrency]",
                 "ppCitizenRegion": "[steps('landingZones').ppCitizenRegion]",
                 "ppCitizenDlp": "[steps('landingZones').ppCitizenDlp]",
+                "ppCitizenManagedEnv": "[steps('landingZones').ppCitizenManagedEnv]",
                 "ppCitizenAlm": "[steps('landingZones').ppCitizenAlm]",
                 "ppCitizenBilling": "[steps('landingZones').ppCitizenBilling]",
                 "ppPro": "[steps('landingZones').ppPro]",
@@ -4449,12 +4557,14 @@
                 "ppProLanguage": "[steps('landingZones').ppProLanguage]",
                 "ppProCurrency": "[steps('landingZones').ppProCurrency]",
                 "ppProDlp": "[steps('landingZones').ppProDlp]",
+                "ppProManagedEnv": "[steps('landingZones').ppProManagedEnv]",
                 "ppProAlm": "[steps('landingZones').ppProAlm]",
                 "ppProRegion": "[steps('landingZones').ppProRegion]",
                 "ppProBilling": "[steps('landingZones').ppProBilling]",
                 "ppSelectIndustry": "[steps('landingZones').ppSelectIndustry]",
                 "ppIndustryNaming": "[steps('landingZones').ppIndustryNaming]",
                 "ppIndustryRegion": "[steps('landingZones').ppIndustryRegion]",
+                "ppIndustryManagedEnv": "[steps('landingZones').ppIndustryManagedEnv]",
                 "ppIndustryBilling": "[steps('landingZones').ppIndustryBilling]",
                 "ppIndustryAlm": "[steps('landingZones').ppIndustryAlm]"
             },

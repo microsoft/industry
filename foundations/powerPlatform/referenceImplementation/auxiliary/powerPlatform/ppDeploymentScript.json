@@ -132,6 +132,17 @@
                 "description": "AZURE-only parameter. SubscriptionId for the billing subscription."
             }
         },
+        "ppAdminManagedEnv": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "no",
+                "yes"
+            ],
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
         "ppAdminCoeSetting": {
             "type": "string",
             "allowedValues": [
@@ -157,6 +168,17 @@
                 "no"
             ],
             "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
+        "ppDefaultManagedEnv": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "no",
+                "yes"
+            ],
             "metadata": {
                 "description": "Select to enable/disable this setting."
             }
@@ -219,6 +241,17 @@
             "defaultValue": "no",
             "metadata": {
                 "description": "Select to enable/disable recommended DLP policies for citizen dev environments."
+            }
+        },
+        "ppCitizenManagedEnv": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "no",
+                "yes"
+            ],
+            "metadata": {
+                "description": "Select to enable/disable this setting."
             }
         },
         "ppCitizenBilling": {
@@ -286,6 +319,17 @@
             "defaultValue": "no",
             "metadata": {
                 "description": "Select to enable/disable recommended DLP policies for pro dev environments."
+            }
+        },
+        "ppProManagedEnv": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "no",
+                "yes"
+            ],
+            "metadata": {
+                "description": "Select to enable/disable this setting."
             }
         },
         "ppProBilling": {
@@ -366,6 +410,17 @@
             "defaultValue": "unitedstates",
             "metadata": {
                 "description": "Provide location for the pro dev environments."
+            }
+        },
+        "ppIndustryManagedEnv": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "no",
+                "yes"
+            ],
+            "metadata": {
+                "description": "Select to enable/disable this setting."
             }
         },
         "ppIndustryBilling": {
@@ -506,8 +561,10 @@
                                                     '-PPAdminBilling', ' ', parameters('ppAdminBilling'), ' ',
                                                     '-PPAdminRegion', ' ', parameters('ppAdminRegion'), ' ',
                                                     '-PPAdminCoeSetting', ' ', parameters('ppAdminCoeSetting'), ' ',
+                                                    '-PPAdminManagedEnv', ' ', parameters('ppAdminManagedEnv'), ' ',
                                                     '-PPDefaultRenameText', ' ', parameters('ppDefaultRenameText'), ' ',
                                                     '-PPDefaultDLP', ' ', parameters('ppDefaultDlp'), ' ',
+                                                    '-PPDefaultManagedEnv', ' ', parameters('ppDefaultManagedEnv'), ' ',
                                                     '-PPCitizen', ' ', parameters('ppCitizen'), ' ',
                                                     '-PPCitizenConfiguration', ' ', parameters('ppCitizenConfiguration'), ' ',
                                                     '-PPCitizenCount', ' ', parameters('ppCitizenCount'), ' ',
@@ -517,6 +574,7 @@
                                                     '-PPCitizenCurrency', ' ', parameters('ppCitizenCurrency'), ' ',
                                                     '-PPCitizenRegion', ' ', parameters('ppCitizenRegion'), ' ',
                                                     '-PPCitizenDlp', ' ', parameters('ppCitizenDlp'), ' ',
+                                                    '-PPCitizenManagedEnv', ' ', parameters('ppCitizenManagedEnv'), ' ',
                                                     '-PPCitizenBilling', ' ', parameters('ppCitizenBilling'), ' ',
                                                     '-PPCitizenAlm', ' ', parameters('ppCitizenAlm'), ' ',
                                                     '-PPPro', ' ', parameters('ppPro'), ' ',
@@ -528,11 +586,13 @@
                                                     '-PPProCurrency', ' ', parameters('ppProCurrency'), ' ' ,
                                                     '-PPProRegion', ' ', parameters('ppProRegion'), ' ',
                                                     '-PPProDlp', ' ', parameters('ppProDlp'), ' ',
+                                                    '-PPProManagedEnv', ' ', parameters('ppProManagedEnv'), ' ',
                                                     '-PPProBilling', ' ', parameters('ppProBilling'), ' ',
                                                     '-PPProAlm', ' ', parameters('ppProAlm'), ' ',
                                                     '-PPSelectIndustry', ' ', parameters('ppSelectIndustry'), ' ',
                                                     '-PPIndustryNaming', ' ', parameters('ppIndustryNaming'), ' ',
                                                     '-PPIndustryRegion', ' ', parameters('ppIndustryRegion'), ' ',
+                                                    '-PPIndustryManagedEnv', ' ', parameters('ppIndustryManagedEnv'), ' ',
                                                     '-PPIndustryAlm', ' ', parameters('ppIndustryAlm'), ' ',
                                                     '-PPIndustryBilling', ' ', parameters('ppIndustryBilling')
                                                     )]",
