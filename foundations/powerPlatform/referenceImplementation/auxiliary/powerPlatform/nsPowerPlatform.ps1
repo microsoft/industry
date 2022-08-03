@@ -19,15 +19,18 @@ param (
     [ValidateSet('unitedstates', 'europe', 'asia', 'australia', 'india', 'japan', 'canada', 'unitedkingdom', 'unitedstatesfirstrelease', 'southamerica', 'france', 'switzerland', 'germany', 'unitedarabemirates')][Parameter(Mandatory = $false)][string]$PPAdminRegion,
     [Parameter(Mandatory = $false)][string]$PPAdminBilling,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPAdminCoeSetting,
+    [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPAdminManagedEnv,
     #Landing Zones
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPDefaultRenameText,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPDefaultDLP,
+    [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPDefaultManagedEnv,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPCitizen,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPCitizenCount,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPCitizenNaming,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPCitizenRegion,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPCitizenDlp,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPCitizenBilling,
+    [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPCitizenManagedEnv,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPCitizenAlm,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPCitizenDescription,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPCitizenCurrency,
@@ -39,6 +42,7 @@ param (
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPProRegion,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPProDlp,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPProBilling,
+    [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPProManagedEnv,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPProAlm,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPProDescription,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPProCurrency,
@@ -48,7 +52,8 @@ param (
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPIndustryNaming,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPIndustryRegion,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPIndustryBilling,
-    [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPIndustryAlm
+    [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPIndustryAlm,
+    [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPIndustryManagedEnv
 )
 
 $DeploymentScriptOutputs = @{}
@@ -285,7 +290,7 @@ if (-not [string]::IsNullOrEmpty($PPDefaultRenameText)) {
             Write-Host "Renamed default environment from $oldDefaultName to $PPDefaultRenameText"
         }
         catch {
-            throw "Failed to rename Default Environment"
+            Write-Warning "Failed to rename Default Environment`r`n$_"
         }
     }
 }
@@ -299,6 +304,17 @@ if ($PPDefaultDLP -eq 'Yes') {
         Write-Warning "Failed to create Default Environment DLP Policy`r`n$_"
     }
 }
+# Enable managed environment for default environment
+if ($defaultEnvironment.properties.governanceConfiguration.protectionLevel -ne 'Standard' -and $PPDefaultManagedEnv -eq 'Yes') {
+    try {
+        Write-Host "Enabling managed environment for the default environment"
+        Enable-PowerOpsManagedEnvironment -EnvironmentName $defaultEnvironment.name
+    }
+    catch {
+        Write-Warning "Failed to enable managed environment for default environment"
+    }
+
+}
 #endregion default environment
 
 #region create admin environments and import COE solution
@@ -307,7 +323,7 @@ if (-not [string]::IsNullOrEmpty($PPAdminEnvNaming)) {
     foreach ($envTier in $envTiers) {
         try {
             $adminEnvName = '{0}-admin-{1}' -f $PPAdminEnvNaming, $envTier
-            $null = New-PowerOpsEnvironment -Name $adminEnvName -Location $PPAdminRegion -Dataverse $true
+            $null = New-PowerOpsEnvironment -Name $adminEnvName -Location $PPAdminRegion -Dataverse $true -ManagedEnvironment ($PPAdminManagedEnv -eq 'Yes')
             Write-Host "Created environment $adminEnvName in $PPAdminRegion"
         }
         catch {
@@ -375,13 +391,14 @@ if ($PPCitizen -in "yes", "half" -and $PPCitizenCount -ge 1 -or $PPCitizen -eq '
     foreach ($environment in $environmentsToCreate) {
         try {
             $envCreationHt = @{
-                Name            = $environment.envName
-                Location        = $environment.envRegion
-                Dataverse       = $true
-                Description     = $environment.envDescription
-                LanguageName    = $environment.envLanguage
-                Currency        = $environment.envCurrency
-                SecurityGroupId = $environment.envRbac
+                Name               = $environment.envName
+                Location           = $environment.envRegion
+                Dataverse          = $true
+                ManagedEnvironment = $PPCitizenManagedEnv -eq 'Yes'
+                Description        = $environment.envDescription
+                LanguageName       = $environment.envLanguage
+                Currency           = $environment.envCurrency
+                SecurityGroupId    = $environment.envRbac
             }
             $null = New-PowerOpsEnvironment @envCreationHt
             Write-Host "Created citizen environment $($environment.envName) in $($environment.envRegion)"
@@ -432,13 +449,14 @@ if ($PPPro -in "yes", "half" -and $PPProCount -ge 1 -or $PPPro -eq 'custom') {
     foreach ($environment in $environmentsToCreate) {
         try {
             $envCreationHt = @{
-                Name            = $environment.envName
-                Location        = $environment.envRegion
-                Dataverse       = $true
-                Description     = $environment.envDescription
-                LanguageName    = $environment.envLanguage
-                Currency        = $environment.envCurrency
-                SecurityGroupId = $environment.envRbac
+                Name               = $environment.envName
+                Location           = $environment.envRegion
+                Dataverse          = $true
+                ManagedEnvironment = $PPProManagedEnv -eq 'Yes'
+                Description        = $environment.envDescription
+                LanguageName       = $environment.envLanguage
+                Currency           = $environment.envCurrency
+                SecurityGroupId    = $environment.envRbac
             }
             $null = New-PowerOpsEnvironment @envCreationHt
             Write-Host "Created pro environment $($environment.envName) in $($environment.envRegion)"
@@ -464,9 +482,10 @@ if (-not[string]::IsNullOrEmpty($PPIndustryNaming)) {
     $PPIndustryRegion = $defaultEnvironment.location
     $indEnvHt = @{
         # Location always need to be set to default for environments with D365 templates
-        Location  = $PPIndustryRegion
-        Dataverse = $true
-        Templates = 'D365_DeveloperEdition'
+        Location           = $PPIndustryRegion
+        Dataverse          = $true
+        ManagedEnvironment = $PPIndustryManagedEnv -eq 'Yes'
+        Templates          = 'D365_DeveloperEdition'
     }
     try {
         if ($PPIndustryAlm -eq 'Yes') {
