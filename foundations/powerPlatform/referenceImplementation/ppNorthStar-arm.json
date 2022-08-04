@@ -1,5 +1,5 @@
 /*
-    North Star Architecture for Power Platform ARM template.
+    Power Platform Landing Zones ARM template.
     This template will in concert with the portal extension provision and bootstrap 1) Azure infrastructure as prerequisite for monitoring, logging, and security,
     and the initial Admin environments for Power Platform, to construct and operationalize landing zones for citizen - and professional developers.
 */
@@ -596,14 +596,14 @@
         "deploymentNamePrefix": "[concat(replace(tenant().displayName, ' ', ''), '-')]",
         "deploymentNameSuffix": "[concat('-', deployment().location, guid(parameters('ppAdminEnvNaming')))]",
         "deploymentNames": {
-            "ppRegistrationDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-RP-Billing', variables('deploymentNameSuffix')), 64)]",
-            "logAnalyticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-Azure-Monitoring', variables('deploymentNameSuffix')), 64)]",
-            "aadDiagnosticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-AAD-Logs', variables('deploymentNameSuffix')), 64)]",
-            "dataLakeDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-DataLake-Analytics', variables('deploymentNameSuffix')), 64)]",
-            "securityDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-Sentinel', variables('deploymentNameSuffix')), 64)]",
-            "northStarDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-Setup', variables('deploymentNameSuffix')), 64)]"
+            "ppRegistrationDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPLZ-RP-Billing', variables('deploymentNameSuffix')), 64)]",
+            "logAnalyticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPLZ-Azure-Monitoring', variables('deploymentNameSuffix')), 64)]",
+            "aadDiagnosticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPLZ-Star-AAD-Logs', variables('deploymentNameSuffix')), 64)]",
+            "dataLakeDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPLZ-DataLake-Analytics', variables('deploymentNameSuffix')), 64)]",
+            "securityDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPLZ-Sentinel', variables('deploymentNameSuffix')), 64)]",
+            "northStarDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPLZ-Setup', variables('deploymentNameSuffix')), 64)]"
         },
-        "resourceNamePrefix": "North-Star",
+        "resourceNamePrefix": "PPLZ",
         "rgNames": {
             "mgmtRg": "[concat(variables('resourceNamePrefix'), '-mgmt-', parameters('location'))]",
             "billingRg": "[concat(variables('resourceNamePrefix'), '-billing-', parameters('location'))]",
@@ -622,7 +622,7 @@
     },
     "resources": [
         {
-            // Deploying the North Star Power Platform script
+            // Deploying the North Star Power Platform script (Power Platform Landing Zones)
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "name": "[variables('deploymentNames').northStarDeploymentName]",
