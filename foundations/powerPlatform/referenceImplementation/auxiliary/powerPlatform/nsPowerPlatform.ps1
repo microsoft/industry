@@ -57,7 +57,6 @@ param (
 )
 
 $DeploymentScriptOutputs = @{}
-
 #Install required modules
 Install-Module -Name PowerOps -AllowPrerelease -Force
 
@@ -162,7 +161,7 @@ function New-DLPAssignmentFromEnv {
     }
     try {
         $template = (Invoke-WebRequest -Uri ($dlpPolicies['BaseUri'] + $templateFile)).Content | ConvertFrom-Json -Depth 100
-        Write-Host "Using base DLP template $templatefile"
+        Write-Output "Using base DLP template $templatefile"
     }
     catch {
         throw "Failed to get template $templatefile from $($dlpPolicies['baseUri'])"
@@ -198,7 +197,7 @@ function New-DLPAssignmentFromEnv {
     $template | ConvertTo-Json -Depth 100 -EnumsAsStrings | Set-Content -Path $templateFile -Force
     try {
         $null = New-PowerOpsDLPPolicy -TemplateFile $templateFile -Name $template.displayName -ErrorAction Stop
-        Write-Host "Created Default $EnvironmentDLP DLP Policy"
+        Write-Output "Created Default $EnvironmentDLP DLP Policy"
     }
     catch {
         Write-Warning "Created Default $EnvironmentDLP DLP Policy`r`n$_"
@@ -229,7 +228,7 @@ if ($PSBoundParameters.Keys -match "Setting") {
             RequestBody = ($tenantSettings | ConvertTo-Json -Depth 100)
         }
         $null = Invoke-PowerOpsRequest @tenantRequest
-        Write-Host "Updated tenant settings"
+        Write-Output "Updated tenant settings"
     }
     catch {
         throw "Failed to set tenant settings"
@@ -253,7 +252,7 @@ if ($PPTenantIsolationSetting -in 'inbound', 'outbound', 'both') {
 
     try {
         Set-PowerOpsTenantIsolation @tenantIsolationSettings
-        Write-Host "Updated tenant isolation settings with $PPTenantIsolationSetting/$PPTenantIsolationDomains"
+        Write-Output "Updated tenant isolation settings with $PPTenantIsolationSetting/$PPTenantIsolationDomains"
     }
     catch {
         throw "Failed to update tenant isolation settings"
@@ -269,7 +268,7 @@ do {
     $defaultEnvAttempts++
     $defaultEnvironment = Get-PowerOpsEnvironment | Where-Object { $_.Properties.environmentSku -eq "Default" }
     if (-not ($defaultEnvironment)) {
-        Write-Host "Getting default environment - attempt $defaultEnvAttempts"
+        Write-Output "Getting default environment - attempt $defaultEnvAttempts"
         Start-Sleep -Seconds 15
     }
 } until ($defaultEnvironment -or $defaultEnvAttempts -eq 15)
@@ -287,7 +286,7 @@ if (-not [string]::IsNullOrEmpty($PPDefaultRenameText)) {
         }
         try {
             Invoke-PowerOpsRequest @defaultEnvRequest
-            Write-Host "Renamed default environment from $oldDefaultName to $PPDefaultRenameText"
+            Write-Output "Renamed default environment from $oldDefaultName to $PPDefaultRenameText"
         }
         catch {
             Write-Warning "Failed to rename Default Environment`r`n$_"
@@ -307,7 +306,7 @@ if ($PPDefaultDLP -eq 'Yes') {
 # Enable managed environment for default environment
 if ($defaultEnvironment.properties.governanceConfiguration.protectionLevel -ne 'Standard' -and $PPDefaultManagedEnv -eq 'Yes') {
     try {
-        Write-Host "Enabling managed environment for the default environment"
+        Write-Output "Enabling managed environment for the default environment"
         Enable-PowerOpsManagedEnvironment -EnvironmentName $defaultEnvironment.name
     }
     catch {
@@ -324,7 +323,7 @@ if (-not [string]::IsNullOrEmpty($PPAdminEnvNaming)) {
         try {
             $adminEnvName = '{0}-admin-{1}' -f $PPAdminEnvNaming, $envTier
             $null = New-PowerOpsEnvironment -Name $adminEnvName -Location $PPAdminRegion -Dataverse $true -ManagedEnvironment ($PPAdminManagedEnv -eq 'Yes')
-            Write-Host "Created environment $adminEnvName in $PPAdminRegion"
+            Write-Output "Created environment $adminEnvName in $PPAdminRegion"
         }
         catch {
             throw "Failed to create admin environment $adminEnvName`r `n$_"
@@ -335,7 +334,7 @@ if (-not [string]::IsNullOrEmpty($PPAdminEnvNaming)) {
     $adminEnvironments = Get-PowerOpsEnvironment | Where-Object { $_.properties.displayName -like "$PPAdminEnvNaming-admin*" }
     try {
         New-DLPAssignmentFromEnv -Environments $adminEnvironments.properties.displayName -EnvironmentDLP 'adminEnv'
-        Write-Host "Created Default Admin Environment DLP Policy"
+        Write-Output "Created Default Admin Environment DLP Policy"
     }
     catch {
         Write-Warning "Created Default Admin Environment DLP Policy`r`n$_"
@@ -352,7 +351,7 @@ if ($PPTenantDLP -in 'low', 'medium', 'high') {
             $environments += $adminEnvironments.Properties.displayName
         }
         $null = New-DLPAssignmentFromEnv -Environments $environments -EnvironmentDLP $PPTenantDLP
-        Write-Host "Created Default Tenant DLP Policy - $PPTenantDLP"
+        Write-Output "Created Default Tenant DLP Policy - $PPTenantDLP"
     }
     catch {
         Write-Warning "Failed to create Default Tenant DLP Policy`r`n$_"
@@ -401,9 +400,9 @@ if ($PPCitizen -in "yes", "half" -and $PPCitizenCount -ge 1 -or $PPCitizen -eq '
                 SecurityGroupId    = $environment.envRbac
             }
             $null = New-PowerOpsEnvironment @envCreationHt
-            Write-Host "Created citizen environment $($environment.envName) in $($environment.envRegion)"
+            Write-Output "Created citizen environment $($environment.envName) in $($environment.envRegion)"
             if (-not [string]::IsNullOrEmpty($environment.envRbac) -and $environment.envDataverse -eq $false) {
-                Write-Host "Assigning RBAC for principalId $($environment.envRbac) in citizen environment $($environment.envName)"
+                Write-Output "Assigning RBAC for principalId $($environment.envRbac) in citizen environment $($environment.envName)"
                 $null = New-PowerOpsRoleAssignment -PrincipalId $environment.envRbac -RoleDefinition EnvironmentAdmin -EnvironmentName $environment.envName
             }
         }
@@ -459,9 +458,9 @@ if ($PPPro -in "yes", "half" -and $PPProCount -ge 1 -or $PPPro -eq 'custom') {
                 SecurityGroupId    = $environment.envRbac
             }
             $null = New-PowerOpsEnvironment @envCreationHt
-            Write-Host "Created pro environment $($environment.envName) in $($environment.envRegion)"
+            Write-Output "Created pro environment $($environment.envName) in $($environment.envRegion)"
             if (-not [string]::IsNullOrEmpty($environment.envRbac) -and $environment.envDataverse -eq $false) {
-                Write-Host "Assigning RBAC for principalId $($environment.envRbac) pro environment $($environment.envName)"
+                Write-Output "Assigning RBAC for principalId $($environment.envRbac) pro environment $($environment.envName)"
                 $null = New-PowerOpsRoleAssignment -PrincipalId $environment.envRbac -RoleDefinition EnvironmentAdmin -EnvironmentName $environment.envName
             }
         }
@@ -492,12 +491,12 @@ if (-not[string]::IsNullOrEmpty($PPIndustryNaming)) {
             foreach ($envTier in $envTiers) {
                 $almEnvironmentName = "{0}-{1}" -f $environmentName, $envTier
                 $null = New-PowerOpsEnvironment -Name $almEnvironmentName @indEnvHt
-                Write-Host "Created industry environment $almEnvironmentName in $PPIndustryRegion"
+                Write-Output "Created industry environment $almEnvironmentName in $PPIndustryRegion"
             }
         }
         else {
             $null = New-PowerOpsEnvironment -Name $environmentName @indEnvHt
-            Write-Host "Created industry environment $environmentName in $PPIndustryRegion"
+            Write-Output "Created industry environment $environmentName in $PPIndustryRegion"
         }
     }
     catch {
@@ -505,3 +504,4 @@ if (-not[string]::IsNullOrEmpty($PPIndustryNaming)) {
     }
 }
 #endregion create industry landing zones
+$DeploymentScriptOutputs['Deployment'] = 'Successful'
