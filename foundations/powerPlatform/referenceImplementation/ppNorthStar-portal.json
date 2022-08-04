@@ -340,11 +340,11 @@
                     "label": "Admin Environment and Settings",
                     "elements": [
                         {
-                            "name": "EnvBox",
+                            "name": "envBox",
                             "type": "Microsoft.Common.InfoBox",
                             "visible": true,
                             "options": {
-                                "text": "It is highly recommended to have dedicated Admin Environments in Power Platform to manage and administer the platform as you scale. When creating dedicated Admin Environments, you can optionally deploy the 'Center of Excellence Starter-Kit' which provides additional capabilities to scale, manage, and operate your Power Platform tenant. The setup creates dedicated Admin Environments for Development, Test, and Production in order to support maintenance, testing, development, and validation before deploying to production.",
+                                "text": "It is highly recommended to have dedicated Admin Environments in Power Platform to manage and administer the platform as you scale. When creating dedicated Admin Environments, you can optionally deploy the 'Center of Excellence Starter-Kit' post deployement which provides additional capabilities to scale, manage, and operate your Power Platform tenant. The setup creates dedicated Admin Environments for Development, Test, and Production in order to support maintenance, testing, development, and validation before deploying to production.",
                                 "link": {
                                     "label": "Learn more about Center of Excellence Starter-kit",
                                     "uri": "https://docs.microsoft.com/power-platform/guidance/coe/starter-kit"
@@ -523,27 +523,6 @@
                                 ],
                                 "required": true
                             }
-                        },
-                        {
-                            "name": "ppAdminCoeSetting",
-                            "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Boostrap the Admin Environments with 'Center of Excellence Starter-kit'",
-                            "defaultValue": "No",
-                            "toolTip": "",
-                            "constraints": {
-                                "allowedValues": [
-                                    {
-                                        "label": "Yes",
-                                        "value": "yes"
-                                    },
-                                    {
-                                        "label": "No",
-                                        "value": "no"
-                                    }
-                                ],
-                                "required": true
-                            },
-                            "visible": true
                         },
 						{
                             "name": "ppAdminBilling",
@@ -4585,7 +4564,6 @@
                 "ppAdminRegion": "[steps('environments').ppAdminRegion]",
                 "ppAdminManagedEnv": "[steps('environments').ppAdminManagedEnv]",
                 "ppAdminBilling": "[steps('environments').ppAdminBilling]",
-                "ppAdminCoeSetting": "[steps('environments').ppAdminCoeSetting]",
                 "ppDefaultRenameText": "[steps('landingZones').ppDefaultRenameText]",
                 "ppDefaultDlp": "[steps('landingZones').ppDefaultDlp]",
                 "ppDefaultManagedEnv": "[steps('landingZones').ppDefaultManagedEnv]",
