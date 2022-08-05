@@ -188,6 +188,17 @@
                 "description": "Select to enable/disable this setting."
             }
         },
+        "ppDefaultManagedSharing": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "no",
+                "yes"
+            ],
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
         "ppCitizen": {
             "type": "string",
             "allowedValues": [
@@ -693,6 +704,9 @@
                     },
                     "ppDefaultManagedEnv": {
                         "value": "[parameters('ppDefaultManagedEnv')]"
+                    },
+                    "ppDefaultManagedSharing": {
+                        "value": "[parameters('ppDefaultManagedSharing')]"
                     },
                     "ppCitizen": {
                         "value": "[parameters('ppCitizen')]"

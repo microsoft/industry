@@ -922,7 +922,7 @@
 						{
                             "name": "ppDefaultManagedText",
                             "type": "Microsoft.Common.TextBlock",
-                            "visible": true,
+                            "visible": "[equals(steps('landingZones').ppDefaultRename, 'yes')]",
                             "options": {
                                 "text": "Enabling Managed Environment in this step will opt-in to weekly digest, and allow you to continue the configuration in Power Platform Admin Center for sharing restrictions, DLPs and more post deployment.",
                                 "link": {
@@ -951,6 +951,27 @@
                                 "required": true
                             },
                             "visible": "[equals(steps('landingZones').ppDefaultRename, 'yes')]"
+                        },
+                        {
+                            "name": "ppDefaultManagedSharing",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Exclude sharing with security groups",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "Help reduce risk by limiting how widely canvas apps can be shared.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('landingZones').ppDefaultRename, 'yes'), equals(steps('landingZones').ppDefaultManagedEnv, 'yes'))]"
                         },
                         {
                             "name": "citizenSection",
@@ -4567,6 +4588,7 @@
                 "ppDefaultRenameText": "[steps('landingZones').ppDefaultRenameText]",
                 "ppDefaultDlp": "[steps('landingZones').ppDefaultDlp]",
                 "ppDefaultManagedEnv": "[steps('landingZones').ppDefaultManagedEnv]",
+                "ppDefaultManagedSharing": "[steps('landingZones').ppDefaultManagedSharing]",
                 "ppEnableAzureMonitor": "[steps('mgmt').ppEnableAzureMonitor]",
                 "ppEnableAppInsights": "[steps('mgmt').ppEnableAppInsights]",
                 "ppEnableAzureSecurity": "[steps('mgmt').ppEnableAzureSecurity]",
