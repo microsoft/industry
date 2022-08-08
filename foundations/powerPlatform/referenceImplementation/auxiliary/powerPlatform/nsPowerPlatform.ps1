@@ -24,6 +24,7 @@ param (
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPDefaultRenameText,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPDefaultDLP,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPDefaultManagedEnv,
+    [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPDefaultManagedSharing,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPCitizen,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPCitizenCount,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPCitizenNaming,
@@ -307,7 +308,7 @@ if ($PPDefaultDLP -eq 'Yes') {
 if ($defaultEnvironment.properties.governanceConfiguration.protectionLevel -ne 'Standard' -and $PPDefaultManagedEnv -eq 'Yes') {
     try {
         Write-Output "Enabling managed environment for the default environment"
-        Enable-PowerOpsManagedEnvironment -EnvironmentName $defaultEnvironment.name
+        Enable-PowerOpsManagedEnvironment -EnvironmentName $defaultEnvironment.name -GroupSharingDisabled ($PPDefaultManagedSharing -eq 'Yes')
     }
     catch {
         Write-Warning "Failed to enable managed environment for default environment"
