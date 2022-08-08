@@ -1,5 +1,5 @@
 /*
-    North Star Architecture for Power Platform ARM template.
+    Power Platform Landing Zones ARM template.
     This template will in concert with the portal extension provision and bootstrap 1) Azure infrastructure as prerequisite for monitoring, logging, and security,
     and the initial Admin environments for Power Platform, to construct and operationalize landing zones for citizen - and professional developers.
 */
@@ -130,6 +130,17 @@
                 "description": "Provide location for the Admin environments."
             }
         },
+        "ppAdminManagedEnv": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "no",
+                "yes"
+            ],
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
         "ppAdminBilling": {
             "type": "string",
             "defaultValue": "",
@@ -162,6 +173,28 @@
                 "no"
             ],
             "defaultValue": "no",
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
+        "ppDefaultManagedEnv": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "no",
+                "yes"
+            ],
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
+        "ppDefaultManagedSharing": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "no",
+                "yes"
+            ],
             "metadata": {
                 "description": "Select to enable/disable this setting."
             }
@@ -226,6 +259,17 @@
                 "description": "Select to enable/disable recommended DLP policies for citizen dev environments."
             }
         },
+        "ppCitizenManagedEnv": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "no",
+                "yes"
+            ],
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },        
         "ppCitizenBilling": {
             "type": "string",
             "defaultValue": "",
@@ -293,6 +337,17 @@
                 "description": "Select to enable/disable recommended DLP policies for pro dev environments."
             }
         },
+        "ppProManagedEnv": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "no",
+                "yes"
+            ],
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },           
         "ppProBilling": {
             "type": "string",
             "defaultValue": "",
@@ -340,6 +395,17 @@
                 "description": "Provide location for the pro dev environments."
             }
         },
+        "ppIndustryManagedEnv": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "no",
+                "yes"
+            ],
+            "metadata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },           
         "ppIndustryBilling": {
             "type": "string",
             "defaultValue": "",
@@ -541,14 +607,14 @@
         "deploymentNamePrefix": "[concat(replace(tenant().displayName, ' ', ''), '-')]",
         "deploymentNameSuffix": "[concat('-', deployment().location, guid(parameters('ppAdminEnvNaming')))]",
         "deploymentNames": {
-            "ppRegistrationDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-RP-Billing', variables('deploymentNameSuffix')), 64)]",
-            "logAnalyticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-Azure-Monitoring', variables('deploymentNameSuffix')), 64)]",
-            "aadDiagnosticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-AAD-Logs', variables('deploymentNameSuffix')), 64)]",
-            "dataLakeDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-DataLake-Analytics', variables('deploymentNameSuffix')), 64)]",
-            "securityDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-Sentinel', variables('deploymentNameSuffix')), 64)]",
-            "northStarDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'North-Star-Setup', variables('deploymentNameSuffix')), 64)]"
+            "ppRegistrationDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPLZ-RP-Billing', variables('deploymentNameSuffix')), 64)]",
+            "logAnalyticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPLZ-Azure-Monitoring', variables('deploymentNameSuffix')), 64)]",
+            "aadDiagnosticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPLZ-Star-AAD-Logs', variables('deploymentNameSuffix')), 64)]",
+            "dataLakeDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPLZ-DataLake-Analytics', variables('deploymentNameSuffix')), 64)]",
+            "securityDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPLZ-Sentinel', variables('deploymentNameSuffix')), 64)]",
+            "northStarDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'PPLZ-Setup', variables('deploymentNameSuffix')), 64)]"
         },
-        "resourceNamePrefix": "North-Star",
+        "resourceNamePrefix": "PPLZ",
         "rgNames": {
             "mgmtRg": "[concat(variables('resourceNamePrefix'), '-mgmt-', parameters('location'))]",
             "billingRg": "[concat(variables('resourceNamePrefix'), '-billing-', parameters('location'))]",
@@ -567,7 +633,7 @@
     },
     "resources": [
         {
-            // Deploying the North Star Power Platform script
+            // Deploying the North Star Power Platform script (Power Platform Landing Zones)
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "name": "[variables('deploymentNames').northStarDeploymentName]",
@@ -624,6 +690,9 @@
                     "ppAdminBilling": {
                         "value": "[if(empty(parameters('ppAdminBilling')), variables('emptystring'), parameters('ppAdminBilling'))]"
                     },
+                    "ppAdminManagedEnv": {
+                        "value": "[parameters('ppAdminManagedEnv')]"
+                    },
                     "ppAdminCoeSetting": {
                         "value": "[parameters('ppAdminCoeSetting')]"
                     },
@@ -632,6 +701,12 @@
                     },
                     "ppDefaultDlp": {
                         "value": "[parameters('ppDefaultDlp')]"
+                    },
+                    "ppDefaultManagedEnv": {
+                        "value": "[parameters('ppDefaultManagedEnv')]"
+                    },
+                    "ppDefaultManagedSharing": {
+                        "value": "[parameters('ppDefaultManagedSharing')]"
                     },
                     "ppCitizen": {
                         "value": "[parameters('ppCitizen')]"
@@ -651,6 +726,9 @@
                     "ppCitizenDlp": {
                         "value": "[parameters('ppCitizenDlp')]"
                     },
+                    "ppCitizenManagedEnv": {
+                        "value": "[parameters('ppCitizenManagedEnv')]"
+                    },
                     "ppPro": {
                         "value": "[parameters('ppPro')]"
                     },
@@ -666,6 +744,9 @@
                     "ppProDlp": {
                         "value": "[parameters('ppProDlp')]"
                     },
+                    "ppProManagedEnv": {
+                        "value": "[parameters('ppProManagedEnv')]"
+                    },
                     "ppProBilling": {
                         "value": "[if(empty(parameters('ppProBilling')), variables('emptyString'), parameters('ppProBilling'))]"
                     },
@@ -677,6 +758,9 @@
                     },
                     "ppIndustryRegion": {
                         "value": "[parameters('ppIndustryRegion')]"
+                    },
+                    "ppIndustryManagedEnv": {
+                        "value": "[parameters('ppIndustryManagedEnv')]"
                     },
                     "ppIndustryBilling": {
                         "value": "[if(empty(parameters('ppIndustryBilling')), variables('emptyString'), parameters('ppIndustryBilling'))]"

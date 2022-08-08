@@ -149,7 +149,7 @@
                     "label": "Security, Governance, and Compliance",
                     "elements": [
                         {
-                            "name": "infoBox1",
+                            "name": "govInfo",
                             "type": "Microsoft.Common.InfoBox",
                             "visible": true,
                             "options": {
@@ -340,11 +340,11 @@
                     "label": "Admin Environment and Settings",
                     "elements": [
                         {
-                            "name": "EnvBox",
+                            "name": "envBox",
                             "type": "Microsoft.Common.InfoBox",
                             "visible": true,
                             "options": {
-                                "text": "It is highly recommended to have dedicated Admin Environments in Power Platform to manage and administer the platform as you scale. When creating dedicated Admin Environments, you can optionally deploy the 'Center of Excellence Starter-Kit' which provides additional capabilities to scale, manage, and operate your Power Platform tenant. The setup creates dedicated Admin Environments for Development, Test, and Production in order to support maintenance, testing, development, and validation before deploying to production.",
+                                "text": "It is highly recommended to have dedicated Admin Environments in Power Platform to manage and administer the platform as you scale. When creating dedicated Admin Environments, you can optionally deploy the 'Center of Excellence Starter-Kit' post deployement which provides additional capabilities to scale, manage, and operate your Power Platform tenant. The setup creates dedicated Admin Environments for Development, Test, and Production in order to support maintenance, testing, development, and validation before deploying to production.",
                                 "link": {
                                     "label": "Learn more about Center of Excellence Starter-kit",
                                     "uri": "https://docs.microsoft.com/power-platform/guidance/coe/starter-kit"
@@ -524,28 +524,7 @@
                                 "required": true
                             }
                         },
-                        {
-                            "name": "ppAdminCoeSetting",
-                            "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Boostrap the Admin Environments with 'Center of Excellence Starter-kit'",
-                            "defaultValue": "No",
-                            "toolTip": "",
-                            "constraints": {
-                                "allowedValues": [
-                                    {
-                                        "label": "Yes",
-                                        "value": "yes"
-                                    },
-                                    {
-                                        "label": "No",
-                                        "value": "no"
-                                    }
-                                ],
-                                "required": true
-                            },
-                            "visible": true
-                        },
-                        {
+						{
                             "name": "ppAdminBilling",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Create Billing Policy and Use Azure Subscription for pay-as-you-go for the environments",
@@ -562,6 +541,39 @@
                                         "value": "no"
                                     }
                                 ]
+                            },
+                            "visible": true
+                        },
+						{
+                            "name": "ppAdminManagedText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": true,
+                            "options": {
+                                "text": "Enabling Managed Environment in this step will opt-in to weekly digest, and allow you to continue the configuration in Power Platform Admin Center for sharing restrictions, DLPs and more post deployment.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/power-platform/admin/managed-environment-overview"
+                                }
+                            }
+                        },
+                        {
+                            "name": "ppAdminManagedEnv",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Managed Environments (Preview) for the Admin Environments",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "Managed Environments is a suite of capabilities that allows admins to manage Power Platform at scale with more control, less effort, and more insights",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ],
+                                "required": true
                             },
                             "visible": true
                         }
@@ -906,6 +918,60 @@
                                 ]
                             },
                             "visible": "[equals(steps('landingZones').ppDefaultRename, 'yes')]"
+                        },
+						{
+                            "name": "ppDefaultManagedText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": "[equals(steps('landingZones').ppDefaultRename, 'yes')]",
+                            "options": {
+                                "text": "Enabling Managed Environment in this step will opt-in to weekly digest, and allow you to continue the configuration in Power Platform Admin Center for sharing restrictions, DLPs and more post deployment.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/power-platform/admin/managed-environment-overview"
+                                }
+                            }
+                        },
+                        {
+                            "name": "ppDefaultManagedEnv",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Managed Environments (Preview) for the Default Environment",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "Managed Environments is a suite of capabilities that allows admins to manage Power Platform at scale with more control, less effort, and more insights",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('landingZones').ppDefaultRename, 'yes')]"
+                        },
+                        {
+                            "name": "ppDefaultManagedSharing",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Exclude sharing with security groups",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "Help reduce risk by limiting how widely canvas apps can be shared.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('landingZones').ppDefaultRename, 'yes'), equals(steps('landingZones').ppDefaultManagedEnv, 'yes'))]"
                         },
                         {
                             "name": "citizenSection",
@@ -2530,6 +2596,39 @@
                             },
                             "visible": "[not(equals(steps('landingZones').ppCitizen, 'no'))]"
                         },
+						{
+                            "name": "ppCitizenManagedText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": true,
+                            "options": {
+                                "text": "Enabling Managed Environment in this step will opt-in to weekly digest, and allow you to continue the configuration in Power Platform Admin Center for sharing restrictions, DLPs and more post deployment.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/power-platform/admin/managed-environment-overview"
+                                }
+                            }
+                        },
+                        {
+                            "name": "ppCitizenManagedEnv",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Managed Environments (Preview) for the Environments for citizen development",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "Managed Environments is a suite of capabilities that allows admins to manage Power Platform at scale with more control, less effort, and more insights",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[not(equals(steps('landingZones').ppCitizen, 'no'))]"
+                        },
                         {
                             "name": "ppCitizenAlm",
                             "type": "Microsoft.Common.OptionsGroup",
@@ -2582,7 +2681,7 @@
                             "type": "Microsoft.Common.TextBlock",
                             "visible": true,
                             "options": {
-                                "text": "The Landing Zones for professional developrs will be optimized for enterprise application scenarios, and provide them with the required agility and simplicity to rapidly build robust enterprise applications with mature application lifecycle management. You can grant business units or indivuduals access to the Environments post creation.",
+                                "text": "The Landing Zones for professional developers will be optimized for enterprise application scenarios, and provide them with the required agility and simplicity to rapidly build robust enterprise applications with mature application lifecycle management. You can grant business units or indivuduals access to the Environments post creation.",
                                 "link": {
                                     "label": "Learn more",
                                     "uri": "https://www.microsoft.com"
@@ -4181,6 +4280,39 @@
                             },
                             "visible": "[not(equals(steps('landingZones').ppPro, 'no'))]"
                         },
+						{
+                            "name": "ppProManagedText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": true,
+                            "options": {
+                                "text": "Enabling Managed Environment in this step will opt-in to weekly digest, and allow you to continue the configuration in Power Platform Admin Center for sharing restrictions, DLPs and more post deployment.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/power-platform/admin/managed-environment-overview"
+                                }
+                            }
+                        },
+                        {
+                            "name": "ppProManagedEnv",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Managed Environments (Preview) for the Environments for professional development",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "Managed Environments is a suite of capabilities that allows admins to manage Power Platform at scale with more control, less effort, and more insights",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[not(equals(steps('landingZones').ppPro, 'no'))]"
+                        },
                         {
                             "name": "ppProAlm",
                             "type": "Microsoft.Common.OptionsGroup",
@@ -4361,6 +4493,39 @@
                                 "required": true
                             }
                         },
+						{
+                            "name": "ppIndustryManagedText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": true,
+                            "options": {
+                                "text": "Enabling Managed Environment in this step will opt-in to weekly digest, and allow you to continue the configuration in Power Platform Admin Center for sharing restrictions, DLPs and more post deployment.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/power-platform/admin/managed-environment-overview"
+                                }
+                            }
+                        },
+                        {
+                            "name": "ppIndustryManagedEnv",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Managed Environments (Preview) for the Environments for industry cloud",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "Managed Environments is a suite of capabilities that allows admins to manage Power Platform at scale with more control, less effort, and more insights",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[not(equals(steps('landingZones').ppIndustry, 'no'))]"
+                        },
                         {
                             "name": "ppIndustryAlm",
                             "type": "Microsoft.Common.OptionsGroup",
@@ -4418,10 +4583,12 @@
                 "ppEnvCapacitySetting": "[steps('environments').ppEnvCapacitySetting]",
                 "ppAdminEnvNaming": "[steps('environments').ppAdminEnvNaming]",
                 "ppAdminRegion": "[steps('environments').ppAdminRegion]",
+                "ppAdminManagedEnv": "[steps('environments').ppAdminManagedEnv]",
                 "ppAdminBilling": "[steps('environments').ppAdminBilling]",
-                "ppAdminCoeSetting": "[steps('environments').ppAdminCoeSetting]",
                 "ppDefaultRenameText": "[steps('landingZones').ppDefaultRenameText]",
                 "ppDefaultDlp": "[steps('landingZones').ppDefaultDlp]",
+                "ppDefaultManagedEnv": "[steps('landingZones').ppDefaultManagedEnv]",
+                "ppDefaultManagedSharing": "[steps('landingZones').ppDefaultManagedSharing]",
                 "ppEnableAzureMonitor": "[steps('mgmt').ppEnableAzureMonitor]",
                 "ppEnableAppInsights": "[steps('mgmt').ppEnableAppInsights]",
                 "ppEnableAzureSecurity": "[steps('mgmt').ppEnableAzureSecurity]",
@@ -4439,6 +4606,7 @@
                 "ppCitizenCurrency": "[steps('landingZones').ppCitizenCurrency]",
                 "ppCitizenRegion": "[steps('landingZones').ppCitizenRegion]",
                 "ppCitizenDlp": "[steps('landingZones').ppCitizenDlp]",
+                "ppCitizenManagedEnv": "[steps('landingZones').ppCitizenManagedEnv]",
                 "ppCitizenAlm": "[steps('landingZones').ppCitizenAlm]",
                 "ppCitizenBilling": "[steps('landingZones').ppCitizenBilling]",
                 "ppPro": "[steps('landingZones').ppPro]",
@@ -4449,12 +4617,14 @@
                 "ppProLanguage": "[steps('landingZones').ppProLanguage]",
                 "ppProCurrency": "[steps('landingZones').ppProCurrency]",
                 "ppProDlp": "[steps('landingZones').ppProDlp]",
+                "ppProManagedEnv": "[steps('landingZones').ppProManagedEnv]",
                 "ppProAlm": "[steps('landingZones').ppProAlm]",
                 "ppProRegion": "[steps('landingZones').ppProRegion]",
                 "ppProBilling": "[steps('landingZones').ppProBilling]",
                 "ppSelectIndustry": "[steps('landingZones').ppSelectIndustry]",
                 "ppIndustryNaming": "[steps('landingZones').ppIndustryNaming]",
                 "ppIndustryRegion": "[steps('landingZones').ppIndustryRegion]",
+                "ppIndustryManagedEnv": "[steps('landingZones').ppIndustryManagedEnv]",
                 "ppIndustryBilling": "[steps('landingZones').ppIndustryBilling]",
                 "ppIndustryAlm": "[steps('landingZones').ppIndustryAlm]"
             },

@@ -203,6 +203,9 @@ The following section describes the design considerations and the design recomme
 - Environments can be created with - or without Dynamics 365 application templates available in the tenant.
 - Dynamics 365 applications takes a dependency on environments with Dataverse provisioned.
 - Dataverse for Microsoft Teams can be created directly from the Teams client, which grants the creator Owner permission on the Environment.
+- Enabling Managed Environments promotes all recourses within an environment to premium. Users who access premium resources must be licensed with a premium license
+- To enable Managed Environments, you must be a global admin, Power Platform admin, or Dynamics 365 admin in Azure Active Directory.
+- In the Power Platform admin center, Environment Admins are not allowed to activate managed environments. Environment Admins are able to see the 'Enable Managed Environment' action in the environment details page.
 
 ### Design recommendations
 
@@ -222,6 +225,10 @@ The following section describes the design considerations and the design recomme
 - Enable auditing for your tenant and environments to understand usage and available capacity.
 - For Microsoft Cloud for industry solutions (e.g., D365 applications for Healthcare, Financial Services Industry), deploy all Dynamics 365 applications to the same environment(s), and avoid creating islands of data that will be complex to merge and combine later.
 - Only split Microsoft Cloud for industry solutions (D365 applications) across different environments if there are data or security constraints.
+- Use Managed Environments for the environments as it provides a suite of capabilities that allows admins to manage Power Platform at scale with more control, such as:
+  - Weekly digest, which informs about what's happening in the managed environment, such as analytics about your top apps and flows, your must impactful makes, and inactive resources you can safely clean up, deliverd to one or more mailboxes once a week.
+  - Exclude sharing with security groups, which blocks the ability to share canvas apps with any security groups. Admins may share with a limit on who an app can be shared with.
+  - Data policies (DLP), for admins to easily identify all the data policies that are applied to an environment.
 
 ## Management and Monitoring
 
