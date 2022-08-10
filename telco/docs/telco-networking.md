@@ -16,6 +16,7 @@ The following sections will cover networking design considerations and recommend
 - [Multiple ExpressRoute Circuits](#multiple-expressroute-circuits)
 - [Multiple IPSec Tunnels](#multiple-ipsec-tunnels)
 - [Azure Virtual Network Manager](#azure-virtual-network-manager)
+- [Manage Azure Firewall rules at scale](#manage-azure-firewall-rules-at-scale)
 
 ## Azure Regions
 
