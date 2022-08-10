@@ -78,7 +78,7 @@ Evaluate whether is possible to consolidate multiple VRFs over a single (or a sm
 - In Azure, connect virtual networks by using VNet peering when resources across different virtual networks need to communicate with each other.
 - When using dedicated ExpressRoute circuits and VNets, and Azure resources must be accesible over two on more ExpressRoute circuits, a multi-homed VNets network architecture is required. A multi-homed VNet architecture can be implemented by using one of the following approaches:
   - **Dynamic routing with Azure Route Server (Preferred)**. In this setup, a Network Virtual Appliance (NVA) in the hub virtual network will learn about on-premises routes from the ExpressRoute gateway through route exchange with the Route Server in the hub. In return, the NVA will send the spoke virtual network addresses to the ExpressRoute gateway using the same Route Server. The Route Server in both the spoke and hub virtual network will then program the on-premises network addresses to the virtual machines in their respective virtual network. The virtual machines in the spoke virtual network will send all traffic destined for the on-premises network to the NVA in the hub virtual network first. Then the NVA will forward the traffic to the on-premises network through ExpressRoute. Traffic from on-premises will traverse the same data path in the reverse direction. In this setup, neither of the Route Servers are in the data path. This scenario is depicted in figure 2 below:
-  
+
   ![Figure 2: Multi-homed VNets using Azure Route Server](./dual-homed-topology-expressroute.png)
 
   _Figure 2: Multi-homed VNets using Azure Route Server_
@@ -123,3 +123,47 @@ Consider the following recommendations if you are deploying the Azure VPN Gatewa
 
 ## Azure Virtual Network Manager
 - **_Work in progress_**
+
+## Manage Azure Firewall rules at scale
+
+For customers that have selected Azure Firewall as the service to govern outbound traffic to the internet, east-west traffic between landing zones (spokes) as well as non-http/s inbound connections, there are several design considerations in terms of how to structure the rule groups/rules, especially as the number of landing zones (spokes) grow.
+
+This article describes considerations and recommendations on how rules and rule collection groups can be managed with the least management overhead within the platform/service limits.
+
+### Design Considerations
+
+- Consider the  [Azure Firewall service limits](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#azure-firewall-limits) for rules and rule collection groups.
+  - Note that there is a difference in limits for rule collection groups created before/after July 2022.
+- Review the [rule processing logic](https://docs.microsoft.com/en-us/azure/firewall/rule-processing#rule-processing-using-firewall-policy) to ensure that rule sets implemented will have the desired effect.
+
+### Design Recommendations
+
+- Create a global Azure Firewall policy to govern security posture across the global network environment. Assign the policy to all Azure Firewall instances.
+  - If needed, create additional, more granular policies to meet specific regional requirements and delegate access to local teams using role-based access control
+
+- To avoid unnecessary management overhead, avoid creating rule collections with explicit 'Deny' actions. Since Azure Firewall denies all traffic by default until rules are manually configured to allow traffic, explicit 'Deny' should only be used by exception.
+
+- Due to the firewall scaling limits, do not create one rule collection group per landing zone/spoke.
+
+    Instead, create a base structure of rule collection groups in the global Azure Firewall Policy covering the required network flows. Consider the following key rule collection groups when creating your base structure. Additional rule collections can always be created based on requirements.
+
+  - **Landing Zones - Common rules**
+    This rule collection group will consist of application, network and DNAT rule collections, enabling all common flows for landing zones/spokes, such as access to common security, monitoring, and other backend services.
+
+  - **Landing Zones - Network Rules**
+    In this rule collection group, we create one [network rule collection](https://docs.microsoft.com/en-us/azure/firewall/policy-rule-sets#network-rules) per landing zone to manage all network (L3/L4) flows to/from the landing zone.
+
+  - **Landing Zones - Application Rules**
+    In this rule collection group, we create one [application rule collection](https://docs.microsoft.com/en-us/azure/firewall/policy-rule-sets#application-rules) per landing zone to manage all supported application (L7) flows to/from the landing zone.
+
+  ![Figure 5: example of base rule collection group structure from the Azure Portal](./ruleCollectionGroups.png)
+  _Figure 5: example of base rule collection group structure from the Azure Portal_
+
+- Integrate existing landing zone lifecycle management processes to ensure creation/deletion of the landing zone-specific rule collections as new landing zones are provisioned and decommissioned.
+
+- Manage rule collection groups/rule collections as Infrastructure-as-Code (IaC) artifacts in a Git repository with branch protection policies as well CI/CD pipelines to do automatic testing and deployment after changes have been approved.
+
+    Consider inviting application teams to the repository hosting the rules to enable them to manage the rules concerning their landing zones in a self-service manner while still maintaining control of deployments in the central networking team.
+
+    ![Figure 6: example of standard Git pull request workflow with approval](./gitWorkflow.png)
+    _Figure 6: example of standard Git pull request workflow with approval_
