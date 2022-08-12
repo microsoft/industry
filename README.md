@@ -120,11 +120,11 @@ Microsoft Cloud for Retail is an industry-specific cloud composed of products an
 - [Reference Implementation](./retail/referenceImplementation/README.md)
 
 - Retail Solutions
-    - [Workforce Management with Teams](./retail/solutions/wrkforceMgmt/README.md)
-    - [Real-time personalization](./retail/solutions/realtimePersonalization/README.md)
-    - [Supply chain and Order lifecycle management](./retail/solutions/flexibleFulfillment/README.md)
-    - [Shopper and operations analytics](./retail/solutions/shopperOpsAnalytics/README.md)
-    - [Unified Customer profile and Retail churn model](./retail/solutions/unifiedCustomerProfile/README.md)
+  - [Workforce Management with Teams](./retail/solutions/wrkforceMgmt/README.md)
+  - [Real-time personalization](./retail/solutions/realtimePersonalization/README.md)
+  - [Supply chain and Order lifecycle management](./retail/solutions/flexibleFulfillment/README.md)
+  - [Shopper and operations analytics](./retail/solutions/shopperOpsAnalytics/README.md)
+  - [Unified Customer profile and Retail churn model](./retail/solutions/unifiedCustomerProfile/README.md)
 
   </td>
   <td>
