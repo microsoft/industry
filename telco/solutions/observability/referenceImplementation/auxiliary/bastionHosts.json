@@ -1,0 +1,159 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rgName": {
+            "type": "string",
+            "defaultValue": "bast100"
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[deployment().location]"
+        },
+        "instanceCount": {
+            "type": "int",
+            "defaultValue": 3,
+            "maxValue": 50
+        },
+        "bastionSku": {
+            "type": "string",
+            "defaultValue": "Basic",
+            "allowedValues": [
+                "Standard",
+                "Basic"
+            ]
+        },
+        "bastionName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "bastionDisableCopyPaste": {
+            "type": "bool",
+            "defaultValue": false
+        },
+        "bastionEnableTunneling": {
+            "type": "bool",
+            "defaultValue": false
+        },
+        "bastionEnableKerberos": {
+            "type": "bool",
+            "defaultValue": false
+        },
+        "subnetResourceId": {
+            "type": "string"
+        },
+        "azureMonitorOption": {
+            "type": "string",
+            "defaultValue": "yes",
+            "allowedValues": [
+                "yes",
+                "no"
+            ]
+        },
+        "workspaceResourceId": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "deploymentName": "[take(concat(parameters('rgName'), '-BASTION-', parameters('location')), 64)]",
+        "resourceNames": {
+            "pipName": "[concat(parameters('rgName'), '-pip-', parameters('location'))]",
+            "bastionName": "[parameters('bastionName')]"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2021-04-01",
+            "name": "[parameters('rgName')]",
+            "location": "[parameters('location')]",
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('deploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "resources": [
+                        {
+                            "apiVersion": "2020-08-01",
+                            "type": "Microsoft.Network/publicIpAddresses",
+                            "name": "[variables('resourceNames').pipName]",
+                            "location": "[parameters('location')]",
+                            "sku": {
+                                "name": "Standard"
+                            },
+                            "properties": {
+                                "publicIPAllocationMethod": "Static"
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Network/bastionHosts",
+                            "apiVersion": "2020-11-01",
+                            "name": "[variables('resourceNames').bastionName]",
+                            "location": "[parameters('location')]",
+                            "dependsOn": [
+                                "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.Network/publicIPAddresses/', variables('resourceNames').pipName)]"
+                            ],
+                            "sku": {
+                                "name": "Standard"
+                            },
+                            "properties": {
+                                "disableCopyPaste": "[parameters('bastionDisableCopyPaste')]",
+                                "enableTunneling": "[parameters('bastionEnableTunneling')]",
+                                "enableKerberos": "[parameters('bastionEnableKerberos')]",
+                                "ipConfigurations": [
+                                    {
+                                        "name": "IpConf",
+                                        "properties": {
+                                            "subnet": {
+                                                "id": "[parameters('subnetResourceId')]"
+                                            },
+                                            "publicIPAddress": {
+                                                "id": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.Network/publicIPAddresses/', variables('resourceNames').pipName)]"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "scaleUnits": "[if(equals(parameters('bastionSku'), 'Basic'), 2, parameters('instanceCount'))]"
+                            }
+                        },
+                        {
+                            "condition": "[equals(parameters('azureMonitorOption'), 'yes')]",
+                            "type": "Microsoft.Network/bastionHosts/providers/diagnosticSettings",
+                            "apiVersion": "2017-05-01-preview",
+                            "name": "[concat(variables('resourceNames').bastionName, '/Microsoft.Insights/', 'azmon')]",
+                            "dependsOn": [
+                                "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.Network/bastionHosts/', variables('resourceNames').bastionName)]"
+                            ],
+                            "properties": {
+                                "workspaceId": "[parameters('workspaceResourceId')]",
+                                "metrics": [
+                                    {
+                                        "category": "AllMetrics",
+                                        "enabled": true
+                                    }
+                                ],
+                                "logs": [
+                                    {
+                                        "category": "BastionAuditLogs",
+                                        "enabled": true
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
