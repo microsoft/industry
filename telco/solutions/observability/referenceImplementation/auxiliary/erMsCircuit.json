@@ -1,0 +1,188 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rgName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "msftErName": {
+            "type": "string",
+            "metadata": {
+                "description": "This is the name of the ExpressRoute circuit"
+            }
+        },
+        "msftProvidersName": {
+            "type": "string",
+            "metadata": {
+                "description": "This is the name of the ExpressRoute Service Provider. It must exactly match one of the Service Providers from List ExpressRoute Service Providers API call."
+            }
+        },
+        "msftProvidersLocationName": {
+            "type": "string",
+            "metadata": {
+                "description": "This is the name of the peering location and not the ARM resource location. It must exactly match one of the available peering locations from List ExpressRoute Service Providers API call."
+            }
+        },
+        "msftProvidersBandwidth": {
+            "type": "string",
+            "metadata": {
+                "description": "This is the bandwidth in Mbps of the circuit being created. It must exactly match one of the available bandwidth offers List ExpressRoute Service Providers API call."
+            }
+        },
+        "msftPeeringCircuitSku": {
+            "type": "string",
+            "defaultValue": "Standard",
+            "allowedValues": [
+                "Standard",
+                "Premium"
+            ],
+            "metadata": {
+                "description": "Chosen SKU Tier of ExpressRoute circuit. Choose from Premium or Standard SKU tiers."
+            }
+        },
+        "msftPeeringCircuitBilling": {
+            "type": "string",
+            "defaultValue": "MeteredData",
+            "allowedValues": [
+                "MeteredData",
+                "UnlimitedData"
+            ],
+            "metadata": {
+                "description": "Chosen SKU family of ExpressRoute circuit. Choose from MeteredData or UnlimitedData SKU families."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[deployment().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        },
+        "azureMonitorOption": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "yes",
+                "no"
+            ]
+        },
+        "workspaceResourceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "routeFilterOption": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "yes", 
+                "no"
+            ]
+        },
+        "routeFilterName": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "resourceDeploymentName": "[take(concat(deployment().name, '-er-rg-', parameters('location')), 64)]",
+        "nestedResourceDeploymentName": "[take(concat(deployment().name, '-er-circuit-', parameters('location')), 64)]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[parameters('location')]",
+            "name": "[variables('resourceDeploymentName')]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.Resources/resourceGroups",
+                            "apiVersion": "2021-04-01",
+                            "location": "[parameters('location')]",
+                            "name": "[parameters('rgName')]",
+                            "properties": {}
+                        },
+                        {
+                            "type": "Microsoft.Resources/deployments",
+                            "apiVersion": "2021-04-01",
+                            "name": "[variables('nestedResourceDeploymentName')]",
+                            "resourceGroup": "[parameters('rgName')]",
+                            "dependsOn": [
+                                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]"
+                            ],
+                            "properties": {
+                                "mode": "Incremental",
+                                "template": {
+                                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                                    "contentVersion": "1.0.0.0",
+                                    "parameters": {},
+                                    "resources": [
+                                        {
+                                            "type": "Microsoft.Network/expressRouteCircuits",
+                                            "apiVersion": "2021-02-01",
+                                            "name": "[parameters('msftErName')]",
+                                            "location": "[parameters('location')]",
+                                            "sku": {
+                                                "name": "[format('{0}_{1}', parameters('msftPeeringCircuitSku'), parameters('msftPeeringCircuitBilling'))]",
+                                                "tier": "[parameters('msftPeeringCircuitSku')]",
+                                                "family": "[parameters('msftPeeringCircuitBilling')]"
+                                            },
+                                            "properties": {
+                                                "serviceProviderProperties": {
+                                                    "serviceProviderName": "[parameters('msftProvidersName')]",
+                                                    "peeringLocation": "[parameters('msftProvidersLocationName')]",
+                                                    "bandwidthInMbps": "[int(parameters('msftProvidersBandwidth'))]"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "condition": "[and(equals(parameters('routeFilterOption'), 'yes'), not(empty(parameters('routeFilterName'))))]",
+                                            "name": "[parameters('routeFilterName')]",
+                                            "type": "Microsoft.Network/routeFilters",
+                                            "apiVersion": "2019-02-01",
+                                            "location": "[parameters('location')]",
+                                            "dependsOn": [],
+                                            "tags": {},
+                                            "properties": {}
+                                        },
+                                        {
+                                            "condition": "[equals(parameters('azureMonitorOption'), 'yes')]",
+                                            "type": "Microsoft.Network/expressRouteCircuits/providers/diagnosticSettings",
+                                            "apiVersion": "2017-05-01-preview",
+                                            "name": "[concat(parameters('msftErName'), '/Microsoft.Insights/', 'azmon')]",
+                                            "dependsOn": [
+                                                "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.Network/expressRouteCircuits/', parameters('msftErName'))]"
+                                            ],
+                                            "properties": {
+                                                "workspaceId": "[parameters('workspaceResourceId')]",
+                                                "metrics": [
+                                                    {
+                                                        "category": "AllMetrics",
+                                                        "enabled": true
+                                                    }
+                                                ],
+                                                "logs": [
+                                                    {
+                                                        "category": "PeeringRouteLog",
+                                                        "enabled": true
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
