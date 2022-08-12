@@ -11,7 +11,7 @@ deployment and adoption of industry cloud.
 
 * [Healthcare](#healthcare)
 
-* [Telecommunications](#Telecommunications)
+* [Telecommunications](#telecommunications)
 
 * [Financial Services](#financial-services)
 
@@ -84,16 +84,11 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
 - [Power Platform for Telecommunications](./foundations/powerPlatform)
 
 Telco Solutions
-- [Governance for Telco Industry Scenarios](./telco/docs/telco-governance.md)
-- [Networking for Telco Industry Scenarios](./telco/docs/telco-networking.md)
-- [Operator Landing Zones](./telco/docs/operator-landing-zones.md)
-- [Network Analytics Landing Zones for Operators](./telco/solutions/observability/readme.md)
-- [Distributed Edge](./telco/docs/telco-edge.md)
-- [Operator services](./telco/solutions/mgmtOptions/readme.md)
-<!--  - [Telco Managed Services](./telco/solutions/managedServices)
-  - [Telco Managed Solution](./telco/solutions/managedSolutions)-->
-<!--- [Telco Sales](./telco/solutions/sales/readme.md)
-- [Place Management](./telco/solutions/placeManagement/readme.md)-->
+- Solutions across Azure and the edge
+  - [Network Analytics Landing Zones](./telco/solutions/observability/readme.md)
+  - [Edge Video Services](https://github.com/microsoft/edge-video-services)
+- Managed Security Offerings
+  - Azure Sentinel and Microsoft Defender for Cloud
 
   </td>
   <td>
@@ -124,11 +119,11 @@ Microsoft Cloud for Retail is an industry-specific cloud composed of products an
 - [Reference Implementation](./retail/referenceImplementation/README.md)
 
 - Retail Solutions
-    - [Workforce Management with Teams](./retail/solutions/wrkforceMgmt/README.md)
-    - [Real-time personalization](./retail/solutions/realtimePersonalization/README.md)
-    - [Supply chain and Order lifecycle management](./retail/solutions/flexibleFulfillment/README.md)
-    - [Shopper and operations analytics](./retail/solutions/shopperOpsAnalytics/README.md)
-    - [Unified Customer profile and Retail churn model](./retail/solutions/unifiedCustomerProfile/README.md)
+  - [Workforce Management with Teams](./retail/solutions/wrkforceMgmt/README.md)
+  - [Real-time personalization](./retail/solutions/realtimePersonalization/README.md)
+  - [Supply chain and Order lifecycle management](./retail/solutions/flexibleFulfillment/README.md)
+  - [Shopper and operations analytics](./retail/solutions/shopperOpsAnalytics/README.md)
+  - [Unified Customer profile and Retail churn model](./retail/solutions/unifiedCustomerProfile/README.md)
 
   </td>
   <td>
