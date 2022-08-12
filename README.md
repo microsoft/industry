@@ -11,7 +11,7 @@ deployment and adoption of industry cloud.
 
 * [Healthcare](#healthcare)
 
-* [Telecommunications](#Telecommunications)
+* [Telecommunications](#telecommunications)
 
 * [Financial Services](#financial-services)
 
