@@ -88,9 +88,8 @@ Telco Solutions
   - [Network Analytics Landing Zones](./telco/solutions/observability/readme.md)
   - [Edge Video Services](https://github.com/microsoft/edge-video-services)
 - Managed Security Offerings
-  - Azure Sentinel
-  - Microsoft Defender
-
+  - Azure Sentinel and Microsoft Defender for Cloud
+ 
   </td>
   <td>
   <img src="telco\docs\telco-industry-reference-architecture.png" width="99%" height="99%"/>
