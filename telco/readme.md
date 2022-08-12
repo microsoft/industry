@@ -18,9 +18,10 @@ This article provides a reference architecture with prescriptive guidance and re
   * [Networking for Telco Industry Scenarios](#letter-b)
   * [Operator Landing Zones](#letter-c)
   * [Distributed Edge](#letter-d)
-  * [Operator Services](#letter-e)
+  * [Managed Services](#letter-e)
 * [Solutions](#solutions)
   * [Network Analytics Landing Zones for Operators](#network-analytics-landing-zones-for-operators)
+  * [Edge Video Services](#edge-video-services)
 * [Next Steps](#next-steps)
 
 ## Azure for Operators Landing Zones Reference Implementations
@@ -55,7 +56,7 @@ As figure 1 depicts, the AfO Landing Zones architecture follows the design princ
 
 <a id="letter-d"></a>![The letter D](./docs/d.png) [Distributed Edge](./docs/telco-edge.md). The AfO Landing Zones architecture provides prescriptive guidance to leverage the operator's distributed edge infrastructure to provide network functions (such as mobile core or UPF) at the near and far edge via [Azure Operator Distributed Services](https://azure.microsoft.com/blog/new-azure-for-operators-solutions-and-services-built-for-the-future-of-telecommunications/).
 
-<a id="letter-e"></a>![The letter E](./docs/e.png) [Operator Services](./solutions/mgmtOptions/readme.md). In addition to providing networking services to their customers, operators also provide managed services and managed solutions to their customers either from the operators own Azure AD tenant, or directly in their customer's Azure AD tenants.
+<a id="letter-e"></a>![The letter E](./docs/e.png) [Managed Services](./solutions/mgmtOptions/readme.md). In addition to providing networking services to their customers, operators also provide managed services and managed solutions to their customers either from the operators own Azure AD tenant, or directly in their customer's Azure AD tenants.
 
 ## Solutions
 
@@ -65,6 +66,13 @@ An observability landing zone for operators provides the required foundational s
 
 * [Architectural guidance](./solutions/observability/readme.md)
 * [User guide](./solutions/observability/userGuide/readme.md)
+
+### Edge Video Services
+
+Edge Video Services (EVS) is a Microsoft platform for [developing video analytics solutions](https://azure.microsoft.com/blog/video-analytics-at-the-edge-an-ideal-technology-for-5g-cloud-monetization/) that can be deployed on Azure public MEC. For example, consider some smart city applications like our Vision Zero work with the City of Bellevue, which enabled a new generation of [real-time traffic flows](https://www.microsoft.com/research/publication/traffic-video-analytics-case-study-report/) leading to substantial improvements in the day-to-day lives of commuters. Similarly, real-time video analytics can make cities safer by controlling traffic lights for situations such as allowing a person in a wheelchair to safely cross the street.
+
+* [Reference architecture](https://github.com/microsoft/edge-video-services)
+* [Example implementation](https://azure.microsoft.com/blog/microsoft-and-att-demonstrate-5gpowered-video-analytics/)
 
 ## Next Steps
 The following articles will provide detailed design considerations and recommendations for AfO Landing Zones key design areas.
@@ -78,6 +86,7 @@ The following articles will provide detailed design considerations and recommend
 
 **Solutions**
 * [Network Analytics Landing Zones for Operators](./solutions/observability/readme.md)
+* [Edge Video Services](https://github.com/microsoft/edge-video-services)
 ---
 
 [Back to documentation root](../README.md)
