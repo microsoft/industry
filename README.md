@@ -89,7 +89,7 @@ Telco Solutions
   - [Edge Video Services](https://github.com/microsoft/edge-video-services)
 - Managed Security Offerings
   - Azure Sentinel and Microsoft Defender for Cloud
- 
+
   </td>
   <td>
   <img src="telco\docs\telco-industry-reference-architecture.png" width="99%" height="99%"/>
