@@ -1248,6 +1248,72 @@
                                     }
                                 ]
                             }                            
+                        },
+                        {
+                            "name": "adbPublicSubnet",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Subnet for Azure Databricks (public).",
+                            "toolTip": "Provide address prefix in CIDR notation (e.g 10.100.3.0/26)",
+                            "defaultValue": "10.100.3.0/26",
+                            "visible": true,
+                            "constraints": {
+                                "required": true,
+                                "validations": [
+                                    {
+                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(2[0-6]))$",
+                                        "message": "Invalid CIDR range. The address prefix must be in the range [20,26]."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('auxiliary').vnetAddress, '/')), 8), equals(last(take(split(first(split(steps('auxiliary').vnetAddress, '/')), '.'), 1)), last(take(split(first(split(steps('auxiliary').adbPublicSubnet, '/')), '.'), 1))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (first octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('auxiliary').vnetAddress, '/')), 16), equals(last(take(split(first(split(steps('auxiliary').vnetAddress, '/')), '.'), 2)), last(take(split(first(split(steps('auxiliary').adbPublicSubnet, '/')), '.'), 2))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (second octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('auxiliary').vnetAddress, '/')), 24), equals(last(take(split(first(split(steps('auxiliary').vnetAddress, '/')), '.'), 3)), last(take(split(first(split(steps('auxiliary').adbPublicSubnet, '/')), '.'), 3))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (third octet)."
+                                    },
+                                    {
+                                        "isValid": "[lessOrEquals(last(split(steps('auxiliary').vnetAddress, '/')), last(split(steps('auxiliary').adbPublicSubnet, '/')))]",
+                                        "message": "CIDR range not within virtual network CIDR range (subnet mask)."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "adbPrivateSubnet",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Subnet for Azure Databricks (private).",
+                            "toolTip": "Provide address prefix in CIDR notation (e.g 10.100.3.64/26)",
+                            "defaultValue": "10.100.3.64/26",
+                            "visible": true,
+                            "constraints": {
+                                "required": true,
+                                "validations": [
+                                    {
+                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(2[0-6]))$",
+                                        "message": "Invalid CIDR range. The address prefix must be in the range [20,26]."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('auxiliary').vnetAddress, '/')), 8), equals(last(take(split(first(split(steps('auxiliary').vnetAddress, '/')), '.'), 1)), last(take(split(first(split(steps('auxiliary').adbPrivateSubnet, '/')), '.'), 1))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (first octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('auxiliary').vnetAddress, '/')), 16), equals(last(take(split(first(split(steps('auxiliary').vnetAddress, '/')), '.'), 2)), last(take(split(first(split(steps('auxiliary').adbPrivateSubnet, '/')), '.'), 2))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (second octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('auxiliary').vnetAddress, '/')), 24), equals(last(take(split(first(split(steps('auxiliary').vnetAddress, '/')), '.'), 3)), last(take(split(first(split(steps('auxiliary').adbPrivateSubnet, '/')), '.'), 3))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (third octet)."
+                                    },
+                                    {
+                                        "isValid": "[lessOrEquals(last(split(steps('auxiliary').vnetAddress, '/')), last(split(steps('auxiliary').adbPrivateSubnet, '/')))]",
+                                        "message": "CIDR range not within virtual network CIDR range (subnet mask)."
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }
@@ -1298,7 +1364,9 @@
                 "erGwSubnet": "[steps('auxiliary').erGwSubnet]",
                 "erGwAzSku": "[steps('auxiliary').privateErAzSku]",
                 "erGwRegionalSku": "[if(empty(steps('auxiliary').privateErRegionalSku), steps('auxiliary').privateErNoAzSku, steps('auxiliary').privateErRegionalSku)]",
-                "erConnectionOption": "[steps('auxiliary').erConnectionOption]"
+                "erConnectionOption": "[steps('auxiliary').erConnectionOption]",
+                "adbPublicSubnet": "[steps('auxiliary').adbPublicSubnet]",
+                "adbPrivateSubnet": "[steps('auxiliary').adbPrivateSubnet]"
             },
             "kind": "Subscription",
             "location": "[steps('setup').locationName]",

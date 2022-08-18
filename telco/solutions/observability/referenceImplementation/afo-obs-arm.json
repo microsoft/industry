@@ -344,6 +344,20 @@
                 "yes",
                 "no"
             ]
+        },
+        "adbPublicSubnet": {
+            "type": "string",
+            "defaultValue": "10.100.3.0/26",
+            "metadata": {
+                "description": "Provide subnet for Azure Databricks (public)."
+            }
+        },
+        "adbPrivateSubnet": {
+            "type": "string",
+            "defaultValue": "10.100.3.64/26",
+            "metadata": {
+                "description": "Provide subnet for Azure Databricks (private)."
+            }
         }
     },
     "variables": {
@@ -452,6 +466,12 @@
                     },
                     "bastionSubnet": {
                         "value": "[parameters('bastionSubnet')]"
+                    },
+                    "adbPublicSubnet": {
+                        "value": "[parameters('adbPublicSubnet')]"
+                    },
+                    "adbPrivateSubnet": {
+                        "value": "[parameters('adbPrivateSubnet')]"
                     },
                     "erGwRegionalOrAz": {
                         "value": "[parameters('erGwRegionalOrAz')]"

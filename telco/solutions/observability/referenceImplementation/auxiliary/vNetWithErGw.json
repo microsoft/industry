@@ -48,6 +48,20 @@
                 "description": "Provide subnet for Bastion"
             }
         },
+        "adbPublicSubnet": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide subnet for Azure Databricks (public)."
+            }
+        },
+        "adbPrivateSubnet": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide subnet for Azure Databricks (private)."
+            }
+        },
         "erGwAzSku": {
             "type": "string",
             "defaultValue": ""
@@ -101,6 +115,22 @@
                     "addressPrefix": "[parameters('bastionSubnet')]"
                 }
             }
+        ],
+        "adbPublicSubnet": [
+            {
+                "name": "adbPublicSubnet",
+                "properties": {
+                    "addressPrefix": "[parameters('adbPublicSubnet')]"
+                }
+            }
+        ],
+        "adbPrivateSubnet": [
+            {
+                "name": "adbPrivateSubnet",
+                "properties": {
+                    "addressPrefix": "[parameters('adbPrivateSubnet')]"
+                }
+            }
         ]
     },
     "resources": [    
@@ -150,13 +180,21 @@
                                                     ]
                                                 },
                                                 "subnets": "[
-                                                             union(
-                                                                  if(
-                                                                      not(
-                                                                          empty(parameters('erGwSubnet'))), variables('erGwSubnet'), json('[]')), 
-                                                                          if(
-                                                                              not(
-                                                                                  empty(parameters('bastionSubnet'))), variables('bastionSubnet'), json('[]')))]",
+                                                    union(
+                                                        if(
+                                                            not(empty(parameters('erGwSubnet'))), variables('erGwSubnet'), json('[]')
+                                                        ), 
+                                                        if(
+                                                            not(empty(parameters('bastionSubnet'))), variables('bastionSubnet'), json('[]')
+                                                        ), 
+                                                        if(
+                                                            not(empty(parameters('adbPublicSubnet'))), variables('adbPublicSubnet'), json('[]')
+                                                        ), 
+                                                        if(
+                                                            not(empty(parameters('adbPrivateSubnet'))), variables('adbPrivateSubnet'), json('[]')
+                                                        )
+                                                    )
+                                                ]",
                                                 "enableDdosProtection": false
                                             }
                                         },
