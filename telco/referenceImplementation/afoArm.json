@@ -684,18 +684,18 @@
         },
         // Declaring all required deployment uri's used for deployments of composite ARM templates for Telco
        "azPrivateDnsPolicyMapping": {
-            "https://management.azure.com/": "managementGroupTemplates/policyDefinitions/DINE-PrivateDNSZonesPolicySetDefinition.json",
-            "https://management.usgovcloudapi.net": "managementGroupTemplates/policyDefinitions/gov/fairfaxDINE-PrivateDNSZonesPolicySetDefinition.json"
+            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyDefinitions/DINE-PrivateDNSZonesPolicySetDefinition.json",
+            "https://management.usgovcloudapi.net": "industrySpecific/managementGroupTemplates/policyDefinitions/gov/fairfaxDINE-PrivateDNSZonesPolicySetDefinition.json"
         },
         "azPrivateDnsArmTemplate": "[variables('azPrivateDnsPolicyMapping')[environment().resourceManager]]",
         "azPublicEndpointsPolicyMapping": {
-            "https://management.azure.com/": "managementGroupTemplates/policyDefinitions/DENY-PublicEndpointsPolicySetDefinition.json",
-            "https://management.usgovcloudapi.net": "managementGroupTemplates/policyDefinitions/gov/fairfaxDENY-PublicEndpointsPolicySetDefinition.json"
+            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyDefinitions/DENY-PublicEndpointsPolicySetDefinition.json",
+            "https://management.usgovcloudapi.net": "industrySpecific/managementGroupTemplates/policyDefinitions/gov/fairfaxDENY-PublicEndpointsPolicySetDefinition.json"
         },
         "azPublicEndpointArmTemplate": "[variables('azPublicEndpointsPolicyMapping')[environment().resourceManager]]",
         "azPolicyPoliciesMapping": {
-            "https://management.azure.com/": "managementGroupTemplates/policyDefinitions/policies.json",
-            "https://management.usgovcloudapi.net": "managementGroupTemplates/policyDefinitions/gov/fairfaxPolicies.json"
+            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyDefinitions/policies.json",
+            "https://management.usgovcloudapi.net": "industrySpecific/managementGroupTemplates/policyDefinitions/gov/fairfaxPolicies.json"
         },
         "azPolicyArmTemplate": "[variables('azPolicyPoliciesMapping')[environment().resourceManager]]",
         "deploymentUris": {
