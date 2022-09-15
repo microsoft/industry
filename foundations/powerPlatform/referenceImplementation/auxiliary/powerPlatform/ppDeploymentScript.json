@@ -132,6 +132,17 @@
                 "description": "AZURE-only parameter. SubscriptionId for the billing subscription."
             }
         },
+        "ppAdminDlp": {
+            "type": "string",
+            "defaultValue": "no",,
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "metedata": {
+                "description": "Select to enable/disable this setting."
+            }
+        },
         "ppAdminManagedEnv": {
             "type": "string",
             "defaultValue": "no",
@@ -572,6 +583,7 @@
                                                     '-PPAdminBilling', ' ', parameters('ppAdminBilling'), ' ',
                                                     '-PPAdminRegion', ' ', parameters('ppAdminRegion'), ' ',
                                                     '-PPAdminCoeSetting', ' ', parameters('ppAdminCoeSetting'), ' ',
+                                                    '-PPAdminDlp', ' ', parameters('ppAdminDlp'), ' ',
                                                     '-PPAdminManagedEnv', ' ', parameters('ppAdminManagedEnv'), ' ',
                                                     '-PPDefaultRenameText', ' ', parameters('ppDefaultRenameText'), ' ',
                                                     '-PPDefaultDLP', ' ', parameters('ppDefaultDlp'), ' ',

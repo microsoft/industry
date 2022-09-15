@@ -544,6 +544,27 @@
                             },
                             "visible": true
                         },
+                        {
+                            "name": "ppAdminDlp",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Assign recommended Data-loss prevention policies to the Admin Environments",
+                            "defaultValue": "Yes (recommended)",
+                            "multiSelect": true,
+                            "toolTip": "If 'Yes' is selected, the setup will enable this",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": "[equals(steps('landingZones').ppDefaultRename, 'yes')]"
+                        },
 						{
                             "name": "ppAdminManagedText",
                             "type": "Microsoft.Common.TextBlock",
@@ -4583,6 +4604,7 @@
                 "ppEnvCapacitySetting": "[steps('environments').ppEnvCapacitySetting]",
                 "ppAdminEnvNaming": "[steps('environments').ppAdminEnvNaming]",
                 "ppAdminRegion": "[steps('environments').ppAdminRegion]",
+                "ppAdminDlp": "[steps('environments').ppAdminDlp]",
                 "ppAdminManagedEnv": "[steps('environments').ppAdminManagedEnv]",
                 "ppAdminBilling": "[steps('environments').ppAdminBilling]",
                 "ppDefaultRenameText": "[steps('landingZones').ppDefaultRenameText]",

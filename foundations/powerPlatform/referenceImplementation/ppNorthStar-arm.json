@@ -130,6 +130,17 @@
                 "description": "Provide location for the Admin environments."
             }
         },
+        "ppAdminDlp": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "metadata": {
+                "description": "Select if recommended DLP policies should be assigned for the Admin environments."
+            }
+        },
         "ppAdminManagedEnv": {
             "type": "string",
             "defaultValue": "no",
@@ -689,6 +700,9 @@
                     },
                     "ppAdminBilling": {
                         "value": "[if(empty(parameters('ppAdminBilling')), variables('emptystring'), parameters('ppAdminBilling'))]"
+                    },
+                    "ppAdminDlp": {
+                        "value": "[parameters('ppAdminDlp')]"
                     },
                     "ppAdminManagedEnv": {
                         "value": "[parameters('ppAdminManagedEnv')]"
