@@ -118,7 +118,8 @@
                 "france",
                 "germany",
                 "unitedarabemirates",
-                "australia"
+                "australia",
+                "norway"
             ],
             "defaultValue": "unitedstates",
             "metadata": {
@@ -247,7 +248,8 @@
                 "france",
                 "germany",
                 "unitedarabemirates",
-                "australia"
+                "australia",
+                "norway"
             ],
             "defaultValue": "unitedstates",
             "metadata": {
@@ -325,7 +327,8 @@
                 "france",
                 "germany",
                 "unitedarabemirates",
-                "australia"
+                "australia",
+                "norway"
             ],
             "defaultValue": "unitedstates",
             "metadata": {

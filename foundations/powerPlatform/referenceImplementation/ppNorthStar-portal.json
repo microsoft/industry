@@ -519,6 +519,10 @@
                                     {
                                         "label": "South America",
                                         "value": "southamerica"
+                                    },
+                                    {
+                                        "label": "Norway",
+                                        "value": "norway"
                                     }
                                 ],
                                 "required": true
@@ -1154,6 +1158,10 @@
                                                     {
                                                         "label": "South America",
                                                         "value": "southamerica"
+                                                    },
+                                                    {
+                                                        "label": "Norway",
+                                                        "value": "norway"
                                                     }
                                                 ],
                                                 "required": true
@@ -1933,6 +1941,10 @@
                                     {
                                         "label": "South America",
                                         "value": "southamerica"
+                                    },
+                                    {
+                                        "label": "Norway",
+                                        "value": "norway"
                                     }
                                 ],
                                 "required": true
@@ -2839,6 +2851,10 @@
                                                     {
                                                         "label": "South America",
                                                         "value": "southamerica"
+                                                    },
+                                                    {
+                                                        "label": "Norway",
+                                                        "value": "norway"
                                                     }
                                                 ],
                                                 "required": true
@@ -3617,6 +3633,10 @@
                                     {
                                         "label": "South America",
                                         "value": "southamerica"
+                                    },
+                                    {
+                                        "label": "Norway",
+                                        "value": "norway"
                                     }
                                 ],
                                 "required": true
@@ -4509,6 +4529,10 @@
                                     {
                                         "label": "South America",
                                         "value": "southamerica"
+                                    },
+                                    {
+                                        "label": "Norway",
+                                        "value": "norway"
                                     }
                                 ],
                                 "required": true
