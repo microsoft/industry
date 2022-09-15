@@ -19,6 +19,7 @@ param (
     [ValidateSet('unitedstates', 'europe', 'asia', 'australia', 'india', 'japan', 'canada', 'unitedkingdom', 'unitedstatesfirstrelease', 'southamerica', 'france', 'switzerland', 'germany', 'unitedarabemirates')][Parameter(Mandatory = $false)][string]$PPAdminRegion,
     [Parameter(Mandatory = $false)][string]$PPAdminBilling,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPAdminCoeSetting,
+    [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPAdminDlp,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPAdminManagedEnv,
     #Landing Zones
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPDefaultRenameText,
@@ -332,13 +333,15 @@ if (-not [string]::IsNullOrEmpty($PPAdminEnvNaming)) {
     }
 
     # Assign DLP to created environments
-    $adminEnvironments = Get-PowerOpsEnvironment | Where-Object { $_.properties.displayName -like "$PPAdminEnvNaming-admin*" }
-    try {
-        New-DLPAssignmentFromEnv -Environments $adminEnvironments.properties.displayName -EnvironmentDLP 'adminEnv'
-        Write-Output "Created Default Admin Environment DLP Policy"
-    }
-    catch {
-        Write-Warning "Created Default Admin Environment DLP Policy`r`n$_"
+    if ($PPAdminDlp -eq "Yes") {
+        $adminEnvironments = Get-PowerOpsEnvironment | Where-Object { $_.properties.displayName -like "$PPAdminEnvNaming-admin*" }
+        try {
+            New-DLPAssignmentFromEnv -Environments $adminEnvironments.properties.displayName -EnvironmentDLP 'adminEnv'
+            Write-Output "Created Default Admin Environment DLP Policy"
+        }
+        catch {
+            Write-Warning "Created Default Admin Environment DLP Policy`r`n$_"
+        }
     }
 }
 #endregion create admin environments and import COE solution
