@@ -140,7 +140,7 @@
                 "yes",
                 "no"
             ],
-            "metedata": {
+            "metadata": {
                 "description": "Select to enable/disable this setting."
             }
         },
