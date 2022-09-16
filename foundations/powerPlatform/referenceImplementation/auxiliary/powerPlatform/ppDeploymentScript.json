@@ -135,7 +135,7 @@
         },
         "ppAdminDlp": {
             "type": "string",
-            "defaultValue": "no",,
+            "defaultValue": "no",
             "allowedValues": [
                 "yes",
                 "no"
