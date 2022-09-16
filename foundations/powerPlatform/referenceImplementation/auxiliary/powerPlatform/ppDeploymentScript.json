@@ -118,7 +118,8 @@
                 "france",
                 "germany",
                 "unitedarabemirates",
-                "australia"
+                "australia",
+                "norway"
             ],
             "defaultValue": "unitedstates",
             "metadata": {
@@ -130,6 +131,17 @@
             "defaultValue": "''",
             "metadata": {
                 "description": "AZURE-only parameter. SubscriptionId for the billing subscription."
+            }
+        },
+        "ppAdminDlp": {
+            "type": "string",
+            "defaultValue": "no",,
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "metadata": {
+                "description": "Select to enable/disable this setting."
             }
         },
         "ppAdminManagedEnv": {
@@ -236,7 +248,8 @@
                 "france",
                 "germany",
                 "unitedarabemirates",
-                "australia"
+                "australia",
+                "norway"
             ],
             "defaultValue": "unitedstates",
             "metadata": {
@@ -314,7 +327,8 @@
                 "france",
                 "germany",
                 "unitedarabemirates",
-                "australia"
+                "australia",
+                "norway"
             ],
             "defaultValue": "unitedstates",
             "metadata": {
@@ -572,6 +586,7 @@
                                                     '-PPAdminBilling', ' ', parameters('ppAdminBilling'), ' ',
                                                     '-PPAdminRegion', ' ', parameters('ppAdminRegion'), ' ',
                                                     '-PPAdminCoeSetting', ' ', parameters('ppAdminCoeSetting'), ' ',
+                                                    '-PPAdminDlp', ' ', parameters('ppAdminDlp'), ' ',
                                                     '-PPAdminManagedEnv', ' ', parameters('ppAdminManagedEnv'), ' ',
                                                     '-PPDefaultRenameText', ' ', parameters('ppDefaultRenameText'), ' ',
                                                     '-PPDefaultDLP', ' ', parameters('ppDefaultDlp'), ' ',
