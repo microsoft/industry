@@ -1853,6 +1853,9 @@
                     "firewallSku": {
                         "value": "[parameters('firewallSku')]"
                     },
+                    "firewallZones": {
+                        "value": "[parameters('firewallZones')]"
+                    },
                     "addressPrefix": {
                         "value": "[parameters('addressPrefix')]"
                     },
@@ -3902,6 +3905,9 @@
                     },
                     "firewallSku": {
                         "value": "[parameters('firewallSku')]"
+                    },
+                    "firewallZones": {
+                        "value": "[parameters('firewallZones')]"
                     },
                     "addressPrefix": {
                         "value": "[parameters('addressPrefix')]"
