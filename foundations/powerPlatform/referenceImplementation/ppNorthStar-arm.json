@@ -123,11 +123,23 @@
                 "france",
                 "germany",
                 "unitedarabemirates",
-                "australia"
+                "australia",
+                "norway"
             ],
             "defaultValue": "unitedstates",
             "metadata": {
                 "description": "Provide location for the Admin environments."
+            }
+        },
+        "ppAdminDlp": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "metadata": {
+                "description": "Select if recommended DLP policies should be assigned for the Admin environments."
             }
         },
         "ppAdminManagedEnv": {
@@ -241,7 +253,8 @@
                 "france",
                 "germany",
                 "unitedarabemirates",
-                "australia"
+                "australia",
+                "norway"
             ],
             "defaultValue": "unitedstates",
             "metadata": {
@@ -319,7 +332,8 @@
                 "france",
                 "germany",
                 "unitedarabemirates",
-                "australia"
+                "australia",
+                "norway"
             ],
             "defaultValue": "unitedstates",
             "metadata": {
@@ -388,7 +402,8 @@
                 "unitedkingdom",
                 "france",
                 "germany",
-                "australia"
+                "australia",
+                "norway"
             ],
             "defaultValue": "unitedstates",
             "metadata": {
@@ -689,6 +704,9 @@
                     },
                     "ppAdminBilling": {
                         "value": "[if(empty(parameters('ppAdminBilling')), variables('emptystring'), parameters('ppAdminBilling'))]"
+                    },
+                    "ppAdminDlp": {
+                        "value": "[parameters('ppAdminDlp')]"
                     },
                     "ppAdminManagedEnv": {
                         "value": "[parameters('ppAdminManagedEnv')]"
