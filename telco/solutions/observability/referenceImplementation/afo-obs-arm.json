@@ -363,7 +363,7 @@
             "bastionDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'bastion', variables('deploymentNameSuffix')), 63)]",
             "erCircuitDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'privatePeering', variables('deploymentNameSuffix')), 63)]",
             "erMsCircuitDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'msftPeering', variables('deploymentNameSuffix')), 63)]",
-            "grafanaDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'grafana', variables('deploymentNameSuffix')), 63)]"
+            "grafanaDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'graf', variables('deploymentNameSuffix')), 63)]"
         },
         "rgNames": {
             "vnetRgName": "[concat(variables('deploymentNamePrefix'), 'vnet-', parameters('location'))]",
@@ -377,7 +377,7 @@
             "erGwName": "[concat(variables('deploymentNamePrefix'), parameters('erGwName'), '-', parameters('location'))]",
             "erCircuitName": "[concat(variables('deploymentNamePrefix'), parameters('privateErName'), '-', parameters('location'))]",
             "erMsCircuitName": "[concat(variables('deploymentNamePrefix'), parameters('msftErName'), '-', parameters('location'))]",
-            "grafanaName": "[take(concat(variables('deploymentNamePrefix'), 'grafana'), 23)]",
+            "grafanaName": "[take(concat(variables('deploymentNamePrefix'), 'graf'), 23)]",
             "bastionHostName": "[concat(variables('deploymentNamePrefix'), parameters('bastionName'), parameters('location'))]",
             "routeFilterName": "[concat(variables('deploymentNamePrefix'), parameters('routeFilterName'), '-', parameters('location'))]"
         },
