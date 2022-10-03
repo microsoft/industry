@@ -269,7 +269,9 @@ Protecting your data in Power Platform is primarily at the Environment level, an
 - Depending on the amount of copied and restored audit data, copy and restore operations can take up to 8 hours.
 - All your environments, except Trial environments (standard and subscription-based), are backed up.
 - System backups occur continuously. The underlying technology used is Azure SQL Database. See SQL Database documentation Automated backups for details.
-- System backups for production environments that have been created with a database and have one or more Dynamics 365 applications installed are retained up to 28 days. * System backups for production environments which don't have Dynamics 365 applications deployed in them will be retained for 7 days. System backups for sandbox environments will be retained for 7 days.
+- System backups for production environments that have been created with a database and have one or more Dynamics 365 applications installed are retained up to 28 days. 
+- System backups for production environments which don't have Dynamics 365 applications deployed in them will be retained for 7 days. 
+- System backups for sandbox environments will be retained for 7 days.
 - You must restore an environment to the same region in which it was backed up.
 - When an environment is restored onto itself, audit logs aren't deleted. For example, when an environment is restored onto itself to a past time t1, full audit data for the environment will be available, including any audit logs that were generated after t1.
 - Admins of an Environment can also do manual backups:
@@ -347,7 +349,7 @@ Most organizations starting with the cloud does not have an operating model that
   - Platform management and monitoring (holistic).
   - Cost Management (holistic).
   - "Platform as Code" (management of templates, scripts and other assets).
-  - Responsible for overall operations on Power Platform within the Azure AD tenant, such as managing service principles, Graph API registration, and role definitions.
+  - Responsible for overall operations on Power Platform within the Azure AD tenant, such as managing service principals, Graph API registration, and role definitions.
   - SecOps (Security Operations)
   - Role based access control (holistic).
   - Key management (for central services).
