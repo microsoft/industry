@@ -330,7 +330,7 @@ There are different network options to allow connectivity to the Power Platform 
 
 ## Platform Automation and DevOps
 
-Most organizations starting with the cloud does not have an operating model that is compatible, and will very likely undergo a degree of operational and organization transformation to deliver on the principle of cloud computing and digital transformation enablement. As it relates to Power Platform it is highly recommended that a DevOps approach is being employed for both the central IT team responsible for the Power Platform, as well as the professional developers teams.
+Most organizations starting with the cloud do not have an operating model that is compatible, and will very likely undergo a degree of operational and organizational transformation to deliver on the principle of cloud computing and digital transformation enablement. As it relates to Power Platform it is highly recommended that a DevOps approach is being employed for both the central IT team responsible for the Power Platform, as well as the professional developers teams.
 
 ![devops](./images/devops.png)
 
