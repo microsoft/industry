@@ -1175,7 +1175,7 @@
                                         "element": {
                                             "name": "ppLanguageDropDown",
                                             "type": "Microsoft.Common.DropDown",
-                                            "placeholder": "Select a currency...",
+                                            "placeholder": "Select a language...",
                                             "filter": true,
                                             "constraints": {
                                                 "allowedValues": [
@@ -2148,7 +2148,7 @@
                         {
                             "name": "ppCitizenCurrency",
                             "type": "Microsoft.Common.DropDown",
-                            "label": "Select currency for the new Environments for professional developers",
+                            "label": "Select currency for the new Environments for citizen developers",
                             "placeholder": "",
                             "defaultValue": "",
                             "toolTip": "",
@@ -2868,7 +2868,7 @@
                                         "element": {
                                             "name": "ppLanguageDropDown",
                                             "type": "Microsoft.Common.DropDown",
-                                            "placeholder": "Select a currency...",
+                                            "placeholder": "Select a language...",
                                             "filter": true,
                                             "constraints": {
                                                 "allowedValues": [
