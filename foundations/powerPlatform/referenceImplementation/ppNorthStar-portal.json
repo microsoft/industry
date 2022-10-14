@@ -1010,7 +1010,7 @@
                             "type": "Microsoft.Common.TextBlock",
                             "visible": true,
                             "options": {
-                                "text": "The Landing Zones for citizen developrs will be optimized for no code/low code scenarios, and provide them with the required agility and simplicity to rapidly build modern business applications. You can grant business units or indivuduals access to the Environments post creation.",
+                                "text": "The Landing Zones for citizen developers will be optimized for no code/low code scenarios, and provide them with the required agility and simplicity to rapidly build modern business applications. You can grant business units or indivuduals access to the Environments post creation.",
                                 "link": {
                                     "label": "Learn more",
                                     "uri": "https://www.microsoft.com"

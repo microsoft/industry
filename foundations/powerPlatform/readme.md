@@ -186,7 +186,7 @@ An environment in Power Platform is an allow-by default system from a policy per
 
 ## Environments
 
-Environments acts as the scale-unit, and a management boundary in Power platform and is where organizations can store, manage, and share business data, applications, including Dynamics 365 apps, chatbots, and flows. It's recommended to have a strategy for how you should create, distribute, and scale environments to accelerate digital transformation for your pro - and citizen developers.
+Environments acts as the scale-unit, and a management boundary in Power Platform and is where organizations can store, manage, and share business data, applications, including Dynamics 365 apps, chatbots, and flows. It's recommended to have a strategy for how you should create, distribute, and scale environments to accelerate digital transformation for your pro - and citizen developers.
 The following section describes the design considerations and the design recommendations for Environments, to help you navigate to the correct setup per your organizational requirements.
 
 ![Environments](./images/env.png)
@@ -269,7 +269,9 @@ Protecting your data in Power Platform is primarily at the Environment level, an
 - Depending on the amount of copied and restored audit data, copy and restore operations can take up to 8 hours.
 - All your environments, except Trial environments (standard and subscription-based), are backed up.
 - System backups occur continuously. The underlying technology used is Azure SQL Database. See SQL Database documentation Automated backups for details.
-- System backups for production environments that have been created with a database and have one or more Dynamics 365 applications installed are retained up to 28 days. * System backups for production environments which don't have Dynamics 365 applications deployed in them will be retained for 7 days. System backups for sandbox environments will be retained for 7 days.
+- System backups for production environments that have been created with a database and have one or more Dynamics 365 applications installed are retained up to 28 days.
+- System backups for production environments which don't have Dynamics 365 applications deployed in them will be retained for 7 days.
+- System backups for sandbox environments will be retained for 7 days.
 - You must restore an environment to the same region in which it was backed up.
 - When an environment is restored onto itself, audit logs aren't deleted. For example, when an environment is restored onto itself to a past time t1, full audit data for the environment will be available, including any audit logs that were generated after t1.
 - Admins of an Environment can also do manual backups:
@@ -328,13 +330,13 @@ There are different network options to allow connectivity to the Power Platform 
 
 ## Platform Automation and DevOps
 
-Most organizations starting with the cloud does not have an operating model that is compatible, and will very likely undergo a degree of operational and organization transformation to deliver on the principle of cloud computing and digital transformation enablement. As it relates to Power Platform it is highly recommended that a DevOps approach is being employed for both the central IT team responsible for the Power Platform, as well as the professional developers teams.
+Most organizations starting with the cloud do not have an operating model that is compatible, and will very likely undergo a degree of operational and organizational transformation to deliver on the principle of cloud computing and digital transformation enablement. As it relates to Power Platform it is highly recommended that a DevOps approach is being employed for both the central IT team responsible for the Power Platform, as well as the professional developers teams.
 
 ![devops](./images/devops.png)
 
 ### Design considerations
 
-- Where central teams are concerned, you should use pipelines for continuous integration and deployment. Use pipelines to manage environment life-cycle, including DLP, security groups, RBAC, and auditing from a compliance perspective.
+- Where central teams are concerned, you should use pipelines for continuous integration and deployment. Use pipelines to manage environment lifecycle, including DLP, security groups, RBAC, and auditing from a compliance perspective.
 - The blanket application of a DevOps model won’t instantly establish capable DevOps teams
 - Investing in engineering capabilities and resources is critical to ensure sustainable engineering and development of the platform alongside with the roadmap
 
@@ -347,7 +349,7 @@ Most organizations starting with the cloud does not have an operating model that
   - Platform management and monitoring (holistic).
   - Cost Management (holistic).
   - "Platform as Code" (management of templates, scripts and other assets).
-  - Responsible for overall operations on Power Platform within the Azure AD tenant, such as managing service principles, Graph API registration, and role definitions.
+  - Responsible for overall operations on Power Platform within the Azure AD tenant, such as managing service principals, Graph API registration, and role definitions.
   - SecOps (Security Operations)
   - Role based access control (holistic).
   - Key management (for central services).
