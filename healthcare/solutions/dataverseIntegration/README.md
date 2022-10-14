@@ -56,7 +56,7 @@ First, use the "Deploy To Azure" Button to setup all Azure related services. Go 
 
 [![Deploy To Microsoft Cloud](/docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FdataverseIntegration%2Fmain.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FdataverseIntegration%2Fportal.json)
 
-Please look at the outputs of the Azure deployment and take note of the Synapse Workspace Id as well as the Dataverse data lake file system Id, as they are required in the next step.
+Please look at the outputs of the Azure deployment and take note of the Synapse Workspace ID as well as the Dataverse data lake file system ID, as they are required in the next step.
 
 ### Connecting Dataverse and Azure Services
 
