@@ -1,0 +1,92 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rgName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "grafanaName": {
+            "type": "string",
+            "metadata": {
+                "description": "This is the name of the ExpressRoute circuit"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[deployment().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        },
+        "azureMonitorOption": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "yes",
+                "no"
+            ]
+        },
+        "workspaceResourceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "zoneRedundancy": {
+            "type": "string",
+            "defaultValue": "Disabled"
+        }
+    },
+    "variables": {
+        "resourceDeploymentName": "[take(concat(deployment().name, 'grafana-', parameters('location')), 64)]",
+        "roleAssignmentName": "[guid(concat(deployment().name, 'grafana-', parameters('location')))]",
+        "monitoringReaderRbac": "43d0d8ad-25c7-4714-9337-8ba259a9fe05"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "resourceGroup": "[parameters('rgName')]",
+            "name": "[variables('resourceDeploymentName')]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.Dashboard/grafana",
+                            "apiVersion": "2021-09-01-preview",
+                            "name": "[parameters('grafanaName')]",
+                            "location": "[parameters('location')]",
+                            "identity": {
+                                "type": "SystemAssigned"
+                            },
+                            "sku": {
+                                "name": "Standard"
+                            },
+                            "properties": {
+                                "zoneRedundancy": "[parameters('zoneRedundancy')]"
+                            }
+                        }
+                    ]
+                }
+            }
+        }/*,
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2019-04-01-preview",
+            "name": "[variables('roleAssignmentName')]",
+            "dependsOn": [
+                "[variables('resourceDeploymentName')]"
+            ],
+            "properties": {
+                "principalType": "ServicePrincipal",
+                "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', variables('monitoringReaderRbac'))]",
+                "principalId": "[toLower(reference(concat('/providers/Microsoft.Dashboard/grafana/', parameters('grafanaName'), '2021-09-01', 'Full')).principalId)]"
+            }
+
+        }*/
+    ],
+    "outputs": {}
+}

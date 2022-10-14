@@ -1,11 +1,11 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "topLevelManagementGroupPrefix": {
             "type": "string",
             "metadata": {
-                "description": "Provide the ESLZ company prefix to the intermediate root management group containing the policy definitions."
+                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
             }
         },
         "enforcementMode": {

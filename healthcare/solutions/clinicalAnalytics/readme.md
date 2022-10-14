@@ -1,7 +1,7 @@
 
 # Healthcare Analytics
 
-The solution for Healthcare Analytics will harness data and discover insights to deliver value. In this guidance we show how you can persist data in the Healthcare API, export de-identified data to an analytical store, enable large scale analytical query capabilities and leverage insights from AI assisted imaging analysis and population health metrics to determine course of care. The analytical solution enable you to search through large amounts of data from sources like electronic medical records, smart medical devices, patient and population demographics, and the public domain to find hidden patterns and trends and predict outcomes for individual patients. The care guidance can rely on AI learning models that become more precise when additional data and cases are introduced.
+The solution for Healthcare Analytics will harness data and discover insights to deliver value. In this guidance we show how you can persist data in the Azure Health Data Services, export de-identified data to an analytical store, enable large scale analytical query capabilities and leverage insights from AI assisted imaging analysis and population health metrics to determine course of care. The analytical solution enable you to search through large amounts of data from sources like electronic medical records, smart medical devices, patient and population demographics, and the public domain to find hidden patterns and trends and predict outcomes for individual patients. The care guidance can rely on AI learning models that become more precise when additional data and cases are introduced.
 
 Key capabilities of Healthcare Analytics include:
 
@@ -11,7 +11,7 @@ Key capabilities of Healthcare Analytics include:
 
 | Reference implementation | Description | Deploy |
 |:----------------------|:------------|--------|
-| Healthcare Analytics | End-to-end deployment and configuration of analytics solution for healthcare |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2FhealthcareArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Fhealthcare%2Fsolutions%2FhealthcareApis%2Fhealthcare-portal.json)
+| Healthcare Analytics | End-to-end deployment and configuration of analytics solution for healthcare |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/mcfh/analytics)
 
 ## Healthcare Analytics - Reference architecture
 
@@ -30,7 +30,7 @@ Key capabilities of Healthcare Analytics include:
 
 * **Azure platform**: Enterprise Scale Landing Zones
 * **Data platform**: Enterprise Scale Analytics (optional)
-* **Azure Healthcare APIs**: FHIR + DICOM + IoT Connector
+* **Azure Health Data Services**: FHIR + DICOM + IoT Connector
 * **Synapse**: Workspace + Spark + SQL pool (optional)
 * **Azure ML**: Custom AI app or cognitive services Custom vision (TBD)
 
@@ -111,7 +111,7 @@ There are different stages the sync status will circulate through. NotStarted in
 
 ## Analytics using PowerBI Connector
 
-Using the PowerBI connector you can connect directly to your Healthcare API FHIR service. The connector does not anonymize the data. Using the connector is the easiest approach to get insights into your data. Using PowerBI you can wrangle the data and present graphs, lists and other visualizations in a dashboard.
+Using the PowerBI connector you can connect directly to your Azure Health Data Services FHIR service. The connector does not anonymize the data. Using the connector is the easiest approach to get insights into your data. Using PowerBI you can wrangle the data and present graphs, lists and other visualizations in a dashboard.
 
 ### Connect and import
 
@@ -119,7 +119,7 @@ In order to import your data into PowerBI first click the **Get Data** button an
 
 ![PowerBI Get Data - FHIR](./images/pbi_1.png)
 
-To connect to your FHIR service write or insert the URL to the Healthcare API you deploy earlier. **Example: h ttps://your-fhir-service.fhir.azurehealthcareapis.com**
+To connect to your FHIR service write or insert the URL to the Azure Health Data Service you deploy earlier. **Example: h ttps://your-fhir-service.fhir.azurehealthcareapis.com**
 If you want to reduce the amount of data transferred to PowerBI you can include a query parameter like *Patient?name:exact=Jon*, this will limit the data returned only including patients with the name Jon.
 
 To be able to access your FHIR service you will be asked to log in.
@@ -182,7 +182,7 @@ The recommended approach is to us a Copy activity.
 
 ![Data Factory Copy activity](./images/adf_fhir_2.png)
 
-The copy activity has a source and a sink. The source can be the FHIR data stored in files or Azure Healthcare API - FHIR service. To authenticate you can use the service principle from earlier or the recommended method is using managed identity. This managed identity needs to be assigned the role of FHIR Data Reader.
+The copy activity has a source and a sink. The source can be the FHIR data stored in files or Azure Azure Health Data Services - FHIR service. To authenticate you can use the service principle from earlier or the recommended method is using managed identity. This managed identity needs to be assigned the role of FHIR Data Reader.
 
 ![Data Factory REST linked service](./images/adf_fhir_3.png)
 

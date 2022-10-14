@@ -1,0 +1,1308 @@
+{
+    "$schema": "<relative path to createFormUI.schema.json>",
+    "view": {
+        "kind": "Form",
+        "properties": {
+            "title": "AfO Network Analytics Landing Zone",
+            "isWizard": true,
+            "steps": [
+                {
+                    "name": "setup",
+                    "label": "Deployment Setup",
+                    "subLabel": {},
+                    "bladeTitle": "setup",
+                    "elements": [
+                        {
+                            "name": "setupBox",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": true,
+                            "options": {
+                                "icon": "Info",
+                                "text": "A network analytics landing zone for operators provides the required foundational services on Azure to ingest large amounts of data into Azure storage services (such as Azure Data Lake Storage Gen2). Once this landing zone is provisioned, operators can simply deploy whichever data and analytics services and solutions they prefer to analyze the data.",
+                                "uri": "https://www.microsoft.com"
+                            }
+                        },
+                        {
+                            "name": "subSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Azure subscription",
+                            "elements": [],
+                            "visible": true
+                        },
+                        {
+                            "name": "azureBox",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": true,
+                            "options": {
+                                "text": "The setup requires an existing Azure subscription placed into the Operator management group to provision the Network Analytics Landing Zones. Select a subscription and a region where the deployment should be placed.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/azure/azure-resource-manager/templates/deploy-to-subscription?tabs=azure-cli"
+                                }
+                            }
+                        },
+                        {
+                            "name": "subscriptionApi",
+                            "type": "Microsoft.Solutions.ArmApiControl",
+                            "request": {
+                                "method": "GET",
+                                "path": "subscriptions?api-version=2020-01-01"
+                            }
+                        },
+                        {
+                            "name": "subscriptionId",
+                            "label": "Subscription",
+                            "type": "Microsoft.Common.DropDown",
+                            "visible": true,
+                            "defaultValue": "",
+                            "toolTip": "Select the Subscription for your network analytics landing zone deployment.",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": true,
+                            "filterPlaceholder": "Filter items ...",
+                            "multiLine": true,
+                            "constraints": {
+                                "allowedValues": "[map(steps('setup').subscriptionApi.value, (item) => parse(concat('{\"label\":\"', item.displayName, '\",\"value\":\"', item.id, '\",\"description\":\"', 'ID: ', item.subscriptionId, '\"}')))]",
+                                "required": true
+                            }
+                        },
+                        {
+                            "name": "locationsApi",
+                            "type": "Microsoft.Solutions.ArmApiControl",
+                            "request": {
+                                "method": "GET",
+                                "path": "locations?api-version=2019-11-01"
+                            }
+                        },
+                        {
+                            "name": "locationName",
+                            "label": "Location",
+                            "type": "Microsoft.Common.DropDown",
+                            "visible": true,
+                            "defaultValue": "",
+                            "toolTip": "Select the Location for your deployment.",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": true,
+                            "filterPlaceholder": "Filter items ...",
+                            "multiLine": true,
+                            "constraints": {
+                                "allowedValues": "[map(steps('setup').locationsApi.value,(item) => parse(concat('{\"label\":\"',item.displayName,'\",\"value\":\"',item.name,'\"}')))]",
+                                "required": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "connectivity",
+                    "label": "Networking Connectivity Model",
+                    "elements": [
+                        {
+                            "name": "lzBox",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": true,
+                            "options": {
+                                "text": "It is essential to define the network connectivity model to be used for the network analytics landing zone for operators, as it will provide the connectivity required to allow you to ingest large amounts of data from your on-premises network into an Azure storage service.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://www.microsoft.com"
+                                }
+                            }
+                        },
+                        {
+                            "name": "peeringSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Network Connectivity",
+                            "elements": [],
+                            "visible": true
+                        },
+                        {
+                            "name": "peeringOptionsBox",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": true,
+                            "options": {
+                                "text": "Select network connectivity model to the on-premises network.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/azure/expressroute/expressroute-circuit-peerings"
+                                }
+                            }
+                        },
+                        {
+                            "name": "networkOption",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Network Connectivity Model",
+                            "defaultValue": "",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "ExpressRoute with Microsoft Peering",
+                                        "value": "microsoft"
+                                    },
+                                    {
+                                        "label": "ExpressRoute with Private Peering",
+                                        "value": "private"
+                                    },
+                                    {
+                                        "label": "Internet",
+                                        "value": "internet"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": true
+                        },
+                        {
+                            "name": "microsoftPeeringSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "ExpressRoute with Microsoft Peering",
+                            "elements": [],
+                            "visible": "[equals(steps('connectivity').networkOption, 'microsoft')]"
+                        },
+                        {
+                            "name": "privatePeeringSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "ExpressRoute with Private Peering",
+                            "elements": [],
+                            "visible": "[equals(steps('connectivity').networkOption, 'private')]"
+                        },
+                        {
+                            "name": "microsoftPeeringBox",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": "[equals(steps('connectivity').networkOption, 'microsoft')]",
+                            "options": {
+                                "text": "Select if you want to create a new - or use an existing ExpressRoute circuit.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/azure/expressroute/expressroute-circuit-peerings"
+                                }
+                            }
+                        },
+                        {
+                            "name": "privatePeeringBox",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": "[equals(steps('connectivity').networkOption, 'private')]",
+                            "options": {
+                                "text": "Select if you want to create a new - or use an existing ExpressRoute circuit.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/azure/expressroute/expressroute-circuit-peerings"
+                                }
+                            }
+                        },
+                        {
+                            "name": "msftPeeringCircuit",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Select new or existing ExpressRoute circuit",
+                            "defaultValue": "New",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "New",
+                                        "value": "new"
+                                    },
+                                    {
+                                        "label": "Existing",
+                                        "value": "existing"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('connectivity').networkOption, 'microsoft')]"
+                        },
+                        {
+                            "name": "privatePeeringCircuit",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Select new or existing ExpressRoute circuit",
+                            "defaultValue": "New",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "New",
+                                        "value": "new"
+                                    },
+                                    {
+                                        "label": "Existing",
+                                        "value": "existing"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('connectivity').networkOption, 'private')]"
+                        },
+                        {
+                            "name": "existingMsftCircuitInfo",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": "[equals(steps('connectivity').msftPeeringCircuit, 'existing')]",
+                            "options": {
+                                "icon": "Info",
+                                "text": "Ensure exisitng circuit is configured per the recommended guidance.",
+                                "uri": "https://docs.microsoft.com/azure/expressroute/expressroute-howto-routing-portal-resource-manager"
+                            }
+                        },
+                        {
+                            "name": "existingPrivateSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Select existing ExpressRoute circuit",
+                            "elements": [],
+                            "visible": "[equals(steps('connectivity').privatePeeringCircuit, 'existing')]"
+                        },
+                        {
+                            "name": "privateExistingResourceId",
+                            "type": "Microsoft.Solutions.ResourceSelector",
+                            "label": "ExpressRoute Circuit resource",
+                            "resourceType": "Microsoft.Network/expressRouteCircuits",
+                            "visible": "[and(equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePeeringCircuit, 'existing'))]",
+                            "options": {
+                                "filter": {
+                                    "subscription": "all",
+                                    "location": "onBasics"
+                                }
+                            }
+                        },
+                        {
+                            "name": "privateExistingAuthzKey",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Authorization key (GUID)",
+                            "placeholder": "",
+                            "defaultValue": "",
+                            "toolTip": "Use only allowed characters",
+                            "constraints": {
+                                "required": true,
+                                "regex": "^[a-z0-9A-Z-]{36}$",
+                                "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+                            },
+                            "visible": "[and(equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePeeringCircuit, 'existing'))]"
+                        },
+                        {
+                            "name": "privateNewPeeringSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Configure new ExpressRoute Circuit with Private Peering",
+                            "elements": [],
+                            "visible": "[and(equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePeeringCircuit, 'new'))]"
+                        },
+                        {
+                            "name": "privatePortOption",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Port type",
+                            "defaultValue": "Provider",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Provider",
+                                        "value": "provider"
+                                    },
+                                    {
+                                        "label": "Direct",
+                                        "value": "direct"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePeeringCircuit, 'new'))]"
+                        },
+                        {
+                            "name": "privateDirectResourceId",
+                            "type": "Microsoft.Solutions.ResourceSelector",
+                            "label": "ExpressRoute Direct resource",
+                            "resourceType": "Microsoft.Network/ExpressRoutePorts",
+                            "visible": "[and(and(equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePeeringCircuit, 'new')), equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePortOption, 'direct'))]",
+                            "options": {
+                                "filter": {
+                                    "subscription": "all",
+                                    "location": "all"
+                                }
+                            }
+                        },
+                        {
+                            "name": "privateErName",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "ExpressRoute name",
+                            "placeholder": "",
+                            "defaultValue": "",
+                            "toolTip": "Use only allowed characters",
+                            "constraints": {
+                                "required": true,
+                                "regex": "^[a-z0-9A-Z]{1,30}$",
+                                "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+                            },
+                            "visible": "[and(and(equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePeeringCircuit, 'new')), equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePortOption, 'provider'))]"
+                        },
+                        {
+                            "name": "privateNewPeeringText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": "[and(and(equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePeeringCircuit, 'new')), equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePortOption, 'provider'))]",
+                            "options": {
+                                "text": "Select the provider, peering location, bandwidth and sku for the ExpressRoute Circuit.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/azure/azure-resource-manager/templates/deploy-to-subscription?tabs=azure-cli"
+                                }
+                            }
+                        },
+                        {
+                            "name": "privateProvidersApi",
+                            "type": "Microsoft.Solutions.ArmApiControl",
+                            "request": {
+                                "method": "GET",
+                                "path": "[concat(steps('setup').subscriptionId, '/providers/Microsoft.Network/expressRouteServiceProviders?api-version=2021-05-01')]"
+                            }
+                        },
+                        {
+                            "name": "privateProvidersName",
+                            "label": "Provider",
+                            "type": "Microsoft.Common.DropDown",
+                            "visible": "[and(and(equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePeeringCircuit, 'new')), equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePortOption, 'provider'))]",
+                            "defaultValue": "",
+                            "toolTip": "ExpressRoute Service Provider.",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": true,
+                            "filterPlaceholder": "Filter items ...",
+                            "multiLine": false,
+                            "constraints": {
+                                "allowedValues": "[map(steps('connectivity').privateProvidersApi.value,(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":', string(item), '}')))]",
+                                "required": true
+                            }
+                        },
+                        {
+                            "name": "privateProvidersLocationName",
+                            "label": "Provider location",
+                            "type": "Microsoft.Common.DropDown",
+                            "visible": "[and(and(equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePeeringCircuit, 'new')), equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePortOption, 'provider'))]",
+                            "defaultValue": "",
+                            "toolTip": "ExpressRoute Service Provider location.",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": true,
+                            "filterPlaceholder": "Filter items ...",
+                            "multiLine": false,
+                            "constraints": {
+                                "allowedValues": "[map(coalesce(steps('connectivity').privateProvidersName.properties.peeringLocations, null), (item) => parse(concat('{\"label\":\"', item, '\",\"value\":\"', item, '\"}')))]",
+                                "required": true
+                            }
+                        },
+                        {
+                            "name": "privateProvidersBandwidth",
+                            "label": "Bandwidth",
+                            "type": "Microsoft.Common.DropDown",
+                            "visible": "[and(and(equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePeeringCircuit, 'new')), equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePortOption, 'provider'))]",
+                            "defaultValue": "",
+                            "toolTip": "Bandwidth",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": true,
+                            "filterPlaceholder": "Filter items ...",
+                            "multiLine": false,
+                            "constraints": {
+                                "allowedValues": "[map(coalesce(steps('connectivity').privateProvidersName.properties.bandwidthsOffered, null), (item) => parse(concat('{\"label\":\"', item.offerName, '\",\"value\":', string(item.valueInMbps), '}')) ) ]",
+                                "required": true
+                            }
+                        },
+                        {
+                            "name": "privatePeeringCircuitSku",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "SKU",
+                            "defaultValue": "Standard",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Standard",
+                                        "value": "Standard"
+                                    },
+                                    {
+                                        "label": "Premium",
+                                        "value": "Premium"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(and(equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePeeringCircuit, 'new')), equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePortOption, 'provider'))]"
+                        },
+                        {
+                            "name": "privatePeeringDirectSku",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "SKU",
+                            "defaultValue": "Standard",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Local",
+                                        "value": "Local"
+                                    },
+                                    {
+                                        "label": "Standard",
+                                        "value": "Standard"
+                                    },
+                                    {
+                                        "label": "Premium",
+                                        "value": "Premium"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(and(equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePeeringCircuit, 'new')), equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePortOption, 'direct'))]"
+                        },
+                        {
+                            "name": "privatePeeringCircuitBilling",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Billing model",
+                            "defaultValue": "Metered",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Metered",
+                                        "value": "MeteredData"
+                                    },
+                                    {
+                                        "label": "Unlimited",
+                                        "value": "UnlimitedData"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('connectivity').networkOption, 'private'), equals(steps('connectivity').privatePeeringCircuit, 'new'))]"
+                        },
+                        {
+                            "name": "microsoftNewPeeringSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Configure new ExpressRoute Circuit with Microsoft Peering",
+                            "elements": [],
+                            "visible": "[and(equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPeeringCircuit, 'new'))]"
+                        },
+                        {
+                            "name": "msftPortOption",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Port type",
+                            "defaultValue": "Direct",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Provider",
+                                        "value": "provider"
+                                    },
+                                    {
+                                        "label": "Direct",
+                                        "value": "direct"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPeeringCircuit, 'new'))]"
+                        },
+                        {
+                            "name": "msftDirectResourceId",
+                            "type": "Microsoft.Solutions.ResourceSelector",
+                            "label": "ExpressRoute Direct resource",
+                            "resourceType": "Microsoft.Network/ExpressRoutePorts",
+                            "visible": "[and(and(equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPeeringCircuit, 'new')), equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPortOption, 'direct'))]",
+                            "options": {
+                                "filter": {
+                                    "subscription": "all",
+                                    "location": "onBasics"
+                                }
+                            }
+                        },
+                        {
+                            "name": "msftErName",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "ExpressRoute circuit name",
+                            "placeholder": "",
+                            "defaultValue": "",
+                            "toolTip": "Use only allowed characters",
+                            "constraints": {
+                                "required": true,
+                                "regex": "^[a-z0-9A-Z]{1,30}$",
+                                "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+                            },
+                            "visible": "[and(and(equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPeeringCircuit, 'new')), equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPortOption, 'provider'))]"
+                        },
+                        {
+                            "name": "microsoftNewPeeringText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": "[and(and(equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPeeringCircuit, 'new')), equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPortOption, 'provider'))]",
+                            "options": {
+                                "text": "Select the provider, peering location, bandwidth and sku for the ExpressRoute Circuit.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/azure/azure-resource-manager/templates/deploy-to-subscription?tabs=azure-cli"
+                                }
+                            }
+                        },
+                        {
+                            "name": "msftProvidersApi",
+                            "type": "Microsoft.Solutions.ArmApiControl",
+                            "request": {
+                                "method": "GET",
+                                "path": "[concat(steps('setup').subscriptionId, '/providers/Microsoft.Network/expressRouteServiceProviders?api-version=2021-05-01')]"
+                            }
+                        },
+                        {
+                            "name": "msftProvidersName",
+                            "label": "Provider",
+                            "type": "Microsoft.Common.DropDown",
+                            "visible": "[and(and(equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPeeringCircuit, 'new')), equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPortOption, 'provider'))]",
+                            "defaultValue": "",
+                            "toolTip": "ExpressRoute Service Provider.",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": true,
+                            "filterPlaceholder": "Filter items ...",
+                            "multiLine": false,
+                            "constraints": {
+                                "allowedValues": "[map(steps('connectivity').msftProvidersApi.value, (item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":', string(item), '}')))]",
+                                "required": true
+                            }
+                        },
+                        {
+                            "name": "msftProvidersLocationName",
+                            "label": "Provider location",
+                            "type": "Microsoft.Common.DropDown",
+                            "visible": "[and(and(equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPeeringCircuit, 'new')), equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPortOption, 'provider'))]",
+                            "defaultValue": "",
+                            "toolTip": "ExpressRoute Service Provider location.",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": true,
+                            "filterPlaceholder": "Filter items ...",
+                            "multiLine": false,
+                            "constraints": {
+                                "allowedValues": "[map(coalesce(steps('connectivity').msftProvidersName.properties.peeringLocations, null), (item) => parse(concat('{\"label\":\"', item, '\",\"value\":\"', item, '\"}')))]",
+                                "required": true
+                            }
+                        },
+                        {
+                            "name": "msftProvidersBandwidth",
+                            "label": "Bandwidth",
+                            "type": "Microsoft.Common.DropDown",
+                            "visible": "[and(and(equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPeeringCircuit, 'new')), equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPortOption, 'provider'))]",
+                            "defaultValue": "",
+                            "toolTip": "Bandwidth",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": true,
+                            "filterPlaceholder": "Filter items ...",
+                            "multiLine": false,
+                            "constraints": {
+                                "allowedValues": "[map(coalesce(steps('connectivity').msftProvidersName.properties.bandwidthsOffered, null), (item) => parse(concat('{\"label\":\"', item.offerName, '\",\"value\":', string(item.valueInMbps), '}')) ) ]",
+                                "required": true
+                            }
+                        },
+                        {
+                            "name": "msftPeeringCircuitSku",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "SKU",
+                            "defaultValue": "Standard",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Local",
+                                        "value": "Local"
+                                    },
+                                    {
+                                        "label": "Standard",
+                                        "value": "Standard"
+                                    },
+                                    {
+                                        "label": "Premium",
+                                        "value": "Premium"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(and(equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPeeringCircuit, 'new')), equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPortOption, 'provider'))]"
+                        },
+                        {
+                            "name": "msftPeeringDirectSku",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "SKU",
+                            "defaultValue": "Standard",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Local",
+                                        "value": "Local"
+                                    },
+                                    {
+                                        "label": "Standard",
+                                        "value": "Standard"
+                                    },
+                                    {
+                                        "label": "Premium",
+                                        "value": "Premium"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(and(equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPeeringCircuit, 'new')), equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPortOption, 'direct'))]"
+                        },
+                        {
+                            "name": "msftPeeringCircuitBilling",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Billing model",
+                            "defaultValue": "Metered",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Metered",
+                                        "value": "MeteredData"
+                                    },
+                                    {
+                                        "label": "Unlimited",
+                                        "value": "UnlimitedData"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPeeringCircuit, 'new'))]"
+                        }
+                    ]
+                },
+                {
+                    "name": "auxiliary",
+                    "label": "Auxiliary Services",
+                    "elements": [
+                        {
+                            "name": "auxiliaryBox",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": true,
+                            "options": {
+                                "icon": "Info",
+                                "text": "Select which auxiliary Azure services that should be deployed and configured to enhance the network analytics Landing Zone. Note that all services here are highly recommended, but optional.",
+                                "uri": "https://www.microsoft.com"
+                            }
+                        },
+                        {
+                            "name": "vnetSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Virtual Network",
+                            "elements": [],
+                            "visible": true
+                        },
+                        {
+                            "name": "vnetText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": true,
+                            "options": {
+                                "text": "Create a virtual network where services such as the ExpressRoute Gateway and Azure Bastion would be deployed. In addition, this virtual network sill be used for your network analytics services, such as private endpoints to Azure storage services or data integration / analytical services.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/en-us/azure/expressroute/how-to-use-expressroute-gateway-bastion-and-virtual-network"
+                                }
+                            }
+                        },
+                        {
+                            "name": "vnetName",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Virtual Network name",
+                            "defaultValue": "",
+                            "toolTip": "",
+                            "constraints": {
+                                "required": true
+                            },
+                            "visible": true
+                        },
+                        {
+                            "name": "vnetAddress",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Address space",
+                            "toolTip": "Provide address prefix in CIDR notation (e.g 10.100.0.0/16)",
+                            "defaultValue": "10.100.0.0/16",
+                            "visible": true,
+                            "constraints": {
+                                "required": true,
+                                "validations": [
+                                    {
+                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(1[0-9]|2[0-4]))$",
+                                        "message": "Invalid CIDR range. The address prefix must be in the range [10,24]."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "bastionSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Azure Bastion",
+                            "elements": [],
+                            "visible": true
+                        },
+                        {
+                            "name": "bastionText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": true,
+                            "options": {
+                                "text": "Azure Bastion is an Azure PaaS service that provides a secure, isolated network access point to Linux and Windows virtual machines in your virtual network. It is a highly recommended auxiliary service, but optional.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-bastion-overview"
+                                }
+                            }
+                        },
+                        {
+                            "name": "bastionOption",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy Azure Bastion",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": true
+                        },
+                        {
+                            "name": "bastionName",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Bastion name",
+                            "defaultValue": "",
+                            "toolTip": "",
+                            "constraints": {
+                                "required": true,
+                                "regex": "^[a-z0-9A-Z]{1,30}$",
+                                "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+                            },
+                            "visible": "[equals(steps('auxiliary').bastionOption, 'yes')]"
+                        },
+                        {
+                            "name": "bastionDisableCopyPaste",
+                            "type": "Microsoft.Common.CheckBox",
+                            "label": "Disable copy and paste",
+                            "constraints": {
+                                "required": false,
+                                "validationMessage": "Please acknowledge the legal conditions."
+                            },
+                            "visible": "[equals(steps('auxiliary').bastionOption, 'yes')]"
+                        },
+                        {
+                            "name": "bastionEnableTunneling",
+                            "type": "Microsoft.Common.CheckBox",
+                            "label": "Enable native client support",
+                            "constraints": {
+                                "required": false,
+                                "validationMessage": "Please acknowledge the legal conditions."
+                            },
+                            "visible": "[equals(steps('auxiliary').bastionOption, 'yes')]"
+                        },
+                        {
+                            "name": "bastionEnableKerberos",
+                            "type": "Microsoft.Common.CheckBox",
+                            "label": "Enable Kerberos authentication",
+                            "constraints": {
+                                "required": false,
+                                "validationMessage": "Please acknowledge the legal conditions."
+                            },
+                            "visible": "[equals(steps('auxiliary').bastionOption, 'yes')]"
+                        },
+                        {
+                            "name": "bastionTier",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Tier",
+                            "defaultValue": "Standard (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Standard (recommended)",
+                                        "value": "Standard"
+                                    },
+                                    {
+                                        "label": "Basic",
+                                        "value": "Basic"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('auxiliary').bastionOption, 'yes')]"
+                        },
+                        {
+                            "name": "bastionCount",
+                            "type": "Microsoft.Common.Slider",
+                            "min": 2,
+                            "max": 50,
+                            "label": "Instance count",
+                            "subLabel": "Count",
+                            "defaultValue": 2,
+                            "showStepMarkers": true,
+                            "toolTip": "Pick the number of instances of the Azure Bastion that you want to deploy.",
+                            "constraints": {
+                                "required": false
+                            },
+                            "visible": "[and(equals(steps('auxiliary').bastionOption, 'yes'), equals(steps('auxiliary').bastionTier, 'Standard'))]"
+                        },
+                        {
+                            "name": "bastionSubnet",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Subnet for Bastion host(s)",
+                            "toolTip": "Provide address prefix in CIDR notation (e.g 10.100.1.0/24)",
+                            "defaultValue": "10.100.1.0/24",
+                            "visible": "[equals(steps('auxiliary').bastionOption, 'yes')]",
+                            "constraints": {
+                                "required": true,
+                                "validations": [
+                                    {
+                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(2[0-7]))$",
+                                        "message": "Invalid CIDR range. The address prefix must be in the range [20,27]."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('auxiliary').vnetAddress, '/')), 8), equals(last(take(split(first(split(steps('auxiliary').vnetAddress, '/')), '.'), 1)), last(take(split(first(split(steps('auxiliary').bastionSubnet, '/')), '.'), 1))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (first octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('auxiliary').vnetAddress, '/')), 16), equals(last(take(split(first(split(steps('auxiliary').vnetAddress, '/')), '.'), 2)), last(take(split(first(split(steps('auxiliary').bastionSubnet, '/')), '.'), 2))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (second octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('auxiliary').vnetAddress, '/')), 24), equals(last(take(split(first(split(steps('auxiliary').vnetAddress, '/')), '.'), 3)), last(take(split(first(split(steps('auxiliary').bastionSubnet, '/')), '.'), 3))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (third octet)."
+                                    },
+                                    {
+                                        "isValid": "[lessOrEquals(last(split(steps('auxiliary').vnetAddress, '/')), last(split(steps('auxiliary').bastionSubnet, '/')))]",
+                                        "message": "CIDR range not within virtual network CIDR range (subnet mask)."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "azureMonitorSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Azure Monitor",
+                            "elements": [],
+                            "visible": true
+                        },
+                        {
+                            "name": "azureMonitorText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": true,
+                            "options": {
+                                "text": "Azure Monitor is a cloud-based service that provides visibility into the performance, availability, and security of your Azure resources. It is highly recommended auxiliary service, but optional. By deploying Azure Monitor, all resources as part of the network analytics landing zone will be enabled with diagnostics and metrics, fully monitored post deployment.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/en-us/azure/monitoring/monitoring-overview"
+                                }
+                            }
+                        },
+                        {
+                            "name": "azureMonitorOption",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy Azure Monitor",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "Select if you want to create a new Azure Monitor workspace.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ],
+                                "required": true
+                            }
+                        },
+                        {
+                            "name": "logAnalyticsRetentionInDays",
+                            "type": "Microsoft.Common.Slider",
+                            "min": 30,
+                            "max": 730,
+                            "label": "Log Analytics Data Retention (days)",
+                            "subLabel": "Days",
+                            "defaultValue": 30,
+                            "showStepMarkers": false,
+                            "toolTip": "Select retention days for Azure logs. Default is 30 days.",
+                            "constraints": {
+                                "required": false
+                            },
+                            "visible": "[equals(steps('auxiliary').azureMonitorOption, 'yes')]"
+                        },
+                        {
+                            "name": "azureGrafanaSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Azure Managed Grafana",
+                            "elements": [],
+                            "visible": "[and(equals(steps('auxiliary').azureMonitorOption, 'yes'), contains(split('eastus,southcentralus,westeurope', ','), steps('setup').locationName))]"
+                        },
+                        {
+                            "name": "azureGrafanaText",
+                            "type": "Microsoft.Common.TextBlock",
+							"visible": "[and(equals(steps('auxiliary').azureMonitorOption, 'yes'), contains(split('eastus,southcentralus,westeurope', ','), steps('setup').locationName))]",
+                            "options": {
+                                "text": "Azure Managed Grafana is a fully managed service for analytics and monitoring solutions, integrated with Azure Monitor. It's supported by Grafana Enterprise, which provides extensible data visualizations. Quickly and easily deploy Grafana dashboards with built-in high availability and control access with Azure AAD. By deploying Azure Managed Grafana, you will be provided with a set of curated dashboards that monitors the resources created for the network analytics landing zone.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/en-us/azure/monitoring/monitoring-overview"
+                                }
+                            }
+                        },
+                        {
+                            "name": "azureGrafanaOption",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy Azure Managed Grafana",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "Select if you want to create a new Azure Managed Grafana workspace.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('auxiliary').azureMonitorOption, 'yes'), contains(split('eastus,southcentralus,westeurope', ','), steps('setup').locationName))]"
+                        },
+                        {
+                            "name": "routeSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Route Filter",
+                            "elements": [],
+                            "visible": "[and(equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPeeringCircuit, 'new'))]"
+                        },
+                        {
+                            "name": "routefilterText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": "[and(equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPeeringCircuit, 'new'))]",
+                            "options": {
+                                "text": "A route filter lets you identify services you want to consume through your ExpressRoute circuit's Microsoft peering. It's essentially an allowed list of all the BGP community values",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/azure/expressroute/how-to-routefilter-portal"
+                                }
+                            }
+                        },
+                        {
+                            "name": "routeFilterOption",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Create Route Filter",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPeeringCircuit, 'new'))]"
+                        },
+                        {
+                            "name": "routeFilterName",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Route Filter name",
+                            "placeholder": "",
+                            "defaultValue": "",
+                            "toolTip": "Use only allowed characters",
+                            "constraints": {
+                                "required": true,
+                                "regex": "^[a-z0-9A-Z]{1,30}$",
+                                "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+                            },
+                            "visible": "[and(and(equals(steps('connectivity').networkOption, 'microsoft'), equals(steps('connectivity').msftPeeringCircuit, 'new')), equals(steps('auxiliary').routeFilterOption, 'yes'), equals(steps('connectivity').msftPeeringCircuit, 'new'))]"
+                        },
+                        {
+                            "name": "erSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "ExpressRoute Gateway",
+                            "elements": [],
+                            "visible": "[equals(steps('connectivity').networkOption, 'private')]"
+                        },
+                        {
+                            "name": "erGwText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": "[equals(steps('connectivity').networkOption, 'private')]",
+                            "options": {
+                                "text": "Please provide the configuration values for your ExpressRoute Gateway.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://www.microsoft.com"
+                                }
+                            }
+                        },
+                        {
+                            "name": "erGwOption",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Create ExpressRoute Gateway",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('connectivity').networkOption, 'private')]"
+                        },
+                        {
+                            "name": "erGwName",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "ExpressRoute Gateway name",
+                            "placeholder": "",
+                            "defaultValue": "",
+                            "toolTip": "Use only allowed characters",
+                            "constraints": {
+                                "required": true,
+                                "regex": "^[a-z0-9A-Z]{1,30}$",
+                                "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+                            },
+                            "visible": "[equals(steps('auxiliary').erGwOption, 'yes')]"
+                        },
+                        {
+                            "name": "privateErRegionalOrAz",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy zone redundant or regional ExpressRoute Gateway",
+                            "defaultValue": "Zone redundant (recommended)",
+                            "visible": "[and(equals(steps('auxiliary').erGwOption, 'yes'), contains(split('canadacentral,centralus,eastus,eastus2,southcentralus,westus2,francecentral,germanywestcentral,northeurope,westeurope,uksouth,southafricanorth,japaneast,southeastasia,australiaeast', ','), steps('setup').locationName))]",
+                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, ARM will deploy Express Route Gateway to the selected region and availability zones.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Zone redundant (recommended)",
+                                        "value": "Zone"
+                                    },
+                                    {
+                                        "label": "Regional",
+                                        "value": "Regional"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "privateErAzSku",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select the ExpressRoute Gateway SKU",
+                            "defaultValue": "",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": false,
+                            "multiLine": true,
+                            "visible": "[and(equals(steps('auxiliary').privateErRegionalOrAz, 'Zone'), contains(split('canadacentral,centralus,eastus,eastus2,southcentralus,westus2,francecentral,germanywestcentral,northeurope,westeurope,uksouth,southafricanorth,japaneast,southeastasia,australiaeast', ','), steps('setup').locationName))]",
+                            "toolTip": "Select the required SKU for the ExpressRoute gateway.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "ErGw1AZ",
+                                        "description": "Megabits per second 1000, packets per second 100,000, connections per second 7000, max number of circuit connections is 4",
+                                        "value": "ErGw1AZ"
+                                    },
+                                    {
+                                        "label": "ErGw2AZ",
+                                        "description": "Megabits per second 2000, packets per second 250,000, connections per second 14000, max number of circuit connections is 8",
+                                        "value": "ErGw2AZ"
+                                    },
+                                    {
+                                        "label": "ErGw3AZ",
+                                        "description": "Megabits per second 10,000, packets per second 1,000,000, connections per second 28,000, max number of circuit connections is 16",
+                                        "value": "ErGw3AZ"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "privateErRegionalSku",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select the ExpressRoute Gateway SKU",
+                            "defaultValue": "",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": false,
+                            "multiLine": true,
+                            "visible": "[and(equals(steps('auxiliary').privateErRegionalOrAz, 'Regional'), contains(split('canadacentral,centralus,eastus,eastus2,southcentralus,westus2,francecentral,germanywestcentral,northeurope,westeurope,uksouth,southafricanorth,japaneast,southeastasia,australiaeast', ','), steps('setup').locationName))]",
+                            "toolTip": "Select the required SKU for the ExpressRoute gateway.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Standard",
+                                        "description": "Megabits per second 1000, packets per second 100,000, connections per second 7000, max number of circuit connections is 4",
+                                        "value": "Standard"
+                                    },
+                                    {
+                                        "label": "HighPerformance",
+                                        "description": "Megabits per second 2000, packets per second 250,000, connections per second 14000, max number of circuit connections is 8",
+                                        "value": "HighPerformance"
+                                    },
+                                    {
+                                        "label": "UltraPerformance",
+                                        "description": "Megabits per second 10,000, packets per second 1,000,000, connections per second 28,000, max number of circuit connections is 16",
+                                        "value": "UltraPerformance"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "privateErNoAzSku",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select the ExpressRoute Gateway SKU",
+                            "defaultValue": "",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": false,
+                            "multiLine": true,
+                            "visible": "[and(equals(steps('auxiliary').erGwOption, 'yes'), not(contains(split('canadacentral,centralus,eastus,eastus2,southcentralus,westus2,francecentral,germanywestcentral,northeurope,westeurope,uksouth,southafricanorth,japaneast,southeastasia,australiaeast', ','), steps('setup').locationName)))]",
+                            "toolTip": "Select the required SKU for the Express Route gateway.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Standard",
+                                        "description": "Megabits per second 1000, packets per second 100,000, connections per second 7000, max number of circuit connections is 4",
+                                        "value": "Standard"
+                                    },
+                                    {
+                                        "label": "HighPerformance",
+                                        "description": "Megabits per second 2000, packets per second 250,000, connections per second 14000, max number of circuit connections is 8",
+                                        "value": "HighPerformance"
+                                    },
+                                    {
+                                        "label": "UltraPerformance",
+                                        "description": "Megabits per second 10,000, packets per second 1,000,000, connections per second 28,000, max number of circuit connections is 16",
+                                        "value": "UltraPerformance"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "erGwSubnet",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Subnet for ExpressRoute Gateway",
+                            "toolTip": "Provide address prefix in CIDR notation (e.g 10.100.1.0/24)",
+                            "defaultValue": "10.100.2.0/24",
+                            "visible": "[equals(steps('auxiliary').erGwOption, 'yes')]",
+                            "constraints": {
+                                "required": true,
+                                "validations": [
+                                    {
+                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(2[0-7]))$",
+                                        "message": "Invalid CIDR range. The address prefix must be in the range [20,27]."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('auxiliary').vnetAddress, '/')), 8), equals(last(take(split(first(split(steps('auxiliary').vnetAddress, '/')), '.'), 1)), last(take(split(first(split(steps('auxiliary').erGwSubnet, '/')), '.'), 1))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (first octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('auxiliary').vnetAddress, '/')), 16), equals(last(take(split(first(split(steps('auxiliary').vnetAddress, '/')), '.'), 2)), last(take(split(first(split(steps('auxiliary').erGwSubnet, '/')), '.'), 2))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (second octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('auxiliary').vnetAddress, '/')), 24), equals(last(take(split(first(split(steps('auxiliary').vnetAddress, '/')), '.'), 3)), last(take(split(first(split(steps('auxiliary').erGwSubnet, '/')), '.'), 3))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (third octet)."
+                                    },
+                                    {
+                                        "isValid": "[lessOrEquals(last(split(steps('auxiliary').vnetAddress, '/')), last(split(steps('auxiliary').erGwSubnet, '/')))]",
+                                        "message": "CIDR range not within virtual network CIDR range (subnet mask)."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "erConnectionOption",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Create an ExpressRoute connection",
+                            "defaultValue": "Yes (recommended)",
+                            "visible": "[and(equals(steps('auxiliary').erGwOption, 'yes'), equals(steps('connectivity').privatePeeringCircuit, 'existing'))]",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            }                            
+                        }
+                    ]
+                }
+            ]
+        },
+        "outputs": {
+            "parameters": {
+                "networkOption": "[steps('connectivity').networkOption]",
+                "msftPeeringCircuit": "[steps('connectivity').msftPeeringCircuit]",
+                "msftErName": "[steps('connectivity').msftErName]",
+                "msftProvidersName": "[steps('connectivity').msftProvidersName.name]",
+                "msftPortOption": "[steps('connectivity').msftPortOption]",
+                "msftProvidersLocationName": "[steps('connectivity').msftProvidersLocationName]",
+                "msftProvidersBandwidth": "[string(steps('connectivity').msftProvidersBandwidth)]",
+                "msftPeeringCircuitSku": "[steps('connectivity').msftPeeringCircuitSku]",
+                "msftPeeringDirectSku": "[steps('connectivity').msftPeeringDirectSku]",
+                "msftPeeringCircuitBilling":"[steps('connectivity').msftPeeringCircuitBilling]",
+                "privatePeeringCircuit": "[steps('connectivity').privatePeeringCircuit]",
+                "privateExistingResourceId": "[steps('connectivity').privateExistingResourceId.id]",
+                "privateExistingAuthzKey": "[steps('connectivity').privateExistingAuthzKey]",
+                "privatePortOption": "[steps('connectivity').privatePortOption]",
+                "privateDirectResourceId": "[steps('connectivity').privateDirectResourceId.id]",
+                "privateErName": "[steps('connectivity').privateErName]",
+                "privateProvidersName": "[steps('connectivity').privateProvidersName.name]",
+                "privateProvidersLocationName": "[steps('connectivity').privateProvidersLocationName]",
+                "privateProvidersBandwidth": "[string(steps('connectivity').privateProvidersBandwidth)]",
+                "privatePeeringCircuitSku": "[steps('connectivity').privatePeeringCircuitSku]",
+                "privatePeeringDirectSku": "[steps('connectivity').privatePeeringDirectSku]",
+                "privatePeeringCircuitBilling": "[steps('connectivity').privatePeeringCircuitBilling]",
+                "vnetName": "[steps('auxiliary').vnetName]",
+                "vnetAddress": "[steps('auxiliary').vnetAddress]",
+                "bastionOption": "[steps('auxiliary').bastionOption]",
+                "bastionDisableCopyPaste": "[steps('auxiliary').bastionDisableCopyPaste]",
+                "bastionEnableTunneling": "[steps('auxiliary').bastionEnableTunneling]",
+                "bastionEnableKerberos": "[steps('auxiliary').bastionEnableKerberos]",
+                "bastionName": "[steps('auxiliary').bastionName]",
+                "bastionTier": "[steps('auxiliary').bastionTier]",
+                "bastionCount": "[steps('auxiliary').bastionCount]",
+                "bastionSubnet": "[steps('auxiliary').bastionSubnet]",
+                "azureMonitorOption": "[steps('auxiliary').azureMonitorOption]",
+                "logAnalyticsRetentionInDays": "[string(steps('auxiliary').logAnalyticsRetentionInDays)]",
+                "azureGrafanaOption": "[steps('auxiliary').azureGrafanaOption]",
+                "routeFilterOption": "[steps('auxiliary').routeFilterOption]",
+                "routeFilterName": "[steps('auxiliary').routeFilterName]",
+                "erGwOption": "[steps('auxiliary').erGwOption]",
+                "erGwName": "[steps('auxiliary').erGwName]",
+                "erGwRegionalOrAz": "[steps('auxiliary').privateErRegionalOrAz]",
+                "erGwSubnet": "[steps('auxiliary').erGwSubnet]",
+                "erGwAzSku": "[steps('auxiliary').privateErAzSku]",
+                "erGwRegionalSku": "[if(empty(steps('auxiliary').privateErRegionalSku), steps('auxiliary').privateErNoAzSku, steps('auxiliary').privateErRegionalSku)]",
+                "erConnectionOption": "[steps('auxiliary').erConnectionOption]"
+            },
+            "kind": "Subscription",
+            "location": "[steps('setup').locationName]",
+            "subscriptionId": "[steps('setup').subscriptionId]"
+        }
+    }
+}

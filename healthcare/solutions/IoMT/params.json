@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westeurope"
+        },
+        "environment": {
+            "value": "dev"
+        },
+        "prefix": {
+            "value": "csuhealth"
+        },
+        "tags": {
+            "value": {}
+        },
+        "ingestionService": {
+            "value": "iothub"
+        },
+        "enableRoleAssignments": {
+            "value": true
+        },
+        "enableHealthBot": {
+            "value": true
+        },
+        "fhirExportStorageAccountFileSystemId": {
+            "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/healthcare/providers/Microsoft.Storage/storageAccounts/mabusshealthstorage/blobServices/default/containers/healthcare"
+        },
+        "iotDeviceMapping": {
+            "value": {
+                "templateType": "CollectionContent",
+                "template": []
+            }
+        },
+        "iotFhirMapping": {
+            "value": {
+                "templateType": "CollectionFhirTemplate",
+                "template": []
+            }
+        },
+        "subnetId": {
+            "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/healthcare-bicep/providers/Microsoft.Network/virtualNetworks/testvnet/subnets/default"
+        },
+        "privateDnsZoneIdEventhubNamespace": {
+            "value": ""
+        },
+        "privateDnsZoneIdContainerRegistry": {
+            "value": ""
+        },
+        "privateDnsZoneIdHealthcareApi": {
+            "value": ""
+        }
+    }
+}

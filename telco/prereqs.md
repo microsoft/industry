@@ -24,7 +24,7 @@ Power Platform is optional, but recommended when additional reporting, analysis,
 
 ## Microsoft Teams
 
-Coming soon.
+> Coming soon.
 
 ---
 

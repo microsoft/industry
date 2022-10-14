@@ -11,9 +11,11 @@ deployment and adoption of industry cloud.
 
 * [Healthcare](#healthcare)
 
-* [Telecommunications](#Telecommunications)
+* [Telecommunications](#telecommunications)
 
 * [Financial Services](#financial-services)
+
+* [Retail](#retail)
 
 ### Healthcare
 
@@ -32,7 +34,7 @@ Microsoft Cloud for Healthcare spans the Microsoft Clouds (Azure, Power Platform
 
 [Healthcare Foundations (Recommended)](./healthcare/prereqs.md)
 - [Power Platform for Healthcare](./foundations/powerPlatform)
-- [Azure for Healthcare](./healthcare/solutions/healthcareApis)
+- [Azure for Healthcare](./healthcare)
 - [Microsoft Teams for Healthcare](./healthcare/solutions/microsoftTeams)
 
 Healthcare Solutions
@@ -46,8 +48,10 @@ Healthcare Solutions
 - Care Coordination
   - [Care Management](./healthcare/solutions/careManagement)
   - [Home Health](./healthcare/solutions/homeHealth)
+<!--
 - Care Collaboration
   - ~~[Health Assistant](./healthcare/solutions/healthAssistant)~~
+-->
 - Monitoring & Analytics
   - [Remote Patient Monitoring](./healthcare/solutions/IoMT)
   - [Healthcare Analytics](./healthcare/solutions/clinicalAnalytics)
@@ -80,18 +84,50 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
 - [Power Platform for Telecommunications](./foundations/powerPlatform)
 
 Telco Solutions
-- [Governance for Telco Industry Scenarios](./telco#governance)
-- [Networking for Telco Industry Scenarios](./telco/docs/telco-networking.md)
-- [Distributed Edge](./telco#distributed-edge)
-- [Telco services](./telco/solutions/mgmtOptions/readme.md)
-<!--  - [Telco Managed Services](./telco/solutions/managedServices)
-  - [Telco Managed Solution](./telco/solutions/managedSolutions)-->
-<!--- [Telco Sales](./telco/solutions/sales/readme.md)
-- [Place Management](./telco/solutions/placeManagement/readme.md)-->
+- Solutions across Azure and the edge
+  - [Network Analytics Landing Zones](./telco/solutions/observability/readme.md)
+  - [Edge Video Services](https://github.com/microsoft/edge-video-services)
+- Managed Security Offerings
+  - Azure Sentinel and Microsoft Defender for Cloud
 
   </td>
   <td>
   <img src="telco\docs\telco-industry-reference-architecture.png" width="99%" height="99%"/>
+  </td>
+
+ </tr>
+</tbody>
+</table>
+
+### Retail
+
+Microsoft Cloud for Retail is an industry-specific cloud composed of products and services to address retail specific use-cases. With services across Microsoft Azure, Dynamics 365 and Power Platform, customers can design, build and deploy cross-cloud solutions.
+
+<table>
+<thead>
+ <tr>
+  <th style="text-align:left" width="30%">Retail Services</th>
+  <th style="text-align:left" width="70%">Reference Architecture</th>
+ </tr>
+</thead>
+<tbody>
+ <tr>
+  <td style="vertical-align:top">
+
+
+- [Retail Foundations (Recommended)](./retail/prereqs.md)
+- [Reference Implementation](./retail/referenceImplementation/README.md)
+
+- Retail Solutions
+  - [Workforce Management with Teams](./retail/solutions/wrkforceMgmt/README.md)
+  - [Real-time personalization](./retail/solutions/realtimePersonalization/README.md)
+  - [Supply chain and Order lifecycle management](./retail/solutions/flexibleFulfillment/README.md)
+  - [Shopper and operations analytics](./retail/solutions/shopperOpsAnalytics/README.md)
+  - [Unified Customer profile and Retail churn model](./retail/solutions/unifiedCustomerProfile/README.md)
+
+  </td>
+  <td>
+  <img src="retail/media/mc4r-reference-architecture.png" width="99%" height="99%"/>
   </td>
 
  </tr>
@@ -124,9 +160,9 @@ Microsoft Cloud for Financial Services provides capabilities to manage data to d
 
 - Customer and employee experience
   - [Unified customer profile](./fsi/solutions/unifiedCustomerProfile)
-  - [Customer onboarding](./fsi/solutions/customerOnboarding)
+  - [Customer onboarding](./fsi/solutions/customerOnboarding/readme.md)
   - [Collaboration manager](./fsi/solutions/collaborationManager)
-  - [Banking customer engagement](./fsi/solutions/customerEngagement)
+  - [Banking customer engagement](./fsi/solutions/bankingCustomerEngagement)
 - Financial crime protection
   - [Account protection](./fsi/solutions/accountProtection)
   - [Purchase protection](./fsi/solutions/purchaseProtection)
@@ -142,6 +178,7 @@ Microsoft Cloud for Financial Services provides capabilities to manage data to d
  </tr>
 </tbody>
 </table>
+
 
 ## Contributing
 

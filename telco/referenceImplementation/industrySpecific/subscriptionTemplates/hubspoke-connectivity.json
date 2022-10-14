@@ -97,6 +97,14 @@
                 "description": "Provide the subscription id for the dedicated connectivity subscription."
             }
         },
+        "enableAvnm": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
         "subnetMaskForAzFw": {
             "type": "string",
             "defaultValue": "",
@@ -158,6 +166,8 @@
         "rgName": "[concat(parameters('topLevelManagementGroupPrefix'), '-vnethub-', parameters('location'))]",
         "azFwPolicyName": "[concat(parameters('topLevelManagementGroupPrefix'), '-azfwpolicy-', parameters('location'))]",
         "hubName": "[concat(parameters('topLevelManagementGroupPrefix'), '-hub-', parameters('location'))]",
+        "avnmName": "[concat(parameters('topLevelManagementGroupPrefix'), '-vnm-', parameters('location'))]",
+        "avnmRgName": "[concat(parameters('topLevelManagementGroupPrefix'), '-netmanager-', parameters('location'))]",
         "azVpnGwIpName": "[concat(variables('vpngwname'), '-pip')]",
         "azVpnGwSubnetId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('rgName'),'/providers/Microsoft.Network/virtualNetworks/', variables('hubname'), '/subnets/GatewaySubnet')]",
         "azFwName": "[concat(parameters('topLevelManagementGroupPrefix'), '-fw-', parameters('location'))]",
@@ -169,6 +179,7 @@
         "azFwSubnetId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('rgName'),'/providers/Microsoft.Network/virtualNetworks/', variables('hubname'), '/subnets/AzureFirewallSubnet')]",
         "azFwPipId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('rgName'), '/providers/Microsoft.Network/publicIPAddresses/', variables('azFwIpName'))]",
         "resourceDeploymentName": "[take(concat(deployment().name, '-hubspoke', parameters('location')), 64)]",
+        "avnmDeploymentName": "[take(concat(deployment().name, '-avnetmanager', parameters('location')), 64)]",
         // Creating variable that later will be used in conjunction with the union() function to cater for conditional subnet creation while ensuring idempotency
         "gwSubnet": [
             {
@@ -196,14 +207,14 @@
             "enableProxy": true
         }
     },
-    "resources": [
+    "resources": [    
         {
             // Conditionally deploy virtual network hub
             "condition": "[and(equals(parameters('enableHub'), 'vhub'), not(empty(parameters('connectivitySubscriptionId'))))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-10-01",
             "location": "[parameters('location')]",
-            "name": "[concat('EntScale', '-connectivityHubSub')]",
+            "name": "[concat('afo', '-connectivityHubSub', deployment().location)]",
             "subscriptionId": "[parameters('connectivitySubscriptionId')]",
             "properties": {
                 "mode": "Incremental",
@@ -212,6 +223,54 @@
                     "contentVersion": "1.0.0.0",
                     "parameters": {},
                     "resources": [
+                        {
+                            "condition": "[equals(parameters('enableAvnm'), 'Yes')]",
+                            "type": "Microsoft.Resources/resourceGroups",
+                            "apiVersion": "2019-10-01",
+                            "location": "[parameters('location')]",
+                            "name": "[variables('avnmRgName')]",
+                            "properties": {}
+                        },
+                        {
+                            "condition": "[equals(parameters('enableAvnm'), 'Yes')]",
+                            "type": "Microsoft.Resources/deployments",
+                            "apiVersion": "2019-10-01",
+                            "name": "[variables('avnmDeploymentName')]",
+                            "resourceGroup": "[variables('avnmRgName')]",
+                            "dependsOn": [
+                                "[resourceId('Microsoft.Resources/resourceGroups', variables('avnmRgName'))]"
+                            ],
+                            "properties": {
+                                "mode": "Incremental",
+                                "template": {
+                                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                                    "contentVersion": "1.0.0.0",
+                                    "parameters": {},
+                                    "resources": [
+                                            {
+                                            "type": "Microsoft.Network/networkManagers",
+                                            "name": "[variables('avnmName')]",
+                                            "apiVersion": "2021-02-01-preview",
+                                            "location": "[parameters('location')]",
+                                            "properties": {
+                                                "displayName": "[concat(parameters('topLevelManagementGroupPrefix'), ' Network Manager')]",
+                                                "description": "[concat('Virtual Network Manager to manage and deploy virtual networks for ', parameters('topLevelManagementGroupPrefix'))]",
+                                                "networkManagerScopes": {
+                                                    "managementGroups": [
+                                                        "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '-landingzones')]"
+                                                    ],
+                                                    "subscriptions": [],
+                                                    "networkManagerScopeAccesses": [
+                                                        "Connectivity",
+                                                        "SecurityAdmin"
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        },
                         {
                             "type": "Microsoft.Resources/resourceGroups",
                             "apiVersion": "2019-10-01",
@@ -233,7 +292,7 @@
                                     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
                                     "contentVersion": "1.0.0.0",
                                     "parameters": {},
-                                    "resources": [
+                                    "resources": [                                        
                                         {
                                             "name": "[variables('hubName')]",
                                             "type": "Microsoft.Network/virtualNetworks",

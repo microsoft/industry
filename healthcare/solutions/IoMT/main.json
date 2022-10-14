@@ -1,0 +1,1372 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.8.9.13224",
+      "templateHash": "8322019635770462247"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the location for all resources."
+      }
+    },
+    "environment": {
+      "type": "string",
+      "defaultValue": "dev",
+      "metadata": {
+        "description": "Specifies the environment of the deployment."
+      },
+      "allowedValues": [
+        "dev",
+        "tst",
+        "prd"
+      ]
+    },
+    "prefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the prefix for all resources created in this deployment."
+      },
+      "maxLength": 10,
+      "minLength": 2
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Specifies the tags that you want to apply to all resources."
+      }
+    },
+    "ingestionService": {
+      "type": "string",
+      "defaultValue": "iothub",
+      "metadata": {
+        "description": "Specifies the ingestion service for the FHIR IoT API."
+      },
+      "allowedValues": [
+        "iothub",
+        "eventhub"
+      ]
+    },
+    "enableRoleAssignments": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Specifies whether role assignments should be enabled."
+      }
+    },
+    "enableHealthBot": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Specifies whether the Azure Healthbot should be enabled."
+      }
+    },
+    "fhirExportStorageAccountFileSystemId": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the storage account file system resource id used for FHIR exports."
+      }
+    },
+    "iotDeviceMapping": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Specifies the iot device mapping."
+      }
+    },
+    "iotFhirMapping": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Specifies the fhir mapping."
+      }
+    },
+    "subnetId": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the resource ID of the subnet to which all services will connect."
+      }
+    },
+    "privateDnsZoneIdEventhubNamespace": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the resource ID of the private DNS zone for EventHub Namespaces."
+      }
+    },
+    "privateDnsZoneIdContainerRegistry": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the resource ID of the private DNS zone for Container Registry."
+      }
+    },
+    "privateDnsZoneIdHealthcareApi": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the resource ID of the private DNS zone for healthcare API workspaces."
+      }
+    }
+  },
+  "variables": {
+    "name": "[toLower(format('{0}-{1}', parameters('prefix'), parameters('environment')))]",
+    "eventhubNamespace001Name": "[format('{0}-ehnamepspace001', variables('name'))]",
+    "servicebusNamespace001Name": "[format('{0}-servicebus001', variables('name'))]",
+    "iotHub001Name": "[format('{0}-iothub001', variables('name'))]",
+    "containerRegistry001Name": "[format('{0}-containerregistry001', variables('name'))]",
+    "healthcareApi001Name": "[format('{0}-hapi001', variables('name'))]",
+    "healthcareBot001Name": "[format('{0}-hbot001', variables('name'))]",
+    "fhirStorageAccountSubscriptionId": "[if(greaterOrEquals(length(split(parameters('fhirExportStorageAccountFileSystemId'), '/')), 13), split(parameters('fhirExportStorageAccountFileSystemId'), '/')[2], subscription().subscriptionId)]",
+    "fhirStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('fhirExportStorageAccountFileSystemId'), '/')), 13), split(parameters('fhirExportStorageAccountFileSystemId'), '/')[4], resourceGroup().name)]",
+    "fhirStorageAccountName": "[if(greaterOrEquals(length(split(parameters('fhirExportStorageAccountFileSystemId'), '/')), 13), split(parameters('fhirExportStorageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]"
+  },
+  "resources": [
+    {
+      "condition": "[equals(parameters('ingestionService'), 'eventhub')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "eventhubNamespace001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
+          "eventhubnamespaceName": {
+            "value": "[variables('eventhubNamespace001Name')]"
+          },
+          "privateDnsZoneIdEventhubNamespace": {
+            "value": "[parameters('privateDnsZoneIdEventhubNamespace')]"
+          },
+          "eventhubnamespaceMinThroughput": {
+            "value": 1
+          },
+          "eventhubnamespaceMaxThroughput": {
+            "value": 1
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.8.9.13224",
+              "templateHash": "9189067070571096498"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "subnetId": {
+              "type": "string"
+            },
+            "eventhubnamespaceName": {
+              "type": "string"
+            },
+            "eventhubnamespaceMinThroughput": {
+              "type": "int",
+              "maxValue": 20,
+              "minValue": 1
+            },
+            "eventhubnamespaceMaxThroughput": {
+              "type": "int",
+              "maxValue": 20,
+              "minValue": 1
+            },
+            "privateDnsZoneIdEventhubNamespace": {
+              "type": "string",
+              "defaultValue": ""
+            }
+          },
+          "variables": {
+            "eventhub001Name": "[format('{0}-eh001', parameters('eventhubnamespaceName'))]",
+            "eventHub001ConsumerGroupName": "healthcareapiiot",
+            "eventhubNamespacePrivateEndpointName": "[format('{0}-private-endpoint', parameters('eventhubnamespaceName'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.EventHub/namespaces",
+              "apiVersion": "2021-11-01",
+              "name": "[parameters('eventhubnamespaceName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "sku": {
+                "name": "Standard",
+                "tier": "Standard",
+                "capacity": "[parameters('eventhubnamespaceMinThroughput')]"
+              },
+              "properties": {
+                "isAutoInflateEnabled": true,
+                "kafkaEnabled": true,
+                "maximumThroughputUnits": "[parameters('eventhubnamespaceMaxThroughput')]",
+                "zoneRedundant": true,
+                "disableLocalAuth": false
+              }
+            },
+            {
+              "type": "Microsoft.EventHub/namespaces/networkRuleSets",
+              "apiVersion": "2021-11-01",
+              "name": "[format('{0}/{1}', parameters('eventhubnamespaceName'), 'default')]",
+              "properties": {
+                "defaultAction": "Deny",
+                "ipRules": [],
+                "virtualNetworkRules": [],
+                "publicNetworkAccess": "Enabled",
+                "trustedServiceAccessEnabled": true
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('eventhubnamespaceName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.EventHub/namespaces/eventhubs",
+              "apiVersion": "2021-11-01",
+              "name": "[format('{0}/{1}', parameters('eventhubnamespaceName'), variables('eventhub001Name'))]",
+              "properties": {
+                "messageRetentionInDays": 3,
+                "partitionCount": 1,
+                "status": "Active"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('eventhubnamespaceName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+              "apiVersion": "2021-11-01",
+              "name": "[format('{0}/{1}/{2}', parameters('eventhubnamespaceName'), variables('eventhub001Name'), variables('eventHub001ConsumerGroupName'))]",
+              "properties": {},
+              "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('eventhubnamespaceName'), variables('eventhub001Name'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2020-11-01",
+              "name": "[variables('eventhubNamespacePrivateEndpointName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "manualPrivateLinkServiceConnections": [],
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "[variables('eventhubNamespacePrivateEndpointName')]",
+                    "properties": {
+                      "groupIds": [
+                        "namespace"
+                      ],
+                      "privateLinkServiceId": "[resourceId('Microsoft.EventHub/namespaces', parameters('eventhubnamespaceName'))]",
+                      "requestMessage": ""
+                    }
+                  }
+                ],
+                "subnet": {
+                  "id": "[parameters('subnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('eventhubnamespaceName'))]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('privateDnsZoneIdEventhubNamespace')))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2020-11-01",
+              "name": "[format('{0}/{1}', variables('eventhubNamespacePrivateEndpointName'), 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "[format('{0}-arecord', variables('eventhubNamespacePrivateEndpointName'))]",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('privateDnsZoneIdEventhubNamespace')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('eventhubNamespacePrivateEndpointName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "eventhubNamespaceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.EventHub/namespaces', parameters('eventhubnamespaceName'))]"
+            },
+            "eventhubNamespaceFqdn": {
+              "type": "string",
+              "value": "[format('{0}.servicesbus.windows.net', parameters('eventhubnamespaceName'))]"
+            },
+            "eventhub001Name": {
+              "type": "string",
+              "value": "[variables('eventhub001Name')]"
+            },
+            "eventhub001ConsumerGroupName": {
+              "type": "string",
+              "value": "[variables('eventHub001ConsumerGroupName')]"
+            }
+          }
+        }
+      }
+    },
+    {
+      "condition": "[equals(parameters('ingestionService'), 'iothub')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "iotHub001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
+          "iothubName": {
+            "value": "[variables('iotHub001Name')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.8.9.13224",
+              "templateHash": "12230231838642514032"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "subnetId": {
+              "type": "string"
+            },
+            "iothubName": {
+              "type": "string"
+            },
+            "iothubSkuName": {
+              "type": "string",
+              "defaultValue": "S1"
+            },
+            "iothubSkuCapacity": {
+              "type": "int",
+              "defaultValue": 1,
+              "maxValue": 200,
+              "minValue": 1
+            },
+            "privateDnsZoneIdIothub": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "privateDnsZoneIdEventhubNamespace": {
+              "type": "string",
+              "defaultValue": ""
+            }
+          },
+          "variables": {
+            "iothubEventhubEndpointName": "events",
+            "iothubEventhubEndpointConsumerGroupName": "healthcareapiiot",
+            "iothubPrivateEndpointName": "[format('{0}-private-endpoint', parameters('iothubName'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Devices/IotHubs",
+              "apiVersion": "2021-07-02",
+              "name": "[parameters('iothubName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "sku": {
+                "name": "[parameters('iothubSkuName')]",
+                "capacity": "[parameters('iothubSkuCapacity')]"
+              },
+              "properties": {
+                "authorizationPolicies": [],
+                "cloudToDevice": {
+                  "defaultTtlAsIso8601": "PT1M",
+                  "feedback": {
+                    "lockDurationAsIso8601": "PT1M",
+                    "maxDeliveryCount": 10,
+                    "ttlAsIso8601": "PT1H"
+                  },
+                  "maxDeliveryCount": 10
+                },
+                "comments": "",
+                "enableFileUploadNotifications": false,
+                "eventHubEndpoints": {
+                  "events": {
+                    "partitionCount": 4,
+                    "retentionTimeInDays": 1
+                  }
+                },
+                "features": "DeviceManagement",
+                "ipFilterRules": [],
+                "messagingEndpoints": {
+                  "fileNotifications": {
+                    "lockDurationAsIso8601": "PT1M",
+                    "maxDeliveryCount": 10,
+                    "ttlAsIso8601": "PT1H"
+                  }
+                },
+                "networkRuleSets": {
+                  "applyToBuiltInEventHubEndpoint": true,
+                  "defaultAction": "Deny",
+                  "ipRules": []
+                },
+                "publicNetworkAccess": "Enabled",
+                "routing": {
+                  "endpoints": {
+                    "eventHubs": [],
+                    "serviceBusQueues": [],
+                    "serviceBusTopics": [],
+                    "storageContainers": []
+                  },
+                  "enrichments": [],
+                  "fallbackRoute": {
+                    "condition": "true",
+                    "endpointNames": [
+                      "events"
+                    ],
+                    "isEnabled": false,
+                    "name": "$fallback",
+                    "source": "DeviceMessages"
+                  },
+                  "routes": []
+                },
+                "storageEndpoints": {}
+              }
+            },
+            {
+              "type": "Microsoft.Devices/IotHubs/eventHubEndpoints/ConsumerGroups",
+              "apiVersion": "2021-07-02",
+              "name": "[format('{0}/{1}/{2}', parameters('iothubName'), variables('iothubEventhubEndpointName'), variables('iothubEventhubEndpointConsumerGroupName'))]",
+              "properties": {
+                "name": "[variables('iothubEventhubEndpointConsumerGroupName')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Devices/IotHubs', parameters('iothubName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2020-11-01",
+              "name": "[variables('iothubPrivateEndpointName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "manualPrivateLinkServiceConnections": [],
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "[variables('iothubPrivateEndpointName')]",
+                    "properties": {
+                      "groupIds": [
+                        "iotHub"
+                      ],
+                      "privateLinkServiceId": "[resourceId('Microsoft.Devices/IotHubs', parameters('iothubName'))]",
+                      "requestMessage": ""
+                    }
+                  }
+                ],
+                "subnet": {
+                  "id": "[parameters('subnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Devices/IotHubs', parameters('iothubName'))]"
+              ]
+            },
+            {
+              "condition": "[and(not(empty(parameters('privateDnsZoneIdIothub'))), not(empty(parameters('privateDnsZoneIdEventhubNamespace'))))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2020-11-01",
+              "name": "[format('{0}/{1}', variables('iothubPrivateEndpointName'), 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "[format('{0}-arecord-iothub', variables('iothubPrivateEndpointName'))]",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('privateDnsZoneIdIothub')]"
+                    }
+                  },
+                  {
+                    "name": "[format('{0}-arecord-eventhub', variables('iothubPrivateEndpointName'))]",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('privateDnsZoneIdEventhubNamespace')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('iothubPrivateEndpointName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "iothubId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Devices/IotHubs', parameters('iothubName'))]"
+            },
+            "iothubEvenhubEndpointFqdn": {
+              "type": "string",
+              "value": "[first(split(last(split(reference(resourceId('Microsoft.Devices/IotHubs', parameters('iothubName'))).eventHubEndpoints[variables('iothubEventhubEndpointName')].endpoint, '//')), '/'))]"
+            },
+            "iothubEvenhubEndpointName": {
+              "type": "string",
+              "value": "[variables('iothubEventhubEndpointName')]"
+            },
+            "iothubEvenhubEndpointConsumerGroupName": {
+              "type": "string",
+              "value": "[format('{0}/{1}/{2}', parameters('iothubName'), variables('iothubEventhubEndpointName'), variables('iothubEventhubEndpointConsumerGroupName'))]"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "servicebusNamespace001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
+          "servicebusnamespaceName": {
+            "value": "[variables('servicebusNamespace001Name')]"
+          },
+          "servicebusnamespaceThroughput": {
+            "value": 1
+          },
+          "privateDnsZoneIdServicebusNamespace": {
+            "value": "[parameters('privateDnsZoneIdEventhubNamespace')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.8.9.13224",
+              "templateHash": "766641961312437394"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "subnetId": {
+              "type": "string"
+            },
+            "servicebusnamespaceName": {
+              "type": "string"
+            },
+            "servicebusnamespaceThroughput": {
+              "type": "int",
+              "defaultValue": 1,
+              "allowedValues": [
+                1,
+                2,
+                4,
+                8,
+                16
+              ]
+            },
+            "privateDnsZoneIdServicebusNamespace": {
+              "type": "string",
+              "defaultValue": ""
+            }
+          },
+          "variables": {
+            "servicebusQueue001Name": "eventHub001",
+            "servicebusQueue001SharedAccessPolicyName": "fhir-synch-agent",
+            "servicebusNamespacePrivateEndpointName": "[format('{0}-private-endpoint', parameters('servicebusnamespaceName'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.ServiceBus/namespaces",
+              "apiVersion": "2021-11-01",
+              "name": "[parameters('servicebusnamespaceName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "sku": {
+                "name": "Premium",
+                "tier": "Premium",
+                "capacity": "[parameters('servicebusnamespaceThroughput')]"
+              },
+              "properties": {
+                "disableLocalAuth": true,
+                "zoneRedundant": true
+              }
+            },
+            {
+              "type": "Microsoft.ServiceBus/namespaces/networkRuleSets",
+              "apiVersion": "2021-11-01",
+              "name": "[format('{0}/{1}', parameters('servicebusnamespaceName'), 'default')]",
+              "properties": {
+                "defaultAction": "Deny",
+                "ipRules": [],
+                "publicNetworkAccess": "Enabled",
+                "trustedServiceAccessEnabled": true,
+                "virtualNetworkRules": []
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('servicebusnamespaceName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.ServiceBus/namespaces/queues",
+              "apiVersion": "2021-11-01",
+              "name": "[format('{0}/{1}', parameters('servicebusnamespaceName'), variables('servicebusQueue001Name'))]",
+              "properties": {
+                "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+                "deadLetteringOnMessageExpiration": false,
+                "defaultMessageTimeToLive": "P14D",
+                "duplicateDetectionHistoryTimeWindow": "PT10M",
+                "enableBatchedOperations": true,
+                "enableExpress": false,
+                "enablePartitioning": false,
+                "lockDuration": "PT30S",
+                "maxDeliveryCount": 10,
+                "maxSizeInMegabytes": 1024,
+                "requiresDuplicateDetection": false,
+                "requiresSession": false
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('servicebusnamespaceName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.ServiceBus/namespaces/queues/authorizationRules",
+              "apiVersion": "2021-11-01",
+              "name": "[format('{0}/{1}/{2}', parameters('servicebusnamespaceName'), variables('servicebusQueue001Name'), variables('servicebusQueue001SharedAccessPolicyName'))]",
+              "properties": {
+                "rights": [
+                  "Listen"
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces/queues', parameters('servicebusnamespaceName'), variables('servicebusQueue001Name'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2020-11-01",
+              "name": "[variables('servicebusNamespacePrivateEndpointName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "manualPrivateLinkServiceConnections": [],
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "[variables('servicebusNamespacePrivateEndpointName')]",
+                    "properties": {
+                      "groupIds": [
+                        "namespace"
+                      ],
+                      "privateLinkServiceId": "[resourceId('Microsoft.ServiceBus/namespaces', parameters('servicebusnamespaceName'))]",
+                      "requestMessage": ""
+                    }
+                  }
+                ],
+                "subnet": {
+                  "id": "[parameters('subnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('servicebusnamespaceName'))]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('privateDnsZoneIdServicebusNamespace')))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2020-11-01",
+              "name": "[format('{0}/{1}', variables('servicebusNamespacePrivateEndpointName'), 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "[format('{0}-arecord', variables('servicebusNamespacePrivateEndpointName'))]",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('privateDnsZoneIdServicebusNamespace')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('servicebusNamespacePrivateEndpointName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "serviceBusUrl": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.ServiceBus/namespaces', parameters('servicebusnamespaceName'))).serviceBusEndpoint]"
+            },
+            "serviceBusQueue001Name": {
+              "type": "string",
+              "value": "[variables('servicebusQueue001Name')]"
+            },
+            "serviceBusQueue001SharedAccessPolicyName": {
+              "type": "string",
+              "value": "[variables('servicebusQueue001SharedAccessPolicyName')]"
+            },
+            "serviceBusQueue001SharedAccessPolicyKey": {
+              "type": "string",
+              "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/queues/authorizationRules', parameters('servicebusnamespaceName'), variables('servicebusQueue001Name'), variables('servicebusQueue001SharedAccessPolicyName')), '2021-11-01').primaryKey]"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "containerRegistry001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
+          "privateDnsZoneIdContainerRegistry": {
+            "value": "[parameters('privateDnsZoneIdContainerRegistry')]"
+          },
+          "containerRegistryName": {
+            "value": "[variables('containerRegistry001Name')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.8.9.13224",
+              "templateHash": "3063364502951142251"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "subnetId": {
+              "type": "string"
+            },
+            "containerRegistryName": {
+              "type": "string"
+            },
+            "privateDnsZoneIdContainerRegistry": {
+              "type": "string",
+              "defaultValue": ""
+            }
+          },
+          "variables": {
+            "containerRegistryNameCleaned": "[replace(parameters('containerRegistryName'), '-', '')]",
+            "containerRegistryPrivateEndpointName": "[format('{0}-private-endpoint', variables('containerRegistryNameCleaned'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.ContainerRegistry/registries",
+              "apiVersion": "2021-09-01",
+              "name": "[variables('containerRegistryNameCleaned')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "sku": {
+                "name": "Premium"
+              },
+              "properties": {
+                "adminUserEnabled": true,
+                "dataEndpointEnabled": false,
+                "networkRuleBypassOptions": "AzureServices",
+                "networkRuleSet": {
+                  "defaultAction": "Deny",
+                  "ipRules": []
+                },
+                "policies": {
+                  "quarantinePolicy": {
+                    "status": "enabled"
+                  },
+                  "retentionPolicy": {
+                    "status": "enabled",
+                    "days": 7
+                  },
+                  "trustPolicy": {
+                    "status": "disabled",
+                    "type": "Notary"
+                  }
+                },
+                "publicNetworkAccess": "Enabled"
+              }
+            },
+            {
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2020-11-01",
+              "name": "[variables('containerRegistryPrivateEndpointName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "manualPrivateLinkServiceConnections": [],
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "[variables('containerRegistryPrivateEndpointName')]",
+                    "properties": {
+                      "groupIds": [
+                        "registry"
+                      ],
+                      "privateLinkServiceId": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryNameCleaned'))]",
+                      "requestMessage": ""
+                    }
+                  }
+                ],
+                "subnet": {
+                  "id": "[parameters('subnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryNameCleaned'))]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('privateDnsZoneIdContainerRegistry')))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2020-11-01",
+              "name": "[format('{0}/{1}', variables('containerRegistryPrivateEndpointName'), 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "[format('{0}-arecord', variables('containerRegistryPrivateEndpointName'))]",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('privateDnsZoneIdContainerRegistry')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('containerRegistryPrivateEndpointName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "containerRegistryId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryNameCleaned'))]"
+            },
+            "containerRegistryLoginServer": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryNameCleaned'))).loginServer]"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "healthcareApi001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
+          "privateDnsZoneIdHealthcareApi": {
+            "value": "[parameters('privateDnsZoneIdHealthcareApi')]"
+          },
+          "healthcareapiName": {
+            "value": "[variables('healthcareApi001Name')]"
+          },
+          "healthcareapiFhirVersion": {
+            "value": "fhir-R4"
+          },
+          "healthcareapiFhirStorageAccountName": {
+            "value": "[variables('fhirStorageAccountName')]"
+          },
+          "healthcareapiFhirContainerRegistryLoginServers": {
+            "value": [
+              "[reference(resourceId('Microsoft.Resources/deployments', 'containerRegistry001')).outputs.containerRegistryLoginServer.value]"
+            ]
+          },
+          "healthcareapiIotEventhubName": {
+            "value": "[if(equals(parameters('ingestionService'), 'iothub'), reference(resourceId('Microsoft.Resources/deployments', 'iotHub001'), '2020-10-01').outputs.iothubEvenhubEndpointName.value, reference(resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001'), '2020-10-01').outputs.eventhub001Name.value)]"
+          },
+          "healthcareapiIotEventhubConsumerGroupName": {
+            "value": "[if(equals(parameters('ingestionService'), 'iothub'), reference(resourceId('Microsoft.Resources/deployments', 'iotHub001'), '2020-10-01').outputs.iothubEvenhubEndpointConsumerGroupName.value, reference(resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001'), '2020-10-01').outputs.eventhub001ConsumerGroupName.value)]"
+          },
+          "healthcareapiIotEventhubNamespaceFqdn": {
+            "value": "[if(equals(parameters('ingestionService'), 'iothub'), reference(resourceId('Microsoft.Resources/deployments', 'iotHub001'), '2020-10-01').outputs.iothubEvenhubEndpointFqdn.value, reference(resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001'), '2020-10-01').outputs.eventhubNamespaceFqdn.value)]"
+          },
+          "healthcareapiIotDeviceMapping": {
+            "value": "[parameters('iotDeviceMapping')]"
+          },
+          "healthcareapiIotFhirMapping": {
+            "value": "[parameters('iotFhirMapping')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.8.9.13224",
+              "templateHash": "4254792522619330546"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "subnetId": {
+              "type": "string"
+            },
+            "healthcareapiName": {
+              "type": "string"
+            },
+            "privateDnsZoneIdHealthcareApi": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "healthcareapiFhirVersion": {
+              "type": "string",
+              "defaultValue": "fhir-R4",
+              "allowedValues": [
+                "fhir-Stu3",
+                "fhir-R4"
+              ]
+            },
+            "healthcareapiFhirStorageAccountName": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "healthcareapiFhirContainerRegistryLoginServers": {
+              "type": "array",
+              "defaultValue": []
+            },
+            "healthcareapiIotDeviceMapping": {
+              "type": "object"
+            },
+            "healthcareapiIotFhirMapping": {
+              "type": "object"
+            },
+            "healthcareapiIotEventhubNamespaceFqdn": {
+              "type": "string"
+            },
+            "healthcareapiIotEventhubName": {
+              "type": "string"
+            },
+            "healthcareapiIotEventhubConsumerGroupName": {
+              "type": "string"
+            }
+          },
+          "variables": {
+            "healthcareapiNameCleaned": "[toLower(replace(parameters('healthcareapiName'), '-', ''))]",
+            "healthcareapiFhirName": "[format('{0}fhir', variables('healthcareapiNameCleaned'))]",
+            "healthcareapiDicomName": "[format('{0}dicom', variables('healthcareapiNameCleaned'))]",
+            "healthcareapiIotName": "[format('{0}iot', variables('healthcareapiNameCleaned'))]",
+            "healthcareapiPrivateEndpointName": "[format('{0}-private-endpoint', variables('healthcareapiNameCleaned'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.HealthcareApis/workspaces",
+              "apiVersion": "2022-05-15",
+              "name": "[variables('healthcareapiNameCleaned')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {}
+            },
+            {
+              "condition": "[false()]",
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2020-11-01",
+              "name": "[variables('healthcareapiPrivateEndpointName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "manualPrivateLinkServiceConnections": [],
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "[variables('healthcareapiPrivateEndpointName')]",
+                    "properties": {
+                      "groupIds": [
+                        "workspace"
+                      ],
+                      "privateLinkServiceId": "[resourceId('Microsoft.HealthcareApis/workspaces', variables('healthcareapiNameCleaned'))]",
+                      "requestMessage": ""
+                    }
+                  }
+                ],
+                "subnet": {
+                  "id": "[parameters('subnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.HealthcareApis/workspaces', variables('healthcareapiNameCleaned'))]"
+              ]
+            },
+            {
+              "condition": "[and(false(), not(empty(parameters('privateDnsZoneIdHealthcareApi'))))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2020-11-01",
+              "name": "[format('{0}/{1}', variables('healthcareapiPrivateEndpointName'), 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "[format('{0}-arecord', variables('healthcareapiPrivateEndpointName'))]",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('privateDnsZoneIdHealthcareApi')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('healthcareapiPrivateEndpointName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.HealthcareApis/workspaces/fhirservices",
+              "apiVersion": "2022-05-15",
+              "name": "[format('{0}/{1}', variables('healthcareapiNameCleaned'), variables('healthcareapiFhirName'))]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "kind": "[parameters('healthcareapiFhirVersion')]",
+              "properties": {
+                "accessPolicies": [],
+                "authenticationConfiguration": {
+                  "audience": "[format('https://{0}-stu3.fhir.azurehealthcareapis.com', variables('healthcareapiNameCleaned'))]",
+                  "authority": "[format('{0}{1}', environment().authentication.loginEndpoint, subscription().tenantId)]",
+                  "smartProxyEnabled": false
+                },
+                "acrConfiguration": {
+                  "loginServers": "[parameters('healthcareapiFhirContainerRegistryLoginServers')]"
+                },
+                "corsConfiguration": {
+                  "allowCredentials": false,
+                  "headers": [
+                    "*"
+                  ],
+                  "maxAge": 1440,
+                  "methods": [
+                    "DELETE",
+                    "GET",
+                    "OPTIONS",
+                    "PATCH",
+                    "POST",
+                    "PUT"
+                  ],
+                  "origins": [
+                    "https://localhost:6001"
+                  ]
+                },
+                "exportConfiguration": {
+                  "storageAccountName": "[parameters('healthcareapiFhirStorageAccountName')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.HealthcareApis/workspaces', variables('healthcareapiNameCleaned'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.HealthcareApis/workspaces/dicomservices",
+              "apiVersion": "2022-05-15",
+              "name": "[format('{0}/{1}', variables('healthcareapiNameCleaned'), variables('healthcareapiDicomName'))]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "authenticationConfiguration": {}
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.HealthcareApis/workspaces', variables('healthcareapiNameCleaned'))]"
+              ]
+            },
+            {
+              "condition": "[and(not(empty(parameters('healthcareapiIotDeviceMapping'))), not(empty(parameters('healthcareapiIotFhirMapping'))))]",
+              "type": "Microsoft.HealthcareApis/workspaces/iotconnectors",
+              "apiVersion": "2022-05-15",
+              "name": "[format('{0}/{1}', variables('healthcareapiNameCleaned'), variables('healthcareapiIotName'))]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "properties": {
+                "deviceMapping": {
+                  "content": "[parameters('healthcareapiIotDeviceMapping')]"
+                },
+                "ingestionEndpointConfiguration": {
+                  "fullyQualifiedEventHubNamespace": "[parameters('healthcareapiIotEventhubNamespaceFqdn')]",
+                  "eventHubName": "[parameters('healthcareapiIotEventhubName')]",
+                  "consumerGroup": "[parameters('healthcareapiIotEventhubConsumerGroupName')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.HealthcareApis/workspaces', variables('healthcareapiNameCleaned'))]"
+              ]
+            },
+            {
+              "condition": "[and(not(empty(parameters('healthcareapiIotDeviceMapping'))), not(empty(parameters('healthcareapiIotFhirMapping'))))]",
+              "type": "Microsoft.HealthcareApis/workspaces/iotconnectors/fhirdestinations",
+              "apiVersion": "2022-05-15",
+              "name": "[format('{0}/{1}/{2}', variables('healthcareapiNameCleaned'), variables('healthcareapiIotName'), variables('healthcareapiFhirName'))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "resourceIdentityResolutionType": "Create",
+                "fhirMapping": {
+                  "content": "[parameters('healthcareapiIotFhirMapping')]"
+                },
+                "fhirServiceResourceId": "[resourceId('Microsoft.HealthcareApis/workspaces/fhirservices', variables('healthcareapiNameCleaned'), variables('healthcareapiFhirName'))]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.HealthcareApis/workspaces/fhirservices', variables('healthcareapiNameCleaned'), variables('healthcareapiFhirName'))]",
+                "[resourceId('Microsoft.HealthcareApis/workspaces/iotconnectors', variables('healthcareapiNameCleaned'), variables('healthcareapiIotName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "healthcareapiFhirId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.HealthcareApis/workspaces/fhirservices', variables('healthcareapiNameCleaned'), variables('healthcareapiFhirName'))]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'containerRegistry001')]",
+        "[resourceId('Microsoft.Resources/deployments', 'eventhubNamespace001')]",
+        "[resourceId('Microsoft.Resources/deployments', 'iotHub001')]"
+      ]
+    },
+    {
+      "condition": "[parameters('enableRoleAssignments')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "healthcareApi001RoleAssignmentStorage",
+      "subscriptionId": "[variables('fhirStorageAccountSubscriptionId')]",
+      "resourceGroup": "[variables('fhirStorageAccountResourceGroupName')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "healthcareapiFhirId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'healthcareApi001')).outputs.healthcareapiFhirId.value]"
+          },
+          "storageAccountFileSystemId": {
+            "value": "[parameters('fhirExportStorageAccountFileSystemId')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.8.9.13224",
+              "templateHash": "7558774887200492394"
+            }
+          },
+          "parameters": {
+            "storageAccountFileSystemId": {
+              "type": "string"
+            },
+            "healthcareapiFhirId": {
+              "type": "string"
+            }
+          },
+          "variables": {
+            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), split(parameters('storageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]",
+            "storageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), last(split(parameters('storageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
+            "healthcareapiSubscriptionId": "[if(greaterOrEquals(length(split(parameters('healthcareapiFhirId'), '/')), 11), split(parameters('healthcareapiFhirId'), '/')[2], subscription().subscriptionId)]",
+            "healthcareapiResourceGroupName": "[if(greaterOrEquals(length(split(parameters('healthcareapiFhirId'), '/')), 11), split(parameters('healthcareapiFhirId'), '/')[4], resourceGroup().name)]",
+            "healthcareapiName": "[if(greaterOrEquals(length(split(parameters('healthcareapiFhirId'), '/')), 11), split(parameters('healthcareapiFhirId'), '/')[8], 'incorrectSegmentLength')]",
+            "healthcareapiFhirName": "[if(greaterOrEquals(length(split(parameters('healthcareapiFhirId'), '/')), 11), last(split(parameters('healthcareapiFhirId'), '/')), 'incorrectSegmentLength')]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2020-10-01-preview",
+              "scope": "[format('Microsoft.Storage/storageAccounts/{0}/blobServices/{1}/containers/{2}', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName'))]",
+              "name": "[guid(uniqueString(resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', variables('storageAccountName'), 'default', variables('storageAccountFileSystemName')), extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('healthcareapiSubscriptionId'), variables('healthcareapiResourceGroupName')), 'Microsoft.HealthcareApis/workspaces/fhirservices', variables('healthcareapiName'), variables('healthcareapiFhirName'))))]",
+              "properties": {
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
+                "principalId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('healthcareapiSubscriptionId'), variables('healthcareapiResourceGroupName')), 'Microsoft.HealthcareApis/workspaces/fhirservices', variables('healthcareapiName'), variables('healthcareapiFhirName')), '2022-05-15', 'full').identity.principalId]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'healthcareApi001')]"
+      ]
+    },
+    {
+      "condition": "[parameters('enableHealthBot')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "healthcareBot001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "healthcarebotName": {
+            "value": "[variables('healthcareBot001Name')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.8.9.13224",
+              "templateHash": "2762361806356176863"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "healthcarebotName": {
+              "type": "string"
+            },
+            "healthcarebotSku": {
+              "type": "string",
+              "defaultValue": "S1",
+              "allowedValues": [
+                "F0",
+                "C0",
+                "S1"
+              ]
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.HealthBot/healthBots",
+              "apiVersion": "2021-08-24",
+              "name": "[parameters('healthcarebotName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "sku": {
+                "name": "[parameters('healthcarebotSku')]"
+              },
+              "properties": {}
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "serviceBusUrl": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'servicebusNamespace001')).outputs.serviceBusUrl.value]"
+    },
+    "serviceBusQueue001Name": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'servicebusNamespace001')).outputs.serviceBusQueue001Name.value]"
+    },
+    "serviceBusQueue001SharedAccessPolicyName": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'servicebusNamespace001')).outputs.serviceBusQueue001SharedAccessPolicyName.value]"
+    },
+    "serviceBusQueue001SharedAccessPolicyKey": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'servicebusNamespace001')).outputs.serviceBusQueue001SharedAccessPolicyKey.value]"
+    }
+  }
+}
