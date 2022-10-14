@@ -59,7 +59,7 @@ The architecture in the Healthcare Industry reference implementation establishes
 
 - [Azure Health Data Services](./solutions/healthcareApis/readme.md)
 
-Building on the secure foundation established in Healthcare Landing Zone an essential part of a healthcare cloud environment are the API's for Azure Health Data Services.
+Building on the secure foundation established in Healthcare Landing Zone an essential part of a healthcare cloud environment are the APIs for Azure Health Data Services.
 
 ### Healthcare Analytics
 
