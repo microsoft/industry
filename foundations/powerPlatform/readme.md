@@ -1,18 +1,19 @@
-# North Star Architecture for Power Platform
+# Power Platform Landing Zones
 
-North Star Architecture for Power Platform is an architecture and design methodology, as well as a reference implementation to deploy into your on Power Platform tenant. It enables effective construction and operationalization of landing zones (environments) on Power Platform, at scale. This approach aligns with the platform and product roadmap and the Center of Excellence adoption framework.
+Power Platform Landing Zones is an architecture and design methodology, as well as a reference implementation to deploy into your on Power Platform tenant. It enables effective construction and operationalization of landing zones (environments) on Power Platform, at scale. This approach aligns with the platform and product roadmap and the Center of Excellence adoption framework.
 
-In addition to being application, persona, and industry agnostic, North Star Architecture will also address the specific recommendations for Microsoft Cloud for Industries (e.g., Healthcare, Financial Services), where Microsoft Power Platform is an essential platform for the overall industry solutions. These curated industry solutions are primarily D365 applications that are deployed into Power Platform environments, and this prescriptive guidance aims to provide you with best practices and recommendations across the critical design areas for Power Platform to host and integrate the various industry applications.
+In addition to being application, persona, and industry agnostic, Power Platform Landing Zones will also address the specific recommendations for Microsoft Cloud for Industries (e.g., Healthcare, Financial Services), where Microsoft Power Platform is an essential platform for the overall industry solutions. These curated industry solutions are primarily D365 applications that are deployed into Power Platform environments, and this prescriptive guidance aims to provide you with best practices and recommendations across the critical design areas for Power Platform to host and integrate the various industry applications.
 
 | Reference implementation | Description | Deploy | Documentation
 |:----------------------|:------------|--------|--------------|
-| North Star Architecture for Power Platform | All up architecture for Power Platform with landing zones (environments) securely configured with security, governance, and compliance for scalable business applications - and industry solutions for professional and citizen developers | Deployment button is coming soon :-) | [User Guide](./referenceImplementation/readme.md)
+| Power Platform Landing Zones | All up architecture for Power Platform with landing zones (Environments) configured with security, governance, and compliance for scalable business applications - and industry solutions for professional and citizen developers | [![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/ppnorthstar) | [User Guide](./referenceImplementation/readme.md)
+| Landing Zones vending machine | Create N landing zones for citizen - and professional developers at scale, into an existing architecture for Power Platform Landing Zones | [![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/ppnorthstarlz) | [User Guide](./landingZones/readme.md)
 
 ## Table of content
 
 - [Architecture overview](#architecture-overview)
-  - [Landing zones in North Star Architecture for Power Platform](#landing-zone-in-north-star-architecture-for-power-platform)
-- [Design Principles](#azure-for-telco-design-principles)
+  - [Landing zones](#landing-zones)
+- [Design Principles](#design-principles)
   - [Environment Democratization](#environment-democratization)
   - [Policy Driven Governance](#policy-driven-governance)
   - [Single Control and Management Plane](#single-control-and-management-plane)
@@ -31,19 +32,19 @@ In addition to being application, persona, and industry agnostic, North Star Arc
 
 ## Architecture overview
 
-North Star Architecture for Power Platform represents the strategic design path and target technical state for an organizations Power Platform environment. It continues to evolve alongside the Power Platform product roadmap. Various design decisions define the architecture that your organization must make to map your Power Platform journey.
+Power Platform Landing Zones represents the strategic design path and target technical state for an organizations Power Platform environment. It continues to evolve alongside the Power Platform product roadmap. Various design decisions define the architecture that your organization must make to map your Power Platform journey.
 
 ### High-level architecture
 
-The North Star Architecture is rooted on key design principles and an evolving set of design considerations and recommendations across the [critical design areas](#critical-design-areas-for-power-platform) for Power Platform. It is modular by design and allows you to start with a foundational architecture that enables construction and operationalization of landing zones (Environments) that supports your industry and business application portfolios, for both pro developers and citizen developers. The architecture will scale regardless your organization scale-point and business requirements.
+The Power Platform Landing Zones architecture is rooted on key design principles and an evolving set of design considerations and recommendations across the [critical design areas](#critical-design-areas-for-power-platform) for Power Platform. It is modular by design and allows you to start with a foundational architecture that enables construction and operationalization of landing zones (Environments) that supports your industry and business application portfolios, for both pro developers and citizen developers. The architecture will scale regardless your organization scale-point and business requirements.
 
-Figure 1 depicts the high-level architecture of North Star Architecture for Power Platform
+Figure 1 depicts the high-level architecture of the architecture for Power Platform Landing Zones
 
 ![power platform architecture](./images/architecture.png)
 
-### Landing zone in North Star Architecture for Power Platform
+### Landing zones
 
-Within the context of the North Star Architecture, a "Landing Zone" (Environment) is a logical construct capturing everything that *must be true* to enable application innovation and digital transformation regardless of citizen developer or professional developer persona. It considers all the requisite platform utilities, and accounts for:
+Within the context of the Power Platform, a "Landing Zone" (Environment) is a logical construct capturing everything that *must be true* to enable application innovation and digital transformation regardless of citizen developer or professional developer persona. It considers all the requisite platform utilities, and accounts for:
 
 - Access Management
 - Scale
@@ -58,7 +59,7 @@ Figure 2 shows the landing zone (environment) in Power Platform.
 
 ## Design Principles
 
-The North Star Architecture is based on the design principles described in this section. These principles serve as a compass for subsequent design decisions across critical technical domains. Readers are strongly advised to familiarize themselves with these principles to better understand their impact and the trade-offs associated with non-adherence.
+The Power Platform Landing Zones architecture is based on the design principles described in this section. These principles serve as a compass for subsequent design decisions across critical technical domains. Readers are strongly advised to familiarize themselves with these principles to better understand their impact and the trade-offs associated with non-adherence.
 
 ### Environment Democratization
 
@@ -70,15 +71,15 @@ Data-loss prevention (DLP) policies are used to provide the guard-rails and ensu
 
 ### Single Control and Management Plane
 
-The North Star Architecture does not use any abstraction layers such as custom developed portals or tooling and ensures a consistent experience for both Platform admins and developers, subject to role-based access controls, and policy-driven controls by Data-loss prevention (DLP) policies.
+The Power Platform Landing Zones architecture does not use any abstraction layers such as custom developed portals or tooling and ensures a consistent experience for both Platform admins and developers, subject to role-based access controls, and policy-driven controls by Data-loss prevention (DLP) policies.
 
 ### Persona Agnostic
 
-The North Star Architecture is Persona agnostic, and does not treat anyone differently from an architecture and capability perspective, and provides a safe and secure foundation for all developer personas an organization may have.
+The Power Platform Landing Zones architecture is Persona agnostic, and does not treat anyone differently from an architecture and capability perspective, and provides a safe and secure foundation for all developer personas an organization may have.
 
 ### Power Platform Native Design and Platform Roadmap Alignment
 
-The North Star Architecture approach advocates using Power Platform's native services and capabilities whenever possible. This approach aligns with the product roadmap to ensure that new capabilities are available within your environments, and can be adopoted in a predictable fashion. The Power Platform roadmap helps to inform the adoption strategy and North Star trajectory.
+The Power Platform Landing Zones approach advocates using Power Platform's native services and capabilities whenever possible. This approach aligns with the product roadmap to ensure that new capabilities are available within your environments, and can be adopoted in a predictable fashion. The Power Platform roadmap helps to inform the adoption strategy and landing zone trajectory.
 
 ### Recommendations
 
@@ -87,7 +88,7 @@ The North Star Architecture approach advocates using Power Platform's native ser
 
 ## Critical design areas for Power Platform
 
-Together with the design principles, the core of North Star Architecture for Power Platform also contains a critical design path comprised of fundamental design areas with heavily interrelated and dependent design decisions. This repository provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the North Star Architecture. For each of the key design areas listed below, review the considerations and recommendations provided and use them to structure and drive design decisions within each area.
+Together with the design principles, the core of Power PLatform Landing Zones architecture also contains a critical design path comprised of fundamental design areas with heavily interrelated and dependent design decisions. This repository provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the Power Platform Landing Zones architecture. For each of the key design areas listed below, review the considerations and recommendations provided and use them to structure and drive design decisions within each area.
 
 - [Licensing and AD tenants](#licensing-and-azure-ad-tenants)
 - [Identity and access management](#identity-and-access-management)
@@ -185,14 +186,14 @@ An environment in Power Platform is an allow-by default system from a policy per
 
 ## Environments
 
-Environments acts as the scale-unit, and a management boundary in Power platform and is where organizations can store, manage, and share business data, applications, including Dynamics 365 apps, chatbots, and flows. It's recommended to have a strategy for how you should create, distribute, and scale environments to accelerate digital transformation for your pro - and citizen developers.
+Environments acts as the scale-unit, and a management boundary in Power Platform and is where organizations can store, manage, and share business data, applications, including Dynamics 365 apps, chatbots, and flows. It's recommended to have a strategy for how you should create, distribute, and scale environments to accelerate digital transformation for your pro - and citizen developers.
 The following section describes the design considerations and the design recommendations for Environments, to help you navigate to the correct setup per your organizational requirements.
 
 ![Environments](./images/env.png)
 
 ### Design considerations
 
-- An environment must be pinned to a location (abstraction of Azure regions), and is determined during creation by the maker/admin, and cannot be changed post creation.
+- An environment must be pinned to a location (abstraction of Azure regions), and is determined during creation by the maker/admin. Location cannot be changed post creation by maker/admin, if such change is needed it can be initiated as request through Microsoft Support.
 - Environments are defined out of the box to serve different audiences and purposes like dev, test, production, and personal exploration/development. Depending on what type of environment that is created, it will determine what you can do with the environment as well as the apps within.
 - Each tenant has a default environment and it is created in the region closest to the default region of the Azure AD tenant.
 - Data Loss Prevention (DLP) policies can be applied to individual environments or the tenant root ("/") level.
@@ -202,6 +203,9 @@ The following section describes the design considerations and the design recomme
 - Environments can be created with - or without Dynamics 365 application templates available in the tenant.
 - Dynamics 365 applications takes a dependency on environments with Dataverse provisioned.
 - Dataverse for Microsoft Teams can be created directly from the Teams client, which grants the creator Owner permission on the Environment.
+- Enabling Managed Environments promotes all recourses within an environment to premium. Users who access premium resources must be licensed with a premium license
+- To enable Managed Environments, you must be a global admin, Power Platform admin, or Dynamics 365 admin in Azure Active Directory.
+- In the Power Platform admin center, Environment Admins are not allowed to activate managed environments. Environment Admins are able to see the 'Enable Managed Environment' action in the environment details page.
 
 ### Design recommendations
 
@@ -221,6 +225,10 @@ The following section describes the design considerations and the design recomme
 - Enable auditing for your tenant and environments to understand usage and available capacity.
 - For Microsoft Cloud for industry solutions (e.g., D365 applications for Healthcare, Financial Services Industry), deploy all Dynamics 365 applications to the same environment(s), and avoid creating islands of data that will be complex to merge and combine later.
 - Only split Microsoft Cloud for industry solutions (D365 applications) across different environments if there are data or security constraints.
+- Use Managed Environments for the environments as it provides a suite of capabilities that allows admins to manage Power Platform at scale with more control, such as:
+  - Weekly digest, which informs about what's happening in the managed environment, such as analytics about your top apps and flows, your must impactful makes, and inactive resources you can safely clean up, deliverd to one or more mailboxes once a week.
+  - Exclude sharing with security groups, which blocks the ability to share canvas apps with any security groups. Admins may share with a limit on who an app can be shared with.
+  - Data policies (DLP), for admins to easily identify all the data policies that are applied to an environment.
 
 ## Management and Monitoring
 
@@ -261,7 +269,9 @@ Protecting your data in Power Platform is primarily at the Environment level, an
 - Depending on the amount of copied and restored audit data, copy and restore operations can take up to 8 hours.
 - All your environments, except Trial environments (standard and subscription-based), are backed up.
 - System backups occur continuously. The underlying technology used is Azure SQL Database. See SQL Database documentation Automated backups for details.
-- System backups for production environments that have been created with a database and have one or more Dynamics 365 applications installed are retained up to 28 days. * System backups for production environments which don't have Dynamics 365 applications deployed in them will be retained for 7 days. System backups for sandbox environments will be retained for 7 days.
+- System backups for production environments that have been created with a database and have one or more Dynamics 365 applications installed are retained up to 28 days.
+- System backups for production environments which don't have Dynamics 365 applications deployed in them will be retained for 7 days.
+- System backups for sandbox environments will be retained for 7 days.
 - You must restore an environment to the same region in which it was backed up.
 - When an environment is restored onto itself, audit logs aren't deleted. For example, when an environment is restored onto itself to a past time t1, full audit data for the environment will be available, including any audit logs that were generated after t1.
 - Admins of an Environment can also do manual backups:
@@ -320,13 +330,13 @@ There are different network options to allow connectivity to the Power Platform 
 
 ## Platform Automation and DevOps
 
-Most organizations starting with the cloud does not have an operating model that is compatible, and will very likely undergo a degree of operational and organization transformation to deliver on the principle of cloud computing and digital transformation enablement. As it relates to Power Platform it is highly recommended that a DevOps approach is being employed for both the central IT team responsible for the Power Platform, as well as the professional developers teams.
+Most organizations starting with the cloud do not have an operating model that is compatible, and will very likely undergo a degree of operational and organizational transformation to deliver on the principle of cloud computing and digital transformation enablement. As it relates to Power Platform it is highly recommended that a DevOps approach is being employed for both the central IT team responsible for the Power Platform, as well as the professional developers teams.
 
 ![devops](./images/devops.png)
 
 ### Design considerations
 
-- Where central teams are concerned, you should use pipelines for continuous integration and deployment. Use pipelines to manage environment life-cycle, including DLP, security groups, RBAC, and auditing from a compliance perspective.
+- Where central teams are concerned, you should use pipelines for continuous integration and deployment. Use pipelines to manage environment lifecycle, including DLP, security groups, RBAC, and auditing from a compliance perspective.
 - The blanket application of a DevOps model won’t instantly establish capable DevOps teams
 - Investing in engineering capabilities and resources is critical to ensure sustainable engineering and development of the platform alongside with the roadmap
 
@@ -339,7 +349,7 @@ Most organizations starting with the cloud does not have an operating model that
   - Platform management and monitoring (holistic).
   - Cost Management (holistic).
   - "Platform as Code" (management of templates, scripts and other assets).
-  - Responsible for overall operations on Power Platform within the Azure AD tenant, such as managing service principles, Graph API registration, and role definitions.
+  - Responsible for overall operations on Power Platform within the Azure AD tenant, such as managing service principals, Graph API registration, and role definitions.
   - SecOps (Security Operations)
   - Role based access control (holistic).
   - Key management (for central services).

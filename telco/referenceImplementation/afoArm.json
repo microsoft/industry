@@ -684,18 +684,18 @@
         },
         // Declaring all required deployment uri's used for deployments of composite ARM templates for Telco
        "azPrivateDnsPolicyMapping": {
-            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/DINE-PrivateDNSZonesPolicySetDefinition.json",
-            "https://management.usgovcloudapi.net": "managementGroupTemplates/policyDefinitions/gov/fairfaxDINE-PrivateDNSZonesPolicySetDefinition.json"
+            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyDefinitions/DINE-PrivateDNSZonesPolicySetDefinition.json",
+            "https://management.usgovcloudapi.net": "industrySpecific/managementGroupTemplates/policyDefinitions/gov/fairfaxDINE-PrivateDNSZonesPolicySetDefinition.json"
         },
         "azPrivateDnsArmTemplate": "[variables('azPrivateDnsPolicyMapping')[environment().resourceManager]]",
         "azPublicEndpointsPolicyMapping": {
-            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/DENY-PublicEndpointsPolicySetDefinition.json",
-            "https://management.usgovcloudapi.net": "managementGroupTemplates/policyDefinitions/gov/fairfaxDENY-PublicEndpointsPolicySetDefinition.json"
+            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyDefinitions/DENY-PublicEndpointsPolicySetDefinition.json",
+            "https://management.usgovcloudapi.net": "industrySpecific/managementGroupTemplates/policyDefinitions/gov/fairfaxDENY-PublicEndpointsPolicySetDefinition.json"
         },
         "azPublicEndpointArmTemplate": "[variables('azPublicEndpointsPolicyMapping')[environment().resourceManager]]",
         "azPolicyPoliciesMapping": {
-            "https://management.azure.com/": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/policies.json",
-            "https://management.usgovcloudapi.net": "managementGroupTemplates/policyDefinitions/gov/fairfaxPolicies.json"
+            "https://management.azure.com/": "industrySpecific/managementGroupTemplates/policyDefinitions/policies.json",
+            "https://management.usgovcloudapi.net": "industrySpecific/managementGroupTemplates/policyDefinitions/gov/fairfaxPolicies.json"
         },
         "azPolicyArmTemplate": "[variables('azPolicyPoliciesMapping')[environment().resourceManager]]",
         "deploymentUris": {
@@ -705,7 +705,7 @@
             "telcoPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyDefinitions/telcoPolicies.json')]",
             "erHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DENY-non-ha-expressRoutes-policyAssignment.json')]",
             "pipHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyAssignments/DENY-non-ha-publicIps-policyAssignment.json')]",
-            "dataPolicyDefinitions": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/managementGroupTemplates/policyDefinitions/dataPolicies.json",
+            "dataPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/managementGroupTemplates/policyDefinitions/dataPolicies.json')]",
             "vnetConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/subscriptionTemplates/hubspoke-connectivity.json')]",
             "vwanConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/subscriptionTemplates/vwan-connectivity.json')]",
             "nvaConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'industrySpecific/subscriptionTemplates/nvahubspoke-connectivity.json')]",

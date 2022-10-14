@@ -11,24 +11,26 @@ This article provides a reference architecture with prescriptive guidance and re
 
 ## Table of contents
 
-* [Azure for Telecommunications Reference Implementation](#azure-for-telecommunications-reference-implementation)
-* [Azure for Telecommunications Reference Architecture](#azure-for-telecommunications-reference-architecture)
-* [Azure for Operators Landing Zones Reference Implementation](#azure-for-operators-landing-zones-reference-implementation)
+* [Azure for Operators Landing Zones Reference Implementations](#azure-for-operators-landing-zones-reference-implementations)
 * [Azure for Operators Landing Zones](#azure-for-operators-landing-zones)
 * [High-level architecture](#high-level-architecture)
   * [Governance for Telco Industry Scenarios](#letter-a)
   * [Networking for Telco Industry Scenarios](#letter-b)
   * [Operator Landing Zones](#letter-c)
   * [Distributed Edge](#letter-d)
-  * [Operator Services](#letter-e)
+  * [Managed Services](#letter-e)
+* [Solutions](#solutions)
+  * [Network Analytics Landing Zones for Operators](#network-analytics-landing-zones-for-operators)
+  * [Edge Video Services](#edge-video-services)
 * [Next Steps](#next-steps)
 
-## Azure for Operators Landing Zones Reference Implementation
+## Azure for Operators Landing Zones Reference Implementations
 
 | Reference Implementation | Description | Deploy | Documentation
 |:----------------------|:------------|--------|--------------|
 | AfO Landing Zones foundation | Azure for Operators (AfO) Landing Zones foundation that provides a full, rich, compliant architecture with scale-out pattern for connectivity and landing zones for operators |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoRI) | [User Guide](./referenceImplementation/readme.md)
 | AfO Landing Zones networking scale-out | When the AfO Landing Zones foundation is in place, you can use this reference implementation to scale-out the hub virtual network and configure the corresponding networking infrastructure |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoScaleOut) | [User Guide](./referenceImplementation/readme.md)
+| Observability Landing Zones for Operators | An observability landing zone for operators provides the required foundational services on Azure to ingest large amounts of data into Azure storage services |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/observabilitylz) | [User Guide](./solutions/observability/userGuide/readme.md)
 
 ## Azure for Operators Landing Zones
 
@@ -42,7 +44,7 @@ _Figure 1: Azure services delivered across Microsoft Azure and operator's on-pre
 The AfO Landing Zones architecture is based on a [proven, at scale Azure architecture](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/architecture) foundation for the construction and operationalization of landing zones in Azure, which at its core is build upon a set of design principles and critical design areas (as summarized on this [article](../foundations/azure/README.md)). Those design principles and critical design areas are applicable for this AfO Landing Zones architecture. However, due to the unique set of requirements and characteristics of the telecommunications industry (for example, the presence or a large distributed edge), the AfO Landing Zones architecture provides an additional, and very specific, set of recommendations to accommodate telco industry requirements and scenarios as described previously on this article. The AfO Landing Zones architecture is depicted on figure 2 below:
 
 ![AfO Landing Zones architecture](./docs/telco-industry-reference-architecture.png)
-_Figure 2:AfO Landing Zones architecture._
+_Figure 2: AfO Landing Zones architecture._
 
 As figure 1 depicts, the AfO Landing Zones architecture follows the design principles and recommendations of proven, compliant, and scalable landing zones architecture on Azure, but it provides specific guidance and recommendations in the following areas to accommodate for the typical requirements of operators:
 
@@ -54,17 +56,37 @@ As figure 1 depicts, the AfO Landing Zones architecture follows the design princ
 
 <a id="letter-d"></a>![The letter D](./docs/d.png) [Distributed Edge](./docs/telco-edge.md). The AfO Landing Zones architecture provides prescriptive guidance to leverage the operator's distributed edge infrastructure to provide network functions (such as mobile core or UPF) at the near and far edge via [Azure Operator Distributed Services](https://azure.microsoft.com/blog/new-azure-for-operators-solutions-and-services-built-for-the-future-of-telecommunications/).
 
-<a id="letter-e"></a>![The letter E](./docs/e.png) [Operator Services](./solutions/mgmtOptions/readme.md). In addition to providing networking services to their customers, operators also provide managed services and managed solutions to their customers either from the operators own Azure AD tenant, or directly in their customer's Azure AD tenants.
+<a id="letter-e"></a>![The letter E](./docs/e.png) [Managed Services](./solutions/mgmtOptions/readme.md). In addition to providing networking services to their customers, operators also provide managed services and managed solutions to their customers either from the operators own Azure AD tenant, or directly in their customer's Azure AD tenants.
 
-### Next Steps
+## Solutions
+
+### Network Analytics Landing Zones for Operators
+
+An observability landing zone for operators provides the required foundational services on Azure to ingest large amounts of data into Azure storage services (such as Azure Data Lake Storage Gen2). Once this landing zone is provisioned, operators can simply deploy whichever data and analytics services and solutions they prefer to analyze the data.
+
+* [Architectural guidance](./solutions/observability/readme.md)
+* [User guide](./solutions/observability/userGuide/readme.md)
+
+### Edge Video Services
+
+Edge Video Services (EVS) is a Microsoft platform for [developing video analytics solutions](https://azure.microsoft.com/blog/video-analytics-at-the-edge-an-ideal-technology-for-5g-cloud-monetization/) that can be deployed on Azure public MEC. For example, consider some smart city applications like our Vision Zero work with the City of Bellevue, which enabled a new generation of [real-time traffic flows](https://www.microsoft.com/research/publication/traffic-video-analytics-case-study-report/) leading to substantial improvements in the day-to-day lives of commuters. Similarly, real-time video analytics can make cities safer by controlling traffic lights for situations such as allowing a person in a wheelchair to safely cross the street.
+
+* [Reference architecture](https://github.com/microsoft/edge-video-services)
+* [Example implementation](https://azure.microsoft.com/blog/microsoft-and-att-demonstrate-5gpowered-video-analytics/)
+
+## Next Steps
 The following articles will provide detailed design considerations and recommendations for AfO Landing Zones key design areas.
 
+**Platform**
 * [Governance for Telco Industry Scenarios](./docs/telco-governance.md)
 * [Networking for Telco Industry Scenarios](./docs/telco-networking.md)
 * [Operator Landing Zones](./docs/operator-landing-zones.md)
 * [Distributed Edge](./docs/telco-edge.md)
 * [Operator Services](./solutions/mgmtOptions/readme.md)
 
+**Solutions**
+* [Network Analytics Landing Zones for Operators](./solutions/observability/readme.md)
+* [Edge Video Services](https://github.com/microsoft/edge-video-services)
 ---
 
 [Back to documentation root](../README.md)

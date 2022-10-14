@@ -11,7 +11,7 @@ Key capabilities of Healthcare Analytics include:
 
 | Reference implementation | Description | Deploy |
 |:----------------------|:------------|--------|
-| Healthcare Analytics | End-to-end deployment and configuration of analytics solution for healthcare |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afhAnalytics)
+| Healthcare Analytics | End-to-end deployment and configuration of analytics solution for healthcare |[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/mcfh/analytics)
 
 ## Healthcare Analytics - Reference architecture
 

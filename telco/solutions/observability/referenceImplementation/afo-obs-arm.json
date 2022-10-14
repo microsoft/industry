@@ -1,0 +1,668 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "subscriptionId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide subscription id for the deployment and resources."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[deployment().location]",
+            "metadata": {
+                "description": "Provide location for the deployment and resources."
+            }
+        },
+        "networkOption": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select if you will use Microsoft or Private peering."
+            }
+        },
+        "msftPeeringCircuit": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select new or existing Microsoft peering circuit."
+            }
+        },
+        "msftErName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide the name of the Microsoft ER."
+            }
+        },
+        "msftProvidersName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide the name of the Microsoft providers."
+            }
+        },
+        "msftProvidersLocationName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide the location of the Microsoft providers."
+            }
+        },
+        "msftProvidersBandwidth": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide the bandwidth of the Microsoft providers."
+            }
+        },
+        "msftPeeringCircuitSku": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide the sku of the Microsoft peering circuit."
+            }
+        },
+        "msftPortOption": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select if you will use Direct or Provider peering port."
+            }
+        },
+        "msftPeeringDirectSku": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide the sku of the Microsoft peering direct."
+            }
+        },
+        "msftPeeringCircuitBilling": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide the billing of the Microsoft peering circuit."
+            }
+        },
+        "privatePeeringCircuit": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select new or existing Private peering circuit."
+            }
+        },
+        "privateExistingResourceId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select existing Private peering resourceId."
+            }
+        },
+        "privateExistingAuthzKey": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select existing Private peering authorization key."
+            }
+        },
+        "privatePortOption": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select if you will use Direct or Provider peering port."
+            }
+        },
+        "privateDirectResourceId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select existing Direct port resourceId."
+            }
+        },
+        "privateErName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide ER name."
+            }
+        },
+        "privateProvidersName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide Provider name."
+            }
+        },
+        "privateProvidersLocationName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide Provider location name."
+            }
+        },
+        "privateProvidersBandwidth": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide Provider bandwidth name."
+            }
+        },
+        "privatePeeringCircuitSku": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select Private peering circuit SKU."
+            }
+        },
+        "privatePeeringDirectSku": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select Private peering Direct SKU."
+            }
+        },
+        "privatePeeringCircuitBilling": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select Private peering circuit billing."
+            }
+        },
+        "vnetName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide the name of the Vnet."
+            }
+        },
+        "vnetAddress": {
+            "type": "string",
+            "defaultValue": "10.100.0.0/16",
+            "metadata": {
+                "description": "Provide the address of the Vnet."
+            }
+        },
+        "bastionOption": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "metadata": {
+                "description": "Select if you will use Bastion."
+            }
+        },
+        "bastionName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide the name of the Bastion."
+            }
+        },
+        "bastionTier": {
+            "type": "string",
+            "defaultValue": "Basic",
+            "allowedValues": [
+                "Standard",
+                "Basic"
+            ],
+            "metadata": {
+                "description": "Select the tier of the Bastion."
+            }
+        },
+        "bastionCount": {
+            "type": "int",
+            "defaultValue": 2,
+            "maxValue": 50,
+            "metadata": {
+                "description": "Select the count of the Bastion."
+            }
+        },
+        "bastionSubnet": {
+            "type": "string",
+            "defaultValue": "10.100.1.0/24",
+            "metadata": {
+                "description": "Provide the subnet of the Bastion."
+            }
+        },
+        "bastionDisableCopyPaste": {
+            "type": "bool",
+            "defaultValue": false
+        },
+        "bastionEnableTunneling": {
+            "type": "bool",
+            "defaultValue": false
+        },
+        "bastionEnableKerberos": {
+            "type": "bool",
+            "defaultValue": false
+        },
+        "azureMonitorOption": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "metadata": {
+                "description": "Select if you will use Azure Monitor."
+            }
+        },
+        "logAnalyticsRetentionInDays": {
+            "type": "string",
+            "defaultValue": "30",
+            "metadata": {
+                "description": "Provide the retention in days of the Azure Monitor Workspace."
+            }
+        },
+        "azureGrafanaOption": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "metadata": {
+                "description": "Select if you will use Grafana."
+            }
+        },
+        "routeFilterOption": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "metadata": {
+                "description": "Select if you will use Route Filter."
+            }
+        },
+        "routeFilterName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide the name of the Route Filter."
+            }
+        },
+        "erGwOption": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "metadata": {
+                "description": "Select if you will use ER Gateway."
+            }
+        },
+        "erGwRegionalOrAz": {
+            "type": "string",
+            "defaultValue": "Regional",
+            "allowedValues": [
+                "Regional",
+                "Zone"
+            ],
+            "metadata": {
+                "description": "Select regional or zone ER Gw"
+            }
+        },
+        "erGwName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide the name of the ER Gateway."
+            }
+        },
+        "erGwSubnet": {
+            "type": "string",
+            "defaultValue": "10.100.2.0/24",
+            "metadata": {
+                "description": "Provide the subnet of the ER Gateway."
+            }
+        },
+        "erGwAzSku": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select the SKU of the ER Gateway."
+            }
+        },
+        "erGwRegionalSku": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select the SKU of the ER Gateway."
+            }
+        },
+        "erConnectionOption": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "yes",
+                "no"
+            ]
+        }
+    },
+    "variables": {
+        "deploymentUris": {
+            "vnetTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/vNetWithErGw.json')]",
+            "logAnalyticsTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/logAnalyticsWorkspace.json')]",
+            "bastionTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/bastionHosts.json')]",
+            "erCircuitTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/erCircuit.json')]",
+            "erMsCircuitTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/erMsCircuit.json')]",
+            "grafanaTemplateUri": "[uri(deployment().properties.templateLink.uri, 'auxiliary/azGrafana.json')]"
+        },
+        "deploymentNamePrefix": "[concat(replace(tenant().displayName, ' ', ''), '-')]",
+        "deploymentNameSuffix": "[concat('-', deployment().location, guid(parameters('subscriptionId')))]",
+        "deploymentNames": {
+            "vnetDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'vnet', variables('deploymentNameSuffix')), 63)]",
+            "logAnalyticsDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'logAnalytics', variables('deploymentNameSuffix')), 63)]",
+            "bastionDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'bastion', variables('deploymentNameSuffix')), 63)]",
+            "erCircuitDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'privatePeering', variables('deploymentNameSuffix')), 63)]",
+            "erMsCircuitDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'msftPeering', variables('deploymentNameSuffix')), 63)]",
+            "grafanaDeploymentName": "[take(concat(variables('deploymentNamePrefix'), 'graf', variables('deploymentNameSuffix')), 63)]"
+        },
+        "rgNames": {
+            "vnetRgName": "[concat(variables('deploymentNamePrefix'), 'vnet-', parameters('location'))]",
+            "azMonRgName": "[concat(variables('deploymentNamePrefix'), 'azmon-', parameters('location'))]",
+            "bastionRgName": "[concat(variables('deploymentNamePrefix'), 'bastion-', parameters('location'))]",
+            "erCircuitRgName": "[concat(variables('deploymentNamePrefix'), 'erc-', parameters('location'))]"
+        },
+        "resourceNames": {
+            "logAnalyticsWorkspaceName": "[concat(variables('deploymentNamePrefix'), 'law-', parameters('location'))]",
+            "vNetName": "[concat(variables('deploymentNamePrefix'), parameters('vnetName'), '-', parameters('location'))]",
+            "erGwName": "[concat(variables('deploymentNamePrefix'), parameters('erGwName'), '-', parameters('location'))]",
+            "erCircuitName": "[concat(variables('deploymentNamePrefix'), parameters('privateErName'), '-', parameters('location'))]",
+            "erMsCircuitName": "[concat(variables('deploymentNamePrefix'), parameters('msftErName'), '-', parameters('location'))]",
+            "grafanaName": "[take(concat(variables('deploymentNamePrefix'), 'graf'), 23)]",
+            "bastionHostName": "[concat(variables('deploymentNamePrefix'), parameters('bastionName'), parameters('location'))]",
+            "routeFilterName": "[concat(variables('deploymentNamePrefix'), parameters('routeFilterName'), '-', parameters('location'))]"
+        },
+        "resourceIds": {
+            "workspaceResourceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', variables('rgNames').azMonRgName, '/providers/Microsoft.OperationalInsights/workspaces/', variables('resourceNames').logAnalyticsWorkspaceName)]",
+            "bastionSubnetResourceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', variables('rgNames').vnetRgName, '/providers/Microsoft.Network/virtualNetworks/', variables('resourceNames').vnetName, '/subnets/AzureBastionSubnet')]"
+        }
+    },
+    "resources": [
+        {
+            // Optionally creating Log Analytics workspace in dedicated resource group, which will then subsequently create diagnostic settings for each resource type created by AfO Network Analytics Landing Zones
+            "condition": "[equals(parameters('azureMonitorOption'), 'yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('deploymentNames').logAnalyticsDeploymentName]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').logAnalyticsTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('rgNames').azMonRgName]"
+                    },
+                    "workspaceName": {
+                        "value": "[variables('resourceNames').logAnalyticsWorkspaceName]"
+                    },
+                    "workspaceRegion": {
+                        "value": "[parameters('location')]"
+                    },
+                    "retentionInDays": {
+                        "value": "[parameters('logAnalyticsRetentionInDays')]"
+                    }
+                }
+            }
+        },
+        {
+            // Creating virtual network, optionally with ExpressRoute Gateway and subnet dedicated for Azure Bastion
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('deploymentNames').vnetDeploymentName]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logAnalyticsDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').vnetTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('rgNames').vnetRgName]"
+                    },
+                    "vNetName": {
+                        "value": "[variables('resourceNames').vNetName]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "addressPrefix": {
+                        "value": "[parameters('vnetAddress')]"
+                    },
+                    "erGwOption": {
+                        "value": "[parameters('erGwOption')]"
+                    },
+                    "erGwSubnet": {
+                        "value": "[parameters('erGwSubnet')]"
+                    },
+                    "bastionSubnet": {
+                        "value": "[parameters('bastionSubnet')]"
+                    },
+                    "erGwRegionalOrAz": {
+                        "value": "[parameters('erGwRegionalOrAz')]"
+                    },
+                    "erGwAzSku": {
+                        "value": "[parameters('erGwAzSku')]"
+                    },
+                    "erGwRegionalSku": {
+                        "value": "[parameters('erGwRegionalSku')]"
+                    },
+                    "erGwName": {
+                        "value": "[variables('resourceNames').erGwName]"
+                    }
+                }
+            }
+        },
+        {
+            // Conditionally creating Bastion host
+            "condition": "[and(equals(parameters('bastionOption'), 'yes'), not(empty(parameters('bastionName'))))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('deploymentNames').bastionDeploymentName]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logAnalyticsDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').vnetDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').bastionTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('rgNames').bastionRgName]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "bastionName": {
+                        "value": "[variables('resourceNames').bastionHostName]"
+                    },
+                    "instanceCount": {
+                        "value": "[parameters('bastionCount')]"
+                    },
+                    "bastionSku": {
+                        "value": "[parameters('bastionTier')]"
+                    },
+                    "bastionDisableCopyPaste": {
+                        "value": "[parameters('bastionDisableCopyPaste')]"
+                    },
+                    "bastionEnableTunneling": {
+                        "value": "[parameters('bastionEnableTunneling')]"
+                    },
+                    "bastionEnableKerberos": {
+                        "value": "[parameters('bastionEnableKerberos')]"
+                    },
+                    "subnetResourceId": {
+                        "value": "[variables('resourceIds').bastionSubnetResourceId]"
+                    },
+                    "azureMonitorOption": {
+                        "value": "[parameters('azureMonitorOption')]"
+                    },
+                    "workspaceResourceId": {
+                        "value": "[variables('resourceIds').workspaceResourceId]"
+                    }
+                }
+            }
+        },
+        {
+            // Conditionally creating new Express Route Circuit for Private Peering
+            "condition": "[and(equals(parameters('networkOption'), 'private'), equals(parameters('privatePortOption'), 'provider'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('deploymentNames').erCircuitDeploymentName]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logAnalyticsDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').erCircuitTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('rgNames').erCircuitRgName]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "privateErName": {
+                        "value": "[variables('resourceNames').erCircuitName]"
+                    },
+                    "privateProvidersName": {
+                        "value": "[parameters('privateProvidersName')]"
+                    },
+                    "privateProvidersLocationName": {
+                        "value": "[parameters('privateProvidersLocationName')]"
+                    },
+                    "privateProvidersBandwidth": {
+                        "value": "[parameters('privateProvidersBandwidth')]"
+                    },
+                    "privatePeeringCircuitSku": {
+                        "value": "[parameters('privatePeeringCircuitSku')]"
+                    },
+                    "privatePeeringCircuitBilling": {
+                        "value": "[parameters('privatePeeringCircuitBilling')]"
+                    },
+                    "azureMonitorOption": {
+                        "value": "[parameters('azureMonitorOption')]"
+                    },
+                    "workspaceResourceId": {
+                        "value": "[variables('resourceIds').workspaceResourceId]"
+                    }
+                }
+            }
+        },
+        {
+            // Conditionally creating new Express Route Circuit for Microsoft Peering
+            "condition": "[and(equals(parameters('networkOption'), 'microsoft'), equals(parameters('msftPortOption'), 'provider'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('deploymentNames').erMsCircuitDeploymentName]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logAnalyticsDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').erMsCircuitTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('rgNames').erCircuitRgName]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "msftErName": {
+                        "value": "[variables('resourceNames').erMsCircuitName]"
+                    },
+                    "msftProvidersName": {
+                        "value": "[parameters('msftProvidersName')]"
+                    },
+                    "msftProvidersLocationName": {
+                        "value": "[parameters('msftProvidersLocationName')]"
+                    },
+                    "msftProvidersBandwidth": {
+                        "value": "[parameters('msftProvidersBandwidth')]"
+                    },
+                    "msftPeeringCircuitSku": {
+                        "value": "[parameters('msftPeeringCircuitSku')]"
+                    },
+                    "msftPeeringCircuitBilling": {
+                        "value": "[parameters('msftPeeringCircuitBilling')]"
+                    },
+                    "azureMonitorOption": {
+                        "value": "[parameters('azureMonitorOption')]"
+                    },
+                    "workspaceResourceId": {
+                        "value": "[variables('resourceIds').workspaceResourceId]"
+                    },
+                    "routeFilterOption": {
+                        "value": "[parameters('routeFilterOption')]"
+                    },
+                    "routeFilterName": {
+                        "value": "[variables('resourceNames').routeFilterName]"
+                    }
+                }
+            }
+        },
+        {
+            // Conditionally creating Azure Grafana
+            "condition": "[equals(parameters('azureGrafanaOption'), 'yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('deploymentNames').grafanaDeploymentName]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logAnalyticsDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').grafanaTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('rgNames').azMonRgName]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "grafanaName": {
+                        "value": "[variables('resourceNames').grafanaName]"
+                    }/*,
+                    "azureMonitorOption": {
+                        "value": "[parameters('azureMonitorOption')]"
+                    },
+                    "workspaceResourceId": {
+                        "value": "[variables('resourceIds').workspaceResourceId]"
+                    }*/
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

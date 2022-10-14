@@ -11,7 +11,7 @@ deployment and adoption of industry cloud.
 
 * [Healthcare](#healthcare)
 
-* [Telecommunications](#Telecommunications)
+* [Telecommunications](#telecommunications)
 
 * [Financial Services](#financial-services)
 
@@ -84,19 +84,50 @@ Microsoft Cloud for Telecommunications enables an at-scale, and sustainable arch
 - [Power Platform for Telecommunications](./foundations/powerPlatform)
 
 Telco Solutions
-- [Governance for Telco Industry Scenarios](./telco/docs/telco-governance.md)
-- [Networking for Telco Industry Scenarios](./telco/docs/telco-networking.md)
-- [Operator Landing Zones](./telco/docs/operator-landing-zones.md)
-- [Distributed Edge](./telco/docs/telco-edge.md)
-- [Operator services](./telco/solutions/mgmtOptions/readme.md)
-<!--  - [Telco Managed Services](./telco/solutions/managedServices)
-  - [Telco Managed Solution](./telco/solutions/managedSolutions)-->
-<!--- [Telco Sales](./telco/solutions/sales/readme.md)
-- [Place Management](./telco/solutions/placeManagement/readme.md)-->
+- Solutions across Azure and the edge
+  - [Network Analytics Landing Zones](./telco/solutions/observability/readme.md)
+  - [Edge Video Services](https://github.com/microsoft/edge-video-services)
+- Managed Security Offerings
+  - Azure Sentinel and Microsoft Defender for Cloud
 
   </td>
   <td>
   <img src="telco\docs\telco-industry-reference-architecture.png" width="99%" height="99%"/>
+  </td>
+
+ </tr>
+</tbody>
+</table>
+
+### Retail
+
+Microsoft Cloud for Retail is an industry-specific cloud composed of products and services to address retail specific use-cases. With services across Microsoft Azure, Dynamics 365 and Power Platform, customers can design, build and deploy cross-cloud solutions.
+
+<table>
+<thead>
+ <tr>
+  <th style="text-align:left" width="30%">Retail Services</th>
+  <th style="text-align:left" width="70%">Reference Architecture</th>
+ </tr>
+</thead>
+<tbody>
+ <tr>
+  <td style="vertical-align:top">
+
+
+- [Retail Foundations (Recommended)](./retail/prereqs.md)
+- [Reference Implementation](./retail/referenceImplementation/README.md)
+
+- Retail Solutions
+  - [Workforce Management with Teams](./retail/solutions/wrkforceMgmt/README.md)
+  - [Real-time personalization](./retail/solutions/realtimePersonalization/README.md)
+  - [Supply chain and Order lifecycle management](./retail/solutions/flexibleFulfillment/README.md)
+  - [Shopper and operations analytics](./retail/solutions/shopperOpsAnalytics/README.md)
+  - [Unified Customer profile and Retail churn model](./retail/solutions/unifiedCustomerProfile/README.md)
+
+  </td>
+  <td>
+  <img src="retail/media/mc4r-reference-architecture.png" width="99%" height="99%"/>
   </td>
 
  </tr>
@@ -127,7 +158,7 @@ Microsoft Cloud for Financial Services provides capabilities to manage data to d
 
 - Customer and employee experience
   - [Unified customer profile](./fsi/solutions/unifiedCustomerProfile)
-  - [Customer onboarding](./fsi/solutions/customerOnboarding)
+  - [Customer onboarding](./fsi/solutions/customerOnboarding/readme.md)
   - [Collaboration manager](./fsi/solutions/collaborationManager)
   - [Banking customer engagement](./fsi/solutions/bankingCustomerEngagement)
 - Financial crime protection
@@ -146,37 +177,6 @@ Microsoft Cloud for Financial Services provides capabilities to manage data to d
 </tbody>
 </table>
 
-### Retail
-
-Microsoft Cloud for Retail is an industry-specific cloud composed of products and services to address retail specific use-cases. With services across Microsoft Azure, Dynamics 365 and Power Platform, customers can design, build and deploy cross-cloud solutions.
-
-<table>
-<thead>
- <tr>
-  <th style="text-align:left" width="30%">Retail Services</th>
-  <th style="text-align:left" width="70%">Reference Architecture</th>
- </tr>
-</thead>
-<tbody>
- <tr>
-  <td style="vertical-align:top">
-
-
-- [Retail Foundations (Recommended)](./retail/prereqs.md)
-- [Reference Implementation](./retail/referenceImplementation/README.md)
-
-- Retail Solutions
-  - [Order lifecycle management scenario with Intelligent Order Management](./retail/solutions/iom/README.md)
-  - [Personalized recommendations with Intelligent Recommendations](./retail/solutions/ir/README.md)
-
-  </td>
-  <td>
-  <img src="retail/media/mc4r-reference-architecture.png" width="99%" height="99%"/>
-  </td>
-
- </tr>
-</tbody>
-</table>
 
 ## Contributing
 

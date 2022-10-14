@@ -1,0 +1,133 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rgName": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the resource group name where the Log Analytics workspace is deployed."
+            }
+        },
+        "workspaceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide resource name for the Log Analytics workspace."
+            }
+        },
+        "workspaceRegion": {
+            "type": "string",
+            "defaultValue": "[deployment().location]",
+            "metadata": {
+                "description": "Select Azure region for the Log Analytics workspace. Default, we will use same region as deployment."
+            }
+        },
+        "enableSecuritySolution": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "Yes",
+            "metadata": {
+                "description": "Select whether security solutions should be enabled or not."
+            }
+        },
+        "enableD365DataConnector": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select if D365 Data Connector should be added to Microsoft Sentinel"
+            }
+        }
+    },
+    "variables": {
+        "laResourceId": "[toLower(concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.OperationalInsights/workspaces/', parameters('workspaceName')))]",
+        "solutions": {
+            "security": {
+                "name": "[concat('Security', '(', parameters('workspaceName'), ')')]",
+                "marketplaceName": "Security"
+            },
+            "securityInsights": {
+                "name": "[concat('SecurityInsights', '(', parameters('workspaceName'), ')')]",
+                "marketplaceName": "SecurityInsights"
+            }
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "name": "[take(concat('NorthStar-', 'solutions-', guid(deployment().name)), 63)]",
+            "resourceGroup": "[parameters('rgName')]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            // Conditionally deploy solution for security
+                            "condition": "[equals(parameters('enableSecuritySolution'), 'yes')]",
+                            "apiVersion": "2015-11-01-preview",
+                            "type": "Microsoft.OperationsManagement/solutions",
+                            "name": "[variables('solutions').security.name]",
+                            "location": "[parameters('workspaceRegion')]",
+                            "properties": {
+                                "workspaceResourceId": "[variables('laResourceId')]"
+                            },
+                            "plan": {
+                                "name": "[variables('solutions').security.name]",
+                                "product": "[concat('OMSGallery/', variables('solutions').security.marketplaceName)]",
+                                "promotionCode": "",
+                                "publisher": "Microsoft"
+                            }
+                        },
+                        {
+                            // Conditionally deploy solution for sentinel
+                            "condition": "[equals(parameters('enableSecuritySolution'), 'yes')]",
+                            "apiVersion": "2015-11-01-preview",
+                            "type": "Microsoft.OperationsManagement/solutions",
+                            "name": "[variables('solutions').securityInsights.name]",
+                            "location": "[parameters('workspaceRegion')]",
+                            "properties": {
+                                "workspaceResourceId": "[variables('laResourceId')]"
+                            },
+                            "plan": {
+                                "name": "[variables('solutions').securityInsights.name]",
+                                "product": "[concat('OMSGallery/', variables('solutions').securityInsights.marketplaceName)]",
+                                "promotionCode": "",
+                                "publisher": "Microsoft"
+                            }
+                        },
+                        {
+                            "condition": "[equals(parameters('enableD365DataConnector'), 'yes')]",
+                            "type": "Microsoft.OperationalInsights/workspaces/providers/dataConnectors",
+                            "apiVersion": "2021-09-01-preview",
+                            "name": "[concat(parameters('workspaceName'), '/Microsoft.SecurityInsights/','c2541efb-c9a6-47fe-9501-87d1017d1512')]",
+                            "kind": "Dynamics365",
+                            "dependsOn": [
+                                "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.OperationsManagement/solutions/', variables('solutions').security.name)]",
+                                "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.OperationsManagement/solutions/', variables('solutions').securityInsights.name)]"
+                            ],
+                            "properties": {
+                                "tenantId": "[subscription().tenantId]",
+                                "dataTypes": {
+                                    "dynamics365CdsActivities": {
+                                        "state": "Enabled"
+                                    }
+                                }
+                            }
+                        }                                                    
+                    ]
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

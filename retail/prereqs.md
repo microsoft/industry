@@ -1,8 +1,8 @@
-# Retail Foundations (Recommended)
+# Microsoft cloud for retail (MCR)
 
 Microsoft Cloud for Retail (MCR) accelerates business growth by providing trusted retail industry solutions that integrate with retailers’ existing systems. It brings together different data sources across the retail value chain and uniquely connects experiences across the end-to-end shopper journey though a set of capabilities that deliver more relevant personalized experiences and operational excellence for sustained profitability.
 
-It's composed of indvidual capabilities which are built on Microsoft Dynamics 365, Microsoft Power Platform, Microsoft 365, and Microsoft Azure.
+It's composed of individual capabilities which are built on Microsoft Dynamics 365, Microsoft Power Platform, Microsoft 365, and Microsoft Azure.
 
 - Shopper and operations analytics
 - Unified customer profile
@@ -13,7 +13,7 @@ It's composed of indvidual capabilities which are built on Microsoft Dynamics 36
 - Seamless customer service
 - Demand planning and operations
 - Supply chain visibility
-- Flexible fufillment
+- Flexible fulfillment
 - Process automation and career development
 - Retail workforce management
 - Real-time store communications and collaborations
@@ -21,8 +21,6 @@ It's composed of indvidual capabilities which are built on Microsoft Dynamics 36
 - Intelligent fraud prevention
 
 [Microsoft Cloud Solution Center](https://aka.ms/solutioncenter) provides a central place to deploy and configure Microsoft industry cloud solutions. It gives customers and partners a unified view of industry cloud capabilities for a seamless provisioning experience across Microsoft 365, Microsoft Azure, Microsoft Dynamics 365, and Microsoft Power Platform. Solution Center guides you through and simplifies the deployment process. It checks licensing requirements and dependencies to help make sure you have everything you need for your deployment.
-
-Customers have an option to enable one or more products which make up MCR.
 
 ## Licensing requirements
 
@@ -35,7 +33,7 @@ The table below summarizes the licenses you may require depending on the retail 
 || Microsoft Clarity | Free - no additional license required; however, registration is required.
 | Unified customer profile | Unified customer profile ||
 || Dynamics 365 Customer Insights |
-| Intelligent stores | Dynamics 365 Connected Spaces (Public Preview) | Preview offers a free 180-day trial. Dynamics 365 Connected Spaces is currently offered for Preview. When the product is released for general availability (GA), you'll be able to convert the trial to a [paid license](https://docs.microsoft.com/en-us/dynamics365/connected-spaces/trial-faq#can-i-convert-the-trial-to-a-paid-license).
+| Intelligent stores | Dynamics 365 Connected Spaces (Public Preview) | Preview offers a free 180-day trial. Dynamics 365 Connected Spaces is currently offered for Preview. When the product is released for general availability (GA), you'll be able to convert the trial to a [paid license](https://docs.microsoft.com/dynamics365/connected-spaces/trial-faq#can-i-convert-the-trial-to-a-paid-license).
 | Unified commerce | Dynamics 365 Commerce | Commerce is licensed per user. Note - When you license Commerce, you automatically become entitled to the Fraud Protection capabilities and transaction capacities noted below. Once you have Commerce, you may also buy additional capacity licenses for Fraud Protection.
 || Azure Cognitive Search | Azure Subscription
 | Real-time personalization | Intelligent Recommendations | Azure Subscription
@@ -63,26 +61,42 @@ The table below summarizes the licenses you may require depending on the retail 
 
 ---
 
-![MCR - capability and product map1](./media/capability-product-map-1.png)
-![MCR - capability and product map2](./media/capability-product-map-2.png)
+## MCR and Dataverse dependencies
 
-## Azure subscription (landing zones)
+Microsoft has published retail applications and capabilities they enable [here](https://download.microsoft.com/download/9/8/5/9854801b-878d-4eb8-a5b6-321279456912/Microsoft_Cloud_for_Retail_pricing%20data_sheet.pdf).
 
-Several capabilities of MCR rely on Azure-based services. Guidance for these services is to leverage [Azure Landing Zones](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/).
+Several applications which are part of MCR ecosystem rely upon Dataverse. The table below provides a summarized view of app deployment and Dataverse dependency.
 
-[Prescriptive guidance for Azure landing zone and reference implementation](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/implementation)
+|Application|Dataverse required for deployment?|Additional Comments|
+|:-|:-|:-|
+|D365 Commerce|No|
+|D365 e-Commerce|No|
+|D365 Commerce POS Add-On|No|
+|D365 Fraud Protection|No|
+|D365 Connected Spaces|Yes|
+|D365 Marketing|Yes|
+|D365 Customer Insights|Yes|
+|Teams for Frontline Workers|No|Optional - Dataverse is required if you plan to use **Approvals** teams app for frontline workers.|
+|D365 Supply Chain Management|No|
+|D365 Intelligent Order Management|Yes|
+|D365 Customer Service|Yes|
+|Microsoft Teams|No|
+
+## Azure landing zones
+
+Several capabilities of MCR rely on Azure-based services. Guidance for these services is to leverage [Azure Landing Zones](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/).
 
 ## Power Platform
 
 Power Platform environments (recommendation is dedicated environments for test, development, and production) that are created into the target region with Dataverse and D365 applications enabled.
 
-**Prescriptive guidance and design recommendations for Power Platform for Retail - coming soon.**
+Prescriptive guidance for deploying Power Platform are published [here](https://github.com/microsoft/industry/tree/main/foundations/powerPlatform).
 
 ## Microsoft Teams
 
 Some of the retail capabilities rely on Microsoft Teams, such as Frontline Workers and Microsoft Viva.
 
-**Prescriptive guidance and design recommendations for Microsoft Teams for Retail - coming soon.**
+Prescriptive guidance and design recommendations for Microsoft Teams are published [here](https://github.com/microsoft/industry/tree/main/foundations/teams)
 
 ---
 

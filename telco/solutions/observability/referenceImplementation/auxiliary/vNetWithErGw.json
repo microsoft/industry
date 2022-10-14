@@ -1,0 +1,258 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rgName": {
+            "type": "string"
+        },
+        "vNetName": {
+            "type": "string"
+        },
+        "addressPrefix": {
+            "type": "string",
+            "metadata": {
+                "displayName": "addressPrefix",
+                "description": "Address prefix of the HUB"
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "displayName": "location",
+                "description": "Location of the HUB"
+            },
+            "defaultValue": "[deployment().location]"
+        },
+        "erGwOption": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Select whether the ExpressRoute Gateway should be deployed or not."
+            }
+        },
+        "erGwSubnet": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide subnet for ER."
+            }
+        },
+        "bastionSubnet": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide subnet for Bastion"
+            }
+        },
+        "erGwAzSku": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "erGwRegionalSku": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "erGwRegionalOrAz": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "azureMonitorOption": {
+            "type": "string",
+            "defaultValue": "no",
+            "allowedValues": [
+                "yes",
+                "no"
+            ]
+        },
+        "workspaceResourceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "erGwName": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "vNetName": "[parameters('vNetName')]",
+        "erGwName": "[parameters('erGwName')]",
+        "erGwIpName": "[concat(variables('erGwName'), '-pip-', parameters('location'))]",
+        "erGwSubnetId": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'),'/providers/Microsoft.Network/virtualNetworks/', variables('vNetName'), '/subnets/GatewaySubnet')]",
+        "bastionSubnetId": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'),'/providers/Microsoft.Network/virtualNetworks/', variables('vNetName'), '/subnets/AzureBastionSubnet')]",
+        "erGwPipId": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.Network/publicIPAddresses/', variables('erGwIpName'))]",
+        "resourceDeploymentName": "[take(concat(deployment().name, '-nwanalytics-', parameters('location')), 64)]",
+        "nestedResourceDeploymentName": "[take(concat(deployment().name, '-nwanalytics-resources-', parameters('location')), 64)]",
+        "erGwSubnet": [
+            {
+                "name": "GatewaySubnet",
+                "properties": {
+                    "addressPrefix": "[parameters('erGwSubnet')]"
+                }
+            }
+        ],
+        "bastionSubnet": [
+            {
+                "name": "AzureBastionSubnet",
+                "properties": {
+                    "addressPrefix": "[parameters('bastionSubnet')]"
+                }
+            }
+        ]
+    },
+    "resources": [    
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "location": "[parameters('location')]",
+            "name": "[variables('resourceDeploymentName')]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.Resources/resourceGroups",
+                            "apiVersion": "2019-10-01",
+                            "location": "[parameters('location')]",
+                            "name": "[parameters('rgName')]",
+                            "properties": {}
+                        },
+                        {
+                            "type": "Microsoft.Resources/deployments",
+                            "apiVersion": "2019-10-01",
+                            "name": "[variables('nestedResourceDeploymentName')]",
+                            "resourceGroup": "[parameters('rgName')]",
+                            "dependsOn": [
+                                "[concat('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
+                            ],
+                            "properties": {
+                                "mode": "Incremental",
+                                "template": {
+                                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                                    "contentVersion": "1.0.0.0",
+                                    "parameters": {},
+                                    "resources": [                                        
+                                        {
+                                            "name": "[variables('vNetName')]",
+                                            "type": "Microsoft.Network/virtualNetworks",
+                                            "apiVersion": "2020-04-01",
+                                            "location": "[parameters('location')]",
+                                            "properties": {
+                                                "addressSpace": {
+                                                    "addressPrefixes": [
+                                                        "[parameters('addressPrefix')]"
+                                                    ]
+                                                },
+                                                "subnets": "[
+                                                             union(
+                                                                  if(
+                                                                      not(
+                                                                          empty(parameters('erGwSubnet'))), variables('erGwSubnet'), json('[]')), 
+                                                                          if(
+                                                                              not(
+                                                                                  empty(parameters('bastionSubnet'))), variables('bastionSubnet'), json('[]')))]",
+                                                "enableDdosProtection": false
+                                            }
+                                        },
+                                        {
+                                            "condition": "[equals(parameters('azureMonitorOption'), 'yes')]",
+                                            "type": "Microsoft.Network/virtualNetworks/providers/diagnosticSettings",
+                                            "apiVersion": "2017-05-01-preview",
+                                            "name": "[concat(variables('vNetName'), '/Microsoft.Insights/', 'azmon')]",
+                                            "dependsOn": [
+                                                "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
+                                            ],
+                                            "properties": {
+                                                "workspaceId": "[parameters('workspaceResourceId')]",
+                                                "metrics": [
+                                                    {
+                                                        "category": "AllMetrics",
+                                                        "enabled": true
+                                                    }
+                                                ],
+                                                "logs": [
+                                                    {
+                                                        "category": "VMProtectionAlerts",
+                                                        "enabled": true
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "condition": "[and(equals(parameters('erGwOption'), 'yes'), not(empty(parameters('erGwSubnet'))))]",
+                                            "apiVersion": "2020-05-01",
+                                            "type": "Microsoft.Network/publicIpAddresses",
+                                            "location": "[parameters('location')]",
+                                            "name": "[variables('erGwIpName')]",
+                                            "sku": {
+                                                "name": "[if(equals(parameters('erGwRegionalOrAz'), 'Zone'), 'Standard', 'Basic')]"
+                                            },
+                                            "properties": {
+                                                "publicIPAllocationMethod": "[if(equals(parameters('erGwRegionalOrAz'), 'Zone'), 'Static', 'Dynamic')]"
+                                            }
+                                        },
+                                        {
+                                            "condition": "[and(equals(parameters('erGwOption'), 'yes'), not(empty(parameters('erGwSubnet'))))]",
+                                            "apiVersion": "2020-05-01",
+                                            "name": "[variables('erGwName')]",
+                                            "type": "Microsoft.Network/virtualNetworkGateways",
+                                            "location": "[parameters('location')]",
+                                            "dependsOn": [
+                                                "[concat('Microsoft.Network/publicIPAddresses/', variables('erGwIpName'))]",
+                                                "[concat('Microsoft.Network/virtualNetworks/', variables('vNetName'))]"
+                                            ],
+                                            "properties": {
+                                                "gatewayType": "ExpressRoute",
+                                                "ipConfigurations": [
+                                                    {
+                                                        "name": "default",
+                                                        "properties": {
+                                                            "privateIPAllocationMethod": "Dynamic",
+                                                            "subnet": {
+                                                                "id": "[variables('erGwSubnetId')]"
+                                                            },
+                                                            "publicIpAddress": {
+                                                                "id": "[variables('erGwPipId')]"
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                "sku": {
+                                                    "name": "[if(
+                                                                 and(
+                                                                     or(
+                                                                         empty(parameters('erGwRegionalSku')), 
+                                                                         empty(parameters('erGwAzSku'))), 
+                                                                         not(
+                                                                             empty(parameters('erGwRegionalSku')))), 
+                                                                                parameters('erGwRegionalSku'), 
+                                                                                parameters('erGwAzSku'))]",
+                                                    "tier": "[if(
+                                                                and(
+                                                                    or(
+                                                                        empty(parameters('erGwRegionalSku')), 
+                                                                        empty(parameters('erGwAzSku'))), 
+                                                                        not(
+                                                                            empty(parameters('erGwRegionalSku')))), 
+                                                                                parameters('erGwRegionalSku'), 
+                                                                                parameters('erGwAzSku'))]"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

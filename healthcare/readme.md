@@ -19,8 +19,8 @@ This article provides a reference architecture with prescriptive guidance and re
 | Industry Architecture | Description | Deploy | Documentation
 |:----------------------|:------------|--------|--------------|
 | Azure for Healthcare | Azure for Healthcare foundation that provides a full, rich, compliant architecture which caters for highly regulated landing zones for Healthcare industry scenarios |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afhRI) | [User Guide](./referenceImplementation/readme.md)
-| Azure Azure Health Data Services | Reference implementation for Azure Health Data Services |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afhApis) | [User Guide](./solutions/healthcareApis)
-| Healthcare Analytics | Reference implementation for data and analytics specifically for Healthcare industry |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afhAnalytics) | [User Guide](./solutions/clinicalAnalytics)
+| Azure Azure Health Data Services | Reference implementation for Azure Health Data Services |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/mcfh/api) | [User Guide](./solutions/healthcareApis)
+| Healthcare Analytics | Reference implementation for data and analytics specifically for Healthcare industry |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/mcfh/analytics) | [User Guide](./solutions/clinicalAnalytics)
 
 ## Azure for Healthcare Reference Architecture
 
@@ -47,7 +47,7 @@ Audit reports can be found here: [Azure & O365 Audit Reports](https://servicetru
 
 ## Architecture composition
 
-The composition of the end-to-end Microsoft Cloud For Healthcare deployment is layered in a set of steps. This gives you flexibility with deploying the relevant components and allow for different teams in the organization to be responsible for deployment and continuous ownership of additional development, configuration and maintenance needs. In the overall architecture for Microsoft Cloud for Healthcare, the Azure Health Data Services enable organizations to use standards based data models e.g. Fast Healthcare Interoperability Resources (FHIR) standards frameworks and Dicom image library.
+The composition of the end to end Microsoft Cloud For Healthcare deployment is layered in a set of steps. This gives you flexibility with deploying the relevant components and allow for different teams in the organization to be responsible for deployment and continuous ownership of additional development, configuration and maintenance needs. In the overall architecture for Microsoft Cloud for Healthcare, the Azure Health Data Services enable organizations to use standards based data models e.g. Fast Healthcare Interoperability Resources (FHIR) standards frameworks and Dicom image library.
 
 ### Healthcare Landing Zones
 
