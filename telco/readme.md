@@ -1,88 +1,92 @@
-# Telecommunications Industry Reference Architecture
+# Azure for Telecommunications
 
-| Industry Architecture | Description | Deploy |
-|:----------------------|:------------|--------|
-| Microsoft Cloud for Telco Industry | Cloud Foundation that spans across Azure, Power Platform, and Microsoft 365 for Telco industry and workloads |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Ftelco%2Fri%2FtelcoArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Ftelco%2Fri%2Ftelco-portal.json)
-| Scale-out Hub virtual network | When the Cloud Foundation is in place, you can use this reference implementation to scale-out the hub virtual network for Telco industry, and configure all networking infrastructure |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Ftelco%2solutions%2FtelcoNetworking%2FtelcoNwArm.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Findustry%2Fmain%2Ftelco%2Fsolutions%2FtelcoNetworking%2FtelcoNw-portal.json)
+Due to the network centric nature of their business, organizations in the Telecommunications (or Telco) industry have a unique set of requirements compared to other organizations of similar scale. Such requirements include:
 
-Customers in the Telecommunications (or Telco) industry have a unique set of requirements compared to enterprises or customers in other industries. Such requirements include:
-
-* Delivery of networking services that consume large amounts of bandwidth and are sensitive to latency and jitter on the network (for example, video or streaming).
-* Provide networking and end-user services to consumers (for example, firewall or storage capacity as added value services on top of an internet line at home).
-* Provide managed services to other companies (for example, provide a managed SD-WAN solution).
-* Leverage the provider’s distributed edges to provide services closer to where their end users are for better performance and lower latency (examples include 5G, gaming or augmented reality).
+* Delivery of strenuous networking services that consume large amounts of bandwidth and are sensitive to latency and jitter on the network (ex. VOIP or video streaming).
+* Provide networking and end user services to consumers (ex. firewall as a service, cloud storage, cloud email, etc).
+* Provide managed services to other companies (ex. SD-WAN solutions, SoC or SBC).
+* Leverage the provider’s distributed near and far edge to deliver services closer to where their end users are for better performance and lower latency (ex. 5G, gaming or augmented reality).
 
 This article provides a reference architecture with prescriptive guidance and recommendations for the Telco industry across the Microsoft Cloud (Power Platform, Dynamics, Microsoft 365 and Microsoft Azure).
 
-## Telco Industry Reference Architecture on Microsoft Azure
+## Table of contents
 
-This article describes Telco industry reference architecture on Microsoft Azure to enable the delivery of Telco specialized workloads on Microsoft Azure and at the edge.
+* [Azure for Operators Landing Zones Reference Implementations](#azure-for-operators-landing-zones-reference-implementations)
+* [Azure for Operators Landing Zones](#azure-for-operators-landing-zones)
+* [High-level architecture](#high-level-architecture)
+  * [Governance for Telco Industry Scenarios](#letter-a)
+  * [Networking for Telco Industry Scenarios](#letter-b)
+  * [Operator Landing Zones](#letter-c)
+  * [Distributed Edge](#letter-d)
+  * [Managed Services](#letter-e)
+* [Solutions](#solutions)
+  * [Network Analytics Landing Zones for Operators](#network-analytics-landing-zones-for-operators)
+  * [Edge Video Services](#edge-video-services)
+* [Next Steps](#next-steps)
+
+## Azure for Operators Landing Zones Reference Implementations
+
+| Reference Implementation | Description | Deploy | Documentation
+|:----------------------|:------------|--------|--------------|
+| AfO Landing Zones foundation | Azure for Operators (AfO) Landing Zones foundation that provides a full, rich, compliant architecture with scale-out pattern for connectivity and landing zones for operators |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoRI) | [User Guide](./referenceImplementation/readme.md)
+| AfO Landing Zones networking scale-out | When the AfO Landing Zones foundation is in place, you can use this reference implementation to scale-out the hub virtual network and configure the corresponding networking infrastructure |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/afoScaleOut) | [User Guide](./referenceImplementation/readme.md)
+| Observability Landing Zones for Operators | An observability landing zone for operators provides the required foundational services on Azure to ingest large amounts of data into Azure storage services |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/observabilitylz) | [User Guide](./solutions/observability/userGuide/readme.md)
+
+## Azure for Operators Landing Zones
+
+This article describes the Azure for Operators (AfO) Landing Zones reference architecture which enables the delivery of telco specialized workloads (such as vEPC, vIMS, SDWAN, vFW, SBC) on Microsoft Azure and at the operator's distributed edge as depicted in figure 1 below:
+
+![AfO Landing Zones overview](./docs/azure-services-at-operator.png)
+_Figure 1: Azure services delivered across Microsoft Azure and operator's on-premises network._
 
 ### High-level architecture
 
-The Telco industry reference architecture on Microsoft Azure is based on an [Enterprise-Scale Landing Zone](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/architecture) foundation for the construction and operationalization of landing zones on Azure, at scale, and then it provides a specific set of recommendations to accommodate for the Telco industry requirements and scenarios as described previously on this article. The reference architecture for Telco industry on Microsoft Azure is depicted on figure 1 below:
+The AfO Landing Zones architecture is based on a [proven, at scale Azure architecture](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/architecture) foundation for the construction and operationalization of landing zones in Azure, which at its core is build upon a set of design principles and critical design areas (as summarized on this [article](../foundations/azure/README.md)). Those design principles and critical design areas are applicable for this AfO Landing Zones architecture. However, due to the unique set of requirements and characteristics of the telecommunications industry (for example, the presence or a large distributed edge), the AfO Landing Zones architecture provides an additional, and very specific, set of recommendations to accommodate telco industry requirements and scenarios as described previously on this article. The AfO Landing Zones architecture is depicted on figure 2 below:
 
-![Telco industry reference architecture](./docs/telco-industry-reference-architecture.png)
-_Figure 1: Reference architecture for the telco industry on Microsoft Azure._
+![AfO Landing Zones architecture](./docs/telco-industry-reference-architecture.png)
+_Figure 2: AfO Landing Zones architecture._
 
-As figure 1 depicts, the reference architecture for the Telco industry on Microsoft Azure follows the design principles and recommendations of Enterprise-Scale Landing Zones, but it provides specific guidance and recommendations in the following areas to accommodate for the typical requirements of customers in the Telco industry:
+As figure 1 depicts, the AfO Landing Zones architecture follows the design principles and recommendations of proven, compliant, and scalable landing zones architecture on Azure, but it provides specific guidance and recommendations in the following areas to accommodate for the typical requirements of operators:
 
-* Telco workloads (depicted as C in figure 1).
-* Networking (Depicted as E in figure 1).
-* Telco distributed edge (Depicted as G in figure 1).
+<a id="letter-a"></a>![The letter A](./docs/a.png) [Governance for Telco Industry Scenarios](./docs/telco-governance.md). To cater for scalability for Telco industry specific scenarios in landing zones, the AfO Landing Zones architecture recommends the creation a new Management Group dedicated to Telco industry specific applications and services. Azure policies that are designed to govern and manage those applications can be assigned to ensure Telco applications are compliant, and configured with high-availability as default at this scope and subscriptions dedicated for such applications would need to be deployed under this management group.
 
-The following sections will provide a high-level overview of the considerations for each of those areas, and subsequent articles will provide detailed design considerations and recommendations.
+<a id="letter-b"></a>![The letter B](./docs/b.png) [Networking for Telco Industry Scenarios](./docs/telco-networking.md). While the networking design considerations and recommendations described in the [Cloud Adoption Framework](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/architecture) are mostly compatible with the AfO Landing Zones architecture, our guidance diverges from the Cloud Adoption Framework when it comes to addressing the Telco specific requirements, as outlined in the introduction above. Most of these changes focus on how to provide more scalable, flexible connectivity for carrier-grade workloads by using a modified network topology by using multiple ExpressRoute circuits.
 
-### Telco workloads
+<a id="letter-c"></a>![The letter C](./docs/c.png) [Operator Landing Zones](./docs/operator-landing-zones.md). This section focuses on providing guidance and reference architectures for deploying mission-critical, carieer-grade telco applications, such as 5G Core, packet core, session boarder control, etc, on especialized Operator Landing Zones.
 
-Several applications, especially internal ones, from the application portfolio of customers in the Telco industry can be deployed, managed and governed in Azure as per existing prescriptive guidance in Enterprise-Scale Landing Zones. However, some applications, such as applications targeted to provide managed services to end customers (B2C), or businesses (B2B) might require a set of controls and governance that are different from the internal line-of-business (LOB) applications. These applications typically provide services such as Core CP, vIMS, vHSS, Thin/uCPE, SDWAN, vFW, vRouter, vLTM, CGNAT, vBNG, DDI and vRadius among others.
+<a id="letter-d"></a>![The letter D](./docs/d.png) [Distributed Edge](./docs/telco-edge.md). The AfO Landing Zones architecture provides prescriptive guidance to leverage the operator's distributed edge infrastructure to provide network functions (such as mobile core or UPF) at the near and far edge via [Azure Operator Distributed Services](https://azure.microsoft.com/blog/new-azure-for-operators-solutions-and-services-built-for-the-future-of-telecommunications/).
 
-For example, such telco applications may require deploying their own ExpressRoute Gateways, use dedicated ExpressRoute circuits for data plane traffic, whilst still need connectivity to on-premises network for control plane traffic. Or such applications may need to use public IPs in their Landing Zones.
+<a id="letter-e"></a>![The letter E](./docs/e.png) [Managed Services](./solutions/mgmtOptions/readme.md). In addition to providing networking services to their customers, operators also provide managed services and managed solutions to their customers either from the operators own Azure AD tenant, or directly in their customer's Azure AD tenants.
 
-Given those specialized requirements, which might conflict with existing policy controls for internal LOB applications, the reference architecture for the Microsoft Cloud for Telco industry recommends to create a new Management Group dedicated for Telco applications. Then, Azure policies that are designed to govern and manage those applications can be assigned at this scope and subscriptions dedicated for such applications would need to be moved under this management group. This new management group is depicted in figure 2 below:
+## Solutions
 
-![Management workloads](./docs/management-group-telco.png)
-_Figure 2: Management group for business to business and business to customer applications._
+### Network Analytics Landing Zones for Operators
 
-### Networking
+An observability landing zone for operators provides the required foundational services on Azure to ingest large amounts of data into Azure storage services (such as Azure Data Lake Storage Gen2). Once this landing zone is provisioned, operators can simply deploy whichever data and analytics services and solutions they prefer to analyze the data.
 
-The reference architecture for the Microsoft Cloud for Telco industry is based on Enterprise-Scale Landing Zones to provide the foundational networking and connectivity services for deploying landing zones in Microsoft Azure at scale.
+* [Architectural guidance](./solutions/observability/readme.md)
+* [User guide](./solutions/observability/userGuide/readme.md)
 
-Network topology and connectivity design considerations and recommendations in Enterprise-Scale Landing Zones are compatible with the Microsoft Cloud for Telco industry reference architecture. For example, recommendations to access Azure PaaS services via Private Link or the usage of hub and spoke or VWAN network topologies are fully compatible with this reference architecture.
+### Edge Video Services
 
-However, to accommodate for specific requirements of customers in the Telco industry, the Microsoft Cloud for Telco industry reference architecture provides additional networking recommendations, specifically in the ExpressRoute connectivity and network topology.
+Edge Video Services (EVS) is a Microsoft platform for [developing video analytics solutions](https://azure.microsoft.com/blog/video-analytics-at-the-edge-an-ideal-technology-for-5g-cloud-monetization/) that can be deployed on Azure public MEC. For example, consider some smart city applications like our Vision Zero work with the City of Bellevue, which enabled a new generation of [real-time traffic flows](https://www.microsoft.com/research/publication/traffic-video-analytics-case-study-report/) leading to substantial improvements in the day-to-day lives of commuters. Similarly, real-time video analytics can make cities safer by controlling traffic lights for situations such as allowing a person in a wheelchair to safely cross the street.
 
-This is primarily as many customers in the Telco industry do not have a single interconnected on-premises network (such as an MPLS) as enterprise customers have. Many Telco customers have an on-premises network that is highly isolated across multiple Virtual Routing and Forwarding (VRFs). This network isolation across VRFs is depicted in figure 3 below with some common VRFs found across customers in the Telco industry (such as core network, signaling or media):
+* [Reference architecture](https://github.com/microsoft/edge-video-services)
+* [Example implementation](https://azure.microsoft.com/blog/microsoft-and-att-demonstrate-5gpowered-video-analytics/)
 
-![Telco on-prem network](./docs/telco-onprem.png)
-_Figure 3 – On-premises network with isolation across multiple example VRFs_
+## Next Steps
+The following articles will provide detailed design considerations and recommendations for AfO Landing Zones key design areas.
 
-Thus, a network topology that can cater for keeping such network isolation from on-premises to Azure might be required (depending on actual customer needs). Some customers may be fine with consolidating multiple VRFs over a single (or a small set of ) ExpressRoute circuit(s). In this scenario, a network topology based on hub and spoke architecture or Azure Virtual WAN as recommended in Enterprise-Scale landing zones would be sufficient.
+**Platform**
+* [Governance for Telco Industry Scenarios](./docs/telco-governance.md)
+* [Networking for Telco Industry Scenarios](./docs/telco-networking.md)
+* [Operator Landing Zones](./docs/operator-landing-zones.md)
+* [Distributed Edge](./docs/telco-edge.md)
+* [Operator Services](./solutions/mgmtOptions/readme.md)
 
-However, if the Telco customer cannot consolidate their VRFs and requires isolation between on-premises and Microsoft Azure, then this reference architecture provides design considerations and recommendations to ensure isolation is maintained either by using IPSec tunnels, or by using multiple ExpressRoute circuits and a network topology with multiple hub virtual networks and multi-homed spoke VNets as depicted in figure 4 below.
-
-![Figure 4: Dual-homed VNet](./docs/dual-homed-topology-expressroute.png)
-
-_Figure 4: Dual-homed virtual network with Azure Route Server and ExpressRoute_
-
----
-***NOTE***
-
-While figure 4 depicts a dual-homed network architecture with Azure Route Server and third party appliances, a similar network architecture can be implemented with Azure Firewall and User Defined Routes (UDR).
-
+**Solutions**
+* [Network Analytics Landing Zones for Operators](./solutions/observability/readme.md)
+* [Edge Video Services](https://github.com/microsoft/edge-video-services)
 ---
 
-### Operator distributed edge
-
-Telcos operate a distributed edge network to provide services (such as Radio Access Networks (RAN) or Wi-Fi) closer to where their customers are. The Microsoft Cloud for Telco industry reference implementation provides prescriptive guidance to leverage the Telco’s distributed edge infrastructure to provide Azure services at the edge via [Azure Stack Edge](https://docs.microsoft.com/en-us/azure/databox-online/) and [Azure private multi-access edge compute (MEC)](https://docs.microsoft.com/en-us/azure/private-multi-access-edge-compute-mec/overview), which among other benefits provides a low-latency experience to users, as services are provided directly at the edge instead of having to provide the services from the Azure region. Such services typically include 5G, CDN, gaming or augmented/virtual reality. This is depicted in figure 5 below.
-
-![Figure 5: Distributed edge](./docs/telco-industry-edge.png)
-_Figure 5: Operators distributed edge_
-
-## Dynamics 365
-
-Coming soon.
-
-## Power Platform
-
-Coming soon
+[Back to documentation root](../README.md)

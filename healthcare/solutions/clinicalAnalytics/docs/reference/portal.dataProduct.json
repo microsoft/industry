@@ -1,0 +1,1450 @@
+{
+    "$schema": "<relative path to createFormUI.schema.json>",
+    "view": {
+        "kind": "Form",
+        "properties": {
+            "title": "Healthcare Analytics",
+            "steps": [
+                {
+                    "name": "basics",
+                    "label": "Data Product",
+                    "elements": [
+                        {
+                            "name": "infoBoxDataManagementAnalytics",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": true,
+                            "options": {
+                                "text": "This deployment is based on the Data product template for Analytics. Visit 'aka.ms/adopt/datamanagement' for more details about the solution pattern.",
+                                "style": "Info",
+                                "uri": "https://aka.ms/adopt/datamanagement"
+                            }
+                        },
+                        {
+                            "name": "deploymentDetails",
+                            "label": "Deployment Details",
+                            "type": "Microsoft.Common.Section",
+                            "visible": true,
+                            "elements": [
+                                {
+                                    "name": "deploymentDetailsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select the subscription and resource group as well as the location to specify the scope of your Data Product deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxPrerequisites",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Please make sure that you have a Data Management Landing Zone and Data Landing Zone deployed before deploying a Data Product or Data Integration template.",
+                                        "style": "Warning",
+                                        "uri": "https://github.com/Azure/data-management-zone"
+                                    }
+                                },
+                                {
+                                    "name": "subscriptionApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "subscriptions?api-version=2020-01-01"
+                                    }
+                                },
+                                {
+                                    "name": "subscriptionId",
+                                    "label": "Subscription",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Subscription of your Data Landing Zone.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(steps('basics').deploymentDetails.subscriptionApi.value, (item) => parse(concat('{\"label\":\"', item.displayName, '\",\"value\":\"', item.id, '\",\"description\":\"', 'ID: ', item.subscriptionId, '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "resourceGroupApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/resourcegroups?api-version=2020-01-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxResourceGroup",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "We have already deployed a few resource groups in your Data Landing Zone, which can be used for Data Product and Data Integration Template deployments. They have the following names: '{prefix}-dp001', '{prefix}-dp002', '{prefix}-di001' and '{prefix}-di002'.",
+                                        "style": "Info"
+                                    }
+                                },
+                                {
+                                    "name": "resourceGroupId",
+                                    "label": "Resource Group",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Resource Group for your Data Product.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(steps('basics').deploymentDetails.resourceGroupApi.value, (item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Subscription ID: ', last(take(split(item.id, '/'), 3)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxLocation",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Since not all service features are available in all regions, this deployment is available in a subset of regions.",
+                                        "style": "Info"
+                                    }
+                                },
+                                {
+                                    "name": "locationsApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "locations?api-version=2019-11-01"
+                                    }
+                                },
+                                {
+                                    "name": "locationName",
+                                    "label": "Location",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Location for your Data Product.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('basics').deploymentDetails.locationsApi.value,(item) => contains(split('southafricanorth,australiaeast,centralindia,japaneast,southeastasia,southindia,canadacentral,francecentral,germanywestcentral,northeurope,uksouth,westeurope,brazilsouth,centralus,eastus,eastus2,southcentralus,westcentralus,westus2', ','), item.name)),(item) => parse(concat('{\"label\":\"', item.regionalDisplayName, '\",\"value\":\"', item.name, '\"}')))]",
+                                        "required": true
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "dataProductName",
+                            "label": "Data Product Name",
+                            "type": "Microsoft.Common.Section",
+                            "visible": true,
+                            "elements": [
+                                {
+                                    "name": "dataPruductNamesText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Specify a prefix and select an environment (Development, Test, Production) which will both be used as a prefix for all resource names. Independent of the environment, the same resources get deployed.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "environment",
+                                    "label": "Environment",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "Development",
+                                    "toolTip": "Select the environment for the deployment. This is currently only used for the naming of resources.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Development",
+                                                "description": "Select if you want to deploy a development environment.",
+                                                "value": "dev"
+                                            },
+                                            {
+                                                "label": "Test",
+                                                "description": "Select if you want to deploy a test environment.",
+                                                "value": "tst"
+                                            },
+                                            {
+                                                "label": "Production",
+                                                "description": "Select if you want to deploy a production environment.",
+                                                "value": "prd"
+                                            }
+                                        ],
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "dataProductPrefix",
+                                    "label": "Data Product Prefix",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Specify a prefix (min 1 and max 10 lowercase characters and numbers).",
+                                    "constraints": {
+                                        "required": true,
+                                        "validations": [
+                                            {
+                                                "regex": "^[a-z0-9]{1,10}$",
+                                                "message": "The prefix must be between 1-10 lowercase characters and numbers."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.keyVaultNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.storageAccountNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.containerRegistryNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.synapseNameApi.available, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.searchNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "keyVaultNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.KeyVault/checkNameAvailability?api-version=2019-09-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-vault001')]",
+                                            "type": "Microsoft.KeyVault/vaults"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "storageAccountNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Storage/checkNameAvailability?api-version=2021-04-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, steps('basics').dataProductName.environment, 'storage001')]",
+                                            "type": "Microsoft.Storage/storageAccounts"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "containerRegistryNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.ContainerRegistry/checkNameAvailability?api-version=2019-05-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, steps('basics').dataProductName.environment, 'containerregistry001')]",
+                                            "type": "Microsoft.ContainerRegistry/registries"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "synapseNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Synapse/checkNameAvailability?api-version=2021-03-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-synapse001')]",
+                                            "type": "Microsoft.Synapse/workspaces"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "searchNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Search/checkNameAvailability?api-version=2021-04-01-preview')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-search001')]",
+                                            "type": "searchServices"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "generalSettings",
+                    "label": "General Settings",
+                    "subLabel": {
+                        "preValidation": "Provide settings for your data product deployment.",
+                        "postValidation": "Done"
+                    },
+                    "bladeTitle": "General Settings",
+                    "bladeSubtitle": "General Settings",
+                    "elements": [
+                        {
+                            "name": "machineLearningDeploymentSettings",
+                            "label": "Machine Learning Deployment Settings",
+                            "type": "Microsoft.Common.Section",
+                            "visible": true,
+                            "elements": [
+                                {
+                                    "name": "machineLearningDeploymentSettingsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Specify the external services you want to connect to Machine Learning.",
+                                        "link": {
+                                            "label": "Learn more",
+                                            "uri": "https://docs.microsoft.com/azure/machine-learning/concept-compute-target"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxComputeCluster",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Two Azure Machine Learning Compute Clusters will automatically be deployed as part of this deployment. The first has CPU and the second has GPU support. Both will be enabled with Private Link.",
+                                        "style": "Info",
+                                        "uri": "https://docs.microsoft.com/azure/machine-learning/how-to-create-attach-compute-cluster"
+                                    }
+                                },
+                                {
+                                    "name": "enableComputeInstance",
+                                    "label": "Create Machine Learning Compute Instance",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "visible": true,
+                                    "toolTip": "If 'Yes' is selected, you are required to provide an AAD User Object ID.",
+                                    "defaultValue": "No",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "no"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxComputeInstance",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableComputeInstance, 'yes')]",
+                                    "options": {
+                                        "text": "Please provide an AAD User Object ID of the user for which you want to deploy an Azure Machine Learning Compute Instance (CI). The public SSH key is optional and allows the user to to connect to the CI using an SSH connection.",
+                                        "style": "Info",
+                                        "uri": "https://docs.microsoft.com/azure/machine-learning/concept-compute-instance"
+                                    }
+                                },
+                                {
+                                    "name": "machineLearningComputeInstance001AdministratorObjectId",
+                                    "label": "ML Compute Instance Admin Object ID",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableComputeInstance, 'yes')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Specify an AAD User Object ID of a the user in your AAD tenant for whom a Compute Instance should be deployed.",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^[a-z0-9-]{36}$",
+                                        "validationMessage": "The Object ID consists of 36 lowercase characters, numbers and hyphens."
+                                    }
+                                },
+                                {
+                                    "name": "machineLearningComputeInstance001AdministratorPublicSshKey",
+                                    "label": "ML Compute Instance Admin Public SSH Key",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableComputeInstance, 'yes')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Specify a Public SSH Key for the Compute Instance that will be deployed in order to be able to connect to it via Visual Studio Code.",
+                                    "constraints": {
+                                        "required": false,
+                                        "validationMessage": ""
+                                    }
+                                },
+                                {
+                                    "name": "enableDatabricks",
+                                    "label": "Connect Machine Learning with Databricks",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "visible": true,
+                                    "toolTip": "If 'Yes' is selected, you are required to select a Databricks workspace and provide a Databricks Access token.",
+                                    "defaultValue": "No",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "no"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxDatabricks",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableDatabricks, 'yes')]",
+                                    "options": {
+                                        "text": "As per Data Management & Analytics Scenario recommendation, we are advising to use shared Databricks workspaces. Please select the shared product Databricks workspace in your Data Landing Zone and provide an access token to connect the workspace with Machine Learning. Leave blank, if you don't want to connect Databricks and Machine Learning.",
+                                        "style": "Info",
+                                        "uri": "https://docs.microsoft.com/azure/machine-learning/how-to-attach-compute-targets#databricks"
+                                    }
+                                },
+                                {
+                                    "name": "databricksApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Databricks/workspaces?api-version=2018-04-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "databricksId",
+                                    "label": "Databricks Workspace",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableDatabricks, 'yes')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Databricks Workspace which you want to connect to Machine Learning.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('generalSettings').machineLearningDeploymentSettings.databricksApi.value,(item) => equals(item.location, steps('basics').deploymentDetails.locationName)),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "databricksWorkspaceUrl",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('generalSettings').machineLearningDeploymentSettings.databricksId, '?api-version=2018-04-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "databricksAccessToken",
+                                    "label": {
+                                        "password": "Databricks Access Token",
+                                        "confirmPassword": "Confirm Databricks Access Token"
+                                    },
+                                    "type": "Microsoft.Common.PasswordBox",
+                                    "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableDatabricks, 'yes')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Specify an Azure Databricks Access Token from the workspace selected above to connect Machine Learning and Databricks.",
+                                    "constraints": {
+                                        "required": true
+                                    },
+                                    "options": {
+                                        "hideConfirmation": true
+                                    }
+                                },
+                                {
+                                    "name": "enableAks",
+                                    "label": "Connect Machine Learning with an Azure Kubernetes Cluster",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "visible": true,
+                                    "toolTip": "If 'Yes' is selected, you are required to select an existing AKS Cluster.",
+                                    "defaultValue": "No",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "no"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxAks",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableAks, 'yes')]",
+                                    "options": {
+                                        "text": "Select an existing Kubernetes Cluster to connect Machine Learning with the cluster for model deployments. Please be aware that an AKS Cluster can only be connected with a single Machine Learning workspace.",
+                                        "style": "Info",
+                                        "uri": "https://docs.microsoft.com/azure/machine-learning/how-to-create-attach-kubernetes?tabs=python"
+                                    }
+                                },
+                                {
+                                    "name": "aksApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.ContainerService/managedClusters?api-version=2021-05-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "aksId",
+                                    "label": "AKS Cluster",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableAks, 'yes')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Select an AKS cluster to connect it to Machine Learning for model deployments.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('generalSettings').machineLearningDeploymentSettings.aksApi.value,(item) => equals(item.location, steps('basics').deploymentDetails.locationName)),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "enableAdls",
+                                    "label": "Connect Machine Learning with an ADLS Gen2 Container",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "visible": true,
+                                    "toolTip": "If 'Yes' is selected, you are required to select an ADLS Gen2 Storage Account and Container.",
+                                    "defaultValue": "No",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "no"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxMachineLearningStorageAccount",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableAdls, 'yes')]",
+                                    "options": {
+                                        "text": "We are recommending to use a dedicated container per Data Product in the workspace Data Lake and per Data Integration in the Raw as well as Enriched & Curated Data Lake. Please select the respective Data Lake in your Data Landing Zone (e.g. Raw - '{prefix}{environment}raw', Enriched & Curated - '{prefix}{environment}encur', Workspace - '{prefix}{environment}work') and select one of the pre-existing storage account containers (e.g. 'di001', 'di002', 'dp001', 'dp002') or create and select a new one for this deployment if all of them are already in use.",
+                                        "style": "Info"
+                                    }
+                                },
+                                {
+                                    "name": "machineLearningStorageAccountApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Storage/storageAccounts?api-version=2021-04-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "machineLearningStorageAccountId",
+                                    "label": "Storage Account",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableAdls, 'yes')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Select an Storage Account that should be connected as Machine Learning datastore.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('generalSettings').machineLearningDeploymentSettings.machineLearningStorageAccountApi.value,(item) => and(equals(item.location, steps('basics').deploymentDetails.locationName), equals(item.properties.isHnsEnabled, true))),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "machineLearningStorageAccountFileSystemApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('generalSettings').machineLearningDeploymentSettings.machineLearningStorageAccountId, '/blobServices/default/containers?api-version=2021-04-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "machineLearningStorageAccountFileSystemId",
+                                    "label": "Storage Account Container",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableAdls, 'yes')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Select an Storage Account Container that should be connected as Machine Learning datastore.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(steps('generalSettings').machineLearningDeploymentSettings.machineLearningStorageAccountFileSystemApi.value, (item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "enableContainerRegistry",
+                                    "label": "Connect Machine Learning with a central Azure Container Registry",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "visible": true,
+                                    "toolTip": "If 'Yes' is selected, you are required to select an existing Azure Container Registry.",
+                                    "defaultValue": "No",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "no"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxContainerRegistry",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableContainerRegistry, 'yes')]",
+                                    "options": {
+                                        "text": "Select an existing Azure Container Registry to connect Machine Learning with the it for pulling curated base images. Please be aware that you also have to enable role assignments below for this option to have an effect.",
+                                        "style": "Info"
+                                    }
+                                },
+                                {
+                                    "name": "subscriptionApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "subscriptions?api-version=2020-01-01"
+                                    }
+                                },
+                                {
+                                    "name": "containerRegistrySub",
+                                    "label": "Container Registry Subscription",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableContainerRegistry, 'yes')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Subscription of your central Container Registry.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(steps('generalSettings').machineLearningDeploymentSettings.subscriptionApi.value, (item) => parse(concat('{\"label\":\"', item.displayName, '\",\"value\":\"', item.id, '\",\"description\":\"', 'ID: ', item.subscriptionId, '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "containerRegistryApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('generalSettings').machineLearningDeploymentSettings.containerRegistrySub, '/providers/Microsoft.ContainerRegistry/registries?api-version=2019-05-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "containerRegistryId",
+                                    "label": "Container Registry",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableContainerRegistry, 'yes')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Select an existing Azure Container Registry to connect it to Machine Learning for pulling centrally managed base images.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(steps('generalSettings').machineLearningDeploymentSettings.containerRegistryApi.value, (item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "dataProcessingServiceDeploymentSettings",
+                            "label": "Data Processing Service Deployment Settings",
+                            "type": "Microsoft.Common.Section",
+                            "visible": true,
+                            "elements": [
+                                {
+                                    "name": "infoBoxProcessingService",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select a processing engine that you want to deploy as part of the Data Product. The service can not only be used as an additional data processing engine, but also as a workflow orchestration engine to orchestrate and trigger workflows and pipelines within Machine Learning.",
+                                        "style": "Info"
+                                    }
+                                },
+                                {
+                                    "name": "processingService",
+                                    "label": "Create Data Processing Service",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "Data Factory",
+                                    "toolTip": "Specify an additional data processing engine that you want to deploy. This can be used as Spark engine as well as for workflow orchestration.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Data Factory",
+                                                "description": "Select if you want to deploy a Data Factory.",
+                                                "value": "dataFactory"
+                                            },
+                                            {
+                                                "label": "Synapse",
+                                                "description": "Select if you want to deploy a Synapse workspace.",
+                                                "value": "synapse"
+                                            }
+                                        ],
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "administratorPassword",
+                                    "label": {
+                                        "password": "Password",
+                                        "confirmPassword": "Confirm password"
+                                    },
+                                    "type": "Microsoft.Common.PasswordBox",
+                                    "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'synapse')]",
+                                    "toolTip": "Specify an administrator password for the Synapse workspace.",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,128}$",
+                                        "validationMessage": "The password must be alphanumeric, contain at least 8 characters, and have at least 1 letter, 1 number and one special character."
+                                    },
+                                    "options": {
+                                        "hideConfirmation": false
+                                    }
+                                },
+                                {
+                                    "name": "synapseDefaultStorageAccountApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Storage/storageAccounts?api-version=2021-04-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxSynapseDefaultStorageAccount",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'synapse')]",
+                                    "options": {
+                                        "text": "We are recommending to use a dedicated container per Data Product in the workspace Data Lake and per Data Integration in the Raw as well as Enriched & Curated Data Lake. Please select the respective Data Lake in your Data Landing Zone (e.g. Raw - '{prefix}{environment}raw', Enriched & Curated - '{prefix}{environment}encur', Workspace - '{prefix}{environment}work') and select one of the pre-existing storage account containers (e.g. 'di001', 'di002', 'dp001', 'dp002') or create and select a new one for this deployment if all of them are already in use.",
+                                        "style": "Info"
+                                    }
+                                },
+                                {
+                                    "name": "synapseDefaultStorageAccountId",
+                                    "label": "Storage Account",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'synapse')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Storage account to which you want to connect Synapse.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountApi.value,(item) => and(equals(item.location, steps('basics').deploymentDetails.locationName), equals(item.properties.isHnsEnabled, true))),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "synapseDefaultStorageAccountFileSystemApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountId, '/blobServices/default/containers?api-version=2021-04-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "synapseDefaultStorageAccountFileSystemId",
+                                    "label": "Synapse Default Storage Account Container",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'synapse')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Default storage container for the Synapse workspace. If no option is shown, please make sure that a container exists within the storage account selected above.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemApi.value, (item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "enableSqlPool",
+                                    "label": "Enable SQL Pool",
+                                    "type": "Microsoft.Common.CheckBox",
+                                    "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'synapse')]",
+                                    "defaultValue": false,
+                                    "toolTip": "Enable the deployment of an Azure SQL Pool (DW100).",
+                                    "constraints": {
+                                        "required": false,
+                                        "validationMessage": "Enable the deployment of an Azure SQL Pool (DW100)."
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "dataGovernanceSettings",
+                            "label": "Data Governance Settings",
+                            "type": "Microsoft.Common.Section",
+                            "visible": true,
+                            "elements": [
+                                {
+                                    "name": "dataGovernanceSettingsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select the Purview account to which you want to connect the Synapse workspace or Data Factory.",
+                                        "link": {
+                                            "label": "Learn more",
+                                            "uri": "https://docs.microsoft.com/azure/purview/overview"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "purviewId",
+                                    "label": "Connect to Purview Account",
+                                    "type": "Microsoft.Solutions.ResourceSelector",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Purview account to which you want to connect Synapse or Data Factory.",
+                                    "resourceType": "Microsoft.Purview/accounts",
+                                    "required": true,
+                                    "options": {
+                                        "filter": {
+                                            "subscription": "all",
+                                            "location": "all"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "purviewApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('generalSettings').dataGovernanceSettings.purviewId.id, '?api-version=2021-07-01')]"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "generalSettings",
+                            "label": "General Settings",
+                            "type": "Microsoft.Common.Section",
+                            "visible": true,
+                            "elements": [
+                                {
+                                    "name": "generalSettingsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Specify general settings for this deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "cognitiveServiceKinds",
+                                    "label": "Cognitive Services Kind",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "None",
+                                    "toolTip": "Select the kind of Cognitive Service that should be deployed.",
+                                    "multiselect": true,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Anomaly Detector",
+                                                "description": "Select if you want to deploy Anomaly Detector.",
+                                                "value": "AnomalyDetector"
+                                            },
+                                            {
+                                                "label": "Computer Vision",
+                                                "description": "Select if you want to deploy Computer Vision.",
+                                                "value": "ComputerVision"
+                                            },
+                                            {
+                                                "label": "Content Moderator",
+                                                "description": "Select if you want to deploy Content Moderator.",
+                                                "value": "ContentModerator"
+                                            },
+                                            {
+                                                "label": "Custom Vision",
+                                                "description": "Select if you want to deploy Custom Vision.",
+                                                "value": "CustomVision.Training"
+                                            },
+                                            {
+                                                "label": "Face",
+                                                "description": "Select if you want to deploy Face.",
+                                                "value": "Face"
+                                            },
+                                            {
+                                                "label": "Form Recognizer",
+                                                "description": "Select if you want to deploy Form Recognizer.",
+                                                "value": "FormRecognizer"
+                                            },
+                                            {
+                                                "label": "Immersive Reader",
+                                                "description": "Select if you want to deploy Immersive Reader.",
+                                                "value": "ImmersiveReader"
+                                            },
+                                            {
+                                                "label": "LUIS",
+                                                "description": "Select if you want to deploy Language Understanding Intelligent Service.",
+                                                "value": "LUIS"
+                                            },
+                                            {
+                                                "label": "Personalizer",
+                                                "description": "Select if you want to deploy Personalizer.",
+                                                "value": "Personalizer"
+                                            },
+                                            {
+                                                "label": "Speech Services",
+                                                "description": "Select if you want to deploy Speech Services.",
+                                                "value": "SpeechServices"
+                                            },
+                                            {
+                                                "label": "Text Analytics",
+                                                "description": "Select if you want to deploy Text Analytics.",
+                                                "value": "TextAnalytics"
+                                            },
+                                            {
+                                                "label": "Text Translator",
+                                                "description": "Select if you want to deploy Text Translator.",
+                                                "value": "TextTranslation"
+                                            }
+                                        ],
+                                        "required": false
+                                    }
+                                },
+                                {
+                                    "name": "enableSearch",
+                                    "label": "Enable Azure Search",
+                                    "type": "Microsoft.Common.CheckBox",
+                                    "visible": true,
+                                    "defaultValue": false,
+                                    "toolTip": "Enable the deployment of Azure Search.",
+                                    "constraints": {
+                                        "required": false,
+                                        "validationMessage": "Enable the deployment of Azure Search."
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxRoleAssignment",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "The role assignment is optional and will assign the Machine Learning MSI to the ADLS Gen2 Storage Account Container (Storage Blob Data Contributor) and Container Registry (AcrPull) that you may have selected above. In addition, it will enable the role assignment of the Synapse MSI (if you choose to deploy Synapse below) to the selected ADLS Gen2 Storage Account Container (Storage Blob Data Contributor). This option is also required to setup the connection between Machine Learning and Synapse (Contributor).",
+                                        "style": "Info"
+                                    }
+                                },
+                                {
+                                    "name": "enableRoleAssignments",
+                                    "label": "Enable role assignments",
+                                    "type": "Microsoft.Common.CheckBox",
+                                    "visible": true,
+                                    "defaultValue": false,
+                                    "toolTip": "Enable role assignments.",
+                                    "constraints": {
+                                        "required": false,
+                                        "validationMessage": "Enable role assignments of Machine Learning MSI and Synapse MSI. Please read infobox above for more details."
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "connectivitySettings",
+                    "label": "Connectivity Settings",
+                    "subLabel": {
+                        "preValidation": "Provide the connectivity settings that should be used for the Data Product.",
+                        "postValidation": "Done"
+                    },
+                    "bladeTitle": "Connectivity Settings",
+                    "bladeSubtitle": "Connectivity Settings",
+                    "elements": [
+                        {
+                            "name": "virtualNetwork",
+                            "label": "Virtual Network",
+                            "type": "Microsoft.Common.Section",
+                            "visible": true,
+                            "elements": [
+                                {
+                                    "name": "virtualNetworkText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select the Virtual Network and Subnet for your deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxVirtualNetwork",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Please select the Virtual Network of your Data Landing Zone and select a free Subnet within the Virtual Network to make sure that you have proper outbound connectivity as well as DNS name resolution in place. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled. This is already pre-configured for you in the DataProduct and DataIntegration subnets in the Data Landing Zone Vnet. In addition, Azure Machine Learning requires a subnet with the 'Microsoft.Storage' service endpoint enabled in the region of the Data Product deployment. This is not enabled by default and therefore must be setup manually.",
+                                        "style": "Info"
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxVirtualNetworkNsg",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": "[not(contains(split('australiaeast,eastasia,japaneast,japanwest,francecentral,northeurope,westeurope,centralus,eastus,eastus2,northcentralus,southcentralus,westcentralus,westus,westus2', ','), steps('basics').deploymentDetails.locationName))]",
+                                    "options": {
+                                        "text": "Please make sure to assign the '{prefix}-{environment}-aml-nsg' Network Security Group (NSG) to the subnet selected below, as the 'no public ip' feature for Azure Machine Learning Compute Clusters and Compute Instances is not available in the selected region. The NSG was deployed as part of your Data Landing Zone deployment and exists in the '{prefix}-{environment}-network' resource group. Please follow the link to learn more.",
+                                        "style": "Warning",
+                                        "uri": "https://docs.microsoft.com/azure/machine-learning/how-to-secure-training-vnet?tabs=azure-studio%2Cipaddress#no-public-ip-amlcompute"
+                                    }
+                                },
+                                {
+                                    "name": "virtualNetworkApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Network/virtualNetworks?api-version=2021-03-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "virtualNetworkId",
+                                    "label": "Virtual Network",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Virtual Network for your Data Product.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').virtualNetwork.virtualNetworkApi.value,(item) => equals(item.location, steps('basics').deploymentDetails.locationName)),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "subnetApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('connectivitySettings').virtualNetwork.virtualNetworkId, '/subnets?api-version=2020-11-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "subnetId",
+                                    "label": "Subnet",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Subnet for your Data Product. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').virtualNetwork.subnetApi.value,(item) => and(equals(item.properties.privateEndpointNetworkPolicies, 'Disabled'), equals(item.properties.privateLinkServiceNetworkPolicies, 'Disabled'), lessOrEquals(int(last(split(item.properties.addressPrefix, '/'))), 27))),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "privateDnsZones",
+                            "label": "Private DNS Zones",
+                            "type": "Microsoft.Common.Section",
+                            "visible": true,
+                            "elements": [
+                                {
+                                    "name": "privateDnsZonesText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select the Private DNS Zone settings for your deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxPrivateDnsZone",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "We are deploying all services with private endpoints and disabled public network access to reduce the data exfiltration risk. For each private endpoint, DNS A-records need to be created in a Private DNS Zones. Therefore, these either need to deployed through Azure Policies or you have to provide the Private DNS Zones that should be used for this deployment. We are assuming that all Private DNS Zones are created in the same subscription. Deploying DNS A-Records through Private Endpoints is the recommended solution.",
+                                        "style": "Info",
+                                        "uri": "https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/private-link-and-dns-integration-at-scale"
+                                    }
+                                },
+                                {
+                                    "name": "automatedPrivateDnsZoneGroups",
+                                    "label": "DNS A-Records are deployed through Azure Policy",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "visible": true,
+                                    "toolTip": "If 'Yes' is selected, Private DNS Zone Groups will not be deployed and we are assuming that this gets created through Azure Policies. If this does not get created, you will not be able to access any resources within this environment.",
+                                    "defaultValue": "No",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "No",
+                                                "value": "no"
+                                            },
+                                            {
+                                                "label": "Yes",
+                                                "value": "yes"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "subscriptionApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "subscriptions?api-version=2020-01-01"
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZonesSub",
+                                    "label": "Subscription with Private DNS Zones",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Subscription of your Private DNS Zones. If you have deployed the Data Management Landing Zone with a Firewall and Private DNS Zones then select the subscription that you have used for your Data Management Landing Zone.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(steps('connectivitySettings').privateDnsZones.subscriptionApi.value, (item) => parse(concat('{\"label\":\"', item.displayName, '\",\"value\":\"', item.id, '\",\"description\":\"', 'ID: ', item.subscriptionId, '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZonesApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('connectivitySettings').privateDnsZones.privateDnsZonesSub, '/providers/Microsoft.Network/privateDnsZones?api-version=2018-09-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZoneIdKeyVault",
+                                    "label": "Private DNS Zone Key Vault (privatelink.vaultcore.azure.net)",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Private DNS Zone for Key Vault (privatelink.vaultcore.azure.net).",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').privateDnsZones.privateDnsZonesApi.value,(item) => contains(item.name, 'privatelink.vaultcore.azure.net')),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZoneIdSynapseDev",
+                                    "label": "Private DNS Zone Synapse Dev (privatelink.dev.azuresynapse.net)",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Private DNS Zone for Synapse Dev (privatelink.dev.azuresynapse.net).",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').privateDnsZones.privateDnsZonesApi.value,(item) => contains(item.name, 'privatelink.dev.azuresynapse.net')),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZoneIdSynapseSql",
+                                    "label": "Private DNS Zone Synapse Sql (privatelink.sql.azuresynapse.net)",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Private DNS Zone for Synapse Sql (privatelink.sql.azuresynapse.net).",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').privateDnsZones.privateDnsZonesApi.value,(item) => contains(item.name, 'privatelink.sql.azuresynapse.net')),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZoneIdDataFactory",
+                                    "label": "Private DNS Zone DataFactory (privatelink.datafactory.azure.net)",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Private DNS Zone for DataFactory (privatelink.datafactory.azure.net).",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').privateDnsZones.privateDnsZonesApi.value,(item) => contains(item.name, 'privatelink.datafactory.azure.net')),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZoneIdDataFactoryPortal",
+                                    "label": "Private DNS Zone DataFactory Portal (privatelink.adf.azure.com)",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Private DNS Zone for DataFactory Portal (privatelink.adf.azure.com).",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').privateDnsZones.privateDnsZonesApi.value,(item) => contains(item.name, 'privatelink.adf.azure.com')),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZoneIdCognitiveService",
+                                    "label": "Private DNS Zone Cognitive Service (privatelink.cognitiveservices.azure.com)",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Private DNS Zone for Cognitive Service (privatelink.cognitiveservices.azure.com).",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').privateDnsZones.privateDnsZonesApi.value,(item) => contains(item.name, 'privatelink.cognitiveservices.azure.com')),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZoneIdContainerRegistry",
+                                    "label": "Private DNS Zone Container Registry (privatelink.azurecr.io)",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Private DNS Zone for Container Registry (privatelink.azurecr.io).",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').privateDnsZones.privateDnsZonesApi.value,(item) => contains(item.name, 'privatelink.azurecr.io')),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZoneIdSearch",
+                                    "label": "Private DNS Zone Azure Search (privatelink.search.windows.net)",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Private DNS Zone for Azure Search (privatelink.search.windows.net).",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').privateDnsZones.privateDnsZonesApi.value,(item) => contains(item.name, 'privatelink.search.windows.net')),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZoneIdBlob",
+                                    "label": "Private DNS Zone Blob Storage (privatelink.blob.core.windows.net)",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Private DNS Zone for Blob Storage (privatelink.blob.core.windows.net).",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').privateDnsZones.privateDnsZonesApi.value,(item) => contains(item.name, 'privatelink.blob.core.windows.net')),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZoneIdFile",
+                                    "label": "Private DNS Zone File Storage (privatelink.file.core.windows.net)",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Private DNS Zone for File Storage (privatelink.file.core.windows.net).",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').privateDnsZones.privateDnsZonesApi.value,(item) => contains(item.name, 'privatelink.file.core.windows.net')),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZoneIdMachineLearningApi",
+                                    "label": "Private DNS Zone Machine Learning (privatelink.api.azureml.ms)",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Private DNS Zone for Machine Learning (privatelink.api.azureml.ms).",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').privateDnsZones.privateDnsZonesApi.value,(item) => contains(item.name, 'privatelink.api.azureml.ms')),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZoneIdMachineLearningNotebooks",
+                                    "label": "Private DNS Zone Machine Learning Notebooks (privatelink.notebooks.azure.net)",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Private DNS Zone for Machine Learning Notebooks (privatelink.notebooks.azure.net).",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').privateDnsZones.privateDnsZonesApi.value,(item) => contains(item.name, 'privatelink.notebooks.azure.net')),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "tags",
+                    "label": "Tags",
+                    "subLabel": {
+                        "preValidation": "Provide tags that will be used for all resources.",
+                        "postValidation": "Done"
+                    },
+                    "bladeTitle": "Tags",
+                    "bladeSubtitle": "Tags",
+                    "elements": [
+                        {
+                            "name": "tagsByResource",
+                            "label": "Tags by Resource",
+                            "type": "Microsoft.Common.TagsByResource",
+                            "visible": true,
+                            "resources": [
+                                "DataManagementAnalytics"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "outputs": {
+            "kind": "ResourceGroup",
+            "location": "[steps('basics').deploymentDetails.locationName]",
+            "resourceGroupId": "[steps('basics').deploymentDetails.resourceGroupId]",
+            "parameters": {
+                "location": "[if(empty(steps('basics').deploymentDetails.locationName), '', steps('basics').deploymentDetails.locationName)]",
+                "environment": "[if(empty(steps('basics').dataProductName.environment), '', steps('basics').dataProductName.environment)]",
+                "prefix": "[if(empty(steps('basics').dataProductName.dataProductPrefix), '', steps('basics').dataProductName.dataProductPrefix)]",
+                "processingService": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService)]",
+                "datalakeFileSystemIds": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.machineLearningStorageAccountFileSystemId), parse('[]'), parse(concat('[\"', steps('generalSettings').machineLearningDeploymentSettings.machineLearningStorageAccountFileSystemId, '\"]')))]",
+                "aksId": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.aksId), '', steps('generalSettings').machineLearningDeploymentSettings.aksId)]",
+                "externalContainerRegistryId": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.containerRegistryId), '', steps('generalSettings').machineLearningDeploymentSettings.containerRegistryId)]",
+                "machineLearningComputeInstance001AdministratorObjectId": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.machineLearningComputeInstance001AdministratorObjectId), '', steps('generalSettings').machineLearningDeploymentSettings.machineLearningComputeInstance001AdministratorObjectId)]",
+                "machineLearningComputeInstance001AdministratorPublicSshKey": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.machineLearningComputeInstance001AdministratorPublicSshKey), '', steps('generalSettings').machineLearningDeploymentSettings.machineLearningComputeInstance001AdministratorPublicSshKey)]",
+                "administratorPassword": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.administratorPassword), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.administratorPassword)]",
+                "synapseDefaultStorageAccountFileSystemId": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemId), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemId)]",
+                "enableSqlPool": "[steps('generalSettings').dataProcessingServiceDeploymentSettings.enableSqlPool]",
+                "purviewId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewId.id)]",
+                "purviewManagedStorageId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewApi.properties.managedResources.storageAccount)]",
+                "purviewManagedEventHubId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewApi.properties.managedResources.eventHubNamespace)]",
+                "databricksWorkspaceId": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.databricksId), '', steps('generalSettings').machineLearningDeploymentSettings.databricksId)]",
+                "databricksWorkspaceUrl": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.databricksWorkspaceUrl.properties.workspaceUrl), '', steps('generalSettings').machineLearningDeploymentSettings.databricksWorkspaceUrl.properties.workspaceUrl)]",
+                "databricksAccessToken": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.databricksAccessToken), '', steps('generalSettings').machineLearningDeploymentSettings.databricksAccessToken)]",
+                "enableRoleAssignments": "[steps('generalSettings').generalSettings.enableRoleAssignments]",
+                "cognitiveServiceKinds": "[if(empty(steps('generalSettings').generalSettings.cognitiveServiceKinds), parse('[]'), steps('generalSettings').generalSettings.cognitiveServiceKinds)]",
+                "enableSearch": "[steps('generalSettings').generalSettings.enableSearch]",
+                "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",
+                "privateDnsZoneIdKeyVault": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault)]",
+                "privateDnsZoneIdSynapseDev": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev)]",
+                "privateDnsZoneIdSynapseSql": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseSql), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseSql)]",
+                "privateDnsZoneIdDataFactory": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdDataFactory), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdDataFactory)]",
+                "privateDnsZoneIdDataFactoryPortal": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdDataFactoryPortal), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdDataFactoryPortal)]",
+                "privateDnsZoneIdCognitiveService": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdCognitiveService), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdCognitiveService)]",
+                "privateDnsZoneIdContainerRegistry": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdContainerRegistry), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdContainerRegistry)]",
+                "privateDnsZoneIdSearch": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSearch), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSearch)]",
+                "privateDnsZoneIdBlob": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdBlob), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdBlob)]",
+                "privateDnsZoneIdFile": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdFile), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdFile)]",
+                "privateDnsZoneIdMachineLearningApi": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningApi), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningApi)]",
+                "privateDnsZoneIdMachineLearningNotebooks": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningNotebooks), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningNotebooks)]",
+                "tags": "[if(not(contains(steps('tags').tagsByResource, 'DataManagementAnalytics')), parse('{}'), first(map(parse(concat('[', string(steps('tags').tagsByResource), ']')), (item) => item.DataManagementAnalytics)))]"
+            }
+        }
+    }
+}

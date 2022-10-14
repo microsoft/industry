@@ -2,7 +2,7 @@ name: Lint Code Base
 
 on:
   push:
-    branches-ignore: [master]
+    branches: [main]
   pull_request:
     branches: [main]
 
@@ -27,6 +27,7 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ARM: false
           VALIDATE_JSCPD: false
           VALIDATE_JSON: false
           FILTER_REGEX_EXCLUDE: (/.devcontainer/|/reference/)

@@ -5,7 +5,7 @@ This document outlines recommendations in order to leverage Microsoft Teams acro
 
 | Reference implementation | Description | Deploy |
 |:----------------------|:------------|--------|
-| Microsoft Teams for Healthcare | Microsoft Teams environment with recommended policies, templates and integrations enabled for Healthcare|[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)]()
+| Microsoft Teams for Healthcare | Microsoft Teams environment with recommended policies, templates and integrations enabled for Healthcare|[![Deploy To Microsoft Cloud](../../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/solutioncenter-healthcare)
 
 
 ## Prerequisites
@@ -18,9 +18,8 @@ This document outlines recommendations in order to leverage Microsoft Teams acro
 
 The following [Azure AD roles](https://docs.microsoft.com/en-us/azure/active-directory/roles/permissions-reference) are required to configure the various healthcare scenarios:
 
--   Teams deployment/configuration: Teams administrator
-
--   [Enable Microsoft Bookings](https://docs.microsoft.com/en-us/microsoft-365/bookings/turn-bookings-on-or-off?view=o365-worldwide) (one-off tenant wide setting): Global Administrator
+- Teams deployment/configuration: Teams administrator
+- [Enable Microsoft Bookings](https://docs.microsoft.com/en-us/microsoft-365/bookings/turn-bookings-on-or-off?view=o365-worldwide) (one-off tenant wide setting): Global Administrator
 
 ## Recommendations
 ### Policies
@@ -48,3 +47,7 @@ Teams template policies let you create and set up policies for people in your or
 Messaging policies are used to control what chat and channel messaging features are available to users in Teams.
 
 [Manage messaging policies in Teams - Microsoft Teams \| Microsoft Docs](https://docs.microsoft.com/en-US/microsoftteams/messaging-policies-in-teams?WT.mc_id=TeamsAdminCenterCSH)
+
+---
+
+[Back to documentation root](../../../README.md)

@@ -1,0 +1,44 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "logAnalyticsResourceId": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the resourceId to your Log Analytics workspace that will receive the AAD auding/sign-in logs."
+            }
+        }
+    },
+    "resources": [
+        {
+            "type": "microsoft.aadiam/diagnosticSettings",
+            "apiVersion": "2017-04-01",
+            "scope": "/",
+            "name": "[concat(split(parameters('logAnalyticsResourceId'), '/')[8])]",
+            "properties": {
+                "workspaceId": "[parameters('logAnalyticsResourceId')]",
+                "logAnalyticsDestinationType": null,
+                "logs": [
+                    {
+                        "category": "AuditLogs",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 0,
+                            "enabled": false
+                        }
+                    },
+                    {
+                        "category": "SignInLogs",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 0,
+                            "enabled": false
+                        }
+                    }
+                ],
+                "metrics": []
+            }
+        }
+    ],
+    "outputs": {}
+}

@@ -1,5 +1,5 @@
 #Connect-AzAccount -Tenant "<Tenant ID >" -Subscription "<subscription ID>"
-
+$fhirservice = 'https://yourfhirservice.fhir.azurehealthcareapis.com/'
 $token = (Get-AzAccessToken -ResourceUrl $fhirservice).token
 
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
@@ -9,18 +9,14 @@ function DownloadFilesFromRepo {
     Param(
         [string]$Owner,
         [string]$Repository,
-        [string]$Path,
-        [string]$fhirservice
+        [string]$Path
         )
         $baseUri = "https://api.github.com/"
-        $wr = Invoke-WebRequest -Uri $($baseuri+$args)
+        $exurl = "repos/$Owner/$Repository/contents/$Path"
+        $wr = Invoke-WebRequest -Uri $($baseuri+$exurl)
         $objects = $wr.Content | ConvertFrom-Json
         $files = $objects | Where-Object {$_.type -eq "file"} | Select-Object -exp download_url
-        $directories = $objects | Where-Object {$_.type -eq "dir"}
-        $directories | ForEach-Object {
-            DownloadFilesFromRepo -Owner $Owner -Repository $Repository -Path $_.path -DestinationPath $($DestinationPath+$_.name)
-        }
-        foreach ($file in $files[0]) {
+        foreach ($file in $files) {
             $dlfile = Invoke-WebRequest -Uri $file
             try {
 
@@ -35,4 +31,4 @@ function DownloadFilesFromRepo {
             }
         }
     }
-    DownloadFilesFromRepo -Owner 'esbran' -Repository 'CatHealthAPI' -Path 'sampledata/fhir/' -fhirservice 'https://eshealthapi-espenhealthfhir.fhir.azurehealthcareapis.com'
+    DownloadFilesFromRepo -Owner 'yourGitHub' -Repository 'yourRepo' -Path 'sampledata/fhir/'

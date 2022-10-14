@@ -1,0 +1,67 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rgName": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the Resource Group name that will contain the Power Platform accounts resourceType."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the location where the Resource Group should be created."
+            }
+        },
+        "powerPlatformLocation": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the location for the Power Platform resourceType (this adheres to the PP regions - and not the Azure regions)."
+            }
+        }
+    },
+    "variables": {
+        "deploymentName": "[take(concat(parameters('rgName'), '-POWERRP', '-', parameters('location')), 64)]",
+        "powerPlatformAccountsName": "[take(concat(parameters('rgName'), '-', 'PP', '-', parameters('location')), 64)]",
+        "ppAccountsDescription": "Dedicated billing subscription for Power Platform tenant for North Star Architecture"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2021-04-01",
+            "name": "[parameters('rgName')]",
+            "location": "[parameters('location')]",
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('deploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.PowerPlatform/accounts",
+                            "apiVersion": "2020-10-30-preview",
+                            "name": "[variables('powerPlatformAccountsName')]",
+                            "location": "[parameters('powerPlatformLocation')]",
+                            "properties": {
+                                "description": "[variables('ppAccountsDescription')]"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

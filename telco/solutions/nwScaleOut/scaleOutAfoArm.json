@@ -1,0 +1,443 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+        "parameters": {
+        "telcoPrefix": {
+            "type": "string",
+            "maxLength": 10,
+            "metadata": {
+                "description": "Provide a prefix (max 10 characters, unique at tenant-scope) for the Management Group hierarchy and other resources created as part of Enterprise-scale."
+            }
+        },
+        "connectivitySubscriptionId": {
+            "type": "string",
+            "defaultValue": "",
+            "maxLength": 36,
+            "metadata": {
+                "description": "Provide the subscription id of an existing, empty subscription you want to dedicate for networking."
+            }
+        },
+        "addressPrefix": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "enableVpnGw": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "enableErGw": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[deployment().location]"
+        },
+        "enableHub": {
+            "type": "string",
+            "allowedValues": [
+                "vhub",
+                "vwan",
+                "nva"
+            ],
+            "defaultValue": "vhub"
+        },
+        "enableAzFw": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
+        },
+        "enableAzFwDnsProxy": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
+        },
+        "enableDdoS": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "enablePrivateDnsZones": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "subnetMaskForAzFw": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "subnetMaskForGw": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "gwRegionalOrAz": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "gwAzSku": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "gwRegionalSku": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "erRegionalOrAz": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "erAzSku": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "erRegionalSku": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "firewallSku": {
+            "type": "string",
+            "allowedValues": [
+                "Standard",
+                "Premium"
+            ],
+            "defaultValue": "Standard"
+        },
+        "firewallZones": {
+            "type": "array",
+            "defaultValue": []
+        }
+    },
+    "variables": {
+        "deploymentUris": {
+            "resourceGroup": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/subscriptionTemplates/resourceGroup.json",
+            "privateDns": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/resourceGroupTemplates/privateDnsZones.json",
+            "ddosProtection": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/resourceGroupTemplates/ddosProtection.json",
+            "hubSpokeAzFw": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/subscriptionTemplates/hubspoke-connectivity.json",
+            "hubSpokeNva": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/subscriptionTemplates/nvahubspoke-connectivity.json",
+            "vWanAzFw": "https://raw.githubusercontent.com/Azure/Enterprise-Scale/main/eslzArm/subscriptionTemplates/vwan-connectivity.json"
+        },
+        "deploymentNames": {
+            "privateDnsRg": "Telco-Rg-DNS",
+            "ddos": "Telco-Ddos",
+            "privateDns": "Telco-Private-DNS",
+            "hubSpokeAzFw": "Telco-HubSpoke-Scale",
+            "hubSpokeNva": "Telco-HubSpokeNva-Scale",
+            "vWanAzFw": "Telco-Vwan-Scale"
+        },
+        "platformRgNames": {
+            "connectivityRg": "[concat(parameters('telcoPrefix'), '-vnethub-', parameters('location'))]",
+            "ddosRg": "[concat(parameters('telcoPrefix'), '-ddos')]",
+            "privateDnsRg": "[concat(parameters('telcoPrefix'), '-privatedns')]"
+        },
+        // Declaring deterministic names for platform resources that will be created
+        "platformResourceNames": {
+            "vpnGwName": "[concat(parameters('telcoPrefix'), '-vpngw-', parameters('location'))]",
+            "erGwName": "[concat(parameters('telcoPrefix'), '-ergw-', parameters('location'))]",
+            "ddosName": "[concat(parameters('telcoPrefix'), '-ddos-', parameters('location'))]",
+            "azFwPolicyName": "[concat(parameters('telcoPrefix'), '-azfwpolicy-', parameters('location'))]",
+            "azFwName": "[concat(parameters('telcoPrefix'), '-fw-', parameters('location'))]",
+            "azErGwIpName": "[concat(parameters('telcoPrefix'), '-erpip-', parameters('location'))]",
+            "hubName": "[concat(parameters('telcoPrefix'), '-hub-', parameters('location'))]",
+            "vwanName": "[concat(parameters('telcoPrefix'), '-vwan-', parameters('location'))]",
+            "azVpnGwIpName": "[concat(parameters('telcoPrefix'), '-gwpip-', parameters('location'))]",
+            "azFwIpName": "[concat(parameters('telcoPrefix'), '-fwpip-', parameters('location'))]"
+        },
+        "platformResourceIds": {
+            "ddosProtectionResourceId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('platformRgNames').ddosRg, '/providers/Microsoft.Network/ddosProtectionPlans/', variables('platformResourceNames').ddosName)]",
+            "vNetHubResourceId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('platformRgNames').connectivityRg, '/providers/Microsoft.Network/virtualNetworks/', variables('platformResourceNames').hubName)]",
+            "vWanHubResourceId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('platformRgNames').connectivityRg, '/providers/Microsoft.Network/virtualHubs/', variables('platformResourceNames').hubName)]",
+            "privateDnsRgResourceId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('platformRgNames').privateDnsRg)]",
+            "azFirewallResourceId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('platformRgNames').connectivityRg, '/providers/Microsoft.Network/azureFirewalls/', variables('platformResourceNames').azFwName)]"
+        },
+        "privateDnsZones": [
+            "privatelink.azure-automation.net",
+            "privatelink.database.windows.net",
+            "privatelink.sql.azuresynapse.net",
+            "privatelink.blob.core.windows.net",
+            "privatelink.table.core.windows.net",
+            "privatelink.queue.core.windows.net",
+            "privatelink.file.core.windows.net",
+            "privatelink.web.core.windows.net",
+            "privatelink.dfs.core.windows.net",
+            "privatelink.documents.azure.com",
+            "privatelink.mongo.cosmos.azure.com",
+            "privatelink.cassandra.cosmos.azure.com",
+            "privatelink.gremlin.cosmos.azure.com",
+            "privatelink.postgres.database.azure.com",
+            "privatelink.mysql.database.azure.com",
+            "privatelink.mariadb.database.azure.com",
+            "privatelink.vaultcore.azure.net",
+            "[concat('privatelink.', parameters('location'), '.azmk8s.io')]",
+            "privatelink.search.windows.net",
+            "privatelink.azurecr.io",
+            "privatelink.azconfig.io",
+            "[concat('privatelink.', parameters('location'), '.backup.windowsazure.com')]",
+            "[concat(parameters('location'), '.privatelink.siterecovery.windowsazure.com')]",
+            "privatelink.servicebus.windows.net",
+            "privatelink.azure-devices.net",
+            "privatelink.eventgrid.azure.net",
+            "privatelink.azurewebsites.net",
+            "privatelink.api.azureml.ms",
+            "privatelink.notebooks.azure.net",
+            "privatelink.service.signalr.net",
+            "privatelink.monitor.azure.com",
+            "privatelink.oms.opsinsights.azure.com",
+            "privatelink.ods.opsinsights.azure.com",
+            "privatelink.agentsvc.azure-automation.net",
+            "privatelink.cognitiveservices.azure.com",
+            "privatelink.afs.azure.net",
+            "privatelink.datafactory.azure.com",
+            "privatelink.adf.azure.com",
+            "privatelink.redis.cache.windows.net"
+        ]
+    },
+    "resources": [
+        {
+            "condition": "[equals(parameters('enablePrivateDnsZones'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('deploymentNames').privateDnsRg]",
+            "location": "[parameters('location')]",
+            "subscriptionId": "[parameters('connectivitySubscriptionId')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').resourceGroup]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('platformRgNames').privateDnsRg]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('enablePrivateDnsZones'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(variables('deploymentNames').privateDns, copyIndex())]",
+            "subscriptionId": "[parameters('connectivitySubscriptionId')]",
+            "resourceGroup": "[variables('platformRgNames').privateDnsRg]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').privateDnsRg)]"
+            ],
+            "copy": {
+                "name": "dnsZones",
+                "count": "[length(variables('privateDnsZones'))]"
+            },
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').privateDns]"
+                },
+                "parameters": {
+                    "privateDnsZoneName": {
+                        "value": "[concat(variables('privateDnsZones')[copyIndex()])]"
+                    },
+                    "connectivityHubResourceId": {
+                        "value": "[variables('platformResourceIds').vNetHubResourceId]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('enableDdoS'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('deploymentNames').ddos]",
+            "location": "[parameters('location')]",
+            "subscriptionId": "[parameters('connectivitySubscriptionId')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').ddosProtection]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('platformRgNames').ddosRg]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('enableHub'), 'vhub')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('deploymentNames').hubSpokeAzFw]",
+            "subscriptionId": "[parameters('connectivitySubscriptionId')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ddos)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').hubSpokeAzFw]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('telcoPrefix')]"
+                    },
+                    "addressPrefix": {
+                        "value": "[parameters('addressPrefix')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "enableHub": {
+                        "value": "[parameters('enableHub')]"
+                    },
+                    "enableAzFw": {
+                        "value": "[parameters('enableAzFw')]"
+                    },
+                    "ddosPlanResourceId": {
+                        "value": "[variables('platformResourceIds').ddosProtectionResourceId]"
+                    },
+                    "enableAzFwDnsProxy": {
+                        "value": "[parameters('enableAzFwDnsProxy')]"
+                    },
+                    "enableVpnGw": {
+                        "value": "[parameters('enableVpnGw')]"
+                    },
+                    "enableErGw": {
+                        "value": "[parameters('enableErGw')]"
+                    },
+                    "enableDdoS": {
+                        "value": "[parameters('enableDdoS')]"
+                    },
+                    "subnetMaskForAzFw": {
+                        "value": "[parameters('subnetMaskForAzFw')]"
+                    },
+                    "connectivitySubscriptionId": {
+                        "value": "[parameters('connectivitySubscriptionId')]"
+                    },
+                    "subnetMaskForGw": {
+                        "value": "[parameters('subnetMaskForGw')]"
+                    },
+                    "firewallSku": {
+                        "value": "[parameters('firewallSku')]"
+                    },
+                    "firewallZones": {
+                        "value": "[parameters('firewallZones')]"
+                    },
+                    "gwRegionalOrAz": {
+                        "value": "[parameters('gwRegionalOrAz')]"
+                    },
+                    "gwAzSku": {
+                        "value": "[parameters('gwAzSku')]"
+                    },
+                    "gwRegionalSku": {
+                        "value": "[parameters('gwRegionalSku')]"
+                    },
+                    "erRegionalOrAz": {
+                        "value": "[parameters('erRegionalOrAz')]"
+                    },
+                    "erAzSku": {
+                        "value": "[parameters('erAzSku')]"
+                    },
+                    "erRegionalSku": {
+                        "value": "[parameters('erRegionalSku')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('enableHub'), 'nva')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').hubSpokeNva]",
+            "subscriptionId": "[parameters('connectivitySubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ddos)]"
+            ],
+            "location": "[parameters('location')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').hubSpokeNva]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('telcoPrefix')]"
+                    },
+                    "ddosPlanResourceId": {
+                        "value": "[variables('platformResourceIds').ddosProtectionResourceId]"
+                    },
+                    "enableHub": {
+                        "value": "[parameters('enableHub')]"
+                    },
+                    "addressPrefix": {
+                        "value": "[parameters('addressPrefix')]"
+                    },
+                    "enableVpnGw": {
+                        "value": "[parameters('enableVpnGw')]"
+                    },
+                    "enableErGw": {
+                        "value": "[parameters('enableErGw')]"
+                    },
+                    "enableDdoS": {
+                        "value": "[parameters('enableDdoS')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "connectivitySubscriptionId": {
+                        "value": "[parameters('connectivitySubscriptionId')]"
+                    },
+                    "subnetMaskForGw": {
+                        "value": "[parameters('subnetMaskForGw')]"
+                    },
+                    "gwRegionalOrAz": {
+                        "value": "[parameters('gwRegionalOrAz')]"
+                    },
+                    "gwAzSku": {
+                        "value": "[parameters('gwAzSku')]"
+                    },
+                    "gwRegionalSku": {
+                        "value": "[parameters('gwRegionalSku')]"
+                    },
+                    "erRegionalOrAz": {
+                        "value": "[parameters('erRegionalOrAz')]"
+                    },
+                    "erAzSku": {
+                        "value": "[parameters('erAzSku')]"
+                    },
+                    "erRegionalSku": {
+                        "value": "[parameters('erRegionalSku')]"
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,64 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appInsightsName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of Application Insights resource."
+            }
+        },
+        "workspaceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Log Analytics workspace."
+            }
+        },
+        "type": {
+            "type": "string",
+            "defaultValue": "web",
+            "metadata": {
+                "description": "Type of app you are deploying. This field is for legacy reasons and will not impact the type of App Insights resource you deploy."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Select the Azure region you want to deploy your Application Insights and Log Analytics workspace into."
+            }
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.OperationalInsights/workspaces",
+            "apiVersion": "2020-10-01",
+            "name": "[parameters('workspaceName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "features": {
+                    "enableLogAccessUsingOnlyResourcePermissions": true
+                },
+                "retentionInDays": 30,
+                "sku": {
+                    "name": "PerGB2018"
+                }
+            }
+        },
+        {
+            "type": "microsoft.insights/components",
+            "apiVersion": "2020-02-02",
+            "name": "[parameters('appInsightsName')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))]"
+            ],
+            "properties": {
+                "ApplicationId": "[parameters('appInsightsName')]",
+                "Application_Type": "[parameters('type')]",
+                "Flow_Type": "Redfield",
+                "Request_Source": "CustomDeployment",
+                "WorkspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))]"
+            }
+        }
+    ]
+}
