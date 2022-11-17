@@ -33,3 +33,5 @@ The following table summarizes the Azure Policies that are recommended to be ass
 |---------------------------------------------|-----------------------------------------------------------------------------------------------------|---------|
 | Ensure Zone Redundant Gateways are deployed | Ensures that ExpressRoute gateways for Telco specialized workloads are deployed as highly-available | 1.0.0   |
 | Ensure Public IPs are Zone Redundant        | Ensures that Public Ip addresses for Telco specialized workloads are deployed as highly-available   | 1.0.0   |
+
+[Back to Azure for Telecommunications](../README.md)

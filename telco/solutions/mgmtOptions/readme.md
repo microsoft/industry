@@ -108,4 +108,4 @@ For Operators considering Azure Managed Application as a way to package, distrib
 
 ---
 
-[Back to documentation root](/README.md)
+[Back to Azure for Telecommunications](../../README.md)

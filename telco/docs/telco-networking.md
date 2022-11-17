@@ -168,3 +168,5 @@ This article describes considerations and recommendations on how rules and rule 
 
     ![Figure 6: example of standard Git pull request workflow with approval](./gitWorkflow.png)
     _Figure 6: example of standard Git pull request workflow with approval_
+
+[Back to Azure for Telecommunications](../README.md)

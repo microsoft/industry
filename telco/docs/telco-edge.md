@@ -6,4 +6,4 @@
 
 ---
 
-[Back to documentation root](../../../)
+[Back to Azure for Telecommunications](../README.md)
