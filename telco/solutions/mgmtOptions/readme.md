@@ -32,7 +32,7 @@ _Figure 1: Azure Active Directoy B2B._
 * Guests are using their own identities and credentials, and are managing their own accounts and passwords.
 * Authorization policies can be used to protect your corporate content, such as Conditional Access policies and multi-factor authentication.
 * Administration of guest users can be [delegated](https://docs.microsoft.com/azure/active-directory/external-identities/delegate-invitations) to application owners.
-* Application owners who need to grant access to Azure must have *Microsoft.Authorization/roleAssignments/write* permission, which is included in the *Owner* and *User Access Administrator* built-in roles.
+* Application owners who need to grant access to Azure must have _Microsoft.Authorization/roleAssignments/write_ permission, which is included in the _Owner_ and _User Access Administrator_ built-in roles.
 * If the guest accounts are subject to multi-factor authentication within their Azure Active Directory, and this is also enabled in the customer's Azure Active Directory, the guest users might have to perform the authentication once in their home organization, and then in the customer organization.
 
 ### Design recommendations
@@ -55,9 +55,9 @@ For Operator's considering Azure Lighthouse to manage and operate their customer
 
 ### Design considerations
 
-* Principal IDs in the Operators tenant can only be associated with Azure built-in RBAC, and the highest privilege that can be used is *Contributor*.
+* Principal IDs in the Operators tenant can only be associated with Azure built-in RBAC, and the highest privilege that can be used is _Contributor_.
 * Azure AD Privileged Identity Management can be leveraged on the Operator Azure AD tenant, providing additional security confirmation to their customers that users are subject to just-in-time access, access reviews, approval process, multi-factor authentication and more.
-* All *write* operations (create, update, and delete) in the customer subscription(s) is transparent for both parties in the Azure Activity log.
+* All _write_ operations (create, update, and delete) in the customer subscription(s) is transparent for both parties in the Azure Activity log.
 * Customers can at any point in time remove the permissions given to users from the Operators Azure AD.
 * When a customer grants access (via onboarding of the Operator), an event is written to the Operator's directory (tenant) activity log. The same happens when permission is revoked.
 * Onboarding of an Operator managed service provider can only be done using an Azure Resource Manager template in the customer subscription.
@@ -69,13 +69,13 @@ For Operator's considering Azure Lighthouse to manage and operate their customer
 * If required by the customer, use Azure AD PIM enabled in the Operator's Azure AD tenant to provide additional, enterprise security capabilities when accessing customer resources.
 * Enable a notification workflow to monitor when new customers are either onboarding to the Operator managed service provider, or are revoking access.
 * Use one or more dedicated subscriptions in the Operator tenant to host and run the requisite management services/tools to operate across multiple customer tenants.
-* Ensure you have an Azure AD group present in the Azure Resource Manager template that is mapped to the *Managed Services Registration assignment Delete Role*, so you can opt-out from a customer if it's required.
+* Ensure you have an Azure AD group present in the Azure Resource Manager template that is mapped to the _Managed Services Registration assignment Delete Role_, so you can opt-out from a customer if it's required.
 * Use Azure AD Groups to organize the various personas and access requirements needed to operate the customers, so clear separation of duties from the Operator tenant is established.
 * For updates required to the authorization needed for the Operator identities, the customer must re-deploy the Azure Resource Manager template with the changes for it to be reflected back to the Operator tenant.
 
 ## Azure Managed Application
 
-Azure Managed Application is a capability for ISVs and service providers to deliver turn-key applications to Azure customers directly from the Azure marketplace. Customers deploy via self-service, and once provisioned, the ISV/service provider will have cross-tenant RBAC permission on the *managed resource group*, which contains all the required infrastructure for the services they are delivering, that customers can use and integrate with other Azure services they may have.
+Azure Managed Application is a capability for ISVs and service providers to deliver turn-key applications to Azure customers directly from the Azure marketplace. Customers deploy via self-service, and once provisioned, the ISV/service provider will have cross-tenant RBAC permission on the _managed resource group_, which contains all the required infrastructure for the services they are delivering, that customers can use and integrate with other Azure services they may have.
 
 Figure 3 depicts how the Managed Application construct works, and the cross-tenant RBAC authorization at the managed resource group scope, granting principal IDs from the remote Azure AD tenant permissions directly on the managed resource group in a customer tenant's Azure subscription.
 
@@ -87,7 +87,7 @@ For Operators considering Azure Managed Application as a way to package, distrib
 ### Design considerations
 
 * Managed Application requires Azure Resource Manager template(s) and a User Interface definition, that must be versioned and published to the Azure Marketplace via [Partner Center](https://partner.microsoft.com/dashboard/home).
-* Azure AD Privileged Identity Management can be used on the *customer's* Azure AD tenant where they can approve just-in-time authorization requests by the telco operators.
+* Azure AD Privileged Identity Management can be used on the _customer's_ Azure AD tenant where they can approve just-in-time authorization requests by the telco operators.
 * You can enable any customer subscription to purchase and deploy your Managed Application, or you can enable this per subscription(s) manually.
 * When customer is deploying a Managed Application, they will see two resource groups where the managed resource group cannot be altered by the customer.
 * Due to how the managed resource group is being locked (using deny assignment), only the Operator can access, create, and change the Azure resources within.
@@ -102,10 +102,10 @@ For Operators considering Azure Managed Application as a way to package, distrib
 * Ensure the resource types (Azure services) you have for the application composition can be deployed in the regions that you allow for.
 * Prepare and configure integration with your customer relationship management system so you can track - and provide proactive customer services when your Managed Application is deployed by customers.
 * Allow the customer to provide tags to the resources created during the Managed Application deployment so they can organize, and query resources using Azure Resource Manager.
-* Ensure *Security Reader* built-in role is mapped to your Azure AD Group/user in order to monitor security risks when the customer is using Microsoft Defender for Cloud on the subscription(s).
+* Ensure _Security Reader_ built-in role is mapped to your Azure AD Group/user in order to monitor security risks when the customer is using Microsoft Defender for Cloud on the subscription(s).
 * Bring your own storage account when you need encryption using your own keys.
 * Use Azure Virtual Network Service Tags to define network access controls on network security groups or Azure Firewall configured for your Managed Application resources.
 
 ---
 
-[Back to documentation root](/README.md)
+[Back to Azure for Telecommunications](../../README.md)

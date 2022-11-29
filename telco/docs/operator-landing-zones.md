@@ -90,3 +90,5 @@ Readers are strongly advised to familiarize themselves with the Azure Mission-Cr
   ![Figure 4: Multiple stamps across availability zones](./zonal-deployment-multiple-stamps.png)
 
    _Figure 4: Multiple stamps across availability zones._
+
+[Back to Azure for Telecommunications](../README.md)
