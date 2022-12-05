@@ -152,7 +152,7 @@ Microsoft Cloud for Financial Services provides capabilities to manage data to d
 
 - [Financial Services Foundations (Recommended)](./fsi/prereqs.md)
   - [Power Platform for Financial Services](./foundations/powerPlatform)
-  - [Azure for Financial Services](./fsi/readme.md)
+  - [Azure for Financial Services](./fsi/README.md)
     - [Service enablement framework](./fsi/solutions/serviceEnablementFramework)
   - [Azure Synapse for Banking](./fsi/solutions/synapseBanking)
 
