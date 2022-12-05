@@ -21,7 +21,7 @@ This article provides a reference architecture with prescriptive guidance and re
 * [Solutions](#solutions)
   * [Payment Gateway](#network-analytics-landing-zones-for-operators)
   * [Banking Desktop solution](#edge-video-services)
-  * [Business Process Framework for FSI](#bpf-for-fsi)
+  * [Compliant workload accelerators for FSI](#bpf-for-fsi)
 * [Next Steps](#next-steps)
 
 ## FSI Landing Zones Reference Implementation

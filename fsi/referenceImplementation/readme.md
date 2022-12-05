@@ -1,8 +1,10 @@
 # FSI Landing Zones on Microsoft Azure User Guide
 
+![fsilzoverview](../docs/fsilandingpage.png)
+
 This user guide explains the FSI Landing Zones on Microsoft Azure reference implementation, what it is, what it does, and how FSI organizations can use this as a starting point in their tenant - either for greenfield or brownfield deployments, to achieve a secure-by-default, and scalable Azure platform and landing zones regardless of their scale-point.
 
-> Note: This reference implementation has been developed, validated, and proven with several of Microsoft's largest FSI customers, and represent the best practices for the FSI industry to accelerate a safe and secure digital transformation.
+> Note: This reference implementation has been developed, validated, and proven with several of Microsoft's largest FSI customers, and represent the best practices for the FSI industry to accelerate a safe and secure digital transformation for the organization as a whole on Microsoft Azure.
 
 ## Table of Contents
 
@@ -10,21 +12,21 @@ This user guide explains the FSI Landing Zones on Microsoft Azure reference impl
 - [Pricing](#pricing)
 - [What if I already have an existing Azure footprint?](#what-if-i-already-have-an-existing-azure-footprint)
 - [How FSI Landing Zones reference implementation works](#how-FSI-landing-zones-reference-implementation-works)
- - [FSI Landing Zones design principles](#fsi-landing-zones-design-principles)
- - [Subscription Democratization](#subscription-democratization)
- - [Policy Driven Governance](#policy-driven-governance)
- - [Single Control and Management Plane](#single-control-and-management-plane)
- - [Application Centric and Archetype-neutral](#application-centric-and-archetype-neutral)
- - [Azure native design and aligned with platform roadmap](#application-native-design-and-aligned-with-platform-roadmap)
- - [Separating platform and landing zones](#separating-platform-and--landing-zones)
- - [Platform responsibilities and functions](#platform-responsibilities-and-functions)
- - [Landing zone owners and application team's responsibilities](#landing-zone-owners-and-application-teams-responsibilities)
- - [FSI Landing Zones Management Group Structure](#fsi-landing-zones-management-group-structure)
- - [Secure-by-default](#secure-by-default)
- - [What happens when you deploy FSI Landing Zones](#what-happens-when-you-deploy-azure-for-telco)
+- [FSI Landing Zones design principles](#fsi-landing-zones-design-principles)
+  - [Subscription Democratization](#subscription-democratization)
+  - [Policy Driven Governance](#policy-driven-governance)
+  - [Single Control and Management Plane](#single-control-and-management-plane)
+  - [Application Centric and Archetype-neutral](#application-centric-and-archetype-neutral)
+  - [Azure native design and aligned with platform roadmap](#application-native-design-and-aligned-with-platform-roadmap)
+- [Separating platform and landing zones](#separating-platform-and--landing-zones)
+- [Platform responsibilities and functions](#platform-responsibilities-and-functions)
+  - [Landing zone owners and application team's responsibilities](#landing-zone-owners-and-application-teams-responsibilities)
+- [FSI Landing Zones Management Group Structure](#fsi-landing-zones-management-group-structure)
+- [Secure-by-default](#secure-by-default)
+- [What happens when you deploy FSI Landing Zones](#what-happens-when-you-deploy-azure-for-telco)
 - [Deployment instructions](#deployment-instructions)
- - [Pre-requisites](#pre-requisites)
- - [Step-by-step guidance](#step-by-step-guidance)
+  - [Pre-requisites](#pre-requisites)
+  - [Step-by-step guidance](#step-by-step-guidance)
 
 ---
 FSI Landing Zones on Microsoft Azure reference architecture provides prescriptive guidance coupled with Azure best practices for the financial services industry, and it follows 5 design principles across the 8 critical design areas for organizations to define their target state for their Azure architecture.
