@@ -1,26 +1,52 @@
-# Financial Services
+# Financial Services Industry (FSI) Landing Zones on Microsoft Azure
 
-Overall architecture for Microsoft Cloud for Financial Services.
+The FSI Landing Zones on Microsoft Azure is an architecture and design methdology, with a proven reference implementation that is developed after years of learnings and experience, working closely with our most complex and sophisticated customers in the financial services industry.
 
-| Industry Architecture | Description | Deploy |
-|:----------------------|:------------|--------|
-| Azure for FSI | Azure for FSI foundation  provides full architecture with landing zones for FSI industry |Coming Soon
-| Power Platform for FSI | Coming Soon | Coming Soon
-| Microsoft Teams for FSI | Coming Soon | Coming Soon
+Due to being in a highly regulated industry, where strict and non-negotionable compliance requirements must be met and is the nature of the FSI business, organizations in the FSI industry have unique requirements compared to other organizations of similar scale. Such requirements include.
 
-![Financial Services Industry Reference Architecture](./docs/mc4f-reference-architecture.png)
+* Delivery of a secure-by-default infrastructure that meets the regulatory compliance requirements, every hour, every day, and every year.
+* Highly-resillient foundation to ensure mission-critical applications - such as payment gateways are meeting the required service level agreement(s) (SLA).
+* Foundation that caters for generic - and industry specific workloads and scenarios, with balancing various degree of security and compliance requirements. 
 
-| Subject | Description |
-|:---------------------------|:------------|
-| [Financial Services Foundations (Recommended)](./fsi/prereqs.md) | Prerequisites
-| Customer and employee experience
-| [Unified customer profile](./solutions/unifiedCustomerProfile) | Help tailor customer experiences via a comprehensive view of the customer's financial situation
-| [Customer onboarding](./solutions/customerOnboarding) | Provide customers with easy-access loan apps and self-service tools, streamlining the loan process to help enhance customer experience and loyalty
-| [Collaboration manager](./solutions/collaborationManager) | Enable automation, collaboration, and communications to help accelerate lending processes, minimize errors, and enhance customer experience
-| [Banking customer engagement](./solutions/bankingCustomerEngagement) | Help personalize customer interactions with relevant financial information to accelerate time to resolution
-| Financial crime protection
-| [Account protection](./solutions/accountProtection) | Help prevent fraudulent digital account creation and account takeover
-| [Purchase protection](./solutions/purchaseProtection) | Help provide a differentiated experience for merchants to improve revenue and retention
-| Compliance, privacy, and security
-| [Risk assurance and support](./solutions/riskAssurance) | White glove service to support risk, audit, and compliance teams in addressing financial services regulatory compliance, cybersecurity, and privacy
-| [Regulatory compliance assessments](./solutions/complianceAssessments) | Assess, monitor, and help improve compliance posture with global, regional, and industry regulations and standards
+This article provides a reference architecture with prescriptive guidance and recommendations for the FSI industry on Microsoft Azure.
+
+## Table of contents
+
+* [FSI Landing Zones Reference Implementations](#fsi-landing-zones-reference-implementation)
+* [FSI Landing Zones](#fsi-landing-zones)
+* [High-level architecture](#high-level-architecture)
+  * [Security, Governance, and Compliance for FSI Industry Scenarios](#letter-a)
+  * [Service Enablement Framework for FSI Industry Scenarios](#letter-b)
+  * [Operational Excellence for production deployments](#letter-c)
+* [Solutions](#solutions)
+  * [Payment Gateway](#network-analytics-landing-zones-for-operators)
+  * [Banking Desktop solution](#edge-video-services)
+  * [Business Process Framework for FSI](#bpf-for-fsi)
+* [Next Steps](#next-steps)
+
+## FSI Landing Zones Reference Implementation
+
+| Reference Implementation | Description | Deploy | Documentation
+|:----------------------|:------------|--------|--------------|
+| FSI Landing Zones | FSI Landing Zones foundation that provides a full, rich, compliant architecture with scale-out pattern for secure-by default regions and landing zones, with a robust and customizable service enablement framework to accelerate adoption of Azure service and enables digital transformation |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/fsilz) | [User Guide](./referenceImplementation/readme.md)
+| 
+
+## FSI Landing Zones
+
+The FSI Landing Zones is designed-with, and built-with our largest FSI customers with global precense, and is based on proven architecture and design guidance to employ Azure at scale in a secure-by-default fashion, accelerating the digital transformation. The core foundation with landing zones underpins multiple turn-key architecture solutions, such as mission-critical payment gateways, digital banking, and the underlying Azure architecture for Microsoft Cloud for Financial Services Industry.
+
+The conceptual all-up architecture is depicted below, in comparison to generic and industry agnostic frameworks for Microsoft Azure.
+
+![fsi](./images/fsilz.png)
+
+## High-level Architecture
+
+### Security, Governance, and Compliance for FSI Industry Scenarios
+
+### Service Enablement framework for FSI Landing Zones
+
+### Operational Excellence for production deployments
+
+## Solutions
+
+### Payment Gateway
