@@ -15,7 +15,7 @@ The process of definining, mapping, and implementing the required controls can i
     * [Implementation](#letter-c)
         * [Enablement and acceleration](#enablement-and-acceleration)
     * [Evidence](#letter-d)
-* [Examples - end-2-end walkthrough](#example---end-2-end-walkthrough)
+* [Examples of end-to-end walkthrough](#examples-of-end-to-end-walkthrough)
 * [Next Steps](#next-steps)
 
 ## Operating model and required functions
@@ -49,7 +49,7 @@ The Platform DevOps team is overall responsible for the holistic architecture go
 * Architecture governance
     * Define and govern the architecture of the Azure platform, including the landing zones, and ensure that the architecture is aligned with the business and application requirements.
 * Subscription management
-    * Manage the subscription life-cycle, such as provisioning and placement into the management group structure (i.e., to ensure the right policies are in place to ensure a deterministic continuous compliance state), and de-provisioning of the subscriptions.
+    * Manage the subscription lifecycle, such as provisioning and placement into the management group structure (i.e., to ensure the right policies are in place to ensure a deterministic continuous compliance state), and de-provisioning of the subscriptions.
 * "Platform as Code"
     * Define and implement the platform as code, such as the ARM templates/code artifacts for management group structure, policy definitions/assignments, roleDefinitions/assignments and more - scoped to the platform.
 * Service Enablement (holistic)
@@ -64,7 +64,7 @@ The Platform DevOps team is overall responsible for the holistic architecture go
     * Responsible for end-to-end networking to and from Azure, managed the address space, peering, and connectivity to other cloud providers.
 ## DevOps and AppOps
 
-In comparison to the Platform DevOps team - which will be one team responsible for the overall Azure platform (holistic), there will be multiple DevOps teams depending on the size of the organization. Recommendation is to have a dedicated team for each application, as in "you build it - you run it", where they have full autonomy and ownership of their deployment pipelines and landing zones. Further, the *AppOps* team can be 1:1 per application, or 1:many, where the applications are either 1st party or 3rd party. 
+In comparison to the Platform DevOps team - which will be one team responsible for the overall Azure platform (holistic), there will be multiple DevOps teams depending on the size of the organization. Recommendation is to have a dedicated team for each application, as in "you build it - you run it", where they have full autonomy and ownership of their deployment pipelines and landing zones. Further, the *AppOps* team can be 1:1 per application, or 1:many, where the applications are either first-party - or third-party. 
 The key responsibiliies for these teams inside the landing zones are:
 * Production systems resiliency, reliablity, and availability within SLA targets
 * Development or enhancement of application DevOps pipelines
@@ -77,7 +77,12 @@ The key responsibiliies for these teams inside the landing zones are:
 * Cost management (app resources)
 * Network management (app resources)
 ## Microsoft controls
-This section outlines the controls that are provided by Microsoft to enable the FSI landing zones on Azure.
+
+As part of the Service Enablement Framework for FSI, it is key to understand how to distinguish between the controls that Microsoft is responsible for for the Azure platform and services (.e.g, ensure data in-transit encryption for data plane for Cosmos DB is enabled is a Microsoft control and responsibility, as this cannot be disabled by the customer), vs the controls that the customer is responsible for (.e.g, ensure customer-managed key option in data at rest encryption when required), as well as when the responsibility is shared (e.g., in support scenarios where Microsoft needs to access your data, use Customer Lockbox to review, then approve or reject each of Microsoft's data access requests.)
+
+Further, Azure compliance for the platform and services as a whole are based on various types of assurances, including formal certifications, attestations, validations, authorizations, and assements produced by independent third-party auditing firms, as well as contractual amendments, self-assessments, and customer guidance documents provided by Microsoft. 
+
+ Each offering description in [this document](https://azure.microsoft.com/mediahandler/files/resourcefiles/microsoft-azure-compliance-offerings/Microsoft%20Azure%20Compliance%20Offerings.pdf) provides an up to date scope statement indicating which Azure customer-facing services are in scope for the assessment, as well as links to downloadable resources to assist customers with their own compliance obligations. Azure compliance offerings are grouped into four segments: globally applicable, US government, industry specific, and region/country specific.
 
 ## Customer controls
 This section outlines the controls that are required by the customer to enable the FSI landing zones on Azure.
@@ -160,5 +165,7 @@ This section explains the implementation phase of the controls
 #### Enablement and acceleration
 This section explains the enablement and acceleration phase of the controls
 
-## Evidence
+### Evidence
 This section provides evidence of the controls
+
+## Examples of end-to-end walkthrough
