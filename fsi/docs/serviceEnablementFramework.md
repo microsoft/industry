@@ -21,6 +21,61 @@ The process of definining, mapping, and implementing the required controls can i
 ## Operating model and required functions
 This section outlines the recommended operating model and reqiured functions to operationalize the Azure platform while enabling the landing zones for an FSI organization.
 
+Sustainable engineering is key to succeed with cloud adoption, and an well-defined operating moodel is recommended that enables the organization to scale and grow, while having clear separation of duties with regards to operating the *platform* - and to operate the landing zones with the workloads.
+
+The following picture depicts the recommended operating model that has been successfully adopted by several of Microsoft's larges FSI customers, where there's clear separation of *Platform DevOps* - being the team with required functions to enable and operationalize the Azure platform, which provides the landing zones as output to the business and application teams, and the *DevOps* and *AppOps* who will be responsible for their workloads in the landing zones.
+
+![Operating model](../docs/opsmodel.png)
+
+### Platform DevOps
+
+They key functions required to compose and organize a dedicated platform team is:
+* System Ops
+    * Provides expertise for operarting systems, database technologies, and runtimes.
+* Automation Ops
+    * Provides expertise for automating the deployment and management of the platform, such as subscription provisioning into the landing zones, policy definitions/assignments, management group structure, roleDefinitions/assignments and more - scoped to the platform
+* Management Ops
+    * Provides expertise for managing the platform, such as monitoring, alerting, and reporting from a *platform* perspective.
+* Network Ops
+    * Responsible for the all-up network topology and connectivity in Azure, for hybrid connectivity (on-premises, to/from other cloud providers)
+* Security Ops
+    * Responsible for the security of the platform, such as security monitoring, threat detection, risks assessment, and governance and compliance.
+* Identity Ops
+    * Responsible for the identity and access management of the platform, such as identity management, authentication, authorization, access control, access reviews and more.
+* Customer Ops
+    * Responsible for the customer experience of the platform, such as customer support, customer enablement and success, and customer engagement. This function is helpful for overall enablement and onboarding application teams successfully to the Azure platform in their respective landing zones.
+
+The Platform DevOps team is overall responsible for the holistic architecture governance and management of the Azure platform, and from a team objective perspective, the team must have the following areas in scope:
+* Architecture governance
+    * Define and govern the architecture of the Azure platform, including the landing zones, and ensure that the architecture is aligned with the business and application requirements.
+* Subscription management
+    * Manage the subscription life-cycle, such as provisioning and placement into the management group structure (i.e., to ensure the right policies are in place to ensure a deterministic continuous compliance state), and de-provisioning of the subscriptions.
+* "Platform as Code"
+    * Define and implement the platform as code, such as the ARM templates/code artifacts for management group structure, policy definitions/assignments, roleDefinitions/assignments and more - scoped to the platform.
+* Service Enablement (holistic)
+    * Control mapping, design, implementation, and maintenance of the Azure Policy enforcement holisitically across the platform, and ensure that the Azure platform is compliant with the required controls.
+* Platform management and monitoring (holistic)
+    * Manage and monitor the Azure platform related events, signals, and metrics.
+* Role based access control (holistic)
+    * Define, implement and control the identity and access management of the Azure platform, often in partnership with on-prem identity functions for AD sync, federeation and more.
+* Key management (central service)
+    * Primarily responsible for keys required for AD domain joined virtual machines, where the key management is done centrally as this requires to be a shared service.
+* Network management (holistic)
+    * Responsible for end-to-end networking to and from Azure, managed the address space, peering, and connectivity to other cloud providers.
+## DevOps and AppOps
+
+In comparison to the Platform DevOps team - which will be one team responsible for the overall Azure platform (holistic), there will be multiple DevOps teams depending on the size of the organization. Recommendation is to have a dedicated team for each application, as in "you build it - you run it", where they have full autonomy and ownership of their deployment pipelines and landing zones. Further, the *AppOps* team can be 1:1 per application, or 1:many, where the applications are either 1st party or 3rd party. 
+The key responsibiliies for these teams inside the landing zones are:
+* Production systems resiliency, reliablity, and availability within SLA targets
+* Development or enhancement of application DevOps pipelines
+* Review and enhancement of the application design, deployment and lifecycle
+* Application migration and/or transformation
+* Application management and monitoring (app resources)
+* Key management (app keys)
+* Role based access control (app resources)
+* Security monitoring and audit (app resources)
+* Cost management (app resources)
+* Network management (app resources)
 ## Microsoft controls
 This section outlines the controls that are provided by Microsoft to enable the FSI landing zones on Azure.
 
