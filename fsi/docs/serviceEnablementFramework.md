@@ -1,4 +1,33 @@
-# Service Enablement Framework for FSI on Microsoft Azure
+# Service Enablement Framework for FSI Landing Zones on Microsoft Azure
+
+Customers in the financial services regulated industry face the challenge of defining, mapping, and enforcing their controls that are needed for them to meet the compliance and security requirements. In parallel, they must balance the need of the business and developers while empowering them to accelerate the digital transformation journey. This must all work in harmony while addressing risk, reliability, and other requirements, and also comply with frameworks and standards such as PCI DSS, NIST 800-53, SOC 1,2,3 and more.
+
+The process of definining, mapping, and implementing the required controls can in most cases be an expensive and time-consuming job, performed by "Digital Security Office", "Tech Risk Assessment" or equivalent function/team within the organization. However, this is a critical function to enable specific Azure services to be broadly adopted, and the *Service Enablement Framework for FSI Landing Zones* aim to help organizations within the financial services industry to accelerate this process, coupled with a proven, prescriptive architecture and implementation on Microsoft Azure.
+
+## Table of contents
+
+* [Operating Model and required functions](#Operating-model-and-required-functions)
+* [Microsoft controls](#microsoft-controls)
+* [Customer controls](#customer-controls)
+* [Service Enablement Framework](#service-enablement-framework)
+    * [Control mapping](#letter-a)
+    * [Design](#letter-b)
+    * [Implementation](#letter-c)
+        * [Enablement and acceleration](#enablement-and-acceleration)
+    * [Evidence](#letter-d)
+* [Examples - end-2-end walkthrough](#example---end-2-end-walkthrough)
+* [Next Steps](#next-steps)
+
+## Operating model and required functions
+This section outlines the recommended operating model and reqiured functions to operationalize the Azure platform while enabling the landing zones for an FSI organization.
+
+## Microsoft controls
+This section outlines the controls that are provided by Microsoft to enable the FSI landing zones on Azure.
+
+## Customer controls
+This section outlines the controls that are required by the customer to enable the FSI landing zones on Azure.
+
+## Service Enablement Framework
 
 As business units request to put workloads into Azure, it requires additional visibility into a workload to determine how to achieve appropriate levels of Governance, Security, and Compliance. When a new service is required that has not been onboarded, allowing the service needs to occur. The following table provides a framework to assess enterprise security readiness of Azure services.
 
@@ -63,3 +92,18 @@ As business units request to put workloads into Azure, it requires additional vi
 |                              |                                                                       | What is the deployment scope of the service? (i.e. is it a regional or global service?)                                                      |
 |                              | Service Level Agreements                                              | What is the SLA for service availability?                                                                                                    |
 |                              |                                                                       | If applicable, what is the SLA for performance?                                                                                              |
+
+### Control mapping
+This section provides a mapping of the controls to the Azure services. The mapping is based on the Azure services documentation and the Azure Security Benchmark. The mapping is not exhaustive and is intended to provide a starting point for your security assessment.
+
+### Design
+This section explains the design phase of the controls
+
+### Implementation
+This section explains the implementation phase of the controls
+
+#### Enablement and acceleration
+This section explains the enablement and acceleration phase of the controls
+
+## Evidence
+This section provides evidence of the controls
