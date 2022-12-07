@@ -7,14 +7,14 @@ The process of definining, mapping, and implementing the required controls can i
 ## Table of contents
 
 * [Operating Model and required functions](#Operating-model-and-required-functions)
-* [Microsoft controls](#microsoft-controls)
-* [Customer controls](#customer-controls)
 * [Service Enablement Framework](#service-enablement-framework)
-    * [Control mapping](#letter-a)
-    * [Design](#letter-b)
-    * [Implementation](#letter-c)
-        * [Enablement and acceleration](#enablement-and-acceleration)
-    * [Evidence](#letter-d)
+    * [Microsoft controls](#microsoft-controls)
+    * [Customer controls](#customer-controls)
+        * [Control mapping](#control-mapping)
+        * [Design](#design)
+        * [Implementation](#implementation)
+            * [Enablement and acceleration](#enablement-and-acceleration)
+        * [Evidence](#evidence)
 * [Examples of end-to-end walkthrough](#examples-of-end-to-end-walkthrough)
 * [Next Steps](#next-steps)
 
@@ -76,7 +76,9 @@ The key responsibiliies for these teams inside the landing zones are:
 * Security monitoring and audit (app resources)
 * Cost management (app resources)
 * Network management (app resources)
-## Microsoft controls
+## Service Enablement Framework
+
+### Microsoft controls
 
 As part of the Service Enablement Framework for FSI, it is key to understand how to distinguish between the controls that Microsoft is responsible for for the Azure platform and services (.e.g, ensure data in-transit encryption for data plane for Cosmos DB is enabled is a Microsoft control and responsibility, as this cannot be disabled by the customer), vs the controls that the customer is responsible for (.e.g, ensure customer-managed key option in data at rest encryption when required), as well as when the responsibility is shared (e.g., in support scenarios where Microsoft needs to access your data, use Customer Lockbox to review, then approve or reject each of Microsoft's data access requests.)
 
@@ -84,12 +86,13 @@ Further, Azure compliance for the platform and services as a whole are based on 
 
  Each offering description in [this document](https://azure.microsoft.com/mediahandler/files/resourcefiles/microsoft-azure-compliance-offerings/Microsoft%20Azure%20Compliance%20Offerings.pdf) provides an up to date scope statement indicating which Azure customer-facing services are in scope for the assessment, as well as links to downloadable resources to assist customers with their own compliance obligations. Azure compliance offerings are grouped into four segments: globally applicable, US government, industry specific, and region/country specific.
 
-## Customer controls
+### Customer controls
 This section outlines the controls that are required by the customer to enable the FSI landing zones on Azure.
 
-## Service Enablement Framework
+### Control mapping
+This section provides a mapping of the controls to the Azure services. The mapping is based on the Azure services documentation and the Azure Security Benchmark. The mapping is not exhaustive and is intended to provide a starting point for your security assessment.
 
-As business units request to put workloads into Azure, it requires additional visibility into a workload to determine how to achieve appropriate levels of Governance, Security, and Compliance. When a new service is required that has not been onboarded, allowing the service needs to occur. The following table provides a framework to assess enterprise security readiness of Azure services.
+The following table provides a framework to assess enterprise security readiness of Azure services.
 
 | Assesment                    | Category                                                              | Crtieria                                                                                                                                     |
 |------------------------------|-----------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
@@ -152,9 +155,6 @@ As business units request to put workloads into Azure, it requires additional vi
 |                              |                                                                       | What is the deployment scope of the service? (i.e. is it a regional or global service?)                                                      |
 |                              | Service Level Agreements                                              | What is the SLA for service availability?                                                                                                    |
 |                              |                                                                       | If applicable, what is the SLA for performance?                                                                                              |
-
-### Control mapping
-This section provides a mapping of the controls to the Azure services. The mapping is based on the Azure services documentation and the Azure Security Benchmark. The mapping is not exhaustive and is intended to provide a starting point for your security assessment.
 
 ### Design
 This section explains the design phase of the controls
