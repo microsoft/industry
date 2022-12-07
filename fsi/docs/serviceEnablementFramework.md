@@ -8,8 +8,7 @@ The process of definining, mapping, and implementing the required controls can i
 
 * [Operating Model and required functions](#Operating-model-and-required-functions)
 * [Service Enablement Framework](#service-enablement-framework)
-    * [Microsoft controls](#microsoft-controls)
-    * [Customer controls](#customer-controls)
+    * [Microsoft controls and customer controls](#microsoft-controls-and-customer-controls)
         * [Control mapping](#control-mapping)
         * [Design](#design)
         * [Implementation](#implementation)
@@ -78,19 +77,28 @@ The key responsibiliies for these teams inside the landing zones are:
 * Network management (app resources)
 ## Service Enablement Framework
 
-### Microsoft controls
+The Service Enablement Framework encompass the requisite sequence, activities, and artifacts required to enable the Azure platform and services for a specific customer. The framework is designed to be used by the Platform DevOps team, and is a holistic approach to enable the Azure platform and services, and ensure that the platform is compliant with the required controls.
 
-As part of the Service Enablement Framework for FSI, it is key to understand how to distinguish between the controls that Microsoft is responsible for for the Azure platform and services (.e.g., ensure data in-transit encryption for data plane for Cosmos DB is enabled is a Microsoft control and responsibility, as this cannot be disabled by the customer), vs the controls that the customer is responsible for (.e.g., ensure customer-managed key option in data at rest encryption when required), as well as when the responsibility is shared (e.g., in support scenarios where Microsoft needs to access your data, use Customer Lockbox to review, then approve or reject each of Microsoft's data access requests.)
+From a high-level perspective, the Service Enablement Framework is composed of the following activities:
+
+![Service Enablement](../docs/serviceenablement.png)
+
+The first phase is to recognize and distinguish between what is a control and responsibility by Microsoft, and what the explicit customer responsibilities are. Once this has been generally understood and established, it simplifies the process and accelerates subsequent enablements the organization will perform. 
+### Microsoft controls and customer controls
+
+For Service Enablement, it is key to understand how to distinguish between the controls that Microsoft is responsible for for the Azure platform and services (e.g., ensure data in-transit encryption for data plane for Cosmos DB is enabled, is a Microsoft control and responsibility as this cannot be disabled by the customer), vs the controls that the customer is responsible for (.e.g., ensure customer-managed key is used for encrypting data at rest when required), as well as when the responsibility is shared (e.g., in support scenarios where Microsoft needs to access your data, use Customer Lockbox to review, then approve or reject each of Microsoft's data access requests).
+
+![controls](../docs/controls.png)
 
 Further, Azure compliance for the platform and services as a whole are based on various types of assurances, including formal certifications, attestations, validations, authorizations, and assements produced by independent third-party auditing firms, as well as contractual amendments, self-assessments, and customer guidance documents provided by Microsoft. 
 
- Each offering description in [this document](https://azure.microsoft.com/mediahandler/files/resourcefiles/microsoft-azure-compliance-offerings/Microsoft%20Azure%20Compliance%20Offerings.pdf) provides an up to date scope statement indicating which Azure customer-facing services are in scope for the assessment, as well as links to downloadable resources to assist customers with their own compliance obligations. Azure compliance offerings are grouped into four segments: globally applicable, US government, industry specific, and region/country specific.
-
-### Customer controls
-This section outlines the controls that are required by the customer to enable the FSI landing zones on Azure.
+Each offering description in [this document](https://azure.microsoft.com/mediahandler/files/resourcefiles/microsoft-azure-compliance-offerings/Microsoft%20Azure%20Compliance%20Offerings.pdf) provides an up to date scope statement indicating which Azure customer-facing services are in scope for the assessment, as well as links to downloadable resources to assist customers with their own compliance obligations. Azure compliance offerings are grouped into four segments: globally applicable, US government, industry specific, and region/country specific.
 
 ### Control mapping
-This section provides a mapping of the controls to the Azure services. The mapping is based on the Azure services documentation and the Azure Security Benchmark. The mapping is not exhaustive and is intended to provide a starting point for your security assessment.
+
+This section provides a mapping of the controls to the Azure services. The mapping is based on the Azure services documentation and the Microsoft Cloud Security Baseline. The mapping is not exhaustive and is intended to provide a starting point for your security assessment.
+
+With Microsoft Cloud Security Benchmark, we have consolidated security controls and baselines and how it maps to guidance like Center for Internet Security (CIS) Controls, National Institute of Standards and Technology (NIST), and the Payment Card Industry Data Security Standard (PCI-DSS) framework, which makes it easier to map the controls to the Azure services.
 
 The following table provides a framework to assess enterprise security readiness of Azure services.
 
