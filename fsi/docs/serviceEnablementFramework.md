@@ -61,7 +61,7 @@ The Platform DevOps team is overall responsible for the holistic architecture go
     * Primarily responsible for keys required for AD domain joined virtual machines, where the key management is done centrally as this requires to be a shared service.
 * Network management (holistic)
     * Responsible for end-to-end networking to and from Azure, managed the address space, peering, and connectivity to other cloud providers.
-## DevOps and AppOps
+### DevOps and AppOps
 
 In comparison to the Platform DevOps team - which will be one team responsible for the overall Azure platform (holistic), there will be multiple DevOps teams depending on the size of the organization. Recommendation is to have a dedicated team for each application, as in "you build it - you run it", where they have full autonomy and ownership of their deployment pipelines and landing zones. Further, the *AppOps* team can be 1:1 per application, or 1:many, where the applications are either first-party - or third-party. 
 The key responsibiliies for these teams inside the landing zones are:
@@ -167,8 +167,18 @@ The following table provides a framework to assess enterprise security readiness
 ### Design
 This section explains the design phase of the controls
 
+Understand what should be:
+1. Azure policy
+2. Identity related
+3. Outside of ARM related
+4. Internal processes
+
 ### Implementation
 This section explains the implementation phase of the controls
+
+Highlight the architecture and how it is implemented. simplified assignment process
+focus on the right policy effects
+show how to create custom policy and how to assign it
 
 #### Enablement and acceleration
 This section explains the enablement and acceleration phase of the controls
