@@ -13,7 +13,7 @@ This article provides a reference architecture with prescriptive guidance and re
 
 ## Table of contents
 
-* [FSI Landing Zones Reference Implementations](#fsi-landing-on-microsoft-azure)
+* [FSI Landing Zones on Microsoft Azure](#fsi-landing-on-microsoft-azure)
 * [FSI Landing Zones architecture and design methodology](#fsi-landing-zones-architecture-and-design-methodology)
   * [Architecture and design](#letter-a)
   * [Security, Governance, and Compliance by-default for FSI industry scenarios](#letter-b)
