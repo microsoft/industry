@@ -13,7 +13,7 @@ This article provides a reference architecture with prescriptive guidance and re
 
 ## Table of contents
 
-* [FSI Landing Zones Reference Implementations](#fsi-landing-zones-reference-implementation)
+* [FSI Landing Zones Reference Implementations](#fsi-landing-on-microsoft-azure)
 * [FSI Landing Zones architecture and design methodology](#fsi-landing-zones-architecture-and-design-methodology)
   * [Architecture and design](#letter-a)
   * [Security, Governance, and Compliance by-default for FSI industry scenarios](#letter-b)
@@ -25,7 +25,7 @@ This article provides a reference architecture with prescriptive guidance and re
   * [Banking Desktop solution](#edge-video-services)
 * [Next Steps](#next-steps)
 
-## FSI Landing Zones Reference Implementation
+## FSI Landing Zones on Microsoft Azure
 
 | Reference Implementation | Description | Deploy | Documentation
 |:----------------------|:------------|--------|--------------|
