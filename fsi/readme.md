@@ -14,7 +14,7 @@ This article provides a reference architecture with prescriptive guidance and re
 ## Table of contents
 
 * [FSI Landing Zones on Microsoft Azure](#fsi-landing-on-microsoft-azure)
-* [FSI Landing Zones architecture and design methodology](#fsi-landing-zones-architecture-and-design-methodology)
+* [Overview](#overview)
   * [Architecture and design](#letter-a)
   * [Security, Governance, and Compliance by-default for FSI industry scenarios](#letter-b)
   * [Service Enablement Framework for FSI industry scenarios](#letter-c)
@@ -31,7 +31,7 @@ This article provides a reference architecture with prescriptive guidance and re
 |:----------------------|:------------|--------|--------------|
 | FSI Landing Zones | FSI Landing Zones foundation that provides a full, rich, compliant architecture with scale-out pattern for secure-by default regions and landing zones, with a robust and customizable service enablement framework to accelerate adoption of Azure service and enables digital transformation |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/fsilz) | [User Guide](./referenceImplementation/readme.md)
 
-## FSI Landing Zones architecture and design methodology
+## Overview
 
 The FSI Landing Zones is exclusively designed-with, and built-with our largest FSI customers with global precense, and is based on proven architecture and design guidance to employ Azure at scale in a secure-by-default fashion, accelerating the digital transformation. The core foundation with landing zones underpins multiple turn-key architecture solutions, such as mission-critical payment gateways, digital banking, and the underlying Azure architecture for Microsoft Cloud for Financial Services Industry.
 

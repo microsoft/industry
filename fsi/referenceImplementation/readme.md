@@ -1,8 +1,8 @@
-# FSI Landing Zones on Microsoft Azure User Guide
+# FSI Landing Zones on Microsoft Azure - User Guide
 
 ![fsilzoverview](../docs/fsilandingpage.png)
 
-This user guide explains the FSI Landing Zones on Microsoft Azure reference implementation, what it is, what it does, and how FSI organizations can use this as a starting point in their tenant - either for greenfield or brownfield deployments, to achieve a secure-by-default, and scalable Azure platform and landing zones regardless of their scale-point.
+This user guide explains the FSI Landing Zones on Microsoft Azure reference implementation, what it is, what it does, and how FSI organizations can use this as a starting point in their tenant - both for greenfield and brownfield deployments, to achieve a secure-by-default, and scalable Azure platform and landing zones regardless of their scale-point.
 
 > Note: This reference implementation has been developed, validated, and proven with several of Microsoft's largest FSI customers, and represent the best practices for the FSI industry to accelerate a safe and secure digital transformation for the organization as a whole on Microsoft Azure.
 
@@ -12,24 +12,15 @@ This user guide explains the FSI Landing Zones on Microsoft Azure reference impl
 - [Pricing](#pricing)
 - [What if I already have an existing Azure footprint?](#what-if-i-already-have-an-existing-azure-footprint)
 - [How FSI Landing Zones reference implementation works](#how-FSI-landing-zones-reference-implementation-works)
-- [FSI Landing Zones design principles](#fsi-landing-zones-design-principles)
-  - [Subscription Democratization](#subscription-democratization)
-  - [Policy Driven Governance](#policy-driven-governance)
-  - [Single Control and Management Plane](#single-control-and-management-plane)
-  - [Application Centric and Archetype-neutral](#application-centric-and-archetype-neutral)
-  - [Azure native design and aligned with platform roadmap](#application-native-design-and-aligned-with-platform-roadmap)
-- [Separating platform and landing zones](#separating-platform-and--landing-zones)
-- [Platform responsibilities and functions](#platform-responsibilities-and-functions)
-  - [Landing zone owners and application team's responsibilities](#landing-zone-owners-and-application-teams-responsibilities)
-- [FSI Landing Zones Management Group Structure](#fsi-landing-zones-management-group-structure)
-- [Secure-by-default](#secure-by-default)
 - [What happens when you deploy FSI Landing Zones](#what-happens-when-you-deploy-azure-for-telco)
 - [Deployment instructions](#deployment-instructions)
   - [Pre-requisites](#pre-requisites)
   - [Step-by-step guidance](#step-by-step-guidance)
 
 ---
-FSI Landing Zones on Microsoft Azure reference architecture provides prescriptive guidance coupled with Azure best practices for the financial services industry, and it follows 5 design principles across the 8 critical design areas for organizations to define their target state for their Azure architecture.
+FSI Landing Zones on Microsoft Azure reference implementation provides prescriptive guidance coupled with Azure best practices for the financial services industry, and it follows 5 design principles across the 8 critical design areas for organizations to define their target state for their Azure architecture.
+
+>Note: To read and learn about the design principles and the critical design araes, please visit this [article](../../foundations/azure/README.md).
 
 The reference architecture is modular by design and allows organizations of any size in the financial services industry to start with the optimized landing zones that support their banking worloads, and application portfolios.
 
@@ -59,53 +50,7 @@ See the following [article](https://docs.microsoft.com/en-us/azure/cloud-adoptio
 
 This section describes at a high level how FSI Landing Zones reference implementation works. Your landing zones are the output of a multi-subscription environment for all your Azure services, where compliance, guardrails, security, networking, and identity is provided at scale by the platform.
 
-## FSI Landing Zones design principles
-
-The FSI Landing Zones architecture prescribed in this guidance is based on the design principles described here. These principles serve as a compass for subsequent design decisions across critical technical domains. Familiarize yourself with these principles to better understand their impact and the trade-offs associated with nonadherence, and how them will help you to scale in alignment with the Azure product roadmap.
-
->Note: The design principles for Azure are by design industry agnostic, and applies to all industries. For more details about architecture and design methodologies for Microsoft Clouds, see [this article](../../foundations/README.md).
-
-### Subscription Democratization
-
-Subscriptions should be used as a unit of management and scale aligned with business needs and priorities to support business areas and portfolio owners to accelerate application migrations and new application development. Subscriptions should be provided to business units to support the design, development, and testing and deployment of new workloads and migration of existing workloads.
-
-### Policy Driven Governance
-
-Azure Policy should be used to provide guardrails and ensure continued compliance with your organization's platform, along with the applications deployed onto it. Azure Policy also provides application owners with sufficient freedom and a secure unhindered path to the cloud.
-
-### Single Control and Management Plane
-
-FSI Landing Zones architecture shouldn't consider any abstraction layers, such as customer-developed portals or tooling. It should provide a consistent experience for both AppOps (centrally managed operation teams) and DevOps (dedicated application operation teams). Azure provides a unified and consistent control plane across all Azure resources and provisioning channels subject to role-based access and policy-driven controls. Azure can be used to establish a standardized set of policies and controls for governing the entire enterprise application estate in the cloud.
-
-### Application Centric and Archetype-neutral
-
-FSI Landing Zones architecture should focus on application-centric migrations and development rather than pure infrastructure lift-and-shift migrations, such as moving virtual machines. It shouldn't differentiate between old and new applications, infrastructure as a service, or platform as a service applications. Ultimately, it should provide a safe and secure foundation for all application types to be deployed onto your Azure platform.
-
-### Azure native design and aligned with platform roadmap
-
-The FSI Landing Zones architecture approach advocates using Azure-native platform services and capabilities whenever possible. This approach should align with Azure platform roadmaps to ensure that new capabilities are available within your environments. Azure platform roadmaps should help to inform the migration strategy and FSI Landing Zones architecture trajectory.
-
-## Separating platform and landing zones
-
-One of the key tenets of FSI Landing Zones architecture is to have a clear separation of the Azure *platform* and the *landing zones*. This allows organizations to scale their Azure architecture alongside with their business requirements, while providing autonomy to their application teams for deploying, migrating and doing net-new development of their workloads into their landing zones. This model fully supports workload autonomy and distinguish between central and federated functions.
-
-## Platform responsibilities and functions
-
-Platform resource are managed by a cross-functional platform team. The team consist mainly out of the following functions. These functions working in close collaboration with the SME functions across the organization:
-
-- PlatformOps: Responsible for management and deployment of control plane resource types such as subscriptions, management groups via IaC and the respective CI/CD pipelines. Management of the platform related identify identity resources on Azure AD and cost management for the platform.
- Operationalization of the Platform for an organization is under the responsibility of the platform function.
-
-- SecOps: Responsible for definition and management of Azure Policy and RBAC permissions on the platform for landing zones and platform management groups and subscriptions. Security operations including monitoring and the definition and the operation of reporting and auditing dashboard.
-- NetOps: Definition and management of the common networking components in Azure including the hybrid connectivity and firewall resource to control internet facing networking traffic. NetOps team is responsible to handout virtual networks to landing zone owners or team.
-
-## landing zone owners responsibilities
-
-FSI Landing Zones reference implementation enables landing zones supporting a both centralized and federated application DevOps models. Most common model are dedicated **DevOps** team aligned with a single workload. In case of smaller workloads or COTS or third-party application a single **AppDevOps** team is responsible for workload operation. Independent of the model every DevOps team manages several workload staging environments (DEV, UAT, PROD) deployed to individual landing zones/subscriptions. Each landing zone has a set of RBAC permissions managed with Azure AD PIM provided by the Platform SecOps team.
-
-When the landing zones/subscriptions are handed over to the DevOps team, the team is end-to-end responsible for the workload. They can independently operate within the security guardrails provided by the platform team. If dependency on central teams or functions are discovered, it is highly recommended to review the process and eliminate as soon as possible to unblock DevOps teams.
-
-## FSI Landing Zones Management Group Structure
+## FSI Landing Zones architecture
 
 The Management Group structure implemented with FSI Landing Zones is as follows:
 
@@ -122,8 +67,11 @@ The Management Group structure implemented with FSI Landing Zones is as follows:
 - **Landing Zones:** This is the parent Management Group for all the landing zone subscriptions and will have workload agnostic Azure Policies assigned to ensure workloads are secure and compliant.
 
  - **** This is the dedicated Management Group for landing zones, which are optimized and governed aligned with migration scenarios, net-new development using PaaS services, as well as mission-critical banking workloads. An application team request as many subscriptions as they want into the various landing zones, and will be responsible for development, testing, and production. From a platform perspective, each subscription is treated equally (i.e., everything is treated as production) to reduce friction in deployment, operations, and overall continious compliance.
- - **Online:** This is the dedicated Management Group for Online landing zones, meaning workloads that may require direct internet inbound/outbound connectivity or also for workloads that may not require a VNet..
+
+ - **Online:** This is the dedicated Management Group for Online landing zones, meaning workloads that may require direct internet inbound/outbound connectivity or also for workloads that may not require a VNet.
+
  - **Corp:** This is the dedicated Management Group for Corp landing zones, meaning workloads that requires connectivity/hybrid connectivity with the corporate network thru the hub in the connectivity subscription.
+
 - **Mission-Critical** For mission-critical banking workloads, (e.g., payment gateways) it is recommended to deploy and operationalize these into dedicated landing zones where guardrails are in place to prevent misconfiguration that relates to reliability, resilliency, and overall performance. These landing zones must be separated from corp and online due to the nature and characteristics of the workloads, data classicfication, and strict requirement of certain SKUs for Azure services to meet the required SLAs and SLOs.
 
 - **Playground:** This is the dedicated Management Group for subscriptions that will solely be used for testing and exploration by anyone in the organization that want to explore Azure services. These subscriptions will be securely disconnected from everything else within the tenant by Azure policies, be subject to an budget and cost enforcement, and is not meant to provide a path from test, dev, or production.
