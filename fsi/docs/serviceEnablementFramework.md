@@ -112,11 +112,42 @@ From a high-level perspective, the Service Enablement Framework is composed of t
 ![Service Enablement](../docs/serviceenablement.png)
 
 The first phase is to recognize and distinguish between what is a control and responsibility by Microsoft, and what the explicit customer responsibilities are. Once this has been generally understood and established, it simplifies the process and accelerates subsequent enablements the organization will perform. 
+
 ### Microsoft controls and customer controls
 
-For Service Enablement, it is key to understand how to distinguish between the controls that Microsoft is responsible for for the Azure platform and services (e.g., ensure data in-transit encryption for data plane for Cosmos DB is enabled, is a Microsoft control and responsibility as this cannot be disabled by the customer), vs the controls that the customer is responsible for (.e.g., ensure customer-managed key is used for encrypting data at rest when required), as well as when the responsibility is shared (e.g., in support scenarios where Microsoft needs to access your data, use Customer Lockbox to review, then approve or reject each of Microsoft's data access requests).
+For Service Enablement, it is key to understand how to distinguish between the controls that Microsoft is responsible for for the Azure platform and services. 
 
-![controls](../docs/controls.png)
+Examples:
+
+* "Ensure data in-transit encryption for data plane for Cosmos DB is enabled", is a Microsoft control and responsibility as this cannot be disabled by the customer.
+
+* "Ensure customer-managed key is used for encrypting data at rest when required", is a customer responsibility as they must provide the key - and the life-cycle management of it, and a KeyVault in a subscription to meet this requirement.
+
+ In addition, sometimes the responsibility is shared between Microsoft and the customer, such as "Ensure Customer Lockbox is used to review, approve, or reject Microsoft data access requests". In this case, the customer is responsible for enabling Customer Lockbox, and Microsoft is responsible for using it.
+
+ To review service by service per Microsoft Cloud security benchmark and baselines individually, please refer to the [Microsoft Cloud security benchmark and baselines](https://docs.microsoft.com/en-us/security/benchmark/azure/baselines) documentation.
+
+ An example of how the benchmark is assessing each service to contextualize the responsiblity and to meet the control requirement can be seen below:
+
+**Azure AD Authentication Required for Data Plane Access**
+
+**Description**: Service supports using Azure AD authentication for data plane access. [Learn more](/azure/active-directory/authentication/overview-authentication).
+
+| Supported | Enabled By Default | Configuration Responsibility |
+|---|---|---|
+| True | False | Customer |
+
+**Feature notes**: Azure AD authentication is only supported on the Core (SQL) API. Other APIs only support key-based authentication.
+
+**Configuration Guidance**: There is no current Microsoft guidance for this feature configuration. Please review and determine if your organization wants to configure this security feature.
+
+**Local Authentication Methods for Data Plane Access**
+
+**Description**: Local authentication methods supported for data plane access, such as a local username and password. [Learn more](/azure/app-service/overview-authentication-authorization).
+
+| Supported | Enabled By Default | Configuration Responsibility |
+|---|---|---|
+| True | True | Microsoft |
 
 Further, Azure compliance for the platform and services as a whole are based on various types of assurances, including formal certifications, attestations, validations, authorizations, and assements produced by independent third-party auditing firms, as well as contractual amendments, self-assessments, and customer guidance documents provided by Microsoft. 
 
@@ -202,7 +233,13 @@ Understand what should be:
 4. Internal processes
 
 ### Implementation
-This section explains the implementation phase of the controls
+This section explains the implementation phase of the controls.
+
+The implementation of the control in context of FSI Landing Zones on Microsoft Azure is tightly bound to the target architecture, where there is a clear separation of what is being defined as *platform* and what is being defined as *landing zones*. For all the *workloads* that will be deployed, will go into the *landing zones* which means that service enablement will primarily be focusing on implementing the controls on the *landing zones management* group, or at the level below; *corp* and *online*. Having the target architecture in place will help to accelerate this as one would aim to have a uniformed implementation across all the *landing zones*.
+
+![landing zones](./landingzones.png)
+
+
 
 Highlight the architecture and how it is implemented. simplified assignment process
 focus on the right policy effects
@@ -215,3 +252,5 @@ This section explains the enablement and acceleration phase of the controls
 This section provides evidence of the controls
 
 ## Examples of end-to-end walkthrough
+
+Explain usage of playground, ASB auditing and assessmenet, towards implentation of controls and applicationt team experiences
