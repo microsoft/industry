@@ -4,7 +4,7 @@
 
 This user guide explains the FSI Landing Zones on Microsoft Azure reference implementation, what it is, what it does, and how FSI organizations can use this as a starting point in their tenant - both for greenfield and brownfield deployments, to achieve a secure-by-default, and scalable Azure platform and landing zones regardless of their scale-point.
 
-> Note: This reference implementation has been developed, validated, and proven with several of Microsoft's largest FSI customers, and represent the best practices for the FSI industry to accelerate a safe and secure digital transformation for the organization as a whole on Microsoft Azure.
+> Note: This reference implementation has been developed, validated, and proven with several of Microsoft's largest FSI customers, and represent the best practices for the FSI industry to accelerate a safe and secure digital transformation for the organization as a whole on Microsoft Azure. We will continue to enhance and develop the reference implementation alongside with the overall Azure roadmap, based on proven and validated design patterns with FSI customers at scale.
 
 ## Table of Contents
 
@@ -50,9 +50,11 @@ See the following [article](https://docs.microsoft.com/en-us/azure/cloud-adoptio
 
 This section describes at a high level how FSI Landing Zones reference implementation works. Your landing zones are the output of a multi-subscription environment for all your Azure services, where compliance, guardrails, security, networking, and identity is provided at scale by the platform.
 
-## FSI Landing Zones architecture
+### FSI Landing Zones architecture
 
-The Management Group structure implemented with FSI Landing Zones is as follows:
+The Management Group structure implemented with FSI Landing Zones on Microsoft Azure is with clear intention to streamline and optimize operational excellence with security and governance being front and center. It caters for the entire life-cycle of a subscription, provides clear separation of concerns with regards to platform resources, and workload resources inside the landing zones.
+
+The following structure is being created when deploying FSI Landing Zones on Microsoft Azure, and enables organizations to transition existing subscription into the target architecture, as well as being the ideal starting point for FSI organizations who are new to Azure:
 
 - **Top-level Management Group** (directly under the tenant root group) is created with a prefix provided by the organization, which purposely will avoid the usage of the root group to allow organizations to move existing Azure subscriptions into the hierarchy, and also enables future scenarios. This Management Group is parent to all the other Management Groups created by FSI Landing Zones
 
@@ -72,10 +74,11 @@ The Management Group structure implemented with FSI Landing Zones is as follows:
 
  - **Corp:** This is the dedicated Management Group for Corp landing zones, meaning workloads that requires connectivity/hybrid connectivity with the corporate network thru the hub in the connectivity subscription.
 
-- **Mission-Critical** For mission-critical banking workloads, (e.g., payment gateways) it is recommended to deploy and operationalize these into dedicated landing zones where guardrails are in place to prevent misconfiguration that relates to reliability, resilliency, and overall performance. These landing zones must be separated from corp and online due to the nature and characteristics of the workloads, data classicfication, and strict requirement of certain SKUs for Azure services to meet the required SLAs and SLOs.
+- **Playground:** This is the dedicated Management Group for subscriptions that will solely be used for testing and exploration by anyone in the organization that want to explore Azure services. Further, subscriptions placed in this management group can be leveraged to expedite service enablement for an FSI organization, to assess and validate Azure services with best practices such as Microsoft Cloud Security Benchmark before allowing new services to be deployed to landing zone subscriptions.
 
-- **Playground:** This is the dedicated Management Group for subscriptions that will solely be used for testing and exploration by anyone in the organization that want to explore Azure services. These subscriptions will be securely disconnected from everything else within the tenant by Azure policies, be subject to an budget and cost enforcement, and is not meant to provide a path from test, dev, or production.
-- **Decommissioned:** This is the dedicated Management Group for landing zones that are being cancelled, which then will be moved to this Management Group before deleted by Azure after 30-60 days.
+>Note: Playground will be securely isolated and disconnected from everything else within the tenant by Azure policies, be subject to an budget and cost enforcement, and is not meant to provide a path from test, dev, or production.
+
+- **Deprecated:** This is the dedicated Management Group for landing zones that are being cancelled, which then will be moved to this Management Group before deleted by Azure after 30-60 days. Policies will ensure no further resource deployment or writes can occur on these subscriptions.
 
 ## What happens when you deploy FSI Landing Zones reference implementation?
 
