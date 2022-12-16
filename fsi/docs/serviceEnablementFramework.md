@@ -131,7 +131,7 @@ Examples:
 
 **Azure AD Authentication Required for Data Plane Access**
 
-**Description**: Service supports using Azure AD authentication for data plane access. [Learn more](/azure/active-directory/authentication/overview-authentication).
+**Description**: Service supports using Azure AD authentication for data plane access.
 
 | Supported | Enabled By Default | Configuration Responsibility |
 |---|---|---|
@@ -143,7 +143,7 @@ Examples:
 
 **Local Authentication Methods for Data Plane Access**
 
-**Description**: Local authentication methods supported for data plane access, such as a local username and password. [Learn more](/azure/app-service/overview-authentication-authorization).
+**Description**: Local authentication methods supported for data plane access, such as a local username and password.
 
 | Supported | Enabled By Default | Configuration Responsibility |
 |---|---|---|
