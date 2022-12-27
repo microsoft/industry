@@ -4647,7 +4647,7 @@
                 "ppEnvCreationSetting": "[steps('environments').ppEnvCreationSetting]",
                 "ppTrialEnvCreationSetting": "[steps('environments').ppTrialEnvCreationSetting]",
                 "ppEnvCapacitySetting": "[steps('environments').ppEnvCapacitySetting]",
-                "ppAdminEnvEnablement": "[steps('environments').ppAdminEnvEnablement",
+                "ppAdminEnvEnablement": "[steps('environments').ppAdminEnvEnablement]",
                 "ppAdminEnvNaming": "[steps('environments').ppAdminEnvNaming]",
                 "ppAdminRegion": "[steps('environments').ppAdminRegion]",
                 "ppAdminDlp": "[steps('environments').ppAdminDlp]",
