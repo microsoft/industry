@@ -96,6 +96,17 @@
                 "description": "Provide the tenant names, IDs, or use * for all tenants"
             }
         },
+        "ppAdminEnvEnablement": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "select to enable/disable this setting."
+            }
+        },
         "ppAdminEnvNaming": {
             "type": "string",
             "maxLength": 15,
@@ -582,6 +593,7 @@
                                                     '-PPTenantDLP', ' ', parameters('ppTenantDlp'), ' ',
                                                     '-PPTenantIsolationSetting', ' ', parameters('ppTenantIsolationSetting'), ' ',
                                                     '-PPTenantIsolationDomains', ' ', parameters('ppTenantIsolationDomains'), ' ',
+                                                    '-PPAdminEnvEnablement', ' ', parameters('ppAdminEnvEnablement'), ' ',
                                                     '-PPAdminEnvNaming', ' ', parameters('ppAdminEnvNaming'), ' ',
                                                     '-PPAdminBilling', ' ', parameters('ppAdminBilling'), ' ',
                                                     '-PPAdminRegion', ' ', parameters('ppAdminRegion'), ' ',
