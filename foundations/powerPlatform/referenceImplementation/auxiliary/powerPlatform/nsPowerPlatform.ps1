@@ -20,6 +20,7 @@ param (
     [Parameter(Mandatory = $false)][string]$PPAdminBilling,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPAdminCoeSetting,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPAdminDlp,
+    [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPAdminEnvEnablement,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPAdminManagedEnv,
     #Landing Zones
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPDefaultRenameText,
@@ -319,7 +320,7 @@ if ($defaultEnvironment.properties.governanceConfiguration.protectionLevel -ne '
 #endregion default environment
 
 #region create admin environments and import COE solution
-if (-not [string]::IsNullOrEmpty($PPAdminEnvNaming)) {
+if ($PPAdminEnvEnablement -eq 'Yes' -and -not [string]::IsNullOrEmpty($PPAdminEnvNaming)) {
     # Create environment
     foreach ($envTier in $envTiers) {
         try {
