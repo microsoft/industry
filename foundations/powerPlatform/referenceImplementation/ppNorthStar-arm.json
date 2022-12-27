@@ -101,6 +101,17 @@
                 "description": "Select to enable/disable this setting."
             }
         },
+        "ppAdminEnvEnablement": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "select to enable/disable this setting."
+            }
+        },
         "ppAdminEnvNaming": {
             "type": "string",
             "maxLength": 15,
@@ -695,6 +706,9 @@
                     },                    
                     "ppEnvCapacitySetting": {
                         "value": "[parameters('ppEnvCapacitySetting')]"
+                    },
+                    "ppAdminEnvEnablement": {
+                        "value": "[parameters('ppAdminEnvEnablement')]"
                     },
                     "ppAdminEnvNaming": {
                         "value": "[parameters('ppAdminEnvNaming')]"
