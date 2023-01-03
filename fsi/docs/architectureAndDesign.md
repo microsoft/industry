@@ -7,7 +7,7 @@ This article goes into the details of the architecture and design of the FSI Lan
 * [Architecture overview](#overview)
     * [Multi-subscription design](#multi-subscription-design)
     * [Multi-region design](#multi-region-design)
-    * [Autonomy and governance](#autonomy-and-governance)
+    * [Autonomy with governance](#autonomy-with-governance)
 * [Separating platform and landing zones](#separating-platform-and-landing-zones)
     * [Platform responsibilities and functions](#platform-responsibilities-and-functions)
     * [Landing zone owners responsibilities](#landing-zone-owners-responsibilities)
@@ -48,10 +48,28 @@ FSI Landing Zones provides a prescriptive guidance on how to structure the subsc
 This is the dedicated subscription for the initial hub in the first Azure region you have precense/will start with. It will contain all centrally managed networking resources such as VNETs, VPNs, ExpressRoute, etc. This subscription will be managed by the platform team, and more specifically the networking team.
 
 * Management
+A dedicated subscription is used to host the management resources that must remain separated from the workloads and landing zones, that provides an unified view with regards to security, platform observability, alerts, and remediations. It will contain a dedicated Log Analytics workspace that is tighly integrated with Microsoft Defender for Cloud, Microsoft Sentinel, and governed by Azure Policy.
+
+* Identity
+A dedicated subscription for identity purposes, such as hosting Windows Server Active Directory Domain Controllers if there is a business requirement to migrate and deploy domain joined virtual machines in the landing zones. This subscription will provide the AuthN/AuthZ for such workloads.
 
 ### Multi-region design
 
-FSI Landing Zones on Microsoft Azure is grounded on key design principles that has been developed and evolved over years of experience. The design principles are:
+Alongisde with a multi-subscription design, FSI Landing Zones enables you to start with a single Azure region - or as many as you want, while allowing you to scale effortless when the business requirements changes. 
+
+At a high-level, the following steps are required to scale out to a new region using FSI Landing Zones on Microsoft Azure:
+
+1. Create either a) a new Azure connectivity subscription into the **Connectivity** management group, or b) create new VNet and Hub resources into the existing connectivity subscription.
+2. Configure the Hub and Spoke network topology in the new region, and configure the VPN or ExpressRoute connection to the existing hub in the first region. 
+3. Enable the new region in Azure Policy to allow deployments of Azure resources to that region.
+4. Create new virtual networks into existing landing zones and peer to the new hub in the new region.
+5. Create new Azure subscriptions with new virtual networks peered to the new region.
+
+For each new region that you will add and where connectivity is required, simply repeat the steps above.
+
+## Autonomy with governance
+
+
 
 ## Separating platform and landing zones
 

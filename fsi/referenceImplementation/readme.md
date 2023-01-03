@@ -1,4 +1,4 @@
-# FSI Landing Zones on Microsoft Azure - User Guide
+# Financial Services Industry (FSI) Landing Zones on Microsoft Azure - User Guide
 
 ![fsilzoverview](../docs/fsilandingpage.png)
 
@@ -20,7 +20,7 @@ This user guide explains the FSI Landing Zones on Microsoft Azure reference impl
 ---
 FSI Landing Zones on Microsoft Azure reference implementation provides prescriptive guidance coupled with Azure best practices for the financial services industry, and it follows 5 design principles across the 8 critical design areas for organizations to define their target state for their Azure architecture.
 
->Note: To read and learn about the design principles and the critical design araes, please visit this [article](../../foundations/azure/README.md).
+>Note: To read and learn about the architecture and design, please visit this [article](../docs/architectureAndDesign.md).
 
 The reference architecture is modular by design and allows organizations of any size in the financial services industry to start with the optimized landing zones that support their banking worloads, and application portfolios.
 
@@ -44,13 +44,13 @@ For example, you don’t pay for the Management Groups or the Azure Policies tha
 
 FSI Landing Zones reference implementation will meet the organizations in the financial services industry where they are, and the design has catered for existing subscriptions and workloads in Azure.
 
-See the following [article](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/transition) to learn more how you can transition into an Azure architecture based on a multi-subscription design with clear separation of platform and landing zones, such as FSI Landing Zones on Microsoft Azure.
+See the following [generic guidance](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/transition) to learn more how you can transition into an Azure architecture based on a multi-subscription design with clear separation of platform and landing zones, such as FSI Landing Zones on Microsoft Azure.
 
 ## How FSI Landing Zones reference implementation works
 
 This section describes at a high level how FSI Landing Zones reference implementation works. Your landing zones are the output of a multi-subscription environment for all your Azure services, where compliance, guardrails, security, networking, and identity is provided at scale by the platform.
 
-## FSI Landing Zones architecture
+### FSI Landing Zones architecture
 
 The Management Group structure implemented with FSI Landing Zones is as follows:
 
