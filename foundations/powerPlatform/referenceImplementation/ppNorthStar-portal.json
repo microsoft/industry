@@ -453,6 +453,27 @@
                             }
                         },
                         {
+                            "name": "ppAdminEnvEnablement",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Create dedicated Admin environments",
+                            "defaultValue": "Yes (recommended)",
+                            "multiSelect": true,
+                            "toolTip": "If 'Yes' is selected, the setup will configure this option.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            "visible": true
+                        },
+                        {
                             "name": "ppAdminEnvNaming",
                             "type": "Microsoft.Common.TextBox",
                             "label": "Provide naming convention for the Admin environments",
@@ -464,7 +485,7 @@
                                 "regex": "^[a-z0-9A-Z]{1,30}$",
                                 "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
                             },
-                            "visible": true
+                            "visible": "[equals(steps('environments').ppAdminEnvEnablement, 'yes')]"
                         },
                         {
                             "name": "ppAdminRegion",
@@ -473,7 +494,7 @@
                             "placeholder": "",
                             "defaultValue": "",
                             "toolTip": "",
-                            "visible": true,
+                            "visible": "[equals(steps('environments').ppAdminEnvEnablement, 'yes')]",
                             "constraints": {
                                 "allowedValues": [
                                     {
@@ -546,7 +567,7 @@
                                     }
                                 ]
                             },
-                            "visible": true
+                            "visible": "[equals(steps('environments').ppAdminEnvEnablement, 'yes')]"
                         },
                         {
                             "name": "ppAdminDlp",
@@ -567,12 +588,12 @@
                                     }
                                 ]
                             },
-                            "visible": "[equals(steps('landingZones').ppDefaultRename, 'yes')]"
+                            "visible": "[equals(steps('environments').ppAdminEnvEnablement, 'yes')]"
                         },
 						{
                             "name": "ppAdminManagedText",
                             "type": "Microsoft.Common.TextBlock",
-                            "visible": true,
+                            "visible": "[equals(steps('environments').ppAdminEnvEnablement, 'yes')]",
                             "options": {
                                 "text": "Enabling Managed Environment in this step will opt-in to weekly digest, and allow you to continue the configuration in Power Platform Admin Center for sharing restrictions, DLPs and more post deployment.",
                                 "link": {
@@ -600,7 +621,7 @@
                                 ],
                                 "required": true
                             },
-                            "visible": true
+                            "visible": "[equals(steps('environments').ppAdminEnvEnablement, 'yes')]"
                         }
                     ]
                 },
@@ -4626,6 +4647,7 @@
                 "ppEnvCreationSetting": "[steps('environments').ppEnvCreationSetting]",
                 "ppTrialEnvCreationSetting": "[steps('environments').ppTrialEnvCreationSetting]",
                 "ppEnvCapacitySetting": "[steps('environments').ppEnvCapacitySetting]",
+                "ppAdminEnvEnablement": "[steps('environments').ppAdminEnvEnablement]",
                 "ppAdminEnvNaming": "[steps('environments').ppAdminEnvNaming]",
                 "ppAdminRegion": "[steps('environments').ppAdminRegion]",
                 "ppAdminDlp": "[steps('environments').ppAdminDlp]",

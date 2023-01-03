@@ -4,7 +4,7 @@
 
 This user guide explains the FSI Landing Zones on Microsoft Azure reference implementation, what it is, what it does, and how FSI organizations can use this as a starting point in their tenant - both for greenfield and brownfield deployments, to achieve a secure-by-default, and scalable Azure platform and landing zones regardless of their scale-point.
 
-> Note: This reference implementation has been developed, validated, and proven with several of Microsoft's largest FSI customers, and represent the best practices for the FSI industry to accelerate a safe and secure digital transformation for the organization as a whole on Microsoft Azure.
+> Note: This reference implementation has been developed, validated, and proven with several of Microsoft's largest FSI customers, and represent the best practices for the FSI industry to accelerate a safe and secure digital transformation for the organization as a whole on Microsoft Azure. We will continue to enhance and develop the reference implementation alongside with the overall Azure roadmap, based on proven and validated design patterns with FSI customers at scale.
 
 ## Table of Contents
 
@@ -16,8 +16,10 @@ This user guide explains the FSI Landing Zones on Microsoft Azure reference impl
 - [Deployment instructions](#deployment-instructions)
   - [Pre-requisites](#pre-requisites)
   - [Step-by-step guidance](#step-by-step-guidance)
+- [Next steps](#next-steps)
 
 ---
+
 FSI Landing Zones on Microsoft Azure reference implementation provides prescriptive guidance coupled with Azure best practices for the financial services industry, and it follows 5 design principles across the 8 critical design areas for organizations to define their target state for their Azure architecture.
 
 >Note: To read and learn about the architecture and design, please visit this [article](../docs/architectureAndDesign.md).
@@ -52,7 +54,9 @@ This section describes at a high level how FSI Landing Zones reference implement
 
 ### FSI Landing Zones architecture
 
-The Management Group structure implemented with FSI Landing Zones is as follows:
+The Management Group structure implemented with FSI Landing Zones on Microsoft Azure is with clear intention to streamline and optimize operational excellence with security and governance being front and center. It caters for the entire life-cycle of a subscription, provides clear separation of concerns with regards to platform resources, and workload resources inside the landing zones.
+
+The following structure is being created when deploying FSI Landing Zones on Microsoft Azure, and enables organizations to transition existing subscription into the target architecture, as well as being the ideal starting point for FSI organizations who are new to Azure:
 
 - **Top-level Management Group** (directly under the tenant root group) is created with a prefix provided by the organization, which purposely will avoid the usage of the root group to allow organizations to move existing Azure subscriptions into the hierarchy, and also enables future scenarios. This Management Group is parent to all the other Management Groups created by FSI Landing Zones
 
@@ -72,10 +76,11 @@ The Management Group structure implemented with FSI Landing Zones is as follows:
 
  - **Corp:** This is the dedicated Management Group for Corp landing zones, meaning workloads that requires connectivity/hybrid connectivity with the corporate network thru the hub in the connectivity subscription.
 
-- **Mission-Critical** For mission-critical banking workloads, (e.g., payment gateways) it is recommended to deploy and operationalize these into dedicated landing zones where guardrails are in place to prevent misconfiguration that relates to reliability, resilliency, and overall performance. These landing zones must be separated from corp and online due to the nature and characteristics of the workloads, data classicfication, and strict requirement of certain SKUs for Azure services to meet the required SLAs and SLOs.
+- **Playground:** This is the dedicated Management Group for subscriptions that will solely be used for testing and exploration by anyone in the organization that want to explore Azure services. Further, subscriptions placed in this management group can be leveraged to expedite service enablement for an FSI organization, to assess and validate Azure services with best practices such as Microsoft Cloud Security Benchmark before allowing new services to be deployed to landing zone subscriptions.
 
-- **Playground:** This is the dedicated Management Group for subscriptions that will solely be used for testing and exploration by anyone in the organization that want to explore Azure services. These subscriptions will be securely disconnected from everything else within the tenant by Azure policies, be subject to an budget and cost enforcement, and is not meant to provide a path from test, dev, or production.
-- **Decommissioned:** This is the dedicated Management Group for landing zones that are being cancelled, which then will be moved to this Management Group before deleted by Azure after 30-60 days.
+>Note: Playground will be securely isolated and disconnected from everything else within the tenant by Azure policies, be subject to an budget and cost enforcement, and is not meant to provide a path from test, dev, or production.
+
+- **Deprecated:** This is the dedicated Management Group for landing zones that are being cancelled, which then will be moved to this Management Group before deleted by Azure after 30-60 days. Policies will ensure no further resource deployment or writes can occur on these subscriptions.
 
 ## What happens when you deploy FSI Landing Zones reference implementation?
 
@@ -85,7 +90,6 @@ By default, all recommended settings and resources recommendations are enabled a
 
 - Azure Policies that will enable autonomy for the platform and the landing zones.
 - An Azure subscription dedicated for **Security, Governance, and Compliance**, which enables core platform capabilities at scale using Azure Policy such as:
-
  - A Log Analytics workspace and an Automation account
  - Microsoft Sentinel
  - Microsoft Defender for Cloud
@@ -93,7 +97,6 @@ By default, all recommended settings and resources recommendations are enabled a
  - Diagnostics settings for Activity Logs, VMs, and PaaS resources sent to Log Analytics
 
 - An Azure subscription dedicated for **Connectivity** for Azure platform networking and distributed edge, which deploys core Azure networking resources such as:
-
  - A hub virtual network
  - Azure Firewall
  - ExpressRoute Gateway
@@ -101,7 +104,6 @@ By default, all recommended settings and resources recommendations are enabled a
  - Azure Private DNS Zones for Private Link
 
 - In addition, network security monitoring can be enabled which includes:
-
  - Enable DDoS Standard protection
  - Network Watcher
  - NSG Flow Logs
@@ -109,24 +111,30 @@ By default, all recommended settings and resources recommendations are enabled a
 
 - (Optionally) An Azure subscription dedicated for **Identity** in case your organization requires to have Active Directory Domain Controllers to provide authorization and authentication for workloads deployed into the landing zones.
 
-- Landing Zone Management Group for **** , mission-critical applications that has unique requirements for availability, performance, connectivity, latency, reliability, and security.
- - This is where you will create your subscriptions that will host your workloads.
+- (Optionally) N subscription can be moved in the **Playground** management group to help accelerate innovation and transformation. These subscriptions will both physically and logically be separated from everything else where developers can explore Azure services, collaborate, and innovate quicker in a safe and reliable way.
+- Azure policies that will be applied to the playground subscriptions:
+ - Prevent any Virtual Network Peering to and from the playground subscription(s)
+ - Ensure there is a budget associated with each playground subscription to control cost
+ - Prevent network interfaces to have public IPs
+ - Prevent usage of costly SKUs across Azure services
 
 - Landing Zone Management Group for **Corp** connected applications that require connectivity to on-premises, to other landing zones or to the internet via shared services provided in the hub virtual network.
  - This is where you will create your subscriptions that will host your corp-connected workloads.
 
 - Landing Zone Management Group for **Online** applications that will be internet-facing, where a virtual network is optional and hybrid connectivity is not required.
  - This is where you will create your Subscriptions that will host your online workloads.
+- Azure policies for online landing zones:
+ - Prevent usage of Application Gateways without Web Application Firewall
+ - Prevent usage of Web Application Firewall with disabled firewall rules
 
-- Landing zone subscriptions for Azure native, internet-facing **Online** applications and resources.
+- Landing zone subscriptions for **Corp** connected applications and resources, including a virtual network that can optionally be connected to the hub via VNet peering.
+- Azure Policies and corp-connected landing zones:
+ - Enforce usage of Private Endpoint for Azure PaaS services
+ - Prevent usage of Public Endpoints for Azure PaaS services
+ - Prevent public IP for Databricks workspaces
+ - Ensure VNet injection is enabled for Databricks workspaces
 
-- Landing zone subscriptions for **** , mission-critical applications and resources.
-- Azure Policies for online and corp-connected landing zones, which include:
- - Enforce highly-available Public IP addresses
- - Enforce highly-available ExpressRoute gateways
-
-- Landing zone subscriptions for **Corp** connected applications and resources, including a virtual network that will be connected to the hub via VNet peering.
-- Azure Policies for online and corp-connected landing zones, which include:
+- In addition, the following policies will be applied to both online and corp landing zones:
  - Enforce VM monitoring (Windows & Linux)
  - Enforce VMSS monitoring (Windows & Linux)
  - Enforce Azure Arc VM monitoring (Windows & Linux)
@@ -136,9 +144,17 @@ By default, all recommended settings and resources recommendations are enabled a
  - Enforce auditing for Azure SQL
  - Enforce encryption for Azure SQL
  - Prevent IP forwarding
- - Prevent inbound RDP from internet
+ - Prevent inbound RDP from the Internet
+ - Prevent inbound SSH from the Internet
  - Ensure subnets are associated with Network Security Groups
  - Ensure subnets are associated with User-Defined routes
+ - Ensure encryption in transit is enabled for PaaS services
+ - Enable Kubernetes (AKS) for Azure Policy
+ - Prevent privileged containers in Kubernetes clusters
+ - Prevent privileged escalation in Kubernetes clusters
+ - Ensure HTTPS ingress is enforced in Kubernetes clusters
+ - Ensure Kubernetes security baseline standards for Linux-based workloads
+ - Ensure Databricks workloads are using the right SKU to ensure enterprise security and Azure RBAC
 
 ## Deployment instructions
 
@@ -156,7 +172,9 @@ The pre-requisites requires the following:
 - Elevation of privileges of a Global Admin that will grant him/her the "User Access Administrator" role assignment at the tenant root scope.
 - An explicit role assignment (Azure RBAC) made at the tenant root scope via Azure CLI or Azure PowerShell (Note: There's currently no graphical user interface to make this role assignment).
 
-#### Elevate Access to manage Azure resources in the directory
+#### Elevate Access to manage Azure resources in Azure Active Directory
+
+>Note: The pre-requisites described here is a *one off* excercise. Once the deployment has completed, permission to the tenant root ("/") can safely be removed as the user will have Owner permission at the intermediate root management group (below tenant root ("/") and tenant root management group).
 
 1.1 Sign into the Azure portal as the user being Global Admin.
 
@@ -164,15 +182,15 @@ The pre-requisites requires the following:
 
 1.3 Under 'Manage', select 'Properties'.
 
-![properties](./media/properties.PNG)
-
 1.4 Under 'Access management for Azure resources' set the toggle to *Yes.
 
-![elevate](./media/elevate.PNG)
+![properties](../docs/properties.png)
 
 Grant explicit access to the User at the tenant root scope ("/") to deploy FSI Landing Zones
 
-You can use either Bash (Azure CLI) or PowerShell (Az.Resources) to create the role assignment for user that will do the deployment.
+You can use either Bash (Azure CLI) o1r PowerShell (Az.Resources) to create the role assignment for user that will do the deployment.
+
+>Note: It is not required to deploy the FSI Landing Zones on Microsoft Azure as a global admin, as the role assignment in next step can be assigned to a different user/group.
 
 Bash:
 
@@ -201,37 +219,54 @@ New-AzRoleAssignment -Scope '/' -RoleDefinitionName 'Owner' -ObjectId $user.Id
 
 ### Optional pre-requisites
 
-The deployment experience in Azure portal allows you to bring in existing (preferably empty) subscriptions dedicated for the platform part of the FSI Landing Zones architecture. It also allows you to bring existing subscriptions that can be used as the initial landing zones for your carrier grade workloads.
+The deployment experience in Azure portal allows you to bring in existing (preferably empty) subscriptions dedicated for the platform part of the FSI Landing Zones architecture. It also allows you to bring existing subscriptions that can be used as the initial landing zones for workload deployments by one or more application teams.
 
 ## Step by step guidance
 
 This section will explain the deployment experience and the options provided for FSI Landing Zones reference implementation.
 
-When you click on [*Deploy to Microsoft Cloud*](https://aka.ms/FSIRi), it will start the deployment experience in the Azure portal into your default Azure tenant. In case you have access to multiple tenants, ensure you are selecting the right one.
+When you click on [*Deploy to Microsoft Cloud*](https://aka.ms/fsilz), it will start the deployment experience in the Azure portal into your default Azure tenant. In case you have access to multiple tenants, ensure you are selecting the right one.
 
-### Deployment location
+### 1 - Deployment location
 
 On the first page, select the *Region*. This region will primarily be used to place the deployment resources in an Azure region, but also used as the initial region for some of the resources that are deployed, such as Azure Monitoring resources.
 
-![Deployment location](./media/location.PNG)
-
-### FSI Landing Zones Architecture setup
+### 2 - Tenant setup
 
 Provide a prefix that will be used to create the management group hierarchy and platform resources, and select if you would use dedicated subscriptions or a single subscription for platform resources (please note that dedicates subscriptions are recommended, and single platform subscription is only for PoC and testing purposes). For this scenario, select **Dedicated**.
 
-![Arch setup](./media/archsetup.PNG)
+![Tenant setup](../docs/tenantsetup.png)
 
-### Security, Governance, and Compliance
+### 3 - Security, Governance, and Compliance
 
 On the *Security, Governance, and Compliance* tab, you will configure the core infrastructure required for all-up platform observability and security, which will be enabled at scale via Azure Policy for the entire Azure architecture as well as the landing zones to ensure continuously compliance for the Azure resources. A dedicated (and empty) subscription is required to host this infrastructure, which will be separated from other platform resources, such as networking and identity that you will configure later.
 
-![Security and governance](./media/security.PNG)
+![Security and governance](../docs/security.png)
+
+>Note: FSI Landing Zones recommends to use Microsoft Cloud Security Benchmark as a baseline for the entire architecture, and by assigning the policy initiative you will have an at-scale consumption experience of best practices that will be applied to every management group, subscription, and resources that will be deployed. Note that this is the only policy assignment that will use the policy effect of *audit* and *auditIfNotExists*. Policies that are assigned at other scopes by the deployment will use *deny* and *deployIfNotExists* to enforce goal-state and continious compliance.
+
+Azure Monitor is essential to capture key and critical platform and security logs into a dedicated Log Analytics workspace for the platform operations purposes. 
+
+![Azure Monitor](../docs/monitor.png)
+
+Once you enable, you can determine the data retention (in days) and optionally enable several curated solutions that will be enabled for the workspace.
+This includes:
+
+- Agent Health solution (VM based)
+- Change Tracking solution (VM based)
+- Update Management solution (VM based)
+- Activity Log solution (Azure subscriptions, resource logs)
+- VM Insights solution (VM based)
+- Service Map solution (VM based)
+- SQL Assessment solution (IaaS and PaaS based)
 
 For the Microsoft Defender for Cloud settings, you must also provide an email address in order to receive critical security notifications from Microsoft Defender for Cloud service.
 
-![Defender](./media/defender.PNG)
+Select which Defender solution you will add. Once configured, Azure Policy will ensure every subscription (existing and new) will have Defender configured for the subscription and the specific Azure services that will be created into the landing zones by application team(s)
 
-### Connectivity for Azure and Distributed Edge
+![Defender](../docs/defender.png)
+
+### 4 - Network Connectivity and Topology
 
 On the *Connectivity for Azure and Distributed Edge* tab, you will configure the core networking platform resources, such as hub virtual network, gateways (VPN and/or ExpressRoute), Azure Firewall, Private DNS Zones for Azure PaaS services, and depending on the options you selected on the *Security, Governance, and Compliance* tab, additional networking security and monitoring options will be presented, such as DDoS Protection Standard, Network Watcher, NSG Flow Logs, and Traffic Analytics.
 
@@ -243,7 +278,7 @@ To deploy and configure a "hub and spoke" topology, you must:
 - Select an Azure region where the hub virtual network will be created
 - Depending on the Azure region, you can optionally use Azure Virtual Network Manager to manage your virtual networks at scale and also enable full mesh.
 
- ![img](./media/hubandspoke.PNG)
+ ![img](../docs/hubspoke.png)
 
 In addition, you can configure:
 
@@ -263,44 +298,43 @@ For Networking security and monitoring solutions:
 - NSG Flow Logs can be enabled for all Network Security Groups, and will be stored into a storage account in the dedicated subscription for *Security, Governance, and Compliance* subscription, and also in the Azure Log Analytics workspace.
 - Traffic Analytics which provides a curated view of networking traffic for Azure and Distributed Edge.
 
- ![img](./media/nwlogs.PNG)
+ ![img](../docs/nwlogs.png)
 
-### Authentication & Authorization
+### 5 - Identity & Access
 
 On the *Authentication & Authorization* tab you can specify if you want to assign recommended policies to primarily secure and govern domain controllers in Azure, which will have its dedicated subscription to ensure clear separation of concerns, and to provide AuthN/AuthZ to workloads into the landing zones. You can then select which policies you want to get assigned, and you will need to provide the address space for the virtual network that will be deployed on this subscription. Please note that this virtual network will be connected to the hub virtual network via VNet peering.
 
 If you don't need - or plan to host domain controllers in Azure for your telco workloads, you can select *No*. If you later want to add dedicated subscription for these purposes, you can move it manually to the 'identity' management group in the hierarchy created by FSI Landing Zones.
 
- ![img](./media/auth.PNG)
+ ![img](../docs/identity.png)
 
-### Landing Zones
+ ### 6 - Playground
+
+ The Playground tab allows you to move subscriptions into the playground management group. The intention of playground is to provide subscriptions where developers and business units can experiement with Azure services in a safe and secure way, completely separated from the landing zones (production). Playground is also a good starting point for any service enablement processes within the FSI organization, to assess an Azure service from a security baseline perspective. Additionally, policies can be assigned during the setup that prevents any accidental configuration that can reach any other Azure subscription within the architecture, provides a budget baseline to control cost and spending, as well as recommended policy to prevent usage of the more expensive SKUs for Azure services.
+
+ ![Playground](../docs/playground.png)
+
+### 7 - Landing Zones
 
 On the * Landing Zones* tab, you can bring in the subscriptions you want to use initially for **, *online*, and *corp* landing zones. Each landing zone type is represented by its own child management group of the *landing zones* management group in the hierarchy, and provides different characteristics regarding networking requirements, security, policy, and availability. For each of the landing zone types, you can select the recommended Azure policies you want to assign, as well as the policies recommended for *all* landing zone types.
-
-- landing zones
-
-Subscriptions can be moved into the ** management group, and bootstrapped with Azure policies that are assigned directly to this management group, as well as the overarching policies assigned to the intermediate root management group, and the landing zones management group.
-The specific policies for the landing zones will - in addition to compliance and security, ensure that carrier grade workloads are configured with resiliency, performance, and availability in mind.
-
-![lz](./media/lz.PNG)
 
 - Corp landing zones
 
 For workloads that require corp connectivity, and hybrid connectivity through the central connectivity subscription for the Azure platform and Distributed Edge, can be moved/created into the *corp* management group.
 
-![corplz](./media/corplz.PNG)
+![corplz](../docs/corp.png)
 
 - Online landing zones
 
 For workloads that does not require corp connectivity, subscriptions can be moved/created into the *online* management group.
 
-![onlinelz](./media/onlinelz.PNG)
+![onlinelz](../docs/online.png)
 
 - Recommended Azure policies for all landing zones
 
 By default, every recommendation is enabled, and you must explicitly opt out if you do not want to assign the recommended policies. The list of available policies will depend on configuration made earlier in the deployment experience.
 
-![lzpolicies](./media/lzpolicies.PNG)
+![lzpolicies](../docs/lzpolicies.png)
 
 ### Review + create
 

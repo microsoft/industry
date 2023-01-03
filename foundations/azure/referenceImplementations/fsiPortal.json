@@ -4,6 +4,7 @@
         "kind": "Form",
         "properties": {
             "title": "FSI Landing Zones on Microsoft Azure",
+            "isWizard": true,
             "steps": [
                 {
                     "name": "basics",
@@ -879,7 +880,7 @@
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Create Private DNS Zones for Azure PaaS services",
                             "defaultValue": "Yes (recommended)",
-                            "visible": "[or(equals(steps('esConnectivityGoalState').esHub, 'vhub'), equals(steps('esConnectivityGoalState').esHub, 'nva'))]",
+                            "visible": "[equals(steps('esConnectivityGoalState').esHub, 'vhub')]",
                             "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, ARM will create Private DNS Zones for Azure PaaS services",
                             "constraints": {
                                 "allowedValues": [
@@ -2060,7 +2061,7 @@
                                             }
                                         ]
                                     },
-                                    "visible": "[or(equals(steps('esConnectivityGoalState').esHub, 'nva'), equals(steps('esConnectivityGoalState').esHub, 'vhub'))]"
+                                    "visible": "[equals(steps('esConnectivityGoalState').esHub, 'vhub')]"
                                 },
                                 {
                                     "name": "lzCorpSubsApi",
