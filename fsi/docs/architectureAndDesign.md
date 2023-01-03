@@ -4,7 +4,7 @@ This article goes into the details of the architecture and design of the FSI Lan
 
 ## Table of contents
 
-* [Architecture overview](#overview)
+* [Architecture overview](#architecture-overview)
     * [Multi-subscription design](#multi-subscription-design)
     * [Multi-region design](#multi-region-design)
     * [Autonomy and governance](#autonomy-and-governance)
@@ -51,7 +51,11 @@ This is the dedicated subscription for the initial hub in the first Azure region
 
 ### Multi-region design
 
-FSI Landing Zones on Microsoft Azure is grounded on key design principles that has been developed and evolved over years of experience. The design principles are:
+Placeholder
+
+### Autonomy and governance
+
+Placeholder
 
 ## Separating platform and landing zones
 
@@ -63,7 +67,7 @@ Architectually, the separation is achieved by having dedicated management group 
 
 By having the separation at this level, FSI organizations can scale out both the platform and the landing zones independently and without having to revisit the whiteboard to understand what must be done *when* a new subscription is being introduced, and the intent of that subscription.
 
-## Platform responsibilities and functions
+### Platform responsibilities and functions
 
 Platform resource are managed by a cross-functional platform team. The team consist mainly out of the following functions. These functions working in close collaboration with the SME functions across the organization:
 
@@ -73,8 +77,20 @@ Platform resource are managed by a cross-functional platform team. The team cons
 - SecOps: Responsible for definition and management of Azure Policy and RBAC permissions on the platform for landing zones and platform management groups and subscriptions. Security operations including monitoring and the definition and the operation of reporting and auditing dashboard.
 - NetOps: Definition and management of the common networking components in Azure including the hybrid connectivity and firewall resource to control internet facing networking traffic. NetOps team is responsible to handout virtual networks to landing zone owners or team.
 
-## Landing zone owners responsibilities
+### Landing zone owners responsibilities
 
 FSI Landing Zones reference implementation enables landing zones supporting a both centralized and federated application DevOps models. Most common model are dedicated **DevOps** team aligned with a single workload. In case of smaller workloads or COTS or third-party application a single **AppDevOps** team is responsible for workload operation. Independent of the model every DevOps team manages several workload staging environments (DEV, UAT, PROD) deployed to individual landing zones/subscriptions. Each landing zone has a set of RBAC permissions managed with Azure AD PIM provided by the Platform SecOps team.
 
 When the landing zones/subscriptions are handed over to the DevOps team, the team is end-to-end responsible for the workload. They can independently operate within the security guardrails provided by the platform team. If dependency on central teams or functions are discovered, it is highly recommended to review the process and eliminate as soon as possible to unblock DevOps teams.
+
+## FAQ
+
+Placeholder
+
+## Anti-patterns and untold stories
+
+Placeholder
+
+## Next steps
+
+Placeholder
