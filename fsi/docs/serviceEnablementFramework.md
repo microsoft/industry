@@ -254,6 +254,407 @@ It's vital to capture key logs for services in order to provide evidence of acce
 
 Microsoft continues to evolve the platform and the investments in Azure Policy, and as such, it is important to understand what is available out of the box to accelerate the implementation and reduce the amount of custom policies (customer will be responsible to maintain the code and its life-cycle).
 
+You can assess the built-in policies directly in the Azure Portal, or using PowerShell or CLI.
+
+Example below using PowerShell to enumerate all built-in policies categorized as *SQL* and with a *description* referring to diagnostic settings.
+
+```powershell
+(Get-AzPolicyDefinition  | where-object {($_.Properties.metadata.category -eq "SQL" -and $_.properties.description -like "*diagn*")}).properties.description
+
+Deploys the diagnostic settings for Azure SQL Database to stream to a regional Event Hub on any Azure SQL Database which is missing this diagnostic settings is created or updated.
+Deploys the diagnostic settings for SQL Databases to stream resource logs to a Log Analytics workspace when any SQL Database which is missing this diagnostic settings is created or updated.
+
+````
+
+For further details, we can also extract the entire JSON to see the different parameters, such as the *effect*, and other relevant conditions for how the rule will be applied.
+
+```powershell
+
+Get-AzPolicyDefinition  | where-object {($_.Properties.metadata.category -eq "SQL" -and $_.properties.description -like "*log analytics*")} | convertto-json -depth 10
+
+{
+    "Name": "b79fa14e-238a-4c2d-b376-442ce508fc84",
+    "ResourceId": "/providers/Microsoft.Authorization/policyDefinitions/b79fa14e-238a-4c2d-b376-442ce508fc84",
+    "ResourceName": "b79fa14e-238a-4c2d-b376-442ce508fc84",
+    "ResourceType": "Microsoft.Authorization/policyDefinitions",
+    "SubscriptionId": null,
+    "Properties": {
+      "Description": "Deploys the diagnostic settings for SQL Databases to stream resource logs to a Log Analytics workspace when any SQL Database which is missing this diagnostic settings is created or updated.",
+      "DisplayName": "Deploy - Configure diagnostic settings for SQL Databases to Log Analytics workspace",
+      "Metadata": {
+        "version": "4.0.0",
+        "category": "SQL"
+      },
+      "Mode": "Indexed",
+      "Parameters": {
+        "effect": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Effect",
+            "description": "Enable or disable the execution of the policy"
+          },
+          "allowedValues": [
+            "DeployIfNotExists",
+            "Disabled"
+          ],
+          "defaultValue": "DeployIfNotExists"
+        },
+        "diagnosticsSettingNameToUse": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Setting name",
+            "description": "Name of the diagnostic settings."
+          },
+          "defaultValue": "SQLDatabaseDiagnosticsLogsToWorkspace"
+        },
+        "logAnalytics": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Log Analytics workspace",
+            "description": "Select the Log Analytics workspace from dropdown list",
+            "strongType": "omsWorkspace",
+            "assignPermissions": true
+          }
+        },
+        "QueryStoreRuntimeStatisticsEnabled": {
+          "type": "String",
+          "metadata": {
+            "displayName": "QueryStoreRuntimeStatistics - Enabled",
+            "description": "Whether to stream QueryStoreRuntimeStatistics logs to the Log Analytics workspace - True or False"
+          },
+          "allowedValues": [
+            "True",
+            "False"
+          ],
+          "defaultValue": "True"
+        },
+        "QueryStoreWaitStatisticsEnabled": {
+          "type": "String",
+          "metadata": {
+            "displayName": "QueryStoreWaitStatistics - Enabled",
+            "description": "Whether to stream QueryStoreWaitStatistics logs to the Log Analytics workspace - True or False"
+          },
+          "allowedValues": [
+            "True",
+            "False"
+          ],
+          "defaultValue": "True"
+        },
+        "ErrorsEnabled": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Errors - Enabled",
+            "description": "Whether to stream Errors logs to the Log Analytics workspace - True or False"
+          },
+          "allowedValues": [
+            "True",
+            "False"
+          ],
+          "defaultValue": "True"
+        },
+        "DatabaseWaitStatisticsEnabled": {
+          "type": "String",
+          "metadata": {
+            "displayName": "DatabaseWaitStatistics - Enabled",
+            "description": "Whether to stream DatabaseWaitStatistics logs to the Log Analytics workspace - True or False"
+          },
+          "allowedValues": [
+            "True",
+            "False"
+          ],
+          "defaultValue": "True"
+        },
+        "BlocksEnabled": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Blocks - Enabled",
+            "description": "Whether to stream Blocks logs to the Log Analytics workspace - True or False"
+          },
+          "allowedValues": [
+            "True",
+            "False"
+          ],
+          "defaultValue": "True"
+        },
+        "SQLInsightsEnabled": {
+          "type": "String",
+          "metadata": {
+            "displayName": "SQLInsights - Enabled",
+            "description": "Whether to stream SQLInsights logs to the Log Analytics workspace - True or False"
+          },
+          "allowedValues": [
+            "True",
+            "False"
+          ],
+          "defaultValue": "True"
+        },
+        "SQLSecurityAuditEventsEnabled": {
+          "type": "String",
+          "metadata": {
+            "displayName": "SQLSecurityAuditEvents - Enabled",
+            "description": "Whether to stream SQLSecurityAuditEvents logs to the Log Analytics workspace - True or False"
+          },
+          "allowedValues": [
+            "True",
+            "False"
+          ],
+          "defaultValue": "True"
+        },
+        "TimeoutsEnabled": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Timeouts - Enabled",
+            "description": "Whether to stream Timeouts logs to the Log Analytics workspace - True or False"
+          },
+          "allowedValues": [
+            "True",
+            "False"
+          ],
+          "defaultValue": "True"
+        },
+        "AutomaticTuningEnabled": {
+          "type": "String",
+          "metadata": {
+            "displayName": "AutomaticTuning - Enabled",
+            "description": "Whether to stream AutomaticTuning logs to the Log Analytics workspace - True or False"
+          },
+          "allowedValues": [
+            "True",
+            "False"
+          ],
+          "defaultValue": "True"
+        },
+        "DeadlocksEnabled": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Deadlocks - Enabled",
+            "description": "Whether to stream Deadlocks logs to the Log Analytics workspace - True or False"
+          },
+          "allowedValues": [
+            "True",
+            "False"
+          ],
+          "defaultValue": "True"
+        },
+        "Basic": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Basic (metric) - Enabled",
+            "description": "Whether to stream Basic metrics to the Log Analytics workspace - True or False"
+          },
+          "allowedValues": [
+            "True",
+            "False"
+          ],
+          "defaultValue": "True"
+        },
+        "InstanceAndAppAdvanced": {
+          "type": "String",
+          "metadata": {
+            "displayName": "InstanceAndAppAdvanced (metric) - Enabled",
+            "description": "Whether to stream InstanceAndAppAdvanced metrics to the Log Analytics workspace - True or False"
+          },
+          "allowedValues": [
+            "True",
+            "False"
+          ],
+          "defaultValue": "True"
+        },
+        "WorkloadManagement": {
+          "type": "String",
+          "metadata": {
+            "displayName": "WorkloadManagement (metric) - Enabled",
+            "description": "Whether to stream WorkloadManagement metrics to the Log Analytics workspace - True or False"
+          },
+          "allowedValues": [
+            "True",
+            "False"
+          ],
+          "defaultValue": "True"
+        }
+      },
+      "PolicyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Sql/servers/databases"
+            },
+            {
+              "field": "name",
+              "notEquals": "master"
+            }
+          ]
+        },
+        "then": {
+          "effect": "[parameters('effect')]",
+          "details": {
+            "type": "Microsoft.Insights/diagnosticSettings",
+            "roleDefinitionIds": [
+              "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+              "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
+            ],
+            "existenceCondition": {
+              "allOf": [
+                {
+                  "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
+                  "equals": "[parameters('logAnalytics')]"
+                },
+                {
+                  "count": {
+                    "field": "Microsoft.Insights/diagnosticSettings/logs[*]",
+                    "where": {
+                      "anyOf": "         "
+                    }
+                  },
+                  "equals": 10
+                },
+                {
+                  "count": {
+                    "field": "Microsoft.Insights/diagnosticSettings/metrics[*]",
+                    "where": {
+                      "anyOf": "  "
+                    }
+                  },
+                  "equals": 3
+                }
+              ]
+            },
+            "deployment": {
+              "properties": {
+                "mode": "incremental",
+                "template": {
+                  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "parameters": {
+                    "diagnosticsSettingNameToUse": {
+                      "type": "string"
+                    },
+                    "resourceName": {
+                      "type": "string"
+                    },
+                    "logAnalytics": {
+                      "type": "string"
+                    },
+                    "location": {
+                      "type": "string"
+                    },
+                    "Basic": {
+                      "type": "string"
+                    },
+                    "InstanceAndAppAdvanced": {
+                      "type": "string"
+                    },
+                    "WorkloadManagement": {
+                      "type": "string"
+                    },
+                    "QueryStoreRuntimeStatisticsEnabled": {
+                      "type": "string"
+                    },
+                    "QueryStoreWaitStatisticsEnabled": {
+                      "type": "string"
+                    },
+                    "ErrorsEnabled": {
+                      "type": "string"
+                    },
+                    "DatabaseWaitStatisticsEnabled": {
+                      "type": "string"
+                    },
+                    "BlocksEnabled": {
+                      "type": "string"
+                    },
+                    "SQLInsightsEnabled": {
+                      "type": "string"
+                    },
+                    "SQLSecurityAuditEventsEnabled": {
+                      "type": "string"
+                    },
+                    "TimeoutsEnabled": {
+                      "type": "string"
+                    },
+                    "AutomaticTuningEnabled": {
+                      "type": "string"
+                    },
+                    "DeadlocksEnabled": {
+                      "type": "string"
+                    }
+                  },
+                  "variables": {},
+                  "resources": [
+                    {
+                      "type": "Microsoft.Sql/servers/databases/providers/diagnosticSettings",
+                      "apiVersion": "2017-05-01-preview",
+                      "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('diagnosticsSettingNameToUse'))]",
+                      "location": "[parameters('location')]",
+                      "dependsOn": "",
+                      "properties": "@{workspaceId=[parameters('logAnalytics')]; metrics=System.Object[]; logs=System.Object[]}"
+                    }
+                  ],
+                  "outputs": {}
+                },
+                "parameters": {
+                  "Basic": {
+                    "value": "[parameters('Basic')]"
+                  },
+                  "InstanceAndAppAdvanced": {
+                    "value": "[parameters('InstanceAndAppAdvanced')]"
+                  },
+                  "diagnosticsSettingNameToUse": {
+                    "value": "[parameters('diagnosticsSettingNameToUse')]"
+                  },
+                  "WorkloadManagement": {
+                    "value": "[parameters('WorkloadManagement')]"
+                  },
+                  "logAnalytics": {
+                    "value": "[parameters('logAnalytics')]"
+                  },
+                  "location": {
+                    "value": "[field('location')]"
+                  },
+                  "resourceName": {
+                    "value": "[field('fullName')]"
+                  },
+                  "QueryStoreRuntimeStatisticsEnabled": {
+                    "value": "[parameters('QueryStoreRuntimeStatisticsEnabled')]"
+                  },
+                  "QueryStoreWaitStatisticsEnabled": {
+                    "value": "[parameters('QueryStoreWaitStatisticsEnabled')]"
+                  },
+                  "ErrorsEnabled": {
+                    "value": "[parameters('ErrorsEnabled')]"
+                  },
+                  "DatabaseWaitStatisticsEnabled": {
+                    "value": "[parameters('DatabaseWaitStatisticsEnabled')]"
+                  },
+                  "BlocksEnabled": {
+                    "value": "[parameters('BlocksEnabled')]"
+                  },
+                  "SQLInsightsEnabled": {
+                    "value": "[parameters('SQLInsightsEnabled')]"
+                  },
+                  "SQLSecurityAuditEventsEnabled": {
+                    "value": "[parameters('SQLSecurityAuditEventsEnabled')]"
+                  },
+                  "TimeoutsEnabled": {
+                    "value": "[parameters('TimeoutsEnabled')]"
+                  },
+                  "AutomaticTuningEnabled": {
+                    "value": "[parameters('AutomaticTuningEnabled')]"
+                  },
+                  "DeadlocksEnabled": {
+                    "value": "[parameters('DeadlocksEnabled')]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "PolicyType": 2
+    },
+    "PolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b79fa14e-238a-4c2d-b376-442ce508fc84"
+  }
+```
 
 
  ensure that when an Azure SQL resource is created, it is configured with a specific set of values to ensure that the diagnostics settings will be enabled and streamed to the central Log Analytics workspace.
