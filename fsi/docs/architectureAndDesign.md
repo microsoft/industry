@@ -69,7 +69,11 @@ For each new region that you will add and where connectivity is required, simply
 
 ## Autonomy with governance
 
+Azure Policy is a key enabler for FSI Landing Zones to provide autonomy for the platform, landing zones, and workloads within the landing zones. The policy-driven governance model is based on the following principles:
 
+* Proavtive vs reactive
+
+Using policy effects such as *deny* and *deployIfNotExists* reduces the effort required to enforce compliance at scale as your Azure footprint grows, regardless of amount of subscriptions and workloads. It also helps the application teams by being transparent on the guardrails in place, and to foster greater technical intensity as part of the Azure journey and overall adoption.
 
 ## Separating platform and landing zones
 
