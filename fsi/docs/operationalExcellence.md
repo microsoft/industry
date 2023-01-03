@@ -15,8 +15,8 @@ In order to accelerate this process and meet the FSI organizations where they ar
 ## Table of contents
 
 * [AzOps - Intro](#azops-intro)
-    * [Discovery](#service-enablement-framework)
-    * [Deployment](#microsoft-controls)
+    * [Discovery](#discovery)
+    * [Deployment](#deployment)
 * [Examples of end-to-end walkthrough](#examples-of-end-to-end-walkthrough)
 * [Next Steps](#next-steps)
 

@@ -235,9 +235,28 @@ Understand what should be:
 ### Implementation
 This section explains the implementation phase of the controls.
 
-The implementation of the control in context of FSI Landing Zones on Microsoft Azure is tightly bound to the target architecture, where there is a clear separation of what is being defined as *platform* and what is being defined as *landing zones*. For all the *workloads* that will be deployed, will go into the *landing zones* which means that service enablement will primarily be focusing on implementing the controls on the *landing zones management* group, or at the level below; *corp* and *online*. Having the target architecture in place will help to accelerate this as one would aim to have a uniformed implementation across all the *landing zones*.
+The implementation of the control in context of FSI Landing Zones on Microsoft Azure is tightly bound to the target architecture, where there is a clear separation of what is being defined as *platform* and what is being defined as *landing zones*. For all the *workloads* that will be deployed, will go into the *landing zones* which means that service enablement will primarily be focusing on implementing the controls on the *landing zones management* group, **and** at the level below; *corp* and *online* as the characteristics from a networking, security, and governance perspective will be different between those two. 
+Having the target architecture in place will help to accelerate this as one would aim to have a uniformed implementation across all the *landing zones* within the Azure tenant.
 
 ![landing zones](./landingzones.png)
+
+The overall implmenentation process is depicted below, where we distinguish between *process*, *people*, and *technology*, where the *technology* part is what we will be focusing on in this document as it relates to implementing a control in context of FSI Landing Zones on Microsoft Azure.
+
+![implementation process](./process.png)
+
+An implementation of a control is subject to the characteristics of the control and the service itself. To demonstrate this we will be using an example that goes through the different steps using Azure Policy to implement the control.
+
+**Step 1: Understand the control**
+
+It's vital to capture key logs for services in order to provide evidence of access, CRUD operations, and other dimensions that are relevant to satisfy the control. In Azure, this is primarily enabled per service using a *Diagnostic setting*, which can emit logs to multiple sinks, such as storage accounts, Event Hubs, and Log Analytics workspaces.
+
+**Step 2: Assess Built-In policies**
+
+Microsoft continues to evolve the platform and the investments in Azure Policy, and as such, it is important to understand what is available out of the box to accelerate the implementation and reduce the amount of custom policies (customer will be responsible to maintain the code and its life-cycle).
+
+
+
+ ensure that when an Azure SQL resource is created, it is configured with a specific set of values to ensure that the diagnostics settings will be enabled and streamed to the central Log Analytics workspace.
 
 
 
