@@ -1,4 +1,4 @@
-# FSI Landing Zones on Microsoft Azure - User Guide
+# Financial Services Industry (FSI) Landing Zones on Microsoft Azure - User Guide
 
 ![fsilzoverview](../docs/fsilandingpage.png)
 
@@ -19,6 +19,7 @@ This user guide explains the FSI Landing Zones on Microsoft Azure reference impl
 - [Next steps](#next-steps)
 
 ---
+
 FSI Landing Zones on Microsoft Azure reference implementation provides prescriptive guidance coupled with Azure best practices for the financial services industry, and it follows 5 design principles across the 8 critical design areas for organizations to define their target state for their Azure architecture.
 
 >Note: To read and learn about the architecture and design, please visit this [article](../docs/architectureAndDesign.md).
@@ -89,7 +90,6 @@ By default, all recommended settings and resources recommendations are enabled a
 
 - Azure Policies that will enable autonomy for the platform and the landing zones.
 - An Azure subscription dedicated for **Security, Governance, and Compliance**, which enables core platform capabilities at scale using Azure Policy such as:
-
  - A Log Analytics workspace and an Automation account
  - Microsoft Sentinel
  - Microsoft Defender for Cloud
@@ -97,7 +97,6 @@ By default, all recommended settings and resources recommendations are enabled a
  - Diagnostics settings for Activity Logs, VMs, and PaaS resources sent to Log Analytics
 
 - An Azure subscription dedicated for **Connectivity** for Azure platform networking and distributed edge, which deploys core Azure networking resources such as:
-
  - A hub virtual network
  - Azure Firewall
  - ExpressRoute Gateway
@@ -105,7 +104,6 @@ By default, all recommended settings and resources recommendations are enabled a
  - Azure Private DNS Zones for Private Link
 
 - In addition, network security monitoring can be enabled which includes:
-
  - Enable DDoS Standard protection
  - Network Watcher
  - NSG Flow Logs
@@ -113,24 +111,30 @@ By default, all recommended settings and resources recommendations are enabled a
 
 - (Optionally) An Azure subscription dedicated for **Identity** in case your organization requires to have Active Directory Domain Controllers to provide authorization and authentication for workloads deployed into the landing zones.
 
-- Landing Zone Management Group for **** , mission-critical applications that has unique requirements for availability, performance, connectivity, latency, reliability, and security.
- - This is where you will create your subscriptions that will host your workloads.
+- (Optionally) N subscription can be moved in the **Playground** management group to help accelerate innovation and transformation. These subscriptions will both physically and logically be separated from everything else where developers can explore Azure services, collaborate, and innovate quicker in a safe and reliable way.
+- Azure policies that will be applied to the playground subscriptions:
+ - Prevent any Virtual Network Peering to and from the playground subscription(s)
+ - Ensure there is a budget associated with each playground subscription to control cost
+ - Prevent network interfaces to have public IPs
+ - Prevent usage of costly SKUs across Azure services
 
 - Landing Zone Management Group for **Corp** connected applications that require connectivity to on-premises, to other landing zones or to the internet via shared services provided in the hub virtual network.
  - This is where you will create your subscriptions that will host your corp-connected workloads.
 
 - Landing Zone Management Group for **Online** applications that will be internet-facing, where a virtual network is optional and hybrid connectivity is not required.
  - This is where you will create your Subscriptions that will host your online workloads.
+- Azure policies for online landing zones:
+ - Prevent usage of Application Gateways without Web Application Firewall
+ - Prevent usage of Web Application Firewall with disabled firewall rules
 
-- Landing zone subscriptions for Azure native, internet-facing **Online** applications and resources.
+- Landing zone subscriptions for **Corp** connected applications and resources, including a virtual network that can optionally be connected to the hub via VNet peering.
+- Azure Policies and corp-connected landing zones:
+ - Enforce usage of Private Endpoint for Azure PaaS services
+ - Prevent usage of Public Endpoints for Azure PaaS services
+ - Prevent public IP for Databricks workspaces
+ - Ensure VNet injection is enabled for Databricks workspaces
 
-- Landing zone subscriptions for **** , mission-critical applications and resources.
-- Azure Policies for online and corp-connected landing zones, which include:
- - Enforce highly-available Public IP addresses
- - Enforce highly-available ExpressRoute gateways
-
-- Landing zone subscriptions for **Corp** connected applications and resources, including a virtual network that will be connected to the hub via VNet peering.
-- Azure Policies for online and corp-connected landing zones, which include:
+- In addition, the following policies will be applied to both online and corp landing zones:
  - Enforce VM monitoring (Windows & Linux)
  - Enforce VMSS monitoring (Windows & Linux)
  - Enforce Azure Arc VM monitoring (Windows & Linux)
@@ -140,9 +144,17 @@ By default, all recommended settings and resources recommendations are enabled a
  - Enforce auditing for Azure SQL
  - Enforce encryption for Azure SQL
  - Prevent IP forwarding
- - Prevent inbound RDP from internet
+ - Prevent inbound RDP from the Internet
+ - Prevent inbound SSH from the Internet
  - Ensure subnets are associated with Network Security Groups
  - Ensure subnets are associated with User-Defined routes
+ - Ensure encryption in transit is enabled for PaaS services
+ - Enable Kubernetes (AKS) for Azure Policy
+ - Prevent privileged containers in Kubernetes clusters
+ - Prevent privileged escalation in Kubernetes clusters
+ - Ensure HTTPS ingress is enforced in Kubernetes clusters
+ - Ensure Kubernetes security baseline standards for Linux-based workloads
+ - Ensure Databricks workloads are using the right SKU to ensure enterprise security and Azure RBAC
 
 ## Deployment instructions
 
@@ -160,7 +172,7 @@ The pre-requisites requires the following:
 - Elevation of privileges of a Global Admin that will grant him/her the "User Access Administrator" role assignment at the tenant root scope.
 - An explicit role assignment (Azure RBAC) made at the tenant root scope via Azure CLI or Azure PowerShell (Note: There's currently no graphical user interface to make this role assignment).
 
-#### Elevate Access to manage Azure resources in the directory
+#### Elevate Access to manage Azure resources in Azure Active Directory
 
 >Note: The pre-requisites described here is a *one off* excercise. Once the deployment has completed, permission to the tenant root ("/") can safely be removed as the user will have Owner permission at the intermediate root management group (below tenant root ("/") and tenant root management group).
 
