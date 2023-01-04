@@ -245,6 +245,8 @@ The overall implmenentation process is depicted below, where we distinguish betw
 
 An implementation of a control is subject to the characteristics of the control and the service itself. To demonstrate this we will be using an example that goes through the different steps using Azure Policy to implement the control.
 
+>Note: For organizations to assess, test, develop, and validate an Azure Policy, only a subscription is required. In FSI Landing Zones, using a subscription in the *Playground* management group is recommended as this simplifies and accelerates the process.
+
 **Step 1: Understanding the control**
 
 There's a myriad of controls that an FSI organization must comply with, hence it is important to understand the control and its requirement. To illustrate this, we will be using an example where an organization will enable Azure SQL within the tenant, and must comply with the requirements within the **Logging and Threat Detection** category.
@@ -258,7 +260,7 @@ This means it's more than just enabling the logs and diagnostics on Azure SQL da
 
 >Note: With FSI Landing Zones on Microsoft Azure, the core components are already provided within the management subscription which contains the Log Analytics workspace for holistic observability of the platform from a security perspective. In terms of data retention, this can be configured directly on the Log Analytics workspace, and one can also define this granularity per log type.
 
-Once we have a clear understanding of the control, we can start to assess the built-in policies that are available within Azure Policy in order to enable the diagnostics settings on Azure SQL databases and stream to the designated Log Analytics workspace.
+Once we have a clear understanding of the control, we can start to assess the built-in policies that are available within Azure Policy to enable the diagnostics settings on Azure SQL databases and stream to the designated Log Analytics workspace.
 
 **Step 2a: Assess Built-In policies**
 
