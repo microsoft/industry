@@ -4,7 +4,7 @@
         "kind": "Form",
         "properties": {
             "title": "FSI Landing Zones on Microsoft Azure",
-            "isWizard": true,
+            "isWizard": false,
             "steps": [
                 {
                     "name": "basics",
@@ -1687,26 +1687,6 @@
                             "visible": true
                         },
                         {
-                            "name": "esIdentity",
-                            "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Assign recommended policies to govern identity and domain controllers",
-                            "defaultValue": "Yes (recommended)",
-                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, Azure Policy will be assigned at the scope to govern your identity resources.",
-                            "constraints": {
-                                "allowedValues": [
-                                    {
-                                        "label": "Yes (recommended)",
-                                        "value": "Yes"
-                                    },
-                                    {
-                                        "label": "No",
-                                        "value": "No"
-                                    }
-                                ]
-                            },
-                            "visible": true
-                        },
-                        {
                             "name": "esIdentitySubSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Identity subscription",
@@ -1717,12 +1697,19 @@
                                     "label": "Management subscription"
                                 }
                             ],
-                            "visible": "[and(equals(steps('esIdentityGoalState').esIdentity,'Yes'), not(equals(steps('lzSettings').subSection.subOrgsOption, 'Single')))]"
+                            "visible": "[not(equals(steps('lzSettings').subSection.subOrgsOption, 'Single'))]"
+                        },
+                        {
+                            "name": "esIdentityGovSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Identity Governance",
+                            "elements": [],
+                            "visible": true
                         },
                         {
                             "name": "identitypolicies",
                             "type": "Microsoft.Common.TextBlock",
-                            "visible": "[equals(steps('esIdentityGoalState').esIdentity,'Yes')]",
+                            "visible": true,
                             "options": {
                                 "text": "Select which of the the recommended policies you will assign to your identity management group.",
                                 "link": {
@@ -1749,7 +1736,7 @@
                                     }
                                 ]
                             },
-                            "visible": "[equals(steps('esIdentityGoalState').esIdentity,'Yes')]"
+                            "visible": true
                         },
                         {
                             "name": "esIdDenySubnetNsg",
@@ -1769,7 +1756,7 @@
                                     }
                                 ]
                             },
-                            "visible": "[equals(steps('esIdentityGoalState').esIdentity,'Yes')]"
+                            "visible": true
                         },
                         {
                             "name": "esIdDenyPublicIp",
@@ -1789,7 +1776,7 @@
                                     }
                                 ]
                             },
-                            "visible": "[and(equals(steps('esIdentityGoalState').esIdentity,'Yes'), not(equals(steps('lzSettings').subSection.subOrgsOption, 'Single')))]"
+                            "visible": "not(equals(steps('lzSettings').subSection.subOrgsOption, 'Single'))]"
                         },
                         {
                             "name": "esIdAzBackup",
@@ -1809,7 +1796,7 @@
                                     }
                                 ]
                             },
-                            "visible": "[equals(steps('esIdentityGoalState').esIdentity,'Yes')]"
+                            "visible": true
                         },
                         {
                             "name": "esIdentityConnectivity",
@@ -1829,7 +1816,7 @@
                                     }
                                 ]
                             },
-                            "visible": "[and(and(equals(steps('esIdentityGoalState').esIdentity,'Yes'), not(equals(steps('lzSettings').subSection.subOrgsOption, 'Single'))), equals(steps('esIdentityGoalState').esIdentity, 'Yes'), not(equals(steps('esConnectivityGoalState').esHub,'No')))]"
+                            "visible": "[and(not(equals(steps('lzSettings').subSection.subOrgsOption, 'Single')), not(equals(steps('esConnectivityGoalState').esHub,'No')))]"
                         },
                         {
                             "name": "esIdentityCidr",
