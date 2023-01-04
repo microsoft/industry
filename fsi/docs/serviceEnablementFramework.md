@@ -13,7 +13,6 @@ The process of definining, mapping, and implementing the required controls can i
         * [Control mapping](#control-mapping)
         * [Design](#design)
         * [Implementation](#implementation)
-            * [Enablement and acceleration](#enablement-and-acceleration)
         * [Evidence](#evidence)
 * [Examples of end-to-end walkthrough](#examples-of-end-to-end-walkthrough)
 * [Next Steps](#next-steps)
@@ -246,11 +245,22 @@ The overall implmenentation process is depicted below, where we distinguish betw
 
 An implementation of a control is subject to the characteristics of the control and the service itself. To demonstrate this we will be using an example that goes through the different steps using Azure Policy to implement the control.
 
-**Step 1: Understand the control**
+**Step 1: Understanding the control**
 
-It's vital to capture key logs for services in order to provide evidence of access, CRUD operations, and other dimensions that are relevant to satisfy the control. In Azure, this is primarily enabled per service using a *Diagnostic setting*, which can emit logs to multiple sinks, such as storage accounts, Event Hubs, and Log Analytics workspaces.
+There's a myriad of controls that an FSI organization must comply with, hence it is important to understand the control and its requirement. To illustrate this, we will be using an example where an organization will enable Azure SQL within the tenant, and must comply with the requirements within the **Logging and Threat Detection** category.
 
-**Step 2: Assess Built-In policies**
+This means it's more than just enabling the logs and diagnostics on Azure SQL database itself, as it requires additional services and configuration, which also drivers additional set of controls and requirements such as:
+
+1. Data sink (where the logs are stored)
+2. Data retention (how long the logs must stored)
+3. Access to the logs (who can access the logs)
+4. Data export (how and where the logs can be exported)
+
+>Note: With FSI Landing Zones on Microsoft Azure, the core components are already provided within the management subscription which contains the Log Analytics workspace for holistic observability of the platform from a security perspective. In terms of data retention, this can be configured directly on the Log Analytics workspace, and one can also define this granularity per log type.
+
+Once we have a clear understanding of the control, we can start to assess the built-in policies that are available within Azure Policy in order to enable the diagnostics settings on Azure SQL databases and stream to the designated Log Analytics workspace.
+
+**Step 2a: Assess Built-In policies**
 
 Microsoft continues to evolve the platform and the investments in Azure Policy, and as such, it is important to understand what is available out of the box to accelerate the implementation and reduce the amount of custom policies (customer will be responsible to maintain the code and its life-cycle).
 
@@ -656,17 +666,88 @@ Get-AzPolicyDefinition  | where-object {($_.Properties.metadata.category -eq "SQ
   }
 ```
 
+**Step 2b: Develop Custom policies**
 
- ensure that when an Azure SQL resource is created, it is configured with a specific set of values to ensure that the diagnostics settings will be enabled and streamed to the central Log Analytics workspace.
+In some cases, you may need to develop custom policies. This is the case when you need to implement a policy that is not available in the Azure Policy library, or if you want additional conditions and rules as part of an existing built-in policy.
 
+To illustrate the approach one must take, we will take an example of a custom policy that is not available in the Azure Policy library. In this example, we will create a policy that will ensure that all Virtual Machine Extensions are from Microsoft. If there's a different publisher, the policy will deny the deployment of the virtual machine extension
 
+1. Explore the available policy aliases for the Microsoft.Compute resource provider. This can easily be done using Azure CLI or Azure PowerShell.
 
-Highlight the architecture and how it is implemented. simplified assignment process
-focus on the right policy effects
-show how to create custom policy and how to assign it
+````powershell
 
-#### Enablement and acceleration
-This section explains the enablement and acceleration phase of the controls
+(Get-AzPolicyAlias -NameSpaceMatch Microsoft.Compute -ResourceTypeMatch).Name
+
+Microsoft.Compute/virtualMachines/extensions/provisioningState
+Microsoft.Compute/virtualMachines/extensions/publisher
+Microsoft.Compute/virtualMachines/extensions/type
+Microsoft.Compute/virtualMachines/extensions/typeHandlerVersion
+Microsoft.Compute/virtualMachines/extensions/autoUpgradeMinorVersion
+Microsoft.Compute/virtualMachines/extensions/enableAutomaticUpgrade
+Microsoft.Compute/virtualMachines/extensions/settings
+
+````
+
+2. As we have an alias for 'Microsoft.Compute/virtualMachines/extensions/publisher', we can create a new policy definition using the Azure CLI, Azure PowerShell, Azure Portal, or Azure Resource Manager template using this alias in the rule set. The policy definition property bag could look like the one below:
+
+````json
+
+{
+  "properties": {
+    "displayName": "Ensure that all Virtual Machine Extensions are from Microsoft",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "This policy ensures that all Virtual Machine Extensions are from Microsoft",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Compute"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "Audit",
+          "Disabled",
+          "Deny"
+        ],
+        "defaultValue": "Audit"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Compute/virtualMachines/extensions"
+          },
+          {
+            "field": "Microsoft.Compute/virtualMachines/extensions/publisher",
+            "notEquals": "Microsoft"
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}
+
+````
+
+3. Deploy the policy definition to the intermediate root management group (the one below Tenant Root Group) so it can be assigned at any scope below.
+
+**Step 3: Assign the policy**
+
+Once the policy has been identified, either being a Built-In or a custom policy, it must be implemented at the appropriate scope in the management group hierarchy. For FSI Landing Zones, it will primarily happen on the Landing Zones management group if it should apply to all workloads, or explicitly on corp or online management group. The recommendation is to always assign at the management group scope as this will ensure segregation of duties as the application teams will inherit the control to their landing zones (subscriptions) and not be able to modify or tamper with the assignment.
+
+In the examples we have used for Azure SQL Database, the policy effect should be *deployIfNotExists*, and for the custom policy for Virtual Machine Extensions, the policy effect should be *deny*.
+
+This will ensure that a) every Azure SQL Database that gets deployed, will always have the diagnostic settings deployed, and b) every Virtual Machine Extension that gets deployed, will always be from Microsoft.
 
 ### Evidence
 This section provides evidence of the controls
