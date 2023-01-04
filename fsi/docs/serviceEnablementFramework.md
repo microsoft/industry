@@ -668,15 +668,15 @@ Get-AzPolicyDefinition  | where-object {($_.Properties.metadata.category -eq "SQ
 
 **Step 2b: Develop Custom policies**
 
-In some cases, you may need to develop custom policies. This is the case when you need to implement a policy that is not available in the Azure Policy library, or if you want additional conditions and rules as part of an existing built-in policy.
+In some cases, you may need to develop custom policies, such as when you need to satisfy a control that is not available in the Azure Policy library, or if you want additional conditions and rules as part of an existing built-in policy.
 
-To illustrate the approach one must take, we will take an example of a custom policy that is not available in the Azure Policy library. In this example, we will create a policy that will ensure that all Virtual Machine Extensions are from Microsoft. If there's a different publisher, the policy will deny the deployment of the virtual machine extension
+To illustrate the approach one must take, we will take an example of a custom policy that is not available in the Azure Policy library. Ee will create a policy that ensures all Virtual Machine Extensions are published by Microsoft. If there's a different publisher, the policy must deny the deployment of the virtual machine extension.
 
-1. Explore the available policy aliases for the Microsoft.Compute resource provider. This can easily be done using Azure CLI or Azure PowerShell.
+1. Explore the available policy aliases for the Microsoft.Compute resource provider. This can be done using Azure CLI or Azure PowerShell.
 
 ````powershell
 
-(Get-AzPolicyAlias -NameSpaceMatch Microsoft.Compute -ResourceTypeMatch).Name
+(Get-AzPolicyAlias -NameSpaceMatch 'Microsoft.Compute' -ResourceTypeMatch 'extensions').Name
 
 Microsoft.Compute/virtualMachines/extensions/provisioningState
 Microsoft.Compute/virtualMachines/extensions/publisher
