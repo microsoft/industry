@@ -12,7 +12,6 @@ This article goes into the details of the architecture and design of the FSI Lan
     * [Platform responsibilities and functions](#platform-responsibilities-and-functions)
     * [Landing zone owners responsibilities](#landing-zone-owners-responsibilities)
 * [FAQ](#faq)
-* [Anti-Patterns and untold stories](#anti-patterns-and-untold-stories)
 * [Next Steps](#next-steps)
 
 ## Architecture overview
@@ -112,10 +111,6 @@ A. FSI Landing Zones is specifically developed and curated for organizations wit
 Q. Can we start with a single subscription, and later add a new subscription?
 
 A. Trust us - you do not want to start with a single subscription. In the scenario where you combine both *platform* resources and *application* resources in a single subscription, and then later adds a new subscription, you are up for a tedious exercise to move or/and redeploy resources which will cause interruption. Further, it violates known best practices and design principles for overall landing zones. Lastly, there's no additional cost associated with the subscriptions themselves, hence it will not cost more for the subscriptions, just that the resource composition and distribution is better aligned for scale.
-
-## Anti-patterns and untold stories
-
-Placeholder
 
 ## Next steps
 

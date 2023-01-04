@@ -12,7 +12,6 @@ This user guide explains the FSI Landing Zones on Microsoft Azure reference impl
 - [Pricing](#pricing)
 - [What if I already have an existing Azure footprint?](#what-if-i-already-have-an-existing-azure-footprint)
 - [How FSI Landing Zones reference implementation works](#how-FSI-landing-zones-reference-implementation-works)
-- [What happens when you deploy FSI Landing Zones](#what-happens-when-you-deploy-azure-for-telco)
 - [Deployment instructions](#deployment-instructions)
   - [Pre-requisites](#pre-requisites)
   - [Step-by-step guidance](#step-by-step-guidance)
@@ -28,7 +27,7 @@ The reference architecture is modular by design and allows organizations of any 
 
 In particular, it enables the organizations to start as small as needed and scale alongside their business requirements regardless of scale point.
 
-![FSI architecture](./media/telco-architecture-detailed.PNG)
+![FSI architecture](coming)
 
 ## What is FSI Landing Zones on Microsoft Azure reference implementation?
 
@@ -81,80 +80,6 @@ The following structure is being created when deploying FSI Landing Zones on Mic
 >Note: Playground will be securely isolated and disconnected from everything else within the tenant by Azure policies, be subject to an budget and cost enforcement, and is not meant to provide a path from test, dev, or production.
 
 - **Deprecated:** This is the dedicated Management Group for landing zones that are being cancelled, which then will be moved to this Management Group before deleted by Azure after 30-60 days. Policies will ensure no further resource deployment or writes can occur on these subscriptions.
-
-## What happens when you deploy FSI Landing Zones reference implementation?
-
-By default, all recommended settings and resources recommendations are enabled and deployed, and you must explicitly disable them if you don't want them to be deployed and configured. These resources and configurations include:
-
-- A scalable Management Group hierarchy aligned to core platform capabilities, allowing you to operationalize at scale using centrally managed Azure RBAC and Azure Policy where platform and workloads have clear separation.
-
-- Azure Policies that will enable autonomy for the platform and the landing zones.
-- An Azure subscription dedicated for **Security, Governance, and Compliance**, which enables core platform capabilities at scale using Azure Policy such as:
- - A Log Analytics workspace and an Automation account
- - Microsoft Sentinel
- - Microsoft Defender for Cloud
- - Storage Account for the NSG Flow Logs setup
- - Diagnostics settings for Activity Logs, VMs, and PaaS resources sent to Log Analytics
-
-- An Azure subscription dedicated for **Connectivity** for Azure platform networking and distributed edge, which deploys core Azure networking resources such as:
- - A hub virtual network
- - Azure Firewall
- - ExpressRoute Gateway
- - VPN Gateway
- - Azure Private DNS Zones for Private Link
-
-- In addition, network security monitoring can be enabled which includes:
- - Enable DDoS Standard protection
- - Network Watcher
- - NSG Flow Logs
- - Traffic Analytis
-
-- (Optionally) An Azure subscription dedicated for **Identity** in case your organization requires to have Active Directory Domain Controllers to provide authorization and authentication for workloads deployed into the landing zones.
-
-- (Optionally) N subscription can be moved in the **Playground** management group to help accelerate innovation and transformation. These subscriptions will both physically and logically be separated from everything else where developers can explore Azure services, collaborate, and innovate quicker in a safe and reliable way.
-- Azure policies that will be applied to the playground subscriptions:
- - Prevent any Virtual Network Peering to and from the playground subscription(s)
- - Ensure there is a budget associated with each playground subscription to control cost
- - Prevent network interfaces to have public IPs
- - Prevent usage of costly SKUs across Azure services
-
-- Landing Zone Management Group for **Corp** connected applications that require connectivity to on-premises, to other landing zones or to the internet via shared services provided in the hub virtual network.
- - This is where you will create your subscriptions that will host your corp-connected workloads.
-
-- Landing Zone Management Group for **Online** applications that will be internet-facing, where a virtual network is optional and hybrid connectivity is not required.
- - This is where you will create your Subscriptions that will host your online workloads.
-- Azure policies for online landing zones:
- - Prevent usage of Application Gateways without Web Application Firewall
- - Prevent usage of Web Application Firewall with disabled firewall rules
-
-- Landing zone subscriptions for **Corp** connected applications and resources, including a virtual network that can optionally be connected to the hub via VNet peering.
-- Azure Policies and corp-connected landing zones:
- - Enforce usage of Private Endpoint for Azure PaaS services
- - Prevent usage of Public Endpoints for Azure PaaS services
- - Prevent public IP for Databricks workspaces
- - Ensure VNet injection is enabled for Databricks workspaces
-
-- In addition, the following policies will be applied to both online and corp landing zones:
- - Enforce VM monitoring (Windows & Linux)
- - Enforce VMSS monitoring (Windows & Linux)
- - Enforce Azure Arc VM monitoring (Windows & Linux)
- - Enforce DDoS on Virtual Networks
- - Enforce VM backup (Windows & Linux)
- - Enforce secure access (HTTPS) to storage accounts
- - Enforce auditing for Azure SQL
- - Enforce encryption for Azure SQL
- - Prevent IP forwarding
- - Prevent inbound RDP from the Internet
- - Prevent inbound SSH from the Internet
- - Ensure subnets are associated with Network Security Groups
- - Ensure subnets are associated with User-Defined routes
- - Ensure encryption in transit is enabled for PaaS services
- - Enable Kubernetes (AKS) for Azure Policy
- - Prevent privileged containers in Kubernetes clusters
- - Prevent privileged escalation in Kubernetes clusters
- - Ensure HTTPS ingress is enforced in Kubernetes clusters
- - Ensure Kubernetes security baseline standards for Linux-based workloads
- - Ensure Databricks workloads are using the right SKU to ensure enterprise security and Azure RBAC
 
 ## Deployment instructions
 
