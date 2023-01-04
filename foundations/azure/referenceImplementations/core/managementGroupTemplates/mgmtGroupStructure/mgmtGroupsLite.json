@@ -24,7 +24,7 @@
             "platform": "[concat(parameters('topLevelManagementGroupPrefix'), '-', 'platform')]",
             "landingZone": "[concat(parameters('topLevelManagementGroupPrefix'), '-', 'landingzones')]",
             "decommissioned": "[concat(parameters('topLevelManagementGroupPrefix'), '-', 'decommissioned')]",
-            "sandboxes": "[concat(parameters('topLevelManagementGroupPrefix'), '-', 'sandboxes')]"
+            "playground": "[concat(parameters('topLevelManagementGroupPrefix'), '-', 'playground')]"
         }
     },
     "resources": [
@@ -70,15 +70,15 @@
             }
         },
         {
-            // Create management group for sandbox subscriptions
+            // Create management group for playground subscriptions
             "type": "Microsoft.Management/managementGroups",
             "apiVersion": "2020-05-01",
-            "name": "[variables('managementGroups').sandboxes]",
+            "name": "[variables('managementGroups').playground]",
             "dependsOn": [
                 "[tenantResourceId('Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]"
             ],
             "properties": {
-                "displayName": "[variables('managementGroups').sandboxes]",
+                "displayName": "[variables('managementGroups').playground]",
                 "details": {
                     "parent": {
                     "id": "[tenantResourceId('Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]"

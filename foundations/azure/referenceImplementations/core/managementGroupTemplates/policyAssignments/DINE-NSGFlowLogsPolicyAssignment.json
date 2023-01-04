@@ -17,16 +17,22 @@
             ],
             "defaultValue": "Default"
         },
-        "storageAccountResourceId": {
+        "storageId": {
             "type": "string"
         },
-        "workspace": {
+        "workspaceResourceId": {
+            "type": "string"
+        },
+        "nsgRegion": {
+            "type": "string"
+        },
+        "workspaceRegion": {
             "type": "string"
         }
     },
     "variables": {
         "policyDefinitions": {
-            "deployNsgFlowLogs": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policyDefinitions/Dine-Nsg-FlowLogs-to-LA')]"
+            "deployNsgFlowLogs": "/providers/Microsoft.Authorization/policyDefinitions/5e1cd26a-5090-4fdb-9d6a-84a90335e22d"
         },
         "policyAssignmentNames": {
             "deployNsgFlowLogs": "Dine-Nsg-FlowLogs",
@@ -53,11 +59,17 @@
                 "policyDefinitionId": "[variables('policyDefinitions').deployNsgFlowLogs]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "storageAccountResourceId": {
-                        "value": "[parameters('storageAccountResourceId')]"
+                    "storageId": {
+                        "value": "[parameters('storageId')]"
                     },
-                    "workspace": {
-                        "value": "[parameters('workspace')]"
+                    "workspaceResourceId": {
+                        "value": "[parameters('workspaceResourceId')]"
+                    },
+                    "nsgRegion": {
+                        "value": "[parameters('nsgRegion')]"
+                    },
+                    "workspaceRegion": {
+                        "value": "[parameters('workspaceRegion')]"
                     }
                 }
             }

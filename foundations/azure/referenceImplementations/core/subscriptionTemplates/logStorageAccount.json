@@ -13,7 +13,7 @@
         }
     },
     "variables": {
-        "deploymentName": "[concat('TelcoFlowLogStorage')]"
+        "deploymentName": "[take(concat(deployment().name, 'LogStorage'), 60)]"
     },
     "resources": [
         {

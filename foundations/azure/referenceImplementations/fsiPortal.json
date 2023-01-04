@@ -1914,7 +1914,7 @@
                         {
                             "name": "vnetPeeringPolicy",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Prevent any Virtual Network Peering to and from the playground landing zones",
+                            "label": "Prevent any Virtual Network Peering to and from the playground subscriptions",
                             "defaultValue": "Yes (recommended)",
                             "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, Azure Policy will be assigned at the scope to govern your playground resources.",
                             "constraints": {
@@ -1934,7 +1934,7 @@
                         {
                             "name": "budgetPolicy",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Ensure there is a budget associated with each playground landing zone to control cost",
+                            "label": "Ensure there is a budget associated with each playground subscription to control cost",
                             "defaultValue": "Yes (recommended)",
                             "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, Azure Policy will be assigned at the scope to govern your playground resources.",
                             "constraints": {
