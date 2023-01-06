@@ -13,7 +13,7 @@ This article provides a reference architecture with prescriptive guidance and re
 
 ## Table of contents
 
-* [FSI Landing Zones on Microsoft Azure](#fsi-landing-on-microsoft-azure)
+* [FSI Landing Zones on Microsoft Azure](#fsi-landing-zones-on-microsoft-azure)
 * [Overview](#overview)
   * [Architecture and design](#letter-a)
   * [Security, Governance, and Compliance by-default for FSI industry scenarios](#letter-b)
@@ -21,8 +21,8 @@ This article provides a reference architecture with prescriptive guidance and re
   * [Operational Excellence for regulated industries](#letter-d)
   * [Compliant workload accelerators for FSI](#letter-e)
 * [Solutions](#solutions)
-  * [Payment Gateway](#network-analytics-landing-zones-for-operators)
-  * [Banking Desktop solution](#edge-video-services)
+  * [Payment Gateway](#placeholder)
+  * [Banking Desktop solution](#placeholder)
 * [Next Steps](#next-steps)
 
 ## FSI Landing Zones on Microsoft Azure
