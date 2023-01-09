@@ -115,7 +115,7 @@
         "ppAdminEnvNaming": {
             "type": "string",
             "maxLength": 15,
-            "defaultValue": "",
+            "defaultValue": "''",
             "metadata": {
                 "description": "Provide naming convention for the Admin environments."
             }
