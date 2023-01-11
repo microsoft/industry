@@ -168,7 +168,7 @@
                                 "uri": "https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/management-and-monitoring",
                                 "style": "Info"
                             }
-                        },                        
+                        },
                         {
                             "name": "esMgmtSubSection",
                             "type": "Microsoft.Common.Section",
@@ -834,13 +834,13 @@
                             },
                             "visible": "[not(equals(steps('esConnectivityGoalState').esHub, 'No'))]"
                         },
-						{
-							"name": "anmSection",
-							"type": "Microsoft.Common.Section",
-							"label": "Enable VNet connectivity with Azure Virtual Network Manager (PREVIEW)",
-							"visible": "[and(equals(steps('esConnectivityGoalState').esHub, 'vhub'), contains(split('northcentrals,westus2,eastus,eastus2,northeurope,westeurope,francecentral', ','), steps('esConnectivityGoalState').esNwLocation))]",
-							"elements": [
-								{
+                        {
+                            "name": "anmSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Enable VNet connectivity with Azure Virtual Network Manager (PREVIEW)",
+                            "visible": "[and(equals(steps('esConnectivityGoalState').esHub, 'vhub'), contains(split('northcentrals,westus2,eastus,eastus2,northeurope,westeurope,francecentral', ','), steps('esConnectivityGoalState').esNwLocation))]",
+                            "elements": [
+                                {
                                     "name": "anmText",
                                     "type": "Microsoft.Common.TextBlock",
                                     "visible": true,
@@ -852,29 +852,29 @@
                                         }
                                     }
                                 },
-								{
-									"name": "anmOption",
-									"type": "Microsoft.Common.OptionsGroup",
-									"label": "Use Azure Virtual Network Manager to manage virtual networks",
-									"defaultValue": "No",
-									"toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, ARM will create an Azure Virtual Network Manager instance in the connectivity subscription.",
-									"constraints": {
-										"allowedValues": [
-											{
-												"label": "Yes",
-												"value": "Yes"
-											},
-											{
-												"label": "No",
-												"value": "No"
-											}
-										],
-										"required": true
-									},
-									"visible": true
-								}
-							]
-						},						
+                                {
+                                    "name": "anmOption",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Use Azure Virtual Network Manager to manage virtual networks",
+                                    "defaultValue": "No",
+                                    "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, ARM will create an Azure Virtual Network Manager instance in the connectivity subscription.",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "required": true
+                                    },
+                                    "visible": true
+                                }
+                            ]
+                        },
                         {
                             "name": "esPrivateDns",
                             "type": "Microsoft.Common.OptionsGroup",
@@ -1952,6 +1952,21 @@
                             "visible": true
                         },
                         {
+                            "name": "budgetAmount",
+                            "type": "Microsoft.Common.Slider",
+                            "min": 1000,
+                            "max": 10000,
+                            "label": "Specify monthly budget amount (subject to your currency)",
+                            "subLabel": "",
+                            "defaultValue": 1000,
+                            "showStepMarkers": false,
+                            "toolTip": "Select amount for the budget policy.",
+                            "constraints": {
+                                "required": false
+                            },
+                            "visible": "[equals(steps('esPlayground').budgetPolicy, 'Yes')]"
+                        },
+                        {
                             "name": "vnicPolicy",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Prevent network interfaces to have public IPs",
@@ -2315,7 +2330,7 @@
                                             "uri": "https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/design-principles#policy-driven-governance"
                                         }
                                     }
-                                },                                
+                                },
                                 {
                                     "name": "wafGwPolicy",
                                     "type": "Microsoft.Common.OptionsGroup",
@@ -2865,6 +2880,10 @@
                 "enableActivityLog": "[steps('esGoalState').azMonSection.esActivityLog]",
                 "enableVmInsights": "[steps('esGoalState').azMonSection.esVmInsights]",
                 "enableServiceMap": "[steps('esGoalState').azMonSection.esServiceMap]",
+                "denyVnetPeering": "[steps('esPlayground').vnetPeeringPolicy]",
+                "enableBudget": "[steps('esPlayground').budgetPolicy]",
+                "budgetAmount": "[steps('esPlayground').budgetAmount]",
+                "playgroundSubscriptionId": "[steps('esPlayground').playgroundSub]",
                 "enableSqlAssessment": "[steps('esGoalState').azMonSection.esSqlAssessment]",
                 "industryPrefix": "[steps('lzSettings').mgSection.esMgmtGroup]",
                 "enableSqlAudit": "[steps('lzGoalState').lzGov.esSqlAudit]",

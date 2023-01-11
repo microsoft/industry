@@ -79,6 +79,13 @@
             ],
             "defaultValue": "No"
         },
+        "playgroundSubscriptionId": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Provide the subscription ids for existing, empty subscriptions you want to move into your playground management group."
+            }
+        },
         "onlineLzSubscriptionId": {
             "type": "array",
             "defaultValue": [],
@@ -611,6 +618,26 @@
                 "No"
             ]
         },
+        "denyVnetPeering": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "No",
+                "Yes"
+            ]
+        },
+        "enableBudget": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "budgetAmount": {
+            "type": "string",
+            "defaultValue": "1000"
+        },
         "enableNetworkWatcher": {
             "type": "string",
             "defaultValue": "No",
@@ -661,6 +688,7 @@
             "management": "[concat(parameters('industryPrefix'), '-', 'management')]",
             "connectivity": "[concat(parameters('industryPrefix'), '-', 'connectivity')]",
             "identity": "[concat(parameters('industryPrefix'), '-', 'identity')]",
+            "playground": "[concat(parameters('industryPrefix'), '-', 'playground')]",
             "lzs": "[concat(parameters('industryPrefix'), '-', 'landingzones')]",
             "corp": "[concat(parameters('industryPrefix'), '-', 'corp')]",
             "online": "[concat(parameters('industryPrefix'), '-', 'online')]"
@@ -672,6 +700,7 @@
             "managementManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').management)]",
             "connectivityManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').connectivity)]",
             "identityManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').identity)]",
+            "playgroundManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').playground)]",
             "lzsManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').lzs)]",
             "corpManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').corp)]",
             "onlineManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').online)]"
@@ -696,8 +725,6 @@
             "managementGroups": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/mgmtGroupStructure/mgmtGroups.json')]",
             "managementGroupsLite": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/mgmtGroupStructure/mgmtGroupsLite.json')]",
             "policyDefinitions": "[uri(deployment().properties.templateLink.uri, variables('azPolicyArmTemplate'))]",
-            "erHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-non-ha-expressRoutes-policyAssignment.json')]",
-            "pipHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-non-ha-publicIps-policyAssignment.json')]",
             "dataPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/dataPolicies.json')]",
             "vnetConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/hubspoke-connectivity.json')]",
             "vwanConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/vwan-connectivity.json')]",
@@ -743,7 +770,12 @@
             "logStorageAccount": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/logStorageAccount.json')]",
             "nwRgPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-NwResourceGroupPolicyAssignment.json')]",
             "nsgFlowLogPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-NSGFlowLogsPolicyAssignment.json')]",
-            "sshFromInternetPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-SSHFromInternetPolicyAssignment.json')]"
+            "sshFromInternetPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-SSHFromInternetPolicyAssignment.json')]",
+            "denyVnetPeeringPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-VNetPeering.json')]",
+            "budgetPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-BudgetPolicyAssignment.json')]",
+            // Telco industry
+            "erHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'telco/managementGroupTemplates/policyAssignments/DENY-non-ha-expressRoutes-policyAssignment.json')]",
+            "pipHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'telco/managementGroupTemplates/policyAssignments/DENY-non-ha-publicIps-policyAssignment.json')]"
         },
         // Declaring deterministic deployment names
         "deploymentSuffix": "[concat('-', deployment().location, guid(parameters('industryPrefix')))]",
@@ -787,7 +819,6 @@
             "publicEndpointPolicyDefinitionName": "[take(concat(parameters('industry'), '-Policy-PEndpoints', variables('deploymentSuffix')), 64)]",
             "privateDnsPolicyDefinitionName": "[take(concat(parameters('industry'), '-Policy-PrivateDns', variables('deploymentSuffix')), 64)]",
             "privateDnsPolicyDeploymentName": "[take(concat(parameters('industry'), '-PrivDNSAssignment', variables('deploymentSuffix')), 64)]",
-            "privateDnsOperatorPolicyDeploymentName": "[take(concat(parameters('industry'), '-PrivateDNSOperator',variables('deploymentSuffix')), 64)]",
             "pipPolicyDeploymentName": "[take(concat(parameters('industry'), '-PIP', variables('deploymentSuffix')), 64)]",
             "rdpFromInternetPolicyDeploymentName": "[take(concat(parameters('industry'), '-RDP', variables('deploymentSuffix')), 64)]",
             "sshFromInternetPolicyDeploymentName": "[take(concat(parameters('industry'), '-SSH', variables('deploymentSuffix')), 64)]",
@@ -797,6 +828,7 @@
             "subnetNsgIdentityPolicyDeploymentName": "[take(concat(parameters('industry'), '-SubnetNsgIdentity', variables('deploymentSuffix')), 64)]",
             "sqlAuditPolicyDeploymentName": "[take(concat(parameters('industry'), '-SqlAudit', variables('deploymentSuffix')), 64)]",
             "sqlEncryptionPolicyDeploymentName": "[take(concat(parameters('industry'), '-SqlEncrypt', variables('deploymentSuffix')), 64)]",
+            "playgroundSubs": "[take(concat(parameters('industry'), '-Playground', variables('deploymentSuffix')), 60)]",
             "onlineLzSubs": "[take(concat(parameters('industry'), '-OnlineLzs', variables('deploymentSuffix')), 60)]",
             "corpLzSubs": "[take(concat(parameters('industry'), '-CorpLzs', variables('deploymentSuffix')), 60)]",
             "corpConnectedMoveLzSubs": "[take(concat(parameters('industry'), '-CorpConnLzs', variables('deploymentSuffix')), 50)]",
@@ -808,13 +840,17 @@
             "identityPeeringDeploymentName": "[take(concat(parameters('industry'), '-IDPeering', variables('deploymentSuffix')), 64)]",
             "identityVwanPeeringDeploymentName": "[take(concat(parameters('industry'), '-IDVwanPeering', variables('deploymentSuffix')), 64)]",
             "corpConnectedLzVwanSubs": "[take(concat(parameters('industry'), '-CorpConnLzsVwan', variables('deploymentSuffix')), 50)]",
-            "erHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaEr', deployment().location, '-', deployment().name), 64)]",
-            "pipHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaPip', deployment().location, '-', deployment().name), 64)]",
             "logStorageDeploymentName": "[take(concat(parameters('industry'), '-LogStorage', deployment().location, '-', deployment().name), 64)]",
             "nwRgPlatformPolicyAssignment": "[take(concat(parameters('industry'), '-NwRgPlatform'), 64)]",
             "nwRgLzPolicyAssignment": "[take(concat(parameters('industry'), '-NwRgLz'), 64)]",
             "nsgFlowLogsPlatformPolicyAssignment": "[take(concat(parameters('industry'), '-NSGFlowPlatform'), 64)]",
-            "nsgFLowLogsLzPolicyAssignment": "[take(concat(parameters('industry'), '-NSGFlowLz'), 64)]"           
+            "nsgFLowLogsLzPolicyAssignment": "[take(concat(parameters('industry'), '-NSGFlowLz'), 64)]",
+            "denyVnetPeeringDeploymentName": "[take(concat(parameters('industry'), '-VNetPeering'), 64)]",
+            "budgetDeploymentName": "[take(concat(parameters('industry'), '-Budget'), 64)]",
+            // Telco specific policies assignment deployments
+            "erHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaEr', deployment().location, '-', deployment().name), 64)]",
+            "pipHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaPip', deployment().location, '-', deployment().name), 64)]",
+            "privateDnsOperatorPolicyDeploymentName": "[take(concat(parameters('industry'), '-PrivateDNSOperator',variables('deploymentSuffix')), 64)]"
         },
         "esLiteDeploymentNames": {
             "mgmtGroupLiteDeploymentName": "[take(concat(parameters('industry'), '-MgsLite', variables('deploymentSuffix')), 64)]",
@@ -2896,7 +2932,101 @@
                     }
                 }
             }
-        },              
+        },
+        {
+            // Placing subscription(s) into playground management group
+            "condition": "[not(empty(parameters('playgroundSubscriptionId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[concat(variables('deploymentNames').playgroundSubs, copyIndex())]",
+            "scope": "[variables('scopes').playgroundManagementGroup]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascPolicyDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascGovPolicyDeploymentName)]",                
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').resourceDiagnosticsPolicyDeploymentName)]"
+            ],
+            "copy": {
+                "name": "playgroundSubs",
+                "count": "[length(parameters('playgroundSubscriptionId'))]"
+            },
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').subscriptionPlacement]"
+                },
+                "parameters": {
+                    "targetManagementGroupId": {
+                        "value": "[variables('mgmtGroups').playground]"
+                    },
+                    "subscriptionId": {
+                        "value": "[concat(parameters('playgroundSubscriptionId')[copyIndex()])]"
+                    }
+                }
+            }
+        },
+        {
+            // Assigning VNet peering policy to playground management group if condition is true
+            "condition": "[equals(parameters('denyVnetPeering'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').denyVnetPeeringDeploymentName]",
+            "scope": "[variables('scopes').playgroundManagementGroup]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyDeploymentName)]",
+                "policyCompletion"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').denyVnetPeeringPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "enforcementMode": {
+                        "value": "Default"
+                    }                    
+                }
+            }
+        }, 
+        {
+            // Assigning budget policy to playground management group if condition is true
+            "condition": "[and(not(empty(parameters('budgetAmount'))), equals(parameters('enableBudget'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').budgetDeploymentName]",
+            "scope": "[variables('scopes').playgroundManagementGroup]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyDeploymentName)]",
+                "policyCompletion"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').budgetPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "budgetName": {
+                        "value": "DefaultBudget"
+                    },
+                    "budgetAmount": {
+                        "value": "[parameters('budgetAmount')]"
+                    }
+                }
+            }
+        },                          
         /*
             The following deployments will place landing zone subscriptions into online/corp (connected, disconnected)
         */
@@ -3122,10 +3252,10 @@
             The following section represent optional deployments in case the user select to use a single dedicated subscription for platform resources.
             This is not recommmended for production deployment, only for small enterprises, demo, POC, etc.
 
-            The following deployment will create the management group structure for Telco Lite
+            The following deployment will create the management group structure for FSI Lite
         */
         {
-            // Creating the Telco Lite management group structure
+            // Creating the FSI Lite management group structure
             "condition": "[not(empty(parameters('singlePlatformSubscriptionId')))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-10-01",
