@@ -2,7 +2,7 @@
 
 Organizations in the financial services regulated industry face the challenge of defining, mapping, and enforcing their controls that are needed for them to meet the compliance and security requirements. In parallel, they must balance the need of the business and developers while empowering them to accelerate the digital transformation journey. This must all work in harmony while addressing risk, reliability, and other requirements, and also comply with frameworks and standards such as PCI DSS, NIST 800-53, SOC 1,2,3 and more.
 
-The process of definining, mapping, and implementing the required controls can in most cases be an expensive and time-consuming job, performed by "Digital Security Office", "Tech Risk Assessment" or equivalent function/team within the organization. However, this is a critical function to enable specific Azure services to be broadly adopted, and the *Service Enablement Framework for FSI Landing Zones* aim to help organizations within the financial services industry to accelerate this process, coupled with a proven, prescriptive architecture and implementation on Microsoft Azure.
+The process of defining, mapping, and implementing the required controls can in most cases be an expensive and time-consuming job, performed by "Digital Security Office", "Tech Risk Assessment" or equivalent function/team within the organization. However, this is a critical function to enable specific Azure services to be broadly adopted, and the *Service Enablement Framework for FSI Landing Zones* aim to help organizations within the financial services industry to accelerate this process, coupled with a proven, prescriptive architecture and implementation on Microsoft Azure.
 
 ## Table of contents
 
@@ -18,9 +18,9 @@ The process of definining, mapping, and implementing the required controls can i
 * [Next Steps](#next-steps)
 
 ## Operating model and required functions
-This section outlines the recommended operating model and reqiured functions to operationalize the Azure platform while enabling the landing zones for an FSI organization.
+This section outlines the recommended operating model and required functions to operationalize the Azure platform while enabling the landing zones for an FSI organization.
 
-Sustainable engineering is key to succeed with cloud adoption, and an well-defined operating moodel is recommended that enables the organization to scale and grow, while having clear separation of duties with regards to operating the *platform* - and to operate the landing zones with the workloads.
+Sustainable engineering is key to succeed with cloud adoption, and an well-defined operating model is recommended that enables the organization to scale and grow, while having clear separation of duties with regards to operating the *platform* - and to operate the landing zones with the workloads.
 
 The following picture depicts the recommended operating model that has been successfully adopted by several of Microsoft's larges FSI customers, where there's clear separation of *Platform DevOps* - being the team with required functions to enable and operationalize the Azure platform, which provides the landing zones as output to the business and application teams, and the *DevOps* and *AppOps* who will be responsible for their workloads in the landing zones.
 
@@ -30,7 +30,7 @@ The following picture depicts the recommended operating model that has been succ
 
 They key functions required to compose and organize a dedicated platform team is:
 * System Ops
-    * Provides expertise for operarting systems, database technologies, and runtimes.
+    * Provides expertise for operating systems, database technologies, and runtimes.
 * Automation Ops
     * Provides expertise for automating the deployment and management of the platform, such as subscription provisioning into the landing zones, policy definitions/assignments, management group structure, roleDefinitions/assignments and more - scoped to the platform
 * Management Ops
@@ -52,19 +52,19 @@ The Platform DevOps team is overall responsible for the holistic architecture go
 * "Platform as Code"
     * Define and implement the platform as code, such as the ARM templates/code artifacts for management group structure, policy definitions/assignments, roleDefinitions/assignments and more - scoped to the platform.
 * Service Enablement (holistic)
-    * Control mapping, design, implementation, and maintenance of the Azure Policy enforcement holisitically across the platform, and ensure that the Azure platform is compliant with the required controls.
+    * Control mapping, design, implementation, and maintenance of the Azure Policy enforcement holistically across the platform, and ensure that the Azure platform is compliant with the required controls.
 * Platform management and monitoring (holistic)
     * Manage and monitor the Azure platform related events, signals, and metrics.
 * Role based access control (holistic)
-    * Define, implement and control the identity and access management of the Azure platform, often in partnership with on-prem identity functions for AD sync, federeation and more.
+    * Define, implement and control the identity and access management of the Azure platform, often in partnership with on-prem identity functions for AD sync, federation and more.
 * Key management (central service)
     * Primarily responsible for keys required for AD domain joined virtual machines, where the key management is done centrally as this requires to be a shared service.
 * Network management (holistic)
     * Responsible for end-to-end networking to and from Azure, managed the address space, peering, and connectivity to other cloud providers.
 ### DevOps and AppOps
 
-In comparison to the Platform DevOps team - which will be one team responsible for the overall Azure platform (holistic), there will be multiple DevOps teams depending on the size of the organization. Recommendation is to have a dedicated team for each application, as in "you build it - you run it", where they have full autonomy and ownership of their deployment pipelines and landing zones. Further, the *AppOps* team can be 1:1 per application, or 1:many, where the applications are either first-party - or third-party. 
-The key responsibiliies for these teams inside the landing zones are:
+In comparison to the Platform DevOps team - which will be one team responsible for the overall Azure platform (holistic), there will be multiple DevOps teams depending on the size of the organization. Recommendation is to have a dedicated team for each application, as in "you build it - you run it", where they have full autonomy and ownership of their deployment pipelines and landing zones. Further, the *AppOps* team can be 1:1 per application, or 1:many, where the applications are either first-party - or third-party.
+The key responsibilities for these teams inside the landing zones are:
 * Production systems resiliency, reliablity, and availability within SLA targets
 * Development or enhancement of application DevOps pipelines
 * Review and enhancement of the application design, deployment and lifecycle
@@ -86,7 +86,7 @@ Azure Policy is a core component of Azure Resource Manager which means it is bak
 
 * Microsoft Defender for Cloud
 
-Microsoft Defender for Cloud is a cloud-native security service that provides advanced threat protection for your cloud workloads. It provides a unified security management experience for your cloud workloads, including Azure, Microsoft 365, and SaaS applications. Azure Policy will be used to enforce Microsoft Defender for Cloud enablement on every subscription that will be created, which will continiously assess subscriptions and resources from a security perspective, and provide additional intelligence to te PlatformOps team.
+Microsoft Defender for Cloud is a cloud-native security service that provides advanced threat protection for your cloud workloads. It provides a unified security management experience for your cloud workloads, including Azure, Microsoft 365, and SaaS applications. Azure Policy will be used to enforce Microsoft Defender for Cloud enablement on every subscription that will be created, which will continuously assess subscriptions and resources from a security perspective, and provide additional intelligence to te PlatformOps team.
 
 * Azure Log Analytics
 
@@ -96,11 +96,11 @@ Log Analytics is a service that helps you collect and analyze data generated by 
 
 Microsoft Sentinel is a cloud-native security information and event management (SIEM) and security orchestration automated response (SOAR) solution that helps you rapidly detect, investigate, and respond to threats. Azure Policy will be used to enforce all security related information from across all subscription in consolidated in to the Log Analytics workspace, which is the underlying infrastructure of Microsoft Sentinel.
 
-* Azure AD Priviliged Identity Management
+* Azure AD Privileged Identity Management
 
-Azure AD Privileged Identity Management (PIM) is a cloud-based service that helps you manage access to your critical resources. It enables you to manage access to your privileged accounts and resources in Azure. It provides features such as just-in-time authorization (JIT) with approval processes, access reviews, and is integrated with Mult-Factor Authentication (MFA).
+Azure AD Privileged Identity Management (PIM) is a cloud-based service that helps you manage access to your critical resources. It enables you to manage access to your privileged accounts and resources in Azure. It provides features such as just-in-time authorization (JIT) with approval processes, access reviews, and is integrated with Multi-Factor Authentication (MFA).
 
-> NOTE: Azure Policy is the primary vehicle for service enablement and continious compliance which sits natively in Azure, wheares the other services must be excplicitly enabled and configured, and Log Analytics and Microsoft Sentinel will be created into a dedicated Management subscription that belongs to the PlatformOps team, separated from all the landing zones where the workloads will be deployed.
+> NOTE: Azure Policy is the primary vehicle for service enablement and continuous compliance which sits natively in Azure, whereas the other services must be explicitly enabled and configured, and Log Analytics and Microsoft Sentinel will be created into a dedicated Management subscription that belongs to the PlatformOps team, separated from all the landing zones where the workloads will be deployed.
 
 ## Service Enablement Framework
 
@@ -110,11 +110,11 @@ From a high-level perspective, the Service Enablement Framework is composed of t
 
 ![Service Enablement](../docs/serviceenablement.png)
 
-The first phase is to recognize and distinguish between what is a control and responsibility by Microsoft, and what the explicit customer responsibilities are. Once this has been generally understood and established, it simplifies the process and accelerates subsequent enablements the organization will perform. 
+The first phase is to recognize and distinguish between what is a control and responsibility by Microsoft, and what the explicit customer responsibilities are. Once this has been generally understood and established, it simplifies the process and accelerates subsequent enablements the organization will perform.
 
 ### Microsoft controls and customer controls
 
-For Service Enablement, it is key to understand how to distinguish between the controls that Microsoft is responsible for for the Azure platform and services. 
+For Service Enablement, it is key to understand how to distinguish between the controls that Microsoft is responsible for for the Azure platform and services.
 
 Examples:
 
@@ -126,7 +126,7 @@ Examples:
 
  To review service by service per Microsoft Cloud security benchmark and baselines individually, please refer to the [Microsoft Cloud security benchmark and baselines](https://docs.microsoft.com/en-us/security/benchmark/azure/baselines) documentation.
 
- An example of how the benchmark is assessing each service to contextualize the responsiblity and to meet the control requirement can be seen below:
+ An example of how the benchmark is assessing each service to contextualize the responsibility and to meet the control requirement can be seen below:
 
 **Azure AD Authentication Required for Data Plane Access**
 
@@ -148,7 +148,7 @@ Examples:
 |---|---|---|
 | True | True | Microsoft |
 
-Further, Azure compliance for the platform and services as a whole are based on various types of assurances, including formal certifications, attestations, validations, authorizations, and assements produced by independent third-party auditing firms, as well as contractual amendments, self-assessments, and customer guidance documents provided by Microsoft. 
+Further, Azure compliance for the platform and services as a whole are based on various types of assurances, including formal certifications, attestations, validations, authorizations, and assessments produced by independent third-party auditing firms, as well as contractual amendments, self-assessments, and customer guidance documents provided by Microsoft.
 
 Each offering description in [this document](https://azure.microsoft.com/mediahandler/files/resourcefiles/microsoft-azure-compliance-offerings/Microsoft%20Azure%20Compliance%20Offerings.pdf) provides an up to date scope statement indicating which Azure customer-facing services are in scope for the assessment, as well as links to downloadable resources to assist customers with their own compliance obligations. Azure compliance offerings are grouped into four segments: globally applicable, US government, industry specific, and region/country specific.
 
@@ -160,7 +160,7 @@ With Microsoft Cloud Security Benchmark, we have consolidated security controls 
 
 The following table provides a framework to assess enterprise security readiness of Azure services.
 
-| Assesment                    | Category                                                              | Crtieria                                                                                                                                     |
+| Assessment                    | Category                                                              | Criteria                                                                                                                                     |
 |------------------------------|-----------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
 | Security                     | Network endpoint                                                      | Does the service have a public endpoint that is accessible outside of a VNet?                                                                |
 |                              |                                                                       | Does it support VNet Service Endpoints?                                                                                                      |
@@ -234,12 +234,12 @@ Understand what should be:
 ### Implementation
 This section explains the implementation phase of the controls.
 
-The implementation of the control in context of FSI Landing Zones on Microsoft Azure is tightly bound to the target architecture, where there is a clear separation of what is being defined as *platform* and what is being defined as *landing zones*. For all the *workloads* that will be deployed, will go into the *landing zones* which means that service enablement will primarily be focusing on implementing the controls on the *landing zones management* group, **and** at the level below; *corp* and *online* as the characteristics from a networking, security, and governance perspective will be different between those two. 
+The implementation of the control in context of FSI Landing Zones on Microsoft Azure is tightly bound to the target architecture, where there is a clear separation of what is being defined as *platform* and what is being defined as *landing zones*. For all the *workloads* that will be deployed, will go into the *landing zones* which means that service enablement will primarily be focusing on implementing the controls on the *landing zones management* group, **and** at the level below; *corp* and *online* as the characteristics from a networking, security, and governance perspective will be different between those two.
 Having the target architecture in place will help to accelerate this as one would aim to have a uniformed implementation across all the *landing zones* within the Azure tenant.
 
 ![landing zones](./landingzones.png)
 
-The overall implmenentation process is depicted below, where we distinguish between *process*, *people*, and *technology*, where the *technology* part is what we will be focusing on in this document as it relates to implementing a control in context of FSI Landing Zones on Microsoft Azure.
+The overall implementation process is depicted below, where we distinguish between *process*, *people*, and *technology*, where the *technology* part is what we will be focusing on in this document as it relates to implementing a control in context of FSI Landing Zones on Microsoft Azure.
 
 ![implementation process](./process.png)
 
@@ -756,4 +756,4 @@ This section provides evidence of the controls
 
 ## Examples of end-to-end walkthrough
 
-Explain usage of playground, ASB auditing and assessmenet, towards implentation of controls and applicationt team experiences
+Explain usage of playground, ASB auditing and assessment, towards implementation of controls and application team experiences

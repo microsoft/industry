@@ -1,12 +1,12 @@
 # Operational Excellence for FSI Landing Zones
 
-The FSI Landing Zones on Microsoft Azure servers as an enterprise architecture framework for organizations in the financial service industry, which provides a holistic view of technology throughout the financial institution's techonology infrastructure, systems, inter-connectivity, and security controls. The FSI Landing Zones facilitates the conceptual design and maintenance of the all-up architecture on Azure, security controls and policies, and serves as the foundation on which financial institutions plan and structure system development and acquisition strategies to meet business goals.
+The FSI Landing Zones on Microsoft Azure servers as an enterprise architecture framework for organizations in the financial service industry, which provides a holistic view of technology throughout the financial institution's technology infrastructure, systems, inter-connectivity, and security controls. The FSI Landing Zones facilitates the conceptual design and maintenance of the all-up architecture on Azure, security controls and policies, and serves as the foundation on which financial institutions plan and structure system development and acquisition strategies to meet business goals.
 
 In addition to an architecture framework, organizations in the financial service industry must establish clear risk management policies and practices for the key phases of the system development life-cycle (SDLC) encompassing system design, development, testing, deployment, change management, maintenance and decommissioning. Such policies and practices must also embed security and relevant enterprise architecture considerations into the SDLC to ensure confidentiality, integrity and availability of data.
 
-With regards to code reviews, organizations in the financial service industry must also ensure any changes to the source code of critical systems are subject to adequate source code reviews to ensure code is secure and was developed in line with recognised coding practices prior to introducing any system changes.
+With regards to code reviews, organizations in the financial service industry must also ensure any changes to the source code of critical systems are subject to adequate source code reviews to ensure code is secure and was developed in line with recognized coding practices prior to introducing any system changes.
 
-To comply with the above, organizations in the financial service industry are often spending a lot of time to enable Infrastructure-as-code in Azure just in order to operationalize the Azure platform itself, and then must rince and repeat per workloads for each application team that gets onboarded into their landing zones.
+To comply with the above, organizations in the financial service industry are often spending a lot of time to enable Infrastructure-as-code in Azure just in order to operationalize the Azure platform itself, and then must rinse and repeat per workloads for each application team that gets onboarded into their landing zones.
 
 In order to accelerate this process and meet the FSI organizations where they are, regardless whether they are new to FSI Landing Zones or already have an established footprint in Azure, we have developed [*AzOps*](https://github.com/Azure/AzOps-Accelerator) which is an Azure-aligned and Azure Resource Manager native module that will help organizations in the financial service industry to operationalize Azure at scale, regardless of starting point and scale
 
@@ -15,8 +15,8 @@ In order to accelerate this process and meet the FSI organizations where they ar
 ## Table of contents
 
 * [AzOps - Intro](#azops-intro)
-    * [Discovery](#discovery)
-    * [Deployment](#deployment)
+  * [Discovery](#discovery)
+  * [Deployment](#deployment)
 * [Examples of end-to-end walkthrough](#examples-of-end-to-end-walkthrough)
 * [Next Steps](#next-steps)
 
@@ -33,15 +33,15 @@ AzOps was developed with the above in mind, to ensure that customers could conti
 ![AzOps and ARM](../docs/azops-arm.png)
 
 ### Discovery
+
 This section will describe the discovery process with link to documentation
 
 ### Deployment
+
 This section will describe the deployment process with link to documentation
 
 ## Examples of end-to-end walkthrough
+
 add examples
 
 ## Next Steps
-
-
-
