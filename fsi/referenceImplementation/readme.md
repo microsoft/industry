@@ -23,7 +23,7 @@ FSI Landing Zones on Microsoft Azure reference implementation provides prescript
 
 >Note: To read and learn about the architecture and design, please visit this [article](../docs/architectureAndDesign.md).
 
-The reference architecture is modular by design and allows organizations of any size in the financial services industry to start with the optimized landing zones that support their banking worloads, and application portfolios.
+The reference architecture is modular by design and allows organizations of any size in the financial services industry to start with the optimized landing zones that support their banking workloads, and application portfolios.
 
 In particular, it enables the organizations to start as small as needed and scale alongside their business requirements regardless of scale point.
 
@@ -61,19 +61,19 @@ The following structure is being created when deploying FSI Landing Zones on Mic
 
 - **Platform:** This Management Group contains all the *platform* child Management Groups, such as Management, Connectivity, and Identity. Common Azure Policies for the entire platform is assigned at this level
 
- - **Management:** This Management Group contains the dedicated subscription for management, monitoring, and security, which will host Azure Log Analytics, Azure Automation, Azure Storage Account for NSG Flow Logs, and Microsoft Sentinel. Specific Azure policies are assigned to harden and manage the resources in the management subscription.
+- **Management:** This Management Group contains the dedicated subscription for management, monitoring, and security, which will host Azure Log Analytics, Azure Automation, Azure Storage Account for NSG Flow Logs, and Microsoft Sentinel. Specific Azure policies are assigned to harden and manage the resources in the management subscription.
 
- - **Connectivity:** This Management Group contains the dedicated subscription for connectivity for Azure platform and Distributed Edge, which will host the Azure networking resources required for the platform, such as Azure Virtual WAN/Virtual Network for the hub, Azure Firewall, DNS Private Zones, Express Route circuits, ExpressRoute/VPN Gateways etc among others. Specific Azure policies are assigned to harden and manage the resources in the connectivity subscription. For typical scale-out scenarios for the FSI industry, additional connectivity subscriptions can be added and brought to compliant state in an autonomous fashion due to the policy driven guardrails design principle.
+- **Connectivity:** This Management Group contains the dedicated subscription for connectivity for Azure platform and Distributed Edge, which will host the Azure networking resources required for the platform, such as Azure Virtual WAN/Virtual Network for the hub, Azure Firewall, DNS Private Zones, Express Route circuits, ExpressRoute/VPN Gateways etc among others. Specific Azure policies are assigned to harden and manage the resources in the connectivity subscription. For typical scale-out scenarios for the FSI industry, additional connectivity subscriptions can be added and brought to compliant state in an autonomous fashion due to the policy driven guardrails design principle.
 
- - **Identity:** This Management Group contains the dedicated subscription for identity, which is a placeholder for Windows Server Active Directory Domain Services (AD DS) VMs, or Azure Active Directory Domain Services to enable AuthN/AuthZ for workloads within the landing zones. Specific Azure policies are assigned to harden and manage the resources in the identity subscription.
+- **Identity:** This Management Group contains the dedicated subscription for identity, which is a placeholder for Windows Server Active Directory Domain Services (AD DS) VMs, or Azure Active Directory Domain Services to enable AuthN/AuthZ for workloads within the landing zones. Specific Azure policies are assigned to harden and manage the resources in the identity subscription.
 
 - **Landing Zones:** This is the parent Management Group for all the landing zone subscriptions and will have workload agnostic Azure Policies assigned to ensure workloads are secure and compliant.
 
- - **** This is the dedicated Management Group for landing zones, which are optimized and governed aligned with migration scenarios, net-new development using PaaS services, as well as mission-critical banking workloads. An application team request as many subscriptions as they want into the various landing zones, and will be responsible for development, testing, and production. From a platform perspective, each subscription is treated equally (i.e., everything is treated as production) to reduce friction in deployment, operations, and overall continious compliance.
+- **** This is the dedicated Management Group for landing zones, which are optimized and governed aligned with migration scenarios, net-new development using PaaS services, as well as mission-critical banking workloads. An application team request as many subscriptions as they want into the various landing zones, and will be responsible for development, testing, and production. From a platform perspective, each subscription is treated equally (i.e., everything is treated as production) to reduce friction in deployment, operations, and overall continuous compliance.
 
- - **Online:** This is the dedicated Management Group for Online landing zones, meaning workloads that may require direct internet inbound/outbound connectivity or also for workloads that may not require a VNet.
+- **Online:** This is the dedicated Management Group for Online landing zones, meaning workloads that may require direct internet inbound/outbound connectivity or also for workloads that may not require a VNet.
 
- - **Corp:** This is the dedicated Management Group for Corp landing zones, meaning workloads that requires connectivity/hybrid connectivity with the corporate network thru the hub in the connectivity subscription.
+- **Corp:** This is the dedicated Management Group for Corp landing zones, meaning workloads that requires connectivity/hybrid connectivity with the corporate network thru the hub in the connectivity subscription.
 
 - **Playground:** This is the dedicated Management Group for subscriptions that will solely be used for testing and exploration by anyone in the organization that want to explore Azure services. Further, subscriptions placed in this management group can be leveraged to expedite service enablement for an FSI organization, to assess and validate Azure services with best practices such as Microsoft Cloud Security Benchmark before allowing new services to be deployed to landing zone subscriptions.
 
@@ -99,7 +99,7 @@ The pre-requisites requires the following:
 
 #### Elevate Access to manage Azure resources in Azure Active Directory
 
->Note: The pre-requisites described here is a *one off* excercise. Once the deployment has completed, permission to the tenant root ("/") can safely be removed as the user will have Owner permission at the intermediate root management group (below tenant root ("/") and tenant root management group).
+>Note: The pre-requisites described here is a *one off* exercise. Once the deployment has completed, permission to the tenant root ("/") can safely be removed as the user will have Owner permission at the intermediate root management group (below tenant root ("/") and tenant root management group).
 
 1.1 Sign into the Azure portal as the user being Global Admin.
 
@@ -168,9 +168,9 @@ On the *Security, Governance, and Compliance* tab, you will configure the core i
 
 ![Security and governance](../docs/security.png)
 
->Note: FSI Landing Zones recommends to use Microsoft Cloud Security Benchmark as a baseline for the entire architecture, and by assigning the policy initiative you will have an at-scale consumption experience of best practices that will be applied to every management group, subscription, and resources that will be deployed. Note that this is the only policy assignment that will use the policy effect of *audit* and *auditIfNotExists*. Policies that are assigned at other scopes by the deployment will use *deny* and *deployIfNotExists* to enforce goal-state and continious compliance.
+>Note: FSI Landing Zones recommends to use Microsoft Cloud Security Benchmark as a baseline for the entire architecture, and by assigning the policy initiative you will have an at-scale consumption experience of best practices that will be applied to every management group, subscription, and resources that will be deployed. Note that this is the only policy assignment that will use the policy effect of *audit* and *auditIfNotExists*. Policies that are assigned at other scopes by the deployment will use *deny* and *deployIfNotExists* to enforce goal-state and continuous compliance.
 
-Azure Monitor is essential to capture key and critical platform and security logs into a dedicated Log Analytics workspace for the platform operations purposes. 
+Azure Monitor is essential to capture key and critical platform and security logs into a dedicated Log Analytics workspace for the platform operations purposes.
 
 ![Azure Monitor](../docs/monitor.png)
 
@@ -209,16 +209,16 @@ In addition, you can configure:
 
 - Azure Private DNS Zones for Azure PaaS services
 - VPN and ExpressRoute Gateways
- - If you choose to deploy either or both of these gateways, you will have the option to select the subnet to be dedicated for these resources, if you decide to deploy them as regional or zone-redundant gateways, as well as choose the right SKU based on your requirements
+- If you choose to deploy either or both of these gateways, you will have the option to select the subnet to be dedicated for these resources, if you decide to deploy them as regional or zone-redundant gateways, as well as choose the right SKU based on your requirements
 - If you choose to deploy Azure Firewall, you will have the option to
- - Select the subnet
- - Select to deploy Azure Firewall as regional or zone redundant (recommended)
- - Select the Firewall SKU (Standard or Premium). It is recommended to choose the Azure Firewall [Premium](https://docs.microsoft.com/azure/firewall/premium-features) SKU if your organization requires next generation firewall capabilities such as TLS inspection or network intrusion detection and prevention system (IDPS).
- - Indicate if you want to enable DNS Proxy in Azure Firewall.
+- Select the subnet
+- Select to deploy Azure Firewall as regional or zone redundant (recommended)
+- Select the Firewall SKU (Standard or Premium). It is recommended to choose the Azure Firewall [Premium](https://docs.microsoft.com/azure/firewall/premium-features) SKU if your organization requires next generation firewall capabilities such as TLS inspection or network intrusion detection and prevention system (IDPS).
+- Indicate if you want to enable DNS Proxy in Azure Firewall.
 
 For Networking security and monitoring solutions:
 
-- DDoS Protection Standard to be enabled for the Azure platform. Enabling this will provide an option to assign requisite Azure Policy on the * landing zones* tab later.
+- DDoS Protection Standard to be enabled for the Azure platform. Enabling this will provide an option to assign requisite Azure Policy on the *landing zones* tab later.
 - Network Watcher observability for the virtual networks that will be created. Enabling this will assign Azure Policy to ensure that Network Watcher will be created into all subscriptions containing a virtual network.
 - NSG Flow Logs can be enabled for all Network Security Groups, and will be stored into a storage account in the dedicated subscription for *Security, Governance, and Compliance* subscription, and also in the Azure Log Analytics workspace.
 - Traffic Analytics which provides a curated view of networking traffic for Azure and Distributed Edge.
@@ -229,19 +229,19 @@ For Networking security and monitoring solutions:
 
 On the *Authentication & Authorization* tab you can specify if you want to assign recommended policies to primarily secure and govern domain controllers in Azure, which will have its dedicated subscription to ensure clear separation of concerns, and to provide AuthN/AuthZ to workloads into the landing zones. You can then select which policies you want to get assigned, and you will need to provide the address space for the virtual network that will be deployed on this subscription. Please note that this virtual network will be connected to the hub virtual network via VNet peering.
 
-If you don't need - or plan to host domain controllers in Azure for your telco workloads, you can select *No*. If you later want to add dedicated subscription for these purposes, you can move it manually to the 'identity' management group in the hierarchy created by FSI Landing Zones.
+If you don't need - or plan to host domain controllers in Azure for your FSI  workloads, you can select *No*. If you later want to add dedicated subscription for these purposes, you can move it manually to the 'identity' management group in the hierarchy created by FSI Landing Zones.
 
  ![img](../docs/identity.png)
 
- ### 6 - Playground
+### 6 - Playground
 
- The Playground tab allows you to move subscriptions into the playground management group. The intention of playground is to provide subscriptions where developers and business units can experiement with Azure services in a safe and secure way, completely separated from the landing zones (production). Playground is also a good starting point for any service enablement processes within the FSI organization, to assess an Azure service from a security baseline perspective. Additionally, policies can be assigned during the setup that prevents any accidental configuration that can reach any other Azure subscription within the architecture, provides a budget baseline to control cost and spending, as well as recommended policy to prevent usage of the more expensive SKUs for Azure services.
+ The Playground tab allows you to move subscriptions into the playground management group. The intention of playground is to provide subscriptions where developers and business units can experiment with Azure services in a safe and secure way, completely separated from the landing zones (production). Playground is also a good starting point for any service enablement processes within the FSI organization, to assess an Azure service from a security baseline perspective. Additionally, policies can be assigned during the setup that prevents any accidental configuration that can reach any other Azure subscription within the architecture, provides a budget baseline to control cost and spending, as well as recommended policy to prevent usage of the more expensive SKUs for Azure services.
 
  ![Playground](../docs/playground.png)
 
 ### 7 - Landing Zones
 
-On the * Landing Zones* tab, you can bring in the subscriptions you want to use initially for **, *online*, and *corp* landing zones. Each landing zone type is represented by its own child management group of the *landing zones* management group in the hierarchy, and provides different characteristics regarding networking requirements, security, policy, and availability. For each of the landing zone types, you can select the recommended Azure policies you want to assign, as well as the policies recommended for *all* landing zone types.
+On the *Landing Zones* tab, you can bring in the subscriptions you want to use initially for **, *online*, and *corp* landing zones. Each landing zone type is represented by its own child management group of the *landing zones* management group in the hierarchy, and provides different characteristics regarding networking requirements, security, policy, and availability. For each of the landing zone types, you can select the recommended Azure policies you want to assign, as well as the policies recommended for *all* landing zone types.
 
 - Corp landing zones
 
