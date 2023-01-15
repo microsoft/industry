@@ -2026,7 +2026,7 @@
                             "multiLine": true,
                             "visible": "[equals(steps('esPlayground').skuPolicy, 'Yes')]",
                             "constraints": {
-                                "allowedValues": "[map(filter(steps('esPlayground').vmSkuApi.value, (sku) => parse(concat('{\"label\":\"', sku.tier, '\",\"description\":\"', sku.family, '\",\"value\":\"', toLower(sku.name), '\"}')) )]",
+                                "allowedValues": "[map(steps('esPlayground').vmSkuApi.value, (sku) => parse(concat('{\"label\":\"', sku.tier, '\",\"description\":\"', sku.family, '\",\"value\":\"', toLower(sku.name), '\"}')))]",
                                 "required": false
                             }
                         }

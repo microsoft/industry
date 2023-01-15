@@ -30,7 +30,7 @@
             "description": "Create Resource Group for Network Watcher in the subscriptions.",
             "displayName": "Create Resource Group for Network Watcher in the subscriptions."
         },
-        "rbacOwner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+        "rbacOwner": "b24988ac-6180-42a0-ab88-20f7382dd24c",
         "roleAssignmentNames": {
             "deployNwResourceGroup": "[guid(concat(parameters('toplevelManagementGroupPrefix'), deployment().name, variables('policyAssignmentNames').deployNwResourceGroup))]"
         }

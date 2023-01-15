@@ -3,13 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "mgmtStorageRgName": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "foo"
         },
         "storageAccountName": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "ststfoo"
         },
         "storageLocation": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "westeurope"
         }
     },
     "variables": {

@@ -1474,7 +1474,7 @@
             }   
         },
         {
-            // Assigning Azure Security Center configuration policy initiative to intermediate root management group if condition is true
+            // Assigning Microsoft Defender for Cloud configuration policy initiative to intermediate root management group if condition is true
             "condition": "[and(or(not(empty(parameters('managementSubscriptionId'))), not(empty(parameters('singlePlatformSubscriptionId')))), equals(parameters('enableAsc'), 'Yes'), equals(environment().resourceManager, 'https://management.azure.com/'))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
@@ -2003,11 +2003,26 @@
                     "enforcementMode": {
                         "value": "[if(equals(parameters('enableNsgFlowLogs'), 'Yes'), 'Default', 'DoNotEnforce')]"
                     },
-                    "storageAccountResourceId": {
+                    "storageId": {
                         "value": "[variables('platformResourceIds').logStorageResourceId]"
                     },
-                    "workspace": {
+                    "workspaceId": {
+                        "value": "[reference(variables('platformResourceIds').logAnalyticsResourceId, '2020-08-01').customerId]"
+                    },
+                    "workspaceResourceId": {
                         "value": "[variables('platformResourceIds').logAnalyticsResourceId]"
+                    },
+                    "workspaceRegion": {
+                        "value": "[deployment().location]"
+                    },
+                    "nsgRegion": {
+                        "value": "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
+                    },
+                    "networkWatcherName": {
+                        "value": "[concat('NetworkWatcher_', parameters('location'))]"
+                    },
+                    "networkWatcherRg": {
+                        "value": "NetworkWatcherRG"
                     }
                 }
             }
