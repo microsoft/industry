@@ -79,6 +79,8 @@ C --> D[Deploy templates <br> to target ARM scopes]
 D --> F(Trigger Pull pipeline<br>to ensure consistency)
 ```
 
+For further details, refer to the [AzOps documentation](https://github.com/azure/azops/wiki/steps#push).
+
 ## Examples of end-to-end walkthrough
 
 ## Next Steps
