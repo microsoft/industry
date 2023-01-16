@@ -4,6 +4,12 @@ Power Platform Landing Zones is an architecture and design methodology, as well 
 
 In addition to being application, persona, and industry agnostic, Power Platform Landing Zones will also address the specific recommendations for Microsoft Cloud for Industries (e.g., Healthcare, Financial Services), where Microsoft Power Platform is an essential platform for the overall industry solutions. These curated industry solutions are primarily D365 applications that are deployed into Power Platform environments, and this prescriptive guidance aims to provide you with best practices and recommendations across the critical design areas for Power Platform to host and integrate the various industry applications.
 
+>**Note**: Learn more about Power Platform Landing Zones by visiting the following links:
+>
+>* [Announcement at the Microsoft Power Platform blog](https://cloudblogs.microsoft.com/powerplatform/2022/02/18/north-star-architecture-and-landing-zones-for-power-platform/)
+>
+>* [Implement Power Platform with Architecture Best Practices and Fusion Development (Ignite session)](https://www.youtube.com/watch?v=TN0Pnm9hSL8)
+
 | Reference implementation | Description | Deploy | Documentation
 |:----------------------|:------------|--------|--------------|
 | Power Platform Landing Zones | All up architecture for Power Platform with landing zones (Environments) configured with security, governance, and compliance for scalable business applications - and industry solutions for professional and citizen developers | [![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/ppnorthstar) | [User Guide](./referenceImplementation/readme.md)
