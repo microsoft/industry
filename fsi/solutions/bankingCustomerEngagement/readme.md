@@ -2,12 +2,12 @@
 
 > Please note that this solution is still in Preview. Previews are not meant for production use.
 
-The banking customer engagement solution enables instant connections and an improved customer engagement for customer service representatives and service agents. The solution can provide an immediate view and cotextual information of the financial situation of the client. This can ultimately drive better outcomes, an increased customer satisfaction and a higher agent productivity.
+The banking customer engagement solution enables instant connections and an improved customer engagement for customer service representatives and service agents. The solution can provide an immediate view and contextual information of the financial situation of the client. This can ultimately drive better outcomes, an increased customer satisfaction and a higher agent productivity.
 
 Key capabilities of the Banking Customer Engagement scenario include:
 
-* **Contact snapshot**: Provides an holistic overview of the customer including their personal details, life moments, financial holdings, credit & debit cards. This allows respresentatives to get a full financial picture of the client and enables an enhanced and personalized client experience.
-* **Enhanced conversation view**: The holistic contact view can be places side-by-side with customer cases, timelines and conversation summaries to provide a comprehensive experience for the customer representative and imrpove their decision making.
+* **Contact snapshot**: Provides an holistic overview of the customer including their personal details, life moments, financial holdings, credit & debit cards. This allows representatives to get a full financial picture of the client and enables an enhanced and personalized client experience.
+* **Enhanced conversation view**: The holistic contact view can be places side-by-side with customer cases, timelines and conversation summaries to provide a comprehensive experience for the customer representative and improve their decision making.
 * **Monitor agent**: Dashboards allow agents, shift managers and general managers to get an overview of various insights depending on their requirements. Dashboards can present active cases, conversations, and more.
 * **Agent script**: Enables agent scripts to address customer specific issues. Own scripts and rules can be integrated.
 * **Knowledge management**: Providing relevant information to service providers at their fingertips is increasingly relevant and can be achieved with this solution. Articles, FAQs, and other shareable or internal knowledge pieces can be made available at the right time in teh right place.
@@ -82,11 +82,11 @@ The enhanced conversation view is based on [Omnichannel for Customer Service](ht
 
 The monitoring capabilities are built into a solution and can be accessed by opening the dashboard view of the application. Different dashboard views are available for different personas and can be used to monitor active sessions, active cases, cases that require a follow-up, active agents and call-center performance.
 
-To learn how additional dashbaords can be created, visit [this page](https://docs.microsoft.com/powerapps/maker/model-driven-apps/create-edit-dashboards).
+To learn how additional dashboards can be created, visit [this page](https://docs.microsoft.com/powerapps/maker/model-driven-apps/create-edit-dashboards).
 
 ### Agent scripts
 
-Agent scripts can be used to provide guidance to agents to avoid errors and ensure that processes are followed. The contextual guidance guides them through the conversation and provides accurate information taht can then be shared with customers. This allows to create a unified experience for customers and allows to respond more timely and efficiently to customer queries.
+Agent scripts can be used to provide guidance to agents to avoid errors and ensure that processes are followed. The contextual guidance guides them through the conversation and provides accurate information that can then be shared with customers. This allows to create a unified experience for customers and allows to respond more timely and efficiently to customer queries.
 
 More details about the agent script feature in Dynamics 365 customer services can be found [here](https://docs.microsoft.com/en-us/dynamics365/app-profile-manager/agent-scripts).
 
@@ -94,7 +94,7 @@ More details about the agent script feature in Dynamics 365 customer services ca
 
 In order to improve customer case resolution, the right information needs to be available at the right time to customer representatives. The knowledge management capability in the banking customer engagement solution can help service agents to respond timely in a clear and standardized fashion, by being able to search through a knowledge base and find the right articles at the right time.
 
-This lowers the training cost of customer representatived, while keeping the quality of the custoemr service high. This is built on top of the knowledge article feature of Omnichannel for Customer Service. More information about this feature can be found [here](https://docs.microsoft.com/en-us/dynamics365/customer-service/knowledge-management-oc).
+This lowers the training cost of customer representative, while keeping the quality of the customer service high. This is built on top of the knowledge article feature of Omnichannel for Customer Service. More information about this feature can be found [here](https://docs.microsoft.com/en-us/dynamics365/customer-service/knowledge-management-oc).
 
 ## Planning guidelines for banking customer engagement
 
@@ -118,7 +118,7 @@ This section provides prescriptive guidance with design considerations and recom
 ### Design recommendations
 
 * Ensure user/group mapping for the requisite licenses are done before deploying the solutions to Power Platform.
-* Ensure appropriate RBAC is assigned to the Security group for the dedicated Environment for Fianncial Services in Power Platform, ideally as part of the Environment creation process.
+* Ensure appropriate RBAC is assigned to the Security group for the dedicated Environment for Financial Services in Power Platform, ideally as part of the Environment creation process.
 * If privileged access to application registration in Azure AD cannot be granted for the group/users who will deploy and operate the D365 Customer Service solution and banking customer engagement scenario, a Global Administrator must assist with the deployment.
 
 ## Deployment
