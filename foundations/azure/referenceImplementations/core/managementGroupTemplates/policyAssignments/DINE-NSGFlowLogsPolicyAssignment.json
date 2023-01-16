@@ -28,6 +28,16 @@
         },
         "workspaceRegion": {
             "type": "string"
+        },
+        "workspaceId": {
+            "type": "string"
+        },
+        "networkWatcherName": {
+            "type": "string"
+        },
+        "networkWatcherRg": {
+            "type": "string",
+            "defaultValue": "NetworkWatcherRg"
         }
     },
     "variables": {
@@ -70,6 +80,15 @@
                     },
                     "workspaceRegion": {
                         "value": "[parameters('workspaceRegion')]"
+                    },
+                    "workspaceId": {
+                        "value": "[parameters('workspaceId')]"
+                    },
+                    "networkWatcherName": {
+                        "value": "[parameters('networkWatcherName')]"
+                    },
+                    "networkWatcherRg": {
+                        "value": "[parameters('networkWatcherRg')]"
                     }
                 }
             }
