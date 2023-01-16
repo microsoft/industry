@@ -125,17 +125,16 @@ The deployment experience requires a [User assigned managed identity](https://do
 **3.** In a PowerShell core session (local or [Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/overview)), authenticate with Azure and follow instructions below to register the User assigned managed identity as a admin management application.
 ```powershell
 # Connect to Azure
+Install-Module -Name Az.Accounts -Force
 Connect-AzAccount
 
 # Install PowerOps module
-Install-Module -Name PowerOps -Force -AllowPrerelease
+Install-Module -Name PowerOps -Force
 
 # Register Admin management application
-$clientId = '<Replace with client id from UMIlient id>'
+$clientId = '<Replace with client id from UMI Client id>'
 Register-PowerOpsAdminApplication -ClientId $clientId
 ```
-  ![Register-AdminApplication](../images/register-adminapplication.png)
-
 
 ### Deployment Setup
 
