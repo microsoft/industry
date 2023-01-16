@@ -1,5 +1,5 @@
 {
-    "displayName": "Tenant (High) North Star DLP (All Environments)",
+    "displayName": "Tenant (High) North Star DLP",
     "defaultConnectorsClassification": "Blocked",
     "connectorGroups": [
         {
@@ -3733,5 +3733,11 @@
         }
     ],
     "environmentType": "AllEnvironments",
-    "environments": []
+    "environments": [
+        {
+            "id": "/providers/Microsoft.BusinessAppPlatform/scopes/admin/environments/",
+            "name": "",
+            "type": "Microsoft.BusinessAppPlatform/scopes/environments"
+        }
+    ]
 }
