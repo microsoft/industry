@@ -205,7 +205,7 @@ To customize each environment, select the option "Yes, and let me configure each
 
 ![LZ creation custom](../images/11lzcustom.PNG)
 
-Additional configuration for the citizen developer landing zones can be made, by assigning recommended DLP policies to ensure an optimal starting point for citizen developers, as well as enabling recommended ALM (application life-cycle management) by creating dedicated developer, test, and production Environment for each Environment being created.
+Additional configuration for the citizen developer landing zones can be made, by assigning recommended DLP policies to ensure an optimal starting point for citizen developers, as well as enabling recommended ALM (application lifecycle management) by creating dedicated developer, test, and production Environment for each Environment being created.
 
 ![LZ recommendations](../images/12lzrecommendations.PNG)
 
