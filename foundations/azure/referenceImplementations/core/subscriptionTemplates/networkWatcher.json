@@ -1,0 +1,51 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "nwRgName": {
+            "type": "string",
+            "defaultValue": "NetworkWatcherRG"
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "westeurope"
+        }
+    },
+    "variables": {
+        "deploymentName": "[take(concat(deployment().name, '-', parameters('nwRgName'), '-', parameters('location')), 64)]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2020-10-01",
+            "location": "[parameters('location')]",
+            "name": "[parameters('nwRgName')]",
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentName')]",
+            "resourceGroup": "[parameters('nwRgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('nwRgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.Network/networkWatchers",
+                            "apiVersion": "2022-07-01",
+                            "name": "[concat('NetworkWatcher_', parameters('location'))]",
+                            "location": "[parameters('location')]"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

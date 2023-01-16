@@ -1577,30 +1577,10 @@
                                 {
                                     "name": "esNsgFlowLogs",
                                     "type": "Microsoft.Common.OptionsGroup",
-                                    "label": "Enable NSG Flow Logs",
+                                    "label": "Enable NSG Flow Logs and Traffic Analytics",
                                     "defaultValue": "Yes (recommended)",
-                                    "visible": "[equals(steps('esGoalState').azMonSection.esLogAnalytics,'Yes')]",
+                                    "visible": "[and(equals(steps('esGoalState').azMonSection.esLogAnalytics,'Yes'), equals(steps('esConnectivityGoalState').nwSecurity.esNetworkWatcher, 'Yes'))]",
                                     "toolTip": "If 'Yes' is selected when also adding a connectivity subscription, NSG Flow Logs will be enabled for all NSGs for the platform and the landing zones.",
-                                    "constraints": {
-                                        "allowedValues": [
-                                            {
-                                                "label": "Yes (recommended)",
-                                                "value": "Yes"
-                                            },
-                                            {
-                                                "label": "No",
-                                                "value": "No"
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "name": "esTrafficAnayzer",
-                                    "type": "Microsoft.Common.OptionsGroup",
-                                    "label": "Enable Azure Traffic Analytics",
-                                    "defaultValue": "Yes (recommended)",
-                                    "visible": "[and(not(equals(steps('esConnectivityGoalState').nwSecurity.esNsgFlowLogs, 'No')), equals(steps('esGoalState').azMonSection.esLogAnalytics,'Yes'))]",
-                                    "toolTip": "If 'Yes' is selected when also adding a connectivity subscription, Azure Traffic Analytics will be enabled for all virtual networks and NSGs for the platform and the landing zones.",
                                     "constraints": {
                                         "allowedValues": [
                                             {
@@ -1649,33 +1629,34 @@
                             }
                         },
                         {
-                            "name": "pimSection",
+                            "name": "authNauthZsection",
                             "type": "Microsoft.Common.Section",
-                            "label": "Azure AD Privileged Identity Management",
-                            "elements": []
+                            "label": "Authentication and Authorization for workloads",
+                            "elements": [],
+                            "visible": "[not(equals(steps('lzSettings').subSection.subOrgsOption, 'Single'))]"
                         },
                         {
-                            "name": "pimText",
+                            "name": "authNauthZtexts",
                             "type": "Microsoft.Common.TextBlock",
-                            "visible": true,
+                            "visible": "[not(equals(steps('lzSettings').subSection.subOrgsOption, 'Single'))]",
                             "options": {
-                                "text": "Privileged Identity Management (PIM) is a service in Azure Active Directory (Azure AD) that enables you to manage, control, and monitor access to important resources in your organization. These resources include resources in Azure AD, Azure, and other Microsoft Online Services such as Microsoft 365 or Microsoft Intune.",
+                                "text": "You can optionally bring in a dedicated subscription for identity, which will serve as a placeholder for your domain controller virtual machines. Select 'No' if you want to do this later.",
                                 "link": {
                                     "label": "Learn more",
-                                    "uri": "https://learn.microsoft.com/azure/active-directory/privileged-identity-management/pim-configure"
+                                    "uri": "https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/design-principles#policy-driven-governance"
                                 }
                             }
                         },
                         {
-                            "name": "pimSetup",
+                            "name": "identitySub",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Enable Azure AD Privileged Identity Management for FSI Landing Zones",
-                            "defaultValue": "Yes (recommended)",
+                            "label": "Configure dedicated Identity subscription",
+                            "defaultValue": "Yes",
                             "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, Azure Policy will be assigned at the scope to govern your identity resources.",
                             "constraints": {
                                 "allowedValues": [
                                     {
-                                        "label": "Yes (recommended)",
+                                        "label": "Yes",
                                         "value": "Yes"
                                     },
                                     {
@@ -1684,7 +1665,7 @@
                                     }
                                 ]
                             },
-                            "visible": true
+                            "visible": "[not(equals(steps('lzSettings').subSection.subOrgsOption, 'Single'))]"
                         },
                         {
                             "name": "esIdentitySubSection",
@@ -1697,7 +1678,7 @@
                                     "label": "Management subscription"
                                 }
                             ],
-                            "visible": "[not(equals(steps('lzSettings').subSection.subOrgsOption, 'Single'))]"
+                            "visible": "[and(not(equals(steps('lzSettings').subSection.subOrgsOption, 'Single')), equals(steps('esIdentityGoalState').identitySub,'Yes'))]"
                         },
                         {
                             "name": "esIdentityGovSection",
@@ -1985,50 +1966,6 @@
                                 ]
                             },
                             "visible": true
-                        },
-                        {
-                            "name": "skuPolicy",
-                            "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Prevent usage of costly SKUs across Azure services",
-                            "defaultValue": "Yes (recommended)",
-                            "toolTip": "If 'Yes' is selected, Azure Policy will be assigned to prevent usage of costly SKUs for Azure resources",
-                            "constraints": {
-                                "allowedValues": [
-                                    {
-                                        "label": "Yes (recommended)",
-                                        "value": "Yes"
-                                    },
-                                    {
-                                        "label": "No",
-                                        "value": "No"
-                                    }
-                                ]
-                            },
-                            "visible": true
-                        },
-                        {
-                            "name": "vmSkuApi",
-                            "type": "Microsoft.Solutions.ArmApiControl",
-                            "request": {
-                                "method": "GET",
-                                "path": "/subscriptions/a7b4a663-6ee3-4bbb-9961-e67543923e7a/providers/Microsoft.Compute/skus?api-version=2021-07-01"
-                            }
-                        },
-                        {
-                            "name": "vmSku",
-                            "type": "Microsoft.Common.DropDown",
-                            "label": "Select allowed VM SKUs",
-                            "toolTip": "",
-                            "multiselect": true,
-                            "selectAll": true,
-                            "filter": true,
-                            "filterPlaceholder": "Filter items ...",
-                            "multiLine": true,
-                            "visible": "[equals(steps('esPlayground').skuPolicy, 'Yes')]",
-                            "constraints": {
-                                "allowedValues": "[map(steps('esPlayground').vmSkuApi.value, (sku) => parse(concat('{\"label\":\"', sku.tier, '\",\"description\":\"', sku.family, '\",\"value\":\"', toLower(sku.name), '\"}')))]",
-                                "required": false
-                            }
                         }
                     ]
                 },
@@ -2247,10 +2184,10 @@
                                 {
                                     "name": "esLzDbPip",
                                     "type": "Microsoft.Common.OptionsGroup",
-                                    "label": "Prevent public IP for Databricks workloads in the corp connected landing zones",
+                                    "label": "Prevent public network access for Databricks workloads in the corp connected landing zones",
                                     "defaultValue": "Yes (recommended)",
                                     "visible": true,
-                                    "toolTip": "If 'Yes' is selected Azure Policy will prevent usage of public IP for Databricks workload.",
+                                    "toolTip": "If 'Yes' is selected Azure Policy will prevent usage of public network access for Databricks workload.",
                                     "constraints": {
                                         "allowedValues": [
                                             {
@@ -2906,7 +2843,7 @@
                 "enableServiceMap": "[steps('esGoalState').azMonSection.esServiceMap]",
                 "denyVnetPeering": "[steps('esPlayground').vnetPeeringPolicy]",
                 "enableBudget": "[steps('esPlayground').budgetPolicy]",
-                "budgetAmount": "[steps('esPlayground').budgetAmount]",
+                "budgetAmount": "[string(steps('esPlayground').budgetAmount)]",
                 "playgroundSubscriptionId": "[steps('esPlayground').playgroundSub]",
                 "enableSqlAssessment": "[steps('esGoalState').azMonSection.esSqlAssessment]",
                 "industryPrefix": "[steps('lzSettings').mgSection.esMgmtGroup]",

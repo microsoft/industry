@@ -2,12 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "topLevelManagementGroupPrefix": {
-            "type": "string",
-            "metadata": {
-                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
-            }
-        },
         "enforcementMode": {
             "type": "string",
             "allowedValues": [
@@ -15,11 +9,21 @@
                 "DoNotEnforce"
             ],
             "defaultValue": "Default"
+        },
+        "listOfResourceTypesNotAllowed": {
+            "type": "array",
+            "defaultValue": [
+                "microsoft.network/virtualnetworks/virtualnetworkpeerings",
+                "microsoft.network/expressroutecircuits/peerings",
+                "microsoft.network/expressroutecircuits/peerings/connections",
+                "microsoft.network/expressroutecrossconnections/peerings",
+                "microsoft.network/virtualrouters/peerings"
+            ]            
         }
     },
     "variables": {
         "policyDefinitions": {
-            "denySubnetWithoutNsg": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policyDefinitions/Deny-VNET-Peer-Cross-Sub')]"
+            "denySubnetWithoutNsg": "/providers/Microsoft.Authorization/policyDefinitions/6c112d4e-5bc7-47ae-a041-ea2d9dccd749"
          },
         "policyAssignmentNames": {
             "denySubnetWithoutNsg": "Deny-VNet-Peer-Cross-Sub",
@@ -36,7 +40,12 @@
                 "description": "[variables('policyAssignmentNames').description]",
                 "displayName": "[variables('policyAssignmentNames').displayName]",
                 "policyDefinitionId": "[variables('policyDefinitions').denySubnetWithoutNsg]",
-                "enforcementMode": "[parameters('enforcementMode')]"
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "listOfResourceTypesNotAllowed": {
+                        "value": "[parameters('listOfResourceTypesNotAllowed')]"
+                    }
+                }
             }
         }        
     ],

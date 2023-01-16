@@ -654,14 +654,6 @@
                 "No"
             ]
         },
-        "enableTrafficAnalytics": {
-            "type": "string",
-            "defaultValue": "No",
-            "allowedValues": [
-                "Yes",
-                "No"
-            ]
-        },
         "enableAvnm": {
             "type": "string",
             "defaultValue": "No",
@@ -768,7 +760,7 @@
             "databricksVnet": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-DatabricksVnetPolicyAssignment.json')]",
             "govAscPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/gov/fairfaxDINE-ASCConfigPolicyAssignment.json')]",
             "logStorageAccount": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/logStorageAccount.json')]",
-            "nwRgPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-NwResourceGroupPolicyAssignment.json')]",
+            "nwDeployment": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/networkWatcher.json')]",
             "nsgFlowLogPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-NSGFlowLogsPolicyAssignment.json')]",
             "sshFromInternetPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-SSHFromInternetPolicyAssignment.json')]",
             "denyVnetPeeringPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-VNetPeering.json')]",
@@ -841,12 +833,12 @@
             "identityVwanPeeringDeploymentName": "[take(concat(parameters('industry'), '-IDVwanPeering', variables('deploymentSuffix')), 64)]",
             "corpConnectedLzVwanSubs": "[take(concat(parameters('industry'), '-CorpConnLzsVwan', variables('deploymentSuffix')), 50)]",
             "logStorageDeploymentName": "[take(concat(parameters('industry'), '-LogStorage', deployment().location, '-', deployment().name), 64)]",
-            "nwRgPlatformPolicyAssignment": "[take(concat(parameters('industry'), '-NwRgPlatform'), 64)]",
-            "nwRgLzPolicyAssignment": "[take(concat(parameters('industry'), '-NwRgLz'), 64)]",
-            "nsgFlowLogsPlatformPolicyAssignment": "[take(concat(parameters('industry'), '-NSGFlowPlatform'), 64)]",
-            "nsgFLowLogsLzPolicyAssignment": "[take(concat(parameters('industry'), '-NSGFlowLz'), 64)]",
-            "denyVnetPeeringDeploymentName": "[take(concat(parameters('industry'), '-VNetPeering'), 64)]",
-            "budgetDeploymentName": "[take(concat(parameters('industry'), '-Budget'), 64)]",
+            "nwDeploymentName": "[take(concat(parameters('industry'), '-NwPlatform', deployment().location, '-', deployment().name), 64)]",
+            "nwRgLzPolicyAssignment": "[take(concat(parameters('industry'), '-NwRgLz', deployment().location, '-', deployment().name), 64)]",
+            "nsgFlowLogsPlatformPolicyAssignment": "[take(concat(parameters('industry'), '-NSGFlowPlatform', deployment().location, '-', deployment().name), 64)]",
+            "nsgFLowLogsLzPolicyAssignment": "[take(concat(parameters('industry'), '-NSGFlowLz', deployment().location, '-', deployment().name), 64)]",
+            "denyVnetPeeringDeploymentName": "[take(concat(parameters('industry'), '-VNetPeering', deployment().location, '-', deployment().name), 64)]",
+            "budgetDeploymentName": "[take(concat(parameters('industry'), '-Budget', deployment().location, '-', deployment().name), 64)]",
             // Telco specific policies assignment deployments
             "erHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaEr', deployment().location, '-', deployment().name), 64)]",
             "pipHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaPip', deployment().location, '-', deployment().name), 64)]",
@@ -869,7 +861,8 @@
             "ddosLiteDeploymentName": "[take(concat(parameters('industry'), '-DDoSLite', variables('deploymentSuffix')), 64)]",
             "ddosHubLitePolicyDeploymentName": "[take(concat(parameters('industry'), '-DDoSHubPolicyLite', variables('deploymentSuffix')), 64)]",
             "privateDnsZoneRgLiteDeploymentName": "[take(concat(parameters('industry'), '-PrivDNSRGLite', variables('deploymentSuffix')), 64)]",
-            "privateDnsZonesLiteDeploymentName": "[take(concat(parameters('industry'), '-PrivDNSLite', variables('deploymentSuffix')), 35)]"            
+            "privateDnsZonesLiteDeploymentName": "[take(concat(parameters('industry'), '-PrivDNSLite', variables('deploymentSuffix')), 35)]",
+            "nwLiteDeploymentName": "[take(concat(parameters('industry'), '-NwPlatform', deployment().location, '-', deployment().name), 64)]"        
 
         },
         // Declaring deterministic names for Resource Groups that will be created for platform resources
@@ -1988,7 +1981,8 @@
                 "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logStorageDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').logLiteStorageDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').logLiteStorageDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').nwDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -2007,7 +2001,7 @@
                         "value": "[variables('platformResourceIds').logStorageResourceId]"
                     },
                     "workspaceId": {
-                        "value": "[reference(variables('platformResourceIds').logAnalyticsResourceId, '2020-08-01').customerId]"
+                        "value": "[variables('platformResourceIds').logAnalyticsResourceId]"
                     },
                     "workspaceResourceId": {
                         "value": "[variables('platformResourceIds').logAnalyticsResourceId]"
@@ -2027,29 +2021,28 @@
                 }
             }
         },            
-        {   // Creating Policy Assignment for NetworkWatcherRG on Platform scope
-            "condition": "[equals(parameters('enableNetworkWatcher'), 'Yes')]",
+        {   // Creating Network Watcher on Connectivity subscription
+            "condition": "[and(not(empty(parameters('connectivitySubscriptionId'))), equals(parameters('enableNetworkWatcher'), 'Yes'))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
             "location": "[deployment().location]",
-            "name": "[variables('deploymentNames').nwRgPlatformPolicyAssignment]",
-            "scope": "[variables('scopes').platformManagementGroup]",
+            "name": "[variables('deploymentNames').nwDeploymentName]",
+            "subscriptionId": "[parameters('connectivitySubscriptionId')]",
             "dependsOn": [
-                "policyCompletion"
+                "policyCompletion",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logStorageDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').connectivitySubscriptionPlacement)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').logLiteStorageDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
                     "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').nwRgPolicyAssignment]"
+                    "uri": "[variables('deploymentUris').nwDeployment]"
                 },
                 "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    },
-                    "enforcementMode": {
-                        "value": "[if(equals(parameters('enableNetworkWatcher'), 'Yes'), 'Default', 'DoNotEnforce')]"
-                    },
                     "location": {
                         "value": "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
                     }
@@ -2069,6 +2062,7 @@
             "dependsOn": [
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').nwDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logStorageDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').logLiteStorageDeploymentName)]"
@@ -2081,50 +2075,35 @@
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
+                        "value": "[concat(parameters('industryPrefix'), '-lz')]"
                     },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('enableNsgFlowLogs'), 'Yes'), 'Default', 'DoNotEnforce')]"
                     },
-                    "storageAccountResourceId": {
+                    "storageId": {
                         "value": "[variables('platformResourceIds').logStorageResourceId]"
                     },
-                    "workspace": {
+                    "workspaceId": {
                         "value": "[variables('platformResourceIds').logAnalyticsResourceId]"
+                    },
+                    "workspaceResourceId": {
+                        "value": "[variables('platformResourceIds').logAnalyticsResourceId]"
+                    },
+                    "workspaceRegion": {
+                        "value": "[deployment().location]"
+                    },
+                    "nsgRegion": {
+                        "value": "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
+                    },
+                    "networkWatcherName": {
+                        "value": "[concat('NetworkWatcher_', parameters('location'))]"
+                    },
+                    "networkWatcherRg": {
+                        "value": "NetworkWatcherRG"
                     }
                 }
             }
         },           
-        {
-            // Creating Policy Assignment for NetworkWatcherRG on Landing Zone scope
-            "condition": "[equals(parameters('enableNetworkWatcher'), 'Yes')]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
-            "location": "[deployment().location]",
-            "name": "[variables('deploymentNames').nwRgLzPolicyAssignment]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
-            "dependsOn": [
-                "policyCompletion"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').nwRgPolicyAssignment]"
-                },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    },
-                    "enforcementMode": {
-                        "value": "[if(equals(parameters('enableNetworkWatcher'), 'Yes'), 'Default', 'DoNotEnforce')]"
-                    },
-                    "location": {
-                        "value": "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
-                    }
-                }
-            }
-        },
         {
             // Assigning RBAC for Private DNS Zone Policy assignment to the connectivity hub
             "condition": "[equals(parameters('enablePrivateDnsZonesForOperators'), 'Yes')]",
@@ -2340,7 +2319,7 @@
             }   
         },
         {
-            // Assigning Azure Policy to prevent Databricks using public IP
+            // Assigning Azure Policy to prevent Databricks using public network access
             "condition": "[or(equals(parameters('denyDatabricksPip'), 'Yes'), equals(parameters('denyDatabricksPip'), 'Audit'))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
@@ -2358,12 +2337,12 @@
                     "uri": "[variables('deploymentUris').databricksPip]"
                 },
                 "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('denyDatabricksPip'), 'Yes'), 'Default', 'DoNotEnforce')]"
-                    }                    
+                    },
+                    "effect": {
+                        "value": "Deny"
+                    }               
                 }
             }
         },
@@ -3028,12 +3007,9 @@
                     "uri": "[variables('deploymentUris').denyVnetPeeringPolicyAssignment]"
                 },
                 "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    },
                     "enforcementMode": {
                         "value": "Default"
-                    }                    
+                    }    
                 }
             }
         }, 
@@ -3062,7 +3038,7 @@
                     "budgetName": {
                         "value": "DefaultBudget"
                     },
-                    "budgetAmount": {
+                    "amount": {
                         "value": "[parameters('budgetAmount')]"
                     }
                 }
@@ -3491,6 +3467,7 @@
             "location": "[deployment().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement)]",
                 "policyCompletion"
             ],
             "properties": {
@@ -3660,6 +3637,38 @@
                     },
                     "connectivityHubResourceId": {
                         "value": "[variables('platformResourceIds').vNetHubResourceId]"
+                    }
+                }
+            }
+        },
+        /*
+            Note: Lite only: Create Network Watcher into the single platform subscription
+        */
+        {   // Creating Network Watcher on Connectivity subscription
+            "condition": "[and(equals(parameters('enableNetworkWatcher'), 'Yes'), not(empty(parameters('singlePlatformSubscriptionId'))))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[deployment().location]",
+            "name": "[variables('esLitedeploymentNames').nwLiteDeploymentName]",
+            "subscriptionId": "[parameters('singlePlatformSubscriptionId')]",
+            "dependsOn": [
+                "policyCompletion",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logStorageDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').connectivitySubscriptionPlacement)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').logLiteStorageDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').nwDeployment]"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
                     }
                 }
             }

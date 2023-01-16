@@ -82,7 +82,7 @@
                         "value": "[parameters('workspaceRegion')]"
                     },
                     "workspaceId": {
-                        "value": "[parameters('workspaceId')]"
+                        "value": "[reference(parameters('workspaceId'), '2020-08-01').customerId]"
                     },
                     "networkWatcherName": {
                         "value": "[parameters('networkWatcherName')]"
