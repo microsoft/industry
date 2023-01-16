@@ -30,18 +30,57 @@ Specifically related to Azure deployments using Azure Resource Manager templates
 
 AzOps was developed with the above in mind, to ensure that customers could continue to operationalize their Azure platform at scale when 1) new scopes were created as part of the pipelines, and 2) if there were any outbound changes directly in Azure (e.g., someone had to remediate something directly via the Azure portal due to urgency and criticality), AzOps would be able to detect and reconcile those changes back into the Git repository, where the structure of the repository would be 1:1 with the Azure scopes, organizing the ARM templates in a way that would be easy to consume and understand.
 
+### Discovery (Pull pipeline)
+
+The Discovery process (Pull pipeline) is used to discover all Azure Scopes and Resources, subject to the [Service Principal RBAC Permissions](https://github.com/azure/azops/wiki/prerequisites) and [settings](https://github.com/azure/azops/wiki/settings) configured. This allows for an IaC-first approach, using the Validate/Push pipelines as well as creating, updating, and deleting infrastructure via the Portal. The Pull pipeline will then manage configuration drift by querying the Azure Resource Manager, determining any changes with respect to the repos main branch, and then opening and merging a Pull Request to integrate those changes.
+The Pull pipeline is configured to run every 6 hours via cron and can also be run manually on-demand.
+
+```mermaid
+flowchart LR
+A[Schedule/trigger] --> B(Connect to Azure)
+B --> C(Pull/Discover scopes & resources) --> D{Changes detected?}
+D -->|No| E[End]
+D -->|Yes| F[Create pull request]
+F --> G[Merge Pull request]
+```
+
 ![AzOps and ARM](../docs/azops-arm.png)
 
-### Discovery
+For further details, refer to the [AzOps documentation](https://github.com/azure/azops/wiki/steps#pull).
 
-This section will describe the discovery process with link to documentation
+### Deployment (Validate/Push pipeline)
 
-### Deployment
+The deployment process in AzOps follows common IaC best practices and consists of two pipelines.
 
-This section will describe the deployment process with link to documentation
+#### Validate pipeline
+
+The Validate pipeline is designed to be run on Pull Requests. On creation of a Pull Request, or commits to the PR, the Validate pipeline will look for changes, validate them against the Azure Resource Manage WhatIf API, and add a PR comment with "WhatIf" results showing the proposed changes. Below is an example showing the "WhatIf" result for update of a policyDefinition:
+![Validate](../docs/policyDefinition_validate.png)
+
+```mermaid
+flowchart LR
+A[Pull request] --> B(Connect to Azure)
+B --> C[Determine templates <br>to deploy]
+C --> D[Submit templates to <br>WhatIf API]
+D --> F(Submit WhatIf results <br> as PR comment)
+```
+
+For further details, refer to the [AzOps documentation](https://github.com/azure/azops/wiki/steps#validate).
+
+#### Push pipeline
+
+The Push pipeline will run automatically on any commits to the main branch, either directly or preferably via Pull Request. Upon creation of a PR (and on subsequent PR commits), the Validate pipeline will run (as described above). When the PR is merged, the Push pipeline will run and deploy the changes to Azure.
+
+```mermaid
+flowchart LR
+A[Merge PR to main] --> B(Connect to Azure)
+B --> C[Determine templates <br>to deploy]
+C --> D[Deploy templates <br> to target ARM scopes]
+D --> F(Trigger Pull pipeline<br>to ensure consistency)
+```
+
+For further details, refer to the [AzOps documentation](https://github.com/azure/azops/wiki/steps#push).
 
 ## Examples of end-to-end walkthrough
-
-add examples
 
 ## Next Steps
