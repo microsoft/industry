@@ -16,7 +16,7 @@ param (
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPTenantDLP,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPTenantIsolationDomains,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPAdminEnvNaming,
-    [ValidateSet('unitedstates', 'europe', 'asia', 'australia', 'india', 'japan', 'canada', 'unitedkingdom', 'unitedstatesfirstrelease', 'southamerica', 'france', 'switzerland', 'germany', 'unitedarabemirates','norway')][Parameter(Mandatory = $false)][string]$PPAdminRegion,
+    [ValidateSet('unitedstates', 'europe', 'asia', 'australia', 'india', 'japan', 'canada', 'unitedkingdom', 'unitedstatesfirstrelease', 'southamerica', 'france', 'switzerland', 'germany', 'unitedarabemirates', 'norway')][Parameter(Mandatory = $false)][string]$PPAdminRegion,
     [Parameter(Mandatory = $false)][string]$PPAdminBilling,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPAdminCoeSetting,
     [Parameter(Mandatory = $false)][string][AllowEmptyString()][AllowNull()]$PPAdminDlp,
@@ -158,7 +158,7 @@ function New-DLPAssignmentFromEnv {
     }
 
     # Get base template from repo
-    $templateFile = if ($Environments -contains 'AllEnvironments') { $dlpPolicies['tenant'].$EnvironmentDLP } else { $dlpPolicies["$EnvironmentDLP"] }
+    $templateFile = if ($EnvironmentDLP -in 'low', 'medium', 'high') { $dlpPolicies['tenant'].$EnvironmentDLP } else { $dlpPolicies["$EnvironmentDLP"] }
     if ([string]::IsNullOrEmpty($templateFile)) {
         throw "Cannot find DLP template $EnvironmentDLP"
     }
@@ -350,12 +350,7 @@ if ($PPAdminEnvEnablement -eq 'Yes' -and -not [string]::IsNullOrEmpty($PPAdminEn
 #region create default tenant dlp policies
 if ($PPTenantDLP -in 'low', 'medium', 'high') {
     try {
-        $environments = @()
-        $environments += 'AllEnvironments'
-        if ($adminEnvironments) {
-            $environments += $adminEnvironments.Properties.displayName
-        }
-        $null = New-DLPAssignmentFromEnv -Environments $environments -EnvironmentDLP $PPTenantDLP
+        $null = New-DLPAssignmentFromEnv -Environments $defaultEnvironment.properties.displayName -EnvironmentDLP $PPTenantDLP
         Write-Output "Created Default Tenant DLP Policy - $PPTenantDLP"
     }
     catch {
