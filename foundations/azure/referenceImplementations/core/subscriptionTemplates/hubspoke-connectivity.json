@@ -250,14 +250,15 @@
                                             {
                                             "type": "Microsoft.Network/networkManagers",
                                             "name": "[variables('avnmName')]",
-                                            "apiVersion": "2021-02-01-preview",
+                                            "apiVersion": "2022-07-01",
                                             "location": "[parameters('location')]",
                                             "properties": {
                                                 "displayName": "[concat(parameters('topLevelManagementGroupPrefix'), ' Network Manager')]",
                                                 "description": "[concat('Virtual Network Manager to manage and deploy virtual networks for ', parameters('topLevelManagementGroupPrefix'))]",
                                                 "networkManagerScopes": {
                                                     "managementGroups": [
-                                                        "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '-landingzones')]"
+                                                        "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '-landingzones')]",
+                                                        "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '-connectivity')]"
                                                     ],
                                                     "subscriptions": [],
                                                     "networkManagerScopeAccesses": [
