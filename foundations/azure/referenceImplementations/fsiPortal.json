@@ -2317,12 +2317,36 @@
                                     }
                                 },
                                 {
-                                    "name": "wafFwPolicy",
+                                    "name": "wafFrontDoor",
                                     "type": "Microsoft.Common.OptionsGroup",
-                                    "label": "Prevent usage of Web Application Firewall with disabled firewall rules",
+                                    "label": "Prevent usage of Web Application Firewall without Azure Front Door entry-points",
                                     "defaultValue": "Yes (recommended)",
                                     "visible": true,
-                                    "toolTip": "If 'Yes' is selected then Azure Policy will prevent WAF resources with disabled firewall rules.",
+                                    "toolTip": "If 'Yes' is selected then Azure Policy will prevent WAF creation withouth Front Door entry-points.",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "Audit only",
+                                                "value": "Audit"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "wafFrontDoorProfiles",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Prevent usage of Azure Front Door profiles that does not support Azure managed WAF",
+                                    "defaultValue": "Yes (recommended)",
+                                    "visible": true,
+                                    "toolTip": "If 'Yes' is selected then Azure Policy will prevent Front Door profiles that are not not using Premium tier.",
                                     "constraints": {
                                         "allowedValues": [
                                             {
@@ -2853,6 +2877,8 @@
                 "enableLzDdoS": "[steps('lzGoalState').lzGov.esLzDdoS]",
                 "enableWafGwPolicy": "[steps('lzGoalState').onlineLz.wafGwPolicy]",
                 "enableWafFwPolicy": "[steps('lzGoalState').onlineLz.wafFwPolicy]",
+                "enableWafFdPolicy": "[steps('lzGoalState').onlineLz.wafFrontDoor]",
+                "enableFdProfilePolicy": "[steps('lzGoalState').onlineLz.wafFrontDoorProfiles]",
                 "denyPublicEndpoints": "[steps('lzGoalState').corpLz.esLzPrivateLink]",
                 "enableEncryptionInTransit": "[steps('lzGoalState').lzGov.esEncryptionInTransit]",
                 "enableAksPolicy": "[steps('lzGoalState').lzGov.esAksPolicy]",

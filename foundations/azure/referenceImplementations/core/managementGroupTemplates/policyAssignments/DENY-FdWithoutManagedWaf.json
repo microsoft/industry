@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "enforcementMode": {
@@ -13,23 +13,23 @@
     },
     "variables": {
         "policyDefinitions": {
-            "denyDatabricksCluster": "/providers/Microsoft.Authorization/policyDefinitions/51c1490f-3319-459c-bbbc-7f391bbed753"
-         },
+            "denyFdWaf": "/providers/Microsoft.Authorization/policyDefinitions/dfc212af-17ea-423a-9dcb-91e2cb2caa6b"
+        },
         "policyAssignmentNames": {
-            "denyDatabricksCluster": "Deny-DataB-Cluster-Pip",
-            "description": "Clusters part of Azure Databricks Workspaces should have public IP disabled. Disabling public IP of clusters in Azure Databricks Workspaces improves security by ensuring that the resource isn't exposed on the public internet. Learn more at: https://learn.microsoft.com/azure/databricks/security/secure-cluster-connectivity.",
-            "displayName": "Clusters that are part of Azure Databricks Workspaces should disable public IP"
+            "denyFdWaf": "Deny-FD-WAF-Policy",
+            "description": "Azure Front Door Premium supports Azure managed WAF rules and private link to supported Azure origins.",
+            "displayName": "Azure Front Door profiles should use Premium tier that supports managed WAF rules and private link"
         }
     },
     "resources": [
         {
             "type": "Microsoft.Authorization/policyAssignments",
             "apiVersion": "2019-09-01",
-            "name": "[variables('policyAssignmentNames').denyDatabricksCluster]",
+            "name": "[variables('policyAssignmentNames').denyFdWaf]",
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
                 "displayName": "[variables('policyAssignmentNames').displayName]",
-                "policyDefinitionId": "[variables('policyDefinitions').denyDatabricksCluster]",
+                "policyDefinitionId": "[variables('policyDefinitions').denyFdWaf]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
                     "effect": {
