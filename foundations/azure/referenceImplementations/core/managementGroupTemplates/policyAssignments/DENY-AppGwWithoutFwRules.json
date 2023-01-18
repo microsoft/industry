@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "denyWafFwPolicy": "/providers/Microsoft.Authorization/policyDefinitions/632d3993-e2c0-44ea-a7db-2eca131f356d"
+        },
+        "policyAssignmentNames": {
+            "denyWafFwPolicy": "Deny-WAF-FW-Policy",
+            "description": "Enabling all Web Application Firewall (WAF) rules strengthens your application security and protects your web applications against common vulnerabilities. To learn more about Web Application Firewall (WAF) with Application Gateway, visit https://aka.ms/waf-ag",
+            "displayName": "Web Application Firewall (WAF) should enable all firewall rules for Application Gateway"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2019-09-01",
+            "name": "[variables('policyAssignmentNames').denyWafFwPolicy]",
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').denyWafFwPolicy]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "effect": {
+                        "value": "Deny"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

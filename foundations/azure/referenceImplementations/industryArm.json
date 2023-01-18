@@ -436,6 +436,23 @@
                 "No"
             ]
         },
+        "enableWafGwPolicy": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "Audit",
+                "No"
+            ]
+        },
+        "enableWafFwPolicy": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "Audit",
+                "No"
+            ]
+        },
         "denySubnetWithoutNsg": {
             "type": "string",
             "allowedValues": [
@@ -600,7 +617,7 @@
                 "No"
             ]
         },
-        "denyDatabricksVnet": {
+        "denyDatabricksClusterPip": {
             "type": "string",
             "defaultValue": "No",
             "allowedValues": [
@@ -757,7 +774,7 @@
             "roleAssignments": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/roleAssignments/roleAssignment.json')]",
             "databricksSku": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-DatabricksSkuPolicyAssignment.json')]",
             "databricksPip": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-DatabricksPipPolicyAssignment.json')]",
-            "databricksVnet": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-DatabricksVnetPolicyAssignment.json')]",
+            "databricksCluster": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-DatabricksClusterPolicyAssignment.json')]",
             "govAscPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/gov/fairfaxDINE-ASCConfigPolicyAssignment.json')]",
             "logStorageAccount": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/logStorageAccount.json')]",
             "nwDeployment": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/networkWatcher.json')]",
@@ -765,6 +782,8 @@
             "sshFromInternetPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-SSHFromInternetPolicyAssignment.json')]",
             "denyVnetPeeringPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-VNetPeering.json')]",
             "budgetPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-BudgetPolicyAssignment.json')]",
+            "appGwWithoutWafPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-AppGwWithoutWaf.json')]",
+            "appGwWithouthFwPolicyAssignment": "[uri(deployment().properties.tempalteLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-AppGwWithoutFwRules.json')]",
             // Telco industry
             "erHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'telco/managementGroupTemplates/policyAssignments/DENY-non-ha-expressRoutes-policyAssignment.json')]",
             "pipHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'telco/managementGroupTemplates/policyAssignments/DENY-non-ha-publicIps-policyAssignment.json')]"
@@ -776,7 +795,7 @@
             "mgmtSubscriptionPlacement": "[take(concat(parameters('industry'), '-MgmtSub', variables('deploymentSuffix')), 64)]",
             "databricksSkuDeploymentName": "[take(concat(parameters('industry'), '-DBSku', variables('deploymentSuffix')), 64)]",
             "databricksPipDeploymentName": "[take(concat(parameters('industry'), '-DBPip', variables('deploymentSuffix')), 64)]",
-            "databricksVnetDeploymentName": "[take(concat(parameters('industry'), '-DBVnet', variables('deploymentSuffix')), 64)]",
+            "databricksClusterDeploymentName": "[take(concat(parameters('industry'), '-DBVnet', variables('deploymentSuffix')), 64)]",
             "corpPeeringDeploymentName": "[take(concat(parameters('industry'), '-CorpPeering', variables('deploymentSuffix')), 60)]",
             "connectivitySubscriptionPlacement": "[take(concat(parameters('industry'), '-ConnectivitySub', variables('deploymentSuffix')), 64)]",
             "identitySubscriptionPlacement": "[take(concat(parameters('industry'), '-IdentitySub', variables('deploymentSuffix')), 64)]",
@@ -832,16 +851,18 @@
             "identityPeeringDeploymentName": "[take(concat(parameters('industry'), '-IDPeering', variables('deploymentSuffix')), 64)]",
             "identityVwanPeeringDeploymentName": "[take(concat(parameters('industry'), '-IDVwanPeering', variables('deploymentSuffix')), 64)]",
             "corpConnectedLzVwanSubs": "[take(concat(parameters('industry'), '-CorpConnLzsVwan', variables('deploymentSuffix')), 50)]",
-            "logStorageDeploymentName": "[take(concat(parameters('industry'), '-LogStorage', deployment().location, '-', deployment().name), 64)]",
-            "nwDeploymentName": "[take(concat(parameters('industry'), '-NwPlatform', deployment().location, '-', deployment().name), 64)]",
-            "nwRgLzPolicyAssignment": "[take(concat(parameters('industry'), '-NwRgLz', deployment().location, '-', deployment().name), 64)]",
-            "nsgFlowLogsPlatformPolicyAssignment": "[take(concat(parameters('industry'), '-NSGFlowPlatform', deployment().location, '-', deployment().name), 64)]",
-            "nsgFLowLogsLzPolicyAssignment": "[take(concat(parameters('industry'), '-NSGFlowLz', deployment().location, '-', deployment().name), 64)]",
-            "denyVnetPeeringDeploymentName": "[take(concat(parameters('industry'), '-VNetPeering', deployment().location, '-', deployment().name), 64)]",
-            "budgetDeploymentName": "[take(concat(parameters('industry'), '-Budget', deployment().location, '-', deployment().name), 64)]",
+            "logStorageDeploymentName": "[take(concat(parameters('industry'), '-LogStorage', variables('deploymentSuffix')), 64)]",
+            "nwDeploymentName": "[take(concat(parameters('industry'), '-NwPlatform', variables('deploymentSuffix')), 64)]",
+            "nwRgLzPolicyAssignment": "[take(concat(parameters('industry'), '-NwRgLz', variables('deploymentSuffix')), 64)]",
+            "nsgFlowLogsPlatformPolicyAssignment": "[take(concat(parameters('industry'), '-NSGFlowPlatform', variables('deploymentSuffix')), 64)]",
+            "nsgFLowLogsLzPolicyAssignment": "[take(concat(parameters('industry'), '-NSGFlowLz', variables('deploymentSuffix')), 64)]",
+            "denyVnetPeeringDeploymentName": "[take(concat(parameters('industry'), '-VNetPeering', variables('deploymentSuffix')), 64)]",
+            "budgetDeploymentName": "[take(concat(parameters('industry'), '-Budget', variables('deploymentSuffix')), 64)]",
+            "appGwWithouthWafDeploymentName": "[take(concat(parameters('industry'), '-APPGWoWAF', variables('deploymentSuffix')), 64)]",
+            "appGwWithoutFwRulesDeploymentName": "[take(concat(parameters('industry'), '-APPGWwoFW', variables('deploymentSuffix')), 64)]",
             // Telco specific policies assignment deployments
-            "erHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaEr', deployment().location, '-', deployment().name), 64)]",
-            "pipHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaPip', deployment().location, '-', deployment().name), 64)]",
+            "erHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaEr', variables('deploymentSuffix')), 64)]",
+            "pipHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaPip', variables('deploymentSuffix')), 64)]",
             "privateDnsOperatorPolicyDeploymentName": "[take(concat(parameters('industry'), '-PrivateDNSOperator',variables('deploymentSuffix')), 64)]"
         },
         "esLiteDeploymentNames": {
@@ -2327,7 +2348,6 @@
             "scope": "[variables('scopes').corpManagementGroup]",
             "location": "[deployment().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').dataPolicyDeploymentName)]",
                 "policyCompletion"
             ],
             "properties": {
@@ -2376,28 +2396,24 @@
         },
         {
             // Assigning Azure Policy to prevent Databricks sku
-            "condition": "[or(equals(parameters('denyDatabricksVnet'), 'Yes'), equals(parameters('denyDatabricksVnet'), 'Audit'))]",
+            "condition": "[or(equals(parameters('denyDatabricksClusterPip'), 'Yes'), equals(parameters('denyDatabricksClusterPip'), 'Audit'))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
-            "name": "[variables('deploymentNames').databricksVnetDeploymentName]",
+            "name": "[variables('deploymentNames').databricksClusterDeploymentName]",
             "scope": "[variables('scopes').corpManagementGroup]",
             "location": "[deployment().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').dataPolicyDeploymentName)]",
                 "policyCompletion"
             ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
                     "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').databricksVnet]"
+                    "uri": "[variables('deploymentUris').databricksCluster]"
                 },
                 "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    },
                     "enforcementMode": {
-                        "value": "[if(equals(parameters('denyDatabricksVnet'), 'Yes'), 'Default', 'DoNotEnforce')]"
+                        "value": "[if(equals(parameters('denyDatabricksClusterPip'), 'Yes'), 'Default', 'DoNotEnforce')]"
                     }                    
                 }
             }
@@ -2638,6 +2654,56 @@
                 }
             }
         },
+        {
+            // Assigning deny App GW without WAF policy on Online LZ
+            "condition": "[equals(parameters('enableWafGwPolicy'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').appGwWithouthWafDeploymentName]",
+            "scope": "[variables('scopes').onlineManagementGroup]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyDeploymentName)]",
+                "policyCompletion"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').appGwWithoutWafPolicyAssignment]"
+                },
+                "parameters": {
+                    "enforcementMode": {
+                        "value": "Default"
+                    }                    
+                }
+            }
+        },
+        {
+            // Assigning deny App GW without FW rules policy on Online LZ
+            "condition": "[equals(parameters('enableWafFwPolicy'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').appGwWithoutFwRulesDeploymentName]",
+            "scope": "[variables('scopes').onlineManagementGroup]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyDeploymentName)]",
+                "policyCompletion"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').appGwWithouthFwPolicyAssignment]"
+                },
+                "parameters": {
+                    "enforcementMode": {
+                        "value": "Default"
+                    }                    
+                }
+            }
+        },        
         {
             // Assigning deny storage without https policy to landing zones management group if condition is true
             "condition": "[equals(parameters('enableStorageHttps'), 'Yes')]",

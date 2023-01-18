@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "denyWafGwPolicy": "/providers/Microsoft.Authorization/policyDefinitions/564feb30-bf6a-4854-b4bb-0d2d2d1e6c66"
+        },
+        "policyAssignmentNames": {
+            "denyWafGwPolicy": "Deny-WAF-GW-Policy",
+            "description": "Deploy Azure Web Application Firewall (WAF) in front of public facing web applications for additional inspection of incoming traffic. Web Application Firewall (WAF) provides centralized protection of your web applications from common exploits and vulnerabilities such as SQL injections, Cross-Site Scripting, local and remote file executions. You can also restrict access to your web applications by countries, IP address ranges, and other http(s) parameters via custom rules.",
+            "displayName": "Web Application Firewall (WAF) should be enabled for Application Gateway"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2019-09-01",
+            "name": "[variables('policyAssignmentNames').denyWafGwPolicy]",
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').denyWafGwPolicy]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "effect": {
+                        "value": "Deny"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

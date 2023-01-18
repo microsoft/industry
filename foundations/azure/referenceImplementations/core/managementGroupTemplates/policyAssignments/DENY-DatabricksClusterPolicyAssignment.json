@@ -2,12 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "topLevelManagementGroupPrefix": {
-            "type": "string",
-            "metadata": {
-                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
-            }
-        },
         "enforcementMode": {
             "type": "string",
             "allowedValues": [
@@ -19,23 +13,23 @@
     },
     "variables": {
         "policyDefinitions": {
-            "denyDatabricksVnet": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policyDefinitions/Deny-Databricks-VirtualNetwork')]"
+            "denyDatabricksCluster": "/providers/Microsoft.Authorization/policyDefinitions/51c1490f-3319-459c-bbbc-7f391bbed753]"
          },
         "policyAssignmentNames": {
-            "denyDatabricksVnet": "Deny-DataB-Vnet",
-            "description": "Enforces the use of vnet injection for Databricks workspaces.",
-            "displayName": "Enforces the use of vnet injection for Databricks"
+            "denyDatabricksCluster": "Deny-DataB-Cluster-Pip",
+            "description": "Clusters part of Azure Databricks Workspaces should have public IP disabled. Disabling public IP of clusters in Azure Databricks Workspaces improves security by ensuring that the resource isn't exposed on the public internet. Learn more at: https://learn.microsoft.com/azure/databricks/security/secure-cluster-connectivity.",
+            "displayName": "Clusters that are part of Azure Databricks Workspaces should disable public IP"
         }
     },
     "resources": [
         {
             "type": "Microsoft.Authorization/policyAssignments",
             "apiVersion": "2019-09-01",
-            "name": "[variables('policyAssignmentNames').denyDatabricksVnet]",
+            "name": "[variables('policyAssignmentNames').denyDatabricksCluster]",
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
                 "displayName": "[variables('policyAssignmentNames').displayName]",
-                "policyDefinitionId": "[variables('policyDefinitions').denyDatabricksVnet]",
+                "policyDefinitionId": "[variables('policyDefinitions').denyDatabricksCluster]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
                     "effect": {

@@ -230,7 +230,7 @@
                             "location": "[parameters('location')]",
                             "name": "[variables('avnmRgName')]",
                             "properties": {}
-                        },
+                        },/*
                         {
                             "condition": "[equals(parameters('enableAvnm'), 'Yes')]",
                             "type": "Microsoft.Resources/deployments",
@@ -271,7 +271,7 @@
                                     ]
                                 }
                             }
-                        },
+                        },*/
                         {
                             "type": "Microsoft.Resources/resourceGroups",
                             "apiVersion": "2019-10-01",
