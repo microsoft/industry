@@ -127,7 +127,7 @@ Microsoft Cloud for Retail is an industry-specific cloud composed of products an
 
   </td>
   <td>
-  <img src="retail/media/mc4r-reference-architecture.png" width="99%" height="99%"/>
+  <img src="retail/media/mc4r-reference-architecture_v2.png" width="99%" height="99%"/>
   </td>
 
  </tr>
