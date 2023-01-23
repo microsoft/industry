@@ -2648,6 +2648,54 @@
                                         ]
                                     }
                                 },
+                              	{
+                                    "name": "esOpenAiAuth",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Prevent use of local authentication for Cognitive Services (OpenAI)",
+                                    "defaultValue": "Yes (recommended)",
+                                    "visible": true,
+                                    "toolTip": "If 'Yes' is selected Azure Policy will enforce the auth setting.",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "Audit only",
+                                                "value": "Audit"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                },								
+                              	{
+                                    "name": "esOpenAiMi",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Ensure usage of managed identity for Cognitive Services (OpenAI)",
+                                    "defaultValue": "Yes (recommended)",
+                                    "visible": true,
+                                    "toolTip": "If 'Yes' is selected Azure Policy will enforce the managed identity setting.",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "Audit only",
+                                                "value": "Audit"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                },													
                                 {
                                     "name": "esAzBackup",
                                     "type": "Microsoft.Common.OptionsGroup",
@@ -2918,6 +2966,8 @@
                 "denyDatabricksClusterPip": "[steps('lzGoalState').corpLz.esLzDbClusterPip]",
                 "denyDatabricksSku": "[steps('lzGoalState').lzGov.esLzDbSku]",
                 "retentionInDays": "[string(steps('esGoalState').azMonSection.esLogRetention)]",
+                "denyOpenAiAuth": "[string(steps('lzGoalState').lzGov.esOpenAiAuth]",
+                "denyOpenAiWithoutMi": "[string(steps('lzGoalState').lzGov.esOpenAiMi]",
                 "enableVmMonitoring": "[steps('lzGoalState').lzGov.esVmMonitoring]",
                 "enableVmssMonitoring": "[steps('lzGoalState').lzGov.esVmssMonitoring]",
                 "vpnOrErZones": "[steps('esConnectivityGoalState').esGwRegionalOrAz]",
