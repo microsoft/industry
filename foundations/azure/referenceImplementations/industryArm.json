@@ -881,8 +881,8 @@
             "budgetDeploymentName": "[take(concat(parameters('industry'), '-Budget', variables('deploymentSuffix')), 64)]",
             "appGwWithouthWafDeploymentName": "[take(concat(parameters('industry'), '-APPGWoWAF', variables('deploymentSuffix')), 64)]",
             "appGwWithoutFwRulesDeploymentName": "[take(concat(parameters('industry'), '-APPGWwoFW', variables('deploymentSuffix')), 64)]",
-            "wafWithoutFdDeploymentName": "[take(concat(parameters('industry'), '-WAFwoFD', variables('deploymentSuffix')), '64')]",
-            "fdWithoutWafDeploymentName": "[take(concat(parameters('industry'), '-FDwoWAF', variables('deploymentSuffix')), '64')]",
+            "wafWithoutFdDeploymentName": "[take(concat(parameters('industry'), '-WAFwoFD', variables('deploymentSuffix')), 64)]",
+            "fdWithoutWafDeploymentName": "[take(concat(parameters('industry'), '-FDwoWAF', variables('deploymentSuffix')), 64)]",
             // Telco specific policies assignment deployments
             "erHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaEr', variables('deploymentSuffix')), 64)]",
             "pipHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaPip', variables('deploymentSuffix')), 64)]",
@@ -2623,7 +2623,7 @@
         },
         {
             // Assigning deny rpd from internet policy landing zones management group if condition is true
-            "condition": "[or(equals(parameters('denyRdp'), 'Yes')], equals(parameters('denyRdp'), 'Audit'))]",
+            "condition": "[or(equals(parameters('denyRdp'), 'Yes'), equals(parameters('denyRdp'), 'Audit'))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "name": "[variables('deploymentNames').rdpFromInternetPolicyDeploymentName]",
