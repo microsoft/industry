@@ -11,7 +11,9 @@ Goal of this documentation is to provide Northstar reference architecture; provi
 
 ## Reference Implementation
 
-![reference-implementation](./media/mc4r-reference-architecture.png)
+![reference-implementation](./media/mc4r-reference-architecture_v2.png)
+
+A detailed explanation of the reference architecture components is provided in [Reference architecture for Microsoft Cloud for Retail](./referenceImplementation/README.md) section. The visio diagram for alterations can be found [here](./referenceImplementation/media/mc4r_v02.vsdx).
 
 ## Retail Solutions
 
