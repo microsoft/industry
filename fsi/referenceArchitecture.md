@@ -6,7 +6,7 @@ The reference architecture builds upon the principles of Enterprise Scale Landin
 
 | Industry Architecture | Description | Deploy |
 |:----------------------|:------------|--------|
-| Azure for FSI | Azure for FSI foundation  provides full architecture with landing zones for FSI industry |Coming Soon
+| Azure for FSI | Azure for FSI foundation  provides full architecture with landing zones for FSI industry | Coming Soon
 | Power Platform for FSI | Coming Soon | Coming Soon
 | Microsoft Teams for FSI | Coming Soon | Coming Soon
 
