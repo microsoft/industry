@@ -1,6 +1,6 @@
 # Financial Services
 
-Below you can find the overall architecture diagram for Microsoft Cloud for Financial Services, covering the suggested positioning of Azure services, Power Platform Services, other microsoft products like Teams, Viva, Sharepoint and Office.
+Below you can find the overall architecture diagram for Microsoft Cloud for Financial Services, covering the suggested positioning of Azure services, Power Platform Services, other Microsoft products like Teams, Viva, SharePoint and Office.
 
 The reference architecture builds up the principles of Enterprise Scale Landing Zones, Power Platform Landing Zones and Cloud Scale Analytics principles.
 
