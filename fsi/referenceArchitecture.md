@@ -12,8 +12,7 @@ The reference architecture builds upon the principles of Enterprise Scale Landin
 
 ![Financial Services Industry Reference Architecture](./docs/mc4f-reference-architecture_v2.png)
 
-The visio diagram for above architecture can be reached from [here](./docs/mc4f_v2.vsdx).
-
+The Visio diagram for above architecture can be reached from [here](./docs/mc4f_v2.vsdx).
 
 Below you can find the list of covered Microsoft Cloud for Financial Services components in the Reference Architecture and information about them.
 
