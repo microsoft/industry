@@ -1,4 +1,4 @@
-# Reference architecture for Microsoft Cloud for RetailReference architecture for Microsoft Cloud for Retail
+# Reference architecture for Microsoft Cloud for Retail
 
 The reference architecture for retail provides opinionated guidance for deploying foundational building blocks for enabling retail-specific use-cases.
 
