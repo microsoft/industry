@@ -19,7 +19,7 @@ deployment and adoption of industry cloud.
 
 ### Healthcare
 
-Microsoft Cloud for Healthcare spans the Microsoft Clouds (Azure, Power Platform and Microsoft 365). This repository provides prescriptive architecture and design guidence together with respective reference implementations for the industry solution as a whole, as well as the various healthcare capabilities.
+Microsoft Cloud for Healthcare spans the Microsoft Clouds (Azure, Power Platform and Microsoft 365). This repository provides prescriptive architecture and design guidance together with respective reference implementations for the industry solution as a whole, as well as the various healthcare capabilities.
 
 <table>
 <thead>
@@ -156,6 +156,7 @@ Microsoft Cloud for Financial Services provides capabilities to manage data to d
     - [Service enablement framework](./fsi/solutions/serviceEnablementFramework)
   - [Azure Synapse for Banking](./fsi/solutions/synapseBanking)
 
+- [Financial Services Reference Architecture](./fsi/referenceArchitecture.md)
 - Customer and employee experience
   - [Unified customer profile](./fsi/solutions/unifiedCustomerProfile)
   - [Customer onboarding](./fsi/solutions/customerOnboarding/readme.md)
@@ -170,7 +171,7 @@ Microsoft Cloud for Financial Services provides capabilities to manage data to d
 
   </td>
   <td>
-  <img src="fsi/docs/mc4f-reference-architecture.png" width="99%" height="99%"/>
+  <img src="fsi/docs/mc4f-reference-architecture_v2.png" width="99%" height="99%"/>
   </td>
 
  </tr>
