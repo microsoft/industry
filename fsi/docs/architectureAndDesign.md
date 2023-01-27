@@ -18,14 +18,14 @@ This article goes into the details of the architecture and design of the FSI Lan
 
 FSI Landing Zones on Microsoft Azure provides a scalable architecture from the very first workload to a large enterprise regardless of scale-point. The scale-out architecture is enabled by a purpose-built management group structure that caters for:
 
-* Centralized management of the platform
-* Centralized and federated management of the landing zones, supporting N characteristics of workloads from a policy, networking, management, and security perspective
-* On-ramp path to Azure for existing workloads and applications, and net new development and exploration
-* Life-cycle management of Azure subscriptions
+* Centralized management of the platform.
+* Centralized and federated management of the landing zones, supporting N characteristics of workloads from a policy, networking, management, and security perspective.
+* On-ramp path to Azure for existing workloads and applications, and net new development and exploration.
+* Life-cycle management of Azure subscriptions.
 
 The architecture is tied closely to the Policy-Driven governance design principle, which enables autonomy for the *platform*, *landing zones*, and the *workload* within the landing zones. The architecture will meet FSI customers where they are, whether it is brownfield or greenfield, and allow them to scale alongside business requirements, and is aligned with the overall platform roadmap for Microsoft Azure.
 
-A high-level view of the management group structure can be seen below, that provides clear intentions and boundaries for the platform and landing zones.
+A high-level view of the management group structure is depicted in the picture below, which provides clear intentions and boundaries for the platform and landing zones.
 
 ![FSI Landing Zones management group structure](./fsimgmt.png)
 
@@ -44,7 +44,7 @@ FSI Landing Zones leverage a multi-subscription design where the platform and la
 FSI Landing Zones provides a prescriptive guidance on how to structure the subscriptions and management groups in Azure. As a starting point, there will be 3 dedicated subscriptions for the platform purposes:
 
 * Connectivity
-This is the dedicated subscription for the initial hub in the first Azure region you have presence/will start with. It will contain all centrally managed networking resources such as VNETs, VPNs, ExpressRoute, etc. This subscription will be managed by the platform team, and more specifically the networking team.
+This is the dedicated subscription for the initial hub virtual network in the first Azure region to be used. It will contain all centrally managed networking resources such as the hub virtual network, VPN and/or ExpressRoute gateways, Azure Private DNS Zones, etc. This subscription will be managed by the platform team, and more specifically the networking team.
 
 * Management
 A dedicated subscription is used to host the management resources that must remain separated from the workloads and landing zones, that provides an unified view with regards to security, platform observability, alerts, and remediations. It will contain a dedicated Log Analytics workspace that is tightly integrated with Microsoft Defender for Cloud, Microsoft Sentinel, and governed by Azure Policy.
@@ -54,17 +54,20 @@ A dedicated subscription for identity purposes, such as hosting Windows Server A
 
 ### Multi-region design
 
-Alongside with a multi-subscription design, FSI Landing Zones enables you to start with a single Azure region - or as many as you want, while allowing you to scale effortless when the business requirements changes.
+Alongside with a multi-subscription design, FSI Landing Zones enables you to start with a single Azure region - or as many as you want, while allowing you to scale effortless when the business requirements changes. Having a multi-region design by default provides the following benefits:
 
-At a high-level, the following steps are required to scale out to a new region using FSI Landing Zones on Microsoft Azure:
+* Azure regions are designed to offer protection against localized disasters with availability zones and protection from regional or large geography disasters with disaster recovery, by making use of another region.
+* By having a platform designed for multi-region support, your platform and landing zones in Azure will be protected against localized disasters with availability zones and also from regional or large geography disasters, by making use of another region.
+* Besides protecting you from a disaster in an Azure region, this architecture allows you to deploy highly available, mission critical systems in an Active-Passive or Active-Active configuration where instances of your application can be deployed across 2 (or more) Azure regions.
 
-1. Create either a) a new Azure connectivity subscription into the **Connectivity** management group, or b) create new VNet and Hub resources into the existing connectivity subscription.
-2. Configure the Hub and Spoke network topology in the new region, and configure the VPN or ExpressRoute connection to the existing hub in the first region.
-3. Enable the new region in Azure Policy to allow deployments of Azure resources to that region.
-4. Create new virtual networks into existing landing zones and peer to the new hub in the new region.
-5. Create new Azure subscriptions with new virtual networks peered to the new region.
+FSI Landing Zones provides a prescriptive guidance on how to expland your Azure platform to a new Azure region (File > New > Region), which at a high-level consists of:
 
-For each new region that you will add and where connectivity is required, simply repeat the steps above.
+* Decide whether to use your existing Connectivity subscription, or create a new subscription for the networking resources in the new region. If a new subscription is created, it must be placed under the **Connectivity** Management Group.
+* Deploy and configure the networking components in the new region (for example, hub virtual network, VPN and/or ExpressRoute gateways and connectivity to on-premises, Azure Firewall or 3rd party network virtual appliance, etc).
+* If you are using the Identify subscription, decide whether to use your existing Identity subscription, or create a new subscription for the Active Directory Domain Services resources in the new region. If a new subscription is created, it must be placed under the **Identity** Management Group.
+* Enable the new region in Azure Policy to allow deployments of Azure resources to that region.
+
+Once you deployed your platform resources in a new region, your organization is ready to create landing zones in the new region.
 
 ### Autonomy with governance
 
@@ -90,7 +93,7 @@ Platform resource are managed by a cross-functional platform team. The team cons
  Operationalization of the Platform for an organization is under the responsibility of the platform function.
 
 * SecOps: Responsible for definition and management of Azure Policy and RBAC permissions on the platform for landing zones and platform management groups and subscriptions. Security operations including monitoring and the definition and the operation of reporting and auditing dashboard.
-* NetOps: Definition and management of the common networking components in Azure including the hybrid connectivity and firewall resource to control internet facing networking traffic. NetOps team is responsible to handout virtual networks to landing zone owners or team.
+* NetOps: Definition and management of the common networking components in Azure including the connectivity via ExpressRoute and/or VPN, firewall resources to control internet facing networking traffic or ensuring DNS name resoultion across the environment. NetOps team is responsible to handout virtual networks to landing zone owners or teams.
 
 ### Landing zone owners responsibilities
 
