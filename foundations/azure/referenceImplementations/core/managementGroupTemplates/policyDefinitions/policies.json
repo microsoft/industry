@@ -2519,7 +2519,7 @@
                         }
                     },
                     "name": "Deny-SSH-From-Internet"
-                },                
+                },
                 {
                     "properties": {
                         "displayName": "RDP access from the Internet should be blocked",
@@ -6945,6 +6945,50 @@
                         }
                     },
                     "name": "Deny-Subnet-Without-Nsg"
+                },
+                {
+                    "properties": {
+                        "description": "This policy denies the creation of Azure Firewall withouth a default Firewall Policy.",
+                        "displayName": "Azure Firewall should have a default Firewall Policy",
+                        "mode": "All",
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "allowedValues": [
+                                    "Audit",
+                                    "Deny",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Deny",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                }
+                            }
+                        },
+                        "metadata": {
+                            "version": "2.0.0",
+                            "category": "Network"
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Network/azureFirewalls"
+                                    },
+                                    {
+                                        "field": "Microsoft.Network/azureFirewalls/firewallPolicy.id",
+                                        "exists": "false"
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-AzFw-Without-Policy"
                 },
                 {
                     "properties": {

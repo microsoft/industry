@@ -19,10 +19,27 @@
       },
       "retentionInDays": {
         "type": "String"
+      },
+      "enableChangeTracking": {
+        "type": "string",
+        "allowedValues": [
+          "No",
+          "Yes"
+        ],
+        "defaultValue": "No"
+      },
+      "enableUpdateMgmt": {
+        "type": "string",
+        "allowedValues": [
+          "No",
+          "Yes"
+        ],
+        "defaultValue": "No"
       }
     },
     "variables": {
-        "deploymentName": "eslz-loganalytics"
+        "fullDeploymentName": "fsi-loganalytics-waa",
+        "laDeploymentName": "fsi-loganalytics"
     },
     "resources": [
       {
@@ -33,9 +50,10 @@
         "properties": {}
       },
       {
+        "condition": "[or(equals(parameters('enableChangeTracking'), 'Yes'), equals(parameters('enableUpdateMgmt'), 'Yes'))]",
         "type": "Microsoft.Resources/deployments",
         "apiVersion": "2018-05-01",
-        "name": "[variables('deploymentName')]",
+        "name": "[variables('fullDeploymentName')]",
         "resourceGroup": "[parameters('rgName')]",
         "dependsOn": [
           "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
@@ -85,6 +103,42 @@
                     }
                   }
                 ]
+              }
+            ],
+            "outputs": {
+            }
+          }
+        }
+      },
+      {
+        "condition": "[and(not(equals(parameters('enableChangeTracking'), 'Yes')), not(equals(parameters('enableUpdateMgmt'), 'Yes')))]",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2018-05-01",
+        "name": "[variables('laDeploymentName')]",
+        "resourceGroup": "[parameters('rgName')]",
+        "dependsOn": [
+          "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
+        ],
+        "properties": {
+          "mode": "Incremental",
+          "template": {
+            "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+            "contentVersion": "1.0.0.0",
+            "parameters": {},
+            "variables": {},
+            "resources": [
+              {
+                "apiVersion": "2020-08-01",
+                "location": "[parameters('workspaceRegion')]",
+                "name": "[parameters('workspaceName')]",
+                "type": "Microsoft.OperationalInsights/workspaces",
+                "properties": {
+                  "sku": {
+                    "name": "PerGB2018"
+                  },
+                  "enableLogAccessUsingOnlyResourcePermissions": true,
+                  "retentionInDays": "[int(parameters('retentionInDays'))]"
+                }
               }
             ],
             "outputs": {

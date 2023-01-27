@@ -440,6 +440,26 @@
                             }
                         },
                         {
+                            "name": "defenderEndpoint",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy Microsoft Defender for Endpoint for Windows and Linux VMs",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "If 'Yes' is selected, ARM will deploy resources and enable them for continous compliance",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ]
+                            },
+                            "visible": "[equals(steps('esGoalState').azMonSection.esLogAnalytics,'Yes')]"
+                        },                        
+                        {
                             "name": "esAsc",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Deploy Microsoft Defender for Cloud and enable security monitoring for your platform and resources",
@@ -2918,6 +2938,7 @@
                 "denySubnetWithoutNsgForIdentity": "[steps('esIdentityGoalState').esIdDenySubnetNsg]",
                 "denyPipForIdentity": "[steps('esIdentityGoalState').esIdDenyPublicIp]",
                 "enableVmBackupForIdentity": "[steps('esIdentityGoalState').esIdAzBackup]",
+                "enableDefenderEndpoint": "[steps('esGoalState').defenderEndpoint]",
                 "enableAsc": "[steps('esGoalState').esAsc]",
                 "emailContactAsc": "[steps('esGoalState').esAscEmail]",
                 "enableAscForServers": "[steps('esGoalState').esAscVms]",

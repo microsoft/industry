@@ -279,6 +279,17 @@
                 "description": "If 'Yes' is selected, policy will be assigned to enforce VM monitoring."
             }
         },
+        "enableDefenderEndpoint": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "metedata": {
+                "description": "If 'Yes' is selected, policy will be assigned to enforce Defender for Endpoint"
+            }
+        },
         "enableVmssMonitoring": {
             "type": "string",
             "defaultValue": "No",
@@ -792,6 +803,7 @@
             "activityDiagnosticsPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-ActivityLogPolicyAssignment.json')]",
             "ascConfigPolicyInitiative": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-ASCConfigPolicyAssignment.json')]",
             "azVmMonitorPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-VMMonitoringPolicyAssignment.json')]",
+            "defenderEndpointPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-DefenderForVms.json')]",
             "azVmssMonitorPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-VMSSMonitoringPolicyAssignment.json')]",
             "azVmBackupPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-VMBackupPolicyAssignment.json')]",
             "azPolicyForAksPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-AksPolicyPolicyAssignment.json')]",
@@ -864,6 +876,7 @@
             "vwanConnectivityHubDeploymentName": "[take(concat(parameters('industry'), '-VWanHub', variables('deploymentSuffix')), 64)]",
             "nvaConnectivityHubDeploymentName": "[take(concat(parameters('industry'), '-NVAHub', variables('deploymentSuffix')), 64)]",
             "azVmMonitorPolicyDeploymentName": "[take(concat(parameters('industry'), '-AzVmMonitor', variables('deploymentSuffix')), 64)]",
+            "defenderEndpointPolicyDeploymentName": "[take(concat(parameters('industry'), '-DefenderEndpoint', variables('deploymentSuffix')), 64)]",
             "azVmssMonitorPolicyDeploymentName": "[take(concat(parameters('industry'),'-AzVmssMonitor', variables('deploymentSuffix')), 64)]",
             "azBackupLzPolicyDeploymentName": "[take(concat(parameters('industry'),'-AzBackupLz', variables('deploymentSuffix')), 64)]",
             "azBackupIdentityPolicyDeploymentName": "[take(concat(parameters('industry'), '-AzBackupIdentity', variables('deploymentSuffix')), 64)]",
@@ -2272,7 +2285,34 @@
                     }
                 }
             }
-        },        
+        },
+        {
+            // Assigning Defender Endpoint VMs policy initiative to intermediate root management group if condition is true
+            "condition": "[equals(parameters('enableDefenderEndpoint'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').defenderEndpointPolicyDeploymentName]",
+            "scope": "[variables('scopes').industryRootManagementGroup]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').defenderEndpointPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "enforcementMode": {
+                        "value": "[if(equals(parameters('enableDefenderEndpoint'), 'Yes'), 'Default', 'DoNotEnforce')]"
+                    }
+                }
+            }   
+        },           
         {
             // Assigning Azure Monitor for VMs policy initiative to intermediate root management group if condition is true
             "condition": "[and(or(not(empty(parameters('managementSubscriptionId'))), not(empty(parameters('singlePlatformSubscriptionId')))), equals(parameters('enableLogAnalytics'), 'Yes'), or(equals(parameters('enableVmMonitoring'), 'Yes'), equals(parameters('enableVmMonitoring'), 'Audit')))]",
@@ -3547,6 +3587,12 @@
                     },
                     "retentionInDays": {
                         "value": "[parameters('retentionInDays')]"
+                    },
+                    "enableChangeTracking": {
+                        "value": "[parameters('enableChangeTracking')]"
+                    },
+                    "enableUpdateMgmt": {
+                        "value": "[parameters('enableUpdateMgmt')]"
                     }
                 }
             }

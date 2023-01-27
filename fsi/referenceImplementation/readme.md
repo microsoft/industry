@@ -27,7 +27,7 @@ The reference architecture is modular by design and allows organizations of any 
 
 In particular, it enables the organizations to start as small as needed and scale alongside their business requirements regardless of scale point.
 
-![FSI architecture](coming)
+![FSI architecture](../docs/FSI_LandingZones.png)
 
 ## What is FSI Landing Zones on Microsoft Azure reference implementation?
 
@@ -55,9 +55,11 @@ This section describes at a high level how FSI Landing Zones reference implement
 
 The Management Group structure implemented with FSI Landing Zones on Microsoft Azure is with clear intention to streamline and optimize operational excellence with security and governance being front and center. It caters for the entire life-cycle of a subscription, provides clear separation of concerns with regards to platform resources, and workload resources inside the landing zones.
 
-The following structure is being created when deploying FSI Landing Zones on Microsoft Azure, and enables organizations to transition existing subscription into the target architecture, as well as being the ideal starting point for FSI organizations who are new to Azure:
+The following structure is being created when deploying FSI Landing Zones on Microsoft Azure, and enables organizations to transition existing subscription into the target architecture, as well as being the ideal starting point for FSI organizations who are new to Azure.
 
-- **Top-level Management Group** (directly under the tenant root group) is created with a prefix provided by the organization, which purposely will avoid the usage of the root group to allow organizations to move existing Azure subscriptions into the hierarchy, and also enables future scenarios. This Management Group is parent to all the other Management Groups created by FSI Landing Zones
+![FSI Landing Zones management group structure](../docs/fsimgmt.png)
+
+- **Intermediate Management Group** (directly under the tenant root group) is created with a prefix provided by the organization, which purposely will avoid the usage of the root group to allow organizations to move existing Azure subscriptions into the hierarchy, and also enables future scenarios. This Management Group is parent to all the other Management Groups created by FSI Landing Zones
 
 - **Platform:** This Management Group contains all the *platform* child Management Groups, such as Management, Connectivity, and Identity. Common Azure Policies for the entire platform is assigned at this level
 
@@ -156,7 +158,7 @@ When you click on [*Deploy to Microsoft Cloud*](https://aka.ms/fsilz), it will s
 
 On the first page, select the *Region*. This region will primarily be used to place the deployment resources in an Azure region, but also used as the initial region for some of the resources that are deployed, such as Azure Monitoring resources.
 
-### 2 - Tenant setup
+### 2 - Management Group & Subscription Organization
 
 Provide a prefix that will be used to create the management group hierarchy and platform resources, and select if you would use dedicated subscriptions or a single subscription for platform resources (please note that dedicates subscriptions are recommended, and single platform subscription is only for PoC and testing purposes). For this scenario, select **Dedicated**.
 
