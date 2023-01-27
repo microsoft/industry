@@ -17,7 +17,7 @@
         },
         "policyAssignmentNames": {
             "ascMonitoring": "Deploy-ASC-Monitoring",
-            "description": "Azure Security Benchmark policy initiative",
+            "description": "The Azure Security Benchmark initiative represents the policies and controls implementing security recommendations defined in Azure Security Benchmark v3, see https://aka.ms/azsecbm. This also serves as the Microsoft Defender for Cloud default policy initiative. You can directly assign this initiative, or manage its policies and compliance results within Microsoft Defender for Cloud.",
             "displayName": "Azure Security Benchmark"
         }
       },

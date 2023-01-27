@@ -9,12 +9,6 @@
                 "description": "Provide a prefix (max 10 characters, unique at tenant-scope) for the Management Group hierarchy and other resources created as part of Afo."
             }
         },
-        "logAnalyticsResourceId": {
-            "type": "string",
-            "metadata": {
-                "description": "Provide the resourceId to the central Log Analytics workspace"
-            }
-        },
         "enforcementMode": {
             "type": "string",
             "allowedValues": [
@@ -29,13 +23,13 @@
             "defenderEndpoint": "/providers/Microsoft.Authorization/policySetDefinitions/e20d08c5-6d64-656d-6465-ce9e37fd0ebc"
             },
         "policyAssignmentNames": {
-            "defenderEndpoint": "Deploy-VM-Monitoring",
+            "defenderEndpoint": "Deploy-Defender",
             "description": "Deploy Microsoft Defender for Endpoint agent on applicable images.",
             "displayName": "Deploy Microsoft Defender for Endpoint agent"
             },
         "rbacOwner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
         "roleAssignmentNames": {
-            "deployDefenderEndpoint": "[guid(concat(parameters('topLevelManagementGroupPrefix'),variables('policyAssignmentNames').defenderEndpoint))]"
+            "deployDefenderEndpoint": "[guid(concat(parameters('topLevelManagementGroupPrefix'), '-def', variables('policyAssignmentNames').defenderEndpoint))]"
             }
         },
     "resources": [

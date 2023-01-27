@@ -1187,7 +1187,7 @@
             // One of Azure's untold stories.....
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
-            "name": "[concat('preparingToLaunch', copyIndex())]",
+            "name": "[concat('Hydrating-Compliance-Step-', copyIndex())]",
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
