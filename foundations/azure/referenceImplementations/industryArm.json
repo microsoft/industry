@@ -1335,6 +1335,12 @@
                     },
                     "retentionInDays": {
                         "value": "[parameters('retentionInDays')]"
+                    },
+                    "enableUpdateMgmt": {
+                        "value": "[parameters('enableUpdateMgmt')]"
+                    },
+                    "enableChangeTracking": {
+                        "value": "[parameters('enableChangeTracking')]"
                     }
                 }
             }
@@ -3552,7 +3558,7 @@
             Note: ES Lite only: the following deployment will create Log Analytics to the platform subscription
         */         
         {
-            // Deploying Log Analytics workspace to platform subscription if condition is true
+            // Deploy workspace to platform subscription if condition is true
             "condition": "[and(equals(parameters('enableLogAnalytics'), 'Yes'), not(empty(parameters('singlePlatformSubscriptionId'))))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",

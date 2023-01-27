@@ -428,7 +428,33 @@
                             "visible": true
                         },
                         {
-                            "name": "textBlock0",
+                            "name": "holGovSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Holistic Platform Security and Governance",
+                            "elements": [],
+							"visible": "[equals(steps('esGoalState').azMonSection.esLogAnalytics,'Yes')]"
+						},
+						{
+                            "name": "platformGovText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": "[equals(steps('esGoalState').azMonSection.esLogAnalytics,'Yes')]",
+                            "options": {
+                                "text": "Select the overarching security and compliance rules that will apply to the overall architecture, including the platform, landing zones, and workload components to ensure continuous compliance and a secure-by-default design.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/azure/security/fundamentals/overview"
+                                }
+                            }
+                        },
+						{
+                            "name": "mcDefenderSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Microsoft Defender for Cloud",
+                            "elements": [],
+							"visible": "[equals(steps('esGoalState').azMonSection.esLogAnalytics,'Yes')]"
+						},
+						{
+                            "name": "mcDefenderText",
                             "type": "Microsoft.Common.TextBlock",
                             "visible": "[equals(steps('esGoalState').azMonSection.esLogAnalytics,'Yes')]",
                             "options": {
@@ -458,7 +484,7 @@
                                 ]
                             },
                             "visible": "[equals(steps('esGoalState').azMonSection.esLogAnalytics,'Yes')]"
-                        },                        
+                        },						                        
                         {
                             "name": "esAsc",
                             "type": "Microsoft.Common.OptionsGroup",
