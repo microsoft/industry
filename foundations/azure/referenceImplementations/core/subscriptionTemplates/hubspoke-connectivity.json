@@ -214,7 +214,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-10-01",
             "location": "[parameters('location')]",
-            "name": "[concat('afo', '-connectivityHubSub', deployment().location)]",
+            "name": "[concat('fsi', '-connectivityHubSub', deployment().location)]",
             "subscriptionId": "[parameters('connectivitySubscriptionId')]",
             "properties": {
                 "mode": "Incremental",

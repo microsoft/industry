@@ -52,11 +52,7 @@
                 "displayName": "[variables('policyAssignmentNames').displayName]",
                 "policyDefinitionId": "[variables('policyDefinitions').defenderEndpoint]",
                 "enforcementMode": "[parameters('enforcementMode')]",
-                "parameters": {
-                    "logAnalytics_1": {
-                        "value": "[parameters('logAnalyticsResourceId')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
