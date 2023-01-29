@@ -49,7 +49,7 @@
             "description": "Deploys NSG flow logs and traffic analytics to Log Analytics with a specfied retention period for a single Azure region. To use across additional regions, assign the policy per region.",
             "displayName": "Enforce NSG Flows are enabled to Storage and Log Analytics workspace"
         },
-        "rbacOwner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+        "roleDefinition": "b24988ac-6180-42a0-ab88-20f7382dd24c",
         "roleAssignmentNames": {
             "deployNsgFlowLogs": "[guid(concat(parameters('toplevelManagementGroupPrefix'), deployment().name, variables('policyAssignmentNames').deployNsgFlowLogs))]"
         }
@@ -102,10 +102,15 @@
             ],
             "properties": {
                 "principalType": "ServicePrincipal",
-                "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', variables('rbacOwner'))]",
+                "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', variables('roleDefinition'))]",
                 "principalId": "[toLower(reference(concat('/providers/Microsoft.Authorization/policyAssignments/', variables('policyAssignmentNames').deployNsgFlowLogs), '2019-09-01', 'Full' ).identity.principalId)]"
             }
         }        
     ],
-    "outputs": {}
+    "outputs": {
+        "principalId": {
+            "type": "string",
+            "value": "[reference(concat('/providers/Microsoft.Authorization/policyAssignments/', variables('policyAssignmentNames').deployNsgFlowLogs), '2019-09-01', 'Full').identity.principalId]"
+        }
+    }
 }

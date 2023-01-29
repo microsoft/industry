@@ -2254,7 +2254,7 @@
                                 {
                                     "name": "esLzDbClusterPip",
                                     "type": "Microsoft.Common.OptionsGroup",
-                                    "label": "Prevent usage of publicIP for Databricks clusters in corp connected landing zones",
+                                    "label": "Prevent usage of public IP for Databricks clusters in corp connected landing zones",
                                     "defaultValue": "Yes (recommended)",
                                     "visible": true,
                                     "toolTip": "If 'Yes' is selected Azure Policy will ensure vnet injection is enabled.",

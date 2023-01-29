@@ -908,6 +908,7 @@
             "privateDnsZonesDeploymentName": "[take(concat(parameters('industry'), '-PrivDNSZones', variables('deploymentSuffix')), 35)]",
             "dnsZoneRoleAssignmentDeploymentName": "[take(concat(parameters('industry'), '-DNSZoneRole', variables('deploymentSuffix')), 64)]",
             "dnsZoneOperatorRoleAssignmentDeploymentName": "[take(concat(parameters('industry'), '-DNSZoneOperatorRole', variables('deploymentSuffix')), 64)]",
+            "nsgFLowLogRoleAssignmentDeploymentName": "[take(concat(parameters('industry'), '-NSGFlowRole', variables('deploymentSuffix')), 64)]",
             "identityPeeringDeploymentName": "[take(concat(parameters('industry'), '-IDPeering', variables('deploymentSuffix')), 64)]",
             "identityVwanPeeringDeploymentName": "[take(concat(parameters('industry'), '-IDVwanPeering', variables('deploymentSuffix')), 64)]",
             "corpConnectedLzVwanSubs": "[take(concat(parameters('industry'), '-CorpConnLzsVwan', variables('deploymentSuffix')), 50)]",
@@ -1065,7 +1066,8 @@
             "dicom.privatelink.azurehealthcareapis.com"
         ],
         "roleDefinitions": {
-            "networkContributor": "4d97b98b-1d4f-4787-a291-c67834d212e7"
+            "networkContributor": "4d97b98b-1d4f-4787-a291-c67834d212e7",
+            "contributor": "b24988ac-6180-42a0-ab88-20f7382dd24c"
         }
     },
     "resources": [
@@ -2194,7 +2196,37 @@
                     }
                 }
             }
-        },           
+        },
+        {
+            // Assigning RBAC for NSG Flow Log Policy assignment to the connectivity hub
+            "condition": "[and(equals(parameters('enableNetworkWatcher'), 'Yes'), equals(parameters('enableNsgFlowLogs'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "name": "[variables('deploymentNames').nsgFLowLogRoleAssignmentDeploymentName]",
+            "location": "[deployment().location]",
+            "subscriptionId": "[variables('singleVsDedicatedConnectivitySub')]",
+            "dependsOn": [
+                "[variables('deploymentNames').nsgFlowLogsLzPolicyAssignment]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').roleAssignments]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "principalId": {
+                        "value": "[if(and(equals(parameters('enableNetworkWatcher'), 'Yes'), equals(parameters('enableNsgFlowLogs'), 'Yes')), reference(variables('deploymentNames').nsgFlowLogsLzPolicyAssignment).outputs.principalId.value, 'na')]"
+                    },
+                    "roleDefinitionId": {
+                        "value": "[variables('roleDefinitions').contributor]"
+                    }
+                }
+            }
+        },          
         {
             // Assigning RBAC for Private DNS Zone Policy assignment to the connectivity hub
             "condition": "[equals(parameters('enablePrivateDnsZonesForOperators'), 'Yes')]",
