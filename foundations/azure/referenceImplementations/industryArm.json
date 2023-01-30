@@ -845,6 +845,7 @@
             "logStorageAccount": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/logStorageAccount.json')]",
             "nwDeployment": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/networkWatcher.json')]",
             "nsgFlowLogPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-NSGFlowLogsPolicyAssignment.json')]",
+            "nsgFlowLogPolicyExemption": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyExemptions/EXEMPT-NSGFlowLogStAcc.json')]",
             "sshFromInternetPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-SSHFromInternetPolicyAssignment.json')]",
             "denyVnetPeeringPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-VNetPeeringPolicyAssignment.json')]",
             "budgetPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-BudgetPolicyAssignment.json')]",
@@ -930,6 +931,7 @@
             "nwRgLzPolicyAssignment": "[take(concat(parameters('industry'), '-NwRgLz', variables('deploymentSuffix')), 64)]",
             "nsgFlowLogsPlatformPolicyAssignment": "[take(concat(parameters('industry'), '-NSGFlowPlatform', variables('deploymentSuffix')), 64)]",
             "nsgFLowLogsLzPolicyAssignment": "[take(concat(parameters('industry'), '-NSGFlowLz', variables('deploymentSuffix')), 64)]",
+            "nsgFlowLogPolicyExemption": "[take(concat(parameters('industry'), '-NSGExempt', variables('deploymentSuffix')), 64)]",
             "denyVnetPeeringDeploymentName": "[take(concat(parameters('industry'), '-VNetPeering', variables('deploymentSuffix')), 64)]",
             "budgetDeploymentName": "[take(concat(parameters('industry'), '-Budget', variables('deploymentSuffix')), 64)]",
             "appGwWithouthWafDeploymentName": "[take(concat(parameters('industry'), '-APPGWoWAF', variables('deploymentSuffix')), 64)]",
@@ -2146,7 +2148,36 @@
                     }
                 }
             }
-        },            
+        },
+        {   // Creating Policy Exemption for storage accounts for NSG in management management group scope
+            "condition": "[and(equals(parameters('enableNetworkWatcher'), 'Yes'), equals(parameters('enableNsgFlowLogs'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').nsgFlowLogPolicyExemption]",
+            "scope": "[variables('scopes').platformManagementGroup]",
+            "dependsOn": [
+                "policyCompletion",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logStorageDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').logLiteStorageDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').nwDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').asbPolicyDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').nsgFlowLogPolicyExemption]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    }
+                }
+            }
+        },               
         {   // Creating Network Watcher on Connectivity subscription
             "condition": "[and(not(empty(parameters('connectivitySubscriptionId'))), equals(parameters('enableNetworkWatcher'), 'Yes'))]",
             "type": "Microsoft.Resources/deployments",
