@@ -2150,7 +2150,7 @@
             }
         },
         {   // Creating Policy Exemption for storage accounts for NSG in management management group scope
-            "condition": "[and(equals(parameters('enableNetworkWatcher'), 'Yes'), equals(parameters('enableNsgFlowLogs'), 'Yes'))]",
+            "condition": "[and(equals(parameters('enableMcsbPolicy'), 'Yes'), equals(parameters('enableNsgFlowLogs'), 'Yes'))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",

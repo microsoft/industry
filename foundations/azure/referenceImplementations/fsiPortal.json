@@ -1643,7 +1643,7 @@
 								{
 									"name": "exemptionInfo",
 									"type": "Microsoft.Common.InfoBox",
-									"visible": "[equals(steps('esConnectivityGoalState').nwSecurity.esNsgFlowLogs, 'Yes')]",
+									"visible": "[and(equals(steps('esConnectivityGoalState').nwSecurity.esNsgFlowLogs, 'Yes'), equals(steps('esGoalState').mcsbPolicy, 'Yes'))]",
 									"options": {
 										"icon": "Info",
 										"text": "NSG Flow Logs requires a storage account accessible over a public endpoint, that will be created in the management subscription only trusting known Azure services. A policy exemption will be created to bypass the Microsoft Cloud Security Benchmark recommendations for the storage account.",
