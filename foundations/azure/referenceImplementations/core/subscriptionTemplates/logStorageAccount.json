@@ -54,13 +54,14 @@
                                 "accessTier": "Hot",
                                 "minimumTlsVersion": "TLS1_2",
                                 "supportsHttpsTrafficOnly": true,
+                                "publicNetworkAccess": "Enabled",
                                 "allowBlobPublicAccess": true,
                                 "allowSharedKeyAccess": true,
                                 "allowCrossTenantReplication": true,
                                 "defaultToOAuthAuthentication": false,
                                 "networkAcls": {
                                     "bypass": "AzureServices",
-                                    "defaultAction": "Allow",
+                                    "defaultAction": "Deny",
                                     "ipRules": []
                                 }
                             }
