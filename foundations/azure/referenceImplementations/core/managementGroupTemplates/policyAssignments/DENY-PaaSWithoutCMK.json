@@ -1,0 +1,164 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
+            }
+        },
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        },
+        "genericNonComplianceMessages": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a message to be displayed when a policy is non-compliant."
+            },
+            "defaultValue": "You are trying to deploy or modify an Azure PaaS resource without using a customer-managed key, which is not permitted. Please use a customer-managed key instead."
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "denyPaaSwithoutCmk": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Deny-Paas-Without-CMK')]"
+        },
+        "policyAssignmentNames": {
+            "denyPaaSwithoutCmk": "Deny-PaaS-without-CMK",
+            "displayName": "Prevent usage of Azure PaaS services without customer-managed keys",
+            "description": "This policy initiative is a group of built-in policies that prevents deployment of Azure PaaS services without customer-managed keys."
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2020-09-01",
+            "name": "[variables('policyAssignmentNames').denyPaaSwithoutCmk]",
+            "location": "[deployment().location]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').denyPaaSwithoutCmk]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "nonComplianceMessages": [
+                    {   // General compliance message for all Azure PaaS services subject to publid endpoint posture, when updating the policy initiative and assignemnt
+                        "message": "[parameters('genericNonComplianceMessages')]"
+                    }
+                ],
+                "parameters": {
+                    "azureSqlEffect": {
+                        "value": "Deny"
+                    },
+                    "aciEffect": {
+                        "value": "Deny"
+                    },
+                    "videoAnalyzerEffect": {
+                        "value": "Deny"
+                    },
+                    "azMonClusterEffect": {
+                        "value": "Deny"
+                    },
+                    "cosmosDbEffect": {
+                        "value": "Deny"
+                    },
+                    "laIseEffect": {
+                        "value": "Deny"
+                    },
+                    "iotHubEffect": {
+                        "value": "Deny"
+                    },
+                    "asrEffect": {
+                        "value": "Deny"
+                    },
+                    "iotHubDeviceEffect": {
+                        "value": "Deny"
+                    },
+                    "adfEffect": {
+                        "value": "Deny"
+                    },
+                    "botEffect": {
+                        "value": "Deny"
+                    },
+                    "aaEffect": {
+                        "value": "Deny"
+                    },
+                    "containerRegistriesEffect": {
+                        "value": "Deny"
+                    },
+                    "hdInsightsEffect": {
+                        "value": "Deny"
+                    },
+                    "loadTestingEffect": {
+                        "value": "Deny"
+                    },
+                    "cognitiveServicesEffect": {
+                        "value": "Deny"
+                    },
+                    "osDataDiskEffect": {
+                        "value": "Deny"
+                    },
+                    "cognitiveSearchEffect": {
+                        "value": "Deny"
+                    },
+                    "tableStorageEffect": {
+                        "value": "Deny"
+                    },
+                    "aksDisksEffect": {
+                        "value": "Deny"
+                    },
+                    "dataExplorerEffect": {
+                        "value": "Deny"
+                    },
+                    "dataBoxEffect": {
+                        "value": "Deny"
+                    },
+                    "streamAnEffect": {
+                        "value": "Deny"
+                    },
+                    "mediaEffect": {
+                        "value": "Deny"
+                    },
+                    "logSearchEffect": {
+                        "value": "Deny"
+                    },
+                    "appConfEffect": {
+                        "value": "Deny"
+                    },
+                    "hpcCacheEffect": {
+                        "value": "Deny"
+                    },
+                    "batchEffect": {
+                        "value": "Deny"
+                    },
+                    "sqlMiEffect": {
+                        "value": "Deny"
+                    },
+                    "storageScopeEffect": {
+                        "value": "Deny"
+                    },
+                    "mlwsEffect": {
+                        "value": "Deny"
+                    },
+                    "managedDiskEffect": {
+                        "value": "Deny"
+                    },
+                    "queueStorageEffect": {
+                        "value": "Deny"
+                    },
+                    "synapseWsEffect": {
+                        "value": "Deny"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

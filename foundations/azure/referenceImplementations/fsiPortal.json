@@ -2481,7 +2481,7 @@
                                 {
                                     "name": "esEncryptionInTransit",
                                     "type": "Microsoft.Common.OptionsGroup",
-                                    "label": "Ensure encryption in transit is enabled for PaaS services",
+                                    "label": "Ensure encryption in transit is enabled for Azure PaaS services",
                                     "defaultValue": "Yes (recommended)",
                                     "visible": true,
                                     "toolTip": "If 'Yes' is selected then Azure Policy will ensure PaaS resources uses TLS and SSL.",
@@ -2502,6 +2502,30 @@
                                         ]
                                     }
                                 },
+                                {
+                                    "name": "esCmk",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Prevent usage of Azure PaaS services without customer-managed keys",
+                                    "defaultValue": "Yes (recommended)",
+                                    "visible": true,
+                                    "toolTip": "If 'Yes' is selected then Azure Policy will ensure PaaS resources uses customer-managed keys.",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "Audit only",
+                                                "value": "Audit"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                },                                
                                 {
                                     "name": "esVmMonitoring",
                                     "type": "Microsoft.Common.OptionsGroup",
@@ -3016,6 +3040,7 @@
                 "denyOpenAiAuth": "[steps('lzGoalState').lzGov.esOpenAiAuth]",
                 "denyOpenAiWithoutMi": "[steps('lzGoalState').lzGov.esOpenAiMi]",
                 "enableVmMonitoring": "[steps('lzGoalState').lzGov.esVmMonitoring]",
+                "denyPaasWithoutCmk": "[steps('lzGoalState').lzGov.esCmk]",
                 "enableVmssMonitoring": "[steps('lzGoalState').lzGov.esVmssMonitoring]",
                 "vpnOrErZones": "[steps('esConnectivityGoalState').esGwRegionalOrAz]",
                 "firewallSku": "[steps('esConnectivityGoalState').esAzFwSku]",

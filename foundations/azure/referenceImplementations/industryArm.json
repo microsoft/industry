@@ -184,6 +184,15 @@
             ],
             "defaultValue": "Disabled"            
         },
+        "denyPaasWithoutCmk": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "Audit",
+                "No"
+            ],
+            "defaultValue": "No"
+        },
         "enableAscForSql": {
             "type": "string",
             "allowedValues": [
@@ -789,6 +798,8 @@
             "managementGroupsLite": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/mgmtGroupStructure/mgmtGroupsLite.json')]",
             "policyDefinitions": "[uri(deployment().properties.templateLink.uri, variables('azPolicyArmTemplate'))]",
             "dataPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/dataPolicies.json')]",
+            "cmkPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/DENY-PaaSWithoutCMKPolicySetDefinition.json')]",
+            "cmkPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-PaaSWithoutCMK.json')]",
             "vnetConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/hubspoke-connectivity.json')]",
             "vwanConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/vwan-connectivity.json')]",
             "nvaConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/nvahubspoke-connectivity.json')]",
@@ -863,6 +874,8 @@
             "ddosRgDeploymentName": "[take(concat(parameters('industry'), '-DDoSRg', variables('deploymentSuffix')), 64)]",
             "ddosDeploymentName": "[take(concat(parameters('industry'), '-DDoS', variables('deploymentSuffix')), 64)]",
             "ddosHubPolicyDeploymentName": "[take(concat(parameters('industry'), '-DDoSHubPolicy', variables('deploymentSuffix')), 64)]",
+            "cmkPolicyDeploymentName": "[take(concat(parameters('industry'), '-CMKPolicy', variables('deploymentSuffix')), 64)]",
+            "cmkPolicyAssignmentDeploymentName": "[take(concat(parameters('industry'), '-CMKPolicyAssignment', variables('deploymentSuffix')), 64)]",
             "ddosLzPolicyDeploymentName": "[take(concat(parameters('industry'), '-DDoSLZPolicy', variables('deploymentSuffix')), 64)]",
             "monitoringDeploymentName": "[take(concat(parameters('industry'), '-Monitoring', variables('deploymentSuffix')), 64)]",
             "logAnalyticsPolicyDeploymentName": "[take(concat(parameters('industry'), '-LAPolicy', variables('deploymentSuffix')), 64)]",
@@ -1161,6 +1174,26 @@
                 "parameters": {}
             }
         },
+        {
+            // Deploying Policy Initiative to prevent usage of PaaS services without CMK using built-in policies
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "name": "[variables('deploymentNames').cmkPolicyDeploymentName]",
+            "location": "[deployment().location]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').cmkPolicySetDefinition]"
+                },
+                "parameters": {}
+            }
+        },        
         {
             // Deploying custom data policies
             "type": "Microsoft.Resources/deployments",
@@ -2675,8 +2708,36 @@
             }
         },
         {
+            // Assigning CMK policy initiative to landing zones management group if condition is true
+            "condition": "[or(equals(parameters('denyPaasWithoutCmk'), 'Yes'), equals(parameters('denyPaasWithoutCmk'), 'Audit'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').cmkPolicyAssignmentDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').cmkPolicyDeploymentName)]",
+                "policyCompletion"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').cmkPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "enforcementMode": {
+                        "value": "[if(equals(parameters('denyPaasWithoutCmk'), 'Yes'), 'Default', 'DoNotEnforce')]"
+                    }                    
+                }
+            }
+        },        
+        {
             // Assigning IP Fwd policy to landing zones management group if condition is true
-            "condition": "[or(equals(parameters('denyIpForwarding'), 'Yes'), equals(parameters('denyIpForwarding'), 'AUdit'))]",
+            "condition": "[or(equals(parameters('denyIpForwarding'), 'Yes'), equals(parameters('denyIpForwarding'), 'Audit'))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "name": "[variables('deploymentNames').ipFwPolicyDeploymentName]",
