@@ -154,6 +154,7 @@ Microsoft Cloud for Financial Services provides capabilities to manage data to d
   - [Power Platform for Financial Services](./foundations/powerPlatform)
   - [Azure for Financial Services](./fsi/readme.md)
 
+- [Financial Services Reference Architecture](./fsi/referenceArchitecture.md)
 - Customer and employee experience
   - [Unified customer profile](./fsi/solutions/unifiedCustomerProfile)
   - [Customer onboarding](./fsi/solutions/customerOnboarding/readme.md)
@@ -168,7 +169,7 @@ Microsoft Cloud for Financial Services provides capabilities to manage data to d
 
   </td>
   <td>
-  <img src="fsi/docs/mc4f-reference-architecture.png" width="99%" height="99%"/>
+  <img src="fsi/docs/mc4f-reference-architecture_v2.png" width="99%" height="99%"/>
   </td>
 
  </tr>
