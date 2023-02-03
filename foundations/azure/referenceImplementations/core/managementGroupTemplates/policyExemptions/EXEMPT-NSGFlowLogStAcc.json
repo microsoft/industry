@@ -1,0 +1,38 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "defaultValue": "JPMC"
+        },
+        "policyDefinitionReferenceIds": {
+            "type": "array",
+            "defaultValue": [
+                "StorageDisallowPublicAccess",
+                "storageAccountsShouldUseCustomerManagedKeyForEncryptionMonitoringEffect",
+                "storageAccountShouldUseAPrivateLinkConnectionMonitoringEffect"
+            ]
+        }
+    },
+    "variables": {
+        "policyExemptionResourceName": "NSG-Flow-Log-Exemption",
+        "policyExemptionName": "[concat(parameters('topLevelManagementGroupPrefix'), '-Management- ', 'Storage Accounts for NSG Flow Logs')]",
+        "policyExemptionDescription": "Exempted from Security Benchmark as the storage account must be on a public endpoint to enable NSG FLow Log from Network Security Groups. The storage account is configured with firewall allowing only trusted Azure Services as the exception.",
+        "policyAssignmentId": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policyAssignments/Deploy-ASC-Monitoring')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyExemptions",
+            "apiVersion": "2022-07-01-preview",
+            "name": "[variables('policyExemptionResourceName')]",
+            "properties": {
+                "policyAssignmentId": "[variables('policyAssignmentId')]",
+                "policyDefinitionReferenceIds": "[parameters('policyDefinitionReferenceIds')]",
+                "exemptionCategory": "Waiver",
+                "displayName": "[variables('policyExemptionName')]",
+                "description": "[variables('policyExemptionDescription')]"
+            }
+        }
+    ]
+}

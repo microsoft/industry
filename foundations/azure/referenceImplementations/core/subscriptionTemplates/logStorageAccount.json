@@ -1,0 +1,74 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "mgmtStorageRgName": {
+            "type": "string",
+            "defaultValue": "foo"
+        },
+        "storageAccountName": {
+            "type": "string",
+            "defaultValue": "ststfoo"
+        },
+        "storageLocation": {
+            "type": "string",
+            "defaultValue": "westeurope"
+        }
+    },
+    "variables": {
+        "deploymentName": "[take(concat(deployment().name, 'LogStorage'), 60)]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2018-05-01",
+            "name": "[parameters('mgmtStorageRgName')]",
+            "location": "[parameters('storageLocation')]",
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "resourceGroup": "[parameters('mgmtStorageRgName')]",
+            "name": "[variables('deploymentName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('mgmtStorageRgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.Storage/storageAccounts",
+                            "apiVersion": "2021-08-01",
+                            "name": "[parameters('storageAccountName')]",
+                            "location": "[parameters('storageLocation')]",
+                            "sku": {
+                                "name": "Standard_RAGRS"
+                            },
+                            "kind": "StorageV2",
+                            "properties": {
+                                "accessTier": "Hot",
+                                "minimumTlsVersion": "TLS1_2",
+                                "supportsHttpsTrafficOnly": true,
+                                "publicNetworkAccess": "Enabled",
+                                "allowBlobPublicAccess": true,
+                                "allowSharedKeyAccess": true,
+                                "allowCrossTenantReplication": true,
+                                "defaultToOAuthAuthentication": false,
+                                "networkAcls": {
+                                    "bypass": "AzureServices",
+                                    "defaultAction": "Deny",
+                                    "ipRules": []
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

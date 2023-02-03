@@ -1,0 +1,47 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        },
+        "effect": {
+            "type": "string",
+            "defaultValue": "Deny"
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "denyDatabricksPip": "/providers/Microsoft.Authorization/policyDefinitions/0e7849de-b939-4c50-ab48-fc6b0f5eeba2"
+         },
+        "policyAssignmentNames": {
+            "denyDatabricksPip": "Deny-DataB-Pip",
+            "description": "Azure Databricks Workspaces should have public network access disabled. Disabling public network access improves security by ensuring that the resource isn't exposed on the public internet. You can limit exposure of your resources by creating private endpoints instead.",
+            "displayName": "Azure Databricks Workspaces should disable public network access"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2019-09-01",
+            "name": "[variables('policyAssignmentNames').denyDatabricksPip]",
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').denyDatabricksPip]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "effect": {
+                        "value": "[parameters('effect')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

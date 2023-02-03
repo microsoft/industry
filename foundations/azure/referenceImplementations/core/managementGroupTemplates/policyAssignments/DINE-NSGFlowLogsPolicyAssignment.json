@@ -1,0 +1,116 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "maxLength": 10,
+            "metadata": {
+                "description": "Provide a prefix (max 10 characters, unique at tenant-scope) for the Management Group hierarchy and other resources created as part of Afo."
+            }
+        },
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        },
+        "storageId": {
+            "type": "string"
+        },
+        "workspaceResourceId": {
+            "type": "string"
+        },
+        "nsgRegion": {
+            "type": "string"
+        },
+        "workspaceRegion": {
+            "type": "string"
+        },
+        "workspaceId": {
+            "type": "string"
+        },
+        "networkWatcherName": {
+            "type": "string"
+        },
+        "networkWatcherRg": {
+            "type": "string",
+            "defaultValue": "NetworkWatcherRg"
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "deployNsgFlowLogs": "/providers/Microsoft.Authorization/policyDefinitions/5e1cd26a-5090-4fdb-9d6a-84a90335e22d"
+        },
+        "policyAssignmentNames": {
+            "deployNsgFlowLogs": "Dine-Nsg-FlowLogs",
+            "description": "Deploys NSG flow logs and traffic analytics to Log Analytics with a specfied retention period for a single Azure region. To use across additional regions, assign the policy per region.",
+            "displayName": "Enforce NSG Flows are enabled to Storage and Log Analytics workspace"
+        },
+        "roleDefinition": "b24988ac-6180-42a0-ab88-20f7382dd24c",
+        "roleAssignmentNames": {
+            "deployNsgFlowLogs": "[guid(concat(parameters('toplevelManagementGroupPrefix'), deployment().name, variables('policyAssignmentNames').deployNsgFlowLogs))]"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2019-09-01",
+            "name": "[variables('policyAssignmentNames').deployNsgFlowLogs]",
+            "location": "[deployment().location]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').deployNsgFlowLogs]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "storageId": {
+                        "value": "[parameters('storageId')]"
+                    },
+                    "workspaceResourceId": {
+                        "value": "[parameters('workspaceResourceId')]"
+                    },
+                    "nsgRegion": {
+                        "value": "[parameters('nsgRegion')]"
+                    },
+                    "workspaceRegion": {
+                        "value": "[parameters('workspaceRegion')]"
+                    },
+                    "workspaceId": {
+                        "value": "[reference(parameters('workspaceId'), '2020-08-01').customerId]"
+                    },
+                    "networkWatcherName": {
+                        "value": "[parameters('networkWatcherName')]"
+                    },
+                    "networkWatcherRg": {
+                        "value": "[parameters('networkWatcherRg')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2019-04-01-preview",
+            "name": "[variables('roleAssignmentNames').deployNsgFlowLogs]",
+            "dependsOn": [
+                "[variables('policyAssignmentNames').deployNsgFlowLogs]"
+            ],
+            "properties": {
+                "principalType": "ServicePrincipal",
+                "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', variables('roleDefinition'))]",
+                "principalId": "[toLower(reference(concat('/providers/Microsoft.Authorization/policyAssignments/', variables('policyAssignmentNames').deployNsgFlowLogs), '2019-09-01', 'Full' ).identity.principalId)]"
+            }
+        }        
+    ],
+    "outputs": {
+        "principalId": {
+            "type": "string",
+            "value": "[reference(concat('/providers/Microsoft.Authorization/policyAssignments/', variables('policyAssignmentNames').deployNsgFlowLogs), '2019-09-01', 'Full').identity.principalId]"
+        }
+    }
+}

@@ -1,8 +1,8 @@
 # Unified Customer Profile
 
-The unified customer profile sceanrio in Microsoft Cloud for Financial Services provides financial institutions with a 360-degree perspective of their customers to enable a more engaged interaction and higher customer satisfaction. The unified profile dashboard can be used across multiple business lines to provide accurate, consistent and cohesive information that can be used to provide a personalized experience, reveal important opportunities and prevent potential loss or churn.
+The unified customer profile scenario in Microsoft Cloud for Financial Services provides financial institutions with a 360-degree perspective of their customers to enable a more engaged interaction and higher customer satisfaction. The unified profile dashboard can be used across multiple business lines to provide accurate, consistent and cohesive information that can be used to provide a personalized experience, reveal important opportunities and prevent potential loss or churn.
 
-Key capabilitie sof the unified customer profile app include:
+Key capabilities of the unified customer profile app include:
 
 * **Customer Summary**: Provides an holistic overview of the customer including their personal details, demographics. life moments, income, financial holdings, credit & debit cards and preferred channel of communication.
 * **Relationships and Groupings**: The app provides information about groups that the customer is part of. Groups can be created and associated based on financial strengths per household or other factors. Relationships between contacts can also be captured and created.
@@ -28,7 +28,7 @@ Specifically for the unified customer profile scenario, you need:
 To deploy the unified customer profile solution you first need to create a Power Platform environment. Next, you need to follow a few steps to deploy the financial services specific solution.
 For the deployment, please [follow the steps described here (Step 1, Step 2, Step 3)](https://docs.microsoft.com/en-us/dynamics365/industry/financial-services/deploy#step-1-prepare-environment) and deploy the unified customer profile solution.
 
-The solution can be optionally deployed with sample data. The sample data can only be added when deplyoing the solution through the solution center. There is no capability to remove the sample data. This needs to be done in the application.
+The solution can be optionally deployed with sample data. The sample data can only be added when deploying the solution through the solution center. There is no capability to remove the sample data. This needs to be done in the application.
 
 ## Access of unified customer profile solution
 
@@ -67,7 +67,7 @@ The connections tab provides a summarized view of relationships to other custome
 The financial holdings tab provides more detailed insights about the financial holdings shown in the summary tab. Following information can be viewed in this section:
 
 * *Financial holdings*: Financial holdings name, category, type, value, instruments, alerts for savings or loans nearing the maturity date
-* *Currency treatment*: Detailed fianncial holdings overview in the original currency and teh default currency
+* *Currency treatment*: Detailed financial holdings overview in the original currency and teh default currency
 
 ## Planning guidelines for unified customer profile
 
@@ -87,7 +87,7 @@ This section provides prescriptive guidance with design considerations and recom
 ### Design recommendations
 
 * Ensure user/group mapping for the requisite licenses are done before deploying the solutions to Power Platform.
-* Ensure appropriate RBAC is assigned to the Security group for the dedicated Environment for Fianncial Services in Power Platform, ideally as part of the Environment creation process.
+* Ensure appropriate RBAC is assigned to the Security group for the dedicated Environment for Financial Services in Power Platform, ideally as part of the Environment creation process.
 * If privileged access to application registration in Azure AD cannot be granted for the group/users who will deploy and operate the D365 solution and unified customer profile scenario, a Global Administrator must assist with the deployment.
 
 ## Deployment

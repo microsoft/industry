@@ -1,0 +1,538 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2021-06-01",
+            "name": "Deny-Paas-Without-CMK",
+            "properties": {
+                "metadata": {
+                "version": "1.0.0",
+                "category": "Encryption"
+                },
+                "displayName": "Prevent usage of Azure PaaS services without customer-managed keys",
+                "description": "This policy initiative is a group of policies that ensures Azure PaaS services are using customer-managed keys",
+                "policyDefinitionGroups": [
+                    {
+                        "name": "Encryption",
+                        "category": "Data Protection",
+                        "displayName": "Ensure PaaS services are using CMK",
+                        "description": "Policies to prevent usage of Azure PaaS services without customer-managed keys"
+                    }
+                ],
+                "parameters": {
+                    "azureSqlEffect": {
+                        "type": "string"
+                    },
+                    "aciEffect": {
+                        "type": "string"
+                    },
+                    "videoAnalyzerEffect": {
+                        "type": "string"
+                    },
+                    "azMonClusterEffect": {
+                        "type": "string"
+                    },
+                    "cosmosDbEffect": {
+                        "type": "string"
+                    },
+                    "laIseEffect": {
+                        "type": "string"
+                    },
+                    "iotHubEffect": {
+                        "type": "string"
+                    },
+                    "asrEffect": {
+                        "type": "string"
+                    },
+                    "iotHubDeviceEffect": {
+                        "type": "string"
+                    },
+                    "adfEffect": {
+                        "type": "string"
+                    },
+                    "botEffect": {
+                        "type": "string"
+                    },
+                    "aaEffect": {
+                        "type": "string"
+                    },
+                    "containerRegistriesEffect": {
+                        "type": "string"
+                    },
+                    "hdInsightsEffect": {
+                        "type": "string"
+                    },
+                    "loadTestingEffect": {
+                        "type": "string"
+                    },
+                    "cognitiveServicesEffect": {
+                        "type": "string"
+                    },
+                    "osDataDiskEffect": {
+                        "type": "string"
+                    },
+                    "cognitiveSearchEffect": {
+                        "type": "string"
+                    },
+                    "tableStorageEffect": {
+                        "type": "string"
+                    },
+                    "aksDisksEffect": {
+                        "type": "string"
+                    },
+                    "dataExplorerEffect": {
+                        "type": "string"
+                    },
+                    "dataBoxEffect": {
+                        "type": "string"
+                    },
+                    "streamAnEffect": {
+                        "type": "string"
+                    },
+                    "mediaEffect": {
+                        "type": "string"
+                    },
+                    "logSearchEffect": {
+                        "type": "string"
+                    },
+                    "appConfEffect": {
+                        "type": "string"
+                    },
+                    "hpcCacheEffect": {
+                        "type": "string"
+                    },
+                    "batchEffect": {
+                        "type": "string"
+                    },
+                    "sqlMiEffect": {
+                        "type": "string"
+                    },
+                    "storageScopeEffect": {
+                        "type": "string"
+                    },
+                    "mlwsEffect": {
+                        "type": "string"
+                    },
+                    "managedDiskEffect": {
+                        "type": "string"
+                    },
+                    "queueStorageEffect": {
+                        "type": "string"
+                    },
+                    "synapseWsEffect": {
+                        "type": "string"
+                    }
+                },
+                "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/0a370ff3-6cab-4e85-8995-295fd854c5b8",
+                        "policyDefinitionReferenceId": "DENY-Azure-Sql-Server-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('azureSqlEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/0aa61e00-0a01-4a3c-9945-e93cffedf0e6",
+                        "policyDefinitionReferenceId": "DENY-ACI-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aciEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/165a4137-c3ed-4fd0-a17f-1c8a80266580",
+                        "policyDefinitionReferenceId": "DENY-Video-Analyzer-Without-CMK","groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('videoAnalyzerEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/1f68a601-6e6d-4e42-babf-3f643a047ea2",
+                        "policyDefinitionReferenceId": "DENY-Azure-Monitor-Cluster-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('azMonClusterEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/1f905d99-2ab7-462c-a6b0-f709acca6c8f",
+                        "policyDefinitionReferenceId": "DENY-Cosmos-DB-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cosmosDbEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/1fafeaf6-7927-4059-a50a-8eb2a7a6f2b5",
+                        "policyDefinitionReferenceId": "DENY-LA-ISE-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('laIseEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/2d7e144b-159c-44fc-95c1-ac3dbf5e6e54",
+                        "policyDefinitionReferenceId": "DENY-IoT-Hub-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('iotHubeffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/2e94d99a-8a36-4563-bc77-810d8893b671",
+                        "policyDefinitionReferenceId": "DENY-ASR-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('asrEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/47031206-ce96-41f8-861b-6a915f3de284",
+                        "policyDefinitionReferenceId": "DENY-IoT-Hub-Device-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('iotHubDeviceEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/4ec52d6d-beb7-40c4-9a9e-fe753254690e",
+                        "policyDefinitionReferenceId": "DENY-ADF-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('adfEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/4ec52d6d-beb7-40c4-9a9e-fe753254690e",
+                        "policyDefinitionReferenceId": "DENY-Bot-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('botEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/56a5ee18-2ae6-4810-86f7-18e39ce5629b",
+                        "policyDefinitionReferenceId": "DENY-Aa-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aaEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/5b9159ae-1701-4a6f-9a7a-aa9c8ddd0580",
+                        "policyDefinitionReferenceId": "DENY-Container-Registries-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('containerRegistriesEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/64d314f6-6062-4780-a861-c23e8951bee5",
+                        "policyDefinitionReferenceId": "DENY-HDi-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('hdInsightseffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/65c4f833-1f2e-426c-8780-f6d7593bed7a",
+                        "policyDefinitionReferenceId": "DENY-LT-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('loadTestingEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/67121cc7-ff39-4ab8-b7e3-95b84dab487d",
+                        "policyDefinitionReferenceId": "DENY-Cognitive-Services-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveServicesEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/702dd420-7fcc-42c5-afe8-4026edd20fe0",
+                        "policyDefinitionReferenceId": "DENY-OsDisk-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('osDataDiskEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/76a56461-9dc0-40f0-82f5-2453283afa2f",
+                        "policyDefinitionReferenceId": "DENY-Cognitive-Search-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveSearchEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/7c322315-e26d-4174-a99e-f49d351b4688",
+                        "policyDefinitionReferenceId": "DENY-Table-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('tableStorageEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/7d7be79c-23ba-4033-84dd-45e2a5ccdd67",
+                        "policyDefinitionReferenceId": "DENY-AKS-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksDisksEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/81e74cea-30fd-40d5-802f-d72103c2aaaa",
+                        "policyDefinitionReferenceId": "DENY-DataExplorer-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('dataExplorerEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/86efb160-8de7-451d-bc08-5d475b0aadae",
+                        "policyDefinitionReferenceId": "DENY-DataBox-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('dataBoxEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/87ba29ef-1ab3-4d82-b763-87fcd4f531f7",
+                        "policyDefinitionReferenceId": "DENY-StreamAn-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('streamAnEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/9285c3de-d5fd-4225-86d4-027894b0c442",
+                        "policyDefinitionReferenceId": "DENY-Media-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('mediaEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/94c1f94d-33b0-4062-bd04-1cdc3e7eece2",
+                        "policyDefinitionReferenceId": "DENY-LogSearch-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('logSearchEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/967a4b4b-2da9-43c1-b7d0-f98d0d74d0b1",
+                        "policyDefinitionReferenceId": "DENY-AppConf-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('appConfEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/970f84d8-71b6-4091-9979-ace7e3fb6dbb",
+                        "policyDefinitionReferenceId": "DENY-HPCcache-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('hpcCacheEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/99e9ccd8-3db9-4592-b0d1-14b1715a4d8a",
+                        "policyDefinitionReferenceId": "DENY-Batch-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('batchEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ac01ad65-10e5-46df-bdd9-6b0cad13e1d2",
+                        "policyDefinitionReferenceId": "DENY-SQLMi-Without-CMK",
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('sqlMiEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b5ec538c-daa0-4006-8596-35468b9148e8",
+                        "policyDefinitionReferenceId": "DENY-StorageScope-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('storageScopeEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ba769a63-b8cc-4b2d-abf6-ac33c7204be8",
+                        "policyDefinitionReferenceId": "DENY-MLWS-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('mlWsEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ca91455f-eace-4f96-be59-e6e2c35b4816",
+                        "policyDefinitionReferenceId": "DENY-MangedDisk-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('managedDiskEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/f0e5abd0-2554-4736-b7c0-4ffef23475ef",
+                        "policyDefinitionReferenceId": "DENY-QueueStorage-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('queueStorageEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/f7d52b2d-e161-4dfa-a82b-55e564167385",
+                        "policyDefinitionReferenceId": "DENY-SynapseWs-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('synapseWsEffect')]"
+                            }
+                        }
+                    }                                                                                                                                                                         
+                ]
+            }
+        }
+    ]
+}
