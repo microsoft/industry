@@ -4,7 +4,6 @@ The FSI Landing Zones on Microsoft Azure provides a proven, authoritative, and s
 
 This article provides an up-to-date view of every Azure Policy and security control capability that is provided in the reference implementation, and explains the intent, user experiences, and also the required steps for an application teams within the landing zones to mitigate through self-service.scale
 
-
 ## Table of contents
 
 * [Autonomy with Governance](#autonomy-with-governance)
@@ -147,6 +146,3 @@ Deploy the FSI Landing Zones on Microsoft Azure reference implementation. Explor
 | Reference Implementation | Description | Deploy | Documentation
 |:----------------------|:------------|--------|--------------|
 | FSI Landing Zones | FSI Landing Zones foundation that provides a full, rich, compliant architecture with scale-out pattern for secure-by default regions and landing zones, with a robust and customizable service enablement framework to accelerate adoption of Azure service and enables digital transformation |[![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/fsilz) | [User Guide](./referenceImplementation/readme.md)
-
-
-[def]: #next-steps
