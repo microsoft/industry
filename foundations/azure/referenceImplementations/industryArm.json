@@ -295,7 +295,7 @@
                 "Yes",
                 "No"
             ],
-            "metedata": {
+            "metadata": {
                 "description": "If 'Yes' is selected, policy will be assigned to enforce Defender for Endpoint"
             }
         },
