@@ -107,14 +107,14 @@ Q. What is the difference between a landing zone and a subscription?
 
 A. The subscription is the scale-unit, management boundary, and isolation boundary. The landing zone is a *definition* when everything that must be **true** in order for workload deployments to commence into the subscription, is provided by the platform team, such as shared networking capabilities, identity and access management, governance, and security.
 
-Q. What is the difference between FSI Landing Zones on Microsoft Azure and Azure Landing Zone?
-
-A. FSI Landing Zones is specifically developed and curated for organizations within the financial services industry, meaning much more prescriptive and authoritative where security, compliance, and governance at scale is non-negotiable in such regulated industry. It provides a new level of autonomy by strictly leveraging deterministic guardrails such as *deny*, *deployIfNotExists*, and *denyDelete*. It has been developed and validated exclusively with our largest FSI customers over several years, and provides a proven and tested reference implementation that meets the FSI organizations where they are, and where they want to go. Lastly, it's tightly integrated with **AzOps** for operational excellence for CI/CD deployments to Azure, and the **Service Framework Enablement** to expedite the adoption of Azure services while meeting the compliance and governance requirements.
-
 Q. Can we start with a single subscription, and later add a new subscription?
 
 A. Trust us - you do not want to start with a single subscription. In the scenario where you combine both *platform* resources and *application* resources in a single subscription, and then later adds a new subscription, you are up for a tedious exercise to move or/and redeploy resources which will cause interruption. Further, it violates known best practices and design principles for overall landing zones. Lastly, there's no additional cost associated with the subscriptions themselves, hence it will not cost more for the subscriptions, just that the resource composition and distribution is better aligned for scale.
 
-## Next steps
+## Next Steps
 
-Placeholder
+Deploy the FSI Landing Zones on Microsoft Azure reference implementation. Explore the user guide and the deployment experience by following the links below:
+
+| Reference Implementation | Description | Deploy | Documentation
+|:----------------------|:------------|--------|--------------|
+| FSI Landing Zones | FSI Landing Zones foundation that provides a full, rich, compliant architecture with scale-out pattern for secure-by default regions and landing zones, with a robust and customizable service enablement framework to accelerate adoption of Azure service and enables digital transformation |[![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/fsilz) | [User Guide](./referenceImplementation/readme.md)
