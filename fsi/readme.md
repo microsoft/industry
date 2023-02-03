@@ -20,9 +20,6 @@ This article provides a reference architecture with prescriptive guidance and re
   * [Service Enablement Framework for FSI industry scenarios](#letter-c)
   * [Operational Excellence for regulated industries](#letter-d)
   * [Compliant workload accelerators for FSI](#letter-e)
-* [Solutions](#solutions)
-  * [Payment Gateway](#placeholder)
-  * [Banking Desktop solution](#placeholder)
 * [Next Steps](#next-steps)
 
 ## FSI Landing Zones on Microsoft Azure
@@ -61,8 +58,10 @@ This section focuses on how organizations in the financial services industry can
 
 A gallery of ready-to-use artifacts that can be consumed as-is and deployed by application teams into the landing zones created by FSI Landing Zones on Microsoft Azure, where they will comply with the security and governance requirements, and will be able to focus on the business requirements and the application code.
 
-## Solutions
+## Next steps
 
-Placeholders
+Deploy the FSI Landing Zones on Microsoft Azure reference implementation. Explore the user guide and the deployment experience by following the links below:
 
-### Payment Gateway
+| Reference Implementation | Description | Deploy | Documentation
+|:----------------------|:------------|--------|--------------|
+| FSI Landing Zones | FSI Landing Zones foundation that provides a full, rich, compliant architecture with scale-out pattern for secure-by default regions and landing zones, with a robust and customizable service enablement framework to accelerate adoption of Azure service and enables digital transformation |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/fsilz) | [User Guide](./referenceImplementation/readme.md)
