@@ -16,9 +16,9 @@ This article provides a reference architecture with prescriptive guidance and re
 * [FSI Landing Zones on Microsoft Azure](#fsi-landing-zones-on-microsoft-azure)
 * [Overview](#overview)
   * [Architecture and design](#letter-a)
-  * [Security, Governance, and Compliance by-default for FSI industry scenarios](#letter-b)
-  * [Service Enablement Framework for FSI industry scenarios](#letter-c)
-  * [Operational Excellence for regulated industries](#letter-d)
+  * [Compliant and Secure by-default FSI Landing Zones](#letter-b)
+  * [Service Enablement Framework for FSI Landing Zones](#letter-c)
+  * [Operational Excellence for FSI Landing Zones](#letter-d)
   * [Compliant workload accelerators for FSI](#letter-e)
 * [Next Steps](#next-steps)
 
@@ -42,7 +42,7 @@ The following sections will provide more in-depth guidance and description for t
 
 The architecture and design is authoritative, proven, prescriptive, with security and governance being front and center - but not at the expense of autonomy and developer freedom. It does not leave any room for interpretation, as its been validated with our largest and most complex customers in the financial services industry. Yet, it provides a flexible starting point for the less complex, and smaller customers, and can scale alongside the organization, business requirements, use cases, and the Azure platform itself due to the design principles and patterns that are employed alongside with the alignment with the overall Azure platform roadmap.
 
-<a id="letter-b"></a>![The letter B](./docs/b.png) [Security, Governance, and Compliance by-default for FSI Landing Zones](./docs/securityGovernanceAndCompliance.md)
+<a id="letter-b"></a>![The letter B](./docs/b.png) [Compliant and Secure by-default FSI Landing Zones](./docs/securityGovernanceAndCompliance.md)
 
 This section focuses on core Azure platform primitives in the realm of governance and security. Customers in regulated industries such as FSI must define and enforce required controls in order to meet compliance and security requirements while empowering application teams with sufficient freedom to innovate and deploy Azure services in a safe and secure manner. To ensure the right balance for the central platform and the application teams, FSI Landing Zones will rely on Azure Policy and Microsoft Defender for Cloud to provide a prescriptive, autonomous, preventive, and proactive continuous compliant experience, that scales alongside withe the FSI's adoption of the Azure platform.
 
