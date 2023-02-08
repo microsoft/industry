@@ -1,0 +1,230 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "defaultValue": "FSIDemo"
+        }
+    },
+    "variables": {
+        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
+        // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
+        "policies": {
+            "policyDefinitions": [
+                {
+                    "properties": {
+    "displayName": "Private endpoint connections on Azure SQL Database should be enabled",
+    "mode": "Indexed",
+    "description": "Private endpoint connections enforce secure communication by enabling private connectivity to Azure SQL Database.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "SQL"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "Audit",
+          "Deny",
+          "Disabled"
+        ],
+        "defaultValue": "Audit"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Sql/servers"
+          },
+          {
+            "count": {
+              "field": "Microsoft.Sql/servers/privateEndpointConnections[*]",
+              "where": {
+                "field": "Microsoft.Sql/servers/privateEndpointConnections[*].privateLinkServiceConnectionState.status",
+                "equals": "Approved"
+              }
+            },
+            "less": 1
+          }
+        ]
+      },
+      "then": {
+        "effect": "[[parameters('effect')]"
+      }
+    }
+  },
+                    "name": "Deny-Sql-Db-Public-Endpoint"
+                }
+            ]
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
+            "apiVersion": "2019-09-01",
+            "copy": {
+                "name": "policyDefinitionCopy",
+                "count": "[length(variables('policies').policyDefinitions)]"
+            },
+            "properties": {
+                "displayName": "[variables('policies').policyDefinitions[copyIndex()].properties.displayName]",
+                "description": "[variables('policies').policyDefinitions[copyIndex()].properties.description]",
+                "mode": "[variables('policies').policyDefinitions[copyIndex()].properties.mode]",
+                "policyType": "Custom",
+                "parameters": "[variables('policies').policyDefinitions[copyIndex()].properties.parameters]",
+                "policyRule": "[variables('policies').policyDefinitions[copyIndex()].properties.policyRule]",
+                "metadata": "[variables('policies').policyDefinitions[copyIndex()].properties.metadata]"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2021-06-01",
+            "name": "Compliant-Sql",
+            "dependsOn": [
+                "policyDefinitionCopy"
+            ],
+            "properties": {
+                "metadata": {
+                    "version": "1.0.0",
+                    "category": "SQL"
+                },
+                "displayName": "Enforce secure-by-default SQL for Financial Services Industry",
+                "description": "This policy initiative is a group of policies that ensures SQL is compliant per FSI Landing Zones",
+                "policyDefinitionGroups": [
+                    {
+                        "name": "Encryption",
+                        "category": "Data Protection",
+                        "displayName": "Ensure compliance for purge protection, soft delete, and key rotation",
+                        "description": "Policy to ensure compliance for purge protection, soft delete, and key rotation"
+                    },
+                    {
+                        "name": "Network",
+                        "category": "Network Security",
+                        "displayName": "Ensure SQL is not accessible over the public internet",
+                        "description": "Policy to ensure SQL is not accessible over the public internet"
+                    },
+                    {
+                        "name": "Identity",
+                        "category": "Identity Management",
+                        "displayName": "Ensure usage of centralized identity and auhtorization system for SQL",
+                        "description": "Policy to ensure SQL is not using local authorization"
+                    },
+                    {
+                        "name": "Logging",
+                        "category": "Logging and Threat Detection",
+                        "displayName": "Ensure SQL is logging all events to Log Analytics",
+                        "description": "Policy to ensure SQL is logging all events to Log Analytics workspace"
+                    }
+                ],
+                "parameters": {
+                    "sqlServerCmk": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "sqlDbPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "sqlServerDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "sqlServerLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "modifySqlPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Modify"
+                    },
+                    "sqlDbTls": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    }
+                },
+                "policyDefinitions": [                   
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/6134c3db-786f-471e-87bc-8f479dc890f6",
+                        "policyDefinitionReferenceId": "Dine-Sql-Adv-Data",
+                        "groupNames": [
+                            "Encryption",
+                            "Logging"
+                        ],
+                        "parameters": {}
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/32e6bbec-16b6-44c2-be37-c5b672d103cf",
+                        "policyDefinitionReferenceId": "Deny-Sql-Db-Tls",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('sqlDbTls')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/0a370ff3-6cab-4e85-8995-295fd854c5b8",
+                        "policyDefinitionReferenceId": "Deny-SQL-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('sqlServerCmk')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/1b8ca024-1d5c-4dec-8995-b1a932b41780",
+                        "policyDefinitionReferenceId": "Deny-SQL-Db-PublicNetworkAccess",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('sqlDbPublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/25da7dfb-0666-4a15-a8f5-402127efd8bb",
+                        "policyDefinitionReferenceId": "Dine-Sql-Diagnostics",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('sqlServerDiagnostics')]"
+                            },
+                            "logAnalyticsWorkspaceId": {
+                                "value": "[[parameters('sqlServerLogAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/28b0b1e5-17ba-4963-a7a4-5a1ab4400a0b",
+                        "policyDefinitionReferenceId": "Modify-Sql-PublicNetworkAccess",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('modifySqlPublicNetworkAccess')]"
+                            }
+                        }
+                    }          
+                ]
+            }
+        }
+    ]
+}

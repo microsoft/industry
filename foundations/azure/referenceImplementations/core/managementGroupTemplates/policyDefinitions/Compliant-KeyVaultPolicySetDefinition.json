@@ -1,0 +1,409 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "defaultValue": "FSIDemo"
+        }
+    },
+    "variables": {
+        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
+        // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
+        "policies": {
+            "policyDefinitions": [
+                {
+                    "properties": {
+                        "displayName": "Service Bus Premium namespaces must use a customer-managed key for encryption",
+                        "mode": "Indexed",
+                        "description": "Azure Service Bus supports the option of encrypting data at rest with either Microsoft-managed keys (default) or customer-managed keys. Choosing to encrypt data using customer-managed keys enables you to assign, rotate, disable, and revoke access to the keys that Service Bus will use to encrypt data in your namespace. Note that Service Bus only supports encryption with customer-managed keys for premium namespaces.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Service Bus"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Deny",
+                                    "Audit",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Deny"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.ServiceBus/namespaces"
+                                    },
+                                    {
+                                        "field": "Microsoft.ServiceBus/namespaces/sku.tier",
+                                        "equals": "Premium"
+                                    },
+                                    {
+                                        "not": {
+                                            "field": "Microsoft.ServiceBus/namespaces/encryption.keySource",
+                                            "equals": "Microsoft.Keyvault"
+                                        }
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-ServiceBus-CMK"
+                }
+            ]
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
+            "apiVersion": "2019-09-01",
+            "copy": {
+                "name": "policyDefinitionCopy",
+                "count": "[length(variables('policies').policyDefinitions)]"
+            },
+            "properties": {
+                "displayName": "[variables('policies').policyDefinitions[copyIndex()].properties.displayName]",
+                "description": "[variables('policies').policyDefinitions[copyIndex()].properties.description]",
+                "mode": "[variables('policies').policyDefinitions[copyIndex()].properties.mode]",
+                "policyType": "Custom",
+                "parameters": "[variables('policies').policyDefinitions[copyIndex()].properties.parameters]",
+                "policyRule": "[variables('policies').policyDefinitions[copyIndex()].properties.policyRule]",
+                "metadata": "[variables('policies').policyDefinitions[copyIndex()].properties.metadata]"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2021-06-01",
+            "name": "Compliant-Key-Vault",
+            "dependsOn": [
+                "policyDefinitionCopy"
+            ],
+            "properties": {
+                "metadata": {
+                    "version": "1.0.0",
+                    "category": "Key Vault"
+                },
+                "displayName": "Enforce secure-by-default Key Vault for Financial Services Industry",
+                "description": "This policy initiative is a group of policies that ensures Key Vault is compliant per FSI Landing Zones",
+                "policyDefinitionGroups": [
+                    {
+                        "name": "Encryption",
+                        "category": "Data Protection",
+                        "displayName": "Ensure compliance for purge protection, soft delete, and key rotation",
+                        "description": "Policy to ensure compliance for purge protection, soft delete, and key rotation"
+                    },
+                    {
+                        "name": "Network",
+                        "category": "Network Security",
+                        "displayName": "Ensure Key Vault is not accessible over the public internet",
+                        "description": "Policy to ensure Key Vault is not accessible over the public internet"
+                    },
+                    {
+                        "name": "Identity",
+                        "category": "Identity Management",
+                        "displayName": "Ensure usage of centralized identity and auhtorization system for Key Vault",
+                        "description": "Policy to ensure Key Vault is not using local authorization"
+                    },
+                    {
+                        "name": "Logging",
+                        "category": "Logging and Threat Detection",
+                        "displayName": "Ensure Key Vault is logging all events to Log Analytics",
+                        "description": "Policy to ensure Key Vault is logging all events to Log Analytics workspace"
+                    }
+                ],
+                "parameters": {
+                    "keyVaultPurgeProtection": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultHmsPurgeProtection": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultArmRbac": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultManagedHsmDisablePublicNetwork": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultSoftDelete": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultDisablePublicNetwork": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultManagedHsmDisablePublicNetworkModify": {
+                        "type": "string",
+                        "defaultValue": "Modify"
+                    },
+                    "keyVaultDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "keyVaultLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "keyVaultPrivateDnsZoneId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "keyVaultPrivateDnsZone": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "keyVaultCertificatesPeriod": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultCertValidPeriod": {
+                        "type": "integer",
+                        "defaultValue": 12
+                    },
+                    "keyVaultKeysExpiration": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultHmsKeysExpiration": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultSecretExpiration": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keysValidPeriod": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keysValidityInDays": {
+                        "type": "integer",
+                        "defaultValue": 90
+                    },
+                    "secretsValidPeriod": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "secretsValidityInDays": {
+                        "type": "integer",
+                        "defaultValue": 90
+                    }
+                },
+                "policyDefinitions": [                   
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/342e8053-e12e-4c44-be01-c3c2f318400f",
+                        "policyDefinitionReferenceId": "Deny-KV-Secrets-ValidityDays",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('secretsValidPeriod')]"
+                            },
+                            "maximumValidityInDays": {
+                                "value": "[[parameters('secretsValidityInDays')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/49a22571-d204-4c91-a7b6-09b1a586fbc9",
+                        "policyDefinitionReferenceId": "Deny-KV-Keys-Expire",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keysValidPeriod')]"
+                            },
+                            "maximumValidityInDays": {
+                                "value": "[[parameters('keysValidityInDays')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/98728c90-32c7-4049-8429-847dc0f4fe37",
+                        "policyDefinitionReferenceId": "Deny-KV-Secret-Expire",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultSecretExpiration')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/1d478a74-21ba-4b9f-9d8f-8e6fced0eec5",
+                        "policyDefinitionReferenceId": "Deny-KV-Hms-Key-Expire",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultHmsKeysExpiration')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/152b15f7-8e1f-4c1f-ab71-8c010ba5dbc0",
+                        "policyDefinitionReferenceId": "Deny-KV-Key-Expire",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultKeysExpiration')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/0a075868-4c26-42ef-914c-5bc007359560",
+                        "policyDefinitionReferenceId": "Deny-KV-Cert-Period",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultCertificatesPeriod')]"
+                            },
+                            "maximumValidityInMonths": {
+                                "value": "[[parameters('keyVaultCertValidPeriod')]"
+                            }
+                        }
+                    },                     
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c39ba22d-4428-4149-b981-70acb31fc383",
+                        "policyDefinitionReferenceId": "Deny-KV-Hms-PurgeProtection",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultHmsPurgeProtection')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ac673a9a-f77d-4846-b2d8-a57f8e1c01d4",
+                        "policyDefinitionReferenceId": "DINE-KV-Dns",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultPrivateDnsZone')]"
+                            },
+                            "privateDnsZoneId": {
+                                "value": "[[parameters('keyVaultPrivateDnsZoneId')]"
+                            }
+                        }
+                    },                                      
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/951af2fa-529b-416e-ab6e-066fd85ac459",
+                        "policyDefinitionReferenceId": "DINE-KV-Logs",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultDiagnostics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('keyVaultLogAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },                    
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/84d327c3-164a-4685-b453-900478614456",
+                        "policyDefinitionReferenceId": "Modify-KV-PublicNetworkAccess",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultManagedHsmDisablePublicNetworkModify')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/405c5871-3e91-4644-8a63-58e19d68ff5b",
+                        "policyDefinitionReferenceId": "Deny-KV-PublicNetwork",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultDisablePublicNetwork')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/1e66c121-a66a-4b1f-9b83-0fd99bf0fc2d",
+                        "policyDefinitionReferenceId": "Deny-KV-Hms-SoftDelete",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultSoftDelete')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/19ea9d63-adee-4431-a95e-1913c6c1c75f",
+                        "policyDefinitionReferenceId": "Deny-KV-Hms-PublicNetwork",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultManagedHsmDisablePublicNetwork')]"
+                            }
+                        }
+                    },                    
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/12d4fa5e-1f9f-4c21-97a9-b99b3c6611b5",
+                        "policyDefinitionReferenceId": "Deny-KV-without-ArmRbac",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultArmRbac')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/0b60c0b2-2dc2-4e1c-b5c9-abbed971de53",
+                        "policyDefinitionReferenceId": "Deny-KV-without-PurgeProtection",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultPurgeProtection')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
