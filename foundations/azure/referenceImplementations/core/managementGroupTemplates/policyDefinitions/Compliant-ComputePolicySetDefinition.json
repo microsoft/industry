@@ -1,0 +1,206 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "defaultValue": "FSIDemo"
+        }
+    },
+    "variables": {
+        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
+        // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
+        "policies": {
+            "policyDefinitions": [
+                {
+                    "properties": {
+                        "displayName": "Managed disks should disable public network access",
+                        "mode": "Indexed",
+                        "description": "Disabling public network access improves security by ensuring that a managed disk isn't exposed on the public internet. Creating private endpoints can limit exposure of managed disks. Learn more at: https://aka.ms/disksprivatelinksdoc.",
+                        "metadata": {
+                        "version": "2.0.0",
+                        "category": "Compute"
+                        },
+                        "parameters": {
+                        "effect": {
+                            "type": "String",
+                            "metadata": {
+                            "displayName": "Effect",
+                            "description": "The effect determines what happens when the policy rule is evaluated to match"
+                            },
+                            "allowedValues": [
+                            "Audit",
+                            "Deny",
+                            "Disabled"
+                            ],
+                            "defaultValue": "Audit"
+                        }
+                        },
+                        "policyRule": {
+                        "if": {
+                            "allOf": [
+                            {
+                                "field": "type",
+                                "equals": "Microsoft.Compute/disks"
+                            },
+                            {
+                                "field": "Microsoft.Compute/disks/networkAccessPolicy",
+                                "notIn": [
+                                "DenyAll",
+                                "AllowPrivate"
+                                ]
+                            },
+                            {
+                                "field": "Microsoft.Compute/disks/publicNetworkAccess",
+                                "notEquals": "Disabled"
+                            }
+                            ]
+                        },
+                        "then": {
+                            "effect": "[[parameters('effect')]"
+                        }
+                        }
+                    },
+                    "name": "Deny-Disk-Public-Endpoint"
+                }
+            ]
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
+            "apiVersion": "2019-09-01",
+            "copy": {
+                "name": "policyDefinitionCopy",
+                "count": "[length(variables('policies').policyDefinitions)]"
+            },
+            "properties": {
+                "displayName": "[variables('policies').policyDefinitions[copyIndex()].properties.displayName]",
+                "description": "[variables('policies').policyDefinitions[copyIndex()].properties.description]",
+                "mode": "[variables('policies').policyDefinitions[copyIndex()].properties.mode]",
+                "policyType": "Custom",
+                "parameters": "[variables('policies').policyDefinitions[copyIndex()].properties.parameters]",
+                "policyRule": "[variables('policies').policyDefinitions[copyIndex()].properties.policyRule]",
+                "metadata": "[variables('policies').policyDefinitions[copyIndex()].properties.metadata]"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2021-06-01",
+            "name": "Compliant-Compute",
+            "dependsOn": [
+                "policyDefinitionCopy"
+            ],
+            "properties": {
+                "metadata": {
+                    "version": "1.0.0",
+                    "category": "Compute"
+                },
+                "displayName": "Enforce secure-by-default Compute for Financial Services Industry",
+                "description": "This policy initiative is a group of policies that ensures Compute is compliant per FSI Landing Zones",
+                "policyDefinitionGroups": [
+                    {
+                        "name": "Encryption",
+                        "category": "Data Protection",
+                        "displayName": "Ensure compliance for purge protection, soft delete, and key rotation",
+                        "description": "Policy to ensure compliance for purge protection, soft delete, and key rotation"
+                    },
+                    {
+                        "name": "Network",
+                        "category": "Network Security",
+                        "displayName": "Ensure Compute is not accessible over the public internet",
+                        "description": "Policy to ensure Compute is not accessible over the public internet"
+                    },
+                    {
+                        "name": "Identity",
+                        "category": "Identity Management",
+                        "displayName": "Ensure usage of centralized identity and auhtorization system for Compute",
+                        "description": "Policy to ensure Compute is not using local authorization"
+                    },
+                    {
+                        "name": "Logging",
+                        "category": "Logging and Threat Detection",
+                        "displayName": "Ensure Compute is logging all events to Log Analytics",
+                        "description": "Policy to ensure Compute is logging all events to Log Analytics workspace"
+                    }
+                ],
+                "parameters": {
+                    "diskPrivateDns": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "diskPrivateDnsZoneId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "diskDoubleEncryption": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "managedDiskPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "osAndDataDiskCmk": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    }
+                },
+                "policyDefinitions": [                   
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/702dd420-7fcc-42c5-afe8-4026edd20fe0",
+                        "policyDefinitionReferenceId": "Deny-OsAndDataDisk-Cmk",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('osAndDataDiskCmk')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
+                        "policyDefinitionReferenceId": "Deny-ManagedDisk-Public-Network-Access",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('managedDiskPublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ca91455f-eace-4f96-be59-e6e2c35b4816",
+                        "policyDefinitionReferenceId": "Deny-Disk-Double-Encryption",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('diskDoubleEncryption')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/bc05b96c-0b36-4ca9-82f0-5c53f96ce05a",
+                        "policyDefinitionReferenceId": "Dine-Disk-Private-DNS",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('diskPrivateDns')]"
+                            },
+                            "privateDnsZoneId": {
+                                "value": "[[parameters('diskPrivateDnsZoneId')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

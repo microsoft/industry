@@ -12,56 +12,6 @@
         // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
         "policies": {
             "policyDefinitions": [
-                {
-                    "properties": {
-                        "displayName": "Service Bus Premium namespaces must use a customer-managed key for encryption",
-                        "mode": "Indexed",
-                        "description": "Azure Service Bus supports the option of encrypting data at rest with either Microsoft-managed keys (default) or customer-managed keys. Choosing to encrypt data using customer-managed keys enables you to assign, rotate, disable, and revoke access to the keys that Service Bus will use to encrypt data in your namespace. Note that Service Bus only supports encryption with customer-managed keys for premium namespaces.",
-                        "metadata": {
-                            "version": "1.0.0",
-                            "category": "Service Bus"
-                        },
-                        "parameters": {
-                            "effect": {
-                                "type": "String",
-                                "metadata": {
-                                    "displayName": "Effect",
-                                    "description": "Enable or disable the execution of the policy"
-                                },
-                                "allowedValues": [
-                                    "Deny",
-                                    "Audit",
-                                    "Disabled"
-                                ],
-                                "defaultValue": "Deny"
-                            }
-                        },
-                        "policyRule": {
-                            "if": {
-                                "allOf": [
-                                    {
-                                        "field": "type",
-                                        "equals": "Microsoft.ServiceBus/namespaces"
-                                    },
-                                    {
-                                        "field": "Microsoft.ServiceBus/namespaces/sku.tier",
-                                        "equals": "Premium"
-                                    },
-                                    {
-                                        "not": {
-                                            "field": "Microsoft.ServiceBus/namespaces/encryption.keySource",
-                                            "equals": "Microsoft.Keyvault"
-                                        }
-                                    }
-                                ]
-                            },
-                            "then": {
-                                "effect": "[[parameters('effect')]"
-                            }
-                        }
-                    },
-                    "name": "Deny-ServiceBus-CMK"
-                }
             ]
         }
     },
@@ -204,9 +154,220 @@
                     "secretsValidityInDays": {
                         "type": "integer",
                         "defaultValue": 90
+                    },
+                    "keyVaultFw": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultCertKeyTypes": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultEllipticCurve": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultModifyFw": {
+                        "type": "string",
+                        "defaultValue": "Modify"
+                    },
+                    "keyVaultCryptographicType": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keysExpiration": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keysExpirationInDays": {
+                        "type": "integer",
+                        "defaultValue": 90
+                    },
+                    "keysActive": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keysActiveInDays": {
+                        "type": "integer",
+                        "defaultValue": 90
+                    },
+                    "keysCurveNames": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "secretsExpiration": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "secretsMoreInDays": {
+                        "type": "integer",
+                        "defaultValue": 10
+                    },
+                    "secretsMaxValiditity": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "secretsMaxValidityInDays": {
+                        "type": "integer",
+                        "defaultValue": 90
+                    },
+                    "secretsActiveInDays": {
+                        "type": "integer",
+                        "defaultValue": 90
+                    },
+                    "secretsActive": {
+                        "type": "string",
+                        "defaultValue": "Deny"
                     }
                 },
                 "policyDefinitions": [                   
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e8d99835-8a06-45ae-a8e0-87a91941ccfe",
+                        "policyDefinitionReferenceId": "Deny-KV-Secret-AvticeDays",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('secretsActive')]"
+                            },
+                            "maximumValidityInDays": {
+                                "value": "[[parameters('secretsActiveInDays')]"
+                            }
+                        }
+                    },                                                            
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b0eb591a-5e70-4534-a8bf-04b9c489584a",
+                        "policyDefinitionReferenceId": "Deny-KV-Secret-MaxDays",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('secretsMaxValiditity')]"
+                            },
+                            "minimumDaysBeforeExpiration": {
+                                "value": "[[parameters('secretsMaxValidityInDays')]"
+                            }
+                        }
+                    },                                        
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b0eb591a-5e70-4534-a8bf-04b9c489584a",
+                        "policyDefinitionReferenceId": "Deny-KV-Secret-MinDays",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('secretsExpiration')]"
+                            },
+                            "minimumDaysBeforeExpiration": {
+                                "value": "[[parameters('secretsMoreInDays')]"
+                            }
+                        }
+                    },                                        
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ff25f3c8-b739-4538-9d07-3d6d25cfb255",
+                        "policyDefinitionReferenceId": "Deny-KV-Curve-Names",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keysCurveNames')]"
+                            }
+                        }
+                    },                                        
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c26e4b24-cf98-4c67-b48b-5a25c4c69eb9",
+                        "policyDefinitionReferenceId": "Deny-KV-Key-Active",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keysActive')]"
+                            },
+                            "maximumValidityInDays": {
+                                "value": "[[parameters('keysActiveInDays')]"
+                            }
+                        }
+                    },                                        
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/5ff38825-c5d8-47c5-b70e-069a21955146",
+                        "policyDefinitionReferenceId": "Deny-KV-Key-Expiration",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keysExpiration')]"
+                            },
+                            "minimumDaysBeforeExpiration": {
+                                "value": "[[parameters('keysExpirationInDays')]"
+                            }
+                        }
+                    },                                        
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/75c4f823-d65c-4f29-a733-01d0077fdbcb",
+                        "policyDefinitionReferenceId": "Deny-KV-Cryptographic-Type",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultCryptographicType')]"
+                            }
+                        }
+                    },                                        
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ac673a9a-f77d-4846-b2d8-a57f8e1c01dc",
+                        "policyDefinitionReferenceId": "Modify-KV-Fw",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultModifyFw')]"
+                            }
+                        }
+                    },                                        
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/bd78111f-4953-4367-9fd5-7e08808b54bf",
+                        "policyDefinitionReferenceId": "Deny-KV-Elliptic-Curve",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultEllipticCurve')]"
+                            }
+                        }
+                    },                    
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/1151cede-290b-4ba0-8b38-0ad145ac888f",
+                        "policyDefinitionReferenceId": "Deny-KV-Key-Types",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultCertKeyTypes')]"
+                            }
+                        }
+                    },                    
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/55615ac9-af46-4a59-874e-391cc3dfb490",
+                        "policyDefinitionReferenceId": "Deny-KV-Fws",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultFw')]"
+                            }
+                        }
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/342e8053-e12e-4c44-be01-c3c2f318400f",
                         "policyDefinitionReferenceId": "Deny-KV-Secrets-ValidityDays",

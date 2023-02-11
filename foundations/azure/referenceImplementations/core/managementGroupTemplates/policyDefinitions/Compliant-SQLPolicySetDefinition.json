@@ -14,53 +14,105 @@
             "policyDefinitions": [
                 {
                     "properties": {
-    "displayName": "Private endpoint connections on Azure SQL Database should be enabled",
-    "mode": "Indexed",
-    "description": "Private endpoint connections enforce secure communication by enabling private connectivity to Azure SQL Database.",
-    "metadata": {
-      "version": "1.0.0",
-      "category": "SQL"
-    },
-    "parameters": {
-      "effect": {
-        "type": "String",
-        "metadata": {
-          "displayName": "Effect",
-          "description": "Enable or disable the execution of the policy"
-        },
-        "allowedValues": [
-          "Audit",
-          "Deny",
-          "Disabled"
-        ],
-        "defaultValue": "Audit"
-      }
-    },
-    "policyRule": {
-      "if": {
-        "allOf": [
-          {
-            "field": "type",
-            "equals": "Microsoft.Sql/servers"
-          },
-          {
-            "count": {
-              "field": "Microsoft.Sql/servers/privateEndpointConnections[*]",
-              "where": {
-                "field": "Microsoft.Sql/servers/privateEndpointConnections[*].privateLinkServiceConnectionState.status",
-                "equals": "Approved"
-              }
-            },
-            "less": 1
-          }
-        ]
-      },
-      "then": {
-        "effect": "[[parameters('effect')]"
-      }
-    }
-  },
+                        "displayName": "Private endpoint connections on Azure SQL Database should be enabled",
+                        "mode": "Indexed",
+                        "description": "Private endpoint connections enforce secure communication by enabling private connectivity to Azure SQL Database.",
+                        "metadata": {
+                        "version": "1.0.0",
+                        "category": "SQL"
+                        },
+                        "parameters": {
+                        "effect": {
+                            "type": "String",
+                            "metadata": {
+                            "displayName": "Effect",
+                            "description": "Enable or disable the execution of the policy"
+                            },
+                            "allowedValues": [
+                            "Audit",
+                            "Deny",
+                            "Disabled"
+                            ],
+                            "defaultValue": "Audit"
+                        }
+                        },
+                        "policyRule": {
+                        "if": {
+                            "allOf": [
+                            {
+                                "field": "type",
+                                "equals": "Microsoft.Sql/servers"
+                            },
+                            {
+                                "count": {
+                                "field": "Microsoft.Sql/servers/privateEndpointConnections[*]",
+                                "where": {
+                                    "field": "Microsoft.Sql/servers/privateEndpointConnections[*].privateLinkServiceConnectionState.status",
+                                    "equals": "Approved"
+                                }
+                                },
+                                "less": 1
+                            }
+                            ]
+                        },
+                        "then": {
+                            "effect": "[[parameters('effect')]"
+                        }
+                        }
+                    },
                     "name": "Deny-Sql-Db-Public-Endpoint"
+                },
+                {
+                    "properties": {
+                        "displayName": "SQL Managed Instance should have the minimal TLS version of 1.2",
+                        "mode": "Indexed",
+                        "description": "Setting minimal TLS version to 1.2 improves security by ensuring your SQL Managed Instance can only be accessed from clients using TLS 1.2. Using versions of TLS less than 1.2 is not recommended since they have well documented security vulnerabilities.",
+                        "metadata": {
+                        "version": "1.0.1",
+                        "category": "SQL"
+                        },
+                        "parameters": {
+                        "effect": {
+                            "type": "String",
+                            "metadata": {
+                            "displayName": "Effect",
+                            "description": "Enable or disable the execution of the policy"
+                            },
+                            "allowedValues": [
+                            "Audit",
+                            "Deny",
+                            "Disabled"
+                            ],
+                            "defaultValue": "Audit"
+                        }
+                        },
+                        "policyRule": {
+                        "if": {
+                            "allOf": [
+                            {
+                                "field": "type",
+                                "equals": "Microsoft.Sql/managedInstances"
+                            },
+                            {
+                                "anyOf": [
+                                {
+                                    "field": "Microsoft.Sql/managedInstances/minimalTlsVersion",
+                                    "exists": false
+                                },
+                                {
+                                    "field": "Microsoft.Sql/managedInstances/minimalTlsVersion",
+                                    "notEquals": "1.2"
+                                }
+                                ]
+                            }
+                            ]
+                        },
+                        "then": {
+                            "effect": "[[parameters('effect')]"
+                        }
+                        }
+                    },
+                    "name": "Deny-Sql-Managed-Tls-Version"
                 }
             ]
         }
@@ -96,20 +148,20 @@
                     "version": "1.0.0",
                     "category": "SQL"
                 },
-                "displayName": "Enforce secure-by-default SQL for Financial Services Industry",
-                "description": "This policy initiative is a group of policies that ensures SQL is compliant per FSI Landing Zones",
+                "displayName": "Enforce secure-by-default SQL and SQL Managed Instance for Financial Services Industry",
+                "description": "This policy initiative is a group of policies that ensures SQL and SQL Managed Instance is compliant per FSI Landing Zones",
                 "policyDefinitionGroups": [
                     {
                         "name": "Encryption",
                         "category": "Data Protection",
                         "displayName": "Ensure compliance for purge protection, soft delete, and key rotation",
-                        "description": "Policy to ensure compliance for purge protection, soft delete, and key rotation"
+                        "description": "Policy to ensure data protection for SQL and SQL Managed Instance"
                     },
                     {
                         "name": "Network",
                         "category": "Network Security",
-                        "displayName": "Ensure SQL is not accessible over the public internet",
-                        "description": "Policy to ensure SQL is not accessible over the public internet"
+                        "displayName": "Ensure SQL and SQL Managed Instance is not accessible over the public internet",
+                        "description": "Policy to ensure SQL and SQL Managed Instance is not accessible over the public internet"
                     },
                     {
                         "name": "Identity",
@@ -120,8 +172,8 @@
                     {
                         "name": "Logging",
                         "category": "Logging and Threat Detection",
-                        "displayName": "Ensure SQL is logging all events to Log Analytics",
-                        "description": "Policy to ensure SQL is logging all events to Log Analytics workspace"
+                        "displayName": "Ensure SQL and SQL Managed Instance is logging all events to Log Analytics",
+                        "description": "Policy to ensure SQL and SQL Managed Instance is logging all events to Log Analytics workspace"
                     }
                 ],
                 "parameters": {
@@ -148,9 +200,130 @@
                     "sqlDbTls": {
                         "type": "string",
                         "defaultValue": "Deny"
+                    },
+                    "sqlManagedAadOnly": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "sqlTde": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "sqlManagedPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "sqlManagedTlsVersion": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "sqlAadOnly": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "sqlManagedCmk": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "sqlManagedDefender": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
                     }
                 },
                 "policyDefinitions": [                   
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c5a62eb0-c65a-4220-8a4d-f70dd4ca95dd",
+                        "policyDefinitionReferenceId": "Dine-Sql-Managed-Defender",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('sqlManagedDefender')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ac01ad65-10e5-46df-bdd9-6b0cad13e1d2",
+                        "policyDefinitionReferenceId": "Deny-Sql-Managed-Cmk",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('sqlManagedCmk')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/abda6d70-9778-44e7-84a8-06713e6db027",
+                        "policyDefinitionReferenceId": "Deny-Sql-Aad-Only",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('sqlAadOnly')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[1].name)]",
+                        "policyDefinitionReferenceId": "Deny-Sql-Managed-Tls-Version",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('sqlManagedTlsVersion')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/9dfea752-dd46-4766-aed1-c355fa93fb91",
+                        "policyDefinitionReferenceId": "Deny-Sql-Managed-Public-Endpoint",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('sqlManagedPublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/86a912f6-9a06-4e26-b447-11b16ba8659f",
+                        "policyDefinitionReferenceId": "Dine-Sql-Tde",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('sqlTde')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/78215662-041e-49ed-a9dd-5385911b3a1f",
+                        "policyDefinitionReferenceId": "Deny-Sql-Managed-Aad-Only",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('sqlManagedAadOnly')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/36d49e87-48c4-4f2e-beed-ba4ed02b71f5",
+                        "policyDefinitionReferenceId": "Dine-Sql-Defender",
+                        "groupNames": [
+                            "Encryption",
+                            "Logging"
+                        ],
+                        "parameters": {}
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/6134c3db-786f-471e-87bc-8f479dc890f6",
                         "policyDefinitionReferenceId": "Dine-Sql-Adv-Data",

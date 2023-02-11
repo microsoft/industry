@@ -1,0 +1,193 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "defaultValue": "FSIDemo"
+        }
+    },
+    "variables": {
+        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
+        // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
+        "policies": {
+            "policyDefinitions": [
+                {
+                    "properties": {
+    "displayName": "[Preview]: Immutability must be enabled for backup vaults",
+    "policyType": "BuiltIn",
+    "mode": "Indexed",
+    "description": "This policy audits if the immutable vaults property is enabled for Backup vaults in the scope. This helps protect your backup data from being deleted before its intended expiry. Learn more at https://aka.ms/AB-ImmutableVaults.",
+    "metadata": {
+      "version": "1.0.0-preview",
+      "preview": true,
+      "category": "Backup"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy."
+        },
+        "allowedValues": [
+          "Audit",
+          "Deny",
+          "Disabled"
+        ],
+        "defaultValue": "Audit"
+      },
+      "checkLockedImmutabiltyOnly": {
+        "type": "Boolean",
+        "metadata": {
+          "displayName": "CheckLockedImmutabiltyOnly",
+          "description": "This parameter checks if Immutability is locked for Backup Vaults in scope. Selecting 'true' will mark only vaults with Immutability 'Locked' as compliant. Selecting 'false' will mark vaults that have Immutability either 'Enabled' or 'Locked' as compliant."
+        },
+        "allowedValues": [
+          true,
+          false
+        ],
+        "defaultValue": true
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.DataProtection/backupvaults"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.DataProtection/backupVaults/securitySettings.immutabilitySettings.State",
+                "notIn": [
+                  "Locked",
+                  "UnLocked"
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "value": "[[parameters('checkLockedImmutabiltyOnly')]",
+                    "equals": true
+                  },
+                  {
+                    "field": "Microsoft.DataProtection/backupVaults/securitySettings.immutabilitySettings.State",
+                    "notEquals": "Locked"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "[[parameters('effect')]"
+      }
+    }
+  },
+  "name": "Deny-Backup-Immutability"
+                }
+            ]
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
+            "apiVersion": "2019-09-01",
+            "copy": {
+                "name": "policyDefinitionCopy",
+                "count": "[length(variables('policies').policyDefinitions)]"
+            },
+            "properties": {
+                "displayName": "[variables('policies').policyDefinitions[copyIndex()].properties.displayName]",
+                "description": "[variables('policies').policyDefinitions[copyIndex()].properties.description]",
+                "mode": "[variables('policies').policyDefinitions[copyIndex()].properties.mode]",
+                "policyType": "Custom",
+                "parameters": "[variables('policies').policyDefinitions[copyIndex()].properties.parameters]",
+                "policyRule": "[variables('policies').policyDefinitions[copyIndex()].properties.policyRule]",
+                "metadata": "[variables('policies').policyDefinitions[copyIndex()].properties.metadata]"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2021-06-01",
+            "name": "Compliant-Backup",
+            "dependsOn": [
+                "policyDefinitionCopy"
+            ],
+            "properties": {
+                "metadata": {
+                    "version": "1.0.0",
+                    "category": "Backup"
+                },
+                "displayName": "Enforce secure-by-default Backup for Financial Services Industry",
+                "description": "This policy initiative is a group of policies that ensures Backup is compliant per FSI Landing Zones",
+                "policyDefinitionGroups": [
+                    {
+                        "name": "Encryption",
+                        "category": "Data Protection",
+                        "displayName": "Ensure compliance for data encryption, protection, and recovery for Backup",
+                        "description": "Policy to ensure data protection for Backup"
+                    },
+                    {
+                        "name": "Network",
+                        "category": "Network Security",
+                        "displayName": "Ensure Backup is not accessible over the public internet",
+                        "description": "Policy to ensure Backup not accessible over the public internet"
+                    },
+                    {
+                        "name": "Identity",
+                        "category": "Identity Management",
+                        "displayName": "Ensure usage of centralized identity and auhtorization system for Backup",
+                        "description": "Policy to ensure Backup is not using local authorization"
+                    },
+                    {
+                        "name": "Logging",
+                        "category": "Logging and Threat Detection",
+                        "displayName": "Ensure Backup is logging all events to Log Analytics",
+                        "description": "Policy to ensure Backup is logging all events to Log Analytics workspace"
+                    }
+                ],
+                "parameters": {
+                    "backupImmutability": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "backupCmk": {
+                      "type": "string",
+                      "defaultValue": "Deny"
+                    }
+                },
+                "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/2e94d99a-8a36-4563-bc77-810d8893b671",
+                        "policyDefinitionReferenceId": "Deny-Backup-Cmk",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('backupCmk')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
+                        "policyDefinitionReferenceId": "Deny-Backup-Immutability",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('backupImmutability')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
