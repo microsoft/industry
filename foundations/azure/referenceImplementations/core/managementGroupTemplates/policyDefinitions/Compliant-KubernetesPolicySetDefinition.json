@@ -1,0 +1,495 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "defaultValue": "FSIDemo"
+        }
+    },
+    "variables": {
+        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
+        // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
+        "policies": {
+            "policyDefinitions": [
+                {
+                    "properties": {
+                        "displayName": "Azure Kubernetes Clusters should enable Key Management Service (KMS)",
+                        "mode": "Indexed",
+                        "description": "Use Key Management Service (KMS) to encrypt secret data at rest in etcd for Kubernetes cluster security. Learn more at: https://aka.ms/aks/kmsetcdencryption.",
+                        "metadata": {
+                        "version": "1.0.0",
+                        "category": "Kubernetes"
+                        },
+                        "parameters": {
+                        "effect": {
+                            "type": "String",
+                            "metadata": {
+                            "displayName": "Effect",
+                            "description": "Enable or disable the execution of the policy",
+                            "portalReview": true
+                            },
+                            "allowedValues": [
+                            "Audit",
+                            "Deny",
+                            "Disabled"
+                            ],
+                            "defaultValue": "Audit"
+                        }
+                        },
+                        "policyRule": {
+                        "if": {
+                            "allOf": [
+                            {
+                                "field": "type",
+                                "equals": "Microsoft.ContainerService/managedClusters"
+                            },
+                            {
+                                "field": "identity.type",
+                                "notEquals": "SystemAssigned"
+                            },
+                            {
+                                "field": "Microsoft.ContainerService/managedClusters/securityProfile.azureKeyVaultKms.enabled",
+                                "notEquals": true
+                            }
+                            ]
+                        },
+                        "then": {
+                            "effect": "[[parameters('effect')]"
+                        }
+                        }
+                    },
+                    "name": "Deny-Aks-CSI"
+                },
+                {
+                    "properties": {
+                        "displayName": "Azure Kubernetes Clusters should use Azure CNI",
+                        "mode": "Indexed",
+                        "description": "Azure CNI is a prerequisite for some Azure Kubernetes Service features, including Azure network policies, Windows node pools and virtual nodes add-on. Learn more at: https://aka.ms/aks-azure-cni",
+                        "metadata": {
+                        "version": "1.0.1",
+                        "category": "Kubernetes"
+                        },
+                        "parameters": {
+                        "effect": {
+                            "type": "String",
+                            "metadata": {
+                            "displayName": "Effect",
+                            "description": "Enable or disable the execution of the policy",
+                            "portalReview": true
+                            },
+                            "allowedValues": [
+                            "Audit",
+                            "Deny",
+                            "Disabled"
+                            ],
+                            "defaultValue": "Audit"
+                        }
+                        },
+                        "policyRule": {
+                        "if": {
+                            "allOf": [
+                            {
+                                "field": "type",
+                                "equals": "Microsoft.ContainerService/managedClusters"
+                            },
+                            {
+                                "field": "Microsoft.ContainerService/managedClusters/networkProfile.networkPlugin",
+                                "notEquals": "azure"
+                            }
+                            ]
+                        },
+                        "then": {
+                            "effect": "[[parameters('effect')]"
+                        }
+                        }
+                    },
+                    "name": "Deny-Aks-Cni"
+                }
+            ]
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
+            "apiVersion": "2019-09-01",
+            "copy": {
+                "name": "policyDefinitionCopy",
+                "count": "[length(variables('policies').policyDefinitions)]"
+            },
+            "properties": {
+                "displayName": "[variables('policies').policyDefinitions[copyIndex()].properties.displayName]",
+                "description": "[variables('policies').policyDefinitions[copyIndex()].properties.description]",
+                "mode": "[variables('policies').policyDefinitions[copyIndex()].properties.mode]",
+                "policyType": "Custom",
+                "parameters": "[variables('policies').policyDefinitions[copyIndex()].properties.parameters]",
+                "policyRule": "[variables('policies').policyDefinitions[copyIndex()].properties.policyRule]",
+                "metadata": "[variables('policies').policyDefinitions[copyIndex()].properties.metadata]"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2021-06-01",
+            "name": "Compliant-Kubernetes",
+            "dependsOn": [
+                "policyDefinitionCopy"
+            ],
+            "properties": {
+                "metadata": {
+                    "version": "1.0.0",
+                    "category": "Kubernetes"
+                },
+                "displayName": "Enforce secure-by-default Kubernetes for Financial Services Industry",
+                "description": "This policy initiative is a group of policies that ensures Kubernetes is compliant per FSI Landing Zones",
+                "policyDefinitionGroups": [
+                    {
+                        "name": "Encryption",
+                        "category": "Data Protection",
+                        "displayName": "Ensure compliance for purge protection, soft delete, and key rotation",
+                        "description": "Policy to ensure compliance for purge protection, soft delete, and key rotation"
+                    },
+                    {
+                        "name": "Network",
+                        "category": "Network Security",
+                        "displayName": "Ensure Kubernetes is not accessible over the public internet",
+                        "description": "Policy to ensure Kubernetes is not accessible over the public internet"
+                    },
+                    {
+                        "name": "Identity",
+                        "category": "Identity Management",
+                        "displayName": "Ensure usage of centralized identity and auhtorization system for Kubernetes",
+                        "description": "Policy to ensure Kubernetes is not using local authorization"
+                    },
+                    {
+                        "name": "Logging",
+                        "category": "Logging and Threat Detection",
+                        "displayName": "Ensure Kubernetes is logging all events to Log Analytics",
+                        "description": "Policy to ensure Kubernetes is logging all events to Log Analytics workspace"
+                    },
+                    {
+                        "name": "Governance",
+                        "category": "Governance and Strategy",
+                        "displayName": "Ensure Kubernetes is integrated with Azure Resource Manager to be governed by Azure Policy",
+                        "description": "Policy to ensure Kubernetes is integrated with Azure Resource Manager to be governed by Azure Policy"
+                    }
+                ],
+                "parameters": {
+                    "aksKms": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aksCni": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aksLocalAuth": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aksPrivateCluster": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aksDefender": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "aksDefenderLogAnalyticsWorkspaceResourceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "aksOsAndDataDiskCmk": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aksPolicy": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "aksCommandInvoke": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "aksReadinessOrLivenessProbes": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aksPrivContainers": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aksPrivEscalation": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aksAllowedCapabilities": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aksTempDisk": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aksInternalLb": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aksHttps": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aksDefaultNamespace": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aksNakedPods": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aksShareHostProcessAndNamespace": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aksWindowsContainerAdministrator": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    }
+                },
+                "policyDefinitions": [                   
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/5485eac0-7e8f-4964-998b-a44f4f0c1e75",
+                        "policyDefinitionReferenceId": "Deny-Aks-Windows-Conatiner-Administrator",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksWindowsContainerAdministrator')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/47a1ee2f-2a2a-4576-bf2a-e0e36709c2b8",
+                        "policyDefinitionReferenceId": "Deny-Aks-Shared-Host-Process-Namespace",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksShareHostProcessAndNamespace')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/65280eef-c8b4-425e-9aec-af55e55bf581",
+                        "policyDefinitionReferenceId": "Deny-Aks-Naked-Pods",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksNakedPods')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/9f061a12-e40d-4183-a00e-171812443373",
+                        "policyDefinitionReferenceId": "Deny-Aks-Default-Namespace",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksDefaultNamespace')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/1a5b4dca-0b6f-4cf5-907c-56316bc1bf3d",
+                        "policyDefinitionReferenceId": "Deny-Aks-Https",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksHttps')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/3fc4dc25-5baf-40d8-9b05-7fe74c1bc64e",
+                        "policyDefinitionReferenceId": "Deny-Aks-Internal-Lb",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksInternalLb')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/41425d9f-d1a5-499a-9932-f8ed8453932c",
+                        "policyDefinitionReferenceId": "Deny-Aks-Temp-Disk-Encryption",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksTempDisk')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c26596ff-4d70-4e6a-9a30-c2506bd2f80c",
+                        "policyDefinitionReferenceId": "Deny-Aks-Allowed-Capabilities",
+                        "groupNames": [
+                            "Governance"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksAllowedCapabilities')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/1c6e92c9-99f0-4e55-9cf2-0c234dc48f99",
+                        "policyDefinitionReferenceId": "Deny-Aks-Priv-Escalation",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksPrivEscalation')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/95edb821-ddaf-4404-9732-666045e056b4",
+                        "policyDefinitionReferenceId": "Deny-Aks-Priv-Containers",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksPrivContainers')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b1a9997f-2883-4f12-bdff-2280f99b5915",
+                        "policyDefinitionReferenceId": "Deny-Aks-ReadinessOrLiveness-Probes",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksReadinessOrLivenessProbes')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/1b708b0a-3380-40e9-8b79-821f9fa224cc",
+                        "policyDefinitionReferenceId": "Dine-Aks-Command-Invoke",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksCommandInvoke')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/a8eff44f-8c92-45c3-a3fb-9880802d67a7",
+                        "policyDefinitionReferenceId": "Dine-Aks-Policy",
+                        "groupNames": [
+                            "Governance"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksPolicy')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/7d7be79c-23ba-4033-84dd-45e2a5ccdd67",
+                        "policyDefinitionReferenceId": "Deny-Aks-OsAnDataDisk-Cmk",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksOsAndDataDiskCmk')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/64def556-fbad-4622-930e-72d1d5589bf5",
+                        "policyDefinitionReferenceId": "Dine-Aks-Defender",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksDefender')]"
+                            },
+                            "logAnalyticsWorkspaceResourceId": {
+                                "value": "[[parameters('aksDefenderLogAnalyticsWorkspaceResourceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/040732e8-d947-40b8-95d6-854c95024bf8",
+                        "policyDefinitionReferenceId": "Deny-Aks-Private-Cluster",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksPrivateCluster')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/993c2fcd-2b29-49d2-9eb0-df2c3a730c32",
+                        "policyDefinitionReferenceId": "Deny-Aks-Local-Auth",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksLocalAuth')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
+                        "policyDefinitionReferenceId": "Deny-Aks-Kms",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksKms')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[1].name)]",
+                        "policyDefinitionReferenceId": "Deny-Aks-Cni",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aksCni')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
