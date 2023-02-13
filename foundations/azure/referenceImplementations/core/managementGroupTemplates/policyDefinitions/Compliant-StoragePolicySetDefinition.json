@@ -244,14 +244,6 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "storageAccountsPrivateEndpoint": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
-                    },
-                    "storageAccountsPrivateEndpointSubnetId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
                     "storageAccountsModifyDisablePublicNetworkAccess": {
                         "type": "string",
                         "defaultValue": "Modify"                        
@@ -279,9 +271,25 @@
                     "storageAccountsTls": {
                         "type": "string",
                         "defaultValue": "Deny"
+                    },
+                    "storageAccountsEncryptionCmk": {
+                        "type": "string",
+                        "defaultValue": "Deny"
                     }
                 },
                 "policyDefinitions": [
+                    {   
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b5ec538c-daa0-4006-8596-35468b9148e8",
+                        "policyDefinitionReferenceId": "Deny-Storage-Encryption-Cmk",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('storageAccountsEncryptionCmk')]"
+                            }
+                        }
+                    },
                     {   
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/fe83a0eb-a853-422d-aac2-1bffd182c5d0",
                         "policyDefinitionReferenceId": "Deny-Storage-Tls",
@@ -366,22 +374,7 @@
                                 "value": "[[parameters('storageAccountsModifyDisablePublicNetworkAccess')]"
                             }
                         }
-                    },
-                    {   
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/9f766f00-8d11-464e-80e1-4091d7874074",
-                        "policyDefinitionReferenceId": "Dine-Storage-Account-PrivateEndpoint",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('storageAccountsPrivateEndpoint')]"
-                            },
-                            "privateEndpointSubnetId": {
-                                "value": "[[parameters('storageAccountsPrivateEndpointSubnetId')]"
-                            }
-                        }
-                    },                    
+                    },                
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/92a89a79-6c52-4a7e-a03f-61306fc49312",
                         "policyDefinitionReferenceId": "Deny-Storage-Cross-Tenant",

@@ -1,0 +1,211 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "defaultValue": "FSIDemo"
+        }
+    },
+    "variables": {
+        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
+        "policies": {
+            "policyDefinitions": [
+                {
+                    "properties": {
+                        "displayName": "Enforce SSL connection should be enabled for MySQL database servers",
+                        "mode": "Indexed",
+                        "description": "Azure Database for MySQL supports connecting your Azure Database for MySQL server to client applications using Secure Sockets Layer (SSL). Enforcing SSL connections between your database server and your client applications helps protect against 'man in the middle' attacks by encrypting the data stream between the server and your application. This configuration enforces that SSL is always enabled for accessing your database server.",
+                        "metadata": {
+                        "version": "1.0.1",
+                        "category": "MySQL"
+                        },
+                        "parameters": {
+                        "effect": {
+                            "type": "String",
+                            "metadata": {
+                            "displayName": "Effect",
+                            "description": "Enable or disable the execution of the policy"
+                            },
+                            "allowedValues": [
+                            "Audit",
+                            "Deny",
+                            "Disabled"
+                            ],
+                            "defaultValue": "Audit"
+                        }
+                        },
+                        "policyRule": {
+                        "if": {
+                            "allOf": [
+                            {
+                                "field": "type",
+                                "equals": "Microsoft.DBforMySQL/servers"
+                            },
+                            {
+                                "field": "Microsoft.DBforMySQL/servers/sslEnforcement",
+                                "exists": "true"
+                            },
+                            {
+                                "field": "Microsoft.DBforMySQL/servers/sslEnforcement",
+                                "notEquals": "Enabled"
+                            }
+                            ]
+                        },
+                        "then": {
+                            "effect": "[[parameters('effect')]"
+                        }
+                        }
+                    },
+                    "name": "Deny-MySql-SSL-Connection"
+                }
+            ]
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
+            "apiVersion": "2019-09-01",
+            "copy": {
+                "name": "policyDefinitionCopy",
+                "count": "[length(variables('policies').policyDefinitions)]"
+            },
+            "properties": {
+                "displayName": "[variables('policies').policyDefinitions[copyIndex()].properties.displayName]",
+                "description": "[variables('policies').policyDefinitions[copyIndex()].properties.description]",
+                "mode": "[variables('policies').policyDefinitions[copyIndex()].properties.mode]",
+                "policyType": "Custom",
+                "parameters": "[variables('policies').policyDefinitions[copyIndex()].properties.parameters]",
+                "policyRule": "[variables('policies').policyDefinitions[copyIndex()].properties.policyRule]",
+                "metadata": "[variables('policies').policyDefinitions[copyIndex()].properties.metadata]"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2021-06-01",
+            "name": "Compliant-MySQL",
+            "dependsOn": [
+                "policyDefinitionCopy"
+            ],
+            "properties": {
+                "metadata": {
+                    "version": "1.0.0",
+                    "category": "MySql"
+                },
+                "displayName": "Enforce secure-by-default MySQQL for Financial Services Industry",
+                "description": "This policy initiative is a group of policies that ensures MySQL is compliant per FSI Landing Zones",
+                "policyDefinitionGroups": [
+                    {
+                        "name": "Encryption",
+                        "category": "Data Protection",
+                        "displayName": "Ensure MySQL is using secure encryption",
+                        "description": "Policy to ensure MySQL is using secure encryption"
+                    },
+                    {
+                        "name": "Network",
+                        "category": "Network Security",
+                        "displayName": "Ensure MySQL is not accessible over the public internet",
+                        "description": "Policy to ensure MySQL is not accessible over the public internet"
+                    },
+                    {
+                        "name": "Identity",
+                        "category": "Identity Management",
+                        "displayName": "Ensure usage of centralized identity and auhtorization system for MySQL",
+                        "description": "Policy to ensure MySQL is not using local authorization"
+                    },
+                    {
+                        "name": "Logging",
+                        "category": "Logging and Threat Detection",
+                        "displayName": "Ensure MySQL is logging all events to Log Analytics",
+                        "description": "Policy to ensure MySQL is logging all events to Log Analytics workspace"
+                    }
+                ],
+                "parameters": {
+                    "mySqlInfraEncryption": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "mySqlAdvThreatProtection": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "mySqlFlexiblePublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "mySqlPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "mySqlSsl": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    }
+                },
+                "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
+                        "policyDefinitionReferenceId": "Deny-MySql-Ssl",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('mySqlSsl')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/d9844e8a-1437-4aeb-a32c-0c992f056095",
+                        "policyDefinitionReferenceId": "Deny-MySql-Public-Network-Access",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('mySqlPublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c9299215-ae47-4f50-9c54-8a392f68a052",
+                        "policyDefinitionReferenceId": "Deny-MySql-Flex-Public-Network-Access",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('mySqlFlexiblePublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/80ed5239-4122-41ed-b54a-6f1fa7552816",
+                        "policyDefinitionReferenceId": "Dine-MySql-Adv-Threat-Protection",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('mySqlAdvThreatProtection')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/3a58212a-c829-4f13-9872-6371df2fd0b4",
+                        "policyDefinitionReferenceId": "Deny-MySql-Infra-Encryption",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('mySqlInfraEncryption')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -96,7 +96,7 @@
                     "category": "Service Bus"
                 },
                 "displayName": "Enforce secure-by-default Service Bus for Financial Services Industry",
-                "description": "This policy initiative is a group of policies that ensures App Service is compliant per FSI Landing Zones",
+                "description": "This policy initiative is a group of policies that ensures Service Bus is compliant per FSI Landing Zones",
                 "policyDefinitionGroups": [
                     {
                         "name": "Encryption",
@@ -163,12 +163,28 @@
                     "profileName": {
                         "type": "string",
                         "defaultValue": "setByPolicy"
+                    },
+                    "serviceBusAuthzRules": {
+                        "type": "string",
+                        "defaultValue": "Deny"
                     }
                 },
                 "policyDefinitions": [
                     {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/a1817ec0-a368-432a-8057-8371e17ac6ee",
+                        "policyDefinitionReferenceId": "Deny-Sb-Authz-Rules",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('serviceBusAuthzRules')]"
+                            }
+                        }
+                    },
+                    {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/04d53d87-841c-4f23-8a5b-21564380b55e",
-                        "policyDefinitionReferenceId": "ServiceBusDeployDiagnosticLogDeployLogAnalytics",
+                        "policyDefinitionReferenceId": "Dine-Sb-Diagnostics",
                         "groupNames": [
                             "Logging"
                         ],
