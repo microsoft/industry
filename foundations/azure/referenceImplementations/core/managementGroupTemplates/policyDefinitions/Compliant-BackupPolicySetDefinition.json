@@ -14,80 +14,153 @@
             "policyDefinitions": [
                 {
                     "properties": {
-    "displayName": "[Preview]: Immutability must be enabled for backup vaults",
-    "policyType": "BuiltIn",
-    "mode": "Indexed",
-    "description": "This policy audits if the immutable vaults property is enabled for Backup vaults in the scope. This helps protect your backup data from being deleted before its intended expiry. Learn more at https://aka.ms/AB-ImmutableVaults.",
-    "metadata": {
-      "version": "1.0.0-preview",
-      "preview": true,
-      "category": "Backup"
-    },
-    "parameters": {
-      "effect": {
-        "type": "String",
-        "metadata": {
-          "displayName": "Effect",
-          "description": "Enable or disable the execution of the policy."
-        },
-        "allowedValues": [
-          "Audit",
-          "Deny",
-          "Disabled"
-        ],
-        "defaultValue": "Audit"
-      },
-      "checkLockedImmutabiltyOnly": {
-        "type": "Boolean",
-        "metadata": {
-          "displayName": "CheckLockedImmutabiltyOnly",
-          "description": "This parameter checks if Immutability is locked for Backup Vaults in scope. Selecting 'true' will mark only vaults with Immutability 'Locked' as compliant. Selecting 'false' will mark vaults that have Immutability either 'Enabled' or 'Locked' as compliant."
-        },
-        "allowedValues": [
-          true,
-          false
-        ],
-        "defaultValue": true
-      }
-    },
-    "policyRule": {
-      "if": {
-        "allOf": [
-          {
-            "field": "type",
-            "equals": "Microsoft.DataProtection/backupvaults"
-          },
-          {
-            "anyOf": [
-              {
-                "field": "Microsoft.DataProtection/backupVaults/securitySettings.immutabilitySettings.State",
-                "notIn": [
-                  "Locked",
-                  "UnLocked"
-                ]
-              },
-              {
-                "allOf": [
-                  {
-                    "value": "[[parameters('checkLockedImmutabiltyOnly')]",
-                    "equals": true
-                  },
-                  {
-                    "field": "Microsoft.DataProtection/backupVaults/securitySettings.immutabilitySettings.State",
-                    "notEquals": "Locked"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      "then": {
-        "effect": "[[parameters('effect')]"
-      }
-    }
-  },
-  "name": "Deny-Backup-Immutability"
+                      "displayName": "Immutability must be enabled for backup vaults",
+                      "mode": "Indexed",
+                      "description": "This policy audits if the immutable vaults property is enabled for Backup vaults in the scope. This helps protect your backup data from being deleted before its intended expiry. Learn more at https://aka.ms/AB-ImmutableVaults.",
+                      "metadata": {
+                        "version": "1.0.0",
+                        "category": "Backup"
+                      },
+                      "parameters": {
+                        "effect": {
+                          "type": "String",
+                          "metadata": {
+                            "displayName": "Effect",
+                            "description": "Enable or disable the execution of the policy."
+                          },
+                          "allowedValues": [
+                            "Audit",
+                            "Deny",
+                            "Disabled"
+                          ],
+                          "defaultValue": "Audit"
+                        },
+                        "checkLockedImmutabiltyOnly": {
+                          "type": "Boolean",
+                          "metadata": {
+                            "displayName": "CheckLockedImmutabiltyOnly",
+                            "description": "This parameter checks if Immutability is locked for Backup Vaults in scope. Selecting 'true' will mark only vaults with Immutability 'Locked' as compliant. Selecting 'false' will mark vaults that have Immutability either 'Enabled' or 'Locked' as compliant."
+                          },
+                          "allowedValues": [
+                            true,
+                            false
+                          ],
+                          "defaultValue": true
+                        }
+                      },
+                      "policyRule": {
+                        "if": {
+                          "allOf": [
+                            {
+                              "field": "type",
+                              "equals": "Microsoft.DataProtection/backupvaults"
+                            },
+                            {
+                              "anyOf": [
+                                {
+                                  "field": "Microsoft.DataProtection/backupVaults/securitySettings.immutabilitySettings.State",
+                                  "notIn": [
+                                    "Locked",
+                                    "UnLocked"
+                                  ]
+                                },
+                                {
+                                  "allOf": [
+                                    {
+                                      "value": "[[parameters('checkLockedImmutabiltyOnly')]",
+                                      "equals": true
+                                    },
+                                    {
+                                      "field": "Microsoft.DataProtection/backupVaults/securitySettings.immutabilitySettings.State",
+                                      "notEquals": "Locked"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "then": {
+                          "effect": "[[parameters('effect')]"
+                        }
+                      }
+                    },
+                    "name": "Deny-Backup-Immutability"
+                },
+                {
+                    "properties": {
+                      "displayName": "Soft delete should be enabled for Backup Vaults",
+                      "mode": "Indexed",
+                      "description": "This policy audits if soft delete is enabled for Backup vaults in the scope. Soft delete can help you recover your data after it has been deleted. Learn more at https://aka.ms/AB-SoftDelete",
+                      "metadata": {
+                        "version": "1.0.0",
+                        "category": "Backup"
+                      },
+                      "parameters": {
+                        "effect": {
+                          "type": "String",
+                          "metadata": {
+                            "displayName": "Effect",
+                            "description": "Enable or disable the execution of the policy."
+                          },
+                          "allowedValues": [
+                            "Audit",
+                            "Deny",
+                            "Disabled"
+                          ],
+                          "defaultValue": "Audit"
+                        },
+                        "checkAlwaysOnSoftDeleteOnly": {
+                          "type": "Boolean",
+                          "metadata": {
+                            "displayName": "CheckAlwaysOnSoftDeleteOnly",
+                            "description": "This parameter checks if Soft Delete is 'Locked' for Backup Vaults in scope. Selecting 'true' will mark only vaults with Soft Delete 'AlwaysOn' as compliant. Selecting 'false' will mark vaults that have Soft Delete either 'On' or 'AlwaysOn' as compliant."
+                          },
+                          "allowedValues": [
+                            true,
+                            false
+                          ],
+                          "defaultValue": true
+                        }
+                      },
+                      "policyRule": {
+                        "if": {
+                          "allOf": [
+                            {
+                              "field": "type",
+                              "equals": "Microsoft.DataProtection/backupvaults"
+                            },
+                            {
+                              "anyOf": [
+                                {
+                                  "field": "Microsoft.DataProtection/backupVaults/securitySettings.softDeleteSettings.state",
+                                  "notIn": [
+                                    "On",
+                                    "AlwaysOn"
+                                  ]
+                                },
+                                {
+                                  "allOf": [
+                                    {
+                                      "value": "[[parameters('checkAlwaysOnSoftDeleteOnly')]",
+                                      "equals": true
+                                    },
+                                    {
+                                      "field": "Microsoft.DataProtection/backupVaults/securitySettings.softDeleteSettings.state",
+                                      "notEquals": "AlwaysOn"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "then": {
+                          "effect": "[[parameters('effect')]"
+                        }
+                      }
+                    },
+                    "name": "Deny-Backup-Soft-Delete"
                 }
             ]
         }
@@ -159,9 +232,94 @@
                     "backupCmk": {
                       "type": "string",
                       "defaultValue": "Deny"
+                    },
+                    "vmBackup": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "backupSoftDelete": {
+                      "type": "string",
+                      "defaultValue": "Deny"
+                    },
+                    "asrPublicNetworkAccess": {
+                      "type": "string",
+                      "defaultValue": "Deny"
+                    },
+                    "asrPrivateDns": {
+                      "type": "string",
+                      "defaultValue": "DeployIfNotExists"
+                    },
+                    "asrPrivateDnsZone-Backup": {
+                      "type": "string",
+                      "defaultValue": ""
+                    },
+                    "asrPrivateDnsZone-Blob": {
+                      "type": "string",
+                      "defaultValue": ""
+                    },
+                    "asrPrivateDnsZone-Queue": {
+                      "type": "string",
+                      "defaultValue": ""
                     }
                 },
                 "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/af783da1-4ad1-42be-800d-d19c70038820",
+                        "policyDefinitionReferenceId": "Dine-Asr-Private-Dns-Zone",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('asrPrivateDns')]"
+                            },
+                            "privateDnsZone-Backup": {
+                              "value": "[[parameters('asrPrivateDnsZone-Backup')]"
+                            },
+                            "privateDnsZone-Blob": {
+                              "value": "[[parameters('asrPrivateDnsZone-Blob')]"
+                            },
+                            "privateDnsZone-Queue": {
+                              "value": "[[parameters('asrPrivateDnsZone-Queue')]"
+                          }
+                      }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/9ebbbba3-4d65-4da9-bb67-b22cfaaff090",
+                        "policyDefinitionReferenceId": "Deny-Asr-Public-Network-Access",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('asrPublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[1].name)]",
+                        "policyDefinitionReferenceId": "Deny-Backup-Soft-Delete",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('backupSoftDelete')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/83644c87-93dd-49fe-bf9f-6aff8fd0834e",
+                        "policyDefinitionReferenceId": "Dine-Vm-Backup",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('vmBackup')]"
+                            }
+                        }
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/2e94d99a-8a36-4563-bc77-810d8893b671",
                         "policyDefinitionReferenceId": "Deny-Backup-Cmk",
