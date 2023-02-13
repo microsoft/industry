@@ -9,30 +9,29 @@
     },
     "variables": {
         "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
-        // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
         "policies": {
             "policyDefinitions": [
                 {
                     "properties": {
-                        "displayName": "Managed disks should disable public network access",
+                        "displayName": "Enforce SSL connection should be enabled for PostgreSQL database servers",
                         "mode": "Indexed",
-                        "description": "Disabling public network access improves security by ensuring that a managed disk isn't exposed on the public internet. Creating private endpoints can limit exposure of managed disks. Learn more at: https://aka.ms/disksprivatelinksdoc.",
+                        "description": "Azure Database for PostgreSQL supports connecting your Azure Database for PostgreSQL server to client applications using Secure Sockets Layer (SSL). Enforcing SSL connections between your database server and your client applications helps protect against 'man in the middle' attacks by encrypting the data stream between the server and your application. This configuration enforces that SSL is always enabled for accessing your database server.",
                         "metadata": {
-                        "version": "2.0.0",
-                        "category": "Compute"
+                        "version": "1.0.1",
+                        "category": "PostgreSQL"
                         },
                         "parameters": {
                         "effect": {
                             "type": "String",
                             "metadata": {
                             "displayName": "Effect",
-                            "description": "The effect determines what happens when the policy rule is evaluated to match"
+                            "description": "Enable or disable the execution of the policy"
                             },
                             "allowedValues": [
-                            "Audit",
-                            "Deny",
-                            "Disabled"
-                            ],
+                                "Deny",
+                                "Audit",
+                                "Disabled"
+                                ],
                             "defaultValue": "Audit"
                         }
                         },
@@ -41,18 +40,15 @@
                             "allOf": [
                             {
                                 "field": "type",
-                                "equals": "Microsoft.Compute/disks"
+                                "equals": "Microsoft.DBforPostgreSQL/servers"
                             },
                             {
-                                "field": "Microsoft.Compute/disks/networkAccessPolicy",
-                                "notIn": [
-                                "DenyAll",
-                                "AllowPrivate"
-                                ]
+                                "field": "Microsoft.DBforPostgreSQL/servers/sslEnforcement",
+                                "exists": "true"
                             },
                             {
-                                "field": "Microsoft.Compute/disks/publicNetworkAccess",
-                                "notEquals": "Disabled"
+                                "field": "Microsoft.DBforPostgreSQL/servers/sslEnforcement",
+                                "notEquals": "Enabled"
                             }
                             ]
                         },
@@ -61,7 +57,7 @@
                         }
                         }
                     },
-                    "name": "Deny-Disk-Public-Endpoint"
+                    "name": "Deny-PostgreSql-SSL-Connection"
                 }
             ]
         }
@@ -88,130 +84,108 @@
         {
             "type": "Microsoft.Authorization/policySetDefinitions",
             "apiVersion": "2021-06-01",
-            "name": "Compliant-Compute",
+            "name": "Compliant-PostgreSQL",
             "dependsOn": [
                 "policyDefinitionCopy"
             ],
             "properties": {
                 "metadata": {
                     "version": "1.0.0",
-                    "category": "Compute"
+                    "category": "PostgreSQL"
                 },
-                "displayName": "Enforce secure-by-default Compute for Financial Services Industry",
-                "description": "This policy initiative is a group of policies that ensures Compute is compliant per FSI Landing Zones",
+                "displayName": "Enforce secure-by-default MySQQL for Financial Services Industry",
+                "description": "This policy initiative is a group of policies that ensures PostgreSQL is compliant per FSI Landing Zones",
                 "policyDefinitionGroups": [
                     {
                         "name": "Encryption",
                         "category": "Data Protection",
-                        "displayName": "Ensure compliance for purge protection, soft delete, and key rotation",
-                        "description": "Policy to ensure compliance for purge protection, soft delete, and key rotation"
+                        "displayName": "Ensure PostgreSQL is using secure encryption",
+                        "description": "Policy to ensure PostgreSQL is using secure encryption"
                     },
                     {
                         "name": "Network",
                         "category": "Network Security",
-                        "displayName": "Ensure Compute is not accessible over the public internet",
-                        "description": "Policy to ensure Compute is not accessible over the public internet"
+                        "displayName": "Ensure PostgreSQL is not accessible over the public internet",
+                        "description": "Policy to ensure PostgreSQL is not accessible over the public internet"
                     },
                     {
                         "name": "Identity",
                         "category": "Identity Management",
-                        "displayName": "Ensure usage of centralized identity and auhtorization system for Compute",
-                        "description": "Policy to ensure Compute is not using local authorization"
+                        "displayName": "Ensure usage of centralized identity and auhtorization system for PostgreSQL",
+                        "description": "Policy to ensure PostgreSQL is not using local authorization"
                     },
                     {
                         "name": "Logging",
                         "category": "Logging and Threat Detection",
-                        "displayName": "Ensure Compute is logging all events to Log Analytics",
-                        "description": "Policy to ensure Compute is logging all events to Log Analytics workspace"
+                        "displayName": "Ensure PostgreSQL is logging all events to Log Analytics",
+                        "description": "Policy to ensure PostgreSQL is logging all events to Log Analytics workspace"
                     }
                 ],
                 "parameters": {
-                    "diskPrivateDns": {
+                    "postgreSqlFlexiblePublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "postgreSqlPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "postgreSqlSsl": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "postgreSqlAdvThreatProtection": {
                         "type": "string",
                         "defaultValue": "DeployIfNotExists"
-                    },
-                    "diskPrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
-                    "diskDoubleEncryption": {
-                        "type": "string",
-                        "defaultValue": "Deny"
-                    },
-                    "managedDiskPublicNetworkAccess": {
-                        "type": "string",
-                        "defaultValue": "Deny"
-                    },
-                    "osAndDataDiskCmk": {
-                        "type": "string",
-                        "defaultValue": "Deny"
-                    },
-                    "vmAndVmssEncryptionHost": {
-                        "type": "string",
-                        "defaultValue": "Deny"
                     }
                 },
-                "policyDefinitions": [                   
+                "policyDefinitions": [
                     {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/fc4d8e41-e223-45ea-9bf5-eada37891d87",
-                        "policyDefinitionReferenceId": "Deny-VmAndVmss-Encryption-Host",
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/db048e65-913c-49f9-bb5f-1084184671d3",
+                        "policyDefinitionReferenceId": "Dine-PostgreSql-Adv-Threat-Protection",
                         "groupNames": [
+                            "Logging",
                             "Encryption"
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('vmAndVmssEncryptionHost')]"
-                            }
-                        }
-                    },                    
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/702dd420-7fcc-42c5-afe8-4026edd20fe0",
-                        "policyDefinitionReferenceId": "Deny-OsAndDataDisk-Cmk",
-                        "groupNames": [
-                            "Encryption"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('osAndDataDiskCmk')]"
+                                "value": "[[parameters('postgreSqlAdvThreatProtection')]"
                             }
                         }
                     },
                     {
                         "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
-                        "policyDefinitionReferenceId": "Deny-ManagedDisk-Public-Network-Access",
+                        "policyDefinitionReferenceId": "Deny-PostgreSql-Ssl",
                         "groupNames": [
                             "Network"
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('managedDiskPublicNetworkAccess')]"
+                                "value": "[[parameters('postgreSqlSsl')]"
                             }
                         }
                     },
                     {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ca91455f-eace-4f96-be59-e6e2c35b4816",
-                        "policyDefinitionReferenceId": "Deny-Disk-Double-Encryption",
-                        "groupNames": [
-                            "Encryption"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('diskDoubleEncryption')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/bc05b96c-0b36-4ca9-82f0-5c53f96ce05a",
-                        "policyDefinitionReferenceId": "Dine-Disk-Private-DNS",
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b52376f7-9612-48a1-81cd-1ffe4b61032c",
+                        "policyDefinitionReferenceId": "Deny-PostgreSql-Public-Network-Access",
                         "groupNames": [
                             "Network"
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('diskPrivateDns')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('diskPrivateDnsZoneId')]"
+                                "value": "[[parameters('postgreSqlPublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/5e1de0e3-42cb-4ebc-a86d-61d0c619ca48",
+                        "policyDefinitionReferenceId": "Deny-PostgreSql-Flexible-Public-Network-Access",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('postgreSqlFlexiblePublicNetworkAccess')]"
                             }
                         }
                     }
