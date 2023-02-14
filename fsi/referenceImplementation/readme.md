@@ -14,7 +14,7 @@ This user guide explains the FSI Landing Zones on Microsoft Azure reference impl
 - [How FSI Landing Zones reference implementation works](#how-FSI-landing-zones-reference-implementation-works)
 - [Deployment instructions](#deployment-instructions)
   - [Pre-requisites](#pre-requisites)
-  - [Step-by-step guidance](#step-by-step-guidance)
+  - [Step-by-step deployment guidance](#step-by-step-deployment-guidance)
 - [Next steps](#next-steps)
 
 ---
@@ -53,7 +53,7 @@ This section describes at a high level how FSI Landing Zones reference implement
 
 ### FSI Landing Zones architecture
 
-The Management Group structure implemented with FSI Landing Zones on Microsoft Azure is with clear intention to streamline and optimize operational excellence with security and governance being front and center. It caters for the entire life-cycle of a subscription, provides clear separation of concerns with regards to platform resources, and workload resources inside the landing zones.
+The Management Group structure implemented with FSI Landing Zones on Microsoft Azure is with clear intention to streamline and optimize operational excellence with security and governance being front and center. It caters for the entire lifecycle of a subscription, provides clear separation of concerns with regards to platform resources, and workload resources inside the landing zones.
 
 The following structure is being created when deploying FSI Landing Zones on Microsoft Azure, and enables organizations to transition existing subscription into the target architecture, as well as being the ideal starting point for FSI organizations who are new to Azure.
 
