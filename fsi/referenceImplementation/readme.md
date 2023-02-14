@@ -93,8 +93,13 @@ Since FSI Landing Zones is a complete, end-to-end setup of your Azure tenant as 
 
 >Note: Both the role assignment as well as the deployment is a one-off exercise, and post deployment you can remove the role assignment from the tenant root scope in Azure.
 
-The pre-requisites requires the following:
+Pre-requisites for deploying FSI Landing Zones on Microsoft Azure:
 
+- Dedicated Azure subscriptions for the platform
+  - Management subscription is always required, where Log Analytics and security configuration will be placed, where other deployment options have a strong dependency on this subscription.
+  - Connectivity subscription is required if network topology and hybrid connectivity must be created at the same time.
+  - Identity subscription is only required if you plan to move your domain controllers to Azure to facilitate for VM migration and workload authentication/authorization within the landing zones.
+- Optionally Azure subscriptions for the landing zones (corp/online). Note; if these subscriptions does not exists during the deployment, you can always create/move subscriptions into the corp/online management groups later and they will conform to the policies in place and be ready for workload deployments.
 - A user that is Global Admin in the Azure Active Directory where FSI Landing Zones will be deployed.
 - Elevation of privileges of a Global Admin that will grant him/her the "User Access Administrator" role assignment at the tenant root scope.
 - An explicit role assignment (Azure RBAC) made at the tenant root scope via Azure CLI or Azure PowerShell (Note: There's currently no graphical user interface to make this role assignment).
@@ -144,15 +149,11 @@ New-AzRoleAssignment -Scope '/' -RoleDefinitionName 'Owner' -ObjectId $user.Id
 
 > Please note: it can take up to 15 minutes for permission to propagate at tenant root scope. It is therefore recommended that you log out and log back in to refresh the token before you proceed with the deployment.*
 
-### Optional pre-requisites
-
-The deployment experience in Azure portal allows you to bring in existing (preferably empty) subscriptions dedicated for the platform part of the FSI Landing Zones architecture. It also allows you to bring existing subscriptions that can be used as the initial landing zones for workload deployments by one or more application teams.
-
-## Step by step guidance
+## Step by step deployment guidance
 
 This section will explain the deployment experience and the options provided for FSI Landing Zones reference implementation.
 
-When you click on [*Deploy to Microsoft Cloud*](https://aka.ms/fsilz), it will start the deployment experience in the Azure portal into your default Azure tenant. In case you have access to multiple tenants, ensure you are selecting the right one.
+Once the pre-requisites have been completed, you can deploy the FSI Landing Zones using this link [*Deploy to Microsoft Cloud*](https://aka.ms/fsilz), it will start the deployment experience in the Azure portal into your default Azure tenant. In case you have access to multiple tenants, ensure you are selecting the right one.
 
 ### 1 - Deployment location
 
