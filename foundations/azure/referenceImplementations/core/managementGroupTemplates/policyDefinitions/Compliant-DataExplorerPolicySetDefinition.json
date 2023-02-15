@@ -1,0 +1,131 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "defaultValue": "FSIDemo"
+        }
+    },
+    "variables": {
+        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
+        "policies": {
+            "policyDefinitions": [
+            ]
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
+            "apiVersion": "2019-09-01",
+            "copy": {
+                "name": "policyDefinitionCopy",
+                "count": "[length(variables('policies').policyDefinitions)]"
+            },
+            "properties": {
+                "displayName": "[variables('policies').policyDefinitions[copyIndex()].properties.displayName]",
+                "description": "[variables('policies').policyDefinitions[copyIndex()].properties.description]",
+                "mode": "[variables('policies').policyDefinitions[copyIndex()].properties.mode]",
+                "policyType": "Custom",
+                "parameters": "[variables('policies').policyDefinitions[copyIndex()].properties.parameters]",
+                "policyRule": "[variables('policies').policyDefinitions[copyIndex()].properties.policyRule]",
+                "metadata": "[variables('policies').policyDefinitions[copyIndex()].properties.metadata]"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2021-06-01",
+            "name": "Compliant-Data-Explorer",
+            "dependsOn": [
+                "policyDefinitionCopy"
+            ],
+            "properties": {
+                "metadata": {
+                    "version": "1.0.0",
+                    "category": "AZure Data Explorer",
+                },
+                "displayName": "Enforce secure-by-default Data Explorer for Financial Services Industry",
+                "description": "This policy initiative is a group of policies that ensures Data Explorer is compliant per FSI Landing Zones",
+                "policyDefinitionGroups": [
+                    {
+                        "name": "Encryption",
+                        "category": "Data Protection",
+                        "displayName": "Ensure Data Explorer is using secure encryption",
+                        "description": "Policy to ensure Data Explorer is using secure encryption"
+                    },
+                    {
+                        "name": "Network",
+                        "category": "Network Security",
+                        "displayName": "Ensure Data Explorer is not accessible over the public internet",
+                        "description": "Policy to ensure Data Explorer is not accessible over the public internet"
+                    },
+                    {
+                        "name": "Identity",
+                        "category": "Identity Management",
+                        "displayName": "Ensure usage of centralized identity and auhtorization system for Data Explorer",
+                        "description": "Policy to ensure Data Explorer is not using local authorization"
+                    },
+                    {
+                        "name": "Logging",
+                        "category": "Logging and Threat Detection",
+                        "displayName": "Ensure Data Explorer is logging all events to Log Analytics",
+                        "description": "Policy to ensure Data Explorer is logging all events to Log Analytics workspace"
+                    }
+                ],
+                "parameters": {
+                    "adeCmk": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "adeEncryption": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "adeDoubleEncryption": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    }
+                },
+                "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ec068d99-e9c7-401f-8cef-5bdde4e6ccf1",
+                        "policyDefinitionReferenceId": "Deny-ADE-Double-Encryption",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('adeDoubleEncryption')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/f4b53539-8df9-40e4-86c6-6b607703bd4e",
+                        "policyDefinitionReferenceId": "Deny-ADE-Encryption",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('adeEncryption')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/81e74cea-30fd-40d5-802f-d72103c2aaaa",
+                        "policyDefinitionReferenceId": "Deny-ADE-Cmk",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('adeCmk')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
