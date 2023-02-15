@@ -99,7 +99,7 @@ Pre-requisites for deploying FSI Landing Zones on Microsoft Azure:
   - Management subscription is always required, where Log Analytics and security configuration will be placed, where other deployment options have a strong dependency on this subscription.
   - Connectivity subscription is required if network topology and hybrid connectivity must be created at the same time.
   - Identity subscription is only required if you plan to move your domain controllers to Azure to facilitate for VM migration and workload authentication/authorization within the landing zones.
-- Optionally Azure subscriptions for the landing zones (corp/online). Note; if these subscriptions does not exists during the deployment, you can always create/move subscriptions into the corp/online management groups later and they will conform to the policies in place and be ready for workload deployments.
+- Optionally, Azure subscriptions for the landing zones (corp/online). Note; if these subscriptions does not exist during the deployment, you can always create/move subscriptions into the corp/online management groups later and they will conform to the policies in place and be ready for workload deployments.
 - A user that is Global Admin in the Azure Active Directory where FSI Landing Zones will be deployed.
 - Elevation of privileges of a Global Admin that will grant him/her the "User Access Administrator" role assignment at the tenant root scope.
 - An explicit role assignment (Azure RBAC) made at the tenant root scope via Azure CLI or Azure PowerShell (Note: There's currently no graphical user interface to make this role assignment).
