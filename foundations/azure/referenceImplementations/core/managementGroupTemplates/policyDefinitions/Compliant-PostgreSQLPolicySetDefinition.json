@@ -93,7 +93,7 @@
                     "version": "1.0.0",
                     "category": "PostgreSQL"
                 },
-                "displayName": "Enforce secure-by-default MySQQL for Financial Services Industry",
+                "displayName": "Enforce secure-by-default PostgreSQL for Financial Services Industry",
                 "description": "This policy initiative is a group of policies that ensures PostgreSQL is compliant per FSI Landing Zones",
                 "policyDefinitionGroups": [
                     {
