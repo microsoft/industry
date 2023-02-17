@@ -43,7 +43,7 @@
             "properties": {
                 "metadata": {
                     "version": "1.0.0",
-                    "category": "AZure Data Explorer",
+                    "category": "Azure Data Explorer"
                 },
                 "displayName": "Enforce secure-by-default Data Explorer for Financial Services Industry",
                 "description": "This policy initiative is a group of policies that ensures Data Explorer is compliant per FSI Landing Zones",
