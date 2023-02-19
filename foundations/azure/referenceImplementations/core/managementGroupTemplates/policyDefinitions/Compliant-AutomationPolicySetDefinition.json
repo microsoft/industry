@@ -163,7 +163,7 @@
                     },
                     "aaPrivateEndpointGroupId": {
                         "type": "string",
-                        "defaultValue": ""
+                        "defaultValue": "DSCAndHybridWorker"
                     },
                     "aaPublicNetworkAccess": {
                         "type": "string",

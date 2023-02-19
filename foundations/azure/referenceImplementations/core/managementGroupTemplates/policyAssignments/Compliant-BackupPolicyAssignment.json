@@ -1,0 +1,91 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
+            }
+        },
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        },
+        "asrPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "asrPrivateDnsZone-Backup": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "asrPrivateDnsZone-Blob": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "asrPrivateDnsZone-Queue": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "asrLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "compliantBackup": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Backup')]"
+        },
+        "policyAssignmentNames": {
+            "backup": "Compliant-Backup",
+            "description": "This policy initiative is a group of policies that ensures Backup is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Backup for Financial Services Industry"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2022-06-01",
+            "name": "[variables('policyAssignmentNames').backup]",
+            "location": "[deployment().location]",
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[parameters('userAssignedIdentityResourceId')]": {}
+                }
+            },
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantBackup]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "asrLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('asrLogAnalyticsWorkspaceId')]"
+                    },
+                    "asrPrivateDnsZone": {
+                        "value": "[parameters('asrPrivateDnsZone')]"
+                    },
+                    "asrPrivateDnsZone-Backup": {
+                        "value": "[parameters('asrPrivateDnsZone-Backup')]"
+                    },
+                    "asrPrivateDnsZone-Blob": {
+                        "value": "[parameters('asrPrivateDnsZone-Blob')]"
+                    },
+                    "asrPrivateDnsZone-Queue": {
+                        "value": "[parameters('asrPrivateDnsZone-Queue')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

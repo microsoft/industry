@@ -251,7 +251,7 @@
                       "type": "string",
                       "defaultValue": "Deny"
                     },
-                    "asrPrivateDns": {
+                    "asrPrivateDnsZone": {
                       "type": "string",
                       "defaultValue": "DeployIfNotExists"
                     },
@@ -266,9 +266,25 @@
                     "asrPrivateDnsZone-Queue": {
                       "type": "string",
                       "defaultValue": ""
+                    },
+                    "asrLogAnalyticsWorkspaceId": {
+                      "type": "string",
+                      "defaultValue": ""
                     }
                 },
                 "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c717fb0c-d118-4c43-ab3d-ece30ac81fb3",
+                        "policyDefinitionReferenceId": "Dine-Asr-Diagnostics",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "logAnalytics": {
+                                "value": "[[parameters('asrLogAnalyticsWorkspaceId')]"
+                          }
+                      }
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/af783da1-4ad1-42be-800d-d19c70038820",
                         "policyDefinitionReferenceId": "Dine-Asr-Private-Dns-Zone",
@@ -277,7 +293,7 @@
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('asrPrivateDns')]"
+                                "value": "[[parameters('asrPrivateDnsZone')]"
                             },
                             "privateDnsZone-Backup": {
                               "value": "[[parameters('asrPrivateDnsZone-Backup')]"

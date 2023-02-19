@@ -521,7 +521,7 @@
             "playground": "[concat(parameters('industryPrefix'), '-', 'playground')]",
             "lzs": "[concat(parameters('industryPrefix'), '-', 'landingzones')]",
             "corp": "[concat(parameters('industryPrefix'), '-', 'corp')]",
-            "online": "[concat(parameters('industryPrefix'), '-', 'online')]"
+            "online": "[concat(parameters('industryPrefix'), '-', 'cloud-native')]"
         },
         // Declaring scopes that will be used for optional deployments, such as platform components (monitoring, networking, identity), policy assignments, subscription placement etc.
         "scopes": {
@@ -553,6 +553,9 @@
         "azPolicyArmTemplate": "[variables('azPolicyPoliciesMapping')[environment().resourceManager]]",
         "deploymentUris": {
             "managementGroups": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/mgmtGroupStructure/mgmtGroups.json')]",
+            "allowedRegionsPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-RegionsPolicyAssignment.json')]",
+            "allowedRgRegionsPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-RgRegionsPolicyAssignment.json')]",
+            "customRbacRoleDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/roleDefinitions/Custom-RBACDefinitions.json')]",
             "policyIdentity": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/policyIdentity.json')]",
             "managementGroupsLite": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/mgmtGroupStructure/mgmtGroupsLite.json')]",
             "policyDefinitions": "[uri(deployment().properties.templateLink.uri, variables('azPolicyArmTemplate'))]",
@@ -563,6 +566,7 @@
             "compliantAutomationPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-AutomationPolicySetDefinition.json')]",
             "compliantAutomationPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-AutomationPolicyAssignment.json')]",            
             "compliantBackupPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-BackupPolicySetDefinition.json')]",
+            "compliantBackupPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-BackupPolicyAssignment.json')]",            
             "compliantComputePolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-ComputePolicySetDefinition.json')]",            
             "compliantContainerAppsPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-ContainerAppsPolicySetDefinition.json')]",            
             "compliantContainerInstancePolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-ContainerInstancePolicySetDefinition.json')]",
@@ -643,6 +647,9 @@
         "deploymentSuffix": "[concat('-', deployment().location, guid(parameters('industryPrefix')))]",
         "deploymentNames": {
             "mgmtGroupDeploymentName": "[take(concat(parameters('industry'), '-Mgs', variables('deploymentSuffix')), 64)]",
+            "customRbacDeploymentName": "[take(concat(parameters('industry'), '-RoleDefinitions', variables('deploymentSuffix')), 64)]",
+            "allowedRegionsDeploymentName": "[take(concat(parameters('industry'), '-Azure-Regions', variables('deploymentSuffix')), 64)]",
+            "allowedRgRegionsDeploymentName": "[take(concat(parameters('industry'), '-Azure-RG-Regions', variables('deploymentSuffix')), 64)]",
             "compliantApimDeploymentName": "[take(concat(parameters('industry'), 'Compliant-Apim', variables('deploymentSuffix')), 64)]",
             "compliantAppServiceDeploymentName": "[take(concat(parameters('industry'), 'Compliant-AppService', variables('deploymentSuffix')), 64)]",
             "compliantAutomationDeploymentName": "[take(concat(parameters('industry'), 'Compliant-Automation', variables('deploymentSuffix')), 64)]",
@@ -736,10 +743,11 @@
             "denyVnetPeeringDeploymentName": "[take(concat(parameters('industry'), '-VNetPeering', variables('deploymentSuffix')), 64)]",
             "budgetDeploymentName": "[take(concat(parameters('industry'), '-Budget', variables('deploymentSuffix')), 64)]",
             // Compliant Azure Service Policy Assignment deployment names
-            "compliantAutomationAssignmentDeploymentName": "[take(concat(parameters('industry'), 'Enforce-Automation-Account', variables('deploymentSuffix')), 64)]",
-            "compliantKeyVaultAssignmentDeploymentName": "[take(concat(parameters('industry'), 'Enforce-Compliant-KeyVault', variables('deploymentSuffix')), 64)]",
-            "compliantApimAssignmentDeploymentName": "[take(concat(parameters('industry'), 'Enforce-Compliant-Apim', variables('deploymentSuffix')), 64)]",
-            "compliantAppServiceAssignmentDeploymentName": "[take(concat(parameters('industry'), 'Enforce-Compliant-AppService', variables('deploymentSuffix')), 64)]",
+            "compliantAutomationAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Auto', variables('deploymentSuffix')), 64)]",
+            "compliantBackupAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Backup', variables('deploymentSuffix')), 64)]",            
+            "compliantKeyVaultAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-KeyVault', variables('deploymentSuffix')), 64)]",
+            "compliantApimAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Apim', variables('deploymentSuffix')), 64)]",
+            "compliantAppServiceAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-AppService', variables('deploymentSuffix')), 64)]",
             // Telco specific policies assignment deployments
             "erHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaEr', variables('deploymentSuffix')), 64)]",
             "pipHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaPip', variables('deploymentSuffix')), 64)]",
@@ -887,6 +895,9 @@
         "baseId": "[concat(variables('platformResourceIds').privateDnsRgResourceId, '/providers/Microsoft.Network/privateDnsZones/')]",
         "privateDnsPolicyParameterMapping": {
             "azureAutomationPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.azure-automation.net')]",
+            "azureBackupPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.', parameters('location'), '.backup.windowsazure.com')]",
+            "azureBackupBlobPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.blob.core.windows.net')]",
+            "azureBackupQueuePrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.blob.core.windows.net')]",
             "azureFilePrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.afs.azure.net')]",
             "azureWebPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.webpubsub.azure.com')]",
             "azureBatchPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.', parameters('location'), '.batch.azure.com')]",
@@ -964,6 +975,30 @@
                 }
             }
         },
+        {
+            // Deploying custom Role Definitions. Note: all roleDefinitions will eventually be moved to built-in policies and codebase will be reduced
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "name": "[variables('deploymentNames').customRbacDeploymentName]",
+            "location": "[deployment().location]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').customRbacRoleDefinition]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    }
+                }
+            }
+        },        
         {
             // Deploying Compliant APIM PolicySetDefinition
             "type": "Microsoft.Resources/deployments",
@@ -1504,7 +1539,7 @@
             ],
             "copy": {
                 "batchSize": 1,
-                "count": 10,
+                "count": 21,
                 "mode": "Serial",
                 "name": "policyCompletion"
             },
@@ -2599,6 +2634,59 @@
         /*
             The following deployments will deploy and configure the Azure policy governance for the landing zones
         */
+        {   // Creating Policy Assignment for allowed Azure Regions on the Landing Zone management group
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').allowedRegionsDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').allowedRegionsPolicyAssignment]"
+                },
+                "parameters": {
+                    "listOfAllowedLocations": {
+                        "value": [
+                            "Global",
+                            "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
+                        ]
+                    }
+                    // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
+                }
+            }
+        },
+        {   // Creating Policy Assignment for allowed Azure Regions for Rgs on the Landing Zone management group
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').allowedRgRegionsDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').allowedRgRegionsPolicyAssignment]"
+                },
+                "parameters": {
+                    "listOfAllowedLocations": {
+                        "value": [
+                            "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
+                        ]
+                    }
+                    // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
+                }
+            }
+        },       
         {   // Creating Policy Assignment for NSG Flow Logs Policy on Landing zone scope
             "condition": "[and(equals(parameters('enableNetworkWatcher'), 'Yes'), equals(parameters('enableNsgFlowLogs'), 'Yes'))]",
             "type": "Microsoft.Resources/deployments",
@@ -2772,6 +2860,51 @@
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "aaLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
+                    // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
+                }
+            }
+        },
+        {   // Creating Policy Assignment Compliant Backup to Landing Zone scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'Backup')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantBackupAssignmentDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantBackupDeploymentName)]",
+                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantBackupPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "asrPrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "asrPrivateDnsZone-Backup": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureBackupPrivateDnsZoneId, '')]"
+                    },
+                    "asrPrivateDnsZone-Blob": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureBackupBlobPrivateDnsZoneId, '')]"
+                    },
+                    "asrPrivateDnsZone-Queue": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureBackupQueuePrivateDnsZoneId, '')]"
+                    },
+                    "asrLogAnalyticsWorkspaceId": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
                     },
                     "userAssignedIdentityResourceId": {
