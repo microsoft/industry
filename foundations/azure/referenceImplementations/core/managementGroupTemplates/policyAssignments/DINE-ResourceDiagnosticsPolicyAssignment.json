@@ -21,6 +21,9 @@
                 "DoNotEnforce"
             ],
             "defaultValue": "Default"
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string"
         }
     },
     "variables": {
@@ -31,20 +34,19 @@
             "resourceDiagnostics": "Deploy-Resource-Diag",
             "description": "This policy set deploys the configurations of application Azure resources to forward diagnostic logs and metrics to an Azure Log Analytics workspace. See the list of policies of the services that are included",
             "displayName": "Deploy Diagnostic Settings to Azure Services"
-            },
-        "rbacOwner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
-        "roleAssignmentNames": {
-            "deployResourceRiagnostics": "[guid(concat(parameters('topLevelManagementGroupPrefix'), variables('policyAssignmentNames').resourceDiagnostics))]"
             }
         },
     "resources": [
         {
             "type": "Microsoft.Authorization/policyAssignments",
-            "apiVersion": "2019-09-01",
+            "apiVersion": "2022-06-01",
             "name": "[variables('policyAssignmentNames').resourceDiagnostics]",
             "location": "[deployment().location]",
             "identity": {
-                "type": "SystemAssigned"
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[parameters('userAssignedIdentityResourceId')]": {}
+                }
             },
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
@@ -56,19 +58,6 @@
                         "value": "[parameters('logAnalyticsResourceId')]"
                     }
                 }
-            }
-        },
-        {
-            "type": "Microsoft.Authorization/roleAssignments",
-            "apiVersion": "2019-04-01-preview",
-            "name": "[variables('roleAssignmentNames').deployResourceRiagnostics]",
-            "dependsOn": [
-                "[variables('policyAssignmentNames').resourceDiagnostics]"
-            ],
-            "properties": {
-                "principalType": "ServicePrincipal",
-                "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', variables('rbacOwner'))]",
-                "principalId": "[toLower(reference(concat('/providers/Microsoft.Authorization/policyAssignments/', variables('policyAssignmentNames').resourceDiagnostics), '2019-09-01', 'Full' ).identity.principalId)]"
             }
         }
     ],

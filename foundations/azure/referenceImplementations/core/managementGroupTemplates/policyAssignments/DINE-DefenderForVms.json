@@ -16,6 +16,9 @@
                 "DoNotEnforce"
             ],
             "defaultValue": "Default"
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string"
         }
     },
     "variables": {
@@ -26,20 +29,19 @@
             "defenderEndpoint": "Deploy-Defender",
             "description": "Deploy Microsoft Defender for Endpoint agent on applicable images.",
             "displayName": "Deploy Microsoft Defender for Endpoint agent"
-            },
-        "rbacOwner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
-        "roleAssignmentNames": {
-            "deployDefenderEndpoint": "[guid(concat(parameters('topLevelManagementGroupPrefix'), '-def', variables('policyAssignmentNames').defenderEndpoint))]"
             }
         },
     "resources": [
         {
             "type": "Microsoft.Authorization/policyAssignments",
-            "apiVersion": "2019-09-01",
+            "apiVersion": "2022-06-01",
             "name": "[variables('policyAssignmentNames').defenderEndpoint]",
             "location": "[deployment().location]",
             "identity": {
-                "type": "SystemAssigned"
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[parameters('userAssignedIdentityResourceId')]": {}
+                }
             },
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
@@ -47,19 +49,6 @@
                 "policyDefinitionId": "[variables('policyDefinitions').defenderEndpoint]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {}
-            }
-        },
-        {
-            "type": "Microsoft.Authorization/roleAssignments",
-            "apiVersion": "2019-04-01-preview",
-            "name": "[variables('roleAssignmentNames').deployDefenderEndpoint]",
-            "dependsOn": [
-                "[variables('policyAssignmentNames').defenderEndpoint]"
-            ],
-            "properties": {
-                "principalType": "ServicePrincipal",
-                "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', variables('rbacOwner'))]",
-                "principalId": "[toLower(reference(concat('/providers/Microsoft.Authorization/policyAssignments/', variables('policyAssignmentNames').defenderEndpoint), '2019-09-01', 'Full' ).identity.principalId)]"
             }
         }
     ],

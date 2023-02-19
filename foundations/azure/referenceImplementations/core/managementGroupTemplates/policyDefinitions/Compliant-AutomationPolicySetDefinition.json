@@ -176,9 +176,39 @@
                     "autoHotPatch": {
                         "type": "string",
                         "defaultValue": "Deny"
+                    },
+                    "aaDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "aaLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "aaLogsCategory": {
+                        "type": "string",
+                        "defaultValue": "allLogs"
                     }
                 },
                 "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b797045a-b3cd-46e4-adc4-bbadb3381d78",
+                        "policyDefinitionReferenceId": "Dine-AA-Diagnostics",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aaDiagnostics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('aaLogAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('aaLogsCategory')]"
+                            }
+                        }
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/6d02d2f7-e38b-4bdc-96f3-adc0a8726abc",
                         "policyDefinitionReferenceId": "Deny-Windows-Vm-HotPatch",
