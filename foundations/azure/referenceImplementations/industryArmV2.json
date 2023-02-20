@@ -405,6 +405,22 @@
             "type": "string",
             "defaultValue": ""
         },
+        "enablePrivateDnsResolver": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "subnetMaskForDnsResolverInbound": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "subnetMaskForDnsResolverOutbound": {
+            "type": "string",
+            "defaultValue": ""
+        },
         "gwRegionalOrAz": {
             "type": "string",
             "defaultValue": ""
@@ -2278,6 +2294,12 @@
                     },
                     "subnetMaskForGw": {
                         "value": "[parameters('subnetMaskForGw')]"
+                    },
+                    "subnetMaskForDnsResolverInbound": {
+                        "value": "[parameters('subnetMaskForDnsResolverInbound')]"
+                    },
+                    "subnetMaskForDnsResolverOutbound": {
+                        "value": "[parameters('subnetMaskForDnsResolverOutbound')]"
                     },
                     "firewallSku": {
                         "value": "[parameters('firewallSku')]"

@@ -158,6 +158,14 @@
         "ddosPlanResourceId": {
             "type": "string",
             "defaultValue": ""
+        },
+        "subnetMaskForDnsResolverInbound": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "subnetMaskForDnsResolverOutbound": {
+            "type": "string",
+            "defaultValue": ""
         }
     },
     "variables": {
@@ -166,6 +174,9 @@
         "rgName": "[concat(parameters('topLevelManagementGroupPrefix'), '-vnethub-', parameters('location'))]",
         "azFwPolicyName": "[concat(parameters('topLevelManagementGroupPrefix'), '-azfwpolicy-', parameters('location'))]",
         "hubName": "[concat(parameters('topLevelManagementGroupPrefix'), '-hub-', parameters('location'))]",
+        "dnsResolverName": "[concat(parameters('topLevelManagementGroupPrefix'), '-dnsresolver-', parameters('location'))]",
+        "dnsResolverInboundEndpointName": "[concat(variables('dnsResolverName'),'/', 'DefaultInboundEndpoint')]",
+        "dnsResolverOutboundEndpointName": "[concat(variables('dnsResolverName'), '/', 'DefaultOutboundEndpoint')]",
         "avnmName": "[concat(parameters('topLevelManagementGroupPrefix'), '-vnm-', parameters('location'))]",
         "avnmRgName": "[concat(parameters('topLevelManagementGroupPrefix'), '-netmanager-', parameters('location'))]",
         "azVpnGwIpName": "[concat(variables('vpngwname'), '-pip')]",
@@ -178,8 +189,11 @@
         "azErGwPipId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('rgName'), '/providers/Microsoft.Network/publicIPAddresses/', variables('azErGwIpName'))]",
         "azFwSubnetId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('rgName'),'/providers/Microsoft.Network/virtualNetworks/', variables('hubname'), '/subnets/AzureFirewallSubnet')]",
         "azFwPipId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('rgName'), '/providers/Microsoft.Network/publicIPAddresses/', variables('azFwIpName'))]",
+        "hubId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('rgName'), '/providers/Microsoft.Network/virtualNetworks/', variables('hubName'))]",
         "resourceDeploymentName": "[take(concat(deployment().name, '-hubspoke', parameters('location')), 64)]",
         "avnmDeploymentName": "[take(concat(deployment().name, '-avnetmanager', parameters('location')), 64)]",
+        "dnsResolverInboundSubnetId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('rgName'),'/providers/Microsoft.Network/virtualNetworks/', variables('hubname'), '/subnets/', first(variables('dnsResolverInboundSubnet')).name)]",
+        "dnsResolverOutboundSubnetId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('rgName'),'/providers/Microsoft.Network/virtualNetworks/', variables('hubname'), '/subnets/', first(variables('dnsResolverOutboundSubnet')).name)]",
         // Creating variable that later will be used in conjunction with the union() function to cater for conditional subnet creation while ensuring idempotency
         "gwSubnet": [
             {
@@ -194,6 +208,22 @@
                 "name": "AzureFirewallSubnet",
                 "properties": {
                     "addressPrefix": "[parameters('subnetMaskForAzFw')]"
+                }
+            }
+        ],
+        "dnsResolverInboundSubnet": [
+            {
+                "name": "DnsResolverInboundSubnet",
+                "properties": {
+                    "addressPrefix": "[parameters('subnetMaskForDnsResolverInbound')]"
+                }
+            }
+        ],
+        "dnsResolverOutboundSubnet": [
+            {
+                "name": "DnsResolverOutboundSubnet",
+                "properties": {
+                    "addressPrefix": "[parameters('subnetMaskForDnsResolverOutbound')]"
                 }
             }
         ],
@@ -214,7 +244,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-10-01",
             "location": "[parameters('location')]",
-            "name": "[concat('fsi', '-connectivityHubSub', deployment().location)]",
+            "name": "[concat('afo', '-connectivityHubSub', deployment().location)]",
             "subscriptionId": "[parameters('connectivitySubscriptionId')]",
             "properties": {
                 "mode": "Incremental",
@@ -250,15 +280,14 @@
                                             {
                                             "type": "Microsoft.Network/networkManagers",
                                             "name": "[variables('avnmName')]",
-                                            "apiVersion": "2022-07-01",
+                                            "apiVersion": "2021-02-01-preview",
                                             "location": "[parameters('location')]",
                                             "properties": {
                                                 "displayName": "[concat(parameters('topLevelManagementGroupPrefix'), ' Network Manager')]",
                                                 "description": "[concat('Virtual Network Manager to manage and deploy virtual networks for ', parameters('topLevelManagementGroupPrefix'))]",
                                                 "networkManagerScopes": {
                                                     "managementGroups": [
-                                                        "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '-landingzones')]",
-                                                        "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '-connectivity')]"
+                                                        "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '-landingzones')]"
                                                     ],
                                                     "subscriptions": [],
                                                     "networkManagerScopeAccesses": [
@@ -306,13 +335,21 @@
                                                     ]
                                                 },
                                                 "subnets": "[
-                                                             union(
-                                                                  if(
-                                                                      not(
-                                                                          empty(parameters('subnetMaskForGw'))), variables('gwSubnet'), json('[]')), 
-                                                                          if(
-                                                                              not(
-                                                                                  empty(parameters('subnetMaskForAzFw'))), variables('fwSubnet'), json('[]')))]",
+                                                    union(
+                                                        if(
+                                                            not(empty(parameters('subnetMaskForGw'))), variables('gwSubnet'), json('[]')
+                                                        ), 
+                                                        if(
+                                                            not(empty(parameters('subnetMaskForAzFw'))), variables('fwSubnet'), json('[]')
+                                                        ), 
+                                                        if(
+                                                            not(empty(parameters('subnetMaskForDnsResolverInbound'))), variables('dnsResolverInboundSubnet'), json('[]')
+                                                        ), 
+                                                        if(
+                                                            not(empty(parameters('subnetMaskForDnsResolverOutbound'))), variables('dnsResolverOutboundSubnet'), json('[]')
+                                                        )
+                                                    )
+                                                ]",
                                                 "enableDdosProtection": "[if(equals(parameters('enableDdoS'), 'Yes'), 'true', 'false')]",
                                                 "ddosProtectionPlan": "[if(equals(parameters('enableDdoS'), 'Yes'), variables('ddosProtectionPlanId'), json('null'))]"
                                             }
@@ -496,6 +533,56 @@
                                                     }
                                                 ],
                                                 "firewallPolicy": "[variables('azFirewallPolicyId')]"
+                                            }
+                                        },
+                                        {
+                                            "condition": "[not(equals(parameters('enableAzFwDnsProxy'), 'Yes'))]",
+                                            "apiVersion": "2022-07-01",
+                                            "type": "Microsoft.Network/dnsResolvers",
+                                            "name": "[variables('dnsResolverName')]",
+                                            "location": "[parameters('location')]",
+                                            "dependsOn": [
+                                                "[concat('Microsoft.Network/virtualNetworks/', variables('hubName'))]"
+                                            ],
+                                            "properties": {
+                                                "virtualNetwork": {
+                                                    "id": "[variables('hubId')]"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "condition": "[not(equals(parameters('enableAzFwDnsProxy'), 'Yes'))]",
+                                            "apiVersion": "2022-07-01",
+                                            "type": "Microsoft.Network/dnsResolvers/inboundEndpoints",
+                                            "name": "[variables('dnsResolverInboundEndpointName')]",
+                                            "location": "[parameters('location')]",
+                                            "dependsOn": [
+                                                "[concat('Microsoft.Network/dnsResolvers/', variables('dnsResolverName'))]"
+                                            ],
+                                            "properties": {
+                                                "ipConfigurations": [
+                                                    {
+                                                        "privateIpAllocationMethod": "Static",
+                                                        "subnet": {
+                                                            "id": "[variables('dnsResolverInboundSubnetId')]"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "condition": "[not(equals(parameters('enableAzFwDnsProxy'), 'Yes'))]",
+                                            "apiVersion": "2022-07-01",
+                                            "type": "Microsoft.Network/dnsResolvers/outboundEndpoints",
+                                            "name": "[variables('dnsResolverOutboundEndpointName')]",
+                                            "location": "[parameters('location')]",
+                                            "dependsOn": [
+                                                "[concat('Microsoft.Network/dnsResolvers/', variables('dnsResolverName'))]"
+                                            ],
+                                            "properties": {
+                                                "subnet": {
+                                                    "id": "[variables('dnsResolverOutboundSubnetId')]"
+                                                }
                                             }
                                         }
                                     ]
