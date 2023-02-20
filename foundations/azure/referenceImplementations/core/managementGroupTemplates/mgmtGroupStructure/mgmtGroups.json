@@ -22,7 +22,7 @@
         "landingZoneMgs": {
             "type": "array",
             "defaultValue": [
-                "online",
+                "cloud-native",
                 "corp"
             ],
             "metadata": {
