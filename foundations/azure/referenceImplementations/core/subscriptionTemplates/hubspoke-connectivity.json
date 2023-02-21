@@ -166,6 +166,10 @@
         "subnetMaskForDnsResolverOutbound": {
             "type": "string",
             "defaultValue": ""
+        },
+        "logAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
         }
     },
     "variables": {
@@ -192,8 +196,8 @@
         "hubId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('rgName'), '/providers/Microsoft.Network/virtualNetworks/', variables('hubName'))]",
         "resourceDeploymentName": "[take(concat(deployment().name, '-hubspoke', parameters('location')), 64)]",
         "avnmDeploymentName": "[take(concat(deployment().name, '-avnetmanager', parameters('location')), 64)]",
-        "dnsResolverInboundSubnetId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('rgName'),'/providers/Microsoft.Network/virtualNetworks/', variables('hubname'), '/subnets/', first(variables('dnsResolverInboundSubnet')).name)]",
-        "dnsResolverOutboundSubnetId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('rgName'),'/providers/Microsoft.Network/virtualNetworks/', variables('hubname'), '/subnets/', first(variables('dnsResolverOutboundSubnet')).name)]",
+        "dnsResolverInboundSubnetId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('rgName'),'/providers/Microsoft.Network/virtualNetworks/', variables('hubname'), '/subnets/DnsResolverInboundSubnet')]",
+        "dnsResolverOutboundSubnetId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('rgName'),'/providers/Microsoft.Network/virtualNetworks/', variables('hubname'), '/subnets/DnsResolverOutboundSubnet')]",
         // Creating variable that later will be used in conjunction with the union() function to cater for conditional subnet creation while ensuring idempotency
         "gwSubnet": [
             {
@@ -326,7 +330,7 @@
                                         {
                                             "name": "[variables('hubName')]",
                                             "type": "Microsoft.Network/virtualNetworks",
-                                            "apiVersion": "2020-04-01",
+                                            "apiVersion": "2022-01-01",
                                             "location": "[parameters('location')]",
                                             "properties": {
                                                 "addressSpace": {
@@ -493,6 +497,36 @@
                                             }
                                         },
                                         {
+                                            "condition": "[and(equals(parameters('enableAzFw'), 'Yes'), not(empty(parameters('logAnalyticsWorkspaceId'))))]",
+                                            "type": "Microsoft.Network/publicIpAddresses/providers/diagnosticSettings",
+                                            "apiVersion": "2021-05-01-preview",
+                                            "name": "[concat(variables('azFwIpName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                                            "location": "[parameters('location')]",
+                                            "dependsOn": [
+                                                "[concat('Microsoft.Network/publicIpAddresses/', variables('azFwIpName'))]"
+                                            ],
+                                            "properties": {
+                                            "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
+                                            "metrics": [
+                                                {
+                                                "category": "AllMetrics",
+                                                "enabled": true,
+                                                "retentionPolicy": {
+                                                    "days": 0,
+                                                    "enabled": false
+                                                },
+                                                "timeGrain": null
+                                                }
+                                            ],
+                                            "logs": [
+                                                    {
+                                                        "categoryGroup": "allLogs",
+                                                        "enabled": true
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
                                             "condition": "[and(equals(parameters('enableAzFw'), 'Yes'), not(empty(parameters('subnetMaskForAzFw'))))]",
                                             "type": "Microsoft.Network/firewallPolicies",
                                             "apiVersion": "2020-11-01",
@@ -536,7 +570,37 @@
                                             }
                                         },
                                         {
-                                            "condition": "[not(equals(parameters('enableAzFwDnsProxy'), 'Yes'))]",
+                                            "condition": "[and(equals(parameters('enableAzFw'), 'Yes'), not(empty(parameters('logAnalyticsWorkspaceId'))))]",
+                                            "type": "Microsoft.Network/azureFirewalls/providers/diagnosticSettings",
+                                            "apiVersion": "2021-05-01-preview",
+                                            "name": "[concat(variables('azFwName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                                            "location": "[parameters('location')]",
+                                            "dependsOn": [
+                                                "[concat('Microsoft.Network/azureFirewalls/', variables('azFwName'))]"
+                                            ],
+                                            "properties": {
+                                            "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
+                                            "metrics": [
+                                                {
+                                                "category": "AllMetrics",
+                                                "enabled": true,
+                                                "retentionPolicy": {
+                                                    "days": 0,
+                                                    "enabled": false
+                                                },
+                                                "timeGrain": null
+                                                }
+                                            ],
+                                            "logs": [
+                                                    {
+                                                        "categoryGroup": "allLogs",
+                                                        "enabled": true
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "condition": "[and(not(empty(parameters('subnetMaskForDnsResolverInbound'))), not(equals(parameters('enableAzFwDnsProxy'), 'Yes')))]",
                                             "apiVersion": "2022-07-01",
                                             "type": "Microsoft.Network/dnsResolvers",
                                             "name": "[variables('dnsResolverName')]",
@@ -551,18 +615,19 @@
                                             }
                                         },
                                         {
-                                            "condition": "[not(equals(parameters('enableAzFwDnsProxy'), 'Yes'))]",
+                                            "condition": "[and(not(empty(parameters('subnetMaskForDnsResolverInbound'))), not(equals(parameters('enableAzFwDnsProxy'), 'Yes')))]",
                                             "apiVersion": "2022-07-01",
                                             "type": "Microsoft.Network/dnsResolvers/inboundEndpoints",
                                             "name": "[variables('dnsResolverInboundEndpointName')]",
                                             "location": "[parameters('location')]",
                                             "dependsOn": [
-                                                "[concat('Microsoft.Network/dnsResolvers/', variables('dnsResolverName'))]"
+                                                "[concat('Microsoft.Network/dnsResolvers/', variables('dnsResolverName'))]",
+                                                "[concat('Microsoft.Network/virtualNetworks/', variables('hubName'))]"
                                             ],
                                             "properties": {
                                                 "ipConfigurations": [
                                                     {
-                                                        "privateIpAllocationMethod": "Static",
+                                                        "privateIpAllocationMethod": "Dynamic",
                                                         "subnet": {
                                                             "id": "[variables('dnsResolverInboundSubnetId')]"
                                                         }
@@ -571,13 +636,14 @@
                                             }
                                         },
                                         {
-                                            "condition": "[not(equals(parameters('enableAzFwDnsProxy'), 'Yes'))]",
+                                            "condition": "[and(not(empty(parameters('subnetMaskForDnsResolverOutbound'))), not(equals(parameters('enableAzFwDnsProxy'), 'Yes')))]",
                                             "apiVersion": "2022-07-01",
                                             "type": "Microsoft.Network/dnsResolvers/outboundEndpoints",
                                             "name": "[variables('dnsResolverOutboundEndpointName')]",
                                             "location": "[parameters('location')]",
                                             "dependsOn": [
-                                                "[concat('Microsoft.Network/dnsResolvers/', variables('dnsResolverName'))]"
+                                                "[concat('Microsoft.Network/dnsResolvers/', variables('dnsResolverName'))]",
+                                                "[concat('Microsoft.Network/virtualNetworks/', variables('hubName'))]"
                                             ],
                                             "properties": {
                                                 "subnet": {
