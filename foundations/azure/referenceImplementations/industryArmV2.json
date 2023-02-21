@@ -2301,6 +2301,9 @@
                     "subnetMaskForDnsResolverOutbound": {
                         "value": "[parameters('subnetMaskForDnsResolverOutbound')]"
                     },
+                    "logAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
                     "firewallSku": {
                         "value": "[parameters('firewallSku')]"
                     },
