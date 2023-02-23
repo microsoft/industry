@@ -359,6 +359,36 @@
                                             }
                                         },
                                         {
+                                            "condition": "[not(empty(parameters('logAnalyticsWorkspaceId')))]",
+                                            "type": "Microsoft.Network/virtualNetworks/providers/diagnosticSettings",
+                                            "apiVersion": "2021-05-01-preview",
+                                            "name": "[concat(variables('hubName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                                            "location": "[parameters('location')]",
+                                            "dependsOn": [
+                                                "[concat('Microsoft.Network/virtualNetworks/', variables('hubName'))]"
+                                            ],
+                                            "properties": {
+                                            "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
+                                            "metrics": [
+                                                {
+                                                "category": "AllMetrics",
+                                                "enabled": true,
+                                                "retentionPolicy": {
+                                                    "days": 0,
+                                                    "enabled": false
+                                                },
+                                                "timeGrain": null
+                                                }
+                                            ],
+                                            "logs": [
+                                                    {
+                                                        "categoryGroup": "allLogs",
+                                                        "enabled": true
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
                                             "condition": "[and(equals(parameters('enableVpnGw'), 'Yes'), not(empty(parameters('subnetMaskForGw'))))]",
                                             "apiVersion": "2020-05-01",
                                             "type": "Microsoft.Network/publicIpAddresses",
@@ -369,6 +399,36 @@
                                             },
                                             "properties": {
                                                 "publicIPAllocationMethod": "[if(equals(parameters('gwRegionalOrAz'), 'Zone'), 'Static', 'Dynamic')]"
+                                            }
+                                        },
+                                        {
+                                            "condition": "[and(equals(parameters('enableVpnGw'), 'Yes'), not(empty(parameters('logAnalyticsWorkspaceId'))))]",
+                                            "type": "Microsoft.Network/publicIpAddresses/providers/diagnosticSettings",
+                                            "apiVersion": "2021-05-01-preview",
+                                            "name": "[concat(variables('azVpnGwIpName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                                            "location": "[parameters('location')]",
+                                            "dependsOn": [
+                                                "[concat('Microsoft.Network/publicIpAddresses/', variables('azVpnGwIpName'))]"
+                                            ],
+                                            "properties": {
+                                            "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
+                                            "metrics": [
+                                                {
+                                                "category": "AllMetrics",
+                                                "enabled": true,
+                                                "retentionPolicy": {
+                                                    "days": 0,
+                                                    "enabled": false
+                                                },
+                                                "timeGrain": null
+                                                }
+                                            ],
+                                            "logs": [
+                                                    {
+                                                        "categoryGroup": "allLogs",
+                                                        "enabled": true
+                                                    }
+                                                ]
                                             }
                                         },
                                         {
@@ -432,6 +492,36 @@
                                             },
                                             "properties": {
                                                 "publicIPAllocationMethod": "[if(equals(parameters('erRegionalOrAz'), 'Zone'), 'Static', 'Dynamic')]"
+                                            }
+                                        },
+                                        {
+                                            "condition": "[and(equals(parameters('enableErGw'), 'Yes'), not(empty(parameters('logAnalyticsWorkspaceId'))))]",
+                                            "type": "Microsoft.Network/publicIpAddresses/providers/diagnosticSettings",
+                                            "apiVersion": "2021-05-01-preview",
+                                            "name": "[concat(variables('azErGwIpName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                                            "location": "[parameters('location')]",
+                                            "dependsOn": [
+                                                "[concat('Microsoft.Network/publicIpAddresses/', variables('azErGwIpName'))]"
+                                            ],
+                                            "properties": {
+                                            "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
+                                            "metrics": [
+                                                {
+                                                "category": "AllMetrics",
+                                                "enabled": true,
+                                                "retentionPolicy": {
+                                                    "days": 0,
+                                                    "enabled": false
+                                                },
+                                                "timeGrain": null
+                                                }
+                                            ],
+                                            "logs": [
+                                                    {
+                                                        "categoryGroup": "allLogs",
+                                                        "enabled": true
+                                                    }
+                                                ]
                                             }
                                         },
                                         {
