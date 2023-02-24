@@ -524,6 +524,13 @@
             "metadata": {
                 "description": "Select the Azure service(s) that should be secure by-default"
             }
+        },
+        "dataExports": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Select the Log Analytics tables that should be exported to event hub."
+            }
         }
     },
     "variables": {
@@ -805,6 +812,7 @@
         // Declaring deterministic names for platform resources that will be created
         "platformResourceNames": {
             "logAnalyticsWorkspace": "[concat(parameters('industryPrefix'), '-law')]",
+            "eventHubNamespace": "[concat(parameters('industryPrefix'), '-ehn-', parameters('location'))]",
             "userAssignedIdentityName": "[concat(parameters('industryPrefix'), '-policy-identity')]",
             "logNwStorageAccount": "[toLower(take(concat(parameters('industryPrefix'), parameters('location'), uniqueString(deployment().name)), 23))]",
             "automationAccount": "[concat(parameters('industryPrefix'), '-aauto')]",
@@ -1699,6 +1707,12 @@
                     },
                     "enableChangeTracking": {
                         "value": "[parameters('enableChangeTracking')]"
+                    },
+                    "eventHubNamespaceName": {
+                        "value": "[variables('platformResourceNames').eventHubNamespace]"
+                    },
+                    "dataExports": {
+                        "value": "[parameters('dataExports')]"
                     }
                 }
             }
@@ -2080,9 +2094,6 @@
                     "uri": "[variables('deploymentUris').defenderEndpointPolicyAssignment]"
                 },
                 "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('enableDefenderEndpoint'), 'Yes'), 'Default', 'DoNotEnforce')]"
                     },
