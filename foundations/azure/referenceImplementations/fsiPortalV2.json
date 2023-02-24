@@ -235,6 +235,85 @@
                                     "visible": "[equals(steps('esGoalState').azMonSection.esLogAnalytics,'Yes')]"
                                 },
                                 {
+                                    "name": "esEventHub",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Enable Log Analytics Data Export to Event Hub for SIEM integration",
+                                    "defaultValue": "Yes",
+                                    "toolTip": "If 'Yes' is selected when also adding a subscription for management, Log Analytics workspace will be created in the dedicated subscription and enable additional configuration options in the deployment wizard.",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    },
+                                    "visible": "[equals(steps('esGoalState').azMonSection.esLogAnalytics,'Yes')]"
+                                },
+                                {
+                                    "name": "esEventHubDataExports",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "label": "Enable Log Analytics Data Export to Event Hub for SIEM integration",
+                                    "defaultValue": "",
+                                    "multiselect": true,
+                                    "selectAll": true,
+                                    "filter": true,
+                                    "toolTip": "If 'Yes' is selected when also adding a subscription for management, Log Analytics workspace will be created in the dedicated subscription and enable additional configuration options in the deployment wizard.",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Security Alert",
+                                                "value": "SecurityAlert"
+                                            },
+                                            {
+                                                "label": "Security Baseline",
+                                                "value": "SecurityBaseline"
+                                            },
+                                            {
+                                                "label": "Security Baseline Summary",
+                                                "value": "SecurityBaselineSummary"
+                                            },
+                                            {
+                                                "label": "Security Detection",
+                                                "value": "SecurityDetection"
+                                            },
+                                            {
+                                                "label": "Security Event",
+                                                "value": "SecurityEvent"
+                                            },
+                                            {
+                                                "label": "Security Incident",
+                                                "value": "SecurityIncident"
+                                            },
+                                            {
+                                                "label": "Security IoT Raw Event",
+                                                "value": "SecurityIoTRawEvent"
+                                            },
+                                            {
+                                                "label": "Security Nested Recommendation",
+                                                "value": "SecurityNestedRecommendation"
+                                            },
+                                            {
+                                                "label": "Security Recommendation",
+                                                "value": "SecurityRecommendation"
+                                            },
+                                            {
+                                                "label": "Sentinel Audit",
+                                                "value": "SentinelAudit"
+                                            },
+                                            {
+                                                "label": "Sentinel Health",
+                                                "value": "SentinelHealth"
+                                            }
+                                        ]
+                                    },
+                                    "visible": "[equals(steps('esGoalState').azMonSection.esEventHub,'Yes')]"
+                                },
+                                {
                                     "name": "monitoring",
                                     "type": "Microsoft.Common.TextBlock",
                                     "visible": "[equals(steps('esGoalState').azMonSection.esLogAnalytics,'Yes')]",
@@ -409,7 +488,7 @@
                                 "uri": "https://learn.microsoft.com/security/benchmark/azure/overview",
                                 "style": "Info"
                             }
-                        },                        
+                        },
                         {
                             "name": "asbSection",
                             "type": "Microsoft.Common.Section",
@@ -1759,7 +1838,7 @@
                                     }
                                 ]
                             }
-                        },                        
+                        },
                         {
                             "name": "esAzFwSku",
                             "type": "Microsoft.Common.DropDown",
@@ -2550,6 +2629,7 @@
                 "enableActivityLog": "[steps('esGoalState').azMonSection.esActivityLog]",
                 "enableVmInsights": "[steps('esGoalState').azMonSection.esVmInsights]",
                 "enableServiceMap": "[steps('esGoalState').azMonSection.esServiceMap]",
+                "dataExports": "[steps('esGoalState').azMonSection.esEventHubDataExports]",
                 "denyVnetPeering": "[steps('esPlayground').vnetPeeringPolicy]",
                 "enableBudget": "[steps('esPlayground').budgetPolicy]",
                 "budgetAmount": "[string(steps('esPlayground').budgetAmount)]",
