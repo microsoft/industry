@@ -12,6 +12,114 @@
         // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
         "policies": {
             "policyDefinitions": [
+                {
+                    "properties": {
+                        "displayName": "Outbound network access should be restricted for Cognitive Services",
+                        "mode": "Indexed",
+                        "description": "Azure Cognitive Services allow restricting outbound network access. Enable this to limit outbound connectivity for the service.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Cognitive Service"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Deny",
+                                    "Audit",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Deny"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.CognitiveServices/accounts"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "field": "Microsoft.CognitiveServices/accounts/restrictOutboundNetworkAccess",
+                                                "exists": "false"
+                                            },
+                                            {
+                                                "field": "Microsoft.CognitiveServices/accounts/restrictOutboundNetworkAccess",
+                                                "notEquals": true
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-CognitiveServices-RestrictOutboundNetworkAccess"
+                },
+                {
+                    "properties": {
+                        "displayName": "Network ACLs should be restricted for Cognitive Services",
+                        "mode": "Indexed",
+                        "description": "Azure Cognitive Services should not allow adding individual IPs or virtual network rules to the service-level firewall. Enable this to restrict inbound network access and enforce the usage of private endpoints.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Cognitive Service"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Deny",
+                                    "Audit",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Deny"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.CognitiveServices/accounts"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "count": {
+                                                    "field": "Microsoft.CognitiveServices/accounts/networkAcls.ipRules[*]"
+                                                },
+                                                "greater": 0
+                                            },
+                                            {
+                                                "count": {
+                                                    "field": "Microsoft.CognitiveServices/accounts/networkAcls.virtualNetworkRules[*]"
+                                                },
+                                                "greater": 0
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-CognitiveServices-NetworkAcls"
+                }
             ]
         }
     },
@@ -128,7 +236,7 @@
                                 "value": "[[parameters('cognitiveServicesManagedIdentity')]"
                             }
                         }
-                    },                    
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c4bc6f10-cb41-49eb-b000-d5ab82e2a091",
                         "policyDefinitionReferenceId": "Dine-Cognitive-Services-Private-Dns",
