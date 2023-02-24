@@ -260,53 +260,56 @@
                                     "label": "Enable Log Analytics Data Export to Event Hub for SIEM integration",
                                     "defaultValue": "",
                                     "multiselect": true,
+                                    "multiLine": true,
                                     "selectAll": true,
+                                    "defaultDescription": "Select the tables you want to export to Event Hub",
                                     "filter": true,
                                     "toolTip": "If 'Yes' is selected when also adding a subscription for management, Log Analytics workspace will be created in the dedicated subscription and enable additional configuration options in the deployment wizard.",
                                     "constraints": {
                                         "allowedValues": [
                                             {
                                                 "label": "Security Alert",
+                                                "description": "Table used by Defender for Cloud and Microsoft Sentinel for alerts",
                                                 "value": "SecurityAlert"
                                             },
                                             {
                                                 "label": "Security Baseline",
+                                                "description": "Table used by Defender for Cloud security baseline for Virtual Machines, VMWare, Azure Stack HCI, SCVMM, and Virtual Machine Scale Sets",
                                                 "value": "SecurityBaseline"
                                             },
                                             {
                                                 "label": "Security Baseline Summary",
+                                                "description": "Table used by Defender for Cloud security baseline summary for Virtual Machines, VMWare, Azure Stack HCI, and SCVMM",
                                                 "value": "SecurityBaselineSummary"
                                             },
                                             {
                                                 "label": "Security Detection",
+                                                "description": "Table used by Security and Audit solution for Log Analytics workspace",
                                                 "value": "SecurityDetection"
                                             },
                                             {
                                                 "label": "Security Event",
+                                                "description": "Table used by Security and Audit solution for Log Analytics workspace and Microsoft Sentinel",
                                                 "value": "SecurityEvent"
                                             },
                                             {
                                                 "label": "Security Incident",
+                                                "description": "Table used by Microsoft Sentinel",
                                                 "value": "SecurityIncident"
                                             },
                                             {
-                                                "label": "Security IoT Raw Event",
-                                                "value": "SecurityIoTRawEvent"
-                                            },
-                                            {
-                                                "label": "Security Nested Recommendation",
-                                                "value": "SecurityNestedRecommendation"
-                                            },
-                                            {
                                                 "label": "Security Recommendation",
+                                                "description": "Table used by Defender for Cloud and Security and Audit solution for Log Analytics workspace",
                                                 "value": "SecurityRecommendation"
                                             },
                                             {
                                                 "label": "Sentinel Audit",
+                                                "description": "Table used by Microsoft Sentinel",
                                                 "value": "SentinelAudit"
                                             },
                                             {
                                                 "label": "Sentinel Health",
+                                                "description": "Table used by Microsoft Sentinel",
                                                 "value": "SentinelHealth"
                                             }
                                         ]
