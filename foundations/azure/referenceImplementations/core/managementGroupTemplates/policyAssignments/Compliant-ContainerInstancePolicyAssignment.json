@@ -25,7 +25,7 @@
             "conInstance": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-ContainerInstance')]"
         },
         "policyAssignmentNames": {
-            "con": "Compliant-ContainerInstance",
+            "con": "Compliant-ConInstance",
             "description": "This policy initiative is a group of policies that ensures Container Instance is compliant per FSI Landing Zones",
             "displayName": "Enforce secure-by-default Container Instance for Financial Services Industry"
         }

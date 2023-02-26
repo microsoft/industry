@@ -611,7 +611,7 @@
                                     {
                                         "label": "Compute",
                                         "description": "Azure policies will ensure secure by-default compliance for Compute, enforce access via private endpoints, encyrption of variables and centralized authorization.",
-                                        "value": "Compmute"
+                                        "value": "Compute"
                                     },
                                     {
                                         "label": "Container Apps",
@@ -1959,7 +1959,7 @@
 						{
                             "name": "esDedicatedInboundSub",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Use dedicated subscriptions for Internet ingress",
+                            "label": "Use a dedicated subscription for Internet ingress",
                             "defaultValue": "No",
                             "visible": "[or(equals(steps('esConnectivityGoalState').esHub, 'vhub'), equals(steps('esConnectivityGoalState').esHub, 'vwan'))]",
                             "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, you can optionally add dedicated subscription for ingess and egress",
@@ -2115,7 +2115,7 @@
 						{
                             "name": "esDedicatedOutboundSub",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Use dedicated subscriptions for Internet egress",
+                            "label": "Use s dedicated subscription for Internet egress",
                             "defaultValue": "No",
                             "visible": "[or(equals(steps('esConnectivityGoalState').esHub, 'vhub'), equals(steps('esConnectivityGoalState').esHub, 'vwan'))]",
                             "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, you can optionally add dedicated subscription for ingess and egress",

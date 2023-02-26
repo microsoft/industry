@@ -37,7 +37,7 @@
             "conRegistry": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-ContainerRegistry')]"
         },
         "policyAssignmentNames": {
-            "con": "Compliant-ContainerRegistry",
+            "con": "Compliant-ConRegistry",
             "description": "This policy initiative is a group of policies that ensures Container Registry is compliant per FSI Landing Zones",
             "displayName": "Enforce secure-by-default Container Registry for Financial Services Industry"
         }
