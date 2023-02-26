@@ -1,0 +1,74 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
+            }
+        },
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        },
+        "containerRegistryPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "containerRegistryPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "conRegistry": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-ContainerRegistry')]"
+        },
+        "policyAssignmentNames": {
+            "con": "Compliant-ContainerRegistry",
+            "description": "This policy initiative is a group of policies that ensures Container Registry is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Container Registry for Financial Services Industry"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2022-06-01",
+            "name": "[variables('policyAssignmentNames').con]",
+            "location": "[deployment().location]",
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[parameters('userAssignedIdentityResourceId')]": {}
+                }
+            },
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').conRegistry]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "containerRegistryPrivateDnsZone": {
+                        "value": "[parameters('containerRegistryPrivateDnsZone')]"
+                    },
+                    "containerRegistryPrivateDnsZoneId": {
+                        "value": "[parameters('containerRegistryPrivateDnsZoneId')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

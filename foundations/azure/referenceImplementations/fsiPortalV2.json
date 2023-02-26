@@ -562,10 +562,14 @@
                                 "App Service",
                                 "Automation",
                                 "Backup",
+                                "Compute",                                                                
+                                "Container Apps",
+                                "Container Instance",
+                                "Container Registry",
+                                "Cosmos DB",
                                 "Key Vault",
                                 "SQL",
-                                "Service Bus",
-                                "Cosmos DB",
+                                "Service Bus",                                
                                 "Open AI",
                                 "Event Grid",
                                 "Event Hub",
@@ -603,6 +607,26 @@
                                         "label": "Backup",
                                         "description": "Azure policies will ensure secure by-default compliance for Backup and Recovery Services vaults, enforce immutable backups, encryption, and private over private endpoint.",
                                         "value": "Backup"
+                                    },
+                                    {
+                                        "label": "Compute",
+                                        "description": "Azure policies will ensure secure by-default compliance for Compute, enforce access via private endpoints, encyrption of variables and centralized authorization.",
+                                        "value": "Compmute"
+                                    },
+                                    {
+                                        "label": "Container Apps",
+                                        "description": "Azure policies will ensure secure by-default compliance for Container Apps, enforce access via private endpoints, encyrption of variables and centralized authorization.",
+                                        "value": "ContainerApps"
+                                    },
+                                    {
+                                        "label": "Container Instance",
+                                        "description": "Azure policies will ensure secure by-default compliance for Container Instance, enforce access via private endpoints, encyrption of variables and centralized authorization.",
+                                        "value": "ContainerInstance"
+                                    },
+                                    {
+                                        "label": "Container Registry",
+                                        "description": "Azure policies will ensure secure by-default compliance for Container Registry, enforce access via private endpoints, encyrption of variables and centralized authorization.",
+                                        "value": "ContainerRegistry"
                                     },
                                     {
                                         "label": "Key Vault",

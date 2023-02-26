@@ -51,6 +51,8 @@
                                             {
                                                 "field": "name",
                                                 "notIn": [
+                                                    "GatewaySubnet",
+                                                    "AzureFirewallSubnet",
                                                     "AzureFirewallManagementSubnet",
                                                     "AzureBastionSubnet"
                                                 ]
@@ -75,7 +77,10 @@
                                                             {
                                                                 "field": "Microsoft.Network/virtualNetworks/subnets[*].name",
                                                                 "notIn": [
-                                                                    "AzureFirewallManagementSubnet"
+                                                                    "GatewaySubnet",
+                                                                    "AzureFirewallSubnet",
+                                                                    "AzureFirewallManagementSubnet",
+                                                                    "AzureBastionSubnet"
                                                                 ]
                                                             }
                                                         ]
@@ -137,7 +142,7 @@
                                                     "GatewaySubnet",
                                                     "AzureFirewallSubnet",
                                                     "AzureFirewallManagementSubnet",
-                                                    "AzureBastion"
+                                                    "AzureBastionSubnet"
                                                 ]
                                             },
                                             {
@@ -166,7 +171,8 @@
                                                                 "notIn": [
                                                                     "GatewaySubnet",
                                                                     "AzureFirewallSubnet",
-                                                                    "AzureFirewallManagementSubnet"
+                                                                    "AzureFirewallManagementSubnet",
+                                                                    "AzureBastionSubnet"
                                                                 ]
                                                             },
                                                             {
