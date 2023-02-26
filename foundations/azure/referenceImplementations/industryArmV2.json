@@ -35,6 +35,22 @@
                 "description": "Provide the subscription id of an existing, empty subscription you want to dedicate for networking."
             }
         },
+        "ingressSubscriptionId": {
+            "type": "string",
+            "defaultValue": "",
+            "maxLength": 36,
+            "metadata": {
+                "description": "Provide the subscription id of an existing, empty subscription you want to dedicate for ingress."
+            }
+        },
+        "egressSubscriptionId": {
+            "type": "string",
+            "defaultValue": "",
+            "maxLength": 36,
+            "metadata": {
+                "description": "Provide the subscription id of an existing, empty subscription you want to dedicate for egress."
+            }
+        },
         "identitySubscriptionId": {
             "type": "string",
             "defaultValue": "",
@@ -334,6 +350,14 @@
             "type": "string",
             "defaultValue": ""
         },
+        "addressPrefixIngress": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "addressPrefixEgress": {
+            "type": "string",
+            "defaultValue": ""
+        },
         "enableVpnGw": {
             "type": "string",
             "defaultValue": "No",
@@ -372,6 +396,22 @@
             ],
             "defaultValue": "No"
         },
+        "enableAzFwIngress": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
+        },
+        "enableAzFwEgress": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
+        },
         "enableAzFwDnsProxy": {
             "type": "string",
             "allowedValues": [
@@ -401,17 +441,17 @@
             "type": "string",
             "defaultValue": ""
         },
-        "subnetMaskForGw": {
+        "subnetMaskForAzFwIngress": {
             "type": "string",
             "defaultValue": ""
         },
-        "enablePrivateDnsResolver": {
+        "subnetMaskForAzFwEgress": {
             "type": "string",
-            "defaultValue": "No",
-            "allowedValues": [
-                "Yes",
-                "No"
-            ]
+            "defaultValue": ""
+        },
+        "subnetMaskForGw": {
+            "type": "string",
+            "defaultValue": ""
         },
         "subnetMaskForDnsResolverInbound": {
             "type": "string",
@@ -453,7 +493,31 @@
             ],
             "defaultValue": "Standard"
         },
+        "firewallSkuIngress": {
+            "type": "string",
+            "allowedValues": [
+                "Standard",
+                "Premium"
+            ],
+            "defaultValue": "Standard"
+        },
+        "firewallSkuEgress": {
+            "type": "string",
+            "allowedValues": [
+                "Standard",
+                "Premium"
+            ],
+            "defaultValue": "Standard"
+        },
         "firewallZones": {
+            "type": "array",
+            "defaultValue": []
+        },
+        "firewallZonesIngress": {
+            "type": "array",
+            "defaultValue": []
+        },
+        "firewallZonesEgress": {
             "type": "array",
             "defaultValue": []
         },
@@ -612,6 +676,7 @@
             "vnetConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/hubspoke-connectivity.json')]",
             "vwanConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/vwan-connectivity.json')]",
             "nvaConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/nvahubspoke-connectivity.json')]",
+            "ingressAndEgress": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/ingress-egress.json')]",
             "subscriptionPlacement": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/subscriptionOrganization/subscriptionOrganization.json')]",
             "monitoring": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/logAnalyticsWorkspace.json')]",
             "resourceGroup": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/resourceGroup.json')]",
@@ -702,6 +767,8 @@
             "databricksClusterDeploymentName": "[take(concat(parameters('industry'), '-DBCluster', variables('deploymentSuffix')), 64)]",
             "corpPeeringDeploymentName": "[take(concat(parameters('industry'), '-CorpPeering', variables('deploymentSuffix')), 60)]",
             "connectivitySubscriptionPlacement": "[take(concat(parameters('industry'), '-ConnectivitySub', variables('deploymentSuffix')), 64)]",
+            "ingressSubscriptionPlacement": "[take(concat(parameters('industry'), '-IngressSub', variables('deploymentSuffix')), 64)]",
+            "egressSubscriptionPlacement": "[take(concat(parameters('industry'), '-EgressSub', variables('deploymentSuffix')), 64)]",
             "identitySubscriptionPlacement": "[take(concat(parameters('industry'), '-IdentitySub', variables('deploymentSuffix')), 64)]",
             "policyDeploymentName": "[take(concat(parameters('industry'), '-Policy', variables('deploymentSuffix')), 64)]",
             "dataPolicyDeploymentName": "[take(concat(parameters('industry'),'-Data-Policy', variables('deploymentSuffix')), 64)]",
@@ -720,6 +787,8 @@
             "ascPolicyDeploymentName": "[take(concat(parameters('industry'), '-ASC', variables('deploymentSuffix')), 64)]",
             "ascGovPolicyDeploymentName": "[take(concat(parameters('industry'), '-Gov-ASC', variables('deploymentSuffix')), 64)]",
             "vnetConnectivityHubDeploymentName": "[take(concat(parameters('industry'), '-HubSpoke', variables('deploymentSuffix')), 64)]",
+            "ingressDeploymentName": "[take(concat(parameters('industry'), '-Ingress', variables('deploymentSuffix')), 64)]",
+            "egressDeploymentName": "[take(concat(parameters('industry'), '-Egress', variables('deploymentSuffix')), 64)]",
             "vwanConnectivityHubDeploymentName": "[take(concat(parameters('industry'), '-VWanHub', variables('deploymentSuffix')), 64)]",
             "nvaConnectivityHubDeploymentName": "[take(concat(parameters('industry'), '-NVAHub', variables('deploymentSuffix')), 64)]",
             "azVmMonitorPolicyDeploymentName": "[take(concat(parameters('industry'), '-AzVmMonitor', variables('deploymentSuffix')), 64)]",
@@ -1636,6 +1705,60 @@
             }
         },
         {
+            // Placing internet ingress subscription into dedicated management group
+            "condition": "[not(empty(parameters('ingressSubscriptionId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').ingressSubscriptionPlacement]",
+            "location": "[deployment().location]",
+            "scope": "[variables('scopes').connectivityManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').subscriptionPlacement]"
+                },
+                "parameters": {
+                    "targetManagementGroupId": {
+                        "value": "[variables('mgmtGroups').connectivity]"
+                    },
+                    "subscriptionId": {
+                        "value": "[parameters('ingressSubscriptionId')]"
+                    }
+                }
+            }
+        }, 
+        {
+            // Placing internet egress subscription into dedicated management group
+            "condition": "[not(empty(parameters('egressSubscriptionId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').egressSubscriptionPlacement]",
+            "location": "[deployment().location]",
+            "scope": "[variables('scopes').connectivityManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').subscriptionPlacement]"
+                },
+                "parameters": {
+                    "targetManagementGroupId": {
+                        "value": "[variables('mgmtGroups').connectivity]"
+                    },
+                    "subscriptionId": {
+                        "value": "[parameters('egressSubscriptionId')]"
+                    }
+                }
+            }
+        },
+        {
             // Placing identity subscription into dedicated management group
             "condition": "[not(empty(parameters('identitySubscriptionId')))]",
             "type": "Microsoft.Resources/deployments",
@@ -2349,6 +2472,148 @@
             }
         },
         {
+            // Creating the ingress subscription
+            "condition": "[and(not(empty(parameters('ingressSubscriptionId'))),equals(parameters('enableHub'), 'vhub'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "scope": "[variables('scopes').connectivityManagementGroup]",
+            "name": "[variables('deploymentNames').ingressDeploymentName]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').connectivitySubscriptionPlacement)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').resourceDiagnosticsPolicyDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').asbPolicyDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascPolicyDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascGovPolicyDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ddosDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').vnetConnectivityHubDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ingressSubscriptionPlacement)]"
+            ],
+            "location": "[deployment().location]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').ingressAndEgress]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "ddosPlanResourceId": {
+                        "value": "[variables('platformResourceIds').ddosProtectionResourceId]"
+                    },
+                    "enableHub": {
+                        "value": "[parameters('enableHub')]"
+                    },
+                    "enableAzFw": {
+                        "value": "[parameters('enableAzFwIngress')]"
+                    },
+                    "addressPrefix": {
+                        "value": "[parameters('addressPrefixIngress')]"
+                    },
+                    "enableDdoS": {
+                        "value": "[parameters('enableDdoS')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "subscriptionId": {
+                        "value": "[parameters('ingressSubscriptionId')]"
+                    },
+                    "subnetMaskForAzFw": {
+                        "value": "[parameters('subnetMaskForAzFwIngress')]"
+                    },
+                    "logAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "firewallSku": {
+                        "value": "[parameters('firewallSkuIngress')]"
+                    },
+                    "firewallZones": {
+                        "value": "[parameters('firewallZonesIngress')]"
+                    },
+                    "enableAzFwDnsProxy": {
+                        "value": "[parameters('enableAzFwDnsProxy')]"
+                    },
+                    "ingressOrEgress": {
+                        "value": "ingress"
+                    }
+                }
+            }
+        },
+        {
+            // Creating the egress subscription
+            "condition": "[and(not(empty(parameters('egressSubscriptionId'))),equals(parameters('enableHub'), 'vhub'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "scope": "[variables('scopes').connectivityManagementGroup]",
+            "name": "[variables('deploymentNames').egressDeploymentName]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').connectivitySubscriptionPlacement)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').resourceDiagnosticsPolicyDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').asbPolicyDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascPolicyDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascGovPolicyDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ddosDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').vnetConnectivityHubDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').egressSubscriptionPlacement)]"
+            ],
+            "location": "[deployment().location]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').ingressAndEgress]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "ddosPlanResourceId": {
+                        "value": "[variables('platformResourceIds').ddosProtectionResourceId]"
+                    },
+                    "enableHub": {
+                        "value": "[parameters('enableHub')]"
+                    },
+                    "enableAzFw": {
+                        "value": "[parameters('enableAzFwEgress')]"
+                    },
+                    "addressPrefix": {
+                        "value": "[parameters('addressPrefixEgress')]"
+                    },
+                    "enableDdoS": {
+                        "value": "[parameters('enableDdoS')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "subscriptionId": {
+                        "value": "[parameters('egressSubscriptionId')]"
+                    },
+                    "subnetMaskForAzFw": {
+                        "value": "[parameters('subnetMaskForAzFwEgress')]"
+                    },
+                    "logAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "firewallSku": {
+                        "value": "[parameters('firewallSkuEgress')]"
+                    },
+                    "firewallZones": {
+                        "value": "[parameters('firewallZonesEgress')]"
+                    },
+                    "enableAzFwDnsProxy": {
+                        "value": "[parameters('enableAzFwDnsProxy')]"
+                    },
+                    "ingressOrEgress": {
+                        "value": "egress"
+                    }
+                }
+            }
+        },
+        {
             // Creating the virtual network hub (with NVA)
             "condition": "[and(not(empty(parameters('connectivitySubscriptionId'))),equals(parameters('enableHub'), 'nva'))]",
             "type": "Microsoft.Resources/deployments",
@@ -2678,7 +2943,8 @@
             "scope": "[variables('scopes').lzsManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
+                "policyCompletion"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -2687,6 +2953,9 @@
                     "uri": "[variables('deploymentUris').allowedRegionsPolicyAssignment]"
                 },
                 "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
                     "listOfAllowedLocations": {
                         "value": [
                             "Global",

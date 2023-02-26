@@ -1,0 +1,353 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "maxLength": 10,
+            "metadata": {
+                "description": "Provide a prefix (max 10 characters, unique at tenant-scope) for the Management Group hierarchy and other resources created as part of Enterprise-scale."
+            }
+        },
+        "addressPrefix": {
+            "type": "string",
+            "metadata": {
+                "displayName": "addressPrefix",
+                "description": "Address prefix of the HUB"
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "displayName": "location",
+                "description": "Location of the HUB"
+            },
+            "defaultValue": "[deployment().location]"
+        },
+        "enableHub": {
+            "type": "string",
+            "allowedValues": [
+                "vhub",
+                "No"
+            ],
+            "defaultValue": "No",
+            "metadata": {
+                "description": "Select whether the virtual network hub should be deployed or not."
+            }
+        },
+        "enableAzFw": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No",
+            "metadata": {
+                "description": "Select whether the Azure Firewall should be deployed or not."
+            }
+        },
+        "enableDdoS": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "metadata": {
+                "description": "Select whether the DDoS Standard protection plan should be enabled or not."
+            }
+        },
+        "subscriptionId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide the subscription id for the ingress/egress connectivity subscription."
+            }
+        },
+        "subnetMaskForAzFw": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide subnet for Azure Firewall."
+            }
+        },
+        "firewallSku": {
+            "type": "string",
+            "allowedValues": [
+                "Standard",
+                "Premium"
+            ],
+            "defaultValue": "Standard"
+        },
+        "firewallZones": {
+            "type": "array",
+            "defaultValue": []
+        },
+        "ddosPlanResourceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "logAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "ingressOrEgress": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "enableAzFwDnsProxy": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No",
+            "metadata": {
+                "description": "Select whether the Azure Firewall should be used as DNS Proxy or not."
+            }
+        }
+    },
+    "variables": {
+        "rgName": "[concat(parameters('topLevelManagementGroupPrefix'), '-vnet-', parameters('ingressOrEgress'), '-', parameters('location'))]",
+        "azFwPolicyName": "[concat(parameters('topLevelManagementGroupPrefix'), '-', parameters('ingressOrEgress'), '-', parameters('location'))]",
+        "hubName": "[concat(parameters('topLevelManagementGroupPrefix'), '-', parameters('ingressOrEgress'), '-', parameters('location'))]",
+        "azFwName": "[concat(parameters('topLevelManagementGroupPrefix'), '-fw-', parameters('ingressOrEgress'), '-', parameters('location'))]",
+        "azFwIpName": "[concat(variables('azFwName'), '-pip')]",
+        "azFwSubnetId": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', variables('rgName'),'/providers/Microsoft.Network/virtualNetworks/', variables('hubname'), '/subnets/AzureFirewallSubnet')]",
+        "azFwPipId": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', variables('rgName'), '/providers/Microsoft.Network/publicIPAddresses/', variables('azFwIpName'))]",
+        "hubId": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', variables('rgName'), '/providers/Microsoft.Network/virtualNetworks/', variables('hubName'))]",
+        "resourceDeploymentName": "[take(concat(deployment().name, '-hubspoke', parameters('location')), 64)]",
+        // Creating variable that later will be used in conjunction with the union() function to cater for conditional subnet creation while ensuring idempotency
+        "fwSubnet": [
+            {
+                "name": "AzureFirewallSubnet",
+                "properties": {
+                    "addressPrefix": "[parameters('subnetMaskForAzFw')]"
+                }
+            }
+        ],
+        "ddosProtectionPlanId": {
+            "id": "[parameters('ddosPlanResourceId')]"
+        },
+        "azFirewallPolicyId": {
+            "id": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', variables('rgName'), '/providers/Microsoft.Network/firewallPolicies/', variables('azFwPolicyName'))]"
+        },
+        "azFirewallDnsSettings": {
+            "enableProxy": true
+        }
+    },
+    "resources": [    
+        {
+            // Conditionally deploy virtual network hub
+            "condition": "[and(equals(parameters('enableHub'), 'vhub'), not(empty(parameters('subscriptionId'))))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "location": "[parameters('location')]",
+            "name": "[concat(parameters('ingressOrEgress'), '-connectivity-', deployment().location)]",
+            "subscriptionId": "[parameters('subscriptionId')]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.Resources/resourceGroups",
+                            "apiVersion": "2019-10-01",
+                            "location": "[parameters('location')]",
+                            "name": "[variables('rgName')]",
+                            "properties": {}
+                        },
+                        {
+                            "type": "Microsoft.Resources/deployments",
+                            "apiVersion": "2019-10-01",
+                            "name": "[variables('resourceDeploymentName')]",
+                            "resourceGroup": "[variables('rgName')]",
+                            "dependsOn": [
+                                "[concat('Microsoft.Resources/resourceGroups/', variables('rgName'))]"
+                            ],
+                            "properties": {
+                                "mode": "Incremental",
+                                "template": {
+                                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                                    "contentVersion": "1.0.0.0",
+                                    "parameters": {},
+                                    "resources": [                                        
+                                        {
+                                            "name": "[variables('hubName')]",
+                                            "type": "Microsoft.Network/virtualNetworks",
+                                            "apiVersion": "2022-01-01",
+                                            "location": "[parameters('location')]",
+                                            "properties": {
+                                                "addressSpace": {
+                                                    "addressPrefixes": [
+                                                        "[parameters('addressPrefix')]"
+                                                    ]
+                                                },
+                                                "subnets": "[
+                                                        if(
+                                                            not(empty(parameters('subnetMaskForAzFw'))), variables('fwSubnet'), json('[]')
+                                                        )
+                                                    ]",
+                                                "enableDdosProtection": "[if(equals(parameters('enableDdoS'), 'Yes'), 'true', 'false')]",
+                                                "ddosProtectionPlan": "[if(equals(parameters('enableDdoS'), 'Yes'), variables('ddosProtectionPlanId'), json('null'))]"
+                                            }
+                                        },
+                                        {
+                                            "condition": "[not(empty(parameters('logAnalyticsWorkspaceId')))]",
+                                            "type": "Microsoft.Network/virtualNetworks/providers/diagnosticSettings",
+                                            "apiVersion": "2021-05-01-preview",
+                                            "name": "[concat(variables('hubName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                                            "location": "[parameters('location')]",
+                                            "dependsOn": [
+                                                "[concat('Microsoft.Network/virtualNetworks/', variables('hubName'))]"
+                                            ],
+                                            "properties": {
+                                            "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
+                                            "metrics": [
+                                                {
+                                                "category": "AllMetrics",
+                                                "enabled": true,
+                                                "retentionPolicy": {
+                                                    "days": 0,
+                                                    "enabled": false
+                                                },
+                                                "timeGrain": null
+                                                }
+                                            ],
+                                            "logs": [
+                                                    {
+                                                        "categoryGroup": "allLogs",
+                                                        "enabled": true
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "condition": "[and(equals(parameters('enableAzFw'), 'Yes'), not(empty(parameters('subnetMaskForAzFw'))))]",
+                                            "apiVersion": "2020-05-01",
+                                            "type": "Microsoft.Network/publicIpAddresses",
+                                            "name": "[variables('azFwIpName')]",
+                                            "location": "[parameters('location')]",
+                                            "sku": {
+                                                "name": "Standard"
+                                            },
+                                            "properties": {
+                                                "publicIPAllocationMethod": "Static"
+                                            }
+                                        },
+                                        {
+                                            "condition": "[and(equals(parameters('enableAzFw'), 'Yes'), not(empty(parameters('logAnalyticsWorkspaceId'))))]",
+                                            "type": "Microsoft.Network/publicIpAddresses/providers/diagnosticSettings",
+                                            "apiVersion": "2021-05-01-preview",
+                                            "name": "[concat(variables('azFwIpName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                                            "location": "[parameters('location')]",
+                                            "dependsOn": [
+                                                "[concat('Microsoft.Network/publicIpAddresses/', variables('azFwIpName'))]"
+                                            ],
+                                            "properties": {
+                                            "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
+                                            "metrics": [
+                                                {
+                                                "category": "AllMetrics",
+                                                "enabled": true,
+                                                "retentionPolicy": {
+                                                    "days": 0,
+                                                    "enabled": false
+                                                },
+                                                "timeGrain": null
+                                                }
+                                            ],
+                                            "logs": [
+                                                    {
+                                                        "categoryGroup": "allLogs",
+                                                        "enabled": true
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "condition": "[and(equals(parameters('enableAzFw'), 'Yes'), not(empty(parameters('subnetMaskForAzFw'))))]",
+                                            "type": "Microsoft.Network/firewallPolicies",
+                                            "apiVersion": "2020-11-01",
+                                            "name": "[variables('azFwPolicyName')]",
+                                            "location": "[parameters('location')]",
+                                            "properties": {
+                                                "dnsSettings": "[if(equals(parameters('enableAzFwDnsProxy'), 'Yes'), variables('azFirewallDnsSettings'), json('null'))]"
+                                            }
+                                        },
+                                        {
+                                            "condition": "[and(equals(parameters('enableAzFw'), 'Yes'), not(empty(parameters('subnetMaskForAzFw'))))]",
+                                            "apiVersion": "2020-05-01",
+                                            "type": "Microsoft.Network/azureFirewalls",
+                                            "name": "[variables('azfwname')]",
+                                            "location": "[parameters('location')]",
+                                            "zones": "[if(not(empty(parameters('firewallZones'))), parameters('firewallZones'), json('null'))]",
+                                            "dependsOn": [
+                                                "[concat('Microsoft.Network/firewallPolicies/', variables('azFwPolicyName'))]",
+                                                "[concat('Microsoft.Network/publicIpAddresses/', variables('azFwIpName'))]",
+                                                "[concat('Microsoft.Network/virtualNetworks/', variables('hubName'))]"
+                                            ],
+                                            "properties": {
+                                                "sku": {
+                                                    "name": "AZFW_VNet",
+                                                    "tier": "[parameters('firewallSku')]"
+                                                },
+                                                "ipConfigurations": [
+                                                    {
+                                                        "name": "[variables('azFwIpName')]",
+                                                        "properties": {
+                                                            "subnet": {
+                                                                "id": "[variables('azFwSubnetId')]"
+                                                            },
+                                                            "publicIPAddress": {
+                                                                "id": "[variables('azFwPipId')]"
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                "firewallPolicy": "[variables('azFirewallPolicyId')]"
+                                            }
+                                        },
+                                        {
+                                            "condition": "[and(equals(parameters('enableAzFw'), 'Yes'), not(empty(parameters('logAnalyticsWorkspaceId'))))]",
+                                            "type": "Microsoft.Network/azureFirewalls/providers/diagnosticSettings",
+                                            "apiVersion": "2021-05-01-preview",
+                                            "name": "[concat(variables('azFwName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                                            "location": "[parameters('location')]",
+                                            "dependsOn": [
+                                                "[concat('Microsoft.Network/azureFirewalls/', variables('azFwName'))]"
+                                            ],
+                                            "properties": {
+                                            "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
+                                            "metrics": [
+                                                {
+                                                "category": "AllMetrics",
+                                                "enabled": true,
+                                                "retentionPolicy": {
+                                                    "days": 0,
+                                                    "enabled": false
+                                                },
+                                                "timeGrain": null
+                                                }
+                                            ],
+                                            "logs": [
+                                                    {
+                                                        "categoryGroup": "allLogs",
+                                                        "enabled": true
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

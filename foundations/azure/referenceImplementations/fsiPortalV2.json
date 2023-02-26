@@ -238,7 +238,7 @@
                                     "name": "esEventHub",
                                     "type": "Microsoft.Common.OptionsGroup",
                                     "label": "Enable Log Analytics Data Export to Event Hub for SIEM integration",
-                                    "defaultValue": "Yes",
+                                    "defaultValue": "No",
                                     "toolTip": "If 'Yes' is selected when also adding a subscription for management, Log Analytics workspace will be created in the dedicated subscription and enable additional configuration options in the deployment wizard.",
                                     "constraints": {
                                         "allowedValues": [
@@ -258,7 +258,11 @@
                                     "name": "esEventHubDataExports",
                                     "type": "Microsoft.Common.DropDown",
                                     "label": "Enable Log Analytics Data Export to Event Hub for SIEM integration",
-                                    "defaultValue": "",
+                                    "defaultValue": [
+                                        "Security Alert",
+                                        "Security Event",
+                                        "Security Incident"
+                                    ],
                                     "multiselect": true,
                                     "multiLine": true,
                                     "selectAll": true,
@@ -1895,7 +1899,7 @@
                                 ]
                             }
                         },
-                        {
+						{
                             "name": "esAddressFw",
                             "type": "Microsoft.Common.TextBox",
                             "label": "Subnet for Azure Firewall",
@@ -1924,6 +1928,318 @@
                                     {
                                         "isValid": "[lessOrEquals(last(split(steps('esConnectivityGoalState').esAddressHubHS, '/')), last(split(steps('esConnectivityGoalState').esAddressFw, '/')))]",
                                         "message": "CIDR range not within virtual network CIDR range (subnet mask)."
+                                    }
+                                ]
+                            }
+                        },
+						{
+                            "name": "esDedicatedInboundSub",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Use dedicated subscriptions for Internet ingress",
+                            "defaultValue": "No",
+                            "visible": "[or(equals(steps('esConnectivityGoalState').esHub, 'vhub'), equals(steps('esConnectivityGoalState').esHub, 'vwan'))]",
+                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, you can optionally add dedicated subscription for ingess and egress",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ]
+                            }
+                        },
+						{
+                            "name": "esNwAdditionalSubSectionIngress",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Internet ingress subscription",
+                            "elements": [
+                                {
+                                    "type": "Microsoft.Common.SubscriptionSelector",
+                                    "name": "esNwIngress",
+                                    "label": "Ingress subscription"
+                                }
+                            ],
+                            "visible": "[and(not(equals(steps('esConnectivityGoalState').esHub, 'No')), equals(steps('esConnectivityGoalState').esDedicatedInboundSub, 'Yes'))]"
+                        },
+                        {
+                            "name": "esAddressIngress",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Address space (required for the virtual network)",
+                            "toolTip": "Provide address prefix in CIDR notation (e.g 10.200.0.0/16)",
+                            "defaultValue": "10.200.0.0/16",
+                            "visible": "[and(not(equals(steps('esConnectivityGoalState').esHub, 'No')), equals(steps('esConnectivityGoalState').esDedicatedInboundSub, 'Yes'))]",
+                            "constraints": {
+                                "required": true,
+                                "validations": [
+                                    {
+                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(1[0-9]|2[0-4]))$",
+                                        "message": "Invalid CIDR range. The address prefix must be in the range [10,24]."
+                                    }
+                                ]
+                            }
+                        },
+						{
+                            "name": "esAzFwIngress",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy Azure Firewall",
+                            "defaultValue": "Yes (recommended)",
+                            "visible": "[and(not(equals(steps('esConnectivityGoalState').esHub, 'No')), equals(steps('esConnectivityGoalState').esDedicatedInboundSub, 'Yes'))]",
+                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, Azure Firewall will be created using the same configuration as used in the connectivity hub",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ]
+                            }
+                        },
+						{
+                            "name": "esAddressFwIngress",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Subnet for Azure Firewall for ingress",
+                            "toolTip": "Provide address prefix in CIDR notation (e.g 10.200.0.0/24)",
+                            "defaultValue": "10.200.0.0/24",
+                            "visible": "[and(equals(steps('esConnectivityGoalState').esAzFwIngress, 'Yes'), equals(steps('esConnectivityGoalState').esDedicatedInboundSub, 'Yes'))]",
+                            "constraints": {
+                                "required": true,
+                                "validations": [
+                                    {
+                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(2[0-6]))$",
+                                        "message": "Invalid CIDR range. The address prefix must be in the range [20,26]."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('esConnectivityGoalState').esAddressIngress, '/')), 8), equals(last(take(split(first(split(steps('esConnectivityGoalState').esAddressIngress, '/')), '.'), 1)), last(take(split(first(split(steps('esConnectivityGoalState').esAddressFwIngress, '/')), '.'), 1))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (first octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('esConnectivityGoalState').esAddressIngress, '/')), 16), equals(last(take(split(first(split(steps('esConnectivityGoalState').esAddressIngress, '/')), '.'), 2)), last(take(split(first(split(steps('esConnectivityGoalState').esAddressFwIngress, '/')), '.'), 2))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (second octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('esConnectivityGoalState').esAddressIngress, '/')), 24), equals(last(take(split(first(split(steps('esConnectivityGoalState').esAddressIngress, '/')), '.'), 3)), last(take(split(first(split(steps('esConnectivityGoalState').esAddressFwIngress, '/')), '.'), 3))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (third octet)."
+                                    },
+                                    {
+                                        "isValid": "[lessOrEquals(last(split(steps('esConnectivityGoalState').esAddressIngress, '/')), last(split(steps('esConnectivityGoalState').esAddressFwIngress, '/')))]",
+                                        "message": "CIDR range not within virtual network CIDR range (subnet mask)."
+                                    }
+                                ]
+                            }
+                        },
+						{
+                            "name": "esAzFwSkuIngress",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select Azure Firewall tier",
+                            "defaultValue": "Standard",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": false,
+                            "multiLine": true,
+                            "visible": "[equals(steps('esConnectivityGoalState').esAzFwIngress, 'Yes')]",
+                            "toolTip": "Select Azure Firewall tier",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Standard",
+                                        "description": "Standard Azure Firewall",
+                                        "value": "Standard"
+                                    },
+                                    {
+                                        "label": "Premium",
+                                        "description": "Premium Azure Firewall adds support for TLS inspection, IDPS, URL filtering and web categories.",
+                                        "value": "Premium"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esFwAzIngress",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select Availability Zones for the Azure Firewall",
+                            "defaultValue": "None",
+                            "multiselect": true,
+                            "selectAll": true,
+                            "filter": true,
+                            "visible": "[if(equals(steps('esConnectivityGoalState').esDedicatedInboundSub, 'Yes'), and(equals(steps('esConnectivityGoalState').esAzFwIngress,'Yes'), contains(split('canadacentral,centralus,eastus,eastus2,southcentralus,westus2,francecentral,germanywestcentral,northeurope,westeurope,uksouth,southafricanorth,japaneast,southeastasia,australiaeast', ','), steps('esConnectivityGoalState').esNwLocation)), false)]",
+                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, ARM will deploy Azure Firewall to the selected region and availability zones.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Zone 1",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "label": "Zone 2",
+                                        "value": "2"
+                                    },
+                                    {
+                                        "label": "Zone 3",
+                                        "value": "3"
+                                    }
+                                ]
+                            }
+                        },
+						{
+                            "name": "esDedicatedOutboundSub",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Use dedicated subscriptions for Internet egress",
+                            "defaultValue": "No",
+                            "visible": "[or(equals(steps('esConnectivityGoalState').esHub, 'vhub'), equals(steps('esConnectivityGoalState').esHub, 'vwan'))]",
+                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, you can optionally add dedicated subscription for ingess and egress",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ]
+                            }
+                        },
+						{
+                            "name": "esNwAdditionalSubSectionEgress",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Internet egress subscription",
+                            "elements": [
+                                {
+                                    "type": "Microsoft.Common.SubscriptionSelector",
+                                    "name": "esNwEgress",
+                                    "label": "Internet egress subscription"
+                                }
+                            ],
+                            "visible": "[and(not(equals(steps('esConnectivityGoalState').esHub, 'No')), equals(steps('esConnectivityGoalState').esDedicatedOutboundSub, 'Yes'))]"
+                        },
+                        {
+                            "name": "esAddressEgress",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Address space (required for the virtual network)",
+                            "toolTip": "Provide address prefix in CIDR notation (e.g 10.210.0.0/16)",
+                            "defaultValue": "10.210.0.0/16",
+                            "visible": "[and(not(equals(steps('esConnectivityGoalState').esHub, 'No')), equals(steps('esConnectivityGoalState').esDedicatedOutboundSub, 'Yes'))]",
+                            "constraints": {
+                                "required": true,
+                                "validations": [
+                                    {
+                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(1[0-9]|2[0-4]))$",
+                                        "message": "Invalid CIDR range. The address prefix must be in the range [10,24]."
+                                    }
+                                ]
+                            }
+                        },
+						{
+                            "name": "esAzFwEgress",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy Azure Firewall",
+                            "defaultValue": "Yes (recommended)",
+                            "visible": "[and(not(equals(steps('esConnectivityGoalState').esHub, 'No')), equals(steps('esConnectivityGoalState').esDedicatedOutboundSub, 'Yes'))]",
+                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, Azure Firewall will be created using the same configuration as used in the connectivity hub",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ]
+                            }
+                        },
+						{
+                            "name": "esAddressFwEgress",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Subnet for Azure Firewall for ingress",
+                            "toolTip": "Provide address prefix in CIDR notation (e.g 10.210.0.0/24)",
+                            "defaultValue": "10.210.0.0/24",
+                            "visible": "[and(equals(steps('esConnectivityGoalState').esAzFwEgress, 'Yes'), equals(steps('esConnectivityGoalState').esDedicatedOutboundSub, 'Yes'))]",
+                            "constraints": {
+                                "required": true,
+                                "validations": [
+                                    {
+                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(2[0-6]))$",
+                                        "message": "Invalid CIDR range. The address prefix must be in the range [20,26]."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('esConnectivityGoalState').esAddressEgress, '/')), 8), equals(last(take(split(first(split(steps('esConnectivityGoalState').esAddressEgress, '/')), '.'), 1)), last(take(split(first(split(steps('esConnectivityGoalState').esAddressFwEgress, '/')), '.'), 1))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (first octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('esConnectivityGoalState').esAddressEgress, '/')), 16), equals(last(take(split(first(split(steps('esConnectivityGoalState').esAddressEgress, '/')), '.'), 2)), last(take(split(first(split(steps('esConnectivityGoalState').esAddressFwEgress, '/')), '.'), 2))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (second octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('esConnectivityGoalState').esAddressEgress, '/')), 24), equals(last(take(split(first(split(steps('esConnectivityGoalState').esAddressEgress, '/')), '.'), 3)), last(take(split(first(split(steps('esConnectivityGoalState').esAddressFwEgress, '/')), '.'), 3))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (third octet)."
+                                    },
+                                    {
+                                        "isValid": "[lessOrEquals(last(split(steps('esConnectivityGoalState').esAddressEgress, '/')), last(split(steps('esConnectivityGoalState').esAddressFwEgress, '/')))]",
+                                        "message": "CIDR range not within virtual network CIDR range (subnet mask)."
+                                    }
+                                ]
+                            }
+                        },
+						{
+                            "name": "esAzFwSkuEgress",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select Azure Firewall tier",
+                            "defaultValue": "Standard",
+                            "multiselect": false,
+                            "selectAll": false,
+                            "filter": false,
+                            "multiLine": true,
+                            "visible": "[equals(steps('esConnectivityGoalState').esAzFwEgress, 'Yes')]",
+                            "toolTip": "Select Azure Firewall tier",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Standard",
+                                        "description": "Standard Azure Firewall",
+                                        "value": "Standard"
+                                    },
+                                    {
+                                        "label": "Premium",
+                                        "description": "Premium Azure Firewall adds support for TLS inspection, IDPS, URL filtering and web categories.",
+                                        "value": "Premium"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esFwAzEgress",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select Availability Zones for the Azure Firewall",
+                            "defaultValue": "None",
+                            "multiselect": true,
+                            "selectAll": true,
+                            "filter": true,
+                            "visible": "[if(equals(steps('esConnectivityGoalState').esDedicatedOutboundSub, 'Yes'), and(equals(steps('esConnectivityGoalState').esAzFwEgress,'Yes'), contains(split('canadacentral,centralus,eastus,eastus2,southcentralus,westus2,francecentral,germanywestcentral,northeurope,westeurope,uksouth,southafricanorth,japaneast,southeastasia,australiaeast', ','), steps('esConnectivityGoalState').esNwLocation)), false)]",
+                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, ARM will deploy Azure Firewall to the selected region and availability zones.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Zone 1",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "label": "Zone 2",
+                                        "value": "2"
+                                    },
+                                    {
+                                        "label": "Zone 3",
+                                        "value": "3"
                                     }
                                 ]
                             }
@@ -2661,6 +2977,18 @@
                 "enablePrivateDnsResolver": "[steps('esConnectivityGoalState').esPrivateDnsResolver]",
                 "subnetMaskForDnsResolverInbound": "[steps('esConnectivityGoalState').subnetMaskPrivateDnsResolverInbound]",
                 "subnetMaskForDnsResolverOutbound": "[steps('esConnectivityGoalState').subnetMaskPrivateDnsResolverOutbound]",
+				"ingressSubscriptionId": "[steps('esConnectivityGoalState').esNwAdditionalSubSectionIngress.esNwIngress.subscriptionId]",
+				"egressSubscriptionId": "[steps('esConnectivityGoalState').esNwAdditionalSubSectionEgress.esNwEgress.subscriptionId]",
+				"addressPrefixIngress": "[steps('esConnectivityGoalState').esAddressIngress]",
+				"addressPrefixEgress": "[steps('esConnectivityGoalState').esAddressEgress]",
+				"enableAzFwIngress": "[steps('esConnectivityGoalState').esAzFwIngress]",
+				"enableAzFwEgress": "[steps('esConnectivityGoalState').esAzFwEgress]",
+				"subnetMaskForAzFwIngress": "[steps('esConnectivityGoalState').esAddressFwIngress]",
+				"subnetMaskForAzFwEgress": "[steps('esConnectivityGoalState').esAddressFwEgress]",
+				"firewallSkuIngress": "[steps('esConnectivityGoalState').esAzFwSkuIngress]",
+				"firewallSkuEgress": "[steps('esConnectivityGoalState').esAzFwSkuEgress]",
+                "firewallZonesIngress": "[steps('esConnectivityGoalState').esFwAzIngress]",
+				"firewallZonesEgress": "[steps('esConnectivityGoalState').esFwAzEgress]",
                 "corpConnectedLzSubscriptionId": "[if(or(not(contains(steps('lzGoalState').corpLz.esCorpLzSub,steps('esGoalState').esMgmtSubSection.esMgmtSub.subscriptionId)),not(contains(steps('lzGoalState').corpLz.esCorpLzSub,steps('esConnectivityGoalState').esNwSubSection.esNwSub.subscriptionId))),steps('lzGoalState').corpLz.lzConnectedSubs,'')]"
             },
             "kind": "Tenant",
