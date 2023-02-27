@@ -218,9 +218,39 @@
                     "secretsActive": {
                         "type": "string",
                         "defaultValue": "Deny"
+                    },
+                    "hsmDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "hsmLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "hsmLogCategories": {
+                        "type": "string",
+                        "defaultValue": "allLogs"
                     }
                 },
                 "policyDefinitions": [                   
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b88bfd90-4da5-43eb-936f-ae1481924291",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Hsm",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('hsmDiagnostics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('hsmLogAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('hsmLogCategories')]"
+                            }
+                        }
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e8d99835-8a06-45ae-a8e0-87a91941ccfe",
                         "policyDefinitionReferenceId": "Deny-KV-Secret-AvticeDays",

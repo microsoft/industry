@@ -4,7 +4,7 @@
     "parameters": {
         "topLevelManagementGroupPrefix": {
             "type": "string",
-            "defaultValue": ""
+            "defaultValue": "FSIDemo"
         }
     },
     "variables": {
@@ -1535,9 +1535,159 @@
                     "erDiagnosticsLogAnalyticsWorkspaceId": {
                         "type": "string",
                         "defaultValue": ""
+                    },
+                    "bastionDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "bastionLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "bastionLogCategories": {
+                        "type": "string",
+                        "defaultValue": "allLogs"
+                    },
+                    "fdCdnDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "fdCdnLogAnalyticsWorkpaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "fdCdnLogCategories": {
+                        "type": "string",
+                        "defaultValue": "allLogs"
+                    },
+                    "pipDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "pipLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "pipLogCategories": {
+                        "type": "string",
+                        "defaultValue": "allLogs"
+                    },
+                    "gwDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "gwLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "gwLogCategories": {
+                        "type": "string",
+                        "defaultValue": "allLogs"
+                    },
+                    "p2sDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "p2sLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "p2sLogCategories": {
+                        "type": "string",
+                        "defaultValue": "allLogs"
                     }
                 },
                 "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/cac9e1c5-c3cb-47fa-8d4c-88b8559262d2",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-P2S",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('p2sDiagnostics')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('p2sLogCategories')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('p2sLogAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ed6ae75a-828f-4fea-88fd-dead1145f1dd",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Gw",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('gwDiagnostics')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('gwLogCategories')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('gwLogAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/1513498c-3091-461a-b321-e9b433218d28",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Pip",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('pipDiagnostics')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('pipLogCategories')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('pipLogAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/6201aeb7-2b5c-4671-8ab4-5d3ba4d77f3b",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-FdCdn",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('fdCdnDiagnostics')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('fdCdnLogCategories')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('fdCdnLogAnalyticsWorkpaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/f8352124-56fa-4f94-9441-425109cdc14b",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Bastion",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('bastionDiagnostics')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('bastionLogCategories')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('bastionLogAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/12430be1-6cc8-4527-a9a8-e3d38f250096",
                         "policyDefinitionReferenceId": "Deny-Waf-AppGw-mode",
