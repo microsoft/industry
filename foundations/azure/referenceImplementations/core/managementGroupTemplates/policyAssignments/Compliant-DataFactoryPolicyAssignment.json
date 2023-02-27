@@ -16,19 +16,7 @@
             ],
             "defaultValue": "Default"
         },
-        "keyVaultLogAnalyticsWorkspaceId": {
-            "type": "string",
-            "metadata": {
-                "description": "Provide the Log Analytics Workspace ID for Key Vault"
-            }
-        },
-        "keyVaultPrivateDnsZoneId": {
-            "type": "string",
-            "metadata": {
-                "description": "Provide the Private DNS Zone ID for Key Vault"
-            }
-        },
-        "keyVaultDiagnostics": {
+        "adfPrivateDnsZone": {
             "type": "string",
             "defaultValue": "Disabled",
             "allowedValues": [
@@ -36,7 +24,15 @@
                 "Disabled"
             ]
         },
-        "keyVaultPrivateDnsZone": {
+        "adfPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "adfManagedIdentity": {
+            "type": "string",
+            "defaultValue": "Deny"
+        },
+        "adfDiagnostics": {
             "type": "string",
             "defaultValue": "Disabled",
             "allowedValues": [
@@ -44,14 +40,7 @@
                 "Disabled"
             ]
         },
-        "hsmDiagnostics": {
-            "type": "string",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "hsmLogAnalyticsWorkspaceId": {
+        "adfLogAnalyticsWorkspaceId": {
             "type": "string",
             "defaultValue": ""
         },
@@ -61,19 +50,19 @@
     },
     "variables": {
         "policyDefinitions": {
-            "compliantKeyVault": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Key-Vault')]"
+            "compliantAdf": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-DataFactory')]"
         },
         "policyAssignmentNames": {
-            "keyVault": "Compliant-Key-Vault",
-            "description": "This policy initiative is a group of policies that ensures Key Vault is compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default Key Vault for Financial Services Industry"
+            "adf": "Compliant-DataFactory",
+            "description": "This policy initiative is a group of policies that ensures Data Factory is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Data Factory for Financial Services Industry"
         }
     },
     "resources": [
         {
             "type": "Microsoft.Authorization/policyAssignments",
             "apiVersion": "2022-06-01",
-            "name": "[variables('policyAssignmentNames').keyVault]",
+            "name": "[variables('policyAssignmentNames').adf]",
             "location": "[deployment().location]",
             "identity": {
                 "type": "UserAssigned",
@@ -84,26 +73,20 @@
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
                 "displayName": "[variables('policyAssignmentNames').displayName]",
-                "policyDefinitionId": "[variables('policyDefinitions').compliantKeyVault]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantAdf]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "keyVaultLogAnalyticsWorkspaceId": {
-                        "value": "[parameters('keyVaultLogAnalyticsWorkspaceId')]"
+                    "adfPrivateDnsZone": {
+                        "value": "[parameters('adfPrivateDnsZone')]"
                     },
-                    "keyVaultPrivateDnsZoneId": {
-                        "value": "[parameters('keyVaultPrivateDnsZoneId')]"
+                    "adfPrivateDnsZoneId": {
+                        "value": "[parameters('adfPrivateDnsZoneId')]"
                     },
-                    "keyVaultPrivateDnsZone": {
-                        "value": "[parameters('keyVaultPrivateDnsZone')]"
+                    "adfDiagnostics": {
+                        "value": "[parameters('adfDiagnostics')]"
                     },
-                    "keyVaultDiagnostics": {
-                        "value": "[parameters('keyVaultDiagnostics')]"
-                    },
-                    "hsmDiagnostics": {
-                        "value": "[parameters('hsmDiagnostics')]"
-                    },
-                    "hsmLogAnalyticsWorkspaceId": {
-                        "value": "[parameters('hsmLogAnalyticsWorkspaceId')]"
+                    "adfLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('adfLogAnalyticsWorkspaceId')]"
                     }
                 }
             }

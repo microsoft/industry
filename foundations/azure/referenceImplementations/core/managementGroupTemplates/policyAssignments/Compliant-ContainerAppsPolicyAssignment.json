@@ -2,6 +2,12 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
+            }
+        },
         "enforcementMode": {
             "type": "string",
             "allowedValues": [
@@ -16,19 +22,19 @@
     },
     "variables": {
         "policyDefinitions": {
-            "defenderEndpoint": "/providers/Microsoft.Authorization/policySetDefinitions/e20d08c5-6d64-656d-6465-ce9e37fd0ebc"
-            },
-        "policyAssignmentNames": {
-            "defenderEndpoint": "Deploy-Defender",
-            "description": "Deploy Microsoft Defender for Endpoint agent on applicable images.",
-            "displayName": "Deploy Microsoft Defender for Endpoint agent"
-            }
+            "conApps": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-ContainerApps')]"
         },
+        "policyAssignmentNames": {
+            "con": "Compliant-ContainerApps",
+            "description": "This policy initiative is a group of policies that ensures Container Apps are compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Container Apps for Financial Services Industry"
+        }
+    },
     "resources": [
         {
             "type": "Microsoft.Authorization/policyAssignments",
             "apiVersion": "2022-06-01",
-            "name": "[variables('policyAssignmentNames').defenderEndpoint]",
+            "name": "[variables('policyAssignmentNames').con]",
             "location": "[deployment().location]",
             "identity": {
                 "type": "UserAssigned",
@@ -39,12 +45,12 @@
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
                 "displayName": "[variables('policyAssignmentNames').displayName]",
-                "policyDefinitionId": "[variables('policyDefinitions').defenderEndpoint]",
+                "policyDefinitionId": "[variables('policyDefinitions').conApps]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {}
             }
         }
+        
     ],
     "outputs": {}
 }
-     

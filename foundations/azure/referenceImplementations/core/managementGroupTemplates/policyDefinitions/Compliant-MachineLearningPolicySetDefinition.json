@@ -162,9 +162,39 @@
                     "mlCmk": {
                         "type": "string",
                         "defaultValue": "Deny"
+                    },
+                    "mlDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "mlLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "mlLogCategories": {
+                        "type": "string",
+                        "defaultValue": "allLogs"
                     }
                 },
                 "policyDefinitions": [                   
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/90c90eda-bfe7-4c67-bf26-410420ed1047",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Ml",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('mlDiagnostics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('mlLogAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('mlLogCategories')]"
+                            }
+                        }
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ba769a63-b8cc-4b2d-abf6-ac33c7204be8",
                         "policyDefinitionReferenceId": "Deny-ML-Cmk",

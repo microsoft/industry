@@ -16,19 +16,7 @@
             ],
             "defaultValue": "Default"
         },
-        "keyVaultLogAnalyticsWorkspaceId": {
-            "type": "string",
-            "metadata": {
-                "description": "Provide the Log Analytics Workspace ID for Key Vault"
-            }
-        },
-        "keyVaultPrivateDnsZoneId": {
-            "type": "string",
-            "metadata": {
-                "description": "Provide the Private DNS Zone ID for Key Vault"
-            }
-        },
-        "keyVaultDiagnostics": {
+        "eventHubNamespacesPrivateDnsZone": {
             "type": "string",
             "defaultValue": "Disabled",
             "allowedValues": [
@@ -36,7 +24,11 @@
                 "Disabled"
             ]
         },
-        "keyVaultPrivateDnsZone": {
+        "eventHubNamespacesPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "eventHubDiagnostics": {
             "type": "string",
             "defaultValue": "Disabled",
             "allowedValues": [
@@ -44,14 +36,7 @@
                 "Disabled"
             ]
         },
-        "hsmDiagnostics": {
-            "type": "string",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "hsmLogAnalyticsWorkspaceId": {
+        "eventHubLogAnalyticsWorkspaceId": {
             "type": "string",
             "defaultValue": ""
         },
@@ -61,19 +46,19 @@
     },
     "variables": {
         "policyDefinitions": {
-            "compliantKeyVault": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Key-Vault')]"
+            "compliantEh": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Event-Hub')]"
         },
         "policyAssignmentNames": {
-            "keyVault": "Compliant-Key-Vault",
-            "description": "This policy initiative is a group of policies that ensures Key Vault is compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default Key Vault for Financial Services Industry"
+            "eh": "Compliant-Event-Hub",
+            "description": "This policy initiative is a group of policies that ensures Event Hub is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Event Hub for Financial Services Industry"
         }
     },
     "resources": [
         {
             "type": "Microsoft.Authorization/policyAssignments",
             "apiVersion": "2022-06-01",
-            "name": "[variables('policyAssignmentNames').keyVault]",
+            "name": "[variables('policyAssignmentNames').eh]",
             "location": "[deployment().location]",
             "identity": {
                 "type": "UserAssigned",
@@ -84,26 +69,20 @@
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
                 "displayName": "[variables('policyAssignmentNames').displayName]",
-                "policyDefinitionId": "[variables('policyDefinitions').compliantKeyVault]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantEh]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "keyVaultLogAnalyticsWorkspaceId": {
-                        "value": "[parameters('keyVaultLogAnalyticsWorkspaceId')]"
+                    "eventHubNamespacesPrivateDnsZone": {
+                        "value": "[parameters('eventHubNamespacesPrivateDnsZone')]"
                     },
-                    "keyVaultPrivateDnsZoneId": {
-                        "value": "[parameters('keyVaultPrivateDnsZoneId')]"
+                    "eventHubNamespacesPrivateDnsZoneId": {
+                        "value": "[parameters('eventHubNamespacesPrivateDnsZoneId')]"
                     },
-                    "keyVaultPrivateDnsZone": {
-                        "value": "[parameters('keyVaultPrivateDnsZone')]"
+                    "eventHubDiagnostics": {
+                        "value": "[parameters('eventHubDiagnostics')]"
                     },
-                    "keyVaultDiagnostics": {
-                        "value": "[parameters('keyVaultDiagnostics')]"
-                    },
-                    "hsmDiagnostics": {
-                        "value": "[parameters('hsmDiagnostics')]"
-                    },
-                    "hsmLogAnalyticsWorkspaceId": {
-                        "value": "[parameters('hsmLogAnalyticsWorkspaceId')]"
+                    "eventHubLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('eventHubLogAnalyticsWorkspaceId')]"
                     }
                 }
             }

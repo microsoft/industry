@@ -16,19 +16,7 @@
             ],
             "defaultValue": "Default"
         },
-        "keyVaultLogAnalyticsWorkspaceId": {
-            "type": "string",
-            "metadata": {
-                "description": "Provide the Log Analytics Workspace ID for Key Vault"
-            }
-        },
-        "keyVaultPrivateDnsZoneId": {
-            "type": "string",
-            "metadata": {
-                "description": "Provide the Private DNS Zone ID for Key Vault"
-            }
-        },
-        "keyVaultDiagnostics": {
+        "cosmosDbPrivateDnsZone": {
             "type": "string",
             "defaultValue": "Disabled",
             "allowedValues": [
@@ -36,7 +24,15 @@
                 "Disabled"
             ]
         },
-        "keyVaultPrivateDnsZone": {
+        "cosmosDbPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "cosmosDbPrivateEndpointGroupId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "cosmosDiagnostics": {
             "type": "string",
             "defaultValue": "Disabled",
             "allowedValues": [
@@ -44,14 +40,7 @@
                 "Disabled"
             ]
         },
-        "hsmDiagnostics": {
-            "type": "string",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "hsmLogAnalyticsWorkspaceId": {
+        "cosmosLogAnalyticsWorkspaceId": {
             "type": "string",
             "defaultValue": ""
         },
@@ -61,19 +50,19 @@
     },
     "variables": {
         "policyDefinitions": {
-            "compliantKeyVault": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Key-Vault')]"
+            "compliantCosmos": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-CosmosDb')]"
         },
         "policyAssignmentNames": {
-            "keyVault": "Compliant-Key-Vault",
-            "description": "This policy initiative is a group of policies that ensures Key Vault is compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default Key Vault for Financial Services Industry"
+            "cosmos": "Compliant-CosmosDb",
+            "description": "This policy initiative is a group of policies that ensures Cosmos DB is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Cosmos DB for Financial Services Industry"
         }
     },
     "resources": [
         {
             "type": "Microsoft.Authorization/policyAssignments",
             "apiVersion": "2022-06-01",
-            "name": "[variables('policyAssignmentNames').keyVault]",
+            "name": "[variables('policyAssignmentNames').cosmos]",
             "location": "[deployment().location]",
             "identity": {
                 "type": "UserAssigned",
@@ -84,26 +73,23 @@
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
                 "displayName": "[variables('policyAssignmentNames').displayName]",
-                "policyDefinitionId": "[variables('policyDefinitions').compliantKeyVault]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantCosmos]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "keyVaultLogAnalyticsWorkspaceId": {
-                        "value": "[parameters('keyVaultLogAnalyticsWorkspaceId')]"
+                    "cosmosDbPrivateDnsZone": {
+                        "value": "[parameters('cosmosDbPrivateDnsZone')]"
                     },
-                    "keyVaultPrivateDnsZoneId": {
-                        "value": "[parameters('keyVaultPrivateDnsZoneId')]"
+                    "cosmosDbPrivateDnsZoneId": {
+                        "value": "[parameters('cosmosDbPrivateDnsZoneId')]"
                     },
-                    "keyVaultPrivateDnsZone": {
-                        "value": "[parameters('keyVaultPrivateDnsZone')]"
+                    "cosmosDbPrivateEndpointGroupId": {
+                        "value": "[parameters('cosmosDbPrivateEndpointGroupId')]"
                     },
-                    "keyVaultDiagnostics": {
-                        "value": "[parameters('keyVaultDiagnostics')]"
+                    "cosmosDiagnostics": {
+                        "value": "[parameters('cosmosDiagnostics')]"
                     },
-                    "hsmDiagnostics": {
-                        "value": "[parameters('hsmDiagnostics')]"
-                    },
-                    "hsmLogAnalyticsWorkspaceId": {
-                        "value": "[parameters('hsmLogAnalyticsWorkspaceId')]"
+                    "cosmosLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('cosmosLogAnalyticsWorkspaceId')]"
                     }
                 }
             }

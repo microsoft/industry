@@ -16,19 +16,7 @@
             ],
             "defaultValue": "Default"
         },
-        "keyVaultLogAnalyticsWorkspaceId": {
-            "type": "string",
-            "metadata": {
-                "description": "Provide the Log Analytics Workspace ID for Key Vault"
-            }
-        },
-        "keyVaultPrivateDnsZoneId": {
-            "type": "string",
-            "metadata": {
-                "description": "Provide the Private DNS Zone ID for Key Vault"
-            }
-        },
-        "keyVaultDiagnostics": {
+        "aksDefender": {
             "type": "string",
             "defaultValue": "Disabled",
             "allowedValues": [
@@ -36,22 +24,18 @@
                 "Disabled"
             ]
         },
-        "keyVaultPrivateDnsZone": {
+        "aksDefenderLogAnalyticsWorkspaceResourceId": {
             "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
+            "defaultValue": ""
         },
-        "hsmDiagnostics": {
+        "aksDiagnostics": {
             "type": "string",
             "allowedValues": [
                 "DeployIfNotExists",
                 "Disabled"
             ]
         },
-        "hsmLogAnalyticsWorkspaceId": {
+        "aksLogAnalyticsWorkspaceId": {
             "type": "string",
             "defaultValue": ""
         },
@@ -61,19 +45,19 @@
     },
     "variables": {
         "policyDefinitions": {
-            "compliantKeyVault": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Key-Vault')]"
+            "compliantAks": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Kubernetes')]"
         },
         "policyAssignmentNames": {
-            "keyVault": "Compliant-Key-Vault",
-            "description": "This policy initiative is a group of policies that ensures Key Vault is compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default Key Vault for Financial Services Industry"
+            "aks": "Compliant-Kubernetes",
+            "description": "This policy initiative is a group of policies that ensures Kubernetes is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Kubernetes for Financial Services Industry"
         }
     },
     "resources": [
         {
             "type": "Microsoft.Authorization/policyAssignments",
             "apiVersion": "2022-06-01",
-            "name": "[variables('policyAssignmentNames').keyVault]",
+            "name": "[variables('policyAssignmentNames').aks]",
             "location": "[deployment().location]",
             "identity": {
                 "type": "UserAssigned",
@@ -84,26 +68,20 @@
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
                 "displayName": "[variables('policyAssignmentNames').displayName]",
-                "policyDefinitionId": "[variables('policyDefinitions').compliantKeyVault]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantAks]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "keyVaultLogAnalyticsWorkspaceId": {
-                        "value": "[parameters('keyVaultLogAnalyticsWorkspaceId')]"
+                    "aksDefender": {
+                        "value": "[parameters('aksDefender')]"
                     },
-                    "keyVaultPrivateDnsZoneId": {
-                        "value": "[parameters('keyVaultPrivateDnsZoneId')]"
+                    "aksDefenderLogAnalyticsWorkspaceResourceId": {
+                        "value": "[parameters('aksDefenderLogAnalyticsWorkspaceResourceId')]"
                     },
-                    "keyVaultPrivateDnsZone": {
-                        "value": "[parameters('keyVaultPrivateDnsZone')]"
+                    "aksDiagnostics": {
+                        "value": "[parameters('aksDiagnostics')]"
                     },
-                    "keyVaultDiagnostics": {
-                        "value": "[parameters('keyVaultDiagnostics')]"
-                    },
-                    "hsmDiagnostics": {
-                        "value": "[parameters('hsmDiagnostics')]"
-                    },
-                    "hsmLogAnalyticsWorkspaceId": {
-                        "value": "[parameters('hsmLogAnalyticsWorkspaceId')]"
+                    "aksLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('aksLogAnalyticsWorkspaceId')]"
                     }
                 }
             }

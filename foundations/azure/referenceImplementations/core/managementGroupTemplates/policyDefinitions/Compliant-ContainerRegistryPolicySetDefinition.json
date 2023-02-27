@@ -9,7 +9,6 @@
     },
     "variables": {
         "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
-        // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
         "policies": {
             "policyDefinitions": [
             ]
@@ -138,9 +137,39 @@
                     "containerRegistryModifyPublicNetworkAccess": {
                         "type": "string",
                         "defaultValue": "Modify"
+                    },
+                    "containerRegistryDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "containerRegistryLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "containerRegistryLogCategories": {
+                        "type": "string",
+                        "defaultValue": "allLogs"
                     }
                 },
                 "policyDefinitions": [                   
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/56288eb2-4350-461d-9ece-2bb242269dce",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-CR",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('containerRegistryDiagnostics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('containerRegistryLogAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('containerRegistryLogCategories')]"
+                            }
+                        }
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/0fdf0491-d080-4575-b627-ad0e843cba0f",
                         "policyDefinitionReferenceId": "Deny-ContainerRegistry-Public-Network-Access",
