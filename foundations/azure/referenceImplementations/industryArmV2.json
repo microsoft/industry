@@ -665,7 +665,9 @@
             "compliantCosmosDbPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-CosmosDbPolicySetDefinition.json')]",            
             "compliantCosmosDbPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-CosmosDbPolicyAssignment.json')]",            
             "compliantDataExplorerPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-DataExplorerPolicySetDefinition.json')]",            
+            "compliantDataExplorerPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-DataExplorerPolicyAssignment.json')]",            
             "compliantDataFactoryPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-DataFactoryPolicySetDefinition.json')]",
+            "compliantDataFactoryPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-DataFactoryPolicyAssignment.json')]",
             "compliantEventGridPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-EventGridPolicySetDefinition.json')]",            
             "compliantEventHubPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-EventHubPolicySetDefinition.json')]",                        
             "compliantKeyVaultPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-KeyVaultPolicySetDefinition.json')]",
@@ -844,6 +846,8 @@
             "compliantBackupAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Backup', variables('deploymentSuffix')), 64)]",
             "compliantCosmosDbAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-CosmosDb', variables('deploymentSuffix')), 64)]",
             "compliantComputeAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Compute', variables('deploymentSuffix')), 64)]",
+            "compliantDataExplorerAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ADE', variables('deploymentSuffix')), 64)]",
+            "compliantDataFactoryAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ADF', variables('deploymentSuffix')), 64)]",
             "compliantKeyVaultAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-KeyVault', variables('deploymentSuffix')), 64)]",
             "compliantContainerAppsAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerApps', variables('deploymentSuffix')), 64)]",            
             "compliantContainerInstanceAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerInstance', variables('deploymentSuffix')), 64)]",            
@@ -946,6 +950,7 @@
             "privatelink.mysql.database.azure.com",
             "privatelink.mariadb.database.azure.com",
             "privatelink.vaultcore.azure.net",
+            "privatelink.datafactory.azure.net",
             "[concat('privatelink.', parameters('location'), '.azmk8s.io')]",
             "privatelink.search.windows.net",
             "privatelink.azurecr.io",
@@ -999,6 +1004,8 @@
         "privateDnsPolicyParameterMapping": {
             "azureAutomationPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.azure-automation.net')]",
             "azureCosmosTablePrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.table.cosmos.azure.com')]",
+            "azureCosmosSqlPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.documents.azure.com')]",
+            "azureDataFactoryPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.datafactory.azure.net')]",
             "azureBackupPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.', parameters('location'), '.backup.windowsazure.com')]",
             "azureBackupBlobPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.blob.core.windows.net')]",
             "azureBackupQueuePrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.queue.core.windows.net')]",
@@ -3357,6 +3364,12 @@
                     "containerRegistryPrivateDnsZoneId": {
                         "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureContainerRegistryPrivateDnsZoneId, '')]"
                     },
+                    "containerRegistryDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "containerRegistryLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
                     }
@@ -3391,10 +3404,10 @@
                         "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "cosmosDbPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureCosmosTablePrivateDnsZoneId, '')]"
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureCosmosSqlPrivateDnsZoneId, '')]"
                     },
                     "cosmosDbPrivateEndpointGroupId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureKeyVaultPrivateDnsZoneId, '')]"
+                        "value": "Sql"
                     },
                     "cosmosDiagnostics": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
@@ -3408,7 +3421,85 @@
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
             }
-        },               
+        },
+        {   // Creating Policy Assignment Compliant Data Explorer to Landing Zone scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'DataExplorer')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantDataExplorerAssignmentDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantDataExplorerDeploymentName)]",
+                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantDataExplorerPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "adeDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "adeLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
+                    // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
+                }
+            }
+        },
+        {   // Creating Policy Assignment Data Factory Vault to Landing Zone scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'DataFactory')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantDataFactoryAssignmentDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantDataFactoryDeploymentName)]",
+                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantDataFactoryPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "adfPrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "adfDbPrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureDataFactoryPrivateDnsZoneId, '')]"
+                    },
+                    "adfDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "adfLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
+                    // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
+                }
+            }
+        },                      
         {   // Creating Policy Assignment Compliant Key Vault to Landing Zone scope
             "condition": "[contains(parameters('compliantAzureServices'), 'KeyVault')]",
             "type": "Microsoft.Resources/deployments",

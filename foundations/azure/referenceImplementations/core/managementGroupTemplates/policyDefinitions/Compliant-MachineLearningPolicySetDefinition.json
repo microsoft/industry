@@ -185,7 +185,7 @@
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('mlDiagnotics')]"
+                                "value": "[[parameters('mlDiagnostics')]"
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('mlLogAnalyticsWorkspaceId')]"

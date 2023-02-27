@@ -567,6 +567,8 @@
                                 "Container Instance",
                                 "Container Registry",
                                 "Cosmos DB",
+                                "Data Explorer",
+                                "Data Factory",
                                 "Key Vault",
                                 "SQL",
                                 "Service Bus",                                
@@ -647,6 +649,16 @@
                                         "label": "Cosmos DB",
                                         "description": "Azure policies will ensure secure by-default compliance for Cosmos DB, enforce access via private endpoints, double encryption, centralized authorization, and centralized logging.",
                                         "value": "CosmosDb"
+                                    },
+                                    {
+                                        "label": "Data Explorer",
+                                        "description": "Azure policies will ensure secure by-default compliance for Data Explorer, enforce access via private endpoints, double encryption, centralized authorization, and centralized logging.",
+                                        "value": "DataExplorer"
+                                    },
+                                    {
+                                        "label": "Data Factory",
+                                        "description": "Azure policies will ensure secure by-default compliance for Data Factory, enforce access via private endpoints, double encryption, centralized authorization, and centralized logging.",
+                                        "value": "DataFactory"
                                     },
                                     {
                                         "label": "Open AI",

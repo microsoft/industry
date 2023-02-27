@@ -16,7 +16,7 @@
             ],
             "defaultValue": "Default"
         },
-        "containerRegistryPrivateDnsZone": {
+        "adfPrivateDnsZone": {
             "type": "string",
             "defaultValue": "Disabled",
             "allowedValues": [
@@ -24,11 +24,15 @@
                 "Disabled"
             ]
         },
-        "containerRegistryPrivateDnsZoneId": {
+        "adfPrivateDnsZoneId": {
             "type": "string",
             "defaultValue": ""
         },
-        "containerRegistryDiagnostics": {
+        "adfManagedIdentity": {
+            "type": "string",
+            "defaultValue": "Deny"
+        },
+        "adfDiagnostics": {
             "type": "string",
             "defaultValue": "Disabled",
             "allowedValues": [
@@ -36,7 +40,7 @@
                 "Disabled"
             ]
         },
-        "containerRegistryLogAnalyticsWorkspaceId": {
+        "adfLogAnalyticsWorkspaceId": {
             "type": "string",
             "defaultValue": ""
         },
@@ -46,19 +50,19 @@
     },
     "variables": {
         "policyDefinitions": {
-            "conRegistry": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-ContainerRegistry')]"
+            "compliantAdf": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-DataFactory')]"
         },
         "policyAssignmentNames": {
-            "con": "Compliant-ConRegistry",
-            "description": "This policy initiative is a group of policies that ensures Container Registry is compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default Container Registry for Financial Services Industry"
+            "adf": "Compliant-DataFactory",
+            "description": "This policy initiative is a group of policies that ensures Data Factory is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Data Factory for Financial Services Industry"
         }
     },
     "resources": [
         {
             "type": "Microsoft.Authorization/policyAssignments",
             "apiVersion": "2022-06-01",
-            "name": "[variables('policyAssignmentNames').con]",
+            "name": "[variables('policyAssignmentNames').adf]",
             "location": "[deployment().location]",
             "identity": {
                 "type": "UserAssigned",
@@ -69,20 +73,20 @@
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
                 "displayName": "[variables('policyAssignmentNames').displayName]",
-                "policyDefinitionId": "[variables('policyDefinitions').conRegistry]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantAdf]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "containerRegistryPrivateDnsZone": {
-                        "value": "[parameters('containerRegistryPrivateDnsZone')]"
+                    "adfPrivateDnsZone": {
+                        "value": "[parameters('adfPrivateDnsZone')]"
                     },
-                    "containerRegistryPrivateDnsZoneId": {
-                        "value": "[parameters('containerRegistryPrivateDnsZoneId')]"
+                    "adfDbPrivateDnsZoneId": {
+                        "value": "[parameters('adfPrivateDnsZoneId')]"
                     },
-                    "containerRegistryDiagnostics": {
-                        "value": "[parameters('containerRegistryDiagnostics')]"
+                    "adfDiagnostics": {
+                        "value": "[parameters('adfDiagnostics')]"
                     },
-                    "containerRegistryLogAnalyticsWorkspaceId": {
-                        "value": "[parameters('containerRegistryLogAnalyticsWorkspaceId')]"
+                    "adfLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('adfLogAnalyticsWorkspaceId')]"
                     }
                 }
             }
