@@ -1,0 +1,213 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "defaultValue": "FSIDemo"
+        }
+    },
+    "variables": {
+        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
+        "policies": {
+            "policyDefinitions": [
+                {
+                    "properties": {
+                        "displayName": "Purview should disable public network acess",
+                        "mode": "Indexed",
+                        "description": "Disabling public network access improves security by ensuring that the Purview is not exposed on the public internet. Creating private endpoints can limit exposure of a Function App. Learn more at: https://learn.microsoft.com/en-us/azure/purview/catalog-private-link",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Purview"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Deny",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Audit"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Purview/accounts"
+                                    },
+                                    {
+                                        "field": "Microsoft.Purview/accounts/publicNetworkAccess",
+                                        "exists": "true"
+                                    },
+                                    {
+                                        "field": "Microsoft.Purview/accounts/publicNetworkAccess",
+                                        "notEquals": "Enabled"
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-Purview-Public-Network-Access"
+                },
+                {
+                    "properties": {
+                        "displayName": "Private endpoint connections on Azure Purview should be enabled",
+                        "mode": "Indexed",
+                        "description": "Private endpoint connections enforce secure communication by enabling private connectivity to Azure Purview.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Purview"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Deny",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Audit"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Purview/accounts"
+                                    },
+                                    {
+                                        "count": {
+                                            "field": "Microsoft.Purview/accounts/privateEndpointConnections[*]",
+                                            "where": {
+                                                "field": "Microsoft.Purview/accounts/privateEndpointConnections[*].privateLinkServiceConnectionState.status",
+                                                "equals": "Approved"
+                                            }
+                                        },
+                                        "less": 1
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-Purview-Public-Endpoint"
+                }
+            ]
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
+            "apiVersion": "2019-09-01",
+            "copy": {
+                "name": "policyDefinitionCopy",
+                "count": "[length(variables('policies').policyDefinitions)]"
+            },
+            "properties": {
+                "displayName": "[variables('policies').policyDefinitions[copyIndex()].properties.displayName]",
+                "description": "[variables('policies').policyDefinitions[copyIndex()].properties.description]",
+                "mode": "[variables('policies').policyDefinitions[copyIndex()].properties.mode]",
+                "policyType": "Custom",
+                "parameters": "[variables('policies').policyDefinitions[copyIndex()].properties.parameters]",
+                "policyRule": "[variables('policies').policyDefinitions[copyIndex()].properties.policyRule]",
+                "metadata": "[variables('policies').policyDefinitions[copyIndex()].properties.metadata]"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2021-06-01",
+            "name": "Compliant-Purview",
+            "dependsOn": [
+                "policyDefinitionCopy"
+            ],
+            "properties": {
+                "metadata": {
+                    "version": "1.0.0",
+                    "category": "Purview"
+                },
+                "displayName": "Enforce secure-by-default Purview for Financial Services Industry",
+                "description": "This policy initiative is a group of policies that ensures Purview is compliant per FSI Landing Zones",
+                "policyDefinitionGroups": [
+                    {
+                        "name": "Encryption",
+                        "category": "Data Protection",
+                        "displayName": "Ensure Purview is using secure encryption",
+                        "description": "Policy to ensure Purview is using secure encryption"
+                    },
+                    {
+                        "name": "Network",
+                        "category": "Network Security",
+                        "displayName": "Ensure Purview is not accessible over the public internet",
+                        "description": "Policy to ensure Purview is not accessible over the public internet"
+                    },
+                    {
+                        "name": "Identity",
+                        "category": "Identity Management",
+                        "displayName": "Ensure usage of centralized identity and auhtorization system for Purview",
+                        "description": "Policy to ensure Purview is not using local authorization"
+                    },
+                    {
+                        "name": "Logging",
+                        "category": "Logging and Threat Detection",
+                        "displayName": "Ensure Purview is logging all events to Log Analytics",
+                        "description": "Policy to ensure Purview is logging all events to Log Analytics workspace"
+                    }
+                ],
+                "parameters": {
+                    "purviewPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "purviewPublicEndpoint": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    }
+                },
+                "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
+                        "policyDefinitionReferenceId": "Deny-Purview-Public-Network-Access",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('purviewPublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[1].name)]",
+                        "policyDefinitionReferenceId": "Deny-Purview-Public-Endpoint",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('purviewPublicEndpoint')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
