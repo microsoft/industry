@@ -669,12 +669,13 @@
             "compliantDataFactoryPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-DataFactoryPolicySetDefinition.json')]",
             "compliantDataFactoryPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-DataFactoryPolicyAssignment.json')]",
             "compliantEventGridPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-EventGridPolicySetDefinition.json')]",            
-            "compliantEventGridPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignment/Compliant-EventGridPolicyAssignment.json')]",
+            "compliantEventGridPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-EventGridPolicyAssignment.json')]",
             "compliantEventHubPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-EventHubPolicySetDefinition.json')]",                        
             "compliantEventHubPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-EventHubPolicyAssignment.json')]",                        
             "compliantKeyVaultPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-KeyVaultPolicySetDefinition.json')]",
             "compliantKeyVaultPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-KeyVaultPolicyAssignment.json')]",
             "compliantKubernetesPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-KubernetesPolicySetDefinition.json')]",
+            "compliantKubernetesPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-KubernetesPolicyAssignment.json')]",
             "compliantMachineLearningPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-MachineLearningPolicySetDefinition.json')]",
             "compliantOpenAiPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-OpenAiPolicySetDefinition.json')]",                        
             "compliantServiceBusPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-ServiceBusPolicySetDefinition.json')]",                        
@@ -856,6 +857,7 @@
             "compliantContainerAppsAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerApps', variables('deploymentSuffix')), 64)]",            
             "compliantContainerInstanceAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerInstance', variables('deploymentSuffix')), 64)]",            
             "compliantContainerRegistryAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerRegistry', variables('deploymentSuffix')), 64)]",            
+            "compliantKubernetesAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Kubernetes', variables('deploymentSuffix')), 64)]",            
             "compliantApimAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Apim', variables('deploymentSuffix')), 64)]",
             "compliantAppServiceAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-AppService', variables('deploymentSuffix')), 64)]",
             // Telco specific policies assignment deployments
@@ -3652,7 +3654,49 @@
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
             }
-        },                          
+        },
+        {   // Creating Policy Assignment Compliant Kubernetes to Landing Zone scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'Kubernetes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantKubernetesAssignmentDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantKubernetesDeploymentName)]",
+                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantKubernetesPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "eventHubNamespacesPrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "eventHubNamespacesPrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureEventHubNamespacePrivateDnsZoneId, '')]"
+                    },
+                    "eventHubDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "eventHubLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
+                    // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
+                }
+            }
+        },                                 
         /*
             The following section will optionally configure the governance for the Identity management group for the platform
         */

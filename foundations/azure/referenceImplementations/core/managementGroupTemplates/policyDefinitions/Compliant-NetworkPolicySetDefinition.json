@@ -14,7 +14,7 @@
                 {
                     "properties": {
                         "Description": "This policy prevents creation of subnets without a UDR attached to them.",
-                        "DisplayName": "Prevent subnets without Route Table",
+                        "DisplayName": "Prevent creation of subnets without Route Table",
                         "Metadata": {
                             "category": "Network",
                             "version": "1.0.0"
@@ -102,7 +102,7 @@
                 {
                     "properties": {
                         "Description": "This policy prevents creation of subnets without an NSG attached to them.",
-                        "DisplayName": "Prevent subnets without NSG",
+                        "DisplayName": "Prevent creation of subnets without NSG",
                         "Metadata": {
                             "category": "Network",
                             "version": "1.0.0"
@@ -141,8 +141,7 @@
                                                 "notIn": [
                                                     "GatewaySubnet",
                                                     "AzureFirewallSubnet",
-                                                    "AzureFirewallManagementSubnet",
-                                                    "AzureBastionSubnet"
+                                                    "AzureFirewallManagementSubnet"
                                                 ]
                                             },
                                             {
@@ -171,8 +170,7 @@
                                                                 "notIn": [
                                                                     "GatewaySubnet",
                                                                     "AzureFirewallSubnet",
-                                                                    "AzureFirewallManagementSubnet",
-                                                                    "AzureBastionSubnet"
+                                                                    "AzureFirewallManagementSubnet"
                                                                 ]
                                                             },
                                                             {

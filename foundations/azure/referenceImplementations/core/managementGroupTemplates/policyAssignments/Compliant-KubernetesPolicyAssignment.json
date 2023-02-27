@@ -16,7 +16,7 @@
             ],
             "defaultValue": "Default"
         },
-        "eventHubNamespacesPrivateDnsZone": {
+        "aksDefender": {
             "type": "string",
             "defaultValue": "Disabled",
             "allowedValues": [
@@ -24,19 +24,18 @@
                 "Disabled"
             ]
         },
-        "eventHubNamespacesPrivateDnsZoneId": {
+        "aksDefenderLogAnalyticsWorkspaceResourceId": {
             "type": "string",
             "defaultValue": ""
         },
-        "eventHubDiagnostics": {
+        "aksDiagnostics": {
             "type": "string",
-            "defaultValue": "Disabled",
             "allowedValues": [
                 "DeployIfNotExists",
                 "Disabled"
             ]
         },
-        "eventHubLogAnalyticsWorkspaceId": {
+        "aksLogAnalyticsWorkspaceId": {
             "type": "string",
             "defaultValue": ""
         },
@@ -46,19 +45,19 @@
     },
     "variables": {
         "policyDefinitions": {
-            "compliantEh": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Event-Hub')]"
+            "compliantAks": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Kubernetes')]"
         },
         "policyAssignmentNames": {
-            "eh": "Compliant-Event-Hub",
-            "description": "This policy initiative is a group of policies that ensures Event Hub is compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default Event Hub for Financial Services Industry"
+            "aks": "Compliant-Kubernetes",
+            "description": "This policy initiative is a group of policies that ensures Kubernetes is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Kubernetes for Financial Services Industry"
         }
     },
     "resources": [
         {
             "type": "Microsoft.Authorization/policyAssignments",
             "apiVersion": "2022-06-01",
-            "name": "[variables('policyAssignmentNames').eh]",
+            "name": "[variables('policyAssignmentNames').aks]",
             "location": "[deployment().location]",
             "identity": {
                 "type": "UserAssigned",
@@ -69,20 +68,20 @@
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
                 "displayName": "[variables('policyAssignmentNames').displayName]",
-                "policyDefinitionId": "[variables('policyDefinitions').compliantEh]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantAks]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "eventHubNamespacesPrivateDnsZone": {
-                        "value": "[parameters('eventHubNamespacesPrivateDnsZone')]"
+                    "aksDefender": {
+                        "value": "[parameters('aksDefender')]"
                     },
-                    "eventHubNamespacesPrivateDnsZoneId": {
-                        "value": "[parameters('eventHubNamespacesPrivateDnsZoneId')]"
+                    "aksDefenderLogAnalyticsWorkspaceResourceId": {
+                        "value": "[parameters('aksDefenderLogAnalyticsWorkspaceResourceId')]"
                     },
-                    "eventHubDiagnostics": {
-                        "value": "[parameters('eventHubDiagnostics')]"
+                    "aksDiagnostics": {
+                        "value": "[parameters('aksDiagnostics')]"
                     },
-                    "eventHubLogAnalyticsWorkspaceId": {
-                        "value": "[parameters('eventHubLogAnalyticsWorkspaceId')]"
+                    "aksLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('aksLogAnalyticsWorkspaceId')]"
                     }
                 }
             }

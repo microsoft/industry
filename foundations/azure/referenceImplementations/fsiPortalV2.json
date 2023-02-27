@@ -636,6 +636,11 @@
                                         "value": "KeyVault"
                                     },
                                     {
+                                        "label": "Kubernetes",
+                                        "description": "Azure policies will ensure secure by-default compliance for Kubernetes (AKS), secrets, keys, and certificates, enforce access via private endpoints, centralized authorization and governance, and centralized logging.",
+                                        "value": "Kubernetes"
+                                    },
+                                    {
                                         "label": "SQL",
                                         "description": "Azure policies will ensure secure by-default compliance for SQL servers and SQL databases, enforce access via private endpoints, centralized authorization, advanced threat protection and centralized logging.",
                                         "value": "Sql"
