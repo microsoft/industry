@@ -9,7 +9,6 @@
     },
     "variables": {
         "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
-        // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
         "policies": {
             "policyDefinitions": [
             ]
@@ -136,9 +135,99 @@
                   "eventGridTopicModifyPublicNetworkAccess": {
                     "type": "string",
                     "defaultValue": "Modify"
+                  },
+                  "eventGridPartnerDiagnostics": {
+                    "type": "string",
+                    "defaultValue": "DeployIfNotExists"
+                  },
+                  "eventGridPartnerLogAnalyticsWorkspaceId": {
+                    "type": "string",
+                    "defaultValue": ""
+                  },
+                  "eventGridPartnerLogCategories": {
+                    "type": "string",
+                    "defaultValue": "allLogs"
+                  },                  
+                  "eventGridTopicDiagnostics": {
+                    "type": "string",
+                    "defaultValue": "DeployIfNotExists"
+                  },
+                  "eventGridTopicLogAnalyticsWorkspaceId": {
+                    "type": "string",
+                    "defaultValue": ""
+                  },
+                  "eventGridTopicLogCategories": {
+                    "type": "string",
+                    "defaultValue": "allLogs"
+                  },
+                  "eventGridDomainDiagnostics": {
+                    "type": "string",
+                    "defaultValue": "DeployIfNotExists"
+                  },
+                  "eventGridDomainLogAnalyticsWorkspaceId": {
+                    "type": "string",
+                    "defaultValue": ""
+                  },
+                  "eventGridDomainLogCategories": {
+                    "type": "string",
+                    "defaultValue": "allLogs"
                   }
                 },
                 "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b90ec596-faa6-4c61-9515-34085703e260",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-EventGrid-Domain",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('eventGridDomainDiagnostics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('eventGridDomainLogAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('eventGridDomainLogCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/46b2dd5d-3936-4347-8908-b298ea4466d3",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-EventGrid-Topic",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('eventGridTopicDiagnostics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('eventGridTopicLogAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('eventGridTopicLogCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/3496f6fd-57ba-485c-8a14-183c4493b781",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-EventGrid-Partner",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('eventGridPartnerDiagnostics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('eventGridPartnerLogAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('eventGridPartnerLogCategories')]"
+                            }
+                        }
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/898e9824-104c-4965-8e0e-5197588fa5d4",
                         "policyDefinitionReferenceId": "Modify-EventGrid-Domain-Public-Network-Access",

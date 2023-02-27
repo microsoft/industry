@@ -669,7 +669,9 @@
             "compliantDataFactoryPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-DataFactoryPolicySetDefinition.json')]",
             "compliantDataFactoryPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-DataFactoryPolicyAssignment.json')]",
             "compliantEventGridPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-EventGridPolicySetDefinition.json')]",            
+            "compliantEventGridPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignment/Compliant-EventGridPolicyAssignment.json')]",
             "compliantEventHubPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-EventHubPolicySetDefinition.json')]",                        
+            "compliantEventHubPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-EventHubPolicyAssignment.json')]",                        
             "compliantKeyVaultPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-KeyVaultPolicySetDefinition.json')]",
             "compliantKeyVaultPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-KeyVaultPolicyAssignment.json')]",
             "compliantKubernetesPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-KubernetesPolicySetDefinition.json')]",
@@ -848,6 +850,8 @@
             "compliantComputeAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Compute', variables('deploymentSuffix')), 64)]",
             "compliantDataExplorerAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ADE', variables('deploymentSuffix')), 64)]",
             "compliantDataFactoryAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ADF', variables('deploymentSuffix')), 64)]",
+            "compliantEventGridAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-EG', variables('deploymentSuffix')), 64)]",
+            "compliantEventHubAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-EH', variables('deploymentSuffix')), 64)]",
             "compliantKeyVaultAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-KeyVault', variables('deploymentSuffix')), 64)]",
             "compliantContainerAppsAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerApps', variables('deploymentSuffix')), 64)]",            
             "compliantContainerInstanceAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerInstance', variables('deploymentSuffix')), 64)]",            
@@ -1006,6 +1010,7 @@
             "azureCosmosTablePrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.table.cosmos.azure.com')]",
             "azureCosmosSqlPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.documents.azure.com')]",
             "azureDataFactoryPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.datafactory.azure.net')]",
+            "azureEventGridPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.eventgrid.azure.net')]",
             "azureBackupPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.', parameters('location'), '.backup.windowsazure.com')]",
             "azureBackupBlobPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.blob.core.windows.net')]",
             "azureBackupQueuePrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.queue.core.windows.net')]",
@@ -1019,11 +1024,9 @@
             "azureKeyVaultPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.vaultcore.azure.net')]",
             "azureSignalRPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.service.signalr.net')]",
             "azureAppServicesPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.azurewebsites.net')]",
-            "azureEventGridTopicsPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.eventgrid.azure.net')]",
             "azureDiskAccessPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.blob.core.windows.net')]",
             "azureCognitiveServicesPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.cognitiveservices.azure.com')]",
             "azureIotHubsPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.azure-devices.net')]",
-            "azureEventGridDomainsPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.eventgrid.azure.net')]",
             "azureRedisCachePrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.redis.cache.windows.net')]",
             "azureAcrPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.azurecr.io')]",
             "azureContainerRegistryPrivateDnsZoneId": "[concat(variables('baseId'), parameters('location'), '.privatelink.azurecr.io')]",
@@ -3547,7 +3550,109 @@
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
             }
-        },                         
+        },
+        {   // Creating Policy Assignment Compliant Event Grid to Landing Zone scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'EventGrid')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantEventGridAssignmentDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantEventGridDeploymentName)]",
+                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantEventGridPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "eventGridDomainPrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "eventGridDomainPrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureEventGridPrivateDnsZoneId, '')]"
+                    },
+                    "eventGridTopicPrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "eventGridTopicPrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureEventGridPrivateDnsZoneId, '')]"
+                    },
+                    "eventGridPartnerDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "eventGridPartnerLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "eventGridTopicDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "eventGridTopicLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "eventGridDomainDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "eventGridDomainLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
+                    // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
+                }
+            }
+        },
+        {   // Creating Policy Assignment Compliant Event Hub to Landing Zone scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'EventHub')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantEventHubAssignmentDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantEventHubDeploymentName)]",
+                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantEventHubPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "eventHubNamespacesPrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "eventHubNamespacesPrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureEventHubNamespacePrivateDnsZoneId, '')]"
+                    },
+                    "eventHubDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "eventHubLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
+                    // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
+                }
+            }
+        },                          
         /*
             The following section will optionally configure the governance for the Identity management group for the platform
         */
