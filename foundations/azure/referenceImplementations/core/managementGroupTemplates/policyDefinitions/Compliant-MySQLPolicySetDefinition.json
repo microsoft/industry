@@ -276,7 +276,7 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "minimalTlsVersion": {
+                    "mySqlminimalTlsVersion": {
                         "type": "string",
                         "defaultValue": "TLS1_2"
                     }
@@ -302,7 +302,7 @@
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('minimalTlsVersion')]"
+                                "value": "[[parameters('mySqlminimalTlsVersion')]"
                             }
                         }
                     },
