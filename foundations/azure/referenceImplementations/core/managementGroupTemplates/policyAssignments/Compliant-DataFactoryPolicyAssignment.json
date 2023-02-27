@@ -79,7 +79,7 @@
                     "adfPrivateDnsZone": {
                         "value": "[parameters('adfPrivateDnsZone')]"
                     },
-                    "adfDbPrivateDnsZoneId": {
+                    "adfPrivateDnsZoneId": {
                         "value": "[parameters('adfPrivateDnsZoneId')]"
                     },
                     "adfDiagnostics": {

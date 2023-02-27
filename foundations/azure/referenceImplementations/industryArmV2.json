@@ -3484,7 +3484,7 @@
                     "adfPrivateDnsZone": {
                         "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
-                    "adfDbPrivateDnsZoneId": {
+                    "adfPrivateDnsZoneId": {
                         "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureDataFactoryPrivateDnsZoneId, '')]"
                     },
                     "adfDiagnostics": {
