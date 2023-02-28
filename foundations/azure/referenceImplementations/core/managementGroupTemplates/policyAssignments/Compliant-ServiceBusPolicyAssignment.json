@@ -16,29 +16,27 @@
             ],
             "defaultValue": "Default"
         },
-        "mlDiagnostics": {
+        "ServiceBusLogAnalyticsEffect": {
+            "type": "String",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "Disabled",
+                "DeployIfNotExists"
+            ]
+        },
+        "ServiceBusLogAnalyticsWorkspaceId": {
+            "type": "String",
+            "defaultValue": ""
+        },
+        "serviceBusDinePrivateDnsZone": {
             "type": "string",
+            "defaultValue": "Disabled",
             "allowedValues": [
                 "DeployIfNotExists",
                 "Disabled"
             ]
         },
-        "mlLogAnalyticsWorkspaceId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "mlPrivateDnsZone": {
-            "type": "string",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "mlPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "mlSecondPrivateDnsZoneId": {
+        "serviceBusPrivateDnsZoneId": {
             "type": "string",
             "defaultValue": ""
         },
@@ -48,19 +46,19 @@
     },
     "variables": {
         "policyDefinitions": {
-            "compliantMl": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Machine-Learning')]"
+            "compliantSb": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Service-Bus')]"
         },
         "policyAssignmentNames": {
-            "ml": "Compliant-ML",
-            "description": "This policy initiative is a group of policies that ensures Machine Learning is compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default Machine Learning for Financial Services Industry"
+            "sb": "Compliant-Service-Bus",
+            "description": "This policy initiative is a group of policies that ensures Service Bus is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Service Bus for Financial Services Industry"
         }
     },
     "resources": [
         {
             "type": "Microsoft.Authorization/policyAssignments",
             "apiVersion": "2022-06-01",
-            "name": "[variables('policyAssignmentNames').ml]",
+            "name": "[variables('policyAssignmentNames').sb]",
             "location": "[deployment().location]",
             "identity": {
                 "type": "UserAssigned",
@@ -71,23 +69,20 @@
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
                 "displayName": "[variables('policyAssignmentNames').displayName]",
-                "policyDefinitionId": "[variables('policyDefinitions').compliantMl]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantSb]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "mlDiagnostics": {
-                        "value": "[parameters('mlDiagnostics')]"
+                    "serviceBusDinePrivateDnsZone": {
+                        "value": "[parameters('serviceBusDinePrivateDnsZone')]"
                     },
-                    "mlLogAnalyticsWorkspaceId": {
-                        "value": "[parameters('mlLogAnalyticsWorkspaceId')]"
+                    "serviceBusPrivateDnsZoneId": {
+                        "value": "[parameters('serviceBusPrivateDnsZoneId')]"
                     },
-                    "mlPrivateDnsZone": {
-                        "value": "[parameters('mlPrivateDnsZone')]"
+                    "ServiceBusLogAnalyticsEffect": {
+                        "value": "[parameters('ServiceBusLogAnalyticsEffect')]"
                     },
-                    "mlPrivateDnsZoneId": {
-                        "value": "[parameters('mlPrivateDnsZoneId')]"
-                    },
-                    "mlSecondPrivateDnsZoneId": {
-                        "value": "[parameters('mlSecondPrivateDnsZoneId')]"
+                    "ServiceBusLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('ServiceBusLogAnalyticsWorkspaceId')]"
                     }
                 }
             }
