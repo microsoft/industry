@@ -4090,7 +4090,7 @@
             }
         },
         {   // Creating Policy Assignment Compliant Storage to Landing Zone scope
-            "condition": "[contains(parameters('compliantAzureServices'), 'Storage')]",
+            "condition": "[contains(parameters('compliantAzureServices'), 'StorageAccount')]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",

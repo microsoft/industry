@@ -708,7 +708,7 @@
                                     {
                                         "label": "Storage Account",
                                         "description": "Azure policies will ensure secure by-default compliance for Storage Accounts, such as enforcement of strong protocols, encryption, access via private endpoint, centralized authorization using Azure AD, and centralized logging.",
-                                        "value": "StorageAccounts"
+                                        "value": "StorageAccount"
                                     },
                                     {
                                         "label": "Virtual Machine",
