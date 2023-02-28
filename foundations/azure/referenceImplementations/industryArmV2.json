@@ -689,6 +689,7 @@
             "compliantSQLPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-SQLPolicySetDefinition.json')]",                        
             "compliantSQLPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-SQLPolicyAssignment.json')]",                        
             "compliantStoragePolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-StoragePolicySetDefinition.json')]",
+            "compliantStoragePolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-StoragePolicyAssignment.json')]",
             "compliantSynapsePolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-SynapsePolicySetDefinition.json')]",
             "dataPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/dataPolicies.json')]",
             "vnetConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/hubspoke-connectivity.json')]",
@@ -874,6 +875,7 @@
             "compliantContainerRegistryAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerRegistry', variables('deploymentSuffix')), 64)]",            
             "compliantServiceBusAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ServiceBus', variables('deploymentSuffix')), 64)]",            
             "compliantKubernetesAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Kubernetes', variables('deploymentSuffix')), 64)]",            
+            "compliantStorageAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Storage', variables('deploymentSuffix')), 64)]",            
             "compliantApimAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Apim', variables('deploymentSuffix')), 64)]",
             "compliantAppServiceAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-AppService', variables('deploymentSuffix')), 64)]",
             // Telco specific policies assignment deployments
@@ -1053,7 +1055,21 @@
             "azureEventHubNamespacePrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.servicebus.windows.net')]",
             "azureMachineLearningWorkspacePrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.api.azureml.ms')]",
             "azureServiceBusNamespacePrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.servicebus.windows.net')]",
-            "azureCognitiveSearchPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.search.windows.net')]"
+            "azureCognitiveSearchPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.search.windows.net')]",
+            "azureStorageBlobPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.blob.core.windows.net')]",
+            "azureSecondaryStorageBlobPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.blob.core.windows.net')]",
+            "azureStorageTablePrivateDnsZoneId":"[concat(variables('baseId'), 'privatelink.table.core.windows.net')]",
+            "azureSecondaryStorageTablePrivateDnsZoneId":"[concat(variables('baseId'), 'privatelink.table.core.windows.net')]",
+            "azureStorageQueuePrivateDnsZoneId":"[concat(variables('baseId'), 'privatelink.queue.core.windows.net')]",
+            "azureSecondaryStorageQueuePrivateDnsZoneId":"[concat(variables('baseId'), 'privatelink.queue.core.windows.net')]",
+            "azureStorageFilePrivateDnsZoneId":"[concat(variables('baseId'), 'privatelink.file.core.windows.net')]",
+            "azureSecondaryStorageFilePrivateDnsZoneId":"[concat(variables('baseId'), 'privatelink.file.core.windows.net')]",
+            "azureStorageWebPrivateDnsZoneId":"[concat(variables('baseId'), 'privatelink.web.core.windows.net')]",
+            "azureSecondaryStorageWebPrivateDnsZoneId":"[concat(variables('baseId'), 'privatelink.web.core.windows.net')]",
+            "azureStorageDfsPrivateDnsZoneId":"[concat(variables('baseId'), 'privatelink.dfs.core.windows.net')]",
+            "azureSecondaryStorageDfsPrivateDnsZoneId":"[concat(variables('baseId'), 'privatelink.dfs.core.windows.net')]",
+            "azureStorageFileSyncPrivateDnsZoneId": "[concat(variables('baseId'), parameters('location'), '.privatelink.afs.azure.net')]"
+            
         },
         "roleDefinitions": {
             "networkContributor": "4d97b98b-1d4f-4787-a291-c67834d212e7",
@@ -3035,7 +3051,8 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
-                "policyCompletion"
+                "policyCompletion",
+                "dnsZones"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -4022,7 +4039,7 @@
                 }
             }
         },
-                {   // Creating Policy Assignment Compliant Service Bus to Landing Zone scope
+        {   // Creating Policy Assignment Compliant Sql to Landing Zone scope
             "condition": "[contains(parameters('compliantAzureServices'), 'Sql')]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -4071,7 +4088,139 @@
                     }
                 }
             }
-        },                                                    
+        },
+        {   // Creating Policy Assignment Compliant Storage to Landing Zone scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'Storage')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantStorageAssignmentDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantStorageDeploymentName)]",
+                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantStoragePolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "storageTablePrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "storageTablePrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageTablePrivateDnsZoneId, '')]"
+                    },
+                    "storageSecondaryTablePrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "storageSecondaryTablePrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageTablePrivateDnsZoneId, '')]"
+                    },
+                    "storageFileSyncPrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "storageFileSyncPrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageFileSyncPrivateDnsZoneId, '')]"
+                    },
+                    "storageFileSyncDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "storageFileSyncLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "storageTableDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "storageTableLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "storageAccountsDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "storageAccountsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "storageFileDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "storageFileDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageFilePrivateDnsZoneId, '')]"
+                    },
+                    "storageBlobPrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "storageBlobPrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageBlobPrivateDnsZoneId, '')]"
+                    },
+                    "storageSecondaryBlobPrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "storageSecondaryBlobPrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageBlobPrivateDnsZoneId, '')]"
+                    },
+                    "storageDfsPrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "storageDfsPrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageDfsPrivateDnsZoneId, '')]"
+                    },
+                    "storageSecondaryDfsPrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "storageSecondaryDfsPrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageDfsPrivateDnsZoneId, '')]"
+                    },
+                    "storageQueuePrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "storageQueuePrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageQueuePrivateDnsZoneId, '')]"
+                    },
+                    "storageSecondaryQueuePrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "storageSecondaryQueuePrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageQueuePrivateDnsZoneId, '')]"
+                    },
+                    "storageWebPrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "storageWebPrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageWebPrivateDnsZoneId, '')]"
+                    },
+                    "storageSecondaryWebPrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "storageSecondaryWebPrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageWebPrivateDnsZoneId, '')]"
+                    },
+                    "storageQueueDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "storageQueueLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "storageBlobDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "storageBlobLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
+                    // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
+                }
+            }
+        },                                             
         /*
             The following section will optionally configure the governance for the Identity management group for the platform
         */

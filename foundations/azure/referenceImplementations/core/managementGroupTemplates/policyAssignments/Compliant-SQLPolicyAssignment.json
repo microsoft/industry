@@ -92,7 +92,7 @@
                 "policyDefinitionId": "[variables('policyDefinitions').compliantSql]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "sqlServerDiagnosticseDinePrivateDnsZone": {
+                    "sqlServerDiagnostics": {
                         "value": "[parameters('sqlServerDiagnostics')]"
                     },
                     "sqlServerLogAnalyticsWorkspaceId": {
