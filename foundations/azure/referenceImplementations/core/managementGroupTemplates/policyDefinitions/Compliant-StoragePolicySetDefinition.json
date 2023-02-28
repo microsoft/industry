@@ -290,11 +290,19 @@
                                     "displayName": "Allowed Bypass Options",
                                     "description": "Specifies which options are allowed to bypass the vnet configuration"
                                 },
-                                "defaultValue": [
+                                "allowedValues": [
                                     "None",
                                     "Logging",
                                     "Metrics",
-                                    "Logging, Metrics"
+                                    "AzureServices",
+                                    "Logging, Metrics",
+                                    "Logging, AzureServices",
+                                    "Metrics, AzureServices",
+                                    "Logging, Metrics, AzureServices",
+                                    "Logging, Metrics, AzureServices"
+                                ],
+                                "defaultValue": [
+                                    "None"
                                 ]
                             }
                         },
