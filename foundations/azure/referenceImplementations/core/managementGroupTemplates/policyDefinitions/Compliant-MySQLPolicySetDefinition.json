@@ -349,6 +349,206 @@
                         }
                     },
                     "name": "Dine-Diagnostics-MySql"
+                },
+                {
+                    "properties": {
+                        "displayName": "Deny MySQL servers without customer-managed keys to encrypt data at rest",
+                        "policyType": "Custom",
+                        "mode": "Indexed",
+                        "description": "Use customer-managed keys to manage the encryption at rest of your MySQL servers. By default, the data is encrypted at rest with service-managed keys, but customer-managed keys are commonly required to meet regulatory compliance standards. Customer-managed keys enable the data to be encrypted with an Azure Key Vault key created and owned by you. You have full control and responsibility for the key lifecycle, including rotation and management.",
+                        "metadata": {
+                            "version": "1.0.5",
+                            "category": "MySQL"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "string",
+                                "defaultValue": "Deny",
+                                "allowedValues": [
+                                    "AuditIfNotExists",
+                                    "Disabled",
+                                    "Deny"
+                                ],
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                }
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "field": "type",
+                                "equals": "Microsoft.DBforMySQL/servers"
+                            },
+                            "then": {
+                                "effect": "[parameters('effect')]",
+                                "details": {
+                                    "type": "Microsoft.DBforMySQL/servers/keys",
+                                    "existenceCondition": {
+                                        "allOf": [
+                                            {
+                                                "field": "Microsoft.DBforMySQL/servers/keys/serverKeyType",
+                                                "equals": "AzureKeyVault"
+                                            },
+                                            {
+                                                "field": "Microsoft.DBforMySQL/servers/keys/uri",
+                                                "notEquals": ""
+                                            },
+                                            {
+                                                "field": "Microsoft.DBforMySQL/servers/keys/uri",
+                                                "exists": "true"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "name": "Deny-MySql-Without-CMK"
+                },
+                {
+                    "properties": {
+                        "displayName": "Deny MySQL Flexible servers without customer-managed keys to encrypt data at rest",
+                        "policyType": "Custom",
+                        "mode": "Indexed",
+                        "description": "Use customer-managed keys to manage the encryption at rest of your MySQL Flexible servers. By default, the data is encrypted at rest with service-managed keys, but customer-managed keys are commonly required to meet regulatory compliance standards. Customer-managed keys enable the data to be encrypted with an Azure Key Vault key created and owned by you. You have full control and responsibility for the key lifecycle, including rotation and management.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "MySQL"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "string",
+                                "defaultValue": "Deny",
+                                "allowedValues": [
+                                    "AuditIfNotExists",
+                                    "Disabled",
+                                    "Deny"
+                                ],
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                }
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "field": "type",
+                                "equals": "Microsoft.DBforMySQL/flexibleServers"
+                            },
+                            "then": {
+                                "effect": "[parameters('effect')]",
+                                "details": {
+                                    "type": "Microsoft.DBforMySQL/flexibleServers/keys",
+                                    "existenceCondition": {
+                                        "allOf": [
+                                            {
+                                                "field": "Microsoft.DBforMySQL/flexibleServers/keys/serverKeyType",
+                                                "equals": "AzureKeyVault"
+                                            },
+                                            {
+                                                "field": "Microsoft.DBforMySQL/flexibleServers/keys/uri",
+                                                "notEquals": ""
+                                            },
+                                            {
+                                                "field": "Microsoft.DBforMySQL/flexibleServers/keys/uri",
+                                                "exists": "true"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "name": "Deny-MySql-FlexibleServers-Without-CMK"
+                },
+                {
+                    "properties": {
+                        "properties": {
+                            "displayName": "Deny MySQL without An Azure Active Directory administrator",
+                            "policyType": "BuiltIn",
+                            "mode": "Indexed",
+                            "description": "Deny provisioning of an Azure Active Directory administrator for your MySQL server to enable Azure AD authentication. Azure AD authentication enables simplified permission management and centralized identity management of database users and other Microsoft services",
+                            "metadata": {
+                                "version": "1.0.0",
+                                "category": "MySQL"
+                            },
+                            "parameters": {
+                                "effect": {
+                                    "type": "string",
+                                    "defaultValue": "Deny",
+                                    "allowedValues": [
+                                        "AuditIfNotExists",
+                                        "Disabled",
+                                        "Deny"
+                                    ],
+                                    "metadata": {
+                                        "displayName": "Effect",
+                                        "description": "Enable or disable the execution of the policy"
+                                    }
+                                }
+                            },
+                            "policyRule": {
+                                "if": {
+                                    "field": "type",
+                                    "equals": "Microsoft.DBforPostgreSQL/servers"
+                                },
+                                "then": {
+                                    "effect": "[parameters('effect')]",
+                                    "details": {
+                                        "type": "Microsoft.DBforPostgreSQL/servers/administrators"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "name": "Deny-MySql-Without-Aad-Admin"
+                },
+                {
+                    "properties": {
+                        "properties": {
+                            "displayName": "Private endpoint should be enabled for MySQL servers",
+                            "policyType": "BuiltIn",
+                            "mode": "Indexed",
+                            "description": "Private endpoint connections enforce secure communication by enabling private connectivity to Azure Database for MySQL. Configure a private endpoint connection to enable access to traffic coming only from known networks and prevent access from all other IP addresses, including within Azure.",
+                            "metadata": {
+                                "version": "1.0.3",
+                                "category": "MySQL"
+                            },
+                            "parameters": {
+                                "effect": {
+                                    "type": "string",
+                                    "defaultValue": "AuditIfNotExists",
+                                    "allowedValues": [
+                                        "AuditIfNotExists",
+                                        "Disabled",
+                                        "Deny"
+                                    ],
+                                    "metadata": {
+                                        "displayName": "Effect",
+                                        "description": "Enable or disable the execution of the policy"
+                                    }
+                                }
+                            },
+                            "policyRule": {
+                                "if": {
+                                    "field": "type",
+                                    "equals": "Microsoft.DBforMySQL/servers"
+                                },
+                                "then": {
+                                    "effect": "[parameters('effect')]",
+                                    "details": {
+                                        "type": "Microsoft.DBforMySQL/servers/privateEndpointConnections",
+                                        "existenceCondition": {
+                                            "field": "Microsoft.DBforMySQL/servers/privateEndpointConnections/privateLinkServiceConnectionState.status",
+                                            "equals": "Approved"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "name": "Deny-MySql-Public-Endpoint"
                 }
             ]
         }
@@ -444,6 +644,18 @@
                     "mySqlDiagnosticsLogAnalyticsWorkspaceId": {
                         "type": "string",
                         "defaultValue": ""
+                    },
+                    "mySqlWithoutCMKEffect": {
+                        "type": "string"
+                    },
+                    "mySqlFlexibleServerWithoutCMKEffect": {
+                        "type": "string"
+                    },
+                    "mySqlAadAdminffect": {
+                        "type": "string"
+                    },
+                    "mySqlManagedPublicNetworkAccess": {
+                        "type": "string"
                     }
                 },
                 "policyDefinitions": [
@@ -531,6 +743,54 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('mySqlInfraEncryption')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[3].name)]",
+                        "policyDefinitionReferenceId": "Deny-MySql-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('mySqlWithoutCMKEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[4].name)]",
+                        "policyDefinitionReferenceId": "Deny-MySql-FlexibleServers-Without-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('mySqlFlexibleServerWithoutCMKEffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[5].name)]",
+                        "policyDefinitionReferenceId": "Deny-MySql-Without-Aad-Admin",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('mySqlAadAdminffect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[6].name)]",
+                        "policyDefinitionReferenceId": "Deny-MySql-Public-Endpoint",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('mySqlManagedPublicNetworkAccess')]"
                             }
                         }
                     }
