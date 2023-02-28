@@ -1606,14 +1606,6 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "effectWafAppGatewayMode": {
-                        "type": "string",
-                        "defaultValue": "Deny"
-                    },
-                    "effectWafAppGatewayAllRulesEnabled": {
-                        "type": "string",
-                        "defaultValue": "Deny"
-                    },
                     "effectAfwEnableAllIDPSSignatureRules": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -1622,19 +1614,11 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "effectNetworkPublicIPNic": {
-                        "type": "string",
-                        "defaultValue": "Deny"
-                    },
                     "effectWafAfdEnabled": {
                         "type": "string",
                         "defaultValue": "Deny"
                     },
                     "effectVpnAzureAD": {
-                        "type": "string",
-                        "defaultValue": "Deny"
-                    },
-                    "effectNetworkIPForwardingNic": {
                         "type": "string",
                         "defaultValue": "Deny"
                     },
@@ -1653,18 +1637,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('effectNetworkSecurityGroupOnGatewaySubnet')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/88c0b9da-ce96-4b03-9635-f29a937e2900",
-                        "policyDefinitionReferenceId": "88c0b9da-ce96-4b03-9635-f29a937e2900",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('effectNetworkIPForwardingNic')]"
                             }
                         }
                     },
@@ -1693,18 +1665,6 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/83a86a26-fd1f-447c-b59d-e51f44264114",
-                        "policyDefinitionReferenceId": "83a86a26-fd1f-447c-b59d-e51f44264114",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('effectNetworkPublicIPNic')]"
-                            }
-                        }
-                    },
-                    {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/6484db87-a62d-4327-9f07-80a2cbdf333a",
                         "policyDefinitionReferenceId": "6484db87-a62d-4327-9f07-80a2cbdf333a",
                         "groupNames": [
@@ -1725,30 +1685,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('effectAfwEnableAllIDPSSignatureRules')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/632d3993-e2c0-44ea-a7db-2eca131f356d",
-                        "policyDefinitionReferenceId": "632d3993-e2c0-44ea-a7db-2eca131f356d",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('effectWafAppGatewayAllRulesEnabled')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/12430be1-6cc8-4527-a9a8-e3d38f250096",
-                        "policyDefinitionReferenceId": "12430be1-6cc8-4527-a9a8-e3d38f250096",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('effectWafAppGatewayMode')]"
                             }
                         }
                     },
