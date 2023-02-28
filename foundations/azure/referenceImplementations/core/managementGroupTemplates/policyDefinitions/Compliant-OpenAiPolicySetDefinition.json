@@ -9,7 +9,6 @@
     },
     "variables": {
         "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
-        // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
         "policies": {
             "policyDefinitions": [
                 {
@@ -19,7 +18,7 @@
                         "description": "Azure Cognitive Services allow restricting outbound network access. Enable this to limit outbound connectivity for the service.",
                         "metadata": {
                             "version": "1.0.0",
-                            "category": "Cognitive Service"
+                            "category": "Cognitive Services"
                         },
                         "parameters": {
                             "effect": {
@@ -71,7 +70,7 @@
                         "description": "Azure Cognitive Services should not allow adding individual IPs or virtual network rules to the service-level firewall. Enable this to restrict inbound network access and enforce the usage of private endpoints.",
                         "metadata": {
                             "version": "1.0.0",
-                            "category": "Cognitive Service"
+                            "category": "Cognitive Services"
                         },
                         "parameters": {
                             "effect": {
@@ -152,7 +151,7 @@
             "properties": {
                 "metadata": {
                     "version": "1.0.0",
-                    "category": "Cognitive Service"
+                    "category": "Cognitive Services"
                 },
                 "displayName": "Enforce secure-by-default Open AI (Cognitive Service) for Financial Services Industry",
                 "description": "This policy initiative is a group of policies that ensures Open AI (Cognitive Service) is compliant per FSI Landing Zones",
@@ -222,9 +221,41 @@
                     "cognitiveServicesManagedIdentity": {
                         "type": "string",
                         "defaultValue": "Deny"
+                    },
+                    "cognitiveServicesOutboundNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "cognitiveServicesNetworkAcls": {
+                        "type": "string",
+                        "defaultValue": "Deny"
                     }
                 },
                 "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
+                        "policyDefinitionReferenceId": "Deny-OpenAi-OutboundNetworkAccess",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveServicesOutboundNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[1].name)]",
+                        "policyDefinitionReferenceId": "Deny-OpenAi-NetworkAcls",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveServicesNetworkAcls')]"
+                            }
+                        }
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/fe3fd216-4f83-4fc1-8984-2bbec80a3418",
                         "policyDefinitionReferenceId": "Deny-Cognitive-Services-Managed-Identity",

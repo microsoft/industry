@@ -666,6 +666,11 @@
                                         "value": "DataFactory"
                                     },
                                     {
+                                        "label": "Machine Learning",
+                                        "description": "Azure policies will ensure secure by-default compliance for Machine Learning, enforce access via private endpoints, centralized authorization, and centralized logging.",
+                                        "value": "MachineLearning"
+                                    },
+                                    {
                                         "label": "Open AI",
                                         "description": "Azure policies will ensure secure by-default compliance for Open AI, enforce access via private endpoints, centralized authorization, and centralized logging.",
                                         "value": "OpenAi"
