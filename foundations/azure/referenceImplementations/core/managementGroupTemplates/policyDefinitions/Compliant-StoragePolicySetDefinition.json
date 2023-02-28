@@ -675,7 +675,7 @@
                                 "allOf": [
                                     {
                                         "field": "type",
-                                        "equals": "Microsoft.Storage/storageAccounts"
+                                        "equals": "Microsoft.Storage/storageAccounts/blobServices"
                                     },
                                     {
                                         "anyOf": [
