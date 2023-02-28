@@ -588,59 +588,7 @@
                 },
                 {
                     "properties": {
-                        "displayName": "Configure secure transfer of data on a storage account",
-                        "mode": "Indexed",
-                        "description": "Secure transfer is an option that forces storage account to accept requests only from secure connections (HTTPS). Use of HTTPS ensures authentication between the server and the service and protects data in transit from network layer attacks such as man-in-the-middle, eavesdropping, and session-hijacking.",
-                        "metadata": {
-                            "version": "1.0.0",
-                            "category": "Storage"
-                        },
-                        "parameters": {
-                            "effect": {
-                                "type": "String",
-                                "metadata": {
-                                    "displayName": "Effect",
-                                    "description": "Enable or disable the execution of the policy"
-                                },
-                                "allowedValues": [
-                                    "Deny",
-                                    "Audit",
-                                    "Disabled"
-                                ],
-                                "defaultValue": "Deny"
-                            }
-                        },
-                        "policyRule": {
-                            "if": {
-                                "allOf": [
-                                    {
-                                        "field": "type",
-                                        "equals": "Microsoft.Storage/storageAccounts"
-                                    },
-                                    {
-                                        "anyOf": [
-                                            {
-                                                "field": "Microsoft.Storage/storageAccounts/supportsHttpsTrafficOnly",
-                                                "exists": false
-                                            },
-                                            {
-                                                "field": "Microsoft.Storage/storageAccounts/supportsHttpsTrafficOnly",
-                                                "notEquals": true
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            "then": {
-                                "effect": "[[parameters('effect')]"
-                            }
-                        }
-                    },
-                    "name": "Deny-Storage-HttpsTrafficOnly"
-                },
-                {
-                    "properties": {
-                        "displayName": "Configure secure transfer of data on a storage account",
+                        "displayName": "Storage Accounts should use a container delete retention policy",
                         "mode": "Indexed",
                         "description": "Enforce container delete retention policies larger than seven days for storage account. Enable this for increased data loss protection",
                         "metadata": {
