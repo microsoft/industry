@@ -155,48 +155,52 @@
                                     {
                                         "anyOf": [
                                             {
-                                                "field": "Microsoft.Storage/storageAccounts/encryption.services.blob.enabled",
-                                                "exists": "false"
+                                                "anyOf": [
+                                                    {
+                                                        "field": "Microsoft.Storage/storageAccounts/encryption.services.blob.enabled",
+                                                        "exists": "false"
+                                                    },
+                                                    {
+                                                        "field": "Microsoft.Storage/storageAccounts/encryption.services.blob.enabled",
+                                                        "notEquals": true
+                                                    }
+                                                ]
                                             },
                                             {
-                                                "field": "Microsoft.Storage/storageAccounts/encryption.services.blob.enabled",
-                                                "notEquals": true
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "anyOf": [
-                                            {
-                                                "field": "Microsoft.Storage/storageAccounts/encryption.services.file.enabled",
-                                                "exists": "false"
+                                                "anyOf": [
+                                                    {
+                                                        "field": "Microsoft.Storage/storageAccounts/encryption.services.file.enabled",
+                                                        "exists": "false"
+                                                    },
+                                                    {
+                                                        "field": "Microsoft.Storage/storageAccounts/encryption.services.file.enabled",
+                                                        "notEquals": true
+                                                    }
+                                                ]
                                             },
                                             {
-                                                "field": "Microsoft.Storage/storageAccounts/encryption.services.file.enabled",
-                                                "notEquals": true
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "anyOf": [
-                                            {
-                                                "field": "Microsoft.Storage/storageAccounts/encryption.services.queue.enabled",
-                                                "exists": "false"
+                                                "anyOf": [
+                                                    {
+                                                        "field": "Microsoft.Storage/storageAccounts/encryption.services.queue.enabled",
+                                                        "exists": "false"
+                                                    },
+                                                    {
+                                                        "field": "Microsoft.Storage/storageAccounts/encryption.services.queue.enabled",
+                                                        "notEquals": true
+                                                    }
+                                                ]
                                             },
                                             {
-                                                "field": "Microsoft.Storage/storageAccounts/encryption.services.queue.enabled",
-                                                "notEquals": true
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "anyOf": [
-                                            {
-                                                "field": "Microsoft.Storage/storageAccounts/encryption.services.table.enabled",
-                                                "exists": "false"
-                                            },
-                                            {
-                                                "field": "Microsoft.Storage/storageAccounts/encryption.services.table.enabled",
-                                                "notEquals": true
+                                                "anyOf": [
+                                                    {
+                                                        "field": "Microsoft.Storage/storageAccounts/encryption.services.table.enabled",
+                                                        "exists": "false"
+                                                    },
+                                                    {
+                                                        "field": "Microsoft.Storage/storageAccounts/encryption.services.table.enabled",
+                                                        "notEquals": true
+                                                    }
+                                                ]
                                             }
                                         ]
                                     }
