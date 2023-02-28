@@ -3799,20 +3799,78 @@
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
                     },
-                    "mlDiagnostics": {
+                    
+                    "vnetModifyDdos": {
+                        "value": "[if(equals(parameters('enableDdos'), 'Yes'), 'Modify', 'Disabled')]"
+                    },
+                    "ddosPlanResourceId": {
+                        "value": "[if(equals(parameters('enableDdos'), 'Yes'), variables('platformResourceIds').ddosProtectionResourceId, '')]"
+                    },
+                    "nsgDiagnostics": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
-                    "mlLogAnalyticsWorkspaceResourceId": {
+                    "nsgLogAnalyticsWorkspaceId": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
                     },
-                    "mlPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    "lbDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
-                    "mlPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureMlPrivateDnsZoneId, '')]"
+                    "lbDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
                     },
-                    "mlSecondPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureMlSecondaryPrivateDnsZoneId, '')]"
+                    "fdDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "fdDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "tmDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "tmDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "vnetDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "vnetDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "erDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "erDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "bastionDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "bastionLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "fdCdnDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "fdCdnLogAnalyticsWorkpaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "pipDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "pipLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "gwDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "gwLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "p2sDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "p2sLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
