@@ -146,7 +146,7 @@
                                             },
                                             {
                                                 "field": "Microsoft.ApiManagement/service/publicNetworkAccess",
-                                                "equals": "Disabled"
+                                                "notEquals": "Disabled"
                                             }
                                         ]
                                     }
@@ -161,7 +161,7 @@
                 },
                 {
                     "properties": {
-                        "displayName": "API Management services should restrict use of public IP assignment",
+                        "displayName": "API Management services should restrict assignment of public IPs",
                         "mode": "Indexed",
                         "description": "Azure API Management should disable public network access through assignment of a public IP address resource to enhanced security, isolation and allows you to prohibit public network traffic. The API service then only allows connections via the network connected via vnet injection or private endpoints.",
                         "metadata": {
@@ -238,6 +238,93 @@
                         }
                     },
                     "name": "Deny-APIM-PublicIpAddress"
+                },
+                {
+                    "properties": {
+                        "displayName": "API Management should restrict virtual network type",
+                        "mode": "Indexed",
+                        "description": "Azure API Management should use internal virtual network type for enhanced security, isolation and prohibiting public network traffic. The API service then only allows connections via the connected network.",
+                        "metadata": {
+                            "version": "1.0.1",
+                            "category": "API Management"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Deny",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Deny"
+                            },
+                            "evaluatedSkuNames": {
+                                "type": "Array",
+                                "metadata": {
+                                    "displayName": "API Management SKU Names",
+                                    "description": "List of API Management SKUs against which this policy will be evaluated."
+                                },
+                                "allowedValues": [
+                                    "Developer",
+                                    "Basic",
+                                    "Standard",
+                                    "Premium",
+                                    "Consumption"
+                                ],
+                                "defaultValue": [
+                                    "Developer",
+                                    "Premium"
+                                ]
+                            },
+                            "virtualNetworkType": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Virtual Network Type",
+                                    "description": "Specifies the desired virtual network type that should be enforced."
+                                },
+                                "allowedValues": [
+                                    "None",
+                                    "Internal",
+                                    "External"
+                                ],
+                                "defaultValue": "Internal"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.ApiManagement/service"
+                                    },
+                                    {
+                                        "field": "Microsoft.ApiManagement/service/sku.name",
+                                        "in": "[[parameters('evaluatedSkuNames')]"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "field": "Microsoft.ApiManagement/service/virtualNetworkType",
+                                                "exists": "false"
+                                            },
+                                            {
+                                                "field": "Microsoft.ApiManagement/service/virtualNetworkType",
+                                                "notEquals": "[[parameters('virtualNetworkType')]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-APIM-VirtualNetworkType"
                 }
             ]
         }
