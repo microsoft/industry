@@ -682,8 +682,12 @@
             "compliantNetworkPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-NetworkPolicyAssignment.json')]",
             "compliantOpenAiPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-OpenAiPolicySetDefinition.json')]",                        
             "compliantOpenAiPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-OpenAiPolicySetAssignment.json')]",                        
+            "compliantPostgrePolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-PostgreSQLPolicySetDefinition.json')]",                        
+            "compliantPostgrePolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-PostgreSQLPolicyAssignment.json')]",                        
             "compliantServiceBusPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-ServiceBusPolicySetDefinition.json')]",                        
+            "compliantServiceBusPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-ServiceBusPolicyAssignment.json')]",                        
             "compliantSQLPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-SQLPolicySetDefinition.json')]",                        
+            "compliantSQLPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-SQLPolicyAssignment.json')]",                        
             "compliantStoragePolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-StoragePolicySetDefinition.json')]",
             "compliantSynapsePolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-SynapsePolicySetDefinition.json')]",
             "dataPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/dataPolicies.json')]",
@@ -770,6 +774,7 @@
             "compliantMachineLearningDeploymentName": "[take(concat(parameters('industry'), 'Compliant-MachineLearning', variables('deploymentSuffix')), 64)]",
             "compliantNetworkDeploymentName": "[take(concat(parameters('industry'), 'Compliant-Network', variables('deploymentSuffix')), 64)]",
             "compliantOpenAiDeploymentName": "[take(concat(parameters('industry'), 'Compliant-OpenAi', variables('deploymentSuffix')), 64)]",
+            "compliantPostgreDeploymentName": "[take(concat(parameters('industry'), 'Compliant-Postgre', variables('deploymentSuffix')), 64)]",
             "compliantServiceBusDeploymentName": "[take(concat(parameters('industry'), 'Compliant-ServiceBus', variables('deploymentSuffix')), 64)]",
             "compliantSqlDeploymentName": "[take(concat(parameters('industry'), 'Compliant-Sql', variables('deploymentSuffix')), 64)]",
             "compliantStorageDeploymentName": "[take(concat(parameters('industry'), 'Compliant-Storage', variables('deploymentSuffix')), 64)]",
@@ -860,11 +865,14 @@
             "compliantEventHubAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-EH', variables('deploymentSuffix')), 64)]",
             "compliantKeyVaultAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-KeyVault', variables('deploymentSuffix')), 64)]",
             "compliantOpenAiAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-OpenAi', variables('deploymentSuffix')), 64)]",
+            "compliantPostgreAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Postgre', variables('deploymentSuffix')), 64)]",
+            "compliantSqlAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-SQL', variables('deploymentSuffix')), 64)]",
             "compliantMachineLearningAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-MachineLearning', variables('deploymentSuffix')), 64)]",
             "compliantNetworkAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Network', variables('deploymentSuffix')), 64)]",
             "compliantContainerAppsAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerApps', variables('deploymentSuffix')), 64)]",            
             "compliantContainerInstanceAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerInstance', variables('deploymentSuffix')), 64)]",            
             "compliantContainerRegistryAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerRegistry', variables('deploymentSuffix')), 64)]",            
+            "compliantServiceBusAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ServiceBus', variables('deploymentSuffix')), 64)]",            
             "compliantKubernetesAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Kubernetes', variables('deploymentSuffix')), 64)]",            
             "compliantApimAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Apim', variables('deploymentSuffix')), 64)]",
             "compliantAppServiceAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-AppService', variables('deploymentSuffix')), 64)]",
@@ -1551,6 +1559,30 @@
                 "templateLink": {
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantOpenAIPolicySetDefinition]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    }
+                }
+            }
+        },
+        {
+            // Deploying Compliant Postgre SQL PolicySetDefinition
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "name": "[variables('deploymentNames').compliantPostgreDeploymentName]",
+            "location": "[deployment().location]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantPostgrePolicySetDefinition]"
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
@@ -3798,8 +3830,7 @@
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
-                    },
-                    
+                    },                    
                     "vnetModifyDdos": {
                         "value": "[if(equals(parameters('enableDdos'), 'Yes'), 'Modify', 'Disabled')]"
                     },
@@ -3870,7 +3901,7 @@
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "p2sLogAnalyticsWorkspaceId": {
-                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
@@ -3914,7 +3945,133 @@
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
             }
-        },                                         
+        },
+        {   // Creating Policy Assignment Compliant Postgre SQL to Landing Zone scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'PostgreSql')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantPostgreAssignmentDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantPostgreDeploymentName)]",
+                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantPostgrePolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "postgreDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "postgreLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
+                }
+            }
+        },
+        {   // Creating Policy Assignment Compliant Service Bus to Landing Zone scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'ServiceBus')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantServiceBusAssignmentDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantServiceBusDeploymentName)]",
+                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantServiceBusPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "serviceBusDinePrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "serviceBusPrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureServiceBusNamespacePrivateDnsZoneId, '')]"
+                    },
+                    "ServiceBusLogAnalyticsEffect": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "ServiceBusLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
+                }
+            }
+        },
+                {   // Creating Policy Assignment Compliant Service Bus to Landing Zone scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'Sql')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantSqlAssignmentDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantSqlDeploymentName)]",
+                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantSqlPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "sqlServerDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "sqlServerLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "sqlManagedDefender": {
+                        "value": "[if(equals(parameters('enableAscForSql'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "sqlDbServerDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "sqlDbServerLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "sqlDbAllDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "sqlDbAllLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
+                }
+            }
+        },                                                    
         /*
             The following section will optionally configure the governance for the Identity management group for the platform
         */

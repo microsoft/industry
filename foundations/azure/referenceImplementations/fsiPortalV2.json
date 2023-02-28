@@ -641,6 +641,11 @@
                                         "value": "Kubernetes"
                                     },
                                     {
+                                        "label": "Postgre SQL",
+                                        "description": "Azure policies will ensure secure by-default compliance for Postgre SQL, enforce access via private endpoints, centralized authorization, advanced threat protection and centralized logging.",
+                                        "value": "PostgreSql"
+                                    },
+                                    {
                                         "label": "SQL",
                                         "description": "Azure policies will ensure secure by-default compliance for SQL servers and SQL databases, enforce access via private endpoints, centralized authorization, advanced threat protection and centralized logging.",
                                         "value": "Sql"

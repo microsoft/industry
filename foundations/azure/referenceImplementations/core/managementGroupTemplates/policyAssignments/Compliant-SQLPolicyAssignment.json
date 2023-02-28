@@ -1,0 +1,121 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
+            }
+        },
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        },
+        "sqlServerDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "Disabled",
+                "DeployIfNotExists"
+            ]
+        },
+        "sqlServerLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "sqlManagedDefender": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "Disabled",
+                "DeployIfNotExists"
+            ]
+        },
+        "sqlDbServerDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "Disabled",
+                "DeployIfNotExists"
+            ]
+        },
+        "sqlDbServerLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "sqlDbAllDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "Disabled",
+                "DeployIfNotExists"
+            ]
+        },
+        "sqlDbAllLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "compliantSql": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Sql')]"
+        },
+        "policyAssignmentNames": {
+            "sql": "Compliant-Sql",
+            "description": "This policy initiative is a group of policies that ensures SQL is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default SQL for Financial Services Industry"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2022-06-01",
+            "name": "[variables('policyAssignmentNames').sql]",
+            "location": "[deployment().location]",
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[parameters('userAssignedIdentityResourceId')]": {}
+                }
+            },
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantSql]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "sqlServerDiagnosticseDinePrivateDnsZone": {
+                        "value": "[parameters('sqlServerDiagnostics')]"
+                    },
+                    "sqlServerLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('sqlServerLogAnalyticsWorkspaceId')]"
+                    },
+                    "sqlManagedDefender": {
+                        "value": "[parameters('sqlManagedDefender')]"
+                    },
+                    "sqlDbServerDiagnostics": {
+                        "value": "[parameters('sqlDbServerDiagnostics')]"
+                    },
+                    "sqlDbServerLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('sqlDbServerLogAnalyticsWorkspaceId')]"
+                    },
+                    "sqlDbAllDiagnostics": {
+                        "value": "[parameters('sqlDbAllDiagnostics')]"
+                    },
+                    "sqlDbAllLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('sqlDbAllLogAnalyticsWorkspaceId')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
