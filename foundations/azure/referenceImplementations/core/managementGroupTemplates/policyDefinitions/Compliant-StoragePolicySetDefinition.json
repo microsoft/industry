@@ -365,7 +365,7 @@
                                     },
                                     {
                                         "field": "Microsoft.Storage/storageAccounts/networkAcls.resourceAccessRules[*].tenantId",
-                                        "notEquals": "[subscription().tenantId]"
+                                        "notEquals": "[[subscription().tenantId]"
                                     }
                                 ]
                             },
@@ -417,7 +417,7 @@
                                         "count": {
                                             "field": "Microsoft.Storage/storageAccounts/networkAcls.resourceAccessRules[*]",
                                             "where": {
-                                                "value": "[split(current('Microsoft.Storage/storageAccounts/networkAcls.resourceAccessRules[*].resourceId'), '/')[2]]",
+                                                "value": "[[split(current('Microsoft.Storage/storageAccounts/networkAcls.resourceAccessRules[*].resourceId'), '/')[2]]",
                                                 "equals": "*"
                                             }
                                         },
@@ -520,8 +520,8 @@
                                                 "exists": false
                                             },
                                             {
-                                                "value": "[split(concat(field('Microsoft.Storage/storageAccounts/privateEndpointConnections/privateEndpoint.id'), '//'), '/')[2]]",
-                                                "notEquals": "[subscription().subscriptionId]"
+                                                "value": "[[split(concat(field('Microsoft.Storage/storageAccounts/privateEndpointConnections/privateEndpoint.id'), '//'), '/')[2]]",
+                                                "notEquals": "[[subscription().subscriptionId]"
                                             }
                                         ]
                                     }
@@ -637,6 +637,70 @@
                         }
                     },
                     "name": "Deny-Storage-HttpsTrafficOnly"
+                },
+                {
+                    "properties": {
+                        "displayName": "Configure secure transfer of data on a storage account",
+                        "mode": "Indexed",
+                        "description": "Enforce container delete retention policies larger than seven days for storage account. Enable this for increased data loss protection",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Storage"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Deny",
+                                    "Audit",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Deny"
+                            },
+                            "minContainerDeleteRetentionInDays": {
+                                "type": "Int",
+                                "metadata": {
+                                    "displayName": "Minimum Container Delete Retention in Days",
+                                    "description": "Specifies the minimum number of days for the container delete retention policy"
+                                },
+                                "defaultValue": 7
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Storage/storageAccounts"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "field": "Microsoft.Storage/storageAccounts/blobServices/containerDeleteRetentionPolicy.enabled",
+                                                "exists": false
+                                            },
+                                            {
+                                                "field": "Microsoft.Storage/storageAccounts/blobServices/containerDeleteRetentionPolicy.enabled",
+                                                "notEquals": true
+                                            },
+                                            {
+                                                "field": "Microsoft.Storage/storageAccounts/blobServices/containerDeleteRetentionPolicy.days",
+                                                "less": "[[parameters('minContainerDeleteRetentionInDays')]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-Storage-ContainerDeleteRetentionPolicy"
                 }
             ]
         }
