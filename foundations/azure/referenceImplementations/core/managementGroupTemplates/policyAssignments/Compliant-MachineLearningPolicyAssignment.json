@@ -77,7 +77,7 @@
                     "mlDiagnostics": {
                         "value": "[parameters('mlDiagnostics')]"
                     },
-                    "mlLogAnalyticsWorkspaceResourceId": {
+                    "mlLogAnalyticsWorkspaceId": {
                         "value": "[parameters('mlLogAnalyticsWorkspaceId')]"
                     },
                     "mlPrivateDnsZone": {

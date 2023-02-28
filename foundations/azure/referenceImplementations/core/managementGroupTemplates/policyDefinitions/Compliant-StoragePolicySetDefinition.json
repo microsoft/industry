@@ -82,7 +82,7 @@
         {
             "type": "Microsoft.Authorization/policySetDefinitions",
             "apiVersion": "2021-06-01",
-            "name": "Compliant-Storage-Account",
+            "name": "Compliant-Storage",
             "dependsOn": [
                 "policyDefinitionCopy"
             ],

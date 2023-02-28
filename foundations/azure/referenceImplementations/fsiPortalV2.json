@@ -581,7 +581,8 @@
                                 "Stream Analytics",
                                 "Networking",
                                 "Storage Account",
-                                "Virtual Machine"
+                                "Virtual Machine",
+                                "Machine Learning"
                             ],
                             "toolTip": "",
                             "multiselect": true,
