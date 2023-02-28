@@ -598,7 +598,7 @@
         }
     },
     "variables": {
-        // Declaring the prescriptive management group structure that will be used in the scope construction
+        // Declaring the prescriptive structure for FSI Landing Zones
         "mgmtGroups": {
             "industryRoot": "[parameters('industryPrefix')]",
             "platform": "[concat(parameters('industryPrefix'), '-', 'platform')]",
@@ -610,7 +610,7 @@
             "corp": "[concat(parameters('industryPrefix'), '-', 'corp')]",
             "online": "[concat(parameters('industryPrefix'), '-', 'cloud-native')]"
         },
-        // Declaring scopes that will be used for optional deployments, such as platform components (monitoring, networking, identity), policy assignments, subscription placement etc.
+        // Declaring scopes that will be used for ARM deployments
         "scopes": {
             "industryRootManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').industryRoot)]",
             "platformManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').platform)]",
@@ -622,7 +622,7 @@
             "corpManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').corp)]",
             "onlineManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').online)]"
         },
-        // Declaring all required deployment uri's used for deployments of composite ARM templates for FSI
+        // Declaring all required deployment uri's used for deployments of composite ARM templates for FSI. As you can see, it's been quite an effort :-)
        "azPrivateDnsPolicyMapping": {
             "https://management.azure.com/": "core/managementGroupTemplates/policyDefinitions/DINE-PrivateDNSZonesPolicySetDefinition.json",
             "https://management.usgovcloudapi.net": "core/managementGroupTemplates/policyDefinitions/gov/fairfaxDINE-PrivateDNSZonesPolicySetDefinition.json"
@@ -3761,16 +3761,16 @@
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
                     },
-                    "eventHubNamespacesPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    "aksDefender": {
+                        "value": "[if(equals(parameters('enableAscForContainers'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
-                    "eventHubNamespacesPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureEventHubNamespacePrivateDnsZoneId, '')]"
+                    "aksDefenderLogAnalyticsWorkspaceResourceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
                     },
-                    "eventHubDiagnostics": {
+                    "aksDiagnostics": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
-                    "eventHubLogAnalyticsWorkspaceId": {
+                    "aksLogAnalyticsWorkspaceId": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
                     },
                     "userAssignedIdentityResourceId": {
@@ -3806,7 +3806,7 @@
                     "mlDiagnostics": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
-                    "mlLogAnalyticsWorkspaceResourceId": {
+                    "mlLogAnalyticsWorkspaceId": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
                     },
                     "mlPrivateDnsZone": {
