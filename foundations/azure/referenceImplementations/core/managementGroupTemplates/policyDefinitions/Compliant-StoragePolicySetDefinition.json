@@ -793,6 +793,58 @@
                         }
                     },
                     "name": "Deny-Storage-CorsRules"
+                },
+                {
+                    "properties": {
+                        "displayName": "Encryption scopes should use customer-managed keys",
+                        "mode": "Indexed",
+                        "description": "Azure Storage Accounts encryption scopes should use customer managed keys instead of Microsoft-managed keys.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Storage"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Deny",
+                                    "Audit",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Deny"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Storage/storageAccounts/encryptionScopes"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "field": "Microsoft.Storage/storageAccounts/encryptionScopes/source",
+                                                "exists": false
+                                            },
+                                            {
+                                                "field": "Microsoft.Storage/storageAccounts/encryptionScopes/source",
+                                                "notEquals": "Microsoft.KeyVault"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-StorageEncryptionScope-KeySource"
                 }
             ]
         }
