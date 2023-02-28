@@ -9,7 +9,6 @@
     },
     "variables": {
         "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
-        // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
         "policies": {
             "policyDefinitions": [
                 {
@@ -18,46 +17,46 @@
                         "mode": "Indexed",
                         "description": "Private endpoint connections enforce secure communication by enabling private connectivity to Azure SQL Database.",
                         "metadata": {
-                        "version": "1.0.0",
-                        "category": "SQL"
+                            "version": "1.0.0",
+                            "category": "SQL"
                         },
                         "parameters": {
-                        "effect": {
-                            "type": "String",
-                            "metadata": {
-                            "displayName": "Effect",
-                            "description": "Enable or disable the execution of the policy"
-                            },
-                            "allowedValues": [
-                            "Audit",
-                            "Deny",
-                            "Disabled"
-                            ],
-                            "defaultValue": "Audit"
-                        }
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Deny",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Audit"
+                            }
                         },
                         "policyRule": {
-                        "if": {
-                            "allOf": [
-                            {
-                                "field": "type",
-                                "equals": "Microsoft.Sql/servers"
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Sql/servers"
+                                    },
+                                    {
+                                        "count": {
+                                            "field": "Microsoft.Sql/servers/privateEndpointConnections[*]",
+                                            "where": {
+                                                "field": "Microsoft.Sql/servers/privateEndpointConnections[*].privateLinkServiceConnectionState.status",
+                                                "equals": "Approved"
+                                            }
+                                        },
+                                        "less": 1
+                                    }
+                                ]
                             },
-                            {
-                                "count": {
-                                "field": "Microsoft.Sql/servers/privateEndpointConnections[*]",
-                                "where": {
-                                    "field": "Microsoft.Sql/servers/privateEndpointConnections[*].privateLinkServiceConnectionState.status",
-                                    "equals": "Approved"
-                                }
-                                },
-                                "less": 1
+                            "then": {
+                                "effect": "[[parameters('effect')]"
                             }
-                            ]
-                        },
-                        "then": {
-                            "effect": "[[parameters('effect')]"
-                        }
                         }
                     },
                     "name": "Deny-Sql-Db-Public-Endpoint"
@@ -68,48 +67,48 @@
                         "mode": "Indexed",
                         "description": "Setting minimal TLS version to 1.2 improves security by ensuring your SQL Managed Instance can only be accessed from clients using TLS 1.2. Using versions of TLS less than 1.2 is not recommended since they have well documented security vulnerabilities.",
                         "metadata": {
-                        "version": "1.0.1",
-                        "category": "SQL"
+                            "version": "1.0.1",
+                            "category": "SQL"
                         },
                         "parameters": {
-                        "effect": {
-                            "type": "String",
-                            "metadata": {
-                            "displayName": "Effect",
-                            "description": "Enable or disable the execution of the policy"
-                            },
-                            "allowedValues": [
-                            "Audit",
-                            "Deny",
-                            "Disabled"
-                            ],
-                            "defaultValue": "Audit"
-                        }
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Deny",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Audit"
+                            }
                         },
                         "policyRule": {
-                        "if": {
-                            "allOf": [
-                            {
-                                "field": "type",
-                                "equals": "Microsoft.Sql/managedInstances"
-                            },
-                            {
-                                "anyOf": [
-                                {
-                                    "field": "Microsoft.Sql/managedInstances/minimalTlsVersion",
-                                    "exists": false
-                                },
-                                {
-                                    "field": "Microsoft.Sql/managedInstances/minimalTlsVersion",
-                                    "notEquals": "1.2"
-                                }
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Sql/managedInstances"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "field": "Microsoft.Sql/managedInstances/minimalTlsVersion",
+                                                "exists": false
+                                            },
+                                            {
+                                                "field": "Microsoft.Sql/managedInstances/minimalTlsVersion",
+                                                "notEquals": "1.2"
+                                            }
+                                        ]
+                                    }
                                 ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
                             }
-                            ]
-                        },
-                        "then": {
-                            "effect": "[[parameters('effect')]"
-                        }
                         }
                     },
                     "name": "Deny-Sql-Managed-Tls-Version"
@@ -228,9 +227,55 @@
                     "sqlManagedDefender": {
                         "type": "string",
                         "defaultValue": "DeployIfNotExists"
+                    },
+                    "sqlDbServerDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "sqlDbServerLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "sqlDbAllDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "sqlDbAllLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
                     }
                 },
-                "policyDefinitions": [                   
+                "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b79fa14e-238a-4c2d-b376-442ce508fc84",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-SqlDbServerAll",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('sqlDbAllDiagnostics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('sqlDbAllLogAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/7ea8a143-05e3-4553-abfe-f56bef8b0b70",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-SqlDbServer",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('sqlDbServerDiagnostics')]"
+                            },
+                            "logAnalyticsWorkspaceId": {
+                                "value": "[[parameters('sqlDbServerLogAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c5a62eb0-c65a-4220-8a4d-f70dd4ca95dd",
                         "policyDefinitionReferenceId": "Dine-Sql-Managed-Defender",
@@ -395,7 +440,7 @@
                                 "value": "[[parameters('modifySqlPublicNetworkAccess')]"
                             }
                         }
-                    }          
+                    }
                 ]
             }
         }
