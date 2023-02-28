@@ -677,7 +677,11 @@
             "compliantKubernetesPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-KubernetesPolicySetDefinition.json')]",
             "compliantKubernetesPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-KubernetesPolicyAssignment.json')]",
             "compliantMachineLearningPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-MachineLearningPolicySetDefinition.json')]",
+            "compliantMachineLearningPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-MachineLearningPolicyAssignment.json')]",
+            "compliantNetworkPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-NetworkPolicySetDefinition.json')]",
+            "compliantNetworkPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-NetworkPolicyAssignment.json')]",
             "compliantOpenAiPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-OpenAiPolicySetDefinition.json')]",                        
+            "compliantOpenAiPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-OpenAiPolicySetAssignment.json')]",                        
             "compliantServiceBusPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-ServiceBusPolicySetDefinition.json')]",                        
             "compliantSQLPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-SQLPolicySetDefinition.json')]",                        
             "compliantStoragePolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-StoragePolicySetDefinition.json')]",
@@ -764,6 +768,7 @@
             "compliantKeyVaultDeploymentName": "[take(concat(parameters('industry'), 'Compliant-KeyVault', variables('deploymentSuffix')), 64)]",
             "compliantKubernetesDeploymentName": "[take(concat(parameters('industry'), 'Compliant-Kubernetes', variables('deploymentSuffix')), 64)]",
             "compliantMachineLearningDeploymentName": "[take(concat(parameters('industry'), 'Compliant-MachineLearning', variables('deploymentSuffix')), 64)]",
+            "compliantNetworkDeploymentName": "[take(concat(parameters('industry'), 'Compliant-Network', variables('deploymentSuffix')), 64)]",
             "compliantOpenAiDeploymentName": "[take(concat(parameters('industry'), 'Compliant-OpenAi', variables('deploymentSuffix')), 64)]",
             "compliantServiceBusDeploymentName": "[take(concat(parameters('industry'), 'Compliant-ServiceBus', variables('deploymentSuffix')), 64)]",
             "compliantSqlDeploymentName": "[take(concat(parameters('industry'), 'Compliant-Sql', variables('deploymentSuffix')), 64)]",
@@ -854,6 +859,9 @@
             "compliantEventGridAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-EG', variables('deploymentSuffix')), 64)]",
             "compliantEventHubAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-EH', variables('deploymentSuffix')), 64)]",
             "compliantKeyVaultAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-KeyVault', variables('deploymentSuffix')), 64)]",
+            "compliantOpenAiAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-OpenAi', variables('deploymentSuffix')), 64)]",
+            "compliantMachineLearningAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-MachineLearning', variables('deploymentSuffix')), 64)]",
+            "compliantNetworkAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Network', variables('deploymentSuffix')), 64)]",
             "compliantContainerAppsAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerApps', variables('deploymentSuffix')), 64)]",            
             "compliantContainerInstanceAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerInstance', variables('deploymentSuffix')), 64)]",            
             "compliantContainerRegistryAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerRegistry', variables('deploymentSuffix')), 64)]",            
@@ -1010,6 +1018,8 @@
         "privateDnsPolicyParameterMapping": {
             "azureAutomationPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.azure-automation.net')]",
             "azureCosmosTablePrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.table.cosmos.azure.com')]",
+            "azureMlPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.api.azureml.ms')]",
+            "azureMlSecondaryPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.notebooks.azure.net')]",
             "azureCosmosSqlPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.documents.azure.com')]",
             "azureDataFactoryPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.datafactory.azure.net')]",
             "azureEventGridPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.eventgrid.azure.net')]",
@@ -1493,6 +1503,30 @@
                 "templateLink": {
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantMachineLearningPolicySetDefinition]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    }
+                }
+            }
+        },
+        {
+            // Deploying Compliant Network PolicySetDefinition
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "name": "[variables('deploymentNames').compliantNetworkDeploymentName]",
+            "location": "[deployment().location]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantNetworkPolicySetDefinition]"
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
@@ -3696,7 +3730,191 @@
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
             }
-        },                                 
+        },
+        {   // Creating Policy Assignment Compliant Machine Learning to Landing Zone scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'MachineLearning')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantMachineLearningAssignmentDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantMachineLearningDeploymentName)]",
+                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantMachineLearningPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "mlDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "mlLogAnalyticsWorkspaceResourceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "mlPrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "mlPrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureMlPrivateDnsZoneId, '')]"
+                    },
+                    "mlSecondPrivateDnsZoneId": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureMlSecondaryPrivateDnsZoneId, '')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
+                    // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
+                }
+            }
+        },
+        {   // Creating Policy Assignment Compliant Network to Landing Zone scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'Networking')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantNetworkAssignmentDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantNetworkDeploymentName)]",
+                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantNetworkPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    
+                    "vnetModifyDdos": {
+                        "value": "[if(equals(parameters('enableDdos'), 'Yes'), 'Modify', 'Disabled')]"
+                    },
+                    "ddosPlanResourceId": {
+                        "value": "[if(equals(parameters('enableDdos'), 'Yes'), variables('platformResourceIds').ddosProtectionResourceId, '')]"
+                    },
+                    "nsgDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "nsgLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "lbDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "lbDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "fdDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "fdDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "tmDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "tmDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "vnetDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "vnetDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "erDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "erDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "bastionDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "bastionLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "fdCdnDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "fdCdnLogAnalyticsWorkpaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "pipDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "pipLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "gwDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "gwLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "p2sDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "p2sLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
+                    // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
+                }
+            }
+        },         
+        {   // Creating Policy Assignment Compliant Open Ai to Landing Zone scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'OpenAI')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantOpenAiAssignmentDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantOpenAiDeploymentName)]",
+                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantOpenAiPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "cognitiveServicesPrivateDnsZone": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "cognitiveServicesPrivateDnsZoneI": {
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureCognitiveServicesPrivateDnsZoneId, '')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
+                    // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
+                }
+            }
+        },                                         
         /*
             The following section will optionally configure the governance for the Identity management group for the platform
         */
