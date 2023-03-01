@@ -18,14 +18,15 @@
         },
         "cognitiveServicesPrivateDnsZone": {
             "type": "string",
-            "defaultValue": "DeployIfNotExists"
-        },
-        "cognitiveServicesPrivateDnsZoneId": {
-            "type": "string",
+            "defaultValue": "Disabled",
             "allowedValues": [
                 "DeployIfNotExists",
                 "Disabled"
             ]
+        },
+        "cognitiveServicesPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
         },
         "userAssignedIdentityResourceId": {
             "type": "string"
@@ -62,7 +63,7 @@
                     "cognitiveServicesPrivateDnsZone": {
                         "value": "[parameters('cognitiveServicesPrivateDnsZone')]"
                     },
-                    "cognitiveServicesPrivateDnsZoneI": {
+                    "cognitiveServicesPrivateDnsZoneId": {
                         "value": "[parameters('cognitiveServicesPrivateDnsZoneId')]"
                     }
                 }

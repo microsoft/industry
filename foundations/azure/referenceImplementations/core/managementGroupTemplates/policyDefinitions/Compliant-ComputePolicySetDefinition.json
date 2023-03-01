@@ -126,14 +126,6 @@
                     }
                 ],
                 "parameters": {
-                    "diskPrivateDns": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
-                    },
-                    "diskPrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
                     "diskDoubleEncryption": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -197,21 +189,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('diskDoubleEncryption')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/bc05b96c-0b36-4ca9-82f0-5c53f96ce05a",
-                        "policyDefinitionReferenceId": "Dine-Disk-Private-DNS",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('diskPrivateDns')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('diskPrivateDnsZoneId')]"
                             }
                         }
                     }

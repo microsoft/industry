@@ -140,14 +140,6 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "serviceBusPrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
-                    "serviceBusDinePrivateDnsZone": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
-                    },
                     "serviceBusDenyCmk": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -209,21 +201,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('serviceBusDenyCmk')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/f0fcf93c-c063-4071-9668-c47474bd3564",
-                        "policyDefinitionReferenceId": "DINE-Sb-PrivateDns",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('serviceBusDinePrivateDnsZone')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('serviceBusPrivateDnsZoneId')]"
                             }
                         }
                     },
