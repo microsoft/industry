@@ -4275,6 +4275,12 @@
                     "serviceBusPrivateDnsZoneId": {
                         "value": "[if(contains(parameters('compliantAzureServices'), 'ServiceBus'), variables('privateDnsPolicyParameterMapping').azureServiceBusNamespacePrivateDnsZoneId, '')]"
                     },
+                    "synapsePrivateDnsZone": {
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'Synapse'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "synapsePrivateDnsZoneId": {
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'Synapse'), variables('privateDnsPolicyParameterMapping').azureServiceBusNamespacePrivateDnsZoneId, '')]"
+                    },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
                     }
@@ -4304,12 +4310,6 @@
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
-                    },
-                    "synapsePrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "synapsePrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSynapsePrivateDnsZoneId, '')]"
                     },
                     "synapseDefender": {
                         "value": "[if(equals(parameters('enableAscForSynapse'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"

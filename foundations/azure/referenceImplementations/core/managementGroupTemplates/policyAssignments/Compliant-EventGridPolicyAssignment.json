@@ -16,30 +16,6 @@
             ],
             "defaultValue": "Default"
         },
-        "eventGridDomainPrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "eventGridDomainPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "eventGridTopicPrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "eventGridTopicPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
         "eventGridPartnerDiagnostics": {
             "type": "string",
             "allowedValues": [
@@ -105,18 +81,6 @@
                 "policyDefinitionId": "[variables('policyDefinitions').compliantEg]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "eventGridDomainPrivateDnsZone": {
-                        "value": "[parameters('eventGridDomainPrivateDnsZone')]"
-                    },
-                    "eventGridDomainPrivateDnsZoneId": {
-                        "value": "[parameters('eventGridDomainPrivateDnsZoneId')]"
-                    },
-                    "eventGridTopicPrivateDnsZone": {
-                        "value": "[parameters('eventGridTopicPrivateDnsZone')]"
-                    },
-                    "eventGridTopicPrivateDnsZoneId": {
-                        "value": "[parameters('eventGridTopicPrivateDnsZoneId')]"
-                    },
                     "eventGridPartnerDiagnostics": {
                         "value": "[parameters('eventGridPartnerDiagnostics')]"
                     },
