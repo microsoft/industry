@@ -4248,24 +4248,19 @@
                         "value": "[parameters('industryPrefix')]"
                     },
                     "synapsePrivateDnsZone": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "synapsePrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSynapsePrivateDnsZoneId, '')]"
+                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSynapsePrivateDnsZoneId, '')]"
                     },
                     "synapseDefender": {
-                        "type": "string",
-                        "defaultValue": "[if(equals(parameters('enableAscForSynapse'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(equals(parameters('enableAscForSynapse'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "synapseDiagnostics": {
-                        "type": "string",
-                        "defaultValue": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "synapseLogAnalyticsWorkspaceId": {
-                        "type": "string",
-                        "defaultValue": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"

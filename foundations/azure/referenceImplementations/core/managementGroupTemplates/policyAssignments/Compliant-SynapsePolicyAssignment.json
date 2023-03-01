@@ -16,47 +16,23 @@
             ],
             "defaultValue": "Default"
         },
-        "sqlServerDiagnostics": {
+        "synapsePrivateDnsZone": {
             "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ]
+            "defaultValue": "DeployIfNotExists"
         },
-        "sqlServerLogAnalyticsWorkspaceId": {
+        "synapsePrivateDnsZoneId": {
             "type": "string",
             "defaultValue": ""
         },
-        "sqlManagedDefender": {
+        "synapseDefender": {
             "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ]
+            "defaultValue": "DeployIfNotExists"
         },
-        "sqlDbServerDiagnostics": {
+        "synapseDiagnostics": {
             "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ]
+            "defaultValue": "DeployIfNotExists"
         },
-        "sqlDbServerLogAnalyticsWorkspaceId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "sqlDbAllDiagnostics": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ]
-        },
-        "sqlDbAllLogAnalyticsWorkspaceId": {
+        "synapseLogAnalyticsWorkspaceId": {
             "type": "string",
             "defaultValue": ""
         },
@@ -92,26 +68,20 @@
                 "policyDefinitionId": "[variables('policyDefinitions').compliantSynapse]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "sqlServerDiagnostics": {
-                        "value": "[parameters('sqlServerDiagnostics')]"
+                    "synapsePrivateDnsZone": {
+                        "value": "[parameters('synapsePrivateDnsZone')]"
                     },
-                    "sqlServerLogAnalyticsWorkspaceId": {
-                        "value": "[parameters('sqlServerLogAnalyticsWorkspaceId')]"
+                    "synapsePrivateDnsZoneId": {
+                        "value": "[parameters('synapsePrivateDnsZoneId')]"
                     },
-                    "sqlManagedDefender": {
-                        "value": "[parameters('sqlManagedDefender')]"
+                    "synapseDefender": {
+                        "value": "[parameters('synapseDefender')]"
                     },
-                    "sqlDbServerDiagnostics": {
-                        "value": "[parameters('sqlDbServerDiagnostics')]"
+                    "synapseDiagnostics": {
+                        "value": "[parameters('synapseDiagnostics')]"
                     },
-                    "sqlDbServerLogAnalyticsWorkspaceId": {
-                        "value": "[parameters('sqlDbServerLogAnalyticsWorkspaceId')]"
-                    },
-                    "sqlDbAllDiagnostics": {
-                        "value": "[parameters('sqlDbAllDiagnostics')]"
-                    },
-                    "sqlDbAllLogAnalyticsWorkspaceId": {
-                        "value": "[parameters('sqlDbAllLogAnalyticsWorkspaceId')]"
+                    "synapseLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('synapseLogAnalyticsWorkspaceId')]"
                     }
                 }
             }
