@@ -122,14 +122,6 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "containerRegistryPrivateDnsZone": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
-                    },
-                    "containerRegistryPrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
                     "containerRegistryPublicNetworkAccess": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -191,21 +183,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('containerRegistryModifyPublicNetworkAccess')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e9585a95-5b8c-4d03-b193-dc7eb5ac4c32",
-                        "policyDefinitionReferenceId": "Dine-ContainerRegistry-Private-DNS-Zone",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('containerRegistryPrivateDnsZone')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('containerRegistryPrivateDnsZoneId')]"
                             }
                         }
                     },

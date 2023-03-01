@@ -252,18 +252,6 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "cosmosDbPrivateDnsZone": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
-                    },
-                    "cosmosDbPrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
-                    "cosmosDbPrivateEndpointGroupId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
                     "cosmosDbAtp": {
                         "type": "string",
                         "defaultValue": "DeployIfNotExists"
@@ -334,24 +322,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('cosmosDbAtp')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/a63cc0bd-cda4-4178-b705-37dc439d3e0f",
-                        "policyDefinitionReferenceId": "Dine-CosmosDb-Private-Dns",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('cosmosDbPrivateDnsZone')]"
-                            },
-                            "privateEndpointGroupId": {
-                                "value": "[[parameters('cosmosDbPrivateEndpointGroupId')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('cosmosDbPrivateDnsZoneId')]"
                             }
                         }
                     },

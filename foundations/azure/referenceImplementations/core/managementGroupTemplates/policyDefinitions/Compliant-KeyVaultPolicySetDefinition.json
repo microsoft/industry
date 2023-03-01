@@ -111,14 +111,6 @@
                         "type": "string",
                         "defaultValue": ""
                     },
-                    "keyVaultPrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
-                    "keyVaultPrivateDnsZone": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
-                    },
                     "keyVaultCertificatesPeriod": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -490,22 +482,7 @@
                                 "value": "[[parameters('keyVaultHmsPurgeProtection')]"
                             }
                         }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ac673a9a-f77d-4846-b2d8-a57f8e1c01d4",
-                        "policyDefinitionReferenceId": "DINE-KV-Dns",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('keyVaultPrivateDnsZone')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('keyVaultPrivateDnsZoneId')]"
-                            }
-                        }
-                    },                                      
+                    },                                    
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/951af2fa-529b-416e-ab6e-066fd85ac459",
                         "policyDefinitionReferenceId": "DINE-KV-Logs",

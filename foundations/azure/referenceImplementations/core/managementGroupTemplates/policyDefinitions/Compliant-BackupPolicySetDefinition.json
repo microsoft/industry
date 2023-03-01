@@ -255,18 +255,6 @@
                       "type": "string",
                       "defaultValue": "DeployIfNotExists"
                     },
-                    "asrPrivateDnsZone-Backup": {
-                      "type": "string",
-                      "defaultValue": ""
-                    },
-                    "asrPrivateDnsZone-Blob": {
-                      "type": "string",
-                      "defaultValue": ""
-                    },
-                    "asrPrivateDnsZone-Queue": {
-                      "type": "string",
-                      "defaultValue": ""
-                    },
                     "asrLogAnalyticsWorkspaceId": {
                       "type": "string",
                       "defaultValue": ""
@@ -282,27 +270,6 @@
                         "parameters": {
                             "logAnalytics": {
                                 "value": "[[parameters('asrLogAnalyticsWorkspaceId')]"
-                          }
-                      }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/af783da1-4ad1-42be-800d-d19c70038820",
-                        "policyDefinitionReferenceId": "Dine-Asr-Private-Dns-Zone",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('asrPrivateDnsZone')]"
-                            },
-                            "privateDnsZone-Backup": {
-                              "value": "[[parameters('asrPrivateDnsZone-Backup')]"
-                            },
-                            "privateDnsZone-Blob": {
-                              "value": "[[parameters('asrPrivateDnsZone-Blob')]"
-                            },
-                            "privateDnsZone-Queue": {
-                              "value": "[[parameters('asrPrivateDnsZone-Queue')]"
                           }
                       }
                     },

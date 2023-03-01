@@ -135,18 +135,6 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "mlPrivateDnsZone": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
-                    },
-                    "mlPrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
-                    "mlSecondPrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
                     "mlModifyLocalAuth": {
                         "type": "string",
                         "defaultValue": "Modify"
@@ -252,24 +240,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('mlModifyPublicNetworkAccess')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ee40564d-486e-4f68-a5ca-7a621edae0fb",
-                        "policyDefinitionReferenceId": "Dine-ML-Private-DNS-Zone",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('mlPrivateDnsZone')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('mlPrivateDnsZoneId')]"
-                            },
-                            "secondPrivateDnsZoneId": {
-                                "value": "[[parameters('mlSecondPrivateDnsZoneId')]"
                             }
                         }
                     },
