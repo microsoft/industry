@@ -62,7 +62,7 @@
                     "cognitiveServicesPrivateDnsZone": {
                         "value": "[parameters('cognitiveServicesPrivateDnsZone')]"
                     },
-                    "cognitiveServicesPrivateDnsZoneI": {
+                    "cognitiveServicesPrivateDnsZoneId": {
                         "value": "[parameters('cognitiveServicesPrivateDnsZoneId')]"
                     }
                 }
