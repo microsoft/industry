@@ -16,29 +16,23 @@
             ],
             "defaultValue": "Default"
         },
-        "mlDiagnostics": {
+        "synapsePrivateDnsZone": {
             "type": "string",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
+            "defaultValue": "DeployIfNotExists"
         },
-        "mlLogAnalyticsWorkspaceId": {
+        "synapsePrivateDnsZoneId": {
             "type": "string",
             "defaultValue": ""
         },
-        "mlPrivateDnsZone": {
+        "synapseDefender": {
             "type": "string",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
+            "defaultValue": "DeployIfNotExists"
         },
-        "mlPrivateDnsZoneId": {
+        "synapseDiagnostics": {
             "type": "string",
-            "defaultValue": ""
+            "defaultValue": "DeployIfNotExists"
         },
-        "mlSecondPrivateDnsZoneId": {
+        "synapseLogAnalyticsWorkspaceId": {
             "type": "string",
             "defaultValue": ""
         },
@@ -48,19 +42,19 @@
     },
     "variables": {
         "policyDefinitions": {
-            "compliantMl": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Machine-Learning')]"
+            "compliantSynapse": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Synapse')]"
         },
         "policyAssignmentNames": {
-            "ml": "Compliant-ML",
-            "description": "This policy initiative is a group of policies that ensures Machine Learning is compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default Machine Learning for Financial Services Industry"
+            "synapse": "Compliant-Synapse",
+            "description": "This policy initiative is a group of policies that ensures Synapse is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Synapse for Financial Services Industry"
         }
     },
     "resources": [
         {
             "type": "Microsoft.Authorization/policyAssignments",
             "apiVersion": "2022-06-01",
-            "name": "[variables('policyAssignmentNames').ml]",
+            "name": "[variables('policyAssignmentNames').synapse]",
             "location": "[deployment().location]",
             "identity": {
                 "type": "UserAssigned",
@@ -71,23 +65,23 @@
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
                 "displayName": "[variables('policyAssignmentNames').displayName]",
-                "policyDefinitionId": "[variables('policyDefinitions').compliantMl]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantSynapse]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "mlDiagnostics": {
-                        "value": "[parameters('mlDiagnostics')]"
+                    "synapsePrivateDnsZone": {
+                        "value": "[parameters('synapsePrivateDnsZone')]"
                     },
-                    "mlLogAnalyticsWorkspaceId": {
-                        "value": "[parameters('mlLogAnalyticsWorkspaceId')]"
+                    "synapsePrivateDnsZoneId": {
+                        "value": "[parameters('synapsePrivateDnsZoneId')]"
                     },
-                    "mlPrivateDnsZone": {
-                        "value": "[parameters('mlPrivateDnsZone')]"
+                    "synapseDefender": {
+                        "value": "[parameters('synapseDefender')]"
                     },
-                    "mlPrivateDnsZoneId": {
-                        "value": "[parameters('mlPrivateDnsZoneId')]"
+                    "synapseDiagnostics": {
+                        "value": "[parameters('synapseDiagnostics')]"
                     },
-                    "mlSecondPrivateDnsZoneId": {
-                        "value": "[parameters('mlSecondPrivateDnsZoneId')]"
+                    "synapseLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('synapseLogAnalyticsWorkspaceId')]"
                     }
                 }
             }

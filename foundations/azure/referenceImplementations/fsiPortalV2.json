@@ -562,7 +562,7 @@
                                 "App Service",
                                 "Automation",
                                 "Backup",
-                                "Compute",                                                                
+                                "Compute",
                                 "Container Apps",
                                 "Container Instance",
                                 "Container Registry",
@@ -570,8 +570,10 @@
                                 "Data Explorer",
                                 "Data Factory",
                                 "Key Vault",
+                                "Kubernetes",
                                 "SQL",
-                                "Service Bus",                                
+                                "Service Bus",
+                                "Postgre SQL",
                                 "Open AI",
                                 "Event Grid",
                                 "Event Hub",
@@ -579,7 +581,9 @@
                                 "Stream Analytics",
                                 "Networking",
                                 "Storage Account",
-                                "Virtual Machine"
+                                "Synapse",
+                                "Virtual Machine",
+                                "Machine Learning"
                             ],
                             "toolTip": "",
                             "multiselect": true,
@@ -641,6 +645,11 @@
                                         "value": "Kubernetes"
                                     },
                                     {
+                                        "label": "Postgre SQL",
+                                        "description": "Azure policies will ensure secure by-default compliance for Postgre SQL, enforce access via private endpoints, centralized authorization, advanced threat protection and centralized logging.",
+                                        "value": "PostgreSql"
+                                    },
+                                    {
                                         "label": "SQL",
                                         "description": "Azure policies will ensure secure by-default compliance for SQL servers and SQL databases, enforce access via private endpoints, centralized authorization, advanced threat protection and centralized logging.",
                                         "value": "Sql"
@@ -649,6 +658,11 @@
                                         "label": "Service Bus",
                                         "description": "Azure policies will ensure secure by-default compliance for Service Bus, enforce access via private endpoints, double encryption, centralized authorization, and centralized logging.",
                                         "value": "ServiceBus"
+                                    },
+                                    {
+                                        "label": "Synapse",
+                                        "description": "Azure policies will ensure secure by-default compliance for Synapse, enforce access via private endpoints, double encryption, centralized authorization, and centralized logging.",
+                                        "value": "Synapse"
                                     },
                                     {
                                         "label": "Cosmos DB",
@@ -703,7 +717,7 @@
                                     {
                                         "label": "Storage Account",
                                         "description": "Azure policies will ensure secure by-default compliance for Storage Accounts, such as enforcement of strong protocols, encryption, access via private endpoint, centralized authorization using Azure AD, and centralized logging.",
-                                        "value": "StorageAccounts"
+                                        "value": "StorageAccount"
                                     },
                                     {
                                         "label": "Virtual Machine",
@@ -1945,7 +1959,7 @@
                                 ]
                             }
                         },
-						{
+                        {
                             "name": "esAddressFw",
                             "type": "Microsoft.Common.TextBox",
                             "label": "Subnet for Azure Firewall",
@@ -1978,7 +1992,7 @@
                                 ]
                             }
                         },
-						{
+                        {
                             "name": "esDedicatedInboundSub",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Use a dedicated subscription for Internet ingress",
@@ -1998,7 +2012,7 @@
                                 ]
                             }
                         },
-						{
+                        {
                             "name": "esNwAdditionalSubSectionIngress",
                             "type": "Microsoft.Common.Section",
                             "label": "Internet ingress subscription",
@@ -2028,7 +2042,7 @@
                                 ]
                             }
                         },
-						{
+                        {
                             "name": "esAzFwIngress",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Deploy Azure Firewall",
@@ -2048,7 +2062,7 @@
                                 ]
                             }
                         },
-						{
+                        {
                             "name": "esAddressFwIngress",
                             "type": "Microsoft.Common.TextBox",
                             "label": "Subnet for Azure Firewall for ingress",
@@ -2081,7 +2095,7 @@
                                 ]
                             }
                         },
-						{
+                        {
                             "name": "esAzFwSkuIngress",
                             "type": "Microsoft.Common.DropDown",
                             "label": "Select Azure Firewall tier",
@@ -2134,7 +2148,7 @@
                                 ]
                             }
                         },
-						{
+                        {
                             "name": "esDedicatedOutboundSub",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Use s dedicated subscription for Internet egress",
@@ -2154,7 +2168,7 @@
                                 ]
                             }
                         },
-						{
+                        {
                             "name": "esNwAdditionalSubSectionEgress",
                             "type": "Microsoft.Common.Section",
                             "label": "Internet egress subscription",
@@ -2184,7 +2198,7 @@
                                 ]
                             }
                         },
-						{
+                        {
                             "name": "esAzFwEgress",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Deploy Azure Firewall",
@@ -2204,7 +2218,7 @@
                                 ]
                             }
                         },
-						{
+                        {
                             "name": "esAddressFwEgress",
                             "type": "Microsoft.Common.TextBox",
                             "label": "Subnet for Azure Firewall for ingress",
@@ -2237,7 +2251,7 @@
                                 ]
                             }
                         },
-						{
+                        {
                             "name": "esAzFwSkuEgress",
                             "type": "Microsoft.Common.DropDown",
                             "label": "Select Azure Firewall tier",
@@ -3023,18 +3037,18 @@
                 "enablePrivateDnsResolver": "[steps('esConnectivityGoalState').esPrivateDnsResolver]",
                 "subnetMaskForDnsResolverInbound": "[steps('esConnectivityGoalState').subnetMaskPrivateDnsResolverInbound]",
                 "subnetMaskForDnsResolverOutbound": "[steps('esConnectivityGoalState').subnetMaskPrivateDnsResolverOutbound]",
-				"ingressSubscriptionId": "[steps('esConnectivityGoalState').esNwAdditionalSubSectionIngress.esNwIngress.subscriptionId]",
-				"egressSubscriptionId": "[steps('esConnectivityGoalState').esNwAdditionalSubSectionEgress.esNwEgress.subscriptionId]",
-				"addressPrefixIngress": "[steps('esConnectivityGoalState').esAddressIngress]",
-				"addressPrefixEgress": "[steps('esConnectivityGoalState').esAddressEgress]",
-				"enableAzFwIngress": "[steps('esConnectivityGoalState').esAzFwIngress]",
-				"enableAzFwEgress": "[steps('esConnectivityGoalState').esAzFwEgress]",
-				"subnetMaskForAzFwIngress": "[steps('esConnectivityGoalState').esAddressFwIngress]",
-				"subnetMaskForAzFwEgress": "[steps('esConnectivityGoalState').esAddressFwEgress]",
-				"firewallSkuIngress": "[steps('esConnectivityGoalState').esAzFwSkuIngress]",
-				"firewallSkuEgress": "[steps('esConnectivityGoalState').esAzFwSkuEgress]",
+                "ingressSubscriptionId": "[steps('esConnectivityGoalState').esNwAdditionalSubSectionIngress.esNwIngress.subscriptionId]",
+                "egressSubscriptionId": "[steps('esConnectivityGoalState').esNwAdditionalSubSectionEgress.esNwEgress.subscriptionId]",
+                "addressPrefixIngress": "[steps('esConnectivityGoalState').esAddressIngress]",
+                "addressPrefixEgress": "[steps('esConnectivityGoalState').esAddressEgress]",
+                "enableAzFwIngress": "[steps('esConnectivityGoalState').esAzFwIngress]",
+                "enableAzFwEgress": "[steps('esConnectivityGoalState').esAzFwEgress]",
+                "subnetMaskForAzFwIngress": "[steps('esConnectivityGoalState').esAddressFwIngress]",
+                "subnetMaskForAzFwEgress": "[steps('esConnectivityGoalState').esAddressFwEgress]",
+                "firewallSkuIngress": "[steps('esConnectivityGoalState').esAzFwSkuIngress]",
+                "firewallSkuEgress": "[steps('esConnectivityGoalState').esAzFwSkuEgress]",
                 "firewallZonesIngress": "[steps('esConnectivityGoalState').esFwAzIngress]",
-				"firewallZonesEgress": "[steps('esConnectivityGoalState').esFwAzEgress]",
+                "firewallZonesEgress": "[steps('esConnectivityGoalState').esFwAzEgress]",
                 "corpConnectedLzSubscriptionId": "[if(or(not(contains(steps('lzGoalState').corpLz.esCorpLzSub,steps('esGoalState').esMgmtSubSection.esMgmtSub.subscriptionId)),not(contains(steps('lzGoalState').corpLz.esCorpLzSub,steps('esConnectivityGoalState').esNwSubSection.esNwSub.subscriptionId))),steps('lzGoalState').corpLz.lzConnectedSubs,'')]"
             },
             "kind": "Tenant",

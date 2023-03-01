@@ -82,7 +82,7 @@
         {
             "type": "Microsoft.Authorization/policySetDefinitions",
             "apiVersion": "2021-06-01",
-            "name": "Compliant-Storage-Account",
+            "name": "Compliant-Storage",
             "dependsOn": [
                 "policyDefinitionCopy"
             ],
@@ -120,25 +120,9 @@
                     }
                 ],
                 "parameters": {
-                    "storagePrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
-                    "storagePrivateDnsZone": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
-                    },
                     "storageKeysExipiration": {
                         "type": "string",
                         "defaultValue": "Deny"
-                    },
-                    "storageFileSyncPrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
-                    "storageFileSyncPrivateDnsZone": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
                     },
                     "modifyStorageFileSyncPublicEndpoint": {
                         "type": "string",
@@ -204,25 +188,9 @@
                         "type": "string",
                         "defaultValue": ""
                     },
-                    "storageFileDnsZone": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
-                    },
-                    "storageFileDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
                     "storageAccountsCmk": {
                         "type": "string",
                         "defaultValue": "Deny"
-                    },
-                    "storageBlobPrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
-                    "storageBlobPrivateDnsZone": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
                     },
                     "storageQueueDiagnostics": {
                         "type": "string",
@@ -275,9 +243,32 @@
                     "storageAccountsEncryptionCmk": {
                         "type": "string",
                         "defaultValue": "Deny"
+                    },
+                    "storageBlobDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "storageBlobLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
                     }
                 },
                 "policyDefinitions": [
+                    {   
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b4fe1a3b-0715-4c6c-a5ea-ffc33cf823cb",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Storage-blob",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('storageBlobDiagnostics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('storageBlobLogAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
                     {   
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b5ec538c-daa0-4006-8596-35468b9148e8",
                         "policyDefinitionReferenceId": "Deny-Storage-Encryption-Cmk",
@@ -429,21 +420,6 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/75973700-529f-4de2-b794-fb9b6781b6b0",
-                        "policyDefinitionReferenceId": "Dine-Storage-Blob-PrivateDns",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('storageBlobPrivateDnsZone')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('storageBlobPrivateDnsZoneId')]"
-                            }
-                        }
-                    },                    
-                    {
                         "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', 'Deny-Storage-Cmk')]",
                         "policyDefinitionReferenceId": "Deny-Storage-Cmk",
                         "groupNames": [
@@ -455,21 +431,6 @@
                             }
                         }
                     },               
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/6df98d03-368a-4438-8730-a93c4d7693d6",
-                        "policyDefinitionReferenceId": "Dine-Storage-FileGroupId-Dns",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('storageFileDnsZone')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('storageFileDnsZoneId')]"
-                            }
-                        }
-                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/59759c62-9a22-4cdf-ae64-074495983fef",
                         "policyDefinitionReferenceId": "Dine-Storage-Accounts-Diagnostics",
@@ -613,7 +574,7 @@
                     },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/13502221-8df0-4414-9937-de9c5c4e396b",
-                        "policyDefinitionReferenceId": "Modify-Api-Storage-Account-PublicEndpoint",
+                        "policyDefinitionReferenceId": "Modify-Blob-Storage-Account-PublicEndpoint",
                         "groupNames": [
                             "Network"
                         ],
@@ -636,21 +597,6 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/028bbd88-e9b5-461f-9424-a1b63a7bee1a",
-                        "policyDefinitionReferenceId": "Dine-Storage-Account-Private-Dns",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('storagePrivateDnsZoneId')]"
-                            },
-                            "effect": {
-                                "value": "[[parameters('storagePrivateDnsZone')]"
-                            }
-                        }
-                    },
-                    {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/044985bb-afe1-42cd-8a36-9d5d42424537",
                         "policyDefinitionReferenceId": "Deny-Storage-Account-Keys-Expire",
                         "groupNames": [
@@ -659,21 +605,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('storageKeysExipiration')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/06695360-db88-47f6-b976-7500d4297475",
-                        "policyDefinitionReferenceId": "Dine-Storage-File-Sync-Private-Dns",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('storageFileSyncPrivateDnsZoneId')]"
-                            },
-                            "effect": {
-                                "value": "[[parameters('storageFileSyncPrivateDnsZone')]"
                             }
                         }
                     }

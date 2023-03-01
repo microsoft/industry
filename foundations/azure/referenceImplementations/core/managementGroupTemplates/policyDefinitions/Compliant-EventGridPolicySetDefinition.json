@@ -112,22 +112,6 @@
                     "type": "string",
                     "defaultValue": "Modify"
                   },
-                  "eventGridDomainPrivateDnsZone": {
-                    "type": "string",
-                    "defaultValue": "DeployIfNotExists"
-                  },
-                  "eventGridDomainPrivateDnsZoneId": {
-                    "type": "string",
-                    "defaultValue": ""
-                  },
-                  "eventGridTopicPrivateDnsZone": {
-                    "type": "string",
-                    "defaultValue": "DeployIfNotExists"
-                  },
-                  "eventGridTopicPrivateDnsZoneId": {
-                    "type": "string",
-                    "defaultValue": ""
-                  },
                   "eventGridDomainModifyPublicNetworkAccess": {
                     "type": "string",
                     "defaultValue": "Modify"
@@ -249,36 +233,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('eventGridTopicModifyPublicNetworkAccess')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/baf19753-7502-405f-8745-370519b20483",
-                        "policyDefinitionReferenceId": "Dine-EventGrid-Topic-Private-DNS-Zone",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('eventGridTopicPrivateDnsZone')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('eventGridTopicPrivateDnsZoneId')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/d389df0a-e0d7-4607-833c-75a6fdac2c2d",
-                        "policyDefinitionReferenceId": "Dine-EventGrid-Domain-Private-DNS-Zone",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('eventGridDomainPrivateDnsZone')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('eventGridDomainPrivateDnsZoneId')]"
                             }
                         }
                     },

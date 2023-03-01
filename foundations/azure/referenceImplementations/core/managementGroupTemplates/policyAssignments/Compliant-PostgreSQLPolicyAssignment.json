@@ -16,15 +16,15 @@
             ],
             "defaultValue": "Default"
         },
-        "cognitiveServicesPrivateDnsZone": {
+        "postgreDiagnostics": {
             "type": "string",
             "defaultValue": "Disabled",
             "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
+                "Disabled",
+                "DeployIfNotExists"
             ]
         },
-        "cognitiveServicesPrivateDnsZoneId": {
+        "postgreLogAnalyticsWorkspaceId": {
             "type": "string",
             "defaultValue": ""
         },
@@ -34,19 +34,19 @@
     },
     "variables": {
         "policyDefinitions": {
-            "compliantOpenAi": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-OpenAi')]"
+            "compliantPostgre": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-PostgreSQL')]"
         },
         "policyAssignmentNames": {
-            "openAI": "Compliant-OpenAi",
-            "description": "This policy initiative is a group of policies that ensures Open Ai (Cognitive Service) is compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default Open Ai (Cognitive Service) for Financial Services Industry"
+            "postgre": "Compliant-PostgreSQL",
+            "description": "This policy initiative is a group of policies that ensures Postgre SQL is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Postgre SQL for Financial Services Industry"
         }
     },
     "resources": [
         {
             "type": "Microsoft.Authorization/policyAssignments",
             "apiVersion": "2022-06-01",
-            "name": "[variables('policyAssignmentNames').openAi]",
+            "name": "[variables('policyAssignmentNames').postgre]",
             "location": "[deployment().location]",
             "identity": {
                 "type": "UserAssigned",
@@ -57,14 +57,14 @@
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
                 "displayName": "[variables('policyAssignmentNames').displayName]",
-                "policyDefinitionId": "[variables('policyDefinitions').compliantOpenAi]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantPostgre]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "cognitiveServicesPrivateDnsZone": {
-                        "value": "[parameters('cognitiveServicesPrivateDnsZone')]"
+                    "postgreDiagnostics": {
+                        "value": "[parameters('postgreDiagnostics')]"
                     },
-                    "cognitiveServicesPrivateDnsZoneId": {
-                        "value": "[parameters('cognitiveServicesPrivateDnsZoneId')]"
+                    "postgreLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('postgreLogAnalyticsWorkspaceId')]"
                     }
                 }
             }
