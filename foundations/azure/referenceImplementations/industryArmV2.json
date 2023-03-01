@@ -3257,12 +3257,6 @@
                     },
                     "functionLogAnalyticsWorkspaceId": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
-                    },
-                    "appServiceAppsPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "appServiceAppsPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureAppServicesPrivateDnsZoneId, '')]"
                     },                    
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
@@ -3293,12 +3287,6 @@
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
-                    },
-                    "aaPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "aaPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureAutomationPrivateDnsZoneId, '')]"
                     },
                     "aaDiagnostics": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
@@ -3336,18 +3324,6 @@
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
                     },
-                    "asrPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "asrPrivateDnsZone-Backup": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureBackupPrivateDnsZoneId, '')]"
-                    },
-                    "asrPrivateDnsZone-Blob": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureBackupBlobPrivateDnsZoneId, '')]"
-                    },
-                    "asrPrivateDnsZone-Queue": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureBackupQueuePrivateDnsZoneId, '')]"
-                    },
                     "asrLogAnalyticsWorkspaceId": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
                     },
@@ -3380,12 +3356,6 @@
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
-                    },
-                    "diskPrivateDns": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "diskPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureManagedDiskPrivateDnsZoneId, '')]"
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
@@ -3477,12 +3447,6 @@
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
                     },
-                    "containerRegistryPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "containerRegistryPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureContainerRegistryPrivateDnsZoneId, '')]"
-                    },
                     "containerRegistryDiagnostics": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
@@ -3518,15 +3482,6 @@
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
-                    },
-                    "cosmosDbPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "cosmosDbPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureCosmosSqlPrivateDnsZoneId, '')]"
-                    },
-                    "cosmosDbPrivateEndpointGroupId": {
-                        "value": "Sql"
                     },
                     "cosmosDiagnostics": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
@@ -3600,12 +3555,6 @@
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
                     },
-                    "adfPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "adfPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureDataFactoryPrivateDnsZoneId, '')]"
-                    },
                     "adfDiagnostics": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
@@ -3641,12 +3590,6 @@
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
-                    },
-                    "keyVaultPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "keyVaultPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureKeyVaultPrivateDnsZoneId, '')]"
                     },
                     "keyVaultDiagnostics": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
@@ -3689,18 +3632,6 @@
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
-                    },
-                    "eventGridDomainPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "eventGridDomainPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureEventGridPrivateDnsZoneId, '')]"
-                    },
-                    "eventGridTopicPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "eventGridTopicPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureEventGridPrivateDnsZoneId, '')]"
                     },
                     "eventGridPartnerDiagnostics": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
@@ -3749,12 +3680,6 @@
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
-                    },
-                    "eventHubNamespacesPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "eventHubNamespacesPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureEventHubNamespacePrivateDnsZoneId, '')]"
                     },
                     "eventHubDiagnostics": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
@@ -3839,15 +3764,6 @@
                     },
                     "mlLogAnalyticsWorkspaceId": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
-                    },
-                    "mlPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "mlPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureMlPrivateDnsZoneId, '')]"
-                    },
-                    "mlSecondPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureMlSecondaryPrivateDnsZoneId, '')]"
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
@@ -3981,12 +3897,6 @@
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
                     },
-                    "cognitiveServicesPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "cognitiveServicesPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureCognitiveServicesPrivateDnsZoneId, '')]"
-                    },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
                     }
@@ -4051,12 +3961,6 @@
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
-                    },
-                    "serviceBusDinePrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "serviceBusPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureServiceBusNamespacePrivateDnsZoneId, '')]"
                     },
                     "ServiceBusLogAnalyticsEffect": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
@@ -4143,24 +4047,6 @@
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
                     },
-                    "storageTablePrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "storageTablePrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageTablePrivateDnsZoneId, '')]"
-                    },
-                    "storageSecondaryTablePrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "storageSecondaryTablePrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageTablePrivateDnsZoneId, '')]"
-                    },
-                    "storageFileSyncPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "storageFileSyncPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageFileSyncPrivateDnsZoneId, '')]"
-                    },
                     "storageFileSyncDiagnostics": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
@@ -4178,60 +4064,6 @@
                     },
                     "storageAccountsLogAnalyticsWorkspaceId": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
-                    },
-                    "storageFileDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "storageFileDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageFilePrivateDnsZoneId, '')]"
-                    },
-                    "storageBlobPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "storageBlobPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageBlobPrivateDnsZoneId, '')]"
-                    },
-                    "storageSecondaryBlobPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "storageSecondaryBlobPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageBlobPrivateDnsZoneId, '')]"
-                    },
-                    "storageDfsPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "storageDfsPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageDfsPrivateDnsZoneId, '')]"
-                    },
-                    "storageSecondaryDfsPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "storageSecondaryDfsPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageDfsPrivateDnsZoneId, '')]"
-                    },
-                    "storageQueuePrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "storageQueuePrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageQueuePrivateDnsZoneId, '')]"
-                    },
-                    "storageSecondaryQueuePrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "storageSecondaryQueuePrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageQueuePrivateDnsZoneId, '')]"
-                    },
-                    "storageWebPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "storageWebPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageWebPrivateDnsZoneId, '')]"
-                    },
-                    "storageSecondaryWebPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
-                    },
-                    "storageSecondaryWebPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageWebPrivateDnsZoneId, '')]"
                     },
                     "storageQueueDiagnostics": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
@@ -4276,172 +4108,172 @@
                         "value": "[parameters('industryPrefix')]"
                     },
                     "storageTablePrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "storageTablePrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageTablePrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), variables('privateDnsPolicyParameterMapping').azureStorageTablePrivateDnsZoneId, '')]"
                     },
                     "storageSecondaryTablePrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "storageSecondaryTablePrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageTablePrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageTablePrivateDnsZoneId, '')]"
                     },
                     "storageFileSyncPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "storageFileSyncPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageFileSyncPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), variables('privateDnsPolicyParameterMapping').azureStorageFileSyncPrivateDnsZoneId, '')]"
                     },
                     "storageFileDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "storageFileDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageFilePrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), variables('privateDnsPolicyParameterMapping').azureStorageFilePrivateDnsZoneId, '')]"
                     },
                     "storageBlobPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "storageBlobPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageBlobPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), variables('privateDnsPolicyParameterMapping').azureStorageBlobPrivateDnsZoneId, '')]"
                     },
                     "storageSecondaryBlobPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "storageSecondaryBlobPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageBlobPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageBlobPrivateDnsZoneId, '')]"
                     },
                     "storageDfsPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "storageDfsPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageDfsPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), variables('privateDnsPolicyParameterMapping').azureStorageDfsPrivateDnsZoneId, '')]"
                     },
                     "storageSecondaryDfsPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "storageSecondaryDfsPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageDfsPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageDfsPrivateDnsZoneId, '')]"
                     },
                     "storageQueuePrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "storageQueuePrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageQueuePrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), variables('privateDnsPolicyParameterMapping').azureStorageQueuePrivateDnsZoneId, '')]"
                     },
                     "storageSecondaryQueuePrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "storageSecondaryQueuePrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageQueuePrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageQueuePrivateDnsZoneId, '')]"
                     },
                     "storageWebPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "storageWebPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureStorageWebPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), variables('privateDnsPolicyParameterMapping').azureStorageWebPrivateDnsZoneId, '')]"
                     },
                     "storageSecondaryWebPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "storageSecondaryWebPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageWebPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), variables('privateDnsPolicyParameterMapping').azureSecondaryStorageWebPrivateDnsZoneId, '')]"
                     },
                     "appServiceAppsPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'AppService'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "appServiceAppsPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureAppServicesPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'AppService'), variables('privateDnsPolicyParameterMapping').azureAppServicesPrivateDnsZoneId, '')]"
                     },
                     "aaPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'Automation'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "aaPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureAutomationPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'Automation'), variables('privateDnsPolicyParameterMapping').azureAutomationPrivateDnsZoneId, '')]"
                     },
                     "asrPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'Backup'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "asrPrivateDnsZone-Backup": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureBackupPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'Backup'), variables('privateDnsPolicyParameterMapping').azureBackupPrivateDnsZoneId, '')]"
                     },
                     "asrPrivateDnsZone-Blob": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureBackupBlobPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'Backup'), variables('privateDnsPolicyParameterMapping').azureBackupBlobPrivateDnsZoneId, '')]"
                     },
                     "asrPrivateDnsZone-Queue": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureBackupQueuePrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'Backup'), variables('privateDnsPolicyParameterMapping').azureBackupQueuePrivateDnsZoneId, '')]"
                     },
                     "diskPrivateDns": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'Compute'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "diskPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureManagedDiskPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'Compute'), variables('privateDnsPolicyParameterMapping').azureManagedDiskPrivateDnsZoneId, '')]"
                     },
                     "containerRegistryPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'ContainerRegistry'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "containerRegistryPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureContainerRegistryPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'ContainerRegistry'), variables('privateDnsPolicyParameterMapping').azureContainerRegistryPrivateDnsZoneId, '')]"
                     },
                     "cosmosDbPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'CosmosDb'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "cosmosDbPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureCosmosSqlPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'CosmosDb'), variables('privateDnsPolicyParameterMapping').azureCosmosSqlPrivateDnsZoneId, '')]"
                     },
                     "cosmosDbPrivateEndpointGroupId": {
                         "value": "Sql"
                     },
                     "adfPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'DataFactory'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "adfPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureDataFactoryPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'DataFactory'), variables('privateDnsPolicyParameterMapping').azureDataFactoryPrivateDnsZoneId, '')]"
                     },
                     "keyVaultPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'KeyVault'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "keyVaultPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureKeyVaultPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'KeyVault'), variables('privateDnsPolicyParameterMapping').azureKeyVaultPrivateDnsZoneId, '')]"
                     },
                     "eventGridDomainPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'EventGrid'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "eventGridDomainPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureEventGridPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'EventGrid'), variables('privateDnsPolicyParameterMapping').azureEventGridPrivateDnsZoneId, '')]"
                     },
                     "eventGridTopicPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'EventGrid'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "eventGridTopicPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureEventGridPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'EventGrid'), variables('privateDnsPolicyParameterMapping').azureEventGridPrivateDnsZoneId, '')]"
                     },
                     "eventHubNamespacesPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'EventHub'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "eventHubNamespacesPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureEventHubNamespacePrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'EventHub'), variables('privateDnsPolicyParameterMapping').azureEventHubNamespacePrivateDnsZoneId, '')]"
                     },
                     "mlPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'MachineLearning'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "mlPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureMlPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'MachineLearning'), variables('privateDnsPolicyParameterMapping').azureMlPrivateDnsZoneId, '')]"
                     },
                     "mlSecondPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureMlSecondaryPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'MachineLearning'), variables('privateDnsPolicyParameterMapping').azureMlSecondaryPrivateDnsZoneId, '')]"
                     },
                     "cognitiveServicesPrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'OpenAi'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "cognitiveServicesPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureCognitiveServicesPrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'OpenAi'), variables('privateDnsPolicyParameterMapping').azureCognitiveServicesPrivateDnsZoneId, '')]"
                     },
                     "serviceBusDinePrivateDnsZone": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'ServiceBus'), 'DeployIfNotExists', 'Disabled')]"
                     },
                     "serviceBusPrivateDnsZoneId": {
-                        "value": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureServiceBusNamespacePrivateDnsZoneId, '')]"
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'ServiceBus'), variables('privateDnsPolicyParameterMapping').azureServiceBusNamespacePrivateDnsZoneId, '')]"
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"

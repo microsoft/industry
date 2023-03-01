@@ -210,14 +210,6 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "cognitiveServicesPrivateDnsZone": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
-                    },
-                    "cognitiveServicesPrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
                     "cognitiveServicesManagedIdentity": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -265,21 +257,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('cognitiveServicesManagedIdentity')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c4bc6f10-cb41-49eb-b000-d5ab82e2a091",
-                        "policyDefinitionReferenceId": "Dine-Cognitive-Services-Private-Dns",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('cognitiveServicesPrivateDnsZone')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('cognitiveServicesPrivateDnsZoneId')]"
                             }
                         }
                     },

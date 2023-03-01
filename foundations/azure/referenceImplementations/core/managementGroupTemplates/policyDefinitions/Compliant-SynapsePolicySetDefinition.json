@@ -124,14 +124,6 @@
                     }
                 ],
                 "parameters": {
-                    "synapsePrivateDnsZone": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
-                    },
-                    "synapsePrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
                     "synapseLocalAuth": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -357,21 +349,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('synapseLocalAuth')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/1e5ed725-f16c-478b-bd4b-7bfa2f7940b9",
-                        "policyDefinitionReferenceId": "Dine-Synapse-Private-Dns-Zone",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('synapsePrivateDnsZone')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('synapsePrivateDnsZoneId')]"
                             }
                         }
                     }

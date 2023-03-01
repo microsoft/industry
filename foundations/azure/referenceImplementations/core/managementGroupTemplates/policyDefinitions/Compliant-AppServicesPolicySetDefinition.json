@@ -674,14 +674,6 @@
                         "type": "string",
                         "defaultValue": "DeployIfNotExists"
                     },
-                    "appServiceAppsPrivateDnsZone": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
-                    },
-                    "appServiceAppsPrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
                     "appServiceAppsTls": {
                         "type": "string",
                         "defaultValue": "DeployIfNotExists"
@@ -809,21 +801,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('appServiceAppsTls')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b318f84a-b872-429b-ac6d-a01b96814452",
-                        "policyDefinitionReferenceId": "Dine-AppService-Apps-Private-DNS-Zone",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('appServiceAppsPrivateDnsZone')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('appServiceAppsPrivateDnsZoneId')]"
                             }
                         }
                     },

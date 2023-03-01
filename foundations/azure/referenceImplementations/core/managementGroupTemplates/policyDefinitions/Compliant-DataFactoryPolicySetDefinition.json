@@ -266,14 +266,6 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "adfPrivateDnsZone": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
-                    },
-                    "adfPrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
                     "adfManagedIdentity": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -312,21 +304,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('adfManagedIdentity')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/86cd96e1-1745-420d-94d4-d3f2fe415aa4",
-                        "policyDefinitionReferenceId": "Dine-Adf-Private-Dns-Zone",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('adfPrivateDnsZone')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('adfPrivateDnsZoneId')]"
                             }
                         }
                     },
