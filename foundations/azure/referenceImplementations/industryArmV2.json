@@ -683,7 +683,7 @@
             "compliantNetworkPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-NetworkPolicySetDefinition.json')]",
             "compliantNetworkPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-NetworkPolicyAssignment.json')]",
             "compliantOpenAiPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-OpenAiPolicySetDefinition.json')]",                        
-            "compliantOpenAiPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-OpenAiPolicySetAssignment.json')]",                        
+            "compliantOpenAiPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-OpenAiPolicyAssignment.json')]",                        
             "compliantPostgrePolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-PostgreSQLPolicySetDefinition.json')]",                        
             "compliantPostgrePolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-PostgreSQLPolicyAssignment.json')]",                        
             "compliantServiceBusPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-ServiceBusPolicySetDefinition.json')]",                        
