@@ -1594,35 +1594,31 @@
                         "type": "string",
                         "defaultValue": "allLogs"
                     },
-                    "effectAfwEnbaleTlsForAllAppRules": {
+                    "afwEnbaleTlsForAllAppRules": {
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "effectAfwEnableTlsInspection": {
+                    "afwEnableTlsInspection": {
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "effectAfwEmptyIDPSBypassList": {
+                    "afwEmptyIDPSBypassList": {
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "effectAfwEnableAllIDPSSignatureRules": {
+                    "afwEnableAllIDPSSignatureRules": {
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "effectAfwEnableIDPS": {
+                    "afwEnableIDPS": {
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "effectWafAfdEnabled": {
+                    "wafAfdEnabled": {
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "effectVpnAzureAD": {
-                        "type": "string",
-                        "defaultValue": "Deny"
-                    },
-                    "effectNetworkSecurityGroupOnGatewaySubnet": {
+                    "vpnAzureAD": {
                         "type": "string",
                         "defaultValue": "Deny"
                     }
@@ -1630,97 +1626,93 @@
                 "policyDefinitions": [
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/35f9c03a-cc27-418e-9c0c-539ff999d010",
-                        "policyDefinitionReferenceId": "35f9c03a-cc27-418e-9c0c-539ff999d010",
+                        "policyDefinitionReferenceId": "Deny-Nsg-GW-subnet",
                         "groupNames": [
                             "Network"
                         ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('effectNetworkSecurityGroupOnGatewaySubnet')]"
-                            }
-                        }
+                        "parameters": {}
                     },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/21a6bc25-125e-4d13-b82d-2e19b7208ab7",
-                        "policyDefinitionReferenceId": "21a6bc25-125e-4d13-b82d-2e19b7208ab7",
+                        "policyDefinitionReferenceId": "Deny-VPN-AzureAD",
                         "groupNames": [
                             "Network"
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('effectVpnAzureAD')]"
+                                "value": "[[parameters('vpnAzureAD')]"
                             }
                         }
                     },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/055aa869-bc98-4af8-bafc-23f1ab6ffe2c",
-                        "policyDefinitionReferenceId": "055aa869-bc98-4af8-bafc-23f1ab6ffe2c",
+                        "policyDefinitionReferenceId": "Deny-Waf-Afd-Enabled",
                         "groupNames": [
                             "Network"
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('effectWafAfdEnabled')]"
+                                "value": "[[parameters('wafAfdEnabled')]"
                             }
                         }
                     },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/6484db87-a62d-4327-9f07-80a2cbdf333a",
-                        "policyDefinitionReferenceId": "6484db87-a62d-4327-9f07-80a2cbdf333a",
+                        "policyDefinitionReferenceId": "Deny-Waf-IDPS",
                         "groupNames": [
                             "Network"
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('effectAfwEnableIDPS')]"
+                                "value": "[[parameters('afwEnableIDPS')]"
                             }
                         }
                     },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/610b6183-5f00-4d68-86d2-4ab4cb3a67a5",
-                        "policyDefinitionReferenceId": "610b6183-5f00-4d68-86d2-4ab4cb3a67a5",
+                        "policyDefinitionReferenceId": "Deny-FW-AllIDPSS",
                         "groupNames": [
                             "Network"
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('effectAfwEnableAllIDPSSignatureRules')]"
+                                "value": "[[parameters('afwEnableAllIDPSSignatureRules')]"
                             }
                         }
                     },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/f516dc7a-4543-4d40-aad6-98f76a706b50",
-                        "policyDefinitionReferenceId": "f516dc7a-4543-4d40-aad6-98f76a706b50",
+                        "policyDefinitionReferenceId": "Deny-FW-EmpIDPSBypass",
                         "groupNames": [
                             "Network"
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('effectAfwEmptyIDPSBypassList')]"
+                                "value": "[[parameters('afwEmptyIDPSBypassList')]"
                             }
                         }
                     },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/711c24bb-7f18-4578-b192-81a6161e1f17",
-                        "policyDefinitionReferenceId": "711c24bb-7f18-4578-b192-81a6161e1f17",
+                        "policyDefinitionReferenceId": "Deny-FW-TLS-Inspection",
                         "groupNames": [
                             "Network"
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('effectAfwEnableTlsInspection')]"
+                                "value": "[[parameters('afwEnableTlsInspection')]"
                             }
                         }
                     },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/a58ac66d-92cb-409c-94b8-8e48d7a96596",
-                        "policyDefinitionReferenceId": "a58ac66d-92cb-409c-94b8-8e48d7a96596",
+                        "policyDefinitionReferenceId": "Deny-FW-TLS-AllApp",
                         "groupNames": [
                             "Network"
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('effectAfwEnbaleTlsForAllAppRules')]"
+                                "value": "[[parameters('afwEnbaleTlsForAllAppRules')]"
                             }
                         }
                     },

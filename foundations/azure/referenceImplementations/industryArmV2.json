@@ -691,6 +691,7 @@
             "compliantStoragePolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-StoragePolicySetDefinition.json')]",
             "compliantStoragePolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-StoragePolicyAssignment.json')]",
             "compliantSynapsePolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-SynapsePolicySetDefinition.json')]",
+            "compliantSynapsePolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-SynapsePolicyAssignment.json')]",
             "dataPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/dataPolicies.json')]",
             "vnetConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/hubspoke-connectivity.json')]",
             "vwanConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/vwan-connectivity.json')]",
@@ -868,6 +869,7 @@
             "compliantOpenAiAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-OpenAi', variables('deploymentSuffix')), 64)]",
             "compliantPostgreAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Postgre', variables('deploymentSuffix')), 64)]",
             "compliantSqlAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-SQL', variables('deploymentSuffix')), 64)]",
+            "compliantSynapseAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Synaps', variables('deploymentSuffix')), 64)]",
             "compliantMachineLearningAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-MachineLearning', variables('deploymentSuffix')), 64)]",
             "compliantNetworkAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Network', variables('deploymentSuffix')), 64)]",
             "compliantContainerAppsAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerApps', variables('deploymentSuffix')), 64)]",            
@@ -1026,6 +1028,7 @@
         ],
         "baseId": "[concat(variables('platformResourceIds').privateDnsRgResourceId, '/providers/Microsoft.Network/privateDnsZones/')]",
         "privateDnsPolicyParameterMapping": {
+            "azureSynapsePrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.sql.azuresynapse.ne')]",
             "azureAutomationPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.azure-automation.net')]",
             "azureCosmosTablePrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.table.cosmos.azure.com')]",
             "azureMlPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.api.azureml.ms')]",
@@ -4218,6 +4221,55 @@
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
+                }
+            }
+        },
+        {   // Creating Policy Assignment Compliant Synapse to Landing Zone scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'Synapse')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantSynapseAssignmentDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantSynapseDeploymentName)]",
+                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantSynapsePolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "synapsePrivateDnsZone": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "synapsePrivateDnsZoneId": {
+                        "type": "string",
+                        "defaultValue": "[if(equals(parameters('enablePrivateDnsZones'), 'Yes'), variables('privateDnsPolicyParameterMapping').azureSynapsePrivateDnsZoneId, '')]"
+                    },
+                    "synapseDefender": {
+                        "type": "string",
+                        "defaultValue": "[if(equals(parameters('enableAscForSynapse'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "synapseDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "synapseLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
                 }
             }
         },                                             
