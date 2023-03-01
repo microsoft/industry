@@ -507,7 +507,7 @@
                     },
                                         {
                         "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[3].name)]",
-                        "policyDefinitionReferenceId": "Deny-PostgreSql-Flexible-Server-Customer-Managed-Keys",
+                        "policyDefinitionReferenceId": "Deny-PostgreSql-Server-Flexible-Server-LogAnalytics",
                         "groupNames": [
                             "Encryption"
                         ],
