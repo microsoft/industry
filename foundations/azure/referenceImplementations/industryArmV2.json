@@ -4253,7 +4253,7 @@
             }
         },
         {   // Creating Policy Assignment Compliant Corp Connected to Corp Landing Zone scope
-            "condition": "[contains(parameters('compliantAzureServices'), 'StorageAccount')]",
+            "condition": "[equals(parameters('enablePrivateDnsZones'), 'Yes')]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
