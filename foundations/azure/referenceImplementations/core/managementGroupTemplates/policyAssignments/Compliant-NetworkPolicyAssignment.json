@@ -1,0 +1,264 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
+            }
+        },
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        },
+        "vnetModifyDdos": {
+            "type": "string",
+            "defaultValue": "Modify"
+        },
+        "ddosPlanResourceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "nsgDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "nsgLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "lbDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "lbDiagnosticsLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "fdDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "fdDiagnosticsLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "tmDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "tmDiagnosticsLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "vnetDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "vnetDiagnosticsLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "erDiagnostics": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "erDiagnosticsLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "bastionDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "bastionLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "fdCdnDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "fdCdnLogAnalyticsWorkpaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "pipDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "pipLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "gwDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "gwLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "p2sDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "p2sLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "compliantNw": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Network')]"
+        },
+        "policyAssignmentNames": {
+            "nw": "Compliant-Network",
+            "description": "This policy initiative is a group of policies that ensures Network and Networking Services are compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Network and Networking Services for Financial Services Industry"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2022-06-01",
+            "name": "[variables('policyAssignmentNames').nw]",
+            "location": "[deployment().location]",
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[parameters('userAssignedIdentityResourceId')]": {}
+                }
+            },
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantNw]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "vnetModifyDdos": {
+                        "value": "[parameters('vnetModifyDdos')]"
+                    },
+                    "ddosPlanResourceId": {
+                        "value": "[parameters('ddosPlanResourceId')]"
+                    },
+                    "nsgDiagnostics": {
+                        "value": "[parameters('nsgDiagnostics')]"
+                    },
+                    "nsgLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('nsgLogAnalyticsWorkspaceId')]"
+                    },
+                    "lbDiagnostics": {
+                        "value": "[parameters('lbDiagnostics')]"
+                    },
+                    "lbDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('lbDiagnosticsLogAnalyticsWorkspaceId')]"
+                    },
+                    "fdDiagnostics": {
+                        "value": "[parameters('fdDiagnostics')]"
+                    },
+                    "fdDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('fdDiagnosticsLogAnalyticsWorkspaceId')]"
+                    },
+                    "tmDiagnostics": {
+                        "value": "[parameters('tmDiagnostics')]"
+                    },
+                    "tmDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('tmDiagnosticsLogAnalyticsWorkspaceId')]"
+                    },
+                    "vnetDiagnostics": {
+                        "value": "[parameters('vnetDiagnostics')]"
+                    },
+                    "vnetDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('vnetDiagnosticsLogAnalyticsWorkspaceId')]"
+                    },
+                    "erDiagnostics": {
+                        "value": "[parameters('erDiagnostics')]"
+                    },
+                    "erDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('erDiagnosticsLogAnalyticsWorkspaceId')]"
+                    },
+                    "bastionDiagnostics": {
+                        "value": "[parameters('bastionDiagnostics')]"
+                    },
+                    "bastionLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('bastionLogAnalyticsWorkspaceId')]"
+                    },
+                    "fdCdnDiagnostics": {
+                        "value": "[parameters('fdCdnDiagnostics')]"
+                    },
+                    "fdCdnLogAnalyticsWorkpaceId": {
+                        "value": "[parameters('fdCdnLogAnalyticsWorkpaceId')]"
+                    },
+                    "pipDiagnostics": {
+                        "value": "[parameters('pipDiagnostics')]"
+                    },
+                    "pipLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('pipLogAnalyticsWorkspaceId')]"
+                    },
+                    "gwDiagnostics": {
+                        "value": "[parameters('gwDiagnostics')]"
+                    },
+                    "gwLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('gwLogAnalyticsWorkspaceId')]"
+                    },
+                    "p2sDiagnostics": {
+                        "value": "[parameters('p2sDiagnostics')]"
+                    },
+                    "p2sLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('p2sLogAnalyticsWorkspaceId')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

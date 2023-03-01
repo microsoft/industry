@@ -570,8 +570,10 @@
                                 "Data Explorer",
                                 "Data Factory",
                                 "Key Vault",
+                                "Kubernetes",
                                 "SQL",
-                                "Service Bus",                                
+                                "Service Bus",
+                                "Postgre SQL",                                
                                 "Open AI",
                                 "Event Grid",
                                 "Event Hub",
@@ -579,7 +581,8 @@
                                 "Stream Analytics",
                                 "Networking",
                                 "Storage Account",
-                                "Virtual Machine"
+                                "Virtual Machine",
+                                "Machine Learning"
                             ],
                             "toolTip": "",
                             "multiselect": true,
@@ -641,6 +644,11 @@
                                         "value": "Kubernetes"
                                     },
                                     {
+                                        "label": "Postgre SQL",
+                                        "description": "Azure policies will ensure secure by-default compliance for Postgre SQL, enforce access via private endpoints, centralized authorization, advanced threat protection and centralized logging.",
+                                        "value": "PostgreSql"
+                                    },
+                                    {
                                         "label": "SQL",
                                         "description": "Azure policies will ensure secure by-default compliance for SQL servers and SQL databases, enforce access via private endpoints, centralized authorization, advanced threat protection and centralized logging.",
                                         "value": "Sql"
@@ -664,6 +672,11 @@
                                         "label": "Data Factory",
                                         "description": "Azure policies will ensure secure by-default compliance for Data Factory, enforce access via private endpoints, double encryption, centralized authorization, and centralized logging.",
                                         "value": "DataFactory"
+                                    },
+                                    {
+                                        "label": "Machine Learning",
+                                        "description": "Azure policies will ensure secure by-default compliance for Machine Learning, enforce access via private endpoints, centralized authorization, and centralized logging.",
+                                        "value": "MachineLearning"
                                     },
                                     {
                                         "label": "Open AI",
@@ -698,7 +711,7 @@
                                     {
                                         "label": "Storage Account",
                                         "description": "Azure policies will ensure secure by-default compliance for Storage Accounts, such as enforcement of strong protocols, encryption, access via private endpoint, centralized authorization using Azure AD, and centralized logging.",
-                                        "value": "StorageAccounts"
+                                        "value": "StorageAccount"
                                     },
                                     {
                                         "label": "Virtual Machine",
