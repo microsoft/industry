@@ -4,7 +4,7 @@
     "parameters": {
         "topLevelManagementGroupPrefix": {
             "type": "string",
-            "defaultValue": "FSIDemo"
+            "defaultValue": "test"
         }
     },
     "variables": {
@@ -566,7 +566,7 @@
                                 "defaultValue": "Deny"
                             },
                             "minContainerDeleteRetentionInDays": {
-                                "type": "Int",
+                                "type": "Integer",
                                 "metadata": {
                                     "displayName": "Minimum Container Delete Retention in Days",
                                     "description": "Specifies the minimum number of days for the container delete retention policy"
@@ -923,6 +923,10 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
+                    "storageMinContainerDeleteRetentionInDays": {
+                        "type": "Integer",
+                        "defaultValue": 7
+                    },
                     "storageCorsRules": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -934,6 +938,74 @@
                     "storageBlobLogAnalyticsWorkspaceId": {
                         "type": "string",
                         "defaultValue": ""
+                    },
+                    "storageBlobPrivateDnsZone": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "storageBlobPrivateDnsZoneId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "storageSecondaryBlobPrivateDnsZone": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "storageSecondaryBlobPrivateDnsZoneId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "storageDfsPrivateDnsZone": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "storageDfsPrivateDnsZoneId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "storageSecondaryDfsPrivateDnsZone": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "storageSecondaryDfsPrivateDnsZoneId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "storageQueuePrivateDnsZone": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "storageQueuePrivateDnsZoneId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "storageSecondaryQueuePrivateDnsZone": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "storageSecondaryQueuePrivateDnsZoneId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "storageWebPrivateDnsZone": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "storageWebPrivateDnsZoneId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "storageSecondaryWebPrivateDnsZone": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "storageSecondaryWebPrivateDnsZoneId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "modifyStorageAccountPublicEndpoint": {
+                        "type": "string",
+                        "defaultValue": "Modify"
                     }
                 },
                 "policyDefinitions": [
@@ -1060,6 +1132,9 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('storageContainerDeleteRetentionPolicy')]"
+                            },
+                            "minContainerDeleteRetentionInDays": {
+                                "value": "[[parameters('storageMinContainerDeleteRetentionInDays')]"
                             }
                         }
                     },
