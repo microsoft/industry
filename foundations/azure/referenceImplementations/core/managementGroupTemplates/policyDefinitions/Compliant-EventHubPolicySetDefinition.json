@@ -136,14 +136,6 @@
                         "type": "string",
                         "defaultValue": "Modify"
                     },
-                    "eventHubNamespacesPrivateDnsZone": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
-                    },
-                    "eventHubNamespacesPrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
                     "eventHubNamespacesPublicNetworkAccess": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -214,21 +206,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('eventHubNamespacesPublicNetworkAccess')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ed66d4f5-8220-45dc-ab4a-20d1749c74e6",
-                        "policyDefinitionReferenceId": "Dine-EH-Private-DNS-Zone",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('eventHubNamespacesPrivateDnsZone')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('eventHubNamespacesPrivateDnsZoneId')]"
                             }
                         }
                     },

@@ -153,18 +153,6 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "aaPrivateDnsZone": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
-                    },
-                    "aaPrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
-                    "aaPrivateEndpointGroupId": {
-                        "type": "string",
-                        "defaultValue": "DSCAndHybridWorker"
-                    },
                     "aaPublicNetworkAccess": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -242,24 +230,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('aaPublicNetworkAccess')]"
-                            }
-                        }
-                    },  
-                   {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/6dd01e4f-1be1-4e80-9d0b-d109e04cb064",
-                        "policyDefinitionReferenceId": "Dine-Aa-Private-Dns",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('aaPrivateDnsZone')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('aaPrivateDnsZoneId')]"
-                            },
-                            "privateEndpointGroupId": {
-                                "value": "[[parameters('aaPrivateEndpointGroupId')]"
                             }
                         }
                     },

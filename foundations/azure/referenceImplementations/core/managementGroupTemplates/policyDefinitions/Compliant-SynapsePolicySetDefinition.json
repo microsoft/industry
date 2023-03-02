@@ -9,52 +9,51 @@
     },
     "variables": {
         "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
-        // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
         "policies": {
             "policyDefinitions": [
                 {
                     "properties": {
-                    "displayName": "IP firewall rules on Azure Synapse workspaces should be removed",
-                    "mode": "All",
-                    "description": "Removing all IP firewall rules improves security by ensuring your Azure Synapse workspace can only be accessed from a private endpoint. This configuration audits creation of firewall rules that allow public network access on the workspace.",
-                    "metadata": {
-                    "version": "1.0.0",
-                    "category": "Synapse"
-                    },
-                    "parameters": {
-                    "effect": {
-                        "type": "String",
+                        "displayName": "IP firewall rules on Azure Synapse workspaces should be removed",
+                        "mode": "All",
+                        "description": "Removing all IP firewall rules improves security by ensuring your Azure Synapse workspace can only be accessed from a private endpoint. This configuration audits creation of firewall rules that allow public network access on the workspace.",
                         "metadata": {
-                        "displayName": "Effect",
-                        "description": "Enable or disable the execution of the policy"
+                            "version": "1.0.0",
+                            "category": "Synapse"
                         },
-                        "allowedValues": [
-                        "Audit",
-                        "Deny",
-                        "Disabled"
-                        ],
-                        "defaultValue": "Audit"
-                    }
-                    },
-                    "policyRule": {
-                    "if": {
-                        "allOf": [
-                        {
-                            "field": "type",
-                            "equals": "Microsoft.Synapse/workspaces/firewallrules"
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Deny",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Audit"
+                            }
                         },
-                        {
-                            "field": "name",
-                            "exists": "true"
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Synapse/workspaces/firewallrules"
+                                    },
+                                    {
+                                        "field": "name",
+                                        "exists": "true"
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
                         }
-                        ]
                     },
-                    "then": {
-                        "effect": "[[parameters('effect')]"
-                    }
-                    }
-                },
-                "name": "Deny-Synapse-Fw-Rules"
+                    "name": "Deny-Synapse-Fw-Rules"
                 }
             ]
         }
@@ -125,14 +124,6 @@
                     }
                 ],
                 "parameters": {
-                    "synapsePrivateDnsZone": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
-                    },
-                    "synapsePrivateDnsZoneId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
                     "synapseLocalAuth": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -182,9 +173,48 @@
                     "synapseCmk": {
                         "type": "string",
                         "defaultValue": "Deny"
+                    },
+                    "synapseDefender": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "synapseDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "synapseLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
                     }
                 },
                 "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/32ba8d30-07c0-4136-ab18-9a11bf4a67b7",
+                        "policyDefinitionReferenceId": "Dine-Synapse-Diagnostics",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('synapseDiagnostics')]"
+                            },
+                            "logAnalyticsWorkspaceId": {
+                                "value": "[[parameters('synapseLogAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/951c1558-50a5-4ca3-abb6-a93e3e2367a6",
+                        "policyDefinitionReferenceId": "Dine-Synapse-Defender",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('synapseDefender')]"
+                            }
+                        }
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/f7d52b2d-e161-4dfa-a82b-55e564167385",
                         "policyDefinitionReferenceId": "Deny-Synapse-Cmk",
@@ -196,7 +226,7 @@
                                 "value": "[[parameters('synapseCmk')]"
                             }
                         }
-                    },                    
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/cb3738a6-82a2-4a18-b87b-15217b9deff4",
                         "policyDefinitionReferenceId": "Deny-Synapse-Tls-Version",
@@ -319,21 +349,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('synapseLocalAuth')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/1e5ed725-f16c-478b-bd4b-7bfa2f7940b9",
-                        "policyDefinitionReferenceId": "Dine-Synapse-Private-Dns-Zone",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('synapsePrivateDnsZone')]"
-                            },
-                            "privateDnsZoneId": {
-                                "value": "[[parameters('synapsePrivateDnsZoneId')]"
                             }
                         }
                     }
