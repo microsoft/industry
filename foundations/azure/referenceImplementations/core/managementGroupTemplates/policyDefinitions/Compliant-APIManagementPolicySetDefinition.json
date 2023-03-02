@@ -107,24 +107,6 @@
                                     "Disabled"
                                 ],
                                 "defaultValue": "Deny"
-                            },
-                            "evaluatedSkuNames": {
-                                "type": "Array",
-                                "metadata": {
-                                    "displayName": "API Management SKU Names",
-                                    "description": "List of API Management SKUs against which this policy will be evaluated."
-                                },
-                                "allowedValues": [
-                                    "Developer",
-                                    "Basic",
-                                    "Standard",
-                                    "Premium",
-                                    "Consumption"
-                                ],
-                                "defaultValue": [
-                                    "Developer",
-                                    "Premium"
-                                ]
                             }
                         },
                         "policyRule": {
@@ -133,10 +115,6 @@
                                     {
                                         "field": "type",
                                         "equals": "Microsoft.ApiManagement/service"
-                                    },
-                                    {
-                                        "field": "Microsoft.ApiManagement/service/sku.name",
-                                        "in": "[[parameters('evaluatedSkuNames')]"
                                     },
                                     {
                                         "anyOf": [
@@ -158,86 +136,6 @@
                         }
                     },
                     "name": "Deny-APIM-PublicNetworkAccess"
-                },
-                {
-                    "properties": {
-                        "displayName": "API Management services should restrict assignment of public IPs",
-                        "mode": "Indexed",
-                        "description": "Azure API Management should disable public network access through assignment of a public IP address resource to enhanced security, isolation and allows you to prohibit public network traffic. The API service then only allows connections via the network connected via vnet injection or private endpoints.",
-                        "metadata": {
-                            "version": "1.0.1",
-                            "category": "API Management"
-                        },
-                        "parameters": {
-                            "effect": {
-                                "type": "String",
-                                "metadata": {
-                                    "displayName": "Effect",
-                                    "description": "Enable or disable the execution of the policy"
-                                },
-                                "allowedValues": [
-                                    "Audit",
-                                    "Deny",
-                                    "Disabled"
-                                ],
-                                "defaultValue": "Deny"
-                            },
-                            "evaluatedSkuNames": {
-                                "type": "Array",
-                                "metadata": {
-                                    "displayName": "API Management SKU Names",
-                                    "description": "List of API Management SKUs against which this policy will be evaluated."
-                                },
-                                "allowedValues": [
-                                    "Developer",
-                                    "Basic",
-                                    "Standard",
-                                    "Premium",
-                                    "Consumption"
-                                ],
-                                "defaultValue": [
-                                    "Developer",
-                                    "Premium"
-                                ]
-                            }
-                        },
-                        "policyRule": {
-                            "if": {
-                                "allOf": [
-                                    {
-                                        "field": "type",
-                                        "equals": "Microsoft.ApiManagement/service"
-                                    },
-                                    {
-                                        "field": "Microsoft.ApiManagement/service/sku.name",
-                                        "in": "[[parameters('evaluatedSkuNames')]"
-                                    },
-                                    {
-                                        "anyOf": [
-                                            {
-                                                "field": "Microsoft.ApiManagement/service/publicIpAddressId",
-                                                "exists": "true"
-                                            },
-                                            {
-                                                "count": {
-                                                    "field": "Microsoft.ApiManagement/service/additionalLocations[*]",
-                                                    "where": {
-                                                        "field": "Microsoft.ApiManagement/service/additionalLocations[*].publicIpAddressId",
-                                                        "exists": "true"
-                                                    }
-                                                },
-                                                "greater": 0
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            "then": {
-                                "effect": "[[parameters('effect')]"
-                            }
-                        }
-                    },
-                    "name": "Deny-APIM-PublicIpAddress"
                 },
                 {
                     "properties": {
@@ -325,87 +223,6 @@
                         }
                     },
                     "name": "Deny-APIM-VirtualNetworkType"
-                },
-                
-                {
-                    "properties": {
-                        "displayName": "Cross-tenant private endpoints should be restricted for Azure API Management",
-                        "mode": "Indexed",
-                        "description": "Azure API Management accounts should restrict cross-tenant private endpoints. Enforce this for increased data exfiltration protection.",
-                        "metadata": {
-                            "version": "1.0.0",
-                            "category": "API Management"
-                        },
-                        "parameters": {
-                            "effect": {
-                                "type": "String",
-                                "metadata": {
-                                    "displayName": "Effect",
-                                    "description": "Enable or disable the execution of the policy"
-                                },
-                                "allowedValues": [
-                                    "Deny",
-                                    "Audit",
-                                    "Disabled"
-                                ],
-                                "defaultValue": "Deny"
-                            },
-                            "evaluatedSkuNames": {
-                                "type": "Array",
-                                "metadata": {
-                                    "displayName": "API Management SKU Names",
-                                    "description": "List of API Management SKUs against which this policy will be evaluated."
-                                },
-                                "allowedValues": [
-                                    "Developer",
-                                    "Basic",
-                                    "Standard",
-                                    "Premium",
-                                    "Consumption"
-                                ],
-                                "defaultValue": [
-                                    "Developer",
-                                    "Premium"
-                                ]
-                            }
-                        },
-                        "policyRule": {
-                            "if": {
-                                "allOf": [
-                                    {
-                                        "field": "type",
-                                        "equals": "Microsoft.ApiManagement/service"
-                                    },
-                                    {
-                                        "field": "Microsoft.ApiManagement/service/sku.name",
-                                        "in": "[[parameters('evaluatedSkuNames')]"
-                                    },
-                                    {
-                                        "count": {
-                                            "field": "Microsoft.ApiManagement/service/privateEndpointConnections[*]",
-                                            "where": {
-                                                "allOf": [
-                                                    {
-                                                        "field": "[[split(concat(field('Microsoft.ApiManagement/service/privateEndpointConnections[*].id'), '//'), '/')[2]]",
-                                                        "notEquals": "[[subscription().subscriptionId]"
-                                                    },
-                                                    {
-                                                        "field": "Microsoft.ApiManagement/service/privateEndpointConnections[*].privateLinkServiceConnectionState.status",
-                                                        "exists": "Approved"
-                                                    }
-                                                ]
-                                            }
-                                        },
-                                        "greater": 0
-                                    }
-                                ]
-                            },
-                            "then": {
-                                "effect": "[[parameters('effect')]"
-                            }
-                        }
-                    },
-                    "name": "Deny-Apim-PrivateEndpointConnections"
                 }
             ]
         }
@@ -510,10 +327,6 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "apimPublicIpAddress": {
-                        "type": "string",
-                        "defaultValue": "Deny"
-                    },
                     "apimVirtualNetworkTypeEffect": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -521,10 +334,6 @@
                     "apimVirtualNetworkType": {
                         "type": "string",
                         "defaultValue": "Internal"
-                    },
-                    "apimPrivateEndpointConnections": {
-                        "type": "string",
-                        "defaultValue": "Deny"
                     },
                     "apimSecrets": {
                         "type": "string",
@@ -571,18 +380,6 @@
                     },
                     {
                         "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[2].name)]",
-                        "policyDefinitionReferenceId": "Deny-APIM-PublicIpAddress",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('apimPublicIpAddress')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[3].name)]",
                         "policyDefinitionReferenceId": "Deny-APIM-VirtualNetworkType",
                         "groupNames": [
                             "Network"
@@ -593,18 +390,6 @@
                             },
                             "virtualNetworkType": {
                                 "value": "[[parameters('apimVirtualNetworkType')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[4].name)]",
-                        "policyDefinitionReferenceId": "Deny-Apim-PrivateEndpointConnections",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('apimPrivateEndpointConnections')]"
                             }
                         }
                     },
