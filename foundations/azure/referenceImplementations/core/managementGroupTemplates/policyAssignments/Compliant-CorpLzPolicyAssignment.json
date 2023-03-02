@@ -257,6 +257,30 @@
             "type": "string",
             "defaultValue": ""
         },
+        "avdHostPoolPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "avdHostPoolPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "avdHostPoolPrivateEndpointGroupId": {
+            "type": "string",
+            "defaultValue": "connection"
+        },
+        "avdWorkspacePrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "avdWorkspacePrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "avdWorkspacePrivateEndpointGroupId": {
+            "type": "string",
+            "defaultValue": "feed"
+        },
         "userAssignedIdentityResourceId": {
             "type": "string",
             "defaultValue": ""
@@ -290,6 +314,24 @@
                 "policyDefinitionId": "[variables('policyDefinitions').compliantCorpLz]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
+                    "avdHostPoolPrivateDnsZone": {
+                        "value": "[parameters('avdHostPoolPrivateDnsZone')]"
+                    },
+                    "avdHostPoolPrivateDnsZoneId": {
+                        "value": "[parameters('avdHostPoolPrivateDnsZoneId')]"
+                    },
+                    "avdHostPoolPrivateEndpointGroupId": {
+                        "value": "[parameters('avdHostPoolPrivateEndpointGroupId')]"
+                    },
+                    "avdWorkspacePrivateDnsZone": {
+                        "value": "[parameters('avdWorkspacePrivateDnsZone')]"
+                    },
+                    "avdWorkspacePrivateDnsZoneId": {
+                        "value": "[parameters('avdWorkspacePrivateDnsZoneId')]"
+                    },
+                    "avdWorkspacePrivateEndpointGroupId": {
+                        "value": "[parameters('avdWorkspacePrivateEndpointGroupId')]"
+                    },
                     "storageTablePrivateDnsZone": {
                         "value": "[parameters('storageTablePrivateDnsZone')]"
                     },
