@@ -4,12 +4,11 @@
     "parameters": {
         "topLevelManagementGroupPrefix": {
             "type": "string",
-            "defaultValue": "FSIDemo"
+            "defaultValue": "Dublin"
         }
     },
     "variables": {
         "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
-        // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
         "policies": {
             "policyDefinitions": [
                 {
@@ -18,47 +17,47 @@
                         "mode": "Indexed",
                         "description": "Disabling public network access improves security by ensuring that a managed disk isn't exposed on the public internet. Creating private endpoints can limit exposure of managed disks. Learn more at: https://aka.ms/disksprivatelinksdoc.",
                         "metadata": {
-                        "version": "2.0.0",
-                        "category": "Compute"
+                            "version": "2.0.0",
+                            "category": "Compute"
                         },
                         "parameters": {
-                        "effect": {
-                            "type": "String",
-                            "metadata": {
-                            "displayName": "Effect",
-                            "description": "The effect determines what happens when the policy rule is evaluated to match"
-                            },
-                            "allowedValues": [
-                            "Audit",
-                            "Deny",
-                            "Disabled"
-                            ],
-                            "defaultValue": "Audit"
-                        }
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "The effect determines what happens when the policy rule is evaluated to match"
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Deny",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Audit"
+                            }
                         },
                         "policyRule": {
-                        "if": {
-                            "allOf": [
-                            {
-                                "field": "type",
-                                "equals": "Microsoft.Compute/disks"
-                            },
-                            {
-                                "field": "Microsoft.Compute/disks/networkAccessPolicy",
-                                "notIn": [
-                                "DenyAll",
-                                "AllowPrivate"
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Compute/disks"
+                                    },
+                                    {
+                                        "field": "Microsoft.Compute/disks/networkAccessPolicy",
+                                        "notIn": [
+                                            "DenyAll",
+                                            "AllowPrivate"
+                                        ]
+                                    },
+                                    {
+                                        "field": "Microsoft.Compute/disks/publicNetworkAccess",
+                                        "notEquals": "Disabled"
+                                    }
                                 ]
                             },
-                            {
-                                "field": "Microsoft.Compute/disks/publicNetworkAccess",
-                                "notEquals": "Disabled"
+                            "then": {
+                                "effect": "[[parameters('effect')]"
                             }
-                            ]
-                        },
-                        "then": {
-                            "effect": "[[parameters('effect')]"
-                        }
                         }
                     },
                     "name": "Deny-Disk-Public-Endpoint"
@@ -143,7 +142,7 @@
                         "defaultValue": "Deny"
                     }
                 },
-                "policyDefinitions": [                   
+                "policyDefinitions": [
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/fc4d8e41-e223-45ea-9bf5-eada37891d87",
                         "policyDefinitionReferenceId": "Deny-VmAndVmss-Encryption-Host",
@@ -155,7 +154,7 @@
                                 "value": "[[parameters('vmAndVmssEncryptionHost')]"
                             }
                         }
-                    },                    
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/702dd420-7fcc-42c5-afe8-4026edd20fe0",
                         "policyDefinitionReferenceId": "Deny-OsAndDataDisk-Cmk",

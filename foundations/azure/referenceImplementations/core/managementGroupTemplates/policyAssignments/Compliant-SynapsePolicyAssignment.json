@@ -16,14 +16,6 @@
             ],
             "defaultValue": "Default"
         },
-        "synapsePrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "DeployIfNotExists"
-        },
-        "synapsePrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
         "synapseDefender": {
             "type": "string",
             "defaultValue": "DeployIfNotExists"
@@ -68,12 +60,6 @@
                 "policyDefinitionId": "[variables('policyDefinitions').compliantSynapse]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "synapsePrivateDnsZone": {
-                        "value": "[parameters('synapsePrivateDnsZone')]"
-                    },
-                    "synapsePrivateDnsZoneId": {
-                        "value": "[parameters('synapsePrivateDnsZoneId')]"
-                    },
                     "synapseDefender": {
                         "value": "[parameters('synapseDefender')]"
                     },

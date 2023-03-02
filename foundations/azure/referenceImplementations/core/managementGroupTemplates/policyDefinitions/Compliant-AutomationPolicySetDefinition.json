@@ -9,57 +9,56 @@
     },
     "variables": {
         "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
-        // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
         "policies": {
             "policyDefinitions": [
                 {
-                      "properties": {
+                    "properties": {
                         "displayName": "Automation Account should have Managed Identity",
                         "mode": "Indexed",
                         "description": "Use Managed Identities as the recommended method for authenticating with Azure resources from the runbooks. Managed identity for authentication is more secure and eliminates the management overhead associated with using RunAs Account in your runbook code .",
                         "metadata": {
-                        "version": "1.0.0",
-                        "category": "Automation"
+                            "version": "1.0.0",
+                            "category": "Automation"
                         },
                         "parameters": {
-                        "effect": {
-                            "type": "String",
-                            "metadata": {
-                            "displayName": "Effect",
-                            "description": "Enable or disable the execution of the policy"
-                            },
-                            "allowedValues": [
-                            "Audit",
-                            "Deny",
-                            "Disabled"
-                            ],
-                            "defaultValue": "Audit"
-                        }
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Deny",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Audit"
+                            }
                         },
                         "policyRule": {
-                        "if": {
-                            "allOf": [
-                            {
-                                "field": "type",
-                                "equals": "Microsoft.Automation/automationAccounts"
-                            },
-                            {
-                                "anyOf": [
-                                {
-                                    "field": "identity.type",
-                                    "exists": "false"
-                                },
-                                {
-                                    "field": "identity.type",
-                                    "contains": "None"
-                                }
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Automation/automationAccounts"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "field": "identity.type",
+                                                "exists": "false"
+                                            },
+                                            {
+                                                "field": "identity.type",
+                                                "contains": "None"
+                                            }
+                                        ]
+                                    }
                                 ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
                             }
-                            ]
-                        },
-                        "then": {
-                            "effect": "[[parameters('effect')]"
-                        }
                         }
                     },
                     "name": "Deny-AA-Managed-Identity"
@@ -208,8 +207,8 @@
                                 "value": "[[parameters('autoHotPatch')]"
                             }
                         }
-                    },  
-                   {
+                    },
+                    {
                         "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
                         "policyDefinitionReferenceId": "Deny-Aa-Managed-Identity",
                         "groupNames": [
@@ -220,7 +219,7 @@
                                 "value": "[[parameters('aaManagedIdentity')]"
                             }
                         }
-                    },  
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/955a914f-bf86-4f0e-acd5-e0766b0efcb6",
                         "policyDefinitionReferenceId": "Deny-Aa-Public-Network-Access",
