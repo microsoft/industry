@@ -83,7 +83,7 @@
                             }
                         }
                     },
-                    "name": "Deny-APIM-WithOutVnet"
+                    "name": "Deny-Apim-without-Vnet"
                 },
                 {
                     "properties": {
