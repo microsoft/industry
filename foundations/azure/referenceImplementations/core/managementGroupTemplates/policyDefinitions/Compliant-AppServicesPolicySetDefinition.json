@@ -4,7 +4,7 @@
     "parameters": {
         "topLevelManagementGroupPrefix": {
             "type": "string",
-            "defaultValue": "FSIDemo"
+            "defaultValue": "Dublin"
         }
     },
     "variables": {
@@ -586,6 +586,10 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
+                    "functionAppsDisablePublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
                     "appServiceDisablePublicNetworkAccess": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -607,6 +611,10 @@
                         "defaultValue": "Deny"
                     },
                     "appServiceAppsModifyPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Modify"
+                    },
+                    "appServiceAppModifyPublicNetworkAccess": {
                         "type": "string",
                         "defaultValue": "Modify"
                     },
@@ -647,6 +655,10 @@
                         "defaultValue": "Deny"
                     },
                     "appServiceRfc": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "appServiceAppsRfc": {
                         "type": "string",
                         "defaultValue": "Deny"
                     },
@@ -829,6 +841,18 @@
                         }
                     },
                     {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c6c3e00e-d414-4ca4-914f-406699bb8eee",
+                        "policyDefinitionReferenceId": "Modify-AppService-App-Public-Network-Access",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('appServiceAppModifyPublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/cca5adfe-626b-4cc6-8522-f5b6ed2391bd",
                         "policyDefinitionReferenceId": "Deny-AppService-Slots-Remote-Debugging",
                         "groupNames": [
@@ -897,6 +921,18 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('appServiceRfc')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/a691eacb-474d-47e4-b287-b4813ca44222",
+                        "policyDefinitionReferenceId": "Deny-AppServiceApps-Rfc",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('appServiceAppsRfc')]"
                             }
                         }
                     },
@@ -1091,6 +1127,18 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('functionAppDisablePublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/11c82d0c-db9f-4d7b-97c5-f3f9aa957da2",
+                        "policyDefinitionReferenceId": "Deny-FunctionApps-Public",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('functionAppsDisablePublicNetworkAccess')]"
                             }
                         }
                     },
