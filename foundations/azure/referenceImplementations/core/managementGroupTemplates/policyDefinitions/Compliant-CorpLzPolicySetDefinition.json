@@ -77,7 +77,7 @@
                                         "allOf": [
                                             {
                                                 "field": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups/privateDnsZoneConfigs[*].privateDnsZoneId",
-                                                "equals": "[parameters('privateDnsZoneId')]"
+                                                "equals": "[[parameters('privateDnsZoneId')]"
                                             }
                                         ]
                                     },
@@ -100,16 +100,16 @@
                                                 },
                                                 "resources": [
                                                     {
-                                                        "name": "[concat(parameters('privateEndpointName'), '/deployedByPolicy')]",
+                                                        "name": "[[concat(parameters('privateEndpointName'), '/deployedByPolicy')]",
                                                         "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
                                                         "apiVersion": "2020-03-01",
-                                                        "location": "[parameters('location')]",
+                                                        "location": "[[parameters('location')]",
                                                         "properties": {
                                                             "privateDnsZoneConfigs": [
                                                                 {
                                                                     "name": "privateDnsZone",
                                                                     "properties": {
-                                                                        "privateDnsZoneId": "[parameters('privateDnsZoneId')]"
+                                                                        "privateDnsZoneId": "[[parameters('privateDnsZoneId')]"
                                                                     }
                                                                 }
                                                             ]
@@ -119,13 +119,13 @@
                                             },
                                             "parameters": {
                                                 "privateDnsZoneId": {
-                                                    "value": "[parameters('privateDnsZoneId')]"
+                                                    "value": "[[parameters('privateDnsZoneId')]"
                                                 },
                                                 "privateEndpointName": {
-                                                    "value": "[field('name')]"
+                                                    "value": "[[field('name')]"
                                                 },
                                                 "location": {
-                                                    "value": "[field('location')]"
+                                                    "value": "[[field('location')]"
                                                 }
                                             }
                                         }
