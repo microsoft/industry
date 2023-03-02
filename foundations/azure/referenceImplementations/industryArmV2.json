@@ -694,6 +694,8 @@
             "compliantStoragePolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-StoragePolicyAssignment.json')]",
             "compliantSynapsePolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-SynapsePolicySetDefinition.json')]",
             "compliantSynapsePolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-SynapsePolicyAssignment.json')]",
+            "compliantVirtualDesktopPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-VirtualDesktopPolicySetDefinition.json')]",
+            "compliantVirtualDesktopPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-VirtualDesktopPolicyAssignment.json')]",
             "dataPolicyDefinitions": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/dataPolicies.json')]",
             "vnetConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/hubspoke-connectivity.json')]",
             "vwanConnectivityHub": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/vwan-connectivity.json')]",
@@ -784,6 +786,7 @@
             "compliantSqlDeploymentName": "[take(concat(parameters('industry'), '-Compliant-Sql', variables('deploymentSuffix')), 64)]",
             "compliantStorageDeploymentName": "[take(concat(parameters('industry'), '-Compliant-Storage', variables('deploymentSuffix')), 64)]",
             "compliantSynapseDeploymentName": "[take(concat(parameters('industry'), '-Compliant-Synapse', variables('deploymentSuffix')), 64)]",
+            "compliantVirtualDesktopDeploymentName": "[take(concat(parameters('industry'), '-Compliant-AVD', variables('deploymentSuffix')), 64)]",
             "mgmtSubscriptionPlacement": "[take(concat(parameters('industry'), '-MgmtSub', variables('deploymentSuffix')), 64)]",
             "policyIdentityDeploymentName": "[take(concat(parameters('industry'), '-PolicyIdentity', variables('deploymentSuffix')), 64)]",
             "policyIdentityRoleAssignmentDeploymentName": "[take(concat(parameters('industry'), '-PolicyIdentityRoleAssignment', variables('deploymentSuffix')), 64)]",
@@ -884,6 +887,7 @@
             "compliantStorageAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Storage', variables('deploymentSuffix')), 64)]",            
             "compliantApimAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Apim', variables('deploymentSuffix')), 64)]",
             "compliantAppServiceAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-AppService', variables('deploymentSuffix')), 64)]",
+            "compliantVirtualDesktopAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-AVD', variables('deploymentSuffix')), 64)]",
             // Telco specific policies assignment deployments
             "erHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaEr', variables('deploymentSuffix')), 64)]",
             "pipHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaPip', variables('deploymentSuffix')), 64)]",
@@ -1028,7 +1032,8 @@
             "privatelink.token.botframework.com",
             "workspace.privatelink.azurehealthcareapis.com",
             "fhir.privatelink.azurehealthcareapis.com",
-            "dicom.privatelink.azurehealthcareapis.com"
+            "dicom.privatelink.azurehealthcareapis.com",
+            "privatelink.wvd.microsoft.com"
         ],
         "baseId": "[concat(variables('platformResourceIds').privateDnsRgResourceId, '/providers/Microsoft.Network/privateDnsZones/')]",
         "privateDnsPolicyParameterMapping": {
@@ -1075,7 +1080,8 @@
             "azureSecondaryStorageWebPrivateDnsZoneId":"[concat(variables('baseId'), 'privatelink.web.core.windows.net')]",
             "azureStorageDfsPrivateDnsZoneId":"[concat(variables('baseId'), 'privatelink.dfs.core.windows.net')]",
             "azureSecondaryStorageDfsPrivateDnsZoneId":"[concat(variables('baseId'), 'privatelink.dfs.core.windows.net')]",
-            "azureStorageFileSyncPrivateDnsZoneId": "[concat(variables('baseId'), parameters('location'), '.privatelink.afs.azure.net')]"
+            "azureStorageFileSyncPrivateDnsZoneId": "[concat(variables('baseId'), parameters('location'), '.privatelink.afs.azure.net')]",
+            "azureDesktopVirtualizationPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.wvd.microsoft.com')]"
             
         },
         "roleDefinitions": {
@@ -1726,6 +1732,30 @@
                 "templateLink": {
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantSynapsePolicySetDefinition]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    }
+                }
+            }
+        },
+        {
+            // Deploying Compliant Virtual Desktop PolicySetDefinition
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "name": "[variables('deploymentNames').compliantVirtualDesktopDeploymentName]",
+            "location": "[deployment().location]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantVirtualDesktopPolicySetDefinition]"
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
@@ -4107,6 +4137,18 @@
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
                     },
+                    "avdHostPoolPrivateDnsZone": {
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'DesktopVirtualization'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "avdHostPoolPrivateDnsZoneId": {
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'DesktopVirtualization'), variables('privateDnsPolicyParameterMapping').azureDesktopVirtualizationPrivateDnsZoneId, '')]"
+                    },
+                    "avdWorkspacePrivateDnsZone": {
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'DesktopVirtualization'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "avdWorkspacePrivateDnsZoneId": {
+                        "value": "[if(contains(parameters('compliantAzureServices'), 'DesktopVirtualization'), variables('privateDnsPolicyParameterMapping').azureDesktopVirtualizationPrivateDnsZoneId, '')]"
+                    },
                     "storageTablePrivateDnsZone": {
                         "value": "[if(contains(parameters('compliantAzureServices'), 'StorageAccount'), 'DeployIfNotExists', 'Disabled')]"
                     },
@@ -4325,7 +4367,54 @@
                     }
                 }
             }
-        },                                             
+        },
+        {   // Creating Policy Assignment Virtual Desktop to Landing Zone scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'DesktopVirtualization')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantVirtualDesktopAssignmentDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantVirtualDesktopDeploymentName)]",
+                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantVirtualDesktopPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "avdAppGroupDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "avdAppGroupLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "avdHostPoolDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "avdHostPoolLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "avdWorkspaceDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "avdWorkspaceLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
+                }
+            }
+        },                                      
         /*
             The following section will optionally configure the governance for the Identity management group for the platform
         */

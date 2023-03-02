@@ -1,0 +1,603 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "defaultValue": "redm"
+        }
+    },
+    "variables": {
+        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
+        "policies": {
+            "policyDefinitions": [
+                {
+                    "properties": {
+                        "policyType": "Custom",
+                        "mode": "Indexed",
+                        "displayName": "Deploy Diagnostic Settings for AVD Application group to Log Analytics workspace",
+                        "description": "Deploys the diagnostic settings for AVD Application group to stream to a Log Analytics workspace when any application group which is missing this diagnostic settings is created or updated. The Policy will set the diagnostic with all and categorys enabled.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Desktop Virtualization"
+                        },
+                        "parameters": {
+                            "logAnalytics": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Log Analytics workspace",
+                                    "description": "Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant 'Log Analytics Contributor' permissions (or similar) to the policy assignment's principal ID.",
+                                    "strongType": "omsWorkspace"
+                                }
+                            },
+                            "effect": {
+                                "type": "String",
+                                "defaultValue": "DeployIfNotExists",
+                                "allowedValues": [
+                                    "DeployIfNotExists",
+                                    "Disabled"
+                                ],
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                }
+                            },
+                            "profileName": {
+                                "type": "String",
+                                "defaultValue": "setbypolicy",
+                                "metadata": {
+                                    "displayName": "Profile name",
+                                    "description": "The diagnostic settings profile name"
+                                }
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "field": "type",
+                                "equals": "Microsoft.DesktopVirtualization/applicationGroups"
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]",
+                                "details": {
+                                    "type": "Microsoft.Insights/diagnosticSettings",
+                                    "name": "[[parameters('profileName')]",
+                                    "existenceCondition": {
+                                        "allOf": [
+                                            {
+                                                "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
+                                                "equals": "true"
+                                            },
+                                            {
+                                                "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
+                                                "equals": "[[parameters('logAnalytics')]"
+                                            }
+                                        ]
+                                    },
+                                    "roleDefinitionIds": [
+                                        "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+                                        "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
+                                    ],
+                                    "deployment": {
+                                        "properties": {
+                                            "mode": "Incremental",
+                                            "template": {
+                                                "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                                                "contentVersion": "1.0.0.0",
+                                                "parameters": {
+                                                    "resourceName": {
+                                                        "type": "String"
+                                                    },
+                                                    "logAnalytics": {
+                                                        "type": "String"
+                                                    },
+                                                    "location": {
+                                                        "type": "String"
+                                                    },
+                                                    "profileName": {
+                                                        "type": "String"
+                                                    }
+                                                },
+                                                "variables": {},
+                                                "resources": [
+                                                    {
+                                                        "type": "Microsoft.DesktopVirtualization/applicationGroups/providers/diagnosticSettings",
+                                                        "apiVersion": "2021-05-01-preview",
+                                                        "name": "[[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
+                                                        "location": "[[parameters('location')]",
+                                                        "dependsOn": [],
+                                                        "properties": {
+                                                            "workspaceId": "[[parameters('logAnalytics')]",
+                                                            "logs": [
+                                                                {
+                                                                    "categoryGroup": "allLogs",
+                                                                    "enabled": true
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                ],
+                                                "outputs": {}
+                                            },
+                                            "parameters": {
+                                                "logAnalytics": {
+                                                    "value": "[[parameters('logAnalytics')]"
+                                                },
+                                                "location": {
+                                                    "value": "[[field('location')]"
+                                                },
+                                                "resourceName": {
+                                                    "value": "[[field('name')]"
+                                                },
+                                                "profileName": {
+                                                    "value": "[[parameters('profileName')]"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "name": "Dine-Diagnostics-avdAppGroup"
+                },
+                {
+                    "properties": {
+                        "policyType": "Custom",
+                        "mode": "Indexed",
+                        "displayName": "Deploy Diagnostic Settings for AVD Host Pools to Log Analytics workspace",
+                        "description": "Deploys the diagnostic settings for AVD Host Pools to stream to a Log Analytics workspace when any Host Pools which is missing this diagnostic settings is created or updated. The Policy will set the diagnostic with all and categorys enabled.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Desktop Virtualization"
+                        },
+                        "parameters": {
+                            "logAnalytics": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Log Analytics workspace",
+                                    "description": "Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant 'Log Analytics Contributor' permissions (or similar) to the policy assignment's principal ID.",
+                                    "strongType": "omsWorkspace"
+                                }
+                            },
+                            "effect": {
+                                "type": "String",
+                                "defaultValue": "DeployIfNotExists",
+                                "allowedValues": [
+                                    "DeployIfNotExists",
+                                    "Disabled"
+                                ],
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                }
+                            },
+                            "profileName": {
+                                "type": "String",
+                                "defaultValue": "setbypolicy",
+                                "metadata": {
+                                    "displayName": "Profile name",
+                                    "description": "The diagnostic settings profile name"
+                                }
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "field": "type",
+                                "equals": "Microsoft.DesktopVirtualization/hostpools"
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]",
+                                "details": {
+                                    "type": "Microsoft.Insights/diagnosticSettings",
+                                    "name": "[[parameters('profileName')]",
+                                    "existenceCondition": {
+                                        "allOf": [
+                                            {
+                                                "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
+                                                "equals": "true"
+                                            },
+                                            {
+                                                "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
+                                                "equals": "[[parameters('logAnalytics')]"
+                                            }
+                                        ]
+                                    },
+                                    "roleDefinitionIds": [
+                                        "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+                                        "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
+                                    ],
+                                    "deployment": {
+                                        "properties": {
+                                            "mode": "Incremental",
+                                            "template": {
+                                                "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                                                "contentVersion": "1.0.0.0",
+                                                "parameters": {
+                                                    "resourceName": {
+                                                        "type": "String"
+                                                    },
+                                                    "logAnalytics": {
+                                                        "type": "String"
+                                                    },
+                                                    "location": {
+                                                        "type": "String"
+                                                    },
+                                                    "profileName": {
+                                                        "type": "String"
+                                                    }
+                                                },
+                                                "variables": {},
+                                                "resources": [
+                                                    {
+                                                        "type": "Microsoft.DesktopVirtualization/hostpools/providers/diagnosticSettings",
+                                                        "apiVersion": "2021-05-01-preview",
+                                                        "name": "[[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
+                                                        "location": "[[parameters('location')]",
+                                                        "dependsOn": [],
+                                                        "properties": {
+                                                            "workspaceId": "[[parameters('logAnalytics')]",
+                                                            "logs": [
+                                                                {
+                                                                    "categoryGroup": "allLogs",
+                                                                    "enabled": true
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                ],
+                                                "outputs": {}
+                                            },
+                                            "parameters": {
+                                                "logAnalytics": {
+                                                    "value": "[[parameters('logAnalytics')]"
+                                                },
+                                                "location": {
+                                                    "value": "[[field('location')]"
+                                                },
+                                                "resourceName": {
+                                                    "value": "[[field('name')]"
+                                                },
+                                                "profileName": {
+                                                    "value": "[[parameters('profileName')]"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "name": "Dine-Diagnostics-avdHostPool"
+                },
+                {
+                    "properties": {
+                        "policyType": "Custom",
+                        "mode": "Indexed",
+                        "displayName": "Deploy Diagnostic Settings for AVD Workspace to Log Analytics workspace",
+                        "description": "Deploys the diagnostic settings for AVD Workspace to stream to a Log Analytics workspace when any Workspace which is missing this diagnostic settings is created or updated. The Policy will set the diagnostic with all and categorys enabled.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Desktop Virtualization"
+                        },
+                        "parameters": {
+                            "logAnalytics": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Log Analytics workspace",
+                                    "description": "Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant 'Log Analytics Contributor' permissions (or similar) to the policy assignment's principal ID.",
+                                    "strongType": "omsWorkspace"
+                                }
+                            },
+                            "effect": {
+                                "type": "String",
+                                "defaultValue": "DeployIfNotExists",
+                                "allowedValues": [
+                                    "DeployIfNotExists",
+                                    "Disabled"
+                                ],
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                }
+                            },
+                            "profileName": {
+                                "type": "String",
+                                "defaultValue": "setbypolicy",
+                                "metadata": {
+                                    "displayName": "Profile name",
+                                    "description": "The diagnostic settings profile name"
+                                }
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "field": "type",
+                                "equals": "Microsoft.DesktopVirtualization/workspaces"
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]",
+                                "details": {
+                                    "type": "Microsoft.Insights/diagnosticSettings",
+                                    "name": "[[parameters('profileName')]",
+                                    "existenceCondition": {
+                                        "allOf": [
+                                            {
+                                                "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
+                                                "equals": "true"
+                                            },
+                                            {
+                                                "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
+                                                "equals": "[[parameters('logAnalytics')]"
+                                            }
+                                        ]
+                                    },
+                                    "roleDefinitionIds": [
+                                        "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+                                        "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
+                                    ],
+                                    "deployment": {
+                                        "properties": {
+                                            "mode": "Incremental",
+                                            "template": {
+                                                "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                                                "contentVersion": "1.0.0.0",
+                                                "parameters": {
+                                                    "resourceName": {
+                                                        "type": "String"
+                                                    },
+                                                    "logAnalytics": {
+                                                        "type": "String"
+                                                    },
+                                                    "location": {
+                                                        "type": "String"
+                                                    },
+                                                    "profileName": {
+                                                        "type": "String"
+                                                    }
+                                                },
+                                                "variables": {},
+                                                "resources": [
+                                                    {
+                                                        "type": "Microsoft.DesktopVirtualization/workspaces/providers/diagnosticSettings",
+                                                        "apiVersion": "2021-05-01-preview",
+                                                        "name": "[[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
+                                                        "location": "[[parameters('location')]",
+                                                        "dependsOn": [],
+                                                        "properties": {
+                                                            "workspaceId": "[[parameters('logAnalytics')]",
+                                                            "logs": [
+                                                                {
+                                                                    "categoryGroup": "allLogs",
+                                                                    "enabled": true
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                ],
+                                                "outputs": {}
+                                            },
+                                            "parameters": {
+                                                "logAnalytics": {
+                                                    "value": "[[parameters('logAnalytics')]"
+                                                },
+                                                "location": {
+                                                    "value": "[[field('location')]"
+                                                },
+                                                "resourceName": {
+                                                    "value": "[[field('name')]"
+                                                },
+                                                "profileName": {
+                                                    "value": "[[parameters('profileName')]"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "name": "Dine-Diagnostics-avdWorkspace"
+                }
+            ]
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
+            "apiVersion": "2019-09-01",
+            "copy": {
+                "name": "policyDefinitionCopy",
+                "count": "[length(variables('policies').policyDefinitions)]"
+            },
+            "properties": {
+                "displayName": "[variables('policies').policyDefinitions[copyIndex()].properties.displayName]",
+                "description": "[variables('policies').policyDefinitions[copyIndex()].properties.description]",
+                "mode": "[variables('policies').policyDefinitions[copyIndex()].properties.mode]",
+                "policyType": "Custom",
+                "parameters": "[variables('policies').policyDefinitions[copyIndex()].properties.parameters]",
+                "policyRule": "[variables('policies').policyDefinitions[copyIndex()].properties.policyRule]",
+                "metadata": "[variables('policies').policyDefinitions[copyIndex()].properties.metadata]"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2021-06-01",
+            "name": "Compliant-AVD",
+            "dependsOn": [
+                "policyDefinitionCopy"
+            ],
+            "properties": {
+                "metadata": {
+                    "version": "1.0.0",
+                    "category": "Desktop Virtualization"
+                },
+                "displayName": "Enforce secure-by-default Virtual Desktop for Financial Services Industry",
+                "description": "This policy initiative is a group of policies that ensures Virtual Desktop is compliant per FSI Landing Zones",
+                "policyDefinitionGroups": [
+                    {
+                        "name": "Encryption",
+                        "category": "Data Protection",
+                        "displayName": "Ensure compliance for purge protection, soft delete, and key rotation",
+                        "description": "Policy to ensure compliance for purge protection, soft delete, and key rotation"
+                    },
+                    {
+                        "name": "Network",
+                        "category": "Network Security",
+                        "displayName": "Ensure Virtual Desktop is not accessible over the public internet",
+                        "description": "Policy to ensure Key Vault is not accessible over the public internet"
+                    },
+                    {
+                        "name": "Identity",
+                        "category": "Identity Management",
+                        "displayName": "Ensure usage of centralized identity and auhtorization system for Virtual Desktop",
+                        "description": "Policy to ensure Virtual Desktop is not using local authorization"
+                    },
+                    {
+                        "name": "Logging",
+                        "category": "Logging and Threat Detection",
+                        "displayName": "Ensure Virtual Desktop is logging all events to Log Analytics",
+                        "description": "Policy to ensure Virtual Desktop is logging all events to Log Analytics workspace"
+                    }
+                ],
+                "parameters": {
+                    "avdHostPoolPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "avdHostPoolModifyPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Modify"
+                    },
+                    "avdWorkspacePublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "avdWorkspaceModifyPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Modify"
+                    },
+                    "avdAppGroupDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "avdAppGroupLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "avdHostPoolDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "avdHostPoolLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "avdWorkspaceDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "avdWorkspaceLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    }
+                },
+                "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-avdAppGroup",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('avdAppGroupDiagnostics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('avdAppGroupLogAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[1].name)]",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-avdHostPool",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('avdHostPoolDiagnostics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('avdHostPoolLogAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[2].name)]",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-avdWorkspace",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('avdWorkspaceDiagnostics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('avdWorkspaceLogAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/87ac3038-c07a-4b92-860d-29e270a4f3cd",
+                        "policyDefinitionReferenceId": "Deny-Workspace-PublicNetworkAccess",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('avdWorkspacePublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ce6ebf1d-0b94-4df9-9257-d8cacc238b4f",
+                        "policyDefinitionReferenceId": "Modify-Workspace-PublicNetworkAccess",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('avdWorkspaceModifyPublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c25dcf31-878f-4eba-98eb-0818fdc6a334",
+                        "policyDefinitionReferenceId": "Deny-Hostpool-PublicNetworkAccess",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('avdHostPoolPublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/2a0913ff-51e7-47b8-97bb-ea17127f7c8d",
+                        "policyDefinitionReferenceId": "Modify-Hostpool-PublicNetworkAccess",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('avdHostPoolModifyPublicNetworkAccess')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

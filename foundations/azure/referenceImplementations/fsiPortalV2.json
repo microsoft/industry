@@ -580,7 +580,8 @@
                                 "Service Bus",
                                 "SQL",
                                 "Storage Account",
-                                "Synapse"
+                                "Synapse",
+                                "Virtual Desktop"
                             ],
                             "toolTip": "",
                             "multiselect": true,
@@ -706,6 +707,11 @@
                                         "label": "Synapse",
                                         "description": "Azure policies will ensure secure by-default compliance for Synapse, enforce access via private endpoints, double encryption, centralized authorization, and centralized logging.",
                                         "value": "Synapse"
+                                    },
+                                    {
+                                        "label": "Virtual Desktop",
+                                        "description": "Azure policies will ensure secure by-default compliance for Virtual Desktop, enforce access via private endpoints, centralized authorization, and centralized logging.",
+                                        "value": "DesktopVirtualization"
                                     }
                                 ],
                                 "required": false
