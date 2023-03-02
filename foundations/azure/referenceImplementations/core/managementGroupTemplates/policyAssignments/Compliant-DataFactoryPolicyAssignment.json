@@ -16,22 +16,6 @@
             ],
             "defaultValue": "Default"
         },
-        "adfPrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "adfPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "adfManagedIdentity": {
-            "type": "string",
-            "defaultValue": "Deny"
-        },
         "adfDiagnostics": {
             "type": "string",
             "defaultValue": "Disabled",
@@ -76,12 +60,6 @@
                 "policyDefinitionId": "[variables('policyDefinitions').compliantAdf]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "adfPrivateDnsZone": {
-                        "value": "[parameters('adfPrivateDnsZone')]"
-                    },
-                    "adfPrivateDnsZoneId": {
-                        "value": "[parameters('adfPrivateDnsZoneId')]"
-                    },
                     "adfDiagnostics": {
                         "value": "[parameters('adfDiagnostics')]"
                     },

@@ -16,42 +16,6 @@
             ],
             "defaultValue": "Default"
         },
-        "storageTablePrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "storageTablePrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ]
-        },
-        "storageSecondaryTablePrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "storageSecondaryTablePrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ]
-        },
-        "storageFileSyncPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "storageFileSyncPrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ]
-        },
         "storageFileSyncDiagnostics": {
             "type": "string",
             "defaultValue": "Disabled",
@@ -81,114 +45,6 @@
             "defaultValue": "DeployIfNotExists"
         },
         "storageAccountsLogAnalyticsWorkspaceId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "storageFileDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ]
-        },
-        "storageFileDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "storageBlobPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "storageBlobPrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ]
-        },
-        "storageSecondaryBlobPrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ]
-        },
-        "storageSecondaryBlobPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "storageDfsPrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ]
-        },
-        "storageDfsPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "storageSecondaryDfsPrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ]
-        },
-        "storageSecondaryDfsPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "storageQueuePrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ]
-        },
-        "storageQueuePrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "storageSecondaryQueuePrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ]
-        },
-        "storageSecondaryQueuePrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "storageWebPrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ]
-        },
-        "storageWebPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "storageSecondaryWebPrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "Disabled",
-                "DeployIfNotExists"
-            ]
-        },
-        "storageSecondaryWebPrivateDnsZoneId": {
             "type": "string",
             "defaultValue": ""
         },
@@ -244,24 +100,6 @@
                 "policyDefinitionId": "[variables('policyDefinitions').compliantStorage]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "storageTablePrivateDnsZone": {
-                        "value": "[parameters('storageTablePrivateDnsZone')]"
-                    },
-                    "storageTablePrivateDnsZoneId": {
-                        "value": "[parameters('storageTablePrivateDnsZoneId')]"
-                    },
-                    "storageSecondaryTablePrivateDnsZone": {
-                        "value": "[parameters('storageSecondaryTablePrivateDnsZone')]"
-                    },
-                    "storageSecondaryTablePrivateDnsZoneId": {
-                        "value": "[parameters('storageSecondaryTablePrivateDnsZoneId')]"
-                    },
-                    "storageFileSyncPrivateDnsZone": {
-                        "value": "[parameters('storageFileSyncPrivateDnsZone')]"
-                    },
-                    "storageFileSyncPrivateDnsZoneId": {
-                        "value": "[parameters('storageFileSyncPrivateDnsZoneId')]"
-                    },
                     "storageFileSyncDiagnostics": {
                         "value": "[parameters('storageFileSyncDiagnostics')]"
                     },
@@ -279,60 +117,6 @@
                     },
                     "storageAccountsLogAnalyticsWorkspaceId": {
                         "value": "[parameters('storageAccountsLogAnalyticsWorkspaceId')]"
-                    },
-                    "storageFileDnsZone": {
-                        "value": "[parameters('storageFileDnsZone')]"
-                    },
-                    "storageFileDnsZoneId": {
-                        "value": "[parameters('storageFileDnsZoneId')]"
-                    },
-                    "storageBlobPrivateDnsZone": {
-                        "value": "[parameters('storageBlobPrivateDnsZone')]"
-                    },
-                    "storageBlobPrivateDnsZoneId": {
-                        "value": "[parameters('storageBlobPrivateDnsZoneId')]"
-                    },
-                    "storageSecondaryBlobPrivateDnsZone": {
-                        "value": "[parameters('storageSecondaryBlobPrivateDnsZone')]"
-                    },
-                    "storageSecondaryBlobPrivateDnsZoneId": {
-                        "value": "[parameters('storageSecondaryBlobPrivateDnsZoneId')]"
-                    },
-                    "storageDfsPrivateDnsZone": {
-                        "value": "[parameters('storageDfsPrivateDnsZone')]"
-                    },
-                    "storageDfsPrivateDnsZoneId": {
-                        "value": "[parameters('storageDfsPrivateDnsZoneId')]"
-                    },
-                    "storageSecondaryDfsPrivateDnsZone": {
-                        "value": "[parameters('storageSecondaryDfsPrivateDnsZone')]"
-                    },
-                    "storageSecondaryDfsPrivateDnsZoneId": {
-                        "value": "[parameters('storageSecondaryDfsPrivateDnsZoneId')]"
-                    },
-                    "storageQueuePrivateDnsZone": {
-                        "value": "[parameters('storageQueuePrivateDnsZone')]"
-                    },
-                    "storageQueuePrivateDnsZoneId": {
-                        "value": "[parameters('storageQueuePrivateDnsZoneId')]"
-                    },
-                    "storageSecondaryQueuePrivateDnsZone": {
-                        "value": "[parameters('storageSecondaryQueuePrivateDnsZone')]"
-                    },
-                    "storageSecondaryQueuePrivateDnsZoneId": {
-                        "value": "[parameters('storageSecondaryQueuePrivateDnsZoneId')]"
-                    },
-                    "storageWebPrivateDnsZone": {
-                        "value": "[parameters('storageWebPrivateDnsZone')]"
-                    },
-                    "storageWebPrivateDnsZoneId": {
-                        "value": "[parameters('storageWebPrivateDnsZoneId')]"
-                    },
-                    "storageSecondaryWebPrivateDnsZone": {
-                        "value": "[parameters('storageSecondaryWebPrivateDnsZone')]"
-                    },
-                    "storageSecondaryWebPrivateDnsZoneId": {
-                        "value": "[parameters('storageSecondaryWebPrivateDnsZoneId')]"
                     },
                     "storageQueueDiagnostics": {
                         "value": "[parameters('storageQueueDiagnostics')]"

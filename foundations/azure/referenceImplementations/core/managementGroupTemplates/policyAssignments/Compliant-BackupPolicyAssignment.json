@@ -16,22 +16,6 @@
             ],
             "defaultValue": "Default"
         },
-        "asrPrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "DeployIfNotExists"
-        },
-        "asrPrivateDnsZone-Backup": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "asrPrivateDnsZone-Blob": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "asrPrivateDnsZone-Queue": {
-            "type": "string",
-            "defaultValue": ""
-        },
         "asrLogAnalyticsWorkspaceId": {
             "type": "string",
             "defaultValue": ""
@@ -70,18 +54,6 @@
                 "parameters": {
                     "asrLogAnalyticsWorkspaceId": {
                         "value": "[parameters('asrLogAnalyticsWorkspaceId')]"
-                    },
-                    "asrPrivateDnsZone": {
-                        "value": "[parameters('asrPrivateDnsZone')]"
-                    },
-                    "asrPrivateDnsZone-Backup": {
-                        "value": "[parameters('asrPrivateDnsZone-Backup')]"
-                    },
-                    "asrPrivateDnsZone-Blob": {
-                        "value": "[parameters('asrPrivateDnsZone-Blob')]"
-                    },
-                    "asrPrivateDnsZone-Queue": {
-                        "value": "[parameters('asrPrivateDnsZone-Queue')]"
                     }
                 }
             }

@@ -27,21 +27,6 @@
             "type": "string",
             "defaultValue": ""
         },
-        "mlPrivateDnsZone": {
-            "type": "string",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "mlPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "mlSecondPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
         "userAssignedIdentityResourceId": {
             "type": "string"
         }
@@ -79,15 +64,6 @@
                     },
                     "mlLogAnalyticsWorkspaceId": {
                         "value": "[parameters('mlLogAnalyticsWorkspaceId')]"
-                    },
-                    "mlPrivateDnsZone": {
-                        "value": "[parameters('mlPrivateDnsZone')]"
-                    },
-                    "mlPrivateDnsZoneId": {
-                        "value": "[parameters('mlPrivateDnsZoneId')]"
-                    },
-                    "mlSecondPrivateDnsZoneId": {
-                        "value": "[parameters('mlSecondPrivateDnsZoneId')]"
                     }
                 }
             }

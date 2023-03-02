@@ -28,18 +28,6 @@
             "type": "String",
             "defaultValue": ""
         },
-        "serviceBusDinePrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "serviceBusPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
         "userAssignedIdentityResourceId": {
             "type": "string"
         }
@@ -72,12 +60,6 @@
                 "policyDefinitionId": "[variables('policyDefinitions').compliantSb]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "serviceBusDinePrivateDnsZone": {
-                        "value": "[parameters('serviceBusDinePrivateDnsZone')]"
-                    },
-                    "serviceBusPrivateDnsZoneId": {
-                        "value": "[parameters('serviceBusPrivateDnsZoneId')]"
-                    },
                     "ServiceBusLogAnalyticsEffect": {
                         "value": "[parameters('ServiceBusLogAnalyticsEffect')]"
                     },
