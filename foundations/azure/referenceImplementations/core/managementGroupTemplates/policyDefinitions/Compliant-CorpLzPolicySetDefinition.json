@@ -10,7 +10,8 @@
     "variables": {
         "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
         "policies": {
-            "policyDefinitions": []
+            "policyDefinitions": [
+            ]
         }
     },
     "resources": [
@@ -308,9 +309,69 @@
                     "synapsePrivateDnsZoneId": {
                         "type": "string",
                         "defaultValue": ""
+                    },
+                    "avdHostPoolPrivateDnsZone": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "avdHostPoolPrivateDnsZoneId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "avdHostPoolPrivateEndpointGroupId": {
+                        "type": "string",
+                        "defaultValue": "connection"
+                    },
+                    "avdWorkspacePrivateDnsZone": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "avdWorkspacePrivateDnsZoneId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "avdWorkspacePrivateEndpointGroupId": {
+                        "type": "string",
+                        "defaultValue": "feed"
                     }
                 },
                 "policyDefinitions": [
+                                        {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/34804460-d88b-4922-a7ca-537165e060ed",
+                        "policyDefinitionReferenceId": "Dine-Workspace-DNS-Zone",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('avdWorkspacePrivateDnsZone')]"
+                            },
+                            "privateDnsZoneId": {
+                                "value": "[[parameters('avdWorkspacePrivateDnsZoneId')]"
+                            },
+                            "privateEndpointGroupId": {
+                                "value": "[[parameters('avdWorkspacePrivateEndpointGroupId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/9427df23-0f42-4e1e-bf99-a6133d841c4a",
+                        "policyDefinitionReferenceId": "Dine-Hostpool-DNS-Zone",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('avdHostpoolPrivateDnsZone')]"
+                            },
+                            "privateDnsZoneId": {
+                                "value": "[[parameters('avdHostpoolPrivateDnsZoneId')]"
+                            },
+                            "privateEndpointGroupId": {
+                                "value": "[[parameters('avdHostpoolPrivateEndpointGroupId')]"
+                            }
+                        }
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/1e5ed725-f16c-478b-bd4b-7bfa2f7940b9",
                         "policyDefinitionReferenceId": "Dine-Synapse-Private-Dns-Zone",
