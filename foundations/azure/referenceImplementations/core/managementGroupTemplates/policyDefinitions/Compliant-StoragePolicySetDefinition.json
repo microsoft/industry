@@ -492,62 +492,6 @@
                 },
                 {
                     "properties": {
-                        "displayName": "Cross-tenant private endpoints should be restricted for Storage Accounts",
-                        "mode": "Indexed",
-                        "description": "Azure Storage accounts should restrict cross-tenant private endpoints. Enforce this for increased data exfiltration protection.",
-                        "metadata": {
-                            "version": "1.0.0",
-                            "category": "Storage"
-                        },
-                        "parameters": {
-                            "effect": {
-                                "type": "String",
-                                "metadata": {
-                                    "displayName": "Effect",
-                                    "description": "Enable or disable the execution of the policy"
-                                },
-                                "allowedValues": [
-                                    "Deny",
-                                    "Audit",
-                                    "Disabled"
-                                ],
-                                "defaultValue": "Deny"
-                            }
-                        },
-                        "policyRule": {
-                            "if": {
-                                "allOf": [
-                                    {
-                                        "field": "type",
-                                        "equals": "Microsoft.Storage/storageAccounts/privateEndpointConnections"
-                                    },
-                                    {
-                                        "field": "Microsoft.Storage/storageAccounts/privateEndpointConnections/privateLinkServiceConnectionState.status",
-                                        "equals": "Approved"
-                                    },
-                                    {
-                                        "anyOf": [
-                                            {
-                                                "field": "Microsoft.Storage/storageAccounts/privateEndpointConnections/privateEndpoint.id",
-                                                "exists": false
-                                            },
-                                            {
-                                                "value": "[[split(concat(field('Microsoft.Storage/storageAccounts/privateEndpointConnections/privateEndpoint.id'), '//'), '/')[2]]",
-                                                "notEquals": "[[subscription().subscriptionId]"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            "then": {
-                                "effect": "[[parameters('effect')]"
-                            }
-                        }
-                    },
-                    "name": "Deny-Storage-PrivateEndpointConnections"
-                },
-                {
-                    "properties": {
                         "displayName": "Public blob access should be restricted for Storage Accounts",
                         "mode": "Indexed",
                         "description": "Azure Storage accounts should restrict blob access to private. Enforce this for increased data exfiltration protection.",
@@ -1067,10 +1011,6 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "storagePrivateEndpointConnections": {
-                        "type": "string",
-                        "defaultValue": "Deny"
-                    },
                     "storageAllowBlobPublicAccess": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -1197,18 +1137,6 @@
                     },
                     {
                         "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[8].name)]",
-                        "policyDefinitionReferenceId": "Deny-Storage-PrivateEndpointConnections",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('storagePrivateEndpointConnections')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[9].name)]",
                         "policyDefinitionReferenceId": "Deny-Storage-AllowBlobPublicAccess",
                         "groupNames": [
                             "Identity"
@@ -1220,7 +1148,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[10].name)]",
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[9].name)]",
                         "policyDefinitionReferenceId": "Deny-Storage-ContainerDeleteRetentionPolicy",
                         "groupNames": [
                             "Encryption"
@@ -1232,7 +1160,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[12].name)]",
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[10].name)]",
                         "policyDefinitionReferenceId": "Deny-Storage-CorsRules",
                         "groupNames": [
                             "Network"
