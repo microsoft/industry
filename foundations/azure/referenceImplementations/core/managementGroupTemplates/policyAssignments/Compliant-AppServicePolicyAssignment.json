@@ -16,18 +16,6 @@
             ],
             "defaultValue": "Default"
         },
-        "appServiceAppsPrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "appServiceAppsPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
         "functionDiagnostics": {
             "type": "string",
             "defaultValue": "Disabled",
@@ -84,12 +72,6 @@
                 "policyDefinitionId": "[variables('policyDefinitions').compliantAppService]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "appServiceAppsPrivateDnsZone": {
-                        "value": "[parameters('appServiceAppsPrivateDnsZone')]"
-                    },
-                    "appServiceAppsPrivateDnsZoneId": {
-                        "value": "[parameters('appServiceAppsPrivateDnsZoneId')]"
-                    },
                     "functionDiagnostics": {
                         "value": "[parameters('functionDiagnostics')]"
                     },

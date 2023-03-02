@@ -16,22 +16,6 @@
             ],
             "defaultValue": "Default"
         },
-        "cosmosDbPrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "cosmosDbPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "cosmosDbPrivateEndpointGroupId": {
-            "type": "string",
-            "defaultValue": ""
-        },
         "cosmosDiagnostics": {
             "type": "string",
             "defaultValue": "Disabled",
@@ -76,15 +60,6 @@
                 "policyDefinitionId": "[variables('policyDefinitions').compliantCosmos]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "cosmosDbPrivateDnsZone": {
-                        "value": "[parameters('cosmosDbPrivateDnsZone')]"
-                    },
-                    "cosmosDbPrivateDnsZoneId": {
-                        "value": "[parameters('cosmosDbPrivateDnsZoneId')]"
-                    },
-                    "cosmosDbPrivateEndpointGroupId": {
-                        "value": "[parameters('cosmosDbPrivateEndpointGroupId')]"
-                    },
                     "cosmosDiagnostics": {
                         "value": "[parameters('cosmosDiagnostics')]"
                     },

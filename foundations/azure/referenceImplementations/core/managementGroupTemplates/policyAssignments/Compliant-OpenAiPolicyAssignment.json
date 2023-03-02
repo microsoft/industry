@@ -16,18 +16,6 @@
             ],
             "defaultValue": "Default"
         },
-        "cognitiveServicesPrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "cognitiveServicesPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
         "userAssignedIdentityResourceId": {
             "type": "string"
         }
@@ -59,14 +47,7 @@
                 "displayName": "[variables('policyAssignmentNames').displayName]",
                 "policyDefinitionId": "[variables('policyDefinitions').compliantOpenAi]",
                 "enforcementMode": "[parameters('enforcementMode')]",
-                "parameters": {
-                    "cognitiveServicesPrivateDnsZone": {
-                        "value": "[parameters('cognitiveServicesPrivateDnsZone')]"
-                    },
-                    "cognitiveServicesPrivateDnsZoneId": {
-                        "value": "[parameters('cognitiveServicesPrivateDnsZoneId')]"
-                    }
-                }
+                "parameters": {}
             }
         }
     ],

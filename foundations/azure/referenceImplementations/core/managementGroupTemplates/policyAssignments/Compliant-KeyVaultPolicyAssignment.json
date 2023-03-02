@@ -22,21 +22,7 @@
                 "description": "Provide the Log Analytics Workspace ID for Key Vault"
             }
         },
-        "keyVaultPrivateDnsZoneId": {
-            "type": "string",
-            "metadata": {
-                "description": "Provide the Private DNS Zone ID for Key Vault"
-            }
-        },
         "keyVaultDiagnostics": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "keyVaultPrivateDnsZone": {
             "type": "string",
             "defaultValue": "Disabled",
             "allowedValues": [
@@ -89,12 +75,6 @@
                 "parameters": {
                     "keyVaultLogAnalyticsWorkspaceId": {
                         "value": "[parameters('keyVaultLogAnalyticsWorkspaceId')]"
-                    },
-                    "keyVaultPrivateDnsZoneId": {
-                        "value": "[parameters('keyVaultPrivateDnsZoneId')]"
-                    },
-                    "keyVaultPrivateDnsZone": {
-                        "value": "[parameters('keyVaultPrivateDnsZone')]"
                     },
                     "keyVaultDiagnostics": {
                         "value": "[parameters('keyVaultDiagnostics')]"

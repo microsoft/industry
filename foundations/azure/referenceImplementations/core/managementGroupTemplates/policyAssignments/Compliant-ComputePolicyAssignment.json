@@ -16,18 +16,6 @@
             ],
             "defaultValue": "Default"
         },
-        "diskPrivateDns": {
-            "type": "string",
-            "metadata": {
-                "description": "Select if policy should be enforced or not"
-            }
-        },
-        "diskPrivateDnsZoneId": {
-            "type": "string",
-            "metadata": {
-                "description": "Provide the Private DNS Zone ID for disk"
-            }
-        },
         "userAssignedIdentityResourceId": {
             "type": "string"
         }
@@ -59,14 +47,7 @@
                 "displayName": "[variables('policyAssignmentNames').displayName]",
                 "policyDefinitionId": "[variables('policyDefinitions').compute]",
                 "enforcementMode": "[parameters('enforcementMode')]",
-                "parameters": {
-                    "diskPrivateDns": {
-                        "value": "[parameters('diskPrivateDns')]"
-                    },
-                    "diskPrivateDnsZoneId": {
-                        "value": "[parameters('diskPrivateDnsZoneId')]"
-                    }
-                }
+                "parameters": {}
             }
         }
         

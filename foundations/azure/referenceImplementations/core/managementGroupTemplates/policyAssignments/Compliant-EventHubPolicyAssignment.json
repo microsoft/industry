@@ -16,18 +16,6 @@
             ],
             "defaultValue": "Default"
         },
-        "eventHubNamespacesPrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "eventHubNamespacesPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
         "eventHubDiagnostics": {
             "type": "string",
             "defaultValue": "Disabled",
@@ -72,12 +60,6 @@
                 "policyDefinitionId": "[variables('policyDefinitions').compliantEh]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "eventHubNamespacesPrivateDnsZone": {
-                        "value": "[parameters('eventHubNamespacesPrivateDnsZone')]"
-                    },
-                    "eventHubNamespacesPrivateDnsZoneId": {
-                        "value": "[parameters('eventHubNamespacesPrivateDnsZoneId')]"
-                    },
                     "eventHubDiagnostics": {
                         "value": "[parameters('eventHubDiagnostics')]"
                     },
