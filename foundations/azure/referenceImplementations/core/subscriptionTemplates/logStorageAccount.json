@@ -73,7 +73,7 @@
                         {
                             "type": "Microsoft.Storage/storageAccounts/blobServices/providers/diagnosticSettings",
                             "apiVersion": "2021-05-01-preview",
-                            "name": "[concat(parameters('storageAccountName'), '/default/', 'Microsoft.Insights/', 'setByPolicy')]",
+                            "name": "[concat(parameters('storageAccountName'), '/default/', 'Microsoft.Insights/', 'blobServicesDiagnosticsLogsToWorkspace')]",
                             "location": "[parameters('storageLocation')]",
                             "dependsOn": [
                                 "[concat(subscription().id, '/resourceGroups/', parameters('mgmtStorageRgName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
@@ -102,7 +102,7 @@
                         {
                             "type": "Microsoft.Storage/storageAccounts/fileServices/providers/diagnosticSettings",
                             "apiVersion": "2021-05-01-preview",
-                            "name": "[concat(parameters('storageAccountName'), '/default/', 'Microsoft.Insights/', 'setByPolicy')]",
+                            "name": "[concat(parameters('storageAccountName'), '/default/', 'Microsoft.Insights/', 'fileServicesDiagnosticsLogsToWorkspace')]",
                             "location": "[parameters('storageLocation')]",
                             "dependsOn": [
                                 "[concat(subscription().id, '/resourceGroups/', parameters('mgmtStorageRgName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"                                
@@ -131,7 +131,7 @@
                         {
                             "type": "Microsoft.Storage/storageAccounts/tableServices/providers/diagnosticSettings",
                             "apiVersion": "2021-05-01-preview",
-                            "name": "[concat(parameters('storageAccountName'), '/default/', 'Microsoft.Insights/', 'setByPolicy')]",
+                            "name": "[concat(parameters('storageAccountName'), '/default/', 'Microsoft.Insights/', 'tableServicesDiagnosticsLogsToWorkspace')]",
                             "location": "[parameters('storageLocation')]",
                             "dependsOn": [
                                 "[concat(subscription().id, '/resourceGroups/', parameters('mgmtStorageRgName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"                                
@@ -160,7 +160,7 @@
                         {
                             "type": "Microsoft.Storage/storageAccounts/queueServices/providers/diagnosticSettings",
                             "apiVersion": "2021-05-01-preview",
-                            "name": "[concat(parameters('storageAccountName'), '/default/', 'Microsoft.Insights/', 'setByPolicy')]",
+                            "name": "[concat(parameters('storageAccountName'), '/default/', 'Microsoft.Insights/', 'queueServicesDiagnosticsLogsToWorkspace')]",
                             "location": "[parameters('storageLocation')]",
                             "dependsOn": [
                                 "[concat(subscription().id, '/resourceGroups/', parameters('mgmtStorageRgName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"                                
