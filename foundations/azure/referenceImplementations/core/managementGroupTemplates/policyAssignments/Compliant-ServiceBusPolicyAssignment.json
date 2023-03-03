@@ -1,0 +1,74 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
+            }
+        },
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        },
+        "ServiceBusLogAnalyticsEffect": {
+            "type": "String",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "Disabled",
+                "DeployIfNotExists"
+            ]
+        },
+        "ServiceBusLogAnalyticsWorkspaceId": {
+            "type": "String",
+            "defaultValue": ""
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "compliantSb": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Service-Bus')]"
+        },
+        "policyAssignmentNames": {
+            "sb": "Compliant-Service-Bus",
+            "description": "This policy initiative is a group of policies that ensures Service Bus is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Service Bus for Financial Services Industry"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2022-06-01",
+            "name": "[variables('policyAssignmentNames').sb]",
+            "location": "[deployment().location]",
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[parameters('userAssignedIdentityResourceId')]": {}
+                }
+            },
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantSb]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "ServiceBusLogAnalyticsEffect": {
+                        "value": "[parameters('ServiceBusLogAnalyticsEffect')]"
+                    },
+                    "ServiceBusLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('ServiceBusLogAnalyticsWorkspaceId')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

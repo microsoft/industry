@@ -1,0 +1,506 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "defaultValue": "FSIDemo",
+            "metadata": {
+                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
+            }
+        },
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        },
+        "storageTablePrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "storageTablePrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "storageSecondaryTablePrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "storageSecondaryTablePrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "storageFileSyncPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "storageFileSyncPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "storageFileDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "storageFileDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "storageBlobPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "storageBlobPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "storageSecondaryBlobPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "storageSecondaryBlobPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "storageDfsPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "storageDfsPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "storageSecondaryDfsPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "storageSecondaryDfsPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "storageQueuePrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "storageQueuePrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "storageSecondaryQueuePrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "storageSecondaryQueuePrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "storageWebPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "storageWebPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "storageSecondaryWebPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "storageSecondaryWebPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "appServiceAppsPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "appServiceAppsPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "aaPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "aaPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "asrPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "asrPrivateDnsZone-Backup": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "asrPrivateDnsZone-Blob": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "asrPrivateDnsZone-Queue": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "diskPrivateDns": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "diskPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "cosmosDbPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "cosmosDbPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "cosmosDbPrivateEndpointGroupId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "containerRegistryPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "containerRegistryPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "adfPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "adfPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "eventGridDomainPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "eventGridDomainPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "eventGridTopicPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "eventGridTopicPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "eventHubNamespacesPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "eventHubNamespacesPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "keyVaultPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "keyVaultPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "mlPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "mlPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "mlSecondPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "cognitiveServicesPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "cognitiveServicesPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "serviceBusPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "serviceBusDinePrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "synapsePrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "synapsePrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "avdHostPoolPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "avdHostPoolPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "avdHostPoolPrivateEndpointGroupId": {
+            "type": "string",
+            "defaultValue": "connection"
+        },
+        "avdWorkspacePrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "avdWorkspacePrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "avdWorkspacePrivateEndpointGroupId": {
+            "type": "string",
+            "defaultValue": "feed"
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "compliantCorpLz": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Corp-Lz')]"
+        },
+        "policyAssignmentNames": {
+            "corpLz": "Compliant-Corp-Lz",
+            "description": "This policy initiative is a group of policies that ensures Corp Connected Landing Zones are compliant per Financial Services Industry requirements",
+            "displayName": "Enforce secure-by-default Corp Connected Landing Zones for Financial Services Industry"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2022-06-01",
+            "name": "[variables('policyAssignmentNames').corpLz]",
+            "location": "[deployment().location]",
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[parameters('userAssignedIdentityResourceId')]": {}
+                }
+            },
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantCorpLz]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "avdHostPoolPrivateDnsZone": {
+                        "value": "[parameters('avdHostPoolPrivateDnsZone')]"
+                    },
+                    "avdHostPoolPrivateDnsZoneId": {
+                        "value": "[parameters('avdHostPoolPrivateDnsZoneId')]"
+                    },
+                    "avdHostPoolPrivateEndpointGroupId": {
+                        "value": "[parameters('avdHostPoolPrivateEndpointGroupId')]"
+                    },
+                    "avdWorkspacePrivateDnsZone": {
+                        "value": "[parameters('avdWorkspacePrivateDnsZone')]"
+                    },
+                    "avdWorkspacePrivateDnsZoneId": {
+                        "value": "[parameters('avdWorkspacePrivateDnsZoneId')]"
+                    },
+                    "avdWorkspacePrivateEndpointGroupId": {
+                        "value": "[parameters('avdWorkspacePrivateEndpointGroupId')]"
+                    },
+                    "storageTablePrivateDnsZone": {
+                        "value": "[parameters('storageTablePrivateDnsZone')]"
+                    },
+                    "storageTablePrivateDnsZoneId": {
+                        "value": "[parameters('storageTablePrivateDnsZoneId')]"
+                    },
+                    "storageSecondaryTablePrivateDnsZone": {
+                        "value": "[parameters('storageSecondaryTablePrivateDnsZone')]"
+                    },
+                    "storageSecondaryTablePrivateDnsZoneId": {
+                        "value": "[parameters('storageSecondaryTablePrivateDnsZoneId')]"
+                    },
+                    "storageFileSyncPrivateDnsZone": {
+                        "value": "[parameters('storageFileSyncPrivateDnsZone')]"
+                    },
+                    "storageFileSyncPrivateDnsZoneId": {
+                        "value": "[parameters('storageFileSyncPrivateDnsZoneId')]"
+                    },
+                    "storageFileDnsZone": {
+                        "value": "[parameters('storageFileDnsZone')]"
+                    },
+                    "storageFileDnsZoneId": {
+                        "value": "[parameters('storageFileDnsZoneId')]"
+                    },
+                    "storageBlobPrivateDnsZone": {
+                        "value": "[parameters('storageBlobPrivateDnsZone')]"
+                    },
+                    "storageBlobPrivateDnsZoneId": {
+                        "value": "[parameters('storageBlobPrivateDnsZoneId')]"
+                    },
+                    "storageSecondaryBlobPrivateDnsZone": {
+                        "value": "[parameters('storageSecondaryBlobPrivateDnsZone')]"
+                    },
+                    "storageSecondaryBlobPrivateDnsZoneId": {
+                        "value": "[parameters('storageSecondaryBlobPrivateDnsZoneId')]"
+                    },
+                    "storageDfsPrivateDnsZone": {
+                        "value": "[parameters('storageDfsPrivateDnsZone')]"
+                    },
+                    "storageDfsPrivateDnsZoneId": {
+                        "value": "[parameters('storageDfsPrivateDnsZoneId')]"
+                    },
+                    "storageSecondaryDfsPrivateDnsZone": {
+                        "value": "[parameters('storageSecondaryDfsPrivateDnsZone')]"
+                    },
+                    "storageSecondaryDfsPrivateDnsZoneId": {
+                        "value": "[parameters('storageSecondaryDfsPrivateDnsZoneId')]"
+                    },
+                    "storageQueuePrivateDnsZone": {
+                        "value": "[parameters('storageQueuePrivateDnsZone')]"
+                    },
+                    "storageQueuePrivateDnsZoneId": {
+                        "value": "[parameters('storageQueuePrivateDnsZoneId')]"
+                    },
+                    "storageSecondaryQueuePrivateDnsZone": {
+                        "value": "[parameters('storageSecondaryQueuePrivateDnsZone')]"
+                    },
+                    "storageSecondaryQueuePrivateDnsZoneId": {
+                        "value": "[parameters('storageSecondaryQueuePrivateDnsZoneId')]"
+                    },
+                    "storageWebPrivateDnsZone": {
+                        "value": "[parameters('storageWebPrivateDnsZone')]"
+                    },
+                    "storageWebPrivateDnsZoneId": {
+                        "value": "[parameters('storageWebPrivateDnsZoneId')]"
+                    },
+                    "storageSecondaryWebPrivateDnsZone": {
+                        "value": "[parameters('storageSecondaryWebPrivateDnsZone')]"
+                    },
+                    "storageSecondaryWebPrivateDnsZoneId": {
+                        "value": "[parameters('storageSecondaryWebPrivateDnsZoneId')]"
+                    },
+                    "aaPrivateDnsZoneId": {
+                        "value": "[parameters('aaPrivateDnsZoneId')]"
+                    },
+                    "aaPrivateDnsZone": {
+                        "value": "[parameters('aaPrivateDnsZone')]"
+                    },
+                    "appServiceAppsPrivateDnsZone": {
+                        "value": "[parameters('appServiceAppsPrivateDnsZone')]"
+                    },
+                    "appServiceAppsPrivateDnsZoneId": {
+                        "value": "[parameters('appServiceAppsPrivateDnsZoneId')]"
+                    },
+                    "asrPrivateDnsZone": {
+                        "value": "[parameters('asrPrivateDnsZone')]"
+                    },
+                    "asrPrivateDnsZone-Backup": {
+                        "value": "[parameters('asrPrivateDnsZone-Backup')]"
+                    },
+                    "asrPrivateDnsZone-Blob": {
+                        "value": "[parameters('asrPrivateDnsZone-Blob')]"
+                    },
+                    "asrPrivateDnsZone-Queue": {
+                        "value": "[parameters('asrPrivateDnsZone-Queue')]"
+                    },
+                    "diskPrivateDns": {
+                        "value": "[parameters('diskPrivateDns')]"
+                    },
+                    "diskPrivateDnsZoneId": {
+                        "value": "[parameters('diskPrivateDnsZoneId')]"
+                    },
+                    "containerRegistryPrivateDnsZone": {
+                        "value": "[parameters('containerRegistryPrivateDnsZone')]"
+                    },
+                    "containerRegistryPrivateDnsZoneId": {
+                        "value": "[parameters('containerRegistryPrivateDnsZoneId')]"
+                    },
+                    "cosmosDbPrivateDnsZone": {
+                        "value": "[parameters('cosmosDbPrivateDnsZone')]"
+                    },
+                    "cosmosDbPrivateDnsZoneId": {
+                        "value": "[parameters('cosmosDbPrivateDnsZoneId')]"
+                    },
+                    "cosmosDbPrivateEndpointGroupId": {
+                        "value": "[parameters('cosmosDbPrivateEndpointGroupId')]"
+                    },
+                    "adfPrivateDnsZone": {
+                        "value": "[parameters('adfPrivateDnsZone')]"
+                    },
+                    "adfPrivateDnsZoneId": {
+                        "value": "[parameters('adfPrivateDnsZoneId')]"
+                    },
+                    "eventGridDomainPrivateDnsZone": {
+                        "value": "[parameters('eventGridDomainPrivateDnsZone')]"
+                    },
+                    "eventGridDomainPrivateDnsZoneId": {
+                        "value": "[parameters('eventGridDomainPrivateDnsZoneId')]"
+                    },
+                    "eventGridTopicPrivateDnsZone": {
+                        "value": "[parameters('eventGridTopicPrivateDnsZone')]"
+                    },
+                    "eventGridTopicPrivateDnsZoneId": {
+                        "value": "[parameters('eventGridTopicPrivateDnsZoneId')]"
+                    },
+                    "eventHubNamespacesPrivateDnsZone": {
+                        "value": "[parameters('eventHubNamespacesPrivateDnsZone')]"
+                    },
+                    "eventHubNamespacesPrivateDnsZoneId": {
+                        "value": "[parameters('eventHubNamespacesPrivateDnsZoneId')]"
+                    },
+                    "keyVaultPrivateDnsZoneId": {
+                        "value": "[parameters('keyVaultPrivateDnsZoneId')]"
+                    },
+                    "keyVaultPrivateDnsZone": {
+                        "value": "[parameters('keyVaultPrivateDnsZone')]"
+                    },
+                    "mlPrivateDnsZone": {
+                        "value": "[parameters('mlPrivateDnsZone')]"
+                    },
+                    "mlPrivateDnsZoneId": {
+                        "value": "[parameters('mlPrivateDnsZoneId')]"
+                    },
+                    "mlSecondPrivateDnsZoneId": {
+                        "value": "[parameters('mlSecondPrivateDnsZoneId')]"
+                    },
+                    "cognitiveServicesPrivateDnsZone": {
+                        "value": "[parameters('cognitiveServicesPrivateDnsZone')]"
+                    },
+                    "cognitiveServicesPrivateDnsZoneId": {
+                        "value": "[parameters('cognitiveServicesPrivateDnsZoneId')]"
+                    },
+                    "serviceBusDinePrivateDnsZone": {
+                        "value": "[parameters('serviceBusDinePrivateDnsZone')]"
+                    },
+                    "serviceBusPrivateDnsZoneId": {
+                        "value": "[parameters('serviceBusPrivateDnsZoneId')]"
+                    },
+                    "synapsePrivateDnsZone": {
+                        "value": "[parameters('synapsePrivateDnsZone')]"
+                    },
+                    "synapsePrivateDnsZoneId": {
+                        "value": "[parameters('synapsePrivateDnsZoneId')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

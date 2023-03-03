@@ -1,0 +1,351 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "defaultValue": "FSIDemo"
+        }
+    },
+    "variables": {
+        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
+        "policies": {
+            "policyDefinitions": [
+                {
+                    "properties": {
+                        "displayName": "Outbound network access should be restricted for Cognitive Services",
+                        "mode": "Indexed",
+                        "description": "Azure Cognitive Services allow restricting outbound network access. Enable this to limit outbound connectivity for the service.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Cognitive Services"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Deny",
+                                    "Audit",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Deny"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.CognitiveServices/accounts"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "field": "Microsoft.CognitiveServices/accounts/restrictOutboundNetworkAccess",
+                                                "exists": "false"
+                                            },
+                                            {
+                                                "field": "Microsoft.CognitiveServices/accounts/restrictOutboundNetworkAccess",
+                                                "notEquals": true
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-CognitiveServices-RestrictOutboundNetworkAccess"
+                },
+                {
+                    "properties": {
+                        "displayName": "Network ACLs should be restricted for Cognitive Services",
+                        "mode": "Indexed",
+                        "description": "Azure Cognitive Services should not allow adding individual IPs or virtual network rules to the service-level firewall. Enable this to restrict inbound network access and enforce the usage of private endpoints.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Cognitive Services"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Deny",
+                                    "Audit",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Deny"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.CognitiveServices/accounts"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "count": {
+                                                    "field": "Microsoft.CognitiveServices/accounts/networkAcls.ipRules[*]"
+                                                },
+                                                "greater": 0
+                                            },
+                                            {
+                                                "count": {
+                                                    "field": "Microsoft.CognitiveServices/accounts/networkAcls.virtualNetworkRules[*]"
+                                                },
+                                                "greater": 0
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-CognitiveServices-NetworkAcls"
+                }
+            ]
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
+            "apiVersion": "2019-09-01",
+            "copy": {
+                "name": "policyDefinitionCopy",
+                "count": "[length(variables('policies').policyDefinitions)]"
+            },
+            "properties": {
+                "displayName": "[variables('policies').policyDefinitions[copyIndex()].properties.displayName]",
+                "description": "[variables('policies').policyDefinitions[copyIndex()].properties.description]",
+                "mode": "[variables('policies').policyDefinitions[copyIndex()].properties.mode]",
+                "policyType": "Custom",
+                "parameters": "[variables('policies').policyDefinitions[copyIndex()].properties.parameters]",
+                "policyRule": "[variables('policies').policyDefinitions[copyIndex()].properties.policyRule]",
+                "metadata": "[variables('policies').policyDefinitions[copyIndex()].properties.metadata]"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2021-06-01",
+            "name": "Compliant-OpenAi",
+            "dependsOn": [
+                "policyDefinitionCopy"
+            ],
+            "properties": {
+                "metadata": {
+                    "version": "1.0.0",
+                    "category": "Cognitive Services"
+                },
+                "displayName": "Enforce secure-by-default Open AI (Cognitive Service) for Financial Services Industry",
+                "description": "This policy initiative is a group of policies that ensures Open AI (Cognitive Service) is compliant per FSI Landing Zones",
+                "policyDefinitionGroups": [
+                    {
+                        "name": "Encryption",
+                        "category": "Data Protection",
+                        "displayName": "Ensure compliance for data encryption, protection, and recovery for Open AI (Cognitive Service)",
+                        "description": "Policy to ensure data protection for Open AI (Cognitive Service)"
+                    },
+                    {
+                        "name": "Network",
+                        "category": "Network Security",
+                        "displayName": "Ensure Open AI (Cognitive Service) is not accessible over the public internet",
+                        "description": "Policy to ensure Open AI (Cognitive Service) not accessible over the public internet"
+                    },
+                    {
+                        "name": "Identity",
+                        "category": "Identity Management",
+                        "displayName": "Ensure usage of centralized identity and auhtorization system for Open AI (Cognitive Service)",
+                        "description": "Policy to ensure Open AI (Cognitive Service) is not using local authorization"
+                    },
+                    {
+                        "name": "Logging",
+                        "category": "Logging and Threat Detection",
+                        "displayName": "Ensure Open AI (Cognitive Service) is logging all events to Log Analytics",
+                        "description": "Policy to ensure Open AI (Cognitive Service) is logging all events to Log Analytics workspace"
+                    }
+                ],
+                "parameters": {
+                    "cognitiveServicesNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "cognitiveServicesPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "cognitiveServicesModifyPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Modify"
+                    },
+                    "cognitiveServicesModifyDisableLocalAuth": {
+                        "type": "string",
+                        "defaultValue": "Modify"
+                    },
+                    "cognitiveServicesDisableLocalAuth": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "cognitiveServicesCustomerStorage": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "cognitiveServicesCmk": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "cognitiveServicesManagedIdentity": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "cognitiveServicesOutboundNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "cognitiveServicesNetworkAcls": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    }
+                },
+                "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
+                        "policyDefinitionReferenceId": "Deny-OpenAi-OutboundNetworkAccess",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveServicesOutboundNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[1].name)]",
+                        "policyDefinitionReferenceId": "Deny-OpenAi-NetworkAcls",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveServicesNetworkAcls')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/fe3fd216-4f83-4fc1-8984-2bbec80a3418",
+                        "policyDefinitionReferenceId": "Deny-Cognitive-Services-Managed-Identity",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveServicesManagedIdentity')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/71ef260a-8f18-47b7-abcb-62d0673d94dc",
+                        "policyDefinitionReferenceId": "Deny-Cognitive-Services-Local-Auth",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveServicesDisableLocalAuth')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/67121cc7-ff39-4ab8-b7e3-95b84dab487d",
+                        "policyDefinitionReferenceId": "Deny-Cognitive-Services-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveServicesCmk')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/47ba1dd7-28d9-4b07-a8d5-9813bed64e0c",
+                        "policyDefinitionReferenceId": "Modify-Cognitive-Services-Public-Network-Access",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveServicesModifyPublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/46aa9b05-0e60-4eae-a88b-1e9d374fa515",
+                        "policyDefinitionReferenceId": "Deny-Cognitive-Services-Cust-Storage",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveServicesCustomerStorage')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/14de9e63-1b31-492e-a5a3-c3f7fd57f555",
+                        "policyDefinitionReferenceId": "Modify-Cognitive-Services-Local-Auth",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveServicesModifyDisableLocalAuth')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/0725b4dd-7e76-479c-a735-68e7ee23d5ca",
+                        "policyDefinitionReferenceId": "Deny-Cognitive-Services-Public-Network-Access",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveServicesPublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/037eea7a-bd0a-46c5-9a66-03aea78705d3",
+                        "policyDefinitionReferenceId": "Deny-Cognitive-Services-Network-Access",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveServicesNetworkAccess')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

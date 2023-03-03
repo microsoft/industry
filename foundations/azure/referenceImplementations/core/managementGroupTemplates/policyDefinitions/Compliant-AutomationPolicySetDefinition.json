@@ -1,0 +1,299 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "defaultValue": "FSIDemo"
+        }
+    },
+    "variables": {
+        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
+        "policies": {
+            "policyDefinitions": [
+                {
+                    "properties": {
+                        "displayName": "Automation Account should have Managed Identity",
+                        "mode": "Indexed",
+                        "description": "Use Managed Identities as the recommended method for authenticating with Azure resources from the runbooks. Managed identity for authentication is more secure and eliminates the management overhead associated with using RunAs Account in your runbook code .",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Automation"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Deny",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Audit"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Automation/automationAccounts"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "field": "identity.type",
+                                                "exists": "false"
+                                            },
+                                            {
+                                                "field": "identity.type",
+                                                "contains": "None"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-AA-Managed-Identity"
+                }
+            ]
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
+            "apiVersion": "2019-09-01",
+            "copy": {
+                "name": "policyDefinitionCopy",
+                "count": "[length(variables('policies').policyDefinitions)]"
+            },
+            "properties": {
+                "displayName": "[variables('policies').policyDefinitions[copyIndex()].properties.displayName]",
+                "description": "[variables('policies').policyDefinitions[copyIndex()].properties.description]",
+                "mode": "[variables('policies').policyDefinitions[copyIndex()].properties.mode]",
+                "policyType": "Custom",
+                "parameters": "[variables('policies').policyDefinitions[copyIndex()].properties.parameters]",
+                "policyRule": "[variables('policies').policyDefinitions[copyIndex()].properties.policyRule]",
+                "metadata": "[variables('policies').policyDefinitions[copyIndex()].properties.metadata]"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2021-06-01",
+            "name": "Compliant-Automation-Account",
+            "dependsOn": [
+                "policyDefinitionCopy"
+            ],
+            "properties": {
+                "metadata": {
+                    "version": "1.0.0",
+                    "category": "Automation"
+                },
+                "displayName": "Enforce secure-by-default Automation Account for Financial Services Industry",
+                "description": "This policy initiative is a group of policies that ensures Automation Account is compliant per FSI Landing Zones",
+                "policyDefinitionGroups": [
+                    {
+                        "name": "Encryption",
+                        "category": "Data Protection",
+                        "displayName": "Ensure compliance for data encryption, protection, and recovery for Automation Account",
+                        "description": "Policy to ensure data protection for Automation Account"
+                    },
+                    {
+                        "name": "Network",
+                        "category": "Network Security",
+                        "displayName": "Ensure Automation Account is not accessible over the public internet",
+                        "description": "Policy to ensure Automation Account not accessible over the public internet"
+                    },
+                    {
+                        "name": "Identity",
+                        "category": "Identity Management",
+                        "displayName": "Ensure usage of centralized identity and auhtorization system for Automation Account",
+                        "description": "Policy to ensure Automation Account is not using local authorization"
+                    },
+                    {
+                        "name": "Logging",
+                        "category": "Logging and Threat Detection",
+                        "displayName": "Ensure Automation Account is logging all events to Log Analytics",
+                        "description": "Policy to ensure Automation Account is logging all events to Log Analytics workspace"
+                    },
+                    {
+                        "name": "DevOps",
+                        "category": "DevOps Security",
+                        "displayName": "Ensure Automation Account is is using Git as source control",
+                        "description": "Policy to ensure Automation Account is configured to use Git as source control"
+                    }
+                ],
+                "parameters": {
+                    "aaModifyPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Modify"
+                    },
+                    "aaModifyLocalAuth": {
+                        "type": "string",
+                        "defaultValue": "Modify"
+                    },
+                    "aaVariablesEncryption": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aaLocalAuth": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aaCmk": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aaPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aaManagedIdentity": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "autoHotPatch": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "aaDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "aaLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "aaLogsCategory": {
+                        "type": "string",
+                        "defaultValue": "allLogs"
+                    }
+                },
+                "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b797045a-b3cd-46e4-adc4-bbadb3381d78",
+                        "policyDefinitionReferenceId": "Dine-AA-Diagnostics",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aaDiagnostics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('aaLogAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('aaLogsCategory')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/6d02d2f7-e38b-4bdc-96f3-adc0a8726abc",
+                        "policyDefinitionReferenceId": "Deny-Windows-Vm-HotPatch",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('autoHotPatch')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
+                        "policyDefinitionReferenceId": "Deny-Aa-Managed-Identity",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aaManagedIdentity')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/955a914f-bf86-4f0e-acd5-e0766b0efcb6",
+                        "policyDefinitionReferenceId": "Deny-Aa-Public-Network-Access",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aaPublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/56a5ee18-2ae6-4810-86f7-18e39ce5629b",
+                        "policyDefinitionReferenceId": "Deny-Aa-Cmk",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aaCmk')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/48c5f1cb-14ad-4797-8e3b-f78ab3f8d700",
+                        "policyDefinitionReferenceId": "Deny-Aa-Local-Auth",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aaLocalAuth')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/3657f5a0-770e-44a3-b44e-9431ba1e9735",
+                        "policyDefinitionReferenceId": "Deny-Aa-Variables-Encrypt",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aaVariablesEncryption')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/30d1d58e-8f96-47a5-8564-499a3f3cca81",
+                        "policyDefinitionReferenceId": "Modify-Aa-Local-Auth",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aaModifyLocalAUth')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/23b36a7c-9d26-4288-a8fd-c1d2fa284d8c",
+                        "policyDefinitionReferenceId": "Modify-Aa-Public-Network-Access",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('aaModifyPublicNetworkAccess')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -22,7 +22,7 @@
         "landingZoneMgs": {
             "type": "array",
             "defaultValue": [
-                "online",
+                "cloud-native",
                 "corp"
             ],
             "metadata": {
@@ -162,6 +162,33 @@
                     "parent": {
                         "id": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('managementGroups').landingZone)]"
                     }
+                }
+            }
+        },
+        {
+            // One of Azure's untold stories.....
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[concat('Consistency-', copyIndex())]",
+            "location": "[deployment().location]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Management/managementGroups', variables('managementGroups').landingZone)]"
+            ],
+            "copy": {
+                "batchSize": 1,
+                "count": 21,
+                "mode": "Serial",
+                "name": "Consistency"
+            },
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "resources": [],
+                    "outputs": {}
                 }
             }
         }

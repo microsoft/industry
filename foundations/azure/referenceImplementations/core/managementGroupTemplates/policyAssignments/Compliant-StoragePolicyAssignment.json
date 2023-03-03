@@ -1,0 +1,138 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
+            }
+        },
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        },
+        "storageFileSyncDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "Disabled",
+                "DeployIfNotExists"
+            ]
+        },
+        "storageFileSyncLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "storageTableDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "Disabled",
+                "DeployIfNotExists"
+            ]
+        },
+        "storageTableLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "storageAccountsDiagnostics": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "storageAccountsLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "storageQueueDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "Disabled",
+                "DeployIfNotExists"
+            ]
+        },
+        "storageQueueLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "storageBlobDiagnostics": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "storageBlobLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "compliantStorage": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Storage')]"
+        },
+        "policyAssignmentNames": {
+            "storage": "Compliant-Storage",
+            "description": "This policy initiative is a group of policies that ensures Storage is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Storage for Financial Services Industry"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2022-06-01",
+            "name": "[variables('policyAssignmentNames').storage]",
+            "location": "[deployment().location]",
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[parameters('userAssignedIdentityResourceId')]": {}
+                }
+            },
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantStorage]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "storageFileSyncDiagnostics": {
+                        "value": "[parameters('storageFileSyncDiagnostics')]"
+                    },
+                    "storageFileSyncLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('storageFileSyncLogAnalyticsWorkspaceId')]"
+                    },
+                    "storageTableDiagnostics": {
+                        "value": "[parameters('storageTableDiagnostics')]"
+                    },
+                    "storageTableLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('storageTableLogAnalyticsWorkspaceId')]"
+                    },
+                    "storageAccountsDiagnostics": {
+                        "value": "[parameters('storageAccountsDiagnostics')]"
+                    },
+                    "storageAccountsLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('storageAccountsLogAnalyticsWorkspaceId')]"
+                    },
+                    "storageQueueDiagnostics": {
+                        "value": "[parameters('storageQueueDiagnostics')]"
+                    },
+                    "storageQueueLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('storageQueueLogAnalyticsWorkspaceId')]"
+                    },
+                    "storageBlobDiagnostics": {
+                        "value": "[parameters('storageBlobDiagnostics')]"
+                    },
+                    "storageBlobLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('storageBlobLogAnalyticsWorkspaceId')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

@@ -1,0 +1,75 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
+            }
+        },
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        },
+        "apimDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "apimLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "compliantApim": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-API-Management')]"
+        },
+        "policyAssignmentNames": {
+            "apim": "Compliant-Apim",
+            "description": "This policy initiative is a group of policies that ensures API Management is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default API Management for Financial Services Industry"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2022-06-01",
+            "name": "[variables('policyAssignmentNames').apim]",
+            "location": "[deployment().location]",
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[parameters('userAssignedIdentityResourceId')]": {}
+                }
+            },
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantApim]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "apimDiagnostics": {
+                        "value": "[parameters('apimDiagnostics')]"
+                    },
+                    "apimLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('apimLogAnalyticsWorkspaceId')]"
+                    }
+                }
+            }
+        }
+        
+    ],
+    "outputs": {}
+}

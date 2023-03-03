@@ -1,0 +1,359 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "defaultValue": "FSIDemo"
+        }
+    },
+    "variables": {
+        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
+        "policies": {
+            "policyDefinitions": [
+                {
+                    "properties": {
+                        "displayName": "IP firewall rules on Azure Synapse workspaces should be removed",
+                        "mode": "All",
+                        "description": "Removing all IP firewall rules improves security by ensuring your Azure Synapse workspace can only be accessed from a private endpoint. This configuration audits creation of firewall rules that allow public network access on the workspace.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Synapse"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Deny",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Audit"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Synapse/workspaces/firewallrules"
+                                    },
+                                    {
+                                        "field": "name",
+                                        "exists": "true"
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-Synapse-Fw-Rules"
+                }
+            ]
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
+            "apiVersion": "2019-09-01",
+            "copy": {
+                "name": "policyDefinitionCopy",
+                "count": "[length(variables('policies').policyDefinitions)]"
+            },
+            "properties": {
+                "displayName": "[variables('policies').policyDefinitions[copyIndex()].properties.displayName]",
+                "description": "[variables('policies').policyDefinitions[copyIndex()].properties.description]",
+                "mode": "[variables('policies').policyDefinitions[copyIndex()].properties.mode]",
+                "policyType": "Custom",
+                "parameters": "[variables('policies').policyDefinitions[copyIndex()].properties.parameters]",
+                "policyRule": "[variables('policies').policyDefinitions[copyIndex()].properties.policyRule]",
+                "metadata": "[variables('policies').policyDefinitions[copyIndex()].properties.metadata]"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2021-06-01",
+            "name": "Compliant-Synapse",
+            "dependsOn": [
+                "policyDefinitionCopy"
+            ],
+            "properties": {
+                "metadata": {
+                    "version": "1.0.0",
+                    "category": "Synapse"
+                },
+                "displayName": "Enforce secure-by-default Synapse workspaces for Financial Services Industry",
+                "description": "This policy initiative is a group of policies that ensures Synapse workspaces is compliant per FSI Landing Zones",
+                "policyDefinitionGroups": [
+                    {
+                        "name": "Encryption",
+                        "category": "Data Protection",
+                        "displayName": "Ensure compliance for data encryption, protection, and recovery for Synapse workspaces",
+                        "description": "Policy to ensure data protection for Synapse workspaces"
+                    },
+                    {
+                        "name": "Network",
+                        "category": "Network Security",
+                        "displayName": "Ensure Synapse workspaces is not accessible over the public internet",
+                        "description": "Policy to ensure Synapse workspaces not accessible over the public internet"
+                    },
+                    {
+                        "name": "Identity",
+                        "category": "Identity Management",
+                        "displayName": "Ensure usage of centralized identity and auhtorization system for Synapse workspaces",
+                        "description": "Policy to ensure Synapse workspaces is not using local authorization"
+                    },
+                    {
+                        "name": "Logging",
+                        "category": "Logging and Threat Detection",
+                        "displayName": "Ensure Synapse workspaces is logging all events to Log Analytics",
+                        "description": "Policy to ensure Synapse workspaces is logging all events to Log Analytics workspace"
+                    },
+                    {
+                        "name": "DevOps",
+                        "category": "DevOps Security",
+                        "displayName": "Ensure Synapse workspaces is is using Git as source control",
+                        "description": "Policy to ensure Synapse workspaces is configured to use Git as source control"
+                    }
+                ],
+                "parameters": {
+                    "synapseLocalAuth": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "synapseManagedVnet": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "synapseDataTraffic": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "synapsePublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "synapseTenants": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "synapseAllowedTenantIds": {
+                        "type": "array",
+                        "defaultValue": [
+                            "[[subscription().tenantId]"
+                        ]
+                    },
+                    "synapseFwRules": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "synapseModifyPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Modify"
+                    },
+                    "synapseModifyTlsVersion": {
+                        "type": "string",
+                        "defaultValue": "Modify"
+                    },
+                    "synapseModifyLocalAuth": {
+                        "type": "string",
+                        "defaultValue": "Modify"
+                    },
+                    "synapseTlsVersion": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "synapseCmk": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "synapseDefender": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "synapseDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "synapseLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    }
+                },
+                "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/32ba8d30-07c0-4136-ab18-9a11bf4a67b7",
+                        "policyDefinitionReferenceId": "Dine-Synapse-Diagnostics",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('synapseDiagnostics')]"
+                            },
+                            "logAnalyticsWorkspaceId": {
+                                "value": "[[parameters('synapseLogAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/951c1558-50a5-4ca3-abb6-a93e3e2367a6",
+                        "policyDefinitionReferenceId": "Dine-Synapse-Defender",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('synapseDefender')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/f7d52b2d-e161-4dfa-a82b-55e564167385",
+                        "policyDefinitionReferenceId": "Deny-Synapse-Cmk",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('synapseCmk')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/cb3738a6-82a2-4a18-b87b-15217b9deff4",
+                        "policyDefinitionReferenceId": "Deny-Synapse-Tls-Version",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('synapseTlsVersion')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c3624673-d2ff-48e0-b28c-5de1c6767c3c",
+                        "policyDefinitionReferenceId": "Modify-Synapse-Local-Auth",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('synapseModifyLocalAuth')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/8b5c654c-fb07-471b-aa8f-15fea733f140",
+                        "policyDefinitionReferenceId": "Modify-Synapse-Tls-Version",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('synapseModifyTlsVersion')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/5c8cad01-ef30-4891-b230-652dadb4876a",
+                        "policyDefinitionReferenceId": "Modify-Synapse-Public-Network-Access",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('synapseModifyPublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
+                        "policyDefinitionReferenceId": "Deny-Synapse-Fw-Rules",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('synapseFwRules')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/3a003702-13d2-4679-941b-937e58c443f0",
+                        "policyDefinitionReferenceId": "Deny-Synapse-Tenant-Access",
+                        "groupNames": [
+                            "Network",
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('synapseTenants')]"
+                            },
+                            "allowedTenantIds": {
+                                "value": "[[parameters('synapseAllowedTenantIds')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/38d8df46-cf4e-4073-8e03-48c24b29de0d",
+                        "policyDefinitionReferenceId": "Deny-Synapse-Public-Network-Access",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('synapsePublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/3484ce98-c0c5-4c83-994b-c5ac24785218",
+                        "policyDefinitionReferenceId": "Deny-Synapse-Data-Traffic",
+                        "groupNames": [
+                            "Network",
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('synapseDataTraffic')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/2d9dbfa3-927b-4cf0-9d0f-08747f971650",
+                        "policyDefinitionReferenceId": "Deny-Synapse-Managed-Vnet",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('synapseManagedVnet')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/2158ddbe-fefa-408e-b43f-d4faef8ff3b8",
+                        "policyDefinitionReferenceId": "Deny-Synapse-Local-Auth",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('synapseLocalAuth')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

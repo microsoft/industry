@@ -1,0 +1,91 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
+            }
+        },
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        },
+        "aksDefender": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "aksDefenderLogAnalyticsWorkspaceResourceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "aksDiagnostics": {
+            "type": "string",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "aksLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "compliantAks": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Kubernetes')]"
+        },
+        "policyAssignmentNames": {
+            "aks": "Compliant-Kubernetes",
+            "description": "This policy initiative is a group of policies that ensures Kubernetes is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Kubernetes for Financial Services Industry"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2022-06-01",
+            "name": "[variables('policyAssignmentNames').aks]",
+            "location": "[deployment().location]",
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[parameters('userAssignedIdentityResourceId')]": {}
+                }
+            },
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantAks]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "aksDefender": {
+                        "value": "[parameters('aksDefender')]"
+                    },
+                    "aksDefenderLogAnalyticsWorkspaceResourceId": {
+                        "value": "[parameters('aksDefenderLogAnalyticsWorkspaceResourceId')]"
+                    },
+                    "aksDiagnostics": {
+                        "value": "[parameters('aksDiagnostics')]"
+                    },
+                    "aksLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('aksLogAnalyticsWorkspaceId')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

@@ -1,0 +1,126 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
+            }
+        },
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        },
+        "avdHostPoolPublicNetworkAccess": {
+            "type": "string",
+            "defaultValue": "Deny"
+        },
+        "avdHostPoolModifyPublicNetworkAccess": {
+            "type": "string",
+            "defaultValue": "Modify"
+        },
+        "avdWorkspacePublicNetworkAccess": {
+            "type": "string",
+            "defaultValue": "Deny"
+        },
+        "avdWorkspaceModifyPublicNetworkAccess": {
+            "type": "string",
+            "defaultValue": "Modify"
+        },
+        "avdAppGroupDiagnostics": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "avdAppGroupLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "avdHostPoolDiagnostics": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "avdHostPoolLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "avdWorkspaceDiagnostics": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "avdWorkspaceLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "compliantAvd": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-AVD')]"
+        },
+        "policyAssignmentNames": {
+            "avd": "Compliant-AVD",
+            "description": "This policy initiative is a group of policies that ensures Virtual Desktop is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Virtual Desktop for Financial Services Industry"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2022-06-01",
+            "name": "[variables('policyAssignmentNames').avd]",
+            "location": "[deployment().location]",
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[parameters('userAssignedIdentityResourceId')]": {}
+                }
+            },
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantAvd]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "avdHostPoolPublicNetworkAccess": {
+                        "value": "[parameters('avdHostPoolPublicNetworkAccess')]"
+                    },
+                    "avdHostPoolModifyPublicNetworkAccess": {
+                        "value": "[parameters('avdHostPoolModifyPublicNetworkAccess')]"
+                    },
+                    "avdWorkspacePublicNetworkAccess": {
+                        "value": "[parameters('avdWorkspacePublicNetworkAccess')]"
+                    },
+                    "avdWorkspaceModifyPublicNetworkAccess": {
+                        "value": "[parameters('avdWorkspaceModifyPublicNetworkAccess')]"
+                    },
+                    "avdAppGroupDiagnostics": {
+                        "value": "[parameters('avdAppGroupDiagnostics')]"
+                    },
+                    "avdAppGroupLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('avdAppGroupLogAnalyticsWorkspaceId')]"
+                    },
+                    "avdHostPoolDiagnostics": {
+                        "value": "[parameters('avdHostPoolDiagnostics')]"
+                    },
+                    "avdHostPoolLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('avdHostPoolLogAnalyticsWorkspaceId')]"
+                    },
+                    "avdWorkspaceDiagnostics": {
+                        "value": "[parameters('avdWorkspaceDiagnostics')]"
+                    },
+                    "avdWorkspaceLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('avdWorkspaceLogAnalyticsWorkspaceId')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

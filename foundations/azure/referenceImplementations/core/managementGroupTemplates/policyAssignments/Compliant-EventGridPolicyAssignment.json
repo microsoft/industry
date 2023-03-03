@@ -1,0 +1,107 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
+            }
+        },
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        },
+        "eventGridPartnerDiagnostics": {
+            "type": "string",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "eventGridPartnerLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "eventGridTopicDiagnostics": {
+            "type": "string",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "eventGridTopicLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "eventGridDomainDiagnostics": {
+            "type": "string",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "eventGridDomainLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "compliantEg": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policySetDefinitions/Compliant-Event-Grid')]"
+        },
+        "policyAssignmentNames": {
+            "eg": "Compliant-Event-Grid",
+            "description": "This policy initiative is a group of policies that ensures Event Grid is compliant per FSI Landing Zones",
+            "displayName": "Enforce secure-by-default Event Grid for Financial Services Industry"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2022-06-01",
+            "name": "[variables('policyAssignmentNames').eg]",
+            "location": "[deployment().location]",
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[parameters('userAssignedIdentityResourceId')]": {}
+                }
+            },
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').compliantEg]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "eventGridPartnerDiagnostics": {
+                        "value": "[parameters('eventGridPartnerDiagnostics')]"
+                    },
+                    "eventGridPartnerLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('eventGridPartnerLogAnalyticsWorkspaceId')]"
+                    },
+                    "eventGridTopicDiagnostics": {
+                        "value": "[parameters('eventGridTopicDiagnostics')]"
+                    },
+                    "eventGridTopicLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('eventGridTopicLogAnalyticsWorkspaceId')]"
+                    },
+                    "eventGridDomainDiagnostics": {
+                        "value": "[parameters('eventGridDomainDiagnostics')]"
+                    },
+                    "eventGridDomainLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('eventGridDomainLogAnalyticsWorkspaceId')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

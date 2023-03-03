@@ -1,0 +1,123 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "roles": {
+            "roleDefinitions": [
+                {
+                    "properties": {
+                        "roleName": "[concat(parameters('toplevelManagementGroupPrefix'), '-LZ Subscription Owner')]",
+                        "description": "LZ Subscription Owner",
+                        "type": "customRole",
+                        "permissions": [
+                            {
+                                "actions": [
+                                    "*"
+                                ],
+                                "notActions": [
+                                    "Microsoft.Blueprint/blueprintAssignments/write",
+                                    "Microsoft.Blueprint/blueprintAssignments/delete",
+                                    "Microsoft.Network/vpnGateways/*",
+                                    "Microsoft.Network/expressRouteCircuits/*",
+                                    "Microsoft.Network/routeTables/write",
+                                    "Microsoft.Network/routeTables/join/*",
+                                    "Microsoft.Network/routeTables/delete",
+                                    "Microsoft.Network/routeTables/routes/write",
+                                    "Microsoft.Network/azurefirewalls/write",
+                                    "Microsoft.Network/azurefirewalls/delete",
+                                    "Microsoft.Network/firewallPolicies/write",
+                                    "Microsoft.Network/firewallPolicies/join/action",
+                                    "Microsoft.Network/firewallPolicies/delete",
+                                    "Microsoft.Network/firewallPolicies/ruleGroups/write",
+                                    "Microsoft.Network/firewallPolicies/ruleGroups/delete",
+                                    "Microsoft.Network/vpnSites/*",
+                                    "Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/*",
+                                    "Microsoft.Network/networkSecurityGroups/securityRules/delete",
+                                    "Microsoft.Network/networkSecurityGroups/delete",
+                                    "Microsoft.Network/virtualNetworks/*/write",
+                                    "Microsoft.Network/virtualNetworks/*/delete"
+                                ],
+                                "dataActions": [],
+                                "notDataActions": []
+                            }
+                        ]
+                    }
+                },
+                {
+                    "properties": {
+                        "roleName": "[concat(parameters('toplevelManagementGroupPrefix'), '-Platform Contributors')]",
+                        "description": "Custom Role that grants full access to manage all Platform resources, but does not allow you to assign roles in Azure RBAC, manage assignments in Azure Blueprints, or share image galleries",
+                        "type": "customRole",
+                        "permissions": [
+                            {
+                                "actions": [
+                                    "*"
+                                ],
+                                "notActions": [
+                                    "Microsoft.Authorization/*/Delete",
+                                    "Microsoft.Authorization/*/Write",
+                                    "Microsoft.Authorization/elevateAccess/Action",
+                                    "Microsoft.Blueprint/blueprintAssignments/write",
+                                    "Microsoft.Blueprint/blueprintAssignments/delete",
+                                    "Microsoft.Compute/galleries/share/action"
+                                ],
+                                "dataActions": [],
+                                "notDataActions": []
+                            }
+                        ]
+                    }
+                },
+                {
+                    "properties": {
+                        "roleName": "[concat(parameters('toplevelManagementGroupPrefix'), '-NetOps')]",
+                        "description": "Platform-wide global connectivity management",
+                        "type": "customRole",
+                        "permissions": [
+                            {
+                                "actions": [
+                                    "*/read",
+                                    "Microsoft.Authorization/*/read",
+                                    "Microsoft.Insights/alertRules/*",
+                                    "Microsoft.Network/*",
+                                    "Microsoft.ResourceHealth/availabilityStatuses/read",
+                                    "Microsoft.Resources/deployments/*",
+                                    "Microsoft.Resources/subscriptions/resourceGroups/read",
+                                    "Microsoft.Support/*"
+                                ],
+                                "notActions": [],
+                                "dataActions": [],
+                                "notDataActions": []
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/roleDefinitions",
+            "name": "[guid(tenantResourceId('Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix')), variables('roles').roleDefinitions[copyIndex()].properties.roleName)]",
+            "apiVersion": "2018-01-01-preview",
+            "copy": {
+                "name": "roleDefinitionCopy",
+                "count": "[length(variables('roles').roleDefinitions)]"
+            },
+            "properties": {
+                "roleName": "[variables('roles').roleDefinitions[copyIndex()].properties.roleName]",
+                "description": "[variables('roles').roleDefinitions[copyIndex()].properties.description]",
+                "type": "[variables('roles').roleDefinitions[copyIndex()].properties.type]",
+                "permissions": "[variables('roles').roleDefinitions[copyIndex()].properties.permissions]",
+                "assignableScopes": [
+                    "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]"
+                ]
+            }
+        }
+    ]
+}

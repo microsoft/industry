@@ -1,0 +1,55 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
+            }
+        },
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        },
+        "listOfAllowedLocations": {
+            "type": "array",
+            "defaultValue": []
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "azureRegions": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policyDefinitions/Deny-Location')]"
+        },
+        "policyAssignmentNames": {
+            "regions": "Deny-Azure-Regions",
+            "description": "This policy enables you to restrict the locations your organization can specify when deploying resources. Use to enforce your geo-compliance requirements. Excludes resource groups, Microsoft.AzureActiveDirectory/b2cDirectories, and resources that use the 'global' region.",
+            "displayName": "Azure Regions for Azure services that are allowed per FSI compliance"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2022-06-01",
+            "name": "[variables('policyAssignmentNames').regions]",
+            "location": "[deployment().location]",            
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').azureRegions]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "listOfAllowedLocations": {
+                        "value": "[parameters('listOfAllowedLocations')]"
+                    }
+                }
+            }
+        }
+        
+    ],
+    "outputs": {}
+}

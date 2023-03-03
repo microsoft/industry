@@ -21,6 +21,9 @@
                 "DoNotEnforce"
             ],
             "defaultValue": "Default"
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string"
         }
     },
     "variables": {
@@ -31,20 +34,19 @@
             "azureActivityLog": "Deploy-AzActivity-Log",
             "description": "Deploys the diagnostic settings for Azure Activity to stream subscriptions audit logs to a Log Analytics workspace to monitor subscription-level events",
             "displayName": "Configure Azure Activity logs to stream to specified Log Analytics workspace"
-        },
-        "rbacOwner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
-        "roleAssignmentNames": {
-            "deployAzureActivityLog": "[guid(concat(parameters('topLevelManagementGroupPrefix'),variables('policyAssignmentNames').azureActivityLog))]"
         }
     },
     "resources": [
         {
             "type": "Microsoft.Authorization/policyAssignments",
-            "apiVersion": "2019-09-01",
+            "apiVersion": "2022-06-01",
             "name": "[variables('policyAssignmentNames').azureActivityLog]",
             "location": "[deployment().location]",
             "identity": {
-                "type": "SystemAssigned"
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[parameters('userAssignedIdentityResourceId')]": {}
+                }
             },
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
@@ -59,19 +61,6 @@
                         "value": "True"
                     }
                 }
-            }
-        },
-        {
-            "type": "Microsoft.Authorization/roleAssignments",
-            "apiVersion": "2019-04-01-preview",
-            "name": "[variables('roleAssignmentNames').deployAzureActivityLog]",
-            "dependsOn": [
-                "[variables('policyAssignmentNames').azureActivityLog]"
-            ],
-            "properties": {
-                "principalType": "ServicePrincipal",
-                "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', variables('rbacOwner'))]",
-                "principalId": "[toLower(reference(concat('/providers/Microsoft.Authorization/policyAssignments/', variables('policyAssignmentNames').azureActivityLog), '2019-09-01', 'Full' ).identity.principalId)]"
             }
         }
     ],

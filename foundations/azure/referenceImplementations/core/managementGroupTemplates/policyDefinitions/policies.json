@@ -4,6 +4,7 @@
     "parameters": {
         "topLevelManagementGroupPrefix": {
             "type": "String",
+            "defaultValue": "FSIDemo",
             "maxLength": 10,
             "metadata": {
                 "description": "Provide a prefix (max 10 characters, unique at tenant-scope) for the Management Group hierarchy and other resources created as part of Enterprise-scale."
@@ -1080,6 +1081,54 @@
                         }
                     },
                     "name": "Deploy-Custom-Route-Table"
+                },
+                {
+
+                    "properties": {
+                        "displayName": "Allowed locations for Landing Zone workloads",
+                        "policyType": "Custom",
+                        "mode": "Indexed",
+                        "description": "This policy enables you to restrict the locations your organization can specify when deploying resources. Use to enforce your geo-compliance requirements. Excludes resource groups, Microsoft.AzureActiveDirectory/b2cDirectories, and resources that use the 'global' region.",
+                        "metadata": {
+                        "category": "General"
+                        },
+                        "parameters": {
+                        "listOfAllowedLocations": {
+                            "type": "Array",
+                            "metadata": {
+                            "displayName": "Allowed locations",
+                            "description": "The list of locations that can be specified when deploying resources.",
+                            "strongType": "location"
+                            }
+                        }
+                        },
+                        "policyRule": {
+                        "if": {
+                            "allOf": [
+                            {
+                                "field": "location",
+                                "notIn": "[[parameters('listOfAllowedLocations')]"
+                            },
+                            {
+                                "field": "location",
+                                "notEquals": "global"
+                            },
+                            {
+                                "field": "type",
+                                "notEquals": "Microsoft.AzureActiveDirectory/b2cDirectories"
+                            },
+                            {
+                                "field": "type",
+                                "notEquals": "Microsoft.Resources/deployments"
+                            }
+                            ]
+                        },
+                        "then": {
+                            "effect": "deny"
+                        }
+                        }
+                    },
+                    "name": "Deny-Location"
                 },
                 {
                     "properties": {
@@ -15960,6 +16009,30 @@
                                     "displayName": "Effect",
                                     "description": "Enable or disable the execution of the policy"
                                 }
+                            },
+                            "enableAscForCSPM": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enablle or disable the execution of the policy"
+                                },
+                                "defaultValue": "DeployIfNotExists"
+                            },
+                            "enableAscForCosmosDb": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enablle or disable the execution of the policy"
+                                },
+                                "defaultValue": "DeployIfNotExists"
+                            },
+                            "enableAscForSynapse": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enablle or disable the execution of the policy"
+                                },
+                                "defaultValue": "DeployIfNotExists"
                             }
                         },
                         "metadata": {
@@ -15967,6 +16040,33 @@
                             "category": "Security Center"
                         },
                         "PolicyDefinitions": [
+                            {
+                                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/951c1558-50a5-4ca3-abb6-a93e3e2367a6",
+                                "policyDefinitionReferenceId": "defenderForSynapse",
+                                "parameters": {
+                                    "effect": {
+                                        "value": "[[parameters('enableAscForSynapse')]"
+                                    }
+                                }
+                            },                                                        
+                            {
+                                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/82bf5b87-728b-4a74-ba4d-6123845cf542",
+                                "policyDefinitionReferenceId": "defenderForCosmosDb",
+                                "parameters": {
+                                    "effect": {
+                                        "value": "[[parameters('enableAscForCosmosDb')]"
+                                    }
+                                }
+                            },                            
+                            {
+                                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/689f7782-ef2c-4270-a6d0-7664869076bd",
+                                "policyDefinitionReferenceId": "defenderForCSPM",
+                                "parameters": {
+                                    "effect": {
+                                        "value": "[[parameters('enableAscForCSPM')]"
+                                    }
+                                }
+                            },                            
                             {
                                 "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/44433aa3-7ec2-4002-93ea-65c65ff0310a",
                                 "policyDefinitionReferenceId": "defenderForOssDb",
