@@ -4,15 +4,19 @@
     "parameters": {
         "mgmtStorageRgName": {
             "type": "string",
-            "defaultValue": "foo"
+            "defaultValue": ""
         },
         "storageAccountName": {
             "type": "string",
-            "defaultValue": "ststfoo"
+            "defaultValue": ""
         },
         "storageLocation": {
             "type": "string",
-            "defaultValue": "westeurope"
+            "defaultValue": ""
+        },
+        "logAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
         }
     },
     "variables": {
@@ -57,13 +61,129 @@
                                 "publicNetworkAccess": "Enabled",
                                 "allowBlobPublicAccess": true,
                                 "allowSharedKeyAccess": true,
-                                "allowCrossTenantReplication": true,
+                                "allowCrossTenantReplication": false,
                                 "defaultToOAuthAuthentication": false,
                                 "networkAcls": {
                                     "bypass": "AzureServices",
                                     "defaultAction": "Deny",
                                     "ipRules": []
                                 }
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Storage/storageAccounts/blobServices/providers/diagnosticSettings",
+                            "apiVersion": "2021-05-01-preview",
+                            "name": "[concat(parameters('storageAccountName'), '/default/', 'Microsoft.Insights/', 'setByPolicy')]",
+                            "location": "[parameters('storageLocation')]",
+                            "dependsOn": [
+                                "[concat(subscription().id, '/resourceGroups/', parameters('mgmtStorageRgName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
+                            ],
+                            "properties": {
+                                "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
+                                "metrics": [
+                                    {
+                                        "category": "Transaction",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        },
+                                        "timeGrain": null
+                                    }
+                                ],
+                                "logs": [
+                                    {
+                                        "categoryGroup": "allLogs",
+                                        "enabled": true
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Storage/storageAccounts/fileServices/providers/diagnosticSettings",
+                            "apiVersion": "2021-05-01-preview",
+                            "name": "[concat(parameters('storageAccountName'), '/default/', 'Microsoft.Insights/', 'setByPolicy')]",
+                            "location": "[parameters('storageLocation')]",
+                            "dependsOn": [
+                                "[concat(subscription().id, '/resourceGroups/', parameters('mgmtStorageRgName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"                                
+                            ],
+                            "properties": {
+                                "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
+                                "metrics": [
+                                    {
+                                        "category": "Transaction",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        },
+                                        "timeGrain": null
+                                    }
+                                ],
+                                "logs": [
+                                    {
+                                        "categoryGroup": "allLogs",
+                                        "enabled": true
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Storage/storageAccounts/tableServices/providers/diagnosticSettings",
+                            "apiVersion": "2021-05-01-preview",
+                            "name": "[concat(parameters('storageAccountName'), '/default/', 'Microsoft.Insights/', 'setByPolicy')]",
+                            "location": "[parameters('storageLocation')]",
+                            "dependsOn": [
+                                "[concat(subscription().id, '/resourceGroups/', parameters('mgmtStorageRgName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"                                
+                            ],
+                            "properties": {
+                                "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
+                                "metrics": [
+                                    {
+                                        "category": "Transaction",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        },
+                                        "timeGrain": null
+                                    }
+                                ],
+                                "logs": [
+                                    {
+                                        "categoryGroup": "allLogs",
+                                        "enabled": true
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Storage/storageAccounts/queueServices/providers/diagnosticSettings",
+                            "apiVersion": "2021-05-01-preview",
+                            "name": "[concat(parameters('storageAccountName'), '/default/', 'Microsoft.Insights/', 'setByPolicy')]",
+                            "location": "[parameters('storageLocation')]",
+                            "dependsOn": [
+                                "[concat(subscription().id, '/resourceGroups/', parameters('mgmtStorageRgName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"                                
+                            ],
+                            "properties": {
+                                "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
+                                "metrics": [
+                                    {
+                                        "category": "Transaction",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        },
+                                        "timeGrain": null
+                                    }
+                                ],
+                                "logs": [
+                                    {
+                                        "categoryGroup": "allLogs",
+                                        "enabled": true
+                                    }
+                                ]
                             }
                         }
                     ]
