@@ -2437,7 +2437,7 @@
                             "name": "identitySub",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Configure dedicated Identity subscription",
-                            "defaultValue": "Yes",
+                            "defaultValue": "No",
                             "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, Azure Policy will be assigned at the scope to govern your identity resources.",
                             "constraints": {
                                 "allowedValues": [
