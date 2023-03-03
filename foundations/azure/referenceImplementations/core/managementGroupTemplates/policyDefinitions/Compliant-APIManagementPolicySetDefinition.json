@@ -103,10 +103,9 @@
                                 },
                                 "allowedValues": [
                                     "Audit",
-                                    "Deny",
                                     "Disabled"
                                 ],
-                                "defaultValue": "Deny"
+                                "defaultValue": "Audit"
                             }
                         },
                         "policyRule": {
@@ -325,7 +324,7 @@
                     },
                     "apimPublicNetworkAccess": {
                         "type": "string",
-                        "defaultValue": "Deny"
+                        "defaultValue": "Audit"
                     },
                     "apimVirtualNetworkTypeEffect": {
                         "type": "string",
