@@ -31,25 +31,25 @@
                                     "Deny",
                                     "Audit",
                                     "Disabled"
-                                    ],
+                                ],
                                 "defaultValue": "Deny"
                             }
                         },
                         "policyRule": {
                             "if": {
                                 "allOf": [
-                                {
-                                    "field": "type",
-                                    "equals": "Microsoft.DBforPostgreSQL/servers"
-                                },
-                                {
-                                    "field": "Microsoft.DBforPostgreSQL/servers/sslEnforcement",
-                                    "exists": "true"
-                                },
-                                {
-                                    "field": "Microsoft.DBforPostgreSQL/servers/sslEnforcement",
-                                    "notEquals": "Enabled"
-                                }
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.DBforPostgreSQL/servers"
+                                    },
+                                    {
+                                        "field": "Microsoft.DBforPostgreSQL/servers/sslEnforcement",
+                                        "exists": "true"
+                                    },
+                                    {
+                                        "field": "Microsoft.DBforPostgreSQL/servers/sslEnforcement",
+                                        "notEquals": "Enabled"
+                                    }
                                 ]
                             },
                             "then": {
@@ -79,7 +79,7 @@
                                     "Deny",
                                     "Audit",
                                     "Disabled"
-                                    ],
+                                ],
                                 "defaultValue": "Deny"
                             },
                             "minimalTlsVersion": {
@@ -106,6 +106,10 @@
                                     },
                                     {
                                         "field": "Microsoft.DBforPostgreSQL/servers/minimalTlsVersion",
+                                        "exists": "true"
+                                    },
+                                    {
+                                        "field": "Microsoft.DBforPostgreSQL/servers/minimalTlsVersion",
                                         "notEquals": "[[parameters('minimalTlsVersion')]"
                                     }
                                 ]
@@ -121,7 +125,7 @@
                     "properties": {
                         "displayName": "Enforce Customer Managed Keys for PostgreSQL Flexible database",
                         "mode": "Indexed",
-                        "description": "Azure Database Flexible Server for PostgreSQL supports deploying a specific minimum TLS version requirement connecting your Azure Database for PostgreSQL server to client applications.",
+                        "description": "Denies deployments of Azure Database Flexible Server for PostgreSQL without Customer Managed Keys on Azure Key Vault present. ",
                         "metadata": {
                             "version": "1.0.1",
                             "category": "PostgreSQL"
@@ -137,14 +141,13 @@
                                     "Deny",
                                     "Audit",
                                     "Disabled"
-                                    ],
+                                ],
                                 "defaultValue": "Deny"
                             }
                         },
                         "policyRule": {
                             "if": {
-                                "allOf":
-                                {
+                                "allOf": {
                                     "field": "type",
                                     "equals": "Microsoft.DBforPostgreSQL/flexibleServer"
                                 },
@@ -160,7 +163,7 @@
                                     {
                                         "field": "Microsoft.DBforPostgreSQL/flexibleServer/dataEncryption/primaryUserAssignedIdentityId",
                                         "exists": "false"
-                                    }                                    
+                                    }
                                 ]
                             },
                             "then": {
@@ -191,7 +194,7 @@
                             "effect": {
                                 "type": "String",
                                 "defaultValue": "DeployIfNotExists",
-                                "allowedValues": ["DeployIfNotExists", "Disabled"],
+                                "allowedValues": [ "DeployIfNotExists", "Disabled" ],
                                 "metadata": {
                                     "displayName": "Effect",
                                     "description": "Enable or disable the execution of the policy"
@@ -208,7 +211,7 @@
                             "metricsEnabled": {
                                 "type": "String",
                                 "defaultValue": "True",
-                                "allowedValues": ["True", "False"],
+                                "allowedValues": [ "True", "False" ],
                                 "metadata": {
                                     "displayName": "Enable metrics",
                                     "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
@@ -217,7 +220,7 @@
                             "logsEnabled": {
                                 "type": "String",
                                 "defaultValue": "True",
-                                "allowedValues": ["True", "False"],
+                                "allowedValues": [ "True", "False" ],
                                 "metadata": {
                                     "displayName": "Enable logs",
                                     "description": "Whether to enable logs stream to the Log Analytics workspace - True or False"
@@ -231,7 +234,9 @@
                                         "field": "type",
                                         "equals": "Microsoft.DBforPostgreSQL/flexibleServers"
                                     },
-                                    {   "field": "type", "equals": "Microsoft.DBforPostgreSQL/servers" 
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.DBforPostgreSQL/servers"
                                     }
                                 ]
                             },
@@ -290,14 +295,21 @@
                                                                 {
                                                                     "category": "AllMetrics",
                                                                     "enabled": "[[parameters('metricsEnabled')]]",
-                                                                    "retentionPolicy": { "days": 0, "enabled": false },
+                                                                    "retentionPolicy": {
+                                                                        "days": 0,
+                                                                        "enabled": false
+                                                                    },
                                                                     "timeGrain": null
                                                                 }
                                                             ],
                                                             "logs": [
                                                                 {
-                                                                    "category": "PostgreSQLLogs",
-                                                                    "enabled": "[[parameters('logsEnabled')]]"
+                                                                    "categoryGroup": "allLogs",
+                                                                    "enabled": "[[parameters('logsEnabled')]]",
+                                                                    "retentionPolicy": {
+                                                                        "days": 0,
+                                                                        "enabled": false
+                                                                    }
                                                                 }
                                                             ]
                                                         }
@@ -315,22 +327,21 @@
                                                                 {
                                                                     "category": "AllMetrics",
                                                                     "enabled": "[[parameters('metricsEnabled')]]",
-                                                                    "retentionPolicy": { "days": 0, "enabled": false },
+                                                                    "retentionPolicy": {
+                                                                        "days": 0,
+                                                                        "enabled": false
+                                                                    },
                                                                     "timeGrain": null
                                                                 }
                                                             ],
                                                             "logs": [
                                                                 {
-                                                                    "category": "PostgreSQLLogs",
-                                                                    "enabled": "[[parameters('logsEnabled')]]"
-                                                                },
-                                                                {
-                                                                    "category": "QueryStoreRuntimeStatistics",
-                                                                    "enabled": "[[parameters('logsEnabled')]]"
-                                                                },
-                                                                {
-                                                                    "category": "QueryStoreWaitStatistics",
-                                                                    "enabled": "[[parameters('logsEnabled')]]"
+                                                                    "categoryGroup": "allLogs",
+                                                                    "enabled": "[[parameters('logsEnabled')]]",
+                                                                    "retentionPolicy": {
+                                                                        "days": 0,
+                                                                        "enabled": false
+                                                                    }
                                                                 }
                                                             ]
                                                         }
@@ -501,11 +512,11 @@
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('postgreSqlFlexiblePublicNetworkAccess')]"
+                                "value": "[[parameters('postgreSqlFlexibleCustomerManagedKeys')]"
                             }
                         }
                     },
-                                        {
+                    {
                         "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[3].name)]",
                         "policyDefinitionReferenceId": "Deny-PostgreSql-Server-Flexible-Server-LogAnalytics",
                         "groupNames": [
