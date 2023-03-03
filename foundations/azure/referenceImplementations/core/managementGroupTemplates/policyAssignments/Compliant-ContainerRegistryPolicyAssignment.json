@@ -16,18 +16,6 @@
             ],
             "defaultValue": "Default"
         },
-        "containerRegistryPrivateDnsZone": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "containerRegistryPrivateDnsZoneId": {
-            "type": "string",
-            "defaultValue": ""
-        },
         "containerRegistryDiagnostics": {
             "type": "string",
             "defaultValue": "Disabled",
@@ -72,12 +60,6 @@
                 "policyDefinitionId": "[variables('policyDefinitions').conRegistry]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "containerRegistryPrivateDnsZone": {
-                        "value": "[parameters('containerRegistryPrivateDnsZone')]"
-                    },
-                    "containerRegistryPrivateDnsZoneId": {
-                        "value": "[parameters('containerRegistryPrivateDnsZoneId')]"
-                    },
                     "containerRegistryDiagnostics": {
                         "value": "[parameters('containerRegistryDiagnostics')]"
                     },

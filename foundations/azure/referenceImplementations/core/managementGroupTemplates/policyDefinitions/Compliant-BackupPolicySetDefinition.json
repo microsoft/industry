@@ -251,10 +251,6 @@
                       "type": "string",
                       "defaultValue": "Deny"
                     },
-                    "asrPrivateDnsZone": {
-                      "type": "string",
-                      "defaultValue": "DeployIfNotExists"
-                    },
                     "asrLogAnalyticsWorkspaceId": {
                       "type": "string",
                       "defaultValue": ""

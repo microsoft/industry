@@ -569,21 +569,19 @@
                                 "Cosmos DB",
                                 "Data Explorer",
                                 "Data Factory",
-                                "Key Vault",
-                                "Kubernetes",
-                                "SQL",
-                                "Service Bus",
-                                "Postgre SQL",
-                                "Open AI",
                                 "Event Grid",
                                 "Event Hub",
-                                "Databricks",
-                                "Stream Analytics",
-                                "Networking",
+                                "Key Vault",
+                                "Kubernetes",                                
+                                "Machine Learning",
+                                "Networking", 
+                                "Open AI",
+                                "Postgre SQL",                                                                
+                                "Service Bus",
+                                "SQL",
                                 "Storage Account",
                                 "Synapse",
-                                "Virtual Machine",
-                                "Machine Learning"
+                                "Virtual Desktop"
                             ],
                             "toolTip": "",
                             "multiselect": true,
@@ -635,36 +633,6 @@
                                         "value": "ContainerRegistry"
                                     },
                                     {
-                                        "label": "Key Vault",
-                                        "description": "Azure policies will ensure secure by-default compliance for Key Vaults, secrets, keys, and certificates, enforce access via private endpoints, purge protection, and centralized logging.",
-                                        "value": "KeyVault"
-                                    },
-                                    {
-                                        "label": "Kubernetes",
-                                        "description": "Azure policies will ensure secure by-default compliance for Kubernetes (AKS), secrets, keys, and certificates, enforce access via private endpoints, centralized authorization and governance, and centralized logging.",
-                                        "value": "Kubernetes"
-                                    },
-                                    {
-                                        "label": "Postgre SQL",
-                                        "description": "Azure policies will ensure secure by-default compliance for Postgre SQL, enforce access via private endpoints, centralized authorization, advanced threat protection and centralized logging.",
-                                        "value": "PostgreSql"
-                                    },
-                                    {
-                                        "label": "SQL",
-                                        "description": "Azure policies will ensure secure by-default compliance for SQL servers and SQL databases, enforce access via private endpoints, centralized authorization, advanced threat protection and centralized logging.",
-                                        "value": "Sql"
-                                    },
-                                    {
-                                        "label": "Service Bus",
-                                        "description": "Azure policies will ensure secure by-default compliance for Service Bus, enforce access via private endpoints, double encryption, centralized authorization, and centralized logging.",
-                                        "value": "ServiceBus"
-                                    },
-                                    {
-                                        "label": "Synapse",
-                                        "description": "Azure policies will ensure secure by-default compliance for Synapse, enforce access via private endpoints, double encryption, centralized authorization, and centralized logging.",
-                                        "value": "Synapse"
-                                    },
-                                    {
                                         "label": "Cosmos DB",
                                         "description": "Azure policies will ensure secure by-default compliance for Cosmos DB, enforce access via private endpoints, double encryption, centralized authorization, and centralized logging.",
                                         "value": "CosmosDb"
@@ -680,16 +648,6 @@
                                         "value": "DataFactory"
                                     },
                                     {
-                                        "label": "Machine Learning",
-                                        "description": "Azure policies will ensure secure by-default compliance for Machine Learning, enforce access via private endpoints, centralized authorization, and centralized logging.",
-                                        "value": "MachineLearning"
-                                    },
-                                    {
-                                        "label": "Open AI",
-                                        "description": "Azure policies will ensure secure by-default compliance for Open AI, enforce access via private endpoints, centralized authorization, and centralized logging.",
-                                        "value": "OpenAi"
-                                    },
-                                    {
                                         "label": "Event Grid",
                                         "description": "Azure policies will ensure secure by-default compliance for Event Grid, enforce access via private endpoints, centralized authorization, and centralized logging.",
                                         "value": "EventGrid"
@@ -700,19 +658,45 @@
                                         "value": "EventHub"
                                     },
                                     {
-                                        "label": "Databricks",
-                                        "description": "Azure policies will ensure secure by-default compliance for Databricks by requiring premium SKU that enforce access via private endpoints, centralized authorization, and centralized logging.",
-                                        "value": "Databricks"
+                                        "label": "Key Vault",
+                                        "description": "Azure policies will ensure secure by-default compliance for Key Vaults, secrets, keys, and certificates, enforce access via private endpoints, purge protection, and centralized logging.",
+                                        "value": "KeyVault"
                                     },
                                     {
-                                        "label": "Stream Analytics",
-                                        "description": "Azure policies will ensure secure by-default compliance for Stream Analytics, enforce access via private endpoints, centralized authorization, and centralized logging.",
-                                        "value": "StreamAnalytics"
+                                        "label": "Kubernetes",
+                                        "description": "Azure policies will ensure secure by-default compliance for Kubernetes (AKS), secrets, keys, and certificates, enforce access via private endpoints, centralized authorization and governance, and centralized logging.",
+                                        "value": "Kubernetes"
+                                    },
+                                    {
+                                        "label": "Machine Learning",
+                                        "description": "Azure policies will ensure secure by-default compliance for Machine Learning, enforce access via private endpoints, centralized authorization, and centralized logging.",
+                                        "value": "MachineLearning"
                                     },
                                     {
                                         "label": "Networking",
                                         "description": "Azure policies will ensure secure by-default compliance for Networking, such as enforcement of strong protocols, encryption, advanced threat protection, communication paths, and logging.",
                                         "value": "Networking"
+                                    },
+                                    
+                                    {
+                                        "label": "Open AI",
+                                        "description": "Azure policies will ensure secure by-default compliance for Open AI, enforce access via private endpoints, centralized authorization, and centralized logging.",
+                                        "value": "OpenAi"
+                                    },
+                                    {
+                                        "label": "Postgre SQL",
+                                        "description": "Azure policies will ensure secure by-default compliance for Postgre SQL, enforce access via private endpoints, centralized authorization, advanced threat protection and centralized logging.",
+                                        "value": "PostgreSql"
+                                    },
+                                    {
+                                        "label": "Service Bus",
+                                        "description": "Azure policies will ensure secure by-default compliance for Service Bus, enforce access via private endpoints, double encryption, centralized authorization, and centralized logging.",
+                                        "value": "ServiceBus"
+                                    },
+                                    {
+                                        "label": "SQL",
+                                        "description": "Azure policies will ensure secure by-default compliance for SQL servers and SQL databases, enforce access via private endpoints, centralized authorization, advanced threat protection and centralized logging.",
+                                        "value": "Sql"
                                     },
                                     {
                                         "label": "Storage Account",
@@ -720,9 +704,14 @@
                                         "value": "StorageAccount"
                                     },
                                     {
-                                        "label": "Virtual Machine",
-                                        "description": "Azure policies will ensure secure by-default compliance for Virtual Machines, such as enforcement of strong protocols, encryption, access via private and secure networks, centralized authorization using Azure AD, and centralized security logging.",
-                                        "value": "VMs"
+                                        "label": "Synapse",
+                                        "description": "Azure policies will ensure secure by-default compliance for Synapse, enforce access via private endpoints, double encryption, centralized authorization, and centralized logging.",
+                                        "value": "Synapse"
+                                    },
+                                    {
+                                        "label": "Virtual Desktop",
+                                        "description": "Azure policies will ensure secure by-default compliance for Virtual Desktop, enforce access via private endpoints, centralized authorization, and centralized logging.",
+                                        "value": "DesktopVirtualization"
                                     }
                                 ],
                                 "required": false

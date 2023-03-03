@@ -22,21 +22,7 @@
                 "description": "Provide the Log Analytics Workspace ID for Key Vault"
             }
         },
-        "aaPrivateDnsZoneId": {
-            "type": "string",
-            "metadata": {
-                "description": "Provide the Private DNS Zone ID for Key Vault"
-            }
-        },
         "aaDiagnostics": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "aaPrivateDnsZone": {
             "type": "string",
             "defaultValue": "Disabled",
             "allowedValues": [
@@ -78,12 +64,6 @@
                 "parameters": {
                     "aaLogAnalyticsWorkspaceId": {
                         "value": "[parameters('aaLogAnalyticsWorkspaceId')]"
-                    },
-                    "aaPrivateDnsZoneId": {
-                        "value": "[parameters('aaPrivateDnsZoneId')]"
-                    },
-                    "aaPrivateDnsZone": {
-                        "value": "[parameters('aaPrivateDnsZone')]"
                     },
                     "aaDiagnostics": {
                         "value": "[parameters('aaDiagnostics')]"
