@@ -17,7 +17,7 @@
                         "mode": "Indexed",
                         "description": "Azure Database for PostgreSQL supports connecting your Azure Database for PostgreSQL server to client applications using Secure Sockets Layer (SSL). Enforcing SSL connections between your database server and your client applications helps protect against 'man in the middle' attacks by encrypting the data stream between the server and your application. This configuration enforces that SSL is always enabled for accessing your database server.",
                         "metadata": {
-                            "version": "1.0.1",
+                            "version": "1.0.0",
                             "category": "PostgreSQL"
                         },
                         "parameters": {
@@ -32,7 +32,7 @@
                                     "Audit",
                                     "Disabled"
                                 ],
-                                "defaultValue": "Deny"
+                                "defaultValue": "Audit"
                             }
                         },
                         "policyRule": {
@@ -61,7 +61,213 @@
                 },
                 {
                     "properties": {
+                        "policyType": "Custom",
+                        "mode": "Indexed",
+                        "displayName": "Deploy Diagnostic Settings for Database for PostgreSQL (server and flexible server) to Log Analytics workspace",
+                        "description": "Deploys the diagnostic settings for Database for PostgreSQL (server and flexible) to stream to a Log Analytics workspace when any Database for PostgreSQL which is missing this diagnostic settings is created or updated. The Policy will set the diagnostic with all metrics and category enabled",
+                        "metadata": {
+                            "version": "2.0.0",
+                            "category": "PostgreSQL"
+                        },
+                        "parameters": {
+                            "logAnalytics": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Log Analytics workspace",
+                                    "description": "Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant 'Log Analytics Contributor' permissions (or similar) to the policy assignment's principal ID.",
+                                    "strongType": "omsWorkspace"
+                                }
+                            },
+                            "effect": {
+                                "type": "String",
+                                "defaultValue": "DeployIfNotExists",
+                                "allowedValues": [
+                                    "DeployIfNotExists",
+                                    "Disabled"
+                                ],
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                }
+                            },
+                            "profileName": {
+                                "type": "String",
+                                "defaultValue": "setbypolicy",
+                                "metadata": {
+                                    "displayName": "Profile name",
+                                    "description": "The diagnostic settings profile name"
+                                }
+                            },
+                            "metricsEnabled": {
+                                "type": "String",
+                                "defaultValue": "True",
+                                "allowedValues": [
+                                    "True",
+                                    "False"
+                                ],
+                                "metadata": {
+                                    "displayName": "Enable metrics",
+                                    "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
+                                }
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "anyOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.DBforPostgreSQL/flexibleServers"
+                                    },
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.DBforPostgreSQL/servers"
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]",
+                                "details": {
+                                    "type": "Microsoft.Insights/diagnosticSettings",
+                                    "name": "[[parameters('profileName')]",
+                                    "existenceCondition": {
+                                        "allOf": [
+                                            {
+                                                "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
+                                                "equals": "true"
+                                            },
+                                            {
+                                                "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
+                                                "equals": "true"
+                                            },
+                                            {
+                                                "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
+                                                "equals": "[[parameters('logAnalytics')]"
+                                            }
+                                        ]
+                                    },
+                                    "roleDefinitionIds": [
+                                        "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+                                        "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
+                                    ],
+                                    "deployment": {
+                                        "properties": {
+                                            "mode": "Incremental",
+                                            "template": {
+                                                "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                                                "contentVersion": "1.0.0.0",
+                                                "parameters": {
+                                                    "resourceName": {
+                                                        "type": "String"
+                                                    },
+                                                    "resourceType": {
+                                                        "type": "String"
+                                                    },
+                                                    "logAnalytics": {
+                                                        "type": "String"
+                                                    },
+                                                    "location": {
+                                                        "type": "String"
+                                                    },
+                                                    "profileName": {
+                                                        "type": "String"
+                                                    },
+                                                    "metricsEnabled": {
+                                                        "type": "String"
+                                                    }
+                                                },
+                                                "variables": {},
+                                                "resources": [
+                                                    {
+                                                        "condition": "[[startsWith(parameters('resourceType'),'Microsoft.DBforPostgreSQL/flexibleServers')]",
+                                                        "type": "Microsoft.DBforPostgreSQL/flexibleServers/providers/diagnosticSettings",
+                                                        "apiVersion": "2021-05-01-preview",
+                                                        "name": "[[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
+                                                        "location": "[[parameters('location')]",
+                                                        "dependsOn": [],
+                                                        "properties": {
+                                                            "workspaceId": "[[parameters('logAnalytics')]",
+                                                            "metrics": [
+                                                                {
+                                                                    "category": "AllMetrics",
+                                                                    "enabled": "[[parameters('metricsEnabled')]",
+                                                                    "retentionPolicy": {
+                                                                        "days": 0,
+                                                                        "enabled": false
+                                                                    },
+                                                                    "timeGrain": null
+                                                                }
+                                                            ],
+                                                            "logs": [
+                                                                {
+                                                                    "categoryGroup": "allLogs",
+                                                                    "enabled": true
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "condition": "[[startsWith(parameters('resourceType'),'Microsoft.DBforPostgreSQL/servers')]",
+                                                        "type": "Microsoft.DBforPostgreSQL/servers/providers/diagnosticSettings",
+                                                        "apiVersion": "2021-05-01-preview",
+                                                        "name": "[[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
+                                                        "location": "[[parameters('location')]",
+                                                        "dependsOn": [],
+                                                        "properties": {
+                                                            "workspaceId": "[[parameters('logAnalytics')]",
+                                                            "metrics": [
+                                                                {
+                                                                    "category": "AllMetrics",
+                                                                    "enabled": "[[parameters('metricsEnabled')]",
+                                                                    "retentionPolicy": {
+                                                                        "days": 0,
+                                                                        "enabled": false
+                                                                    },
+                                                                    "timeGrain": null
+                                                                }
+                                                            ],
+                                                            "logs": [
+                                                                {
+                                                                    "categoryGroup": "allLogs",
+                                                                    "enabled": true
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                ],
+                                                "outputs": {}
+                                            },
+                                            "parameters": {
+                                                "logAnalytics": {
+                                                    "value": "[[parameters('logAnalytics')]"
+                                                },
+                                                "location": {
+                                                    "value": "[[field('location')]"
+                                                },
+                                                "resourceName": {
+                                                    "value": "[[field('name')]"
+                                                },
+                                                "resourceType": {
+                                                    "value": "[[field('type')]"
+                                                },
+                                                "profileName": {
+                                                    "value": "[[parameters('profileName')]"
+                                                },
+                                                "metricsEnabled": {
+                                                    "value": "[[parameters('metricsEnabled')]"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "name": "Dine-Diagnostics-PostgreSQL-Server-and-FlexibleServer"
+                },
+                {
+                    "properties": {
                         "displayName": "Enforce specific minimum TLS version requirement for PostgreSQL database servers",
+                        "policyType": "Custom",
                         "mode": "Indexed",
                         "description": "Deploys the diagnostic settings for Database for PostgreSQL to stream to a Log Analytics workspace when any Database for PostgreSQL which is missing this diagnostic settings is created or updated. The Policy will set the diagnostic with all metrics and category enabled.",
                         "metadata": {
@@ -149,19 +355,19 @@
                             "if": {
                                 "allOf": {
                                     "field": "type",
-                                    "equals": "Microsoft.DBforPostgreSQL/flexibleServer"
+                                    "equals": "Microsoft.DBforPostgreSQL/flexibleServers"
                                 },
                                 "anyOf": [
                                     {
-                                        "field": "Microsoft.DBforPostgreSQL/flexibleServer/dataEncryption/type",
+                                        "field": "Microsoft.DBForPostgreSql/flexibleServers/dataEncryption.type",
                                         "notEquals": "AzureKeyVault"
                                     },
                                     {
-                                        "field": "Microsoft.DBforPostgreSQL/flexibleServer/dataEncryption/primaryKeyURI",
+                                        "field": "Microsoft.DBForPostgreSql/flexibleServers/dataEncryption.primaryKeyURI",
                                         "exists": "false"
                                     },
                                     {
-                                        "field": "Microsoft.DBforPostgreSQL/flexibleServer/dataEncryption/primaryUserAssignedIdentityId",
+                                        "field": "Microsoft.DBForPostgreSql/flexibleServers/dataEncryption.primaryUserAssignedIdentityId",
                                         "exists": "false"
                                     }
                                 ]
@@ -172,199 +378,6 @@
                         }
                     },
                     "name": "Deny-PostgreSql-Flexible-Server-Customer-Managed-Keys"
-                },
-                {
-                    "properties": {
-                        "displayName": "Deploy Diagnostic Settings for Database for PostgreSQL to Log Analytics workspace",
-                        "mode": "Indexed",
-                        "description": "Deploys the diagnostic settings for Database for PostgreSQL to stream to a Log Analytics workspace when any Database for PostgreSQL which is missing this diagnostic settings is created or updated. The Policy will set the diagnostic with all metrics and category enabled.",
-                        "metadata": {
-                            "version": "1.0.1",
-                            "category": "PostgreSQL"
-                        },
-                        "parameters": {
-                            "logAnalytics": {
-                                "type": "String",
-                                "metadata": {
-                                    "displayName": "Log Analytics workspace",
-                                    "description": "Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant 'Log Analytics Contributor' permissions (or similar) to the policy assignment's principal ID.",
-                                    "strongType": "omsWorkspace"
-                                }
-                            },
-                            "effect": {
-                                "type": "String",
-                                "defaultValue": "DeployIfNotExists",
-                                "allowedValues": [ "DeployIfNotExists", "Disabled" ],
-                                "metadata": {
-                                    "displayName": "Effect",
-                                    "description": "Enable or disable the execution of the policy"
-                                }
-                            },
-                            "profileName": {
-                                "type": "String",
-                                "defaultValue": "setbypolicy",
-                                "metadata": {
-                                    "displayName": "Profile name",
-                                    "description": "The diagnostic settings profile name"
-                                }
-                            },
-                            "metricsEnabled": {
-                                "type": "String",
-                                "defaultValue": "True",
-                                "allowedValues": [ "True", "False" ],
-                                "metadata": {
-                                    "displayName": "Enable metrics",
-                                    "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
-                                }
-                            },
-                            "logsEnabled": {
-                                "type": "String",
-                                "defaultValue": "True",
-                                "allowedValues": [ "True", "False" ],
-                                "metadata": {
-                                    "displayName": "Enable logs",
-                                    "description": "Whether to enable logs stream to the Log Analytics workspace - True or False"
-                                }
-                            }
-                        },
-                        "policyRule": {
-                            "if": {
-                                "anyOf": [
-                                    {
-                                        "field": "type",
-                                        "equals": "Microsoft.DBforPostgreSQL/flexibleServers"
-                                    },
-                                    {
-                                        "field": "type",
-                                        "equals": "Microsoft.DBforPostgreSQL/servers"
-                                    }
-                                ]
-                            },
-                            "then": {
-                                "effect": "[[parameters('effect')]",
-                                "details": {
-                                    "type": "Microsoft.Insights/diagnosticSettings",
-                                    "name": "[[parameters('profileName')]]",
-                                    "existenceCondition": {
-                                        "allOf": [
-                                            {
-                                                "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                                                "equals": "true"
-                                            },
-                                            {
-                                                "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
-                                                "equals": "true"
-                                            },
-                                            {
-                                                "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
-                                                "equals": "[[parameters('logAnalytics')]]"
-                                            }
-                                        ]
-                                    },
-                                    "roleDefinitionIds": [
-                                        "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
-                                        "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
-                                    ],
-                                    "deployment": {
-                                        "properties": {
-                                            "mode": "Incremental",
-                                            "template": {
-                                                "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-                                                "contentVersion": "1.0.0.0",
-                                                "parameters": {
-                                                    "resourceName": { "type": "String" },
-                                                    "resourceType": { "type": "String" },
-                                                    "logAnalytics": { "type": "String" },
-                                                    "location": { "type": "String" },
-                                                    "profileName": { "type": "String" },
-                                                    "metricsEnabled": { "type": "String" },
-                                                    "logsEnabled": { "type": "String" }
-                                                },
-                                                "variables": {},
-                                                "resources": [
-                                                    {
-                                                        "condition": "[[startsWith(parameters('resourceType'),'Microsoft.DBforPostgreSQL/flexibleServers')]]",
-                                                        "type": "Microsoft.DBforPostgreSQL/flexibleServers/providers/diagnosticSettings",
-                                                        "apiVersion": "2021-05-01-preview",
-                                                        "name": "[[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]]",
-                                                        "location": "[[parameters('location')]]",
-                                                        "dependsOn": [],
-                                                        "properties": {
-                                                            "workspaceId": "[[parameters('logAnalytics')]]",
-                                                            "metrics": [
-                                                                {
-                                                                    "category": "AllMetrics",
-                                                                    "enabled": "[[parameters('metricsEnabled')]]",
-                                                                    "retentionPolicy": {
-                                                                        "days": 0,
-                                                                        "enabled": false
-                                                                    },
-                                                                    "timeGrain": null
-                                                                }
-                                                            ],
-                                                            "logs": [
-                                                                {
-                                                                    "categoryGroup": "allLogs",
-                                                                    "enabled": "[[parameters('logsEnabled')]]",
-                                                                    "retentionPolicy": {
-                                                                        "days": 0,
-                                                                        "enabled": false
-                                                                    }
-                                                                }
-                                                            ]
-                                                        }
-                                                    },
-                                                    {
-                                                        "condition": "[[startsWith(parameters('resourceType'),'Microsoft.DBforPostgreSQL/servers')]]",
-                                                        "type": "Microsoft.DBforPostgreSQL/servers/providers/diagnosticSettings",
-                                                        "apiVersion": "2021-05-01-preview",
-                                                        "name": "[[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]]",
-                                                        "location": "[[parameters('location')]]",
-                                                        "dependsOn": [],
-                                                        "properties": {
-                                                            "workspaceId": "[[parameters('logAnalytics')]]",
-                                                            "metrics": [
-                                                                {
-                                                                    "category": "AllMetrics",
-                                                                    "enabled": "[[parameters('metricsEnabled')]]",
-                                                                    "retentionPolicy": {
-                                                                        "days": 0,
-                                                                        "enabled": false
-                                                                    },
-                                                                    "timeGrain": null
-                                                                }
-                                                            ],
-                                                            "logs": [
-                                                                {
-                                                                    "categoryGroup": "allLogs",
-                                                                    "enabled": "[[parameters('logsEnabled')]]",
-                                                                    "retentionPolicy": {
-                                                                        "days": 0,
-                                                                        "enabled": false
-                                                                    }
-                                                                }
-                                                            ]
-                                                        }
-                                                    }
-                                                ],
-                                                "outputs": {}
-                                            },
-                                            "parameters": {
-                                                "logAnalytics": { "value": "[[parameters('logAnalytics')]]" },
-                                                "location": { "value": "[[field('location')]]" },
-                                                "resourceName": { "value": "[[field('name')]]" },
-                                                "resourceType": { "value": "[[field('type')]]" },
-                                                "profileName": { "value": "[[parameters('profileName')]]" },
-                                                "metricsEnabled": { "value": "[[parameters('metricsEnabled')]]" },
-                                                "logsEnabled": { "value": "[[parameters('logsEnabled')]]" }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "name": "Dine-PostgreSql-Server-Flexible-LogAnalytics"
                 }
             ]
         }
@@ -433,27 +446,27 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "postgreSqlFlexibleCustomerManagedKeys": {
+                    "postgreSqlPublicNetworkAccess": {
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "postgreSqlServerPublicNetworkAccess": {
+                    "postgreSqlSsl": {
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "postgreSqlServerSsl": {
-                        "type": "string",
-                        "defaultValue": "Deny"
-                    },
-                    "postgreSqlServerTlsMinimumVersion": {
-                        "type": "string",
-                        "defaultValue": "Deny"
-                    },
-                    "postgreSqlServerAdvThreatProtection": {
+                    "postgreSqlAdvThreatProtection": {
                         "type": "string",
                         "defaultValue": "DeployIfNotExists"
                     },
-                    "postgreSqlServerInfrastuctureEncryption": {
+                    "postgreDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "postgreLogAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "postgreSqlServerTlsMinimumVersion": {
                         "type": "string",
                         "defaultValue": "Deny"
                     },
@@ -461,39 +474,54 @@
                         "type": "string",
                         "defaultValue": "DeployIfNotExists"
                     },
-                    "postgreSqlServerAndFlexibleLogAnalytics": {
+                    "postgreSqlServerInfrastuctureEncryption": {
                         "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "defaultValue": "Deny"
                     }
                 },
                 "policyDefinitions": [
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/db048e65-913c-49f9-bb5f-1084184671d3",
-                        "policyDefinitionReferenceId": "Dine-PostgreSql-Server-Adv-Threat-Protection",
+                        "policyDefinitionReferenceId": "Dine-PostgreSql-Adv-Threat-Protection",
                         "groupNames": [
                             "Logging",
                             "Encryption"
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('postgreSqlServerAdvThreatProtection')]"
+                                "value": "[[parameters('postgreSqlAdvThreatProtection')]"
                             }
                         }
                     },
                     {
                         "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
-                        "policyDefinitionReferenceId": "Deny-Server-PostgreSql-Ssl",
+                        "policyDefinitionReferenceId": "Deny-PostgreSql-Ssl",
                         "groupNames": [
                             "Network"
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('postgreSqlServerSsl')]"
+                                "value": "[[parameters('postgreSqlSsl')]"
                             }
                         }
                     },
                     {
                         "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[1].name)]",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Postgre",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('postgreDiagnostics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('postgreLogAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[2].name)]",
                         "policyDefinitionReferenceId": "Deny-PostgreSql-Server-Tls-Minimum-Version",
                         "groupNames": [
                             "Network"
@@ -505,38 +533,14 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[2].name)]",
-                        "policyDefinitionReferenceId": "Deny-PostgreSql-Flexible-Server-Customer-Managed-Keys",
-                        "groupNames": [
-                            "Encryption"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('postgreSqlFlexibleCustomerManagedKeys')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[3].name)]",
-                        "policyDefinitionReferenceId": "Deny-PostgreSql-Server-Flexible-Server-LogAnalytics",
-                        "groupNames": [
-                            "Encryption"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('postgreSqlServerAndFlexibleLogAnalytics')]"
-                            }
-                        }
-                    },
-                    {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b52376f7-9612-48a1-81cd-1ffe4b61032c",
-                        "policyDefinitionReferenceId": "Deny-PostgreSql-Server-Public-Network-Access",
+                        "policyDefinitionReferenceId": "Deny-PostgreSql-Public-Network-Access",
                         "groupNames": [
                             "Network"
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('postgreSqlServerPublicNetworkAccess')]"
+                                "value": "[[parameters('postgreSqlPublicNetworkAccess')]"
                             }
                         }
                     },
@@ -549,6 +553,18 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('postgreSqlFlexiblePublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[3].name)]",
+                        "policyDefinitionReferenceId": "Deny-PostgreSql-Flexible-Server-Customer-Managed-Keys",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('postgreSqlFlexibleCustomerManagedKeys')]"
                             }
                         }
                     },
