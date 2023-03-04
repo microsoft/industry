@@ -338,7 +338,7 @@
                                                         "allOf": [
                                                             {
                                                                 "exists": "false",
-                                                                "field": "Microsoft.Network/virtualNetworks/subnets[*].networkSecurityGroup.id"
+                                                                "field": "Microsoft.Network/virtualNetworks/subnets[*].serviceEndpoints.id"
                                                             },
                                                             {
                                                                 "count": {
