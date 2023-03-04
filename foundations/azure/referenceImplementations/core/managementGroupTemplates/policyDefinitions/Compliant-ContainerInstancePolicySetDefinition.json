@@ -4,15 +4,13 @@
     "parameters": {
         "topLevelManagementGroupPrefix": {
             "type": "string",
-            "defaultValue": "FSIDemo"
+            "defaultValue": ""
         }
     },
     "variables": {
         "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
-        // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
         "policies": {
-            "policyDefinitions": [
-            ]
+            "policyDefinitions": []
         }
     },
     "resources": [
@@ -84,7 +82,7 @@
                         "defaultValue": "Deny"
                     }
                 },
-                "policyDefinitions": [                   
+                "policyDefinitions": [
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/8af8f826-edcb-4178-b35f-851ea6fea615",
                         "policyDefinitionReferenceId": "Deny-ContainerInstance-Vnet",
