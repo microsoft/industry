@@ -306,20 +306,56 @@
                         },
                         "policyRule": {
                             "if": {
-                                "allOf": [
+                                "anyOf": [
                                     {
-                                        "field": "type",
-                                        "equals": "Microsoft.Network/virtualNetworks/subnets"
+                                        "allOf": [
+                                            {
+                                                "equals": "Microsoft.Network/virtualNetworks/subnets",
+                                                "field": "type"
+                                            },
+                                            {
+                                                "count": {
+                                                    "field": "Microsoft.Network/virtualNetworks/subnets/serviceEndpoints[*]",
+                                                    "where": {
+                                                        "field": "Microsoft.Network/virtualNetworks/subnets/serviceEndpoints[*].service",
+                                                        "exists": true
+                                                    }
+                                                },
+                                                "greater": 0
+                                            }
+                                        ]
                                     },
                                     {
-                                        "count": {
-                                            "field": "Microsoft.Network/virtualNetworks/subnets/serviceEndpoints[*]",
-                                            "where": {
-                                                "field": "Microsoft.Network/virtualNetworks/subnets/serviceEndpoints[*].service",
-                                                "exists": true
+                                        "allOf": [
+                                            {
+                                                "equals": "Microsoft.Network/virtualNetworks",
+                                                "field": "type"
+                                            },
+                                            {
+                                                "count": {
+                                                    "field": "Microsoft.Network/virtualNetworks/subnets[*]",
+                                                    "where": {
+                                                        "allOf": [
+                                                            {
+                                                                "exists": "false",
+                                                                "field": "Microsoft.Network/virtualNetworks/subnets[*].networkSecurityGroup.id"
+                                                            },
+                                                            {
+                                                                "count": {
+                                                                    "field": "Microsoft.Network/virtualNetworks/subnets/serviceEndpoints[*]",
+                                                                    "where": {
+                                                                        "field": "Microsoft.Network/virtualNetworks/subnets/serviceEndpoints[*].service",
+                                                                        "exists": true
+                                                                    }
+                                                                },
+                                                                "greater": 0
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                "notEquals": 0
                                             }
-                                        },
-                                        "greater": 0
+                                        ]
                                     }
                                 ]
                             },
