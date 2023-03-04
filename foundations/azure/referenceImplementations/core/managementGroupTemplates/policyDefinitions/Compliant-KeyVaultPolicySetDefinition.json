@@ -4,7 +4,7 @@
     "parameters": {
         "topLevelManagementGroupPrefix": {
             "type": "string",
-            "defaultValue": "FSIDemo"
+            "defaultValue": "chase"
         }
     },
     "variables": {
@@ -173,7 +173,7 @@
                     },
                     "keysExpirationInDays": {
                         "type": "integer",
-                        "defaultValue": 90
+                        "defaultValue": 30
                     },
                     "keysActive": {
                         "type": "string",
@@ -193,7 +193,7 @@
                     },
                     "secretsMoreInDays": {
                         "type": "integer",
-                        "defaultValue": 10
+                        "defaultValue": 30
                     },
                     "secretsMaxValiditity": {
                         "type": "string",
@@ -257,22 +257,7 @@
                                 "value": "[[parameters('secretsActiveInDays')]"
                             }
                         }
-                    },                                                            
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b0eb591a-5e70-4534-a8bf-04b9c489584a",
-                        "policyDefinitionReferenceId": "Deny-KV-Secret-MaxDays",
-                        "groupNames": [
-                            "Encryption"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('secretsMaxValiditity')]"
-                            },
-                            "minimumDaysBeforeExpiration": {
-                                "value": "[[parameters('secretsMaxValidityInDays')]"
-                            }
-                        }
-                    },                                        
+                    },                                                                                
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b0eb591a-5e70-4534-a8bf-04b9c489584a",
                         "policyDefinitionReferenceId": "Deny-KV-Secret-MinDays",
