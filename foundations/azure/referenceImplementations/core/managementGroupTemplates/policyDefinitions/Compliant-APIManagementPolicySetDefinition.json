@@ -87,57 +87,6 @@
                 },
                 {
                     "properties": {
-                        "displayName": "API Management services should disable public network access",
-                        "mode": "Indexed",
-                        "description": "Azure API Management should disable public network access which provides enhanced security, isolation and allows you to prohibit public network traffic. The API service then only allows connections via the network connected via vnet injection or private endpoints.",
-                        "metadata": {
-                            "version": "1.0.1",
-                            "category": "API Management"
-                        },
-                        "parameters": {
-                            "effect": {
-                                "type": "String",
-                                "metadata": {
-                                    "displayName": "Effect",
-                                    "description": "Enable or disable the execution of the policy"
-                                },
-                                "allowedValues": [
-                                    "Audit",
-                                    "Disabled"
-                                ],
-                                "defaultValue": "Audit"
-                            }
-                        },
-                        "policyRule": {
-                            "if": {
-                                "allOf": [
-                                    {
-                                        "field": "type",
-                                        "equals": "Microsoft.ApiManagement/service"
-                                    },
-                                    {
-                                        "anyOf": [
-                                            {
-                                                "field": "Microsoft.ApiManagement/service/publicNetworkAccess",
-                                                "exists": "false"
-                                            },
-                                            {
-                                                "field": "Microsoft.ApiManagement/service/publicNetworkAccess",
-                                                "notEquals": "Disabled"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            "then": {
-                                "effect": "[[parameters('effect')]"
-                            }
-                        }
-                    },
-                    "name": "Deny-APIM-PublicNetworkAccess"
-                },
-                {
-                    "properties": {
                         "displayName": "API Management should restrict virtual network type",
                         "mode": "Indexed",
                         "description": "Azure API Management should use internal virtual network type for enhanced security, isolation and prohibiting public network traffic. The API service then only allows connections via the connected network.",
@@ -397,18 +346,6 @@
                     },
                     {
                         "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[1].name)]",
-                        "policyDefinitionReferenceId": "Deny-APIM-PublicNetworkAccess",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('apimPublicNetworkAccess')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[2].name)]",
                         "policyDefinitionReferenceId": "Deny-APIM-VirtualNetworkType",
                         "groupNames": [
                             "Network"
