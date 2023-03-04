@@ -2257,7 +2257,11 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').asbPolicyInitiative]"
                 },
-                "parameters": {}
+                "parameters": {
+                    "autoProvisioningOfTheLogAnalyticsAgentShouldBeEnabledOnYourSubscriptionMonitoringEffect": {
+                        "value": "Disabled"
+                    }
+                }
             }
         },
         {
