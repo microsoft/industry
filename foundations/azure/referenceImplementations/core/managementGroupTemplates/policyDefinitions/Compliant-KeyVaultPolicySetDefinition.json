@@ -169,7 +169,7 @@
                     },
                     "keysExpiration": {
                         "type": "string",
-                        "defaultValue": "Deny"
+                        "defaultValue": "Disabled"
                     },
                     "keysExpirationInDays": {
                         "type": "integer",
@@ -177,7 +177,7 @@
                     },
                     "keysActive": {
                         "type": "string",
-                        "defaultValue": "Deny"
+                        "defaultValue": "Disabled"
                     },
                     "keysActiveInDays": {
                         "type": "integer",
@@ -189,19 +189,11 @@
                     },
                     "secretsExpiration": {
                         "type": "string",
-                        "defaultValue": "Deny"
+                        "defaultValue": "Disabled"
                     },
                     "secretsMoreInDays": {
                         "type": "integer",
                         "defaultValue": 30
-                    },
-                    "secretsMaxValiditity": {
-                        "type": "string",
-                        "defaultValue": "Deny"
-                    },
-                    "secretsMaxValidityInDays": {
-                        "type": "integer",
-                        "defaultValue": 90
                     },
                     "secretsActiveInDays": {
                         "type": "integer",
@@ -209,7 +201,7 @@
                     },
                     "secretsActive": {
                         "type": "string",
-                        "defaultValue": "Deny"
+                        "defaultValue": "Disabled"
                     },
                     "hsmDiagnostics": {
                         "type": "string",
