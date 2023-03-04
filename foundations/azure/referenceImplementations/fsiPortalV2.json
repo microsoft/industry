@@ -2140,7 +2140,7 @@
                         {
                             "name": "esDedicatedOutboundSub",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Use s dedicated subscription for Internet egress",
+                            "label": "Use a dedicated subscription for Internet egress",
                             "defaultValue": "No",
                             "visible": "[or(equals(steps('esConnectivityGoalState').esHub, 'vhub'), equals(steps('esConnectivityGoalState').esHub, 'vwan'))]",
                             "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, you can optionally add dedicated subscription for ingess and egress",
@@ -2210,7 +2210,7 @@
                         {
                             "name": "esAddressFwEgress",
                             "type": "Microsoft.Common.TextBox",
-                            "label": "Subnet for Azure Firewall for ingress",
+                            "label": "Subnet for Azure Firewall for egress",
                             "toolTip": "Provide address prefix in CIDR notation (e.g 10.210.0.0/24)",
                             "defaultValue": "10.210.0.0/24",
                             "visible": "[and(equals(steps('esConnectivityGoalState').esAzFwEgress, 'Yes'), equals(steps('esConnectivityGoalState').esDedicatedOutboundSub, 'Yes'))]",

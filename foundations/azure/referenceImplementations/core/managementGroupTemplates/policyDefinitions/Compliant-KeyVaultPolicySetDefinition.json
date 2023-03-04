@@ -4,7 +4,7 @@
     "parameters": {
         "topLevelManagementGroupPrefix": {
             "type": "string",
-            "defaultValue": "FSIDemo"
+            "defaultValue": ""
         }
     },
     "variables": {
@@ -169,15 +169,15 @@
                     },
                     "keysExpiration": {
                         "type": "string",
-                        "defaultValue": "Deny"
+                        "defaultValue": "Disabled"
                     },
                     "keysExpirationInDays": {
                         "type": "integer",
-                        "defaultValue": 90
+                        "defaultValue": 30
                     },
                     "keysActive": {
                         "type": "string",
-                        "defaultValue": "Deny"
+                        "defaultValue": "Disabled"
                     },
                     "keysActiveInDays": {
                         "type": "integer",
@@ -189,19 +189,11 @@
                     },
                     "secretsExpiration": {
                         "type": "string",
-                        "defaultValue": "Deny"
+                        "defaultValue": "Disabled"
                     },
                     "secretsMoreInDays": {
                         "type": "integer",
-                        "defaultValue": 10
-                    },
-                    "secretsMaxValiditity": {
-                        "type": "string",
-                        "defaultValue": "Deny"
-                    },
-                    "secretsMaxValidityInDays": {
-                        "type": "integer",
-                        "defaultValue": 90
+                        "defaultValue": 30
                     },
                     "secretsActiveInDays": {
                         "type": "integer",
@@ -209,7 +201,7 @@
                     },
                     "secretsActive": {
                         "type": "string",
-                        "defaultValue": "Deny"
+                        "defaultValue": "Disabled"
                     },
                     "hsmDiagnostics": {
                         "type": "string",
@@ -257,22 +249,7 @@
                                 "value": "[[parameters('secretsActiveInDays')]"
                             }
                         }
-                    },                                                            
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b0eb591a-5e70-4534-a8bf-04b9c489584a",
-                        "policyDefinitionReferenceId": "Deny-KV-Secret-MaxDays",
-                        "groupNames": [
-                            "Encryption"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('secretsMaxValiditity')]"
-                            },
-                            "minimumDaysBeforeExpiration": {
-                                "value": "[[parameters('secretsMaxValidityInDays')]"
-                            }
-                        }
-                    },                                        
+                    },                                                                                
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b0eb591a-5e70-4534-a8bf-04b9c489584a",
                         "policyDefinitionReferenceId": "Deny-KV-Secret-MinDays",

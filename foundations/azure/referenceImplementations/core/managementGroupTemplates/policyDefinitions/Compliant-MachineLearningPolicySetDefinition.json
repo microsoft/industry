@@ -4,12 +4,11 @@
     "parameters": {
         "topLevelManagementGroupPrefix": {
             "type": "string",
-            "defaultValue": "FSIDemo"
+            "defaultValue": ""
         }
     },
     "variables": {
         "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
-        // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
         "policies": {
             "policyDefinitions": [
                 {
@@ -18,44 +17,44 @@
                         "mode": "All",
                         "description": "Compute instances are non-compliant if the instance has an outdated operating system version. For more information, visit http://aka.ms/azureml-ci-updates/.",
                         "metadata": {
-                        "version": "1.0.0",
-                        "category": "Machine Learning"
+                            "version": "1.0.0",
+                            "category": "Machine Learning"
                         },
                         "parameters": {
-                        "effects": {
-                            "type": "String",
-                            "metadata": {
-                            "displayName": "Effect",
-                            "description": "The effect determines what happens when the policy rule is evaluated to match."
-                            },
-                            "allowedValues": [
-                            "Audit",
-                            "Deny",
-                            "Disabled"
-                            ],
-                            "defaultValue": "Audit"
-                        }
+                            "effects": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "The effect determines what happens when the policy rule is evaluated to match."
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Deny",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Audit"
+                            }
                         },
                         "policyRule": {
-                        "if": {
-                            "allOf": [
-                            {
-                                "field": "type",
-                                "equals": "Microsoft.MachineLearningServices/workspaces/computes"
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.MachineLearningServices/workspaces/computes"
+                                    },
+                                    {
+                                        "field": "Microsoft.MachineLearningServices/workspaces/computes/computeType",
+                                        "equals": "ComputeInstance"
+                                    },
+                                    {
+                                        "field": "Microsoft.MachineLearningServices/workspaces/computes/osImageMetadata.isLatestOsImageVersion",
+                                        "equals": "false"
+                                    }
+                                ]
                             },
-                            {
-                                "field": "Microsoft.MachineLearningServices/workspaces/computes/computeType",
-                                "equals": "ComputeInstance"
-                            },
-                            {
-                                "field": "Microsoft.MachineLearningServices/workspaces/computes/osImageMetadata.isLatestOsImageVersion",
-                                "equals": "false"
+                            "then": {
+                                "effect": "[[parameters('effects')]"
                             }
-                            ]
-                        },
-                        "then": {
-                            "effect": "[[parameters('effects')]"
-                        }
                         }
                     },
                     "name": "Deny-ML-Outdated-OS"
@@ -164,7 +163,7 @@
                         "defaultValue": "allLogs"
                     }
                 },
-                "policyDefinitions": [                   
+                "policyDefinitions": [
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/90c90eda-bfe7-4c67-bf26-410420ed1047",
                         "policyDefinitionReferenceId": "Dine-Diagnostics-Ml",
@@ -194,7 +193,7 @@
                                 "value": "[[parameters('mlCmk')]"
                             }
                         }
-                    },                    
+                    },
                     {
                         "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
                         "policyDefinitionReferenceId": "Deny-ML-Outdated-Os",
@@ -206,7 +205,7 @@
                                 "value": "[[parameters('mlOutdatedOS')]"
                             }
                         }
-                    },                    
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e96a9a5f-07ca-471b-9bc5-6a0f33cbd68f",
                         "policyDefinitionReferenceId": "Deny-ML-Local-Auth",
@@ -266,7 +265,7 @@
                                 "value": "[[parameters('mlPublicNetworkAccess')]"
                             }
                         }
-                    }                    
+                    }
                 ]
             }
         }
