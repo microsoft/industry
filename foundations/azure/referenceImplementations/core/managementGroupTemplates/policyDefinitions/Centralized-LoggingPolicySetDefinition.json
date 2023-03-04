@@ -1,0 +1,914 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "defaultValue": "chase"
+        }
+    },
+    "variables": {
+        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policyDefinitions/')]",
+        "policies": {
+            "policyDefinitions": []
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
+            "apiVersion": "2019-09-01",
+            "copy": {
+                "name": "policyDefinitionCopy",
+                "count": "[length(variables('policies').policyDefinitions)]"
+            },
+            "properties": {
+                "displayName": "[variables('policies').policyDefinitions[copyIndex()].properties.displayName]",
+                "description": "[variables('policies').policyDefinitions[copyIndex()].properties.description]",
+                "mode": "[variables('policies').policyDefinitions[copyIndex()].properties.mode]",
+                "policyType": "Custom",
+                "parameters": "[variables('policies').policyDefinitions[copyIndex()].properties.parameters]",
+                "policyRule": "[variables('policies').policyDefinitions[copyIndex()].properties.policyRule]",
+                "metadata": "[variables('policies').policyDefinitions[copyIndex()].properties.metadata]"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2021-06-01",
+            "name": "Centralized-Logging",
+            "dependsOn": [
+                "policyDefinitionCopy"
+            ],
+            "properties": {
+                "metadata": {
+                    "version": "1.0.0",
+                    "category": "Monitoring"
+                },
+                "displayName": "Enforce centralized logging for Financial Services Industry",
+                "description": "This policy initiative is a group of policies that ensures centralized logging is enabled and compliant per FSI Landing Zones",
+                "policyDefinitionGroups": [
+                    {
+                        "name": "Logging",
+                        "category": "Logging and Threat Detection",
+                        "displayName": "Ensure centralized logging to Log Analytics",
+                        "description": "Policy to ensure logging is enforced to centralized Log Analytics workspace"
+                    }
+                ],
+                "parameters": {
+                    "logAnalyticsWorkspaceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "enableLogAnalytics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists",
+                        "allowedValues": [
+                            "Disabled",
+                            "DeployIfNotExists"
+                        ]
+                    },
+                    "logCategories": {
+                        "type": "string",
+                        "defaultValue": "allLogs"
+                    }
+                },
+                "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ed6ae75a-828f-4fea-88fd-dead1145f1dd",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-VnetGw",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/93a604fe-0ec2-4a99-ab8c-7ef08f05555a",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-SignalR",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/8fc4ca5f-6abc-4b30-9565-0bd91ac49420",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-ManagedSqlInstance",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/4cabf9fc-4ed1-4990-bbaf-7248fb8751bc",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Purview",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/69214fad-6742-49a9-8f71-ee9d269364ab",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Media",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/818719e5-1338-4776-9a9d-3c31e4df5986",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-LogAnalytics",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/614d9fbd-68cd-4832-96db-3362069661b2",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-IoTHub",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/441af8bf-7c88-4efc-bd24-b7be28d4acce",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-EventHubNamespace",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/46b2dd5d-3936-4347-8908-b298ea4466d3",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-EventGridTopic",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/3496f6fd-57ba-485c-8a14-183c4493b781",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-EventGridPartner",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b90ec596-faa6-4c61-9515-34085703e260",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-EventGridDomain",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/56288eb2-4350-461d-9ece-2bb242269dce",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-ContainerReg",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/55d1f543-d1b0-4811-9663-d6d0dbc6326d",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Cognitive",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/f8352124-56fa-4f94-9441-425109cdc14b",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Bastion",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/aec4c33f-2f2a-4fd3-91cd-24a939513c60",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Redis",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b797045a-b3cd-46e4-adc4-bbadb3381d78",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Automation",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/856331d3-0169-4dd9-9b04-cbb2ad3d1cf2",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Attestation",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/4b05de63-3ad2-4f6d-b421-da21f1328f3b",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-AppConfig",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/69ab8bfc-dc5b-443d-93a7-7531551dec66",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Avs",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/567c93f7-3661-494f-a30f-0a94d9bfebf8",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Apim",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/f59276f0-5740-4aaf-821d-45d185aa210e",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Ml",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/d56a5a7c-72d7-42bc-8ceb-3baf4c0eae03",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-DataLake",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c84e5349-db6d-4769-805e-e14037dab9b5",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Batch",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c717fb0c-d118-4c43-ab3d-ece30ac81fb3",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-RecoveryServices",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b889a06c-ec72-4b03-910a-cb169ee18721",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-LogicApp",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b79fa14e-238a-4c2d-b376-442ce508fc84",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-SqlDb",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b4fe1a3b-0715-4c6c-a5ea-ffc33cf823cb",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Blob",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b3884c81-31aa-473d-a9bb-9466fe0ec2a0",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-KvHsm",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/98a2e215-5382-489e-bd29-32e7190a39ba",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Nsg",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/951af2fa-529b-416e-ab6e-066fd85ac459",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Kv",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/7ea8a143-05e3-4553-abfe-f56bef8b0b70",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Sql",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalyticsWorkspaceId": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/6c66c325-74c8-42fd-a286-a74b0e2939d8",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Aks",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/7bd000e3-37c7-4928-9f31-86c4b77c5c45",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Queue",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/59759c62-9a22-4cdf-ae64-074495983fef",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Storage",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/2fb86bf3-d221-43d1-96d1-2434af34eaa0",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Table",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/25a70cc8-2bd4-47f1-90b6-1478e4662c96",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-File",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/25763a0a-5783-4f14-969e-79d4933eb74b",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-DlGen1",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/237e0f7e-b0e8-4ec4-ad46-8c12cb66d673",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-StreamAnalytics",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/23057b42-ca8d-4aa0-a3dc-96a98b5b5a3d",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Databricks",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/1f6e93e8-6b31-41b1-83f6-36e449a42579",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Eh",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/08ba64b8-738f-4918-9686-730d2ed79c7d",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Search",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/04d53d87-841c-4f23-8a5b-21564380b55e",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Sb",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/6201aeb7-2b5c-4671-8ab4-5d3ba4d77f3b",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-FdCdn",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/1513498c-3091-461a-b321-e9b433218d28",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Pip",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/cac9e1c5-c3cb-47fa-8d4c-88b8559262d2",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Gw",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/cac9e1c5-c3cb-47fa-8d4c-88b8559262d2",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-P2S",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "categoryGroup": {
+                                "value": "[[parameters('logCategories')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), 'Dine-Diagnostics-ExpressRouteCircuit')]",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Er",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), 'Dine-Diagnostics-Vnet')]",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Vnet",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), 'Dine-Diagnostics-TrafficManager')]",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Tm",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), 'Dine-Diagnostics-LoadBalancer')]",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Lb",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), 'Dine-Diagnostics-FrontDoor')]",
+                        "policyDefinitionReferenceId": "Dine-Diagnostics-Fd",
+                        "groupNames": [
+                            "Logging"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('enableLogAnalytics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
