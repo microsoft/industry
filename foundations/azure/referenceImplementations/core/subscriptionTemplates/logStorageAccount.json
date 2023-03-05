@@ -71,6 +71,24 @@
                             }
                         },
                         {
+                            "type": "Microsoft.Storage/storageAccounts/providers/diagnosticSettings",
+                            "apiVersion": "2021-05-01-preview",
+                            "name": "[concat(parameters('storageAccountName'), '/Microsoft.Insights/', 'storageAccountsDiagnosticsLogsToWorkspace')]",
+                            "location": "[parameters('storageLocation')]",
+                            "dependsOn": [
+                                "[concat(subscription().id, '/resourceGroups/', parameters('mgmtStorageRgName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
+                            ],
+                            "properties": {
+                                "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
+                                "metrics": [
+                                    {
+                                        "category": "AllMetrics",
+                                        "enabled": true
+                                    }
+                                ]
+                            }
+                        },
+                        {
                             "type": "Microsoft.Storage/storageAccounts/blobServices/providers/diagnosticSettings",
                             "apiVersion": "2021-05-01-preview",
                             "name": "[concat(parameters('storageAccountName'), '/default/', 'Microsoft.Insights/', 'blobServicesDiagnosticsLogsToWorkspace')]",
@@ -82,18 +100,21 @@
                                 "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
                                 "metrics": [
                                     {
-                                        "category": "Transaction",
-                                        "enabled": true,
-                                        "retentionPolicy": {
-                                            "days": 0,
-                                            "enabled": false
-                                        },
-                                        "timeGrain": null
+                                        "category": "AllMetrics",
+                                        "enabled": true
                                     }
                                 ],
                                 "logs": [
                                     {
-                                        "categoryGroup": "allLogs",
+                                        "category": "StorageRead",
+                                        "enabled": true
+                                    },
+                                    {
+                                        "category": "StorageWrite",
+                                        "enabled": true
+                                    },
+                                    {
+                                        "category": "StorageDelete",
                                         "enabled": true
                                     }
                                 ]
@@ -105,24 +126,27 @@
                             "name": "[concat(parameters('storageAccountName'), '/default/', 'Microsoft.Insights/', 'fileServicesDiagnosticsLogsToWorkspace')]",
                             "location": "[parameters('storageLocation')]",
                             "dependsOn": [
-                                "[concat(subscription().id, '/resourceGroups/', parameters('mgmtStorageRgName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"                                
+                                "[concat(subscription().id, '/resourceGroups/', parameters('mgmtStorageRgName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
                             ],
                             "properties": {
                                 "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
                                 "metrics": [
                                     {
-                                        "category": "Transaction",
-                                        "enabled": true,
-                                        "retentionPolicy": {
-                                            "days": 0,
-                                            "enabled": false
-                                        },
-                                        "timeGrain": null
+                                        "category": "AllMetrics",
+                                        "enabled": true
                                     }
                                 ],
                                 "logs": [
                                     {
-                                        "categoryGroup": "allLogs",
+                                        "category": "StorageRead",
+                                        "enabled": true
+                                    },
+                                    {
+                                        "category": "StorageWrite",
+                                        "enabled": true
+                                    },
+                                    {
+                                        "category": "StorageDelete",
                                         "enabled": true
                                     }
                                 ]
@@ -134,24 +158,27 @@
                             "name": "[concat(parameters('storageAccountName'), '/default/', 'Microsoft.Insights/', 'tableServicesDiagnosticsLogsToWorkspace')]",
                             "location": "[parameters('storageLocation')]",
                             "dependsOn": [
-                                "[concat(subscription().id, '/resourceGroups/', parameters('mgmtStorageRgName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"                                
+                                "[concat(subscription().id, '/resourceGroups/', parameters('mgmtStorageRgName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
                             ],
                             "properties": {
                                 "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
                                 "metrics": [
                                     {
-                                        "category": "Transaction",
-                                        "enabled": true,
-                                        "retentionPolicy": {
-                                            "days": 0,
-                                            "enabled": false
-                                        },
-                                        "timeGrain": null
+                                        "category": "AllMetrics",
+                                        "enabled": true
                                     }
                                 ],
                                 "logs": [
                                     {
-                                        "categoryGroup": "allLogs",
+                                        "category": "StorageRead",
+                                        "enabled": true
+                                    },
+                                    {
+                                        "category": "StorageWrite",
+                                        "enabled": true
+                                    },
+                                    {
+                                        "category": "StorageDelete",
                                         "enabled": true
                                     }
                                 ]
@@ -163,24 +190,27 @@
                             "name": "[concat(parameters('storageAccountName'), '/default/', 'Microsoft.Insights/', 'queueServicesDiagnosticsLogsToWorkspace')]",
                             "location": "[parameters('storageLocation')]",
                             "dependsOn": [
-                                "[concat(subscription().id, '/resourceGroups/', parameters('mgmtStorageRgName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"                                
+                                "[concat(subscription().id, '/resourceGroups/', parameters('mgmtStorageRgName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
                             ],
                             "properties": {
                                 "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
                                 "metrics": [
                                     {
-                                        "category": "Transaction",
-                                        "enabled": true,
-                                        "retentionPolicy": {
-                                            "days": 0,
-                                            "enabled": false
-                                        },
-                                        "timeGrain": null
+                                        "category": "AllMetrics",
+                                        "enabled": true
                                     }
                                 ],
                                 "logs": [
                                     {
-                                        "categoryGroup": "allLogs",
+                                        "category": "StorageRead",
+                                        "enabled": true
+                                    },
+                                    {
+                                        "category": "StorageWrite",
+                                        "enabled": true
+                                    },
+                                    {
+                                        "category": "StorageDelete",
                                         "enabled": true
                                     }
                                 ]
