@@ -306,7 +306,14 @@
                                     "Logging, Metrics, AzureServices"
                                 ],
                                 "defaultValue": [
-                                    "None"
+                                    "Logging",
+                                    "Metrics",
+                                    "AzureServices",
+                                    "Logging, Metrics",
+                                    "Logging, AzureServices",
+                                    "Metrics, AzureServices",
+                                    "Logging, Metrics, AzureServices",
+                                    "Logging, Metrics, AzureServices"
                                 ]
                             }
                         },
