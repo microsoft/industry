@@ -200,7 +200,8 @@
         "dnsResolverOutboundSubnetId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('rgName'),'/providers/Microsoft.Network/virtualNetworks/', variables('hubname'), '/subnets/DnsResolverOutboundSubnet')]",
         "nsgDnsResolverName": "[concat(parameters('topLevelManagementGroupPrefix'), '-nsg-dns-', parameters('location'))]",
         "nsgDnsResolverResourceId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('rgName'), '/providers/Microsoft.Network/networkSecurityGroups/', variables('nsgDnsResolverName'))]",
-        // Creating variable that later will be used in conjunction with the union() function to cater for conditional subnet creation while ensuring idempotency
+        "udrDnsResolverName": "[concat(parameters('topLevelManagementGroupPrefix'), '-udr-dns-', parameters('location'))]",
+        "udrDnsResolverResourceId": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', variables('rgName'), '/providers/Microsoft.Network/routeTables/', variables('udrDnsResolverName'))]",
         "gwSubnet": [
             {
                 "name": "GatewaySubnet",
@@ -224,6 +225,9 @@
                     "addressPrefix": "[parameters('subnetMaskForDnsResolverInbound')]",
                     "networkSecurityGroup": {
                         "id":  "[variables('nsgDnsResolverResourceId')]"
+                    },
+                    "routeTable": {
+                        "id": "[variables('udrDnsResolverResourceId')]"
                     }
                 }
             }
@@ -235,6 +239,9 @@
                     "addressPrefix": "[parameters('subnetMaskForDnsResolverOutbound')]",
                     "networkSecurityGroup": {
                         "id":  "[variables('nsgDnsResolverResourceId')]"
+                    },
+                    "routeTable": {
+                        "id": "[variables('udrDnsResolverResourceId')]"
                     }
                 }
             }
@@ -346,6 +353,17 @@
                                             }
                                         },
                                         {
+                                            "condition": "[not(empty(parameters('subnetMaskForDnsResolverInbound')))]",
+                                            "type": "Microsoft.Network/routeTables",
+                                            "apiVersion": "2020-11-01",
+                                            "name": "[variables('udrDnsResolverName')]",
+                                            "location": "[parameters('location')]",
+                                            "properties": {
+                                                "disableBgpRoutePropagation": false,
+                                                "routes": []
+                                            }
+                                        },
+                                        {
                                             "condition": "[and(not(empty(parameters('subnetMaskForDnsResolverInbound'))), not(empty(parameters('logAnalyticsWorkspaceId'))))]",
                                             "type": "Microsoft.Network/networkSecurityGroups/providers/diagnosticSettings",
                                             "apiVersion": "2021-05-01-preview",
@@ -370,7 +388,8 @@
                                             "apiVersion": "2022-01-01",
                                             "location": "[parameters('location')]",
                                             "dependsOn": [
-                                                "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsgDnsResolverName'))]"
+                                                "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsgDnsResolverName'))]",
+                                                "[concat('Microsoft.Network/routeTables/', variables('udrDnsResolverName'))]"
                                             ],
                                             "properties": {
                                                 "addressSpace": {
