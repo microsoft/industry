@@ -884,6 +884,7 @@
             "compliantSynapseAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Synapse', variables('deploymentSuffix')), 64)]",
             "compliantMachineLearningAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-MachineLearning', variables('deploymentSuffix')), 64)]",
             "compliantNetworkAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Network', variables('deploymentSuffix')), 64)]",
+            "compliantPlatformNetworkAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-PlatformNetwork', variables('deploymentSuffix')), 64)]",
             "compliantContainerAppsAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerApps', variables('deploymentSuffix')), 64)]",            
             "compliantContainerInstanceAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerInstance', variables('deploymentSuffix')), 64)]",            
             "compliantContainerRegistryAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerRegistry', variables('deploymentSuffix')), 64)]",            
@@ -1091,7 +1092,221 @@
         "roleDefinitions": {
             "networkContributor": "4d97b98b-1d4f-4787-a291-c67834d212e7",
             "contributor": "b24988ac-6180-42a0-ab88-20f7382dd24c"
-        }
+        },
+        "allowedResources": {
+            "automation": [
+                "Microsoft.Automation/automationAccounts",
+                "Microsoft.Automation/deletedAutomationAccounts",
+                "Microsoft.Automation/automationAccounts/runbooks",
+                "Microsoft.Automation/automationAccounts/configurations",
+                "Microsoft.Automation/automationAccounts/webhooks",
+                "Microsoft.Automation/operations",
+                "Microsoft.Automation/automationAccounts/softwareUpdateConfigurations",
+                "Microsoft.Automation/automationAccounts/softwareUpdateConfigurationRuns",
+                "Microsoft.Automation/automationAccounts/softwareUpdateConfigurationMachineRuns",
+                "Microsoft.Automation/automationAccounts/jobs",
+                "Microsoft.Automation/automationAccounts/privateLinkResources",
+                "Microsoft.Automation/automationAccounts/privateEndpointConnections",
+                "Microsoft.Automation/automationAccounts/privateEndpointConnectionProxies",
+                "Microsoft.Automation/automationAccounts/hybridRunbookWorkerGroups",
+                "Microsoft.Automation/automationAccounts/hybridRunbookWorkerGroups/hybridRunbookWorkers",
+                "Microsoft.Automation/automationAccounts/agentRegistrationInformation"
+
+            ],
+            "apiManagement": [
+                "Microsoft.ApiManagement/service",
+                "Microsoft.ApiManagement/deletedServices",
+                "Microsoft.ApiManagement/locations",
+                "Microsoft.ApiManagement/locations/deletedServices",
+                "Microsoft.ApiManagement/validateServiceNameAvailability",
+                "Microsoft.ApiManagement/checkServiceNameAvailability",
+                "Microsoft.ApiManagement/checkNameAvailability",
+                "Microsoft.ApiManagement/reportFeedback",
+                "Microsoft.ApiManagement/checkFeedbackRequired",
+                "Microsoft.ApiManagement/operations",
+                "Microsoft.ApiManagement/getDomainOwnershipIdentifier",
+                "Microsoft.ApiManagement/service/eventGridFilters"
+            ],
+            "appService": [
+                "Microsoft.Web/publishingUsers",
+                "Microsoft.Web/ishostnameavailable",
+                "Microsoft.Web/validate",
+                "Microsoft.Web/isusernameavailable",
+                "Microsoft.Web/generateGithubAccessTokenForAppserviceCLI",
+                "Microsoft.Web/sourceControls",
+                "Microsoft.Web/availableStacks",
+                "Microsoft.Web/webAppStacks",
+                "Microsoft.Web/locations/webAppStacks",
+                "Microsoft.Web/functionAppStacks",
+                "Microsoft.Web/locations/functionAppStacks",
+                "Microsoft.Web/staticSites",
+                "Microsoft.Web/locations/previewStaticSiteWorkflowFile",
+                "Microsoft.Web/staticSites/userProvidedFunctionApps",
+                "Microsoft.Web/staticSites/linkedBackends",
+                "Microsoft.Web/staticSites/builds/linkedBackends",
+                "Microsoft.Web/staticSites/databaseConnections",
+                "Microsoft.Web/staticSites/builds/databaseConnections",
+                "Microsoft.Web/staticSites/builds",
+                "Microsoft.Web/staticSites/builds/userProvidedFunctionApps",
+                "Microsoft.Web/listSitesAssignedToHostName",
+                "Microsoft.Web/locations/getNetworkPolicies",
+                "Microsoft.Web/locations/operations",
+                "Microsoft.Web/locations/operationResults",
+                "Microsoft.Web/sites/networkConfig",
+                "Microsoft.Web/sites/slots/networkConfig",
+                "Microsoft.Web/sites/hostNameBindings",
+                "Microsoft.Web/sites/slots/hostNameBindings",
+                "Microsoft.Web/operations",
+                "Microsoft.Web/certificates",
+                "Microsoft.Web/serverFarms",
+                "Microsoft.Web/sites",
+                "Microsoft.Web/sites/slots",
+                "Microsoft.Web/runtimes",
+                "Microsoft.Web/recommendations",
+                "Microsoft.Web/resourceHealthMetadata",
+                "Microsoft.Web/georegions",
+                "Microsoft.Web/sites/premieraddons",
+                "Microsoft.Web/hostingEnvironments",
+                "Microsoft.Web/hostingEnvironments/multiRolePools",
+                "Microsoft.Web/hostingEnvironments/workerPools",
+                "Microsoft.Web/kubeEnvironments",
+                "Microsoft.Web/deploymentLocations",
+                "Microsoft.Web/deletedSites",
+                "Microsoft.Web/locations/deletedSites",
+                "Microsoft.Web/ishostingenvironmentnameavailable",
+                "Microsoft.Web/locations/deleteVirtualNetworkOrSubnets",
+                "Microsoft.Web/locations/validateDeleteVirtualNetworkOrSubnets",
+                "Microsoft.Web/connections",
+                "Microsoft.Web/customApis",
+                "Microsoft.Web/locations",
+                "Microsoft.Web/locations/listWsdlInterfaces",
+                "Microsoft.Web/locations/extractApiDefinitionFromWsdl",
+                "Microsoft.Web/locations/managedApis",
+                "Microsoft.Web/locations/runtimes",
+                "Microsoft.Web/locations/apiOperations",
+                "Microsoft.Web/connectionGateways",
+                "Microsoft.Web/locations/connectionGatewayInstallations",
+                "Microsoft.Web/checkNameAvailability",
+                "Microsoft.Web/billingMeters",
+                "Microsoft.Web/verifyHostingEnvironmentVnet",
+                "Microsoft.Web/serverFarms/eventGridFilters",
+                "Microsoft.Web/sites/eventGridFilters",
+                "Microsoft.Web/sites/slots/eventGridFilters",
+                "Microsoft.Web/hostingEnvironments/eventGridFilters",
+                "Microsoft.Web/serverFarms/firstPartyApps",
+                "Microsoft.Web/serverFarms/firstPartyApps/keyVaultSettings",
+                "Microsoft.Web/workerApps",
+                "Microsoft.Web/containerApps",
+                "Microsoft.Web/customhostnameSites"
+            ],
+            "backup": [
+                "Microsoft.RecoveryServices/vaults",
+                "Microsoft.RecoveryServices/operations",
+                "Microsoft.RecoveryServices/locations",
+                "Microsoft.RecoveryServices/locations/backupStatus",
+                "Microsoft.RecoveryServices/locations/checkNameAvailability",
+                "Microsoft.RecoveryServices/locations/allocatedStamp",
+                "Microsoft.RecoveryServices/locations/allocateStamp",
+                "Microsoft.RecoveryServices/locations/backupValidateFeatures",
+                "Microsoft.RecoveryServices/locations/backupPreValidateProtection",
+                "Microsoft.RecoveryServices/locations/backupCrrJobs",
+                "Microsoft.RecoveryServices/locations/backupCrrJob",
+                "Microsoft.RecoveryServices/locations/backupAadProperties",
+                "Microsoft.RecoveryServices/locations/backupCrossRegionRestore",
+                "Microsoft.RecoveryServices/locations/backupCrrOperationResults",
+                "Microsoft.RecoveryServices/locations/backupCrrOperationsStatus",
+                "Microsoft.RecoveryServices/backupProtectedItems",
+                "Microsoft.RecoveryServices/replicationEligibilityResults",
+                "Microsoft.RecoveryServices/locations/capabilities"
+            ],
+            "containerApps": [
+                "Microsoft.App/managedEnvironments",
+                "Microsoft.App/managedEnvironments/certificates",
+                "Microsoft.App/managedEnvironments/managedCertificates",
+                "Microsoft.App/containerApps",
+                "Microsoft.App/jobs",
+                "Microsoft.App/locations",
+                "Microsoft.App/locations/managedEnvironmentOperationResults",
+                "Microsoft.App/locations/managedEnvironmentOperationStatuses",
+                "Microsoft.App/locations/containerappOperationResults",
+                "Microsoft.App/locations/containerappOperationStatuses",
+                "Microsoft.App/operations",
+                "Microsoft.App/connectedEnvironments",
+                "Microsoft.App/connectedEnvironments/certificates",
+                "Microsoft.App/locations/connectedEnvironmentOperationResults",
+                "Microsoft.App/locations/connectedEnvironmentOperationStatuses",
+                "Microsoft.App/locations/billingMeters",
+                "Microsoft.App/locations/availableManagedEnvironmentsWorkloadProfileTypes"
+            ],
+            "containerinstance": [
+                "Microsoft.ContainerInstance/containerGroups",
+                "Microsoft.ContainerInstance/serviceAssociationLinks",
+                "Microsoft.ContainerInstance/locations",
+                "Microsoft.ContainerInstance/locations/capabilities",
+                "Microsoft.ContainerInstance/locations/usages",
+                "Microsoft.ContainerInstance/locations/operations",
+                "Microsoft.ContainerInstance/locations/operationresults",
+                "Microsoft.ContainerInstance/operations",
+                "Microsoft.ContainerInstance/locations/cachedImages",
+                "Microsoft.ContainerInstance/locations/validateDeleteVirtualNetworkOrSubnets",
+                "Microsoft.ContainerInstance/locations/deleteVirtualNetworkOrSubnets"
+            ],
+            "containerRegistry": [
+                "Microsoft.ContainerRegistry/registries",
+                "Microsoft.ContainerRegistry/registries/cacheRules",
+                "Microsoft.ContainerRegistry/registries/credentialSets",
+                "Microsoft.ContainerRegistry/registries/connectedRegistries",
+                "Microsoft.ContainerRegistry/registries/connectedRegistries/deactivate",
+                "Microsoft.ContainerRegistry/registries/scopeMaps",
+                "Microsoft.ContainerRegistry/registries/tokens",
+                "Microsoft.ContainerRegistry/registries/generateCredentials",
+                "Microsoft.ContainerRegistry/registries/privateEndpointConnections",
+                "Microsoft.ContainerRegistry/registries/privateEndpointConnectionProxies",
+                "Microsoft.ContainerRegistry/registries/privateEndpointConnectionProxies/validate",
+                "Microsoft.ContainerRegistry/registries/privateLinkResources",
+                "Microsoft.ContainerRegistry/registries/importImage",
+                "Microsoft.ContainerRegistry/registries/exportPipelines",
+                "Microsoft.ContainerRegistry/registries/importPipelines",
+                "Microsoft.ContainerRegistry/registries/pipelineRuns",
+                "Microsoft.ContainerRegistry/registries/listBuildSourceUploadUrl",
+                "Microsoft.ContainerRegistry/registries/scheduleRun",
+                "Microsoft.ContainerRegistry/registries/runs",
+                "Microsoft.ContainerRegistry/registries/taskRuns",
+                "Microsoft.ContainerRegistry/registries/taskRuns/listDetails",
+                "Microsoft.ContainerRegistry/registries/agentPools",
+                "Microsoft.ContainerRegistry/registries/agentPoolsOperationResults",
+                "Microsoft.ContainerRegistry/registries/agentPools/listQueueStatus",
+                "Microsoft.ContainerRegistry/registries/runs/listLogSasUrl",
+                "Microsoft.ContainerRegistry/registries/runs/cancel",
+                "Microsoft.ContainerRegistry/registries/tasks",
+                "Microsoft.ContainerRegistry/registries/tasks/listDetails",
+                "Microsoft.ContainerRegistry/registries/getBuildSourceUploadUrl",
+                "Microsoft.ContainerRegistry/registries/queueBuild",
+                "Microsoft.ContainerRegistry/registries/builds",
+                "Microsoft.ContainerRegistry/registries/builds/getLogLink",
+                "Microsoft.ContainerRegistry/registries/builds/cancel",
+                "Microsoft.ContainerRegistry/registries/buildTasks",
+                "Microsoft.ContainerRegistry/registries/buildTasks/listSourceRepositoryProperties",
+                "Microsoft.ContainerRegistry/registries/builtTasks/steps",
+                "Microsoft.ContainerRegistry/registries/buildTasks/steps/listBuildArguments",
+                "Microsoft.ContainerRegistry/registries/replications",
+                "Microsoft.ContainerRegistry/registries/webhooks",
+                "Microsoft.ContainerRegistry/registries/webhooks/ping"
+            ],
+            "compute": [
+                "Microsoft.Compute/virtualMachines",
+                "Microsoft.Compute/virtualMachines/extenstions"
+            ],
+            "platform": [
+                "Microsoft.OperationalInsights/workspaces",
+                "Microsoft.Insights/components",
+                "Microsoft.AlertManagement/actionGroups",
+                "Microsoft.Authorization/policyDefinitions",
+                "Microsoft.Authorization/policySetDefinitions",
+                "Microsoft.Authorization/policyAssignments"
+            ]
+        },
+        "allowedResourcesMap": "[concat(if(contains(parameters('compliantAzureServices'), 'Apim'), variables('allowedResources').apiManagement, json('[]')), if(contains(parameters('compliantAzureServices'), 'Automation'), variables('allowedResources').automation, json('[]')),if(contains(parameters('compliantAzureServices'), 'Backup'), variables('allowedResources').backup, json('[]')),if(contains(parameters('compliantAzureServices'), 'Compute'), variables('allowedResources').compute, json('[]')),if(contains(parameters('compliantAzureServices'), 'ContainerApps'), variables('allowedResources').containerApps, json('[]')), if(contains(parameters('compliantAzureServices'), 'ContainerInstance'), variables('allowedResources').containerInstance, json('[]')), if(contains(parameters('compliantAzureServices'), 'ContainerRegistry'), variables('allowedResources').containerRegistry, json('[]')), variables('allowedResources').platform)]"
     },
     "resources": [
         /*
@@ -3988,7 +4203,110 @@
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
             }
-        },         
+        },
+        {   // Creating Policy Assignment Compliant Network to Platform Management group scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'Networking')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantPlatformNetworkAssignmentDeploymentName]",
+            "scope": "[variables('scopes').platformManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantNetworkDeploymentName)]",
+                "dnsZones",
+                "policyCompletion",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantNetworkPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },                    
+                    "vnetModifyDdos": {
+                        "value": "[if(equals(parameters('enableDdos'), 'Yes'), 'Modify', 'Disabled')]"
+                    },
+                    "ddosPlanResourceId": {
+                        "value": "[if(equals(parameters('enableDdos'), 'Yes'), variables('platformResourceIds').ddosProtectionResourceId, '')]"
+                    },
+                    "nsgDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "nsgLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "lbDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "lbDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "fdDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "fdDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "tmDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "tmDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "vnetDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "vnetDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "erDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "erDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "bastionDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "bastionLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "fdCdnDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "fdCdnLogAnalyticsWorkpaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "pipDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "pipLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "gwDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "gwLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "p2sDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "p2sLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
+                    // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
+                }
+            }
+        },           
         {   // Creating Policy Assignment Compliant Open Ai to Landing Zone scope
             "condition": "[contains(parameters('compliantAzureServices'), 'OpenAi')]",
             "type": "Microsoft.Resources/deployments",
@@ -4413,6 +4731,9 @@
                     },
                     "synapsePrivateDnsZoneId": {
                         "value": "[if(contains(parameters('compliantAzureServices'), 'Synapse'), variables('privateDnsPolicyParameterMapping').azureServiceBusNamespacePrivateDnsZoneId, '')]"
+                    },
+                    "corpListOfResourceTypesAllowed": {
+                        "value": "[variables('allowedResourcesMap')]"
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"

@@ -273,6 +273,10 @@
             "type": "string",
             "defaultValue": "feed"
         },
+        "corpListOfResourceTypesAllowed": {
+            "type": "array",
+            "defaultValue": []
+        },
         "userAssignedIdentityResourceId": {
             "type": "string",
             "defaultValue": ""
@@ -497,6 +501,9 @@
                     },
                     "synapsePrivateDnsZoneId": {
                         "value": "[parameters('synapsePrivateDnsZoneId')]"
+                    },
+                    "corpListOfResourceTypesAllowed": {
+                        "value": "[parameters('corpListOfResourceTypesAllowed')]"
                     }
                 }
             }
