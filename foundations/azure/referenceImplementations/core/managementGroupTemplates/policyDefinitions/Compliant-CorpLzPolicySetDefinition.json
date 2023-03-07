@@ -321,24 +321,9 @@
                     "avdWorkspacePrivateEndpointGroupId": {
                         "type": "string",
                         "defaultValue": "feed"
-                    },
-                    "corpListOfResourceTypesAllowed": {
-                        "type": "array",
-                        "defaultValue": []
                     }
                 },
                 "policyDefinitions": [
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/a08ec900-254a-4555-9bf5-e42af04b5c5c",
-                        "policyDefinitionReferenceId": "Deny-ResourceTypes",
-                        "groupNames": [
-                        ],
-                        "parameters": {
-                            "listOfResourceTypesAllowed": {
-                                "value": "[[parameters('corpListOfResourceTypesAllowed')]"
-                            }
-                        }
-                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/34804460-d88b-4922-a7ca-537165e060ed",
                         "policyDefinitionReferenceId": "Dine-Workspace-DNS-Zone",

@@ -755,7 +755,8 @@
                                             "name": "[variables('dnsResolverName')]",
                                             "location": "[parameters('location')]",
                                             "dependsOn": [
-                                                "[concat('Microsoft.Network/virtualNetworks/', variables('hubName'))]"
+                                                "[concat('Microsoft.Network/virtualNetworks/', variables('hubName'))]",
+                                                "[concat('Microsoft.Network/azureFirewalls/', variables('azFwName'))]"
                                             ],
                                             "properties": {
                                                 "virtualNetwork": {
@@ -771,7 +772,9 @@
                                             "location": "[parameters('location')]",
                                             "dependsOn": [
                                                 "[concat('Microsoft.Network/dnsResolvers/', variables('dnsResolverName'))]",
-                                                "[concat('Microsoft.Network/virtualNetworks/', variables('hubName'))]"
+                                                "[concat('Microsoft.Network/virtualNetworks/', variables('hubName'))]",
+                                                "[concat('Microsoft.Network/virtualNetworkGateways/', variables('vpngwname'))]",
+                                                "[concat('Microsoft.Network/virtualNetworkGateways/', variables('erGwName'))]"
                                             ],
                                             "properties": {
                                                 "ipConfigurations": [
@@ -792,7 +795,9 @@
                                             "location": "[parameters('location')]",
                                             "dependsOn": [
                                                 "[concat('Microsoft.Network/dnsResolvers/', variables('dnsResolverName'))]",
-                                                "[concat('Microsoft.Network/virtualNetworks/', variables('hubName'))]"
+                                                "[concat('Microsoft.Network/virtualNetworks/', variables('hubName'))]",
+                                                "[concat('Microsoft.Network/virtualNetworkGateways/', variables('vpngwname'))]",
+                                                "[concat('Microsoft.Network/virtualNetworkGateways/', variables('erGwName'))]"
                                             ],
                                             "properties": {
                                                 "subnet": {
