@@ -916,7 +916,7 @@
             "logAnalyticsWorkspace": "[concat(parameters('industryPrefix'), '-law')]",
             "eventHubNamespace": "[concat(parameters('industryPrefix'), '-ehn-', parameters('location'))]",
             "userAssignedIdentityName": "[concat(parameters('industryPrefix'), '-policy-identity')]",
-            "logNwStorageAccount": "[toLower(take(concat(parameters('industryPrefix'), parameters('location'), uniqueString(deployment().name)), 23))]",
+            "logNwStorageAccount": "[toLower(take(concat(replace(replace(parameters('industryPrefix'), '-', ''), '_', ''), parameters('location'), uniqueString(deployment().name)), 23))]",
             "automationAccount": "[concat(parameters('industryPrefix'), '-aauto')]",
             "vpnGwName": "[concat(parameters('industryPrefix'), '-vpngw-', parameters('location'))]",
             "erGwName": "[concat(parameters('industryPrefix'), '-ergw-', parameters('location'))]",
@@ -4647,9 +4647,6 @@
                     "uri": "[variables('deploymentUris').nsgFlowLogPolicyAssignment]"
                 },
                 "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('enableNsgFlowLogs'), 'Yes'), 'Default', 'DoNotEnforce')]"
                     },
@@ -4843,9 +4840,6 @@
                     "uri": "[variables('deploymentUris').nsgFlowLogPolicyAssignment]"
                 },
                 "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[concat(parameters('industryPrefix'), '-lz')]"
-                    },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('enableNsgFlowLogs'), 'Yes'), 'Default', 'DoNotEnforce')]"
                     },
