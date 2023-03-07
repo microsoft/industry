@@ -1297,7 +1297,8 @@
             "compute": [
                 "microsoft.compute/disks",
                 "microsoft.compute/diskaccesses/privateendpointconnections",
-                "microsoft.compute/diskaccesses"
+                "microsoft.compute/diskaccesses",
+                "microsoft.Compute/diskEncryptionSets"
             ],
             "cosmosDb": [
                 "Microsoft.DocumentDb/databaseAccounts",
