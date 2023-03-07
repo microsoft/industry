@@ -113,7 +113,7 @@
                     },
                     "keyVaultCertificatesPeriod": {
                         "type": "string",
-                        "defaultValue": "Deny"
+                        "defaultValue": "Disabled"
                     },
                     "keyVaultCertValidPeriod": {
                         "type": "integer",
@@ -133,7 +133,7 @@
                     },
                     "keysValidPeriod": {
                         "type": "string",
-                        "defaultValue": "Deny"
+                        "defaultValue": "Disabled"
                     },
                     "keysValidityInDays": {
                         "type": "integer",

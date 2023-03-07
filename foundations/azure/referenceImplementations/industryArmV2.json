@@ -642,9 +642,9 @@
             "managementGroups": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/mgmtGroupStructure/mgmtGroups.json')]",
             "allowedRegionsPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-RegionsPolicyAssignment.json')]",
             "allowedRgRegionsPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-RgRegionsPolicyAssignment.json')]",
+            "allowedResourcesPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-ResourcesPolicyAssignment.json')]",
             "customRbacRoleDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/roleDefinitions/Custom-RBACDefinitions.json')]",
             "policyIdentity": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/policyIdentity.json')]",
-            "managementGroupsLite": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/mgmtGroupStructure/mgmtGroupsLite.json')]",
             "policyDefinitions": "[uri(deployment().properties.templateLink.uri, variables('azPolicyArmTemplate'))]",
             "centralizedLogsPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Centralized-LoggingPolicySetDefinition.json')]",
             "centralizedLogsPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Centralized-LoggingPolicyAssignment.json')]",
@@ -764,6 +764,7 @@
             "customRbacDeploymentName": "[take(concat(parameters('industry'), '-RoleDefinitions', variables('deploymentSuffix')), 64)]",
             "allowedRegionsDeploymentName": "[take(concat(parameters('industry'), '-Azure-Regions', variables('deploymentSuffix')), 64)]",
             "allowedRgRegionsDeploymentName": "[take(concat(parameters('industry'), '-Azure-RG-Regions', variables('deploymentSuffix')), 64)]",
+            "allowedResourcesDeploymentName": "[take(concat(parameters('industry'), '-Azure-Resources', variables('deploymentSuffix')), 64)]",
             "centralizedLoggingDeploymentName": "[take(concat(parameters('industry'), '-Centralized-Logs', variables('deploymentSuffix')), 64)]",
             "compliantCorpLzDeploymentName": "[take(concat(parameters('industry'), '-Compliant-CorpLz', variables('deploymentSuffix')), 64)]",
             "compliantApimDeploymentName": "[take(concat(parameters('industry'), '-Compliant-Apim', variables('deploymentSuffix')), 64)]",
@@ -884,6 +885,7 @@
             "compliantSynapseAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Synapse', variables('deploymentSuffix')), 64)]",
             "compliantMachineLearningAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-MachineLearning', variables('deploymentSuffix')), 64)]",
             "compliantNetworkAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Network', variables('deploymentSuffix')), 64)]",
+            "compliantPlatformNetworkAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-PlatformNetwork', variables('deploymentSuffix')), 64)]",
             "compliantContainerAppsAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerApps', variables('deploymentSuffix')), 64)]",            
             "compliantContainerInstanceAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerInstance', variables('deploymentSuffix')), 64)]",            
             "compliantContainerRegistryAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerRegistry', variables('deploymentSuffix')), 64)]",            
@@ -897,28 +899,6 @@
             "erHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaEr', variables('deploymentSuffix')), 64)]",
             "pipHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaPip', variables('deploymentSuffix')), 64)]",
             "privateDnsOperatorPolicyDeploymentName": "[take(concat(parameters('industry'), '-PrivateDNSOperator',variables('deploymentSuffix')), 64)]"
-        },
-        "esLiteDeploymentNames": {
-            "mgmtGroupLiteDeploymentName": "[take(concat(parameters('industry'), '-MgsLite', variables('deploymentSuffix')), 64)]",
-            "policyIdentityLiteDeploymentName": "[take(concat(parameters('industry'), '-PolicyIdentityLite', variables('deploymentSuffix')), 64)]",
-            "rdpFromInternetIdentityLitePolicyDeploymentName": "[take(concat(parameters('industry'), '-RDPIdentity', variables('deploymentSuffix')), 64)]",
-            "azBackupIdentityLitePolicyDeploymentName": "[take(concat(parameters('industry'), '-AzBackupIdentity', variables('deploymentSuffix')), 64)]",
-            "subnetNsgIdentityLitePolicyDeploymentName": "[take(concat(parameters('industry'), '-SubnetNsgIdentity', variables('deploymentSuffix')), 64)]",
-            "monitoringLiteDeploymentName": "[take(concat(parameters('industry'), '-MonitoringLite', variables('deploymentSuffix')), 64)]",
-            "logAnalyticsLitePolicyDeploymentName": "[take(concat(parameters('industry'),'-LAPolicyLite', variables('deploymentSuffix')), 64)]",
-            "monitoringSolutionsLiteDeploymentName": "[take(concat(parameters('industry'), '-SolutionsLite', variables('deploymentSuffix')), 64)]",
-            "platformLiteSubscriptionPlacement": "[take(concat(parameters('industry'), '-PlatformSubLite', variables('deploymentSuffix')), 64)]",
-            "logLiteStorageDeploymentName": "[take(concat(parameters('industry'), '-LogStorageLite', deployment().location, '-', deployment().name), 64)]",
-            "vnetConnectivityHubLiteDeploymentName": "[take(concat(parameters('industry'), '-VnetHubLite', variables('deploymentSuffix')), 64)]",
-            "vwanConnectivityHubLiteDeploymentName": "[take(concat(parameters('industry'), '-VWanHubLite', variables('deploymentSuffix')), 64)]",
-            "nvaConnectivityHubLiteDeploymentName": "[take(concat(parameters('industry'), '-NVAHubLite', variables('deploymentSuffix')), 64)]",
-            "ddosRgLiteDeploymentName": "[take(concat(parameters('industry'), '-DDoSRgLite', variables('deploymentSuffix')), 64)]",
-            "ddosLiteDeploymentName": "[take(concat(parameters('industry'), '-DDoSLite', variables('deploymentSuffix')), 64)]",
-            "ddosHubLitePolicyDeploymentName": "[take(concat(parameters('industry'), '-DDoSHubPolicyLite', variables('deploymentSuffix')), 64)]",
-            "privateDnsZoneRgLiteDeploymentName": "[take(concat(parameters('industry'), '-PrivDNSRGLite', variables('deploymentSuffix')), 64)]",
-            "privateDnsZonesLiteDeploymentName": "[take(concat(parameters('industry'), '-PrivDNSLite', variables('deploymentSuffix')), 35)]",
-            "nwLiteDeploymentName": "[take(concat(parameters('industry'), '-NwPlatform', deployment().location, '-', deployment().name), 64)]"        
-
         },
         // Declaring deterministic names for Resource Groups that will be created for platform resources
         "platformRgNames": {
@@ -966,7 +946,7 @@
             "privateDnsRgResourceId": "[concat('/subscriptions/', variables('singleVsDedicatedConnectivitySub'), '/resourceGroups/', variables('platformRgNames').privateDnsRg)]",
             "azFirewallResourceId": "[concat('/subscriptions/', variables('singleVsDedicatedConnectivitySub'), '/resourceGroups/', variables('platformRgNames').connectivityRg, '/providers/Microsoft.Network/azureFirewalls/', variables('platformResourceNames').azFwName)]"
         },
-        // Declaring deterministic resourceId's for ES Lite platform resources (as they will be consolidated into a single platform subscription)
+        // Declaring deterministic resourceId's for FSILZ platform resources (as they will be consolidated into a single platform subscription)
         "deterministicRoleAssignmentGuids": {
             "ddosForConnectivity": "[take(guid(concat(parameters('industryPrefix'), 'ddos')), 10)]",
             "backupForIdentity": "[take(guid(concat(parameters('industryPrefix'), 'idbackup')), 10)]"
@@ -1091,7 +1071,1246 @@
         "roleDefinitions": {
             "networkContributor": "4d97b98b-1d4f-4787-a291-c67834d212e7",
             "contributor": "b24988ac-6180-42a0-ab88-20f7382dd24c"
-        }
+        },
+        "allowedResources": {
+            "automation": [
+                "microsoft.automation/automationaccounts",
+                "microsoft.automation/deletedautomationaccounts",
+                "microsoft.automation/automationaccounts/runbooks",
+                "microsoft.automation/automationaccounts/configurations",
+                "microsoft.automation/automationaccounts/webhooks",
+                "microsoft.automation/operations",
+                "microsoft.automation/automationaccounts/softwareupdateconfigurations",
+                "microsoft.automation/automationaccounts/softwareupdateconfigurationruns",
+                "microsoft.automation/automationaccounts/softwareupdateconfigurationmachineruns",
+                "microsoft.automation/automationaccounts/jobs",
+                "microsoft.automation/automationaccounts/privatelinkresources",
+                "microsoft.automation/automationaccounts/privateendpointconnections",
+                "microsoft.automation/automationaccounts/privateendpointconnectionproxies",
+                "microsoft.automation/automationaccounts/hybridrunbookworkergroups",
+                "microsoft.automation/automationaccounts/hybridrunbookworkergroups/hybridrunbookworkers",
+                "microsoft.automation/automationaccounts/agentregistrationinformation"
+
+            ],
+            "apiManagement": [
+                "Microsoft.ApiManagement/service",
+                "Microsoft.ApiManagement/deletedServices",
+                "Microsoft.ApiManagement/locations",
+                "Microsoft.ApiManagement/locations/deletedServices",
+                "Microsoft.ApiManagement/validateServiceNameAvailability",
+                "Microsoft.ApiManagement/checkServiceNameAvailability",
+                "Microsoft.ApiManagement/checkNameAvailability",
+                "Microsoft.ApiManagement/reportFeedback",
+                "Microsoft.ApiManagement/checkFeedbackRequired",
+                "Microsoft.ApiManagement/operations",
+                "Microsoft.ApiManagement/getDomainOwnershipIdentifier",
+                "Microsoft.ApiManagement/service/eventGridFilters"
+            ],
+            "appService": [
+                "Microsoft.Web/publishingUsers",
+                "Microsoft.Web/ishostnameavailable",
+                "Microsoft.Web/validate",
+                "Microsoft.Web/isusernameavailable",
+                "Microsoft.Web/generateGithubAccessTokenForAppserviceCLI",
+                "Microsoft.Web/sourceControls",
+                "Microsoft.Web/availableStacks",
+                "Microsoft.Web/webAppStacks",
+                "Microsoft.Web/locations/webAppStacks",
+                "Microsoft.Web/functionAppStacks",
+                "Microsoft.Web/locations/functionAppStacks",
+                "Microsoft.Web/staticSites",
+                "Microsoft.Web/locations/previewStaticSiteWorkflowFile",
+                "Microsoft.Web/staticSites/userProvidedFunctionApps",
+                "Microsoft.Web/staticSites/linkedBackends",
+                "Microsoft.Web/staticSites/builds/linkedBackends",
+                "Microsoft.Web/staticSites/databaseConnections",
+                "Microsoft.Web/staticSites/builds/databaseConnections",
+                "Microsoft.Web/staticSites/builds",
+                "Microsoft.Web/staticSites/builds/userProvidedFunctionApps",
+                "Microsoft.Web/listSitesAssignedToHostName",
+                "Microsoft.Web/locations/getNetworkPolicies",
+                "Microsoft.Web/locations/operations",
+                "Microsoft.Web/locations/operationResults",
+                "Microsoft.Web/sites/networkConfig",
+                "Microsoft.Web/sites/slots/networkConfig",
+                "Microsoft.Web/sites/hostNameBindings",
+                "Microsoft.Web/sites/slots/hostNameBindings",
+                "Microsoft.Web/operations",
+                "Microsoft.Web/certificates",
+                "Microsoft.Web/serverFarms",
+                "Microsoft.Web/sites",
+                "Microsoft.Web/sites/slots",
+                "Microsoft.Web/runtimes",
+                "Microsoft.Web/recommendations",
+                "Microsoft.Web/resourceHealthMetadata",
+                "Microsoft.Web/georegions",
+                "Microsoft.Web/sites/premieraddons",
+                "Microsoft.Web/hostingEnvironments",
+                "Microsoft.Web/hostingEnvironments/multiRolePools",
+                "Microsoft.Web/hostingEnvironments/workerPools",
+                "Microsoft.Web/kubeEnvironments",
+                "Microsoft.Web/deploymentLocations",
+                "Microsoft.Web/deletedSites",
+                "Microsoft.Web/locations/deletedSites",
+                "Microsoft.Web/ishostingenvironmentnameavailable",
+                "Microsoft.Web/locations/deleteVirtualNetworkOrSubnets",
+                "Microsoft.Web/locations/validateDeleteVirtualNetworkOrSubnets",
+                "Microsoft.Web/connections",
+                "Microsoft.Web/customApis",
+                "Microsoft.Web/locations",
+                "Microsoft.Web/locations/listWsdlInterfaces",
+                "Microsoft.Web/locations/extractApiDefinitionFromWsdl",
+                "Microsoft.Web/locations/managedApis",
+                "Microsoft.Web/locations/runtimes",
+                "Microsoft.Web/locations/apiOperations",
+                "Microsoft.Web/connectionGateways",
+                "Microsoft.Web/locations/connectionGatewayInstallations",
+                "Microsoft.Web/checkNameAvailability",
+                "Microsoft.Web/billingMeters",
+                "Microsoft.Web/verifyHostingEnvironmentVnet",
+                "Microsoft.Web/serverFarms/eventGridFilters",
+                "Microsoft.Web/sites/eventGridFilters",
+                "Microsoft.Web/sites/slots/eventGridFilters",
+                "Microsoft.Web/hostingEnvironments/eventGridFilters",
+                "Microsoft.Web/serverFarms/firstPartyApps",
+                "Microsoft.Web/serverFarms/firstPartyApps/keyVaultSettings",
+                "Microsoft.Web/workerApps",
+                "Microsoft.Web/containerApps",
+                "Microsoft.Web/customhostnameSites"
+            ],
+            "backup": [
+                "microsoft.recoveryservices/vaults",
+                "microsoft.recoveryservices/operations",
+                "microsoft.recoveryservices/locations",
+                "microsoft.recoveryservices/locations/backupstatus",
+                "microsoft.recoveryservices/locations/checknameavailability",
+                "microsoft.recoveryservices/locations/allocatedstamp",
+                "microsoft.recoveryservices/locations/allocatestamp",
+                "microsoft.recoveryservices/locations/backupvalidatefeatures",
+                "microsoft.recoveryservices/locations/backupprevalidateprotection",
+                "microsoft.recoveryservices/locations/backupcrrjobs",
+                "microsoft.recoveryservices/locations/backupcrrjob",
+                "microsoft.recoveryservices/locations/backupaadproperties",
+                "microsoft.recoveryservices/locations/backupcrossregionrestore",
+                "microsoft.recoveryservices/locations/backupcrroperationresults",
+                "microsoft.recoveryservices/locations/backupcrroperationsstatus",
+                "microsoft.recoveryservices/backupprotecteditems",
+                "microsoft.recoveryservices/replicationeligibilityresults",
+                "microsoft.recoveryservices/locations/capabilities",
+                "microsoft.recoveryservices/vaults/backupconfig",
+                "microsoft.recoveryservices/vaults/backupencryptionconfigs",
+                "microsoft.recoveryservices/vaults/backupfabrics/backupprotectionintent",
+                "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers",
+                "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems",
+                "microsoft.recoveryservices/vaults/backuppolicies",
+                "microsoft.recoveryservices/vaults/backupresourceguardproxies",
+                "microsoft.recoveryservices/vaults/backupstorageconfig",
+                "microsoft.recoveryservices/vaults/extendedinformation",
+                "microsoft.recoveryservices/vaults/privateendpointconnections",
+                "microsoft.recoveryservices/vaults/replicationalertsettings",
+                "microsoft.recoveryservices/vaults/replicationfabrics",
+                "microsoft.recoveryservices/vaults/replicationfabrics/replicationnetworks/replicationnetworkmappings",
+                "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationmigrationitems",
+                "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationprotecteditems",
+                "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationprotectioncontainermappings",
+                "microsoft.recoveryservices/vaults/replicationfabrics/replicationrecoveryservicesproviders",
+                "microsoft.recoveryservices/vaults/replicationfabrics/replicationstorageclassifications/replicationstorageclassificationmappings",
+                "microsoft.recoveryservices/vaults/replicationvaultsettings",
+                "microsoft.recoveryservices/vaults/replicationrecoveryplans",
+                "microsoft.recoveryservices/vaults/replicationprotectionintents",
+                "microsoft.recoveryservices/vaults/replicationfabrics/replicationvcenters"
+            ],
+            "containerApps": [
+                "microsoft.app/managedenvironments",
+                "microsoft.app/managedenvironments/certificates",
+                "microsoft.app/managedenvironments/managedcertificates",
+                "microsoft.app/containerapps",
+                "microsoft.app/jobs",
+                "microsoft.app/locations",
+                "microsoft.app/locations/managedenvironmentoperationresults",
+                "microsoft.app/locations/managedenvironmentoperationstatuses",
+                "microsoft.app/locations/containerappoperationresults",
+                "microsoft.app/locations/containerappoperationstatuses",
+                "microsoft.app/operations",
+                "microsoft.app/connectedenvironments",
+                "microsoft.app/connectedenvironments/certificates",
+                "microsoft.app/locations/connectedenvironmentoperationresults",
+                "microsoft.app/locations/connectedenvironmentoperationstatuses",
+                "microsoft.app/locations/billingmeters",
+                "microsoft.app/locations/availablemanagedenvironmentsworkloadprofiletypes"
+            ],
+            "containerinstance": [
+                "microsoft.containerinstance/containergroups",
+                "microsoft.containerinstance/serviceassociationlinks",
+                "microsoft.containerinstance/locations",
+                "microsoft.containerinstance/locations/capabilities",
+                "microsoft.containerinstance/locations/usages",
+                "microsoft.containerinstance/locations/operations",
+                "microsoft.containerinstance/locations/operationresults",
+                "microsoft.containerinstance/operations",
+                "microsoft.containerinstance/locations/cachedimages",
+                "microsoft.containerinstance/locations/validatedeletevirtualnetworkorsubnets",
+                "microsoft.containerinstance/locations/deletevirtualnetworkorsubnets"
+            ],
+            "containerRegistry": [
+                "Microsoft.ContainerRegistry/registries",
+                "Microsoft.ContainerRegistry/registries/cacheRules",
+                "Microsoft.ContainerRegistry/registries/credentialSets",
+                "Microsoft.ContainerRegistry/registries/connectedRegistries",
+                "Microsoft.ContainerRegistry/registries/connectedRegistries/deactivate",
+                "Microsoft.ContainerRegistry/registries/scopeMaps",
+                "Microsoft.ContainerRegistry/registries/tokens",
+                "Microsoft.ContainerRegistry/registries/generateCredentials",
+                "Microsoft.ContainerRegistry/registries/privateEndpointConnections",
+                "Microsoft.ContainerRegistry/registries/privateEndpointConnectionProxies",
+                "Microsoft.ContainerRegistry/registries/privateEndpointConnectionProxies/validate",
+                "Microsoft.ContainerRegistry/registries/privateLinkResources",
+                "Microsoft.ContainerRegistry/registries/importImage",
+                "Microsoft.ContainerRegistry/registries/exportPipelines",
+                "Microsoft.ContainerRegistry/registries/importPipelines",
+                "Microsoft.ContainerRegistry/registries/pipelineRuns",
+                "Microsoft.ContainerRegistry/registries/listBuildSourceUploadUrl",
+                "Microsoft.ContainerRegistry/registries/scheduleRun",
+                "Microsoft.ContainerRegistry/registries/runs",
+                "Microsoft.ContainerRegistry/registries/taskRuns",
+                "Microsoft.ContainerRegistry/registries/taskRuns/listDetails",
+                "Microsoft.ContainerRegistry/registries/agentPools",
+                "Microsoft.ContainerRegistry/registries/agentPoolsOperationResults",
+                "Microsoft.ContainerRegistry/registries/agentPools/listQueueStatus",
+                "Microsoft.ContainerRegistry/registries/runs/listLogSasUrl",
+                "Microsoft.ContainerRegistry/registries/runs/cancel",
+                "Microsoft.ContainerRegistry/registries/tasks",
+                "Microsoft.ContainerRegistry/registries/tasks/listDetails",
+                "Microsoft.ContainerRegistry/registries/getBuildSourceUploadUrl",
+                "Microsoft.ContainerRegistry/registries/queueBuild",
+                "Microsoft.ContainerRegistry/registries/builds",
+                "Microsoft.ContainerRegistry/registries/builds/getLogLink",
+                "Microsoft.ContainerRegistry/registries/builds/cancel",
+                "Microsoft.ContainerRegistry/registries/buildTasks",
+                "Microsoft.ContainerRegistry/registries/buildTasks/listSourceRepositoryProperties",
+                "Microsoft.ContainerRegistry/registries/builtTasks/steps",
+                "Microsoft.ContainerRegistry/registries/buildTasks/steps/listBuildArguments",
+                "Microsoft.ContainerRegistry/registries/replications",
+                "Microsoft.ContainerRegistry/registries/webhooks",
+                "Microsoft.ContainerRegistry/registries/webhooks/ping"
+            ],
+            "compute": [
+                "microsoft.compute/disks",
+                "microsoft.compute/diskaccesses/privateendpointconnections",
+                "microsoft.compute/diskaccesses"
+            ],
+            "cosmosDb": [
+                "Microsoft.DocumentDb/databaseAccounts",
+                "Microsoft.DocumentDb/databaseAccountNames",
+                "Microsoft.DocumentDb/operations",
+                "Microsoft.DocumentDb/operationResults",
+                "Microsoft.DocumentDb/operationStatus",
+                "Microsoft.DocumentDb/locations/operationsStatus",
+                "Microsoft.DocumentDb/locations/operationResults",
+                "Microsoft.DocumentDb/locations",
+                "Microsoft.DocumentDb/locations/deleteVirtualNetworkOrSubnets",
+                "Microsoft.DocumentDb/locations/restorableDatabaseAccounts",
+                "Microsoft.DocumentDb/restorableDatabaseAccounts",
+                "Microsoft.DocumentDb/cassandraClusters",
+                "Microsoft.DocumentDb/databaseAccounts/encryptionScopes"
+            ],
+            "dataExplorer": [
+                "Microsoft.Kusto/clusters",
+                "Microsoft.Kusto/clusters/databases",
+                "Microsoft.Kusto/clusters/attacheddatabaseconfigurations",
+                "Microsoft.Kusto/clusters/principalassignments",
+                "Microsoft.Kusto/clusters/databases/eventhubconnections",
+                "Microsoft.Kusto/clusters/databases/dataconnections",
+                "Microsoft.Kusto/clusters/databases/principalassignments",
+                "Microsoft.Kusto/locations/operationResults",
+                "Microsoft.Kusto/locations",
+                "Microsoft.Kusto/locations/checkNameAvailability",
+                "Microsoft.Kusto/locations/skus",
+                "Microsoft.Kusto/operations",
+                "Microsoft.Kusto/clusters/databases/scripts"
+            ],
+            "dataFactory": [
+                "Microsoft.Datafactory/dataFactories",
+                "Microsoft.Datafactory/factories",
+                "Microsoft.Datafactory/factories/integrationRuntimes",
+                "Microsoft.Datafactory/dataFactories/diagnosticSettings",
+                "Microsoft.Datafactory/dataFactories/metricDefinitions",
+                "Microsoft.Datafactory/checkDataFactoryNameAvailability",
+                "Microsoft.Datafactory/checkAzureDataFactoryNameAvailability",
+                "Microsoft.Datafactory/dataFactorySchema",
+                "Microsoft.Datafactory/operations",
+                "Microsoft.Datafactory/locations",
+                "Microsoft.Datafactory/locations/configureFactoryRepo",
+                "Microsoft.Datafactory/locations/getFeatureValue"
+            ],
+            "eventGrid": [
+                "Microsoft.EventGrid/locations",
+                "Microsoft.EventGrid/locations/eventSubscriptions",
+                "Microsoft.EventGrid/eventSubscriptions",
+                "Microsoft.EventGrid/topics",
+                "Microsoft.EventGrid/domains",
+                "Microsoft.EventGrid/domains/topics",
+                "Microsoft.EventGrid/topicTypes",
+                "Microsoft.EventGrid/operations",
+                "Microsoft.EventGrid/locations/operationsStatus",
+                "Microsoft.EventGrid/locations/operationResults",
+                "Microsoft.EventGrid/locations/topicTypes",
+                "Microsoft.EventGrid/extensionTopics",
+                "Microsoft.EventGrid/operationResults",
+                "Microsoft.EventGrid/systemTopics",
+                "Microsoft.EventGrid/systempTopics/eventSubscriptions",
+                "Microsoft.EventGrid/partnerRegistrations",
+                "Microsoft.EventGrid/partnerConfigurations",
+                "Microsoft.EventGrid/verifiedPartners",
+                "Microsoft.EventGrid/partnerNamespaces",
+                "Microsoft.EventGrid/partnerTopics",
+                "Microsoft.EventGrid/partnerTopics/eventSubscriptions",
+                "Microsoft.EventGrid/partnerNamespaces/eventChannels",
+                "Microsoft.EventGrid/partnerNamespaces/channels",
+                "Microsoft.EventGrid/partnerDestinations"
+            ],
+            "eventHub": [
+                "Microsoft.EventHub/namespaces",
+                "Microsoft.EventHub/clusters",
+                "Microsoft.EventHub/namespaces/authorizationRules",
+                "Microsoft.EventHub/namespaces/networkrulesets",
+                "Microsoft.EventHub/namespaces/privateEndpointConnections",
+                "Microsoft.EventHub/namespaces/eventhubs",
+                "Microsoft.EventHub/namespaces/eventhubs/authorizationRules",
+                "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+                "Microsoft.EventHub/namespaces/applicationGroups",
+                "Microsoft.EventHub/checkNamespaceAvailability",
+                "Microsoft.EventHub/checkNameAvailability",
+                "Microsoft.EventHub/sku",
+                "Microsoft.EventHub/operations",
+                "Microsoft.EventHub/namespaces/disasterrecoveryconfigs",
+                "Microsoft.EventHub/namespaces/disasterrecoveryconfigs/checkNameAvailability",
+                "Microsoft.EventHub/locations",
+                "Microsoft.EventHub/locations/operationsStatus",
+                "Microsoft.EventHub/locations/clusterOperationResults",
+                "Microsoft.EventHub/locations/deleteVirtualNetworkOrSubnets",
+                "Microsoft.EventHub/availableClusterRegions"
+            ],
+            "keyVault": [
+                "Microsoft.KeyVault/vaults",
+                "Microsoft.KeyVault/vaults/secrets",
+                "Microsoft.KeyVault/vaults/accessPolicies",
+                "Microsoft.KeyVault/operations",
+                "Microsoft.KeyVault/checkNameAvailability",
+                "Microsoft.KeyVault/deletedVaults",
+                "Microsoft.KeyVault/locations",
+                "Microsoft.KeyVault/locations/notifyNetworkSecuritypermieterUpdatesAvailable",
+                "Microsoft.KeyVault/locations/deletedVaults",
+                "Microsoft.KeyVault/locations/deletedVirtualNetworkOrSubnets",
+                "Microsoft.KeyVault/locations/operationResults",
+                "Microsoft.KeyVault/vaults/eventGridFilters",
+                "Microsoft.KeyVault/managedHSMs",
+                "Microsoft.KeyVault/deletedManagedHSMs",
+                "Microsoft.KeyVault/locations/deletedManagedHSMs",
+                "Microsoft.KeyVault/locations/managedHsmOperationResults",
+                "Microsoft.KeyVault/managedHSMs/keys",
+                "Microsoft.KeyVault/managedHSMs/keys/versions",
+                "Microsoft.KeyVault/checkMhsmNameAvailability",
+                "Microsoft.KeyVault/vaults/keys",
+                "Microsoft.KeyVault/vaults/keys/versions"
+            ],
+            "kubernetes": [
+                "Microsoft.ContainerService/managedClusters/eventGridFilters",
+                "Microsoft.ContainerService/containerServices",
+                "Microsoft.ContainerService/fleetMemberships",
+                "Microsoft.ContainerService/fleets",
+                "Microsoft.ContainerService/fleets/members",
+                "Microsoft.ContainerService/locations",
+                "Microsoft.ContainerService/locations/notifyNetworkSecurityPerimeterUpdatesAvailable",
+                "Microsoft.ContainerService/locations/operationResults",
+                "Microsoft.ContainerService/locations/operations",
+                "Microsoft.ContainerService/locations/orchestrators",
+                "Microsoft.ContainerService/locations/osOptions",
+                "Microsoft.ContainerService/managedClusters",
+                "Microsoft.ContainerService/managedclustersnapshots",
+                "Microsoft.ContainerService/operations",
+                "Microsoft.ContainerService/snapshots"
+            ],
+            "machineLearning": [
+                "Microsoft.MachineLearning/Workspaces",
+                "Microsoft.MachineLearning/webServices",
+                "Microsoft.MachineLearning/operations",
+                "Microsoft.MachineLearning/locations",
+                "Microsoft.MachineLearning/locations/operations",
+                "Microsoft.MachineLearning/locations/operationResults",
+                "Microsoft.MachineLearning/committmentPlans"
+            ],
+            "network": [
+                "Microsoft.Network/virtualNetworks",
+                "Microsoft.Network/virtualNetworks/taggedTrafficConsumers",
+                "Microsoft.Network/natGateways",
+                "Microsoft.Network/internalPublicIpAddresses",
+                "Microsoft.Network/customIpPrefixes",
+                "Microsoft.Network/networkInterfaces",
+                "Microsoft.Network/dscpConfigurations",
+                "Microsoft.Network/privateEndpoints",
+                "Microsoft.Network/privateEndpoints/privateLinkServiceProxies",
+                "Microsoft.Network/privateEndpointRedirectMaps",
+                "Microsoft.Network/loadBalancers",
+                "Microsoft.Network/networkSecurityGroups",
+                "Microsoft.Network/applicationSecurityGroups",
+                "Microsoft.Network/serviceEndpointPolicies",
+                "Microsoft.Network/networkIntentPolicies",
+                "Microsoft.Network/routeTables",
+                "Microsoft.Network/publicIPPrefixes",
+                "Microsoft.Network/networkWatchers",
+                "Microsoft.Network/networkWatchers/connectionMonitors",
+                "Microsoft.Network/networkWatchers/flowLogs",
+                "Microsoft.Network/networkWatchers/pingMeshes",
+                "Microsoft.Network/virtualNetworkGateways",
+                "Microsoft.Network/localNetworkGateways",
+                "Microsoft.Network/connections",
+                "Microsoft.Network/applicationGateways",
+                "Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies",
+                "Microsoft.Network/locations",
+                "Microsoft.Network/locations/operations",
+                "Microsoft.Network/locations/operationResults",
+                "Microsoft.Network/locations/CheckDnsNameAvailability",
+                "Microsoft.Network/locations/setLoadBalancerFrontendPublicIpAddresses",
+                "Microsoft.Network/cloudServiceSlots",
+                "Microsoft.Network/locations/usages",
+                "Microsoft.Network/locations/virtualNetworkAvailableEndpointServices",
+                "Microsoft.Network/locations/availableDelegations",
+                "Microsoft.Network/locations/ApplicationGatewayWafDynamicManifests",
+                "Microsoft.Network/locations/serviceTags",
+                "Microsoft.Network/locations/availablePrivateEndpointTypes",
+                "Microsoft.Network/locations/availableServiceAliases",
+                "Microsoft.Network/locations/checkPrivateLinkServiceVisibility",
+                "Microsoft.Network/locations/autoApprovedPrivateLinkServices",
+                "Microsoft.Network/locations/batchValidatePrivateEndpointsForResourceMove",
+                "Microsoft.Network/locations/batchNotifyPrivateEndpointsForResourceMove",
+                "Microsoft.Network/locations/supportedVirtualMachineSizes",
+                "Microsoft.Network/locations/setAzureNetworkManagerConfiguration",
+                "Microsoft.Network/locations/publishResources",
+                "Microsoft.Network/locations/getAzureNetworkManagerConfiguration",
+                "Microsoft.Network/locations/checkAcceleratedNetworkingSupport",
+                "Microsoft.Network/locations/validateResourceOwnership",
+                "Microsoft.Network/locations/setResourceOwnership",
+                "Microsoft.Network/locations/effectiveResourceOwnership",
+                "Microsoft.Network/operations",
+                "Microsoft.Network/dnszones",
+                "Microsoft.Network/dnsOperationResults",
+                "Microsoft.Network/dnsOperationStatuses",
+                "Microsoft.Network/getDnsResourceReference",
+                "Microsoft.Network/internalNotify",
+                "Microsoft.Network/dnszones/A",
+                "Microsoft.Network/dnszones/AAAA",
+                "Microsoft.Network/dnszones/CNAME",
+                "Microsoft.Network/dnszones/PTR",
+                "Microsoft.Network/dnszones/MX",
+                "Microsoft.Network/dnszones/TXT",
+                "Microsoft.Network/dnszones/SRV",
+                "Microsoft.Network/dnszones/SOA",
+                "Microsoft.Network/dnszones/NS",
+                "Microsoft.Network/dnszones/CAA",
+                "Microsoft.Network/dnszones/recordsets",
+                "Microsoft.Network/dnszones/all",
+                "Microsoft.Network/privateDnsZones",
+                "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+                "Microsoft.Network/privateDnsOperationResults",
+                "Microsoft.Network/privateDnsOperationStatuses",
+                "Microsoft.Network/privateDnsZonesInternal",
+                "Microsoft.Network/privateDnsZones/A",
+                "Microsoft.Network/privateDnsZones/AAAA",
+                "Microsoft.Network/privateDnsZones/CNAME",
+                "Microsoft.Network/privateDnsZones/PTR",
+                "Microsoft.Network/privateDnsZones/MX",
+                "Microsoft.Network/privateDnsZones/TXT",
+                "Microsoft.Network/privateDnsZones/SRV",
+                "Microsoft.Network/privateDnsZones/SOA",
+                "Microsoft.Network/privateDnsZones/all",
+                "Microsoft.Network/virtualNetworks/privateDnsZoneLinks",
+                "Microsoft.Network/dnsResolvers",
+                "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+                "Microsoft.Network/dnsResolvers/inboundEndpoints",
+                "Microsoft.Network/dnsResolvers/outboundEndpoints",
+                "Microsoft.Network/dnsForwardingRulesets",
+                "Microsoft.Network/dnsForwardingRulesets/forwardingRules",
+                "Microsoft.Network/dnsForwardingRulesets/virtualNetworkLinks",
+                "Microsoft.Network/virtualNetworks/listDnsResolvers",
+                "Microsoft.Network/virtualNetworks/listDnsForwardingRulesets",
+                "Microsoft.Network/locations/dnsResolverOperationResults",
+                "Microsoft.Network/locations/dnsResolverOperationStatuses",
+                "Microsoft.Network/trafficmanagerprofiles",
+                "Microsoft.Network/trafficmanagerprofiles/heatMaps",
+                "Microsoft.Network/trafficmanagerprofiles/azureendpoints",
+                "Microsoft.Network/trafficmanagerprofiles/externalendpoints",
+                "Microsoft.Network/trafficmanagerprofiles/nestedendpoints",
+                "Microsoft.Network/checkTrafficManagerNameAvailability",
+                "Microsoft.Network/trafficManagerUserMetricsKeys",
+                "Microsoft.Network/trafficManagerGeographicHierarchies",
+                "Microsoft.Network/expressRouteCircuits",
+                "Microsoft.Network/expressRouteServiceProviders",
+                "Microsoft.Network/applicationGatewayAvailableWafRuleSets",
+                "Microsoft.Network/applicationGatewayAvailableSslOptions",
+                "Microsoft.Network/applicationGatewayAvailableServerVariables",
+                "Microsoft.Network/applicationGatewayAvailableRequestHeaders",
+                "Microsoft.Network/applicationGatewayAvailableResponseHeaders",
+                "Microsoft.Network/routeFilters",
+                "Microsoft.Network/bgpServiceCommunities",
+                "Microsoft.Network/virtualWans",
+                "Microsoft.Network/vpnSites",
+                "Microsoft.Network/vpnServerConfigurations",
+                "Microsoft.Network/virtualHubs",
+                "Microsoft.Network/vpnGateways",
+                "Microsoft.Network/p2sVpnGateways",
+                "Microsoft.Network/expressRouteGateways",
+                "Microsoft.Network/locations/hybridEdgeZone",
+                "Microsoft.Network/expressRoutePortsLocations",
+                "Microsoft.Network/expressRoutePorts",
+                "Microsoft.Network/firewallPolicies",
+                "Microsoft.Network/ipGroups",
+                "Microsoft.Network/azureWebCategories",
+                "Microsoft.Network/locations/nfvOperations",
+                "Microsoft.Network/locations/nfvOperationResults",
+                "Microsoft.Network/securityPartnerProviders",
+                "Microsoft.Network/azureFirewalls",
+                "Microsoft.Network/azureFirewallFqdnTags",
+                "Microsoft.Network/virtualNetworkTaps",
+                "Microsoft.Network/privateLinkServices",
+                "Microsoft.Network/locations/privateLinkServices",
+                "Microsoft.Network/ddosProtectionPlans",
+                "Microsoft.Network/networkProfiles",
+                "Microsoft.Network/frontdoorOperationResults",
+                "Microsoft.Network/checkFrontdoorNameAvailability",
+                "Microsoft.Network/frontdoors",
+                "Microsoft.Network/frontdoors/frontendEndpoints",
+                "Microsoft.Network/frontdoors/frontendEndpoints/customHttpsConfiguration",
+                "Microsoft.Network/frontdoorWebApplicationFirewallPolicies",
+                "Microsoft.Network/frontdoorWebApplicationFirewallManagedRuleSets",
+                "Microsoft.Network/networkExperimentProfiles",
+                "Microsoft.Network/locations/bareMetalTenants",
+                "Microsoft.Network/bastionHosts",
+                "Microsoft.Network/virtualRouters",
+                "Microsoft.Network/networkVirtualAppliances",
+                "Microsoft.Network/ipAllocations",
+                "Microsoft.Network/networkManagers",
+                "Microsoft.Network/networkManagerConnections",
+                "Microsoft.Network/locations/queryNetworkSecurityPerimeter",
+                "Microsoft.Network/virtualNetworks/listNetworkManagerEffectiveConnectivityConfigurations",
+                "Microsoft.Network/virtualNetworks/listNetworkManagerEffectiveSecurityAdminRules",
+                "Microsoft.Network/locations/commitInternalAzureNetworkManagerConfiguration",
+                "Microsoft.Network/locations/internalAzureVirtualNetworkManagerOperation",
+                "Microsoft.Network/networkVirtualApplianceSkus",
+                "Microsoft.Network/locations/serviceTagDetails",
+                "Microsoft.Network/locations/dataTasks"
+
+            ],
+            "openAi": [
+                "Microsoft.CognitiveServices/operations",
+                "Microsoft.CognitiveServices/locations/operationResults",
+                "Microsoft.CognitiveServices/locations",
+                "Microsoft.CognitiveServices/locations/deleteVirtualNetworkOrSubnets",
+                "Microsoft.CognitiveServices/locations/checkSkuAvailability",
+                "Microsoft.CognitiveServices/checkDomainAvailability",
+                "Microsoft.CognitiveServices/accounts/privateLinkResources",
+                "Microsoft.CognitiveServices/accounts/privateEndpointConnections",
+                "Microsoft.CognitiveServices/accounts/privateEndpointConnectionProxies",
+                "Microsoft.CognitiveServices/deletedAccounts",
+                "Microsoft.CognitiveServices/locations/resourceGroups",
+                "Microsoft.CognitiveServices/locations/resourceGroups/deletedAccounts",
+                "Microsoft.CognitiveServices/locations/commitmentTiers",
+                "Microsoft.CognitiveServices/locations/notifyNetworkSecurityPerimeterUpdatesAvailable",
+                "Microsoft.CognitiveServices/accounts/networkSecurityPerimeterAssociationProxies",
+                "Microsoft.CognitiveServices/commitmentPlans"
+            ],
+            "postgreSql": [
+                "Microsoft.DBforPostgreSQL/operations",
+                "Microsoft.DBforPostgreSQL/servers",
+                "Microsoft.DBforPostgreSQL/serverGroupsv2",
+                "Microsoft.DBforPostgreSQL/flexibleServers",
+                "Microsoft.DBforPostgreSQL/locations/capabilities",
+                "Microsoft.DBforPostgreSQL/locations/checkNameAvailability",
+                "Microsoft.DBforPostgreSQL/servers/recoverableServers",
+                "Microsoft.DBforPostgreSQL/servers/virtualNetworkRules",
+                "Microsoft.DBforPostgreSQL/checkNameAvailability",
+                "Microsoft.DBforPostgreSQL/availableEngineVersions",
+                "Microsoft.DBforPostgreSQL/getPrivateDnsZoneSuffix",
+                "Microsoft.DBforPostgreSQL/locations",
+                "Microsoft.DBforPostgreSQL/locations/operationResults",
+                "Microsoft.DBforPostgreSQL/locations/azureAsyncOperation",
+                "Microsoft.DBforPostgreSQL/locations/administratorOperationResults",
+                "Microsoft.DBforPostgreSQL/locations/administratorAzureAsyncOperation",
+                "Microsoft.DBforPostgreSQL/locations/checkVirtualNetworkSubnetUsage",
+                "Microsoft.DBforPostgreSQL/locations/privateEndpointConnectionProxyOperationResults",
+                "Microsoft.DBforPostgreSQL/locations/privateEndpointConnectionProxyAzureAsyncOperation",
+                "Microsoft.DBforPostgreSQL/locations/privateEndpointConnectionOperationResults",
+                "Microsoft.DBforPostgreSQL/locations/privateEndpointConnectionAzureAsyncOperation",
+                "Microsoft.DBforPostgreSQL/locations/performanceTiers",
+                "Microsoft.DBforPostgreSQL/locations/securityAlertPoliciesAzureAsyncOperation",
+                "Microsoft.DBforPostgreSQL/locations/securityAlertPoliciesOperationResults",
+                "Microsoft.DBforPostgreSQL/locations/recommendedActionSessionsAzureAsyncOperation",
+                "Microsoft.DBforPostgreSQL/locations/recommendedActionSessionsOperationResults",
+                "Microsoft.DBforPostgreSQL/servers/topQueryStatistics",
+                "Microsoft.DBforPostgreSQL/servers/queryTexts",
+                "Microsoft.DBforPostgreSQL/servers/waitStatistics",
+                "Microsoft.DBforPostgreSQL/servers/resetQueryPerformanceInsightData",
+                "Microsoft.DBforPostgreSQL/servers/advisors",
+                "Microsoft.DBforPostgreSQL/servers/privateLinkResources",
+                "Microsoft.DBforPostgreSQL/servers/privateEndpointConnections",
+                "Microsoft.DBforPostgreSQL/servers/privateEndpointConnectionProxies",
+                "Microsoft.DBforPostgreSQL/servers/keys",
+                "Microsoft.DBforPostgreSQL/locations/serverKeyAzureAsyncOperation",
+                "Microsoft.DBforPostgreSQL/locations/serverKeyOperationResults",
+                "Microsoft.DBforPostgreSQL/locations/getCachedServerName"
+            ],
+            "serviceBus": [
+                "Microsoft.ServiceBus/namespaces",
+                "Microsoft.ServiceBus/namespaces/authorizationrules",
+                "Microsoft.ServiceBus/namespaces/networkrulesets",
+                "Microsoft.ServiceBus/namespaces/privateEndpointConnections",
+                "Microsoft.ServiceBus/namespaces/queues",
+                "Microsoft.ServiceBus/namespaces/queues/authorizationrules",
+                "Microsoft.ServiceBus/namespaces/topics",
+                "Microsoft.ServiceBus/namespaces/topics/authorizationrules",
+                "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+                "Microsoft.ServiceBus/namespaces/topics/subscriptions/rules",
+                "Microsoft.ServiceBus/checkNamespaceAvailability",
+                "Microsoft.ServiceBus/checkNameAvailability",
+                "Microsoft.ServiceBus/sku",
+                "Microsoft.ServiceBus/premiumMessagingRegions",
+                "Microsoft.ServiceBus/operations",
+                "Microsoft.ServiceBus/namespaces/eventgridfilters",
+                "Microsoft.ServiceBus/namespaces/disasterrecoveryconfigs",
+                "Microsoft.ServiceBus/namespaces/migrationConfigurations",
+                "Microsoft.ServiceBus/namespaces/disasterrecoveryconfigs/checkNameAvailability",
+                "Microsoft.ServiceBus/locations",
+                "Microsoft.ServiceBus/locations/operationStatus",
+                "Microsoft.ServiceBus/locations/deleteVirtualNetworkOrSubnets"
+            ],
+            "sql": [
+                "Microsoft.Sql/operations",
+                "Microsoft.Sql/locations",
+                "Microsoft.Sql/locations/capabilities",
+                "Microsoft.Sql/locations/databaseAzureAsyncOperation",
+                "Microsoft.Sql/locations/databaseOperationResults",
+                "Microsoft.Sql/locations/databaseEncryptionProtectorRevalidateAzureAsyncOperation",
+                "Microsoft.Sql/locations/databaseEncryptionProtectorRevalidateOperationResults",
+                "Microsoft.Sql/locations/databaseEncryptionProtectorRevertAzureAsyncOperation",
+                "Microsoft.Sql/locations/databaseEncryptionProtectorRevertOperationResults",
+                "Microsoft.Sql/locations/serverKeyAzureAsyncOperation",
+                "Microsoft.Sql/locations/serverKeyOperationResults",
+                "Microsoft.Sql/servers/keys",
+                "Microsoft.Sql/servers/encryptionProtector",
+                "Microsoft.Sql/locations/encryptionProtectorOperationResults",
+                "Microsoft.Sql/locations/encryptionProtectorAzureAsyncOperation",
+                "Microsoft.Sql/locations/externalPolicyBasedAuthorizationsAzureAsycOperation",
+                "Microsoft.Sql/locations/externalPolicyBasedAuthorizationsOperationResults",
+                "Microsoft.Sql/locations/refreshExternalGovernanceStatusOperationResults",
+                "Microsoft.Sql/locations/refreshExternalGovernanceStatusAzureAsyncOperation",
+                "Microsoft.Sql/locations/managedInstanceKeyAzureAsyncOperation",
+                "Microsoft.Sql/locations/managedInstanceKeyOperationResults",
+                "Microsoft.Sql/locations/managedInstanceEncryptionProtectorOperationResults",
+                "Microsoft.Sql/locations/managedInstanceEncryptionProtectorAzureAsyncOperation",
+                "Microsoft.Sql/locations/transparentDataEncryptionAzureAsyncOperation",
+                "Microsoft.Sql/locations/transparentDataEncryptionOperationResults",
+                "Microsoft.Sql/locations/managedtransparentDataEncryptionAzureAsyncOperation",
+                "Microsoft.Sql/locations/managedtransparentDataEncryptionOperationResults",
+                "Microsoft.Sql/servers/tdeCertificates",
+                "Microsoft.Sql/locations/tdeCertAzureAsyncOperation",
+                "Microsoft.Sql/locations/tdeCertOperationResults",
+                "Microsoft.Sql/locations/serverAzureAsyncOperation",
+                "Microsoft.Sql/locations/serverOperationResults",
+                "Microsoft.Sql/locations/usages",
+                "Microsoft.Sql/checkNameAvailability",
+                "Microsoft.Sql/servers",
+                "Microsoft.Sql/servers/databases",
+                "Microsoft.Sql/servers/serviceObjectives",
+                "Microsoft.Sql/servers/communicationLinks",
+                "Microsoft.Sql/servers/administrators",
+                "Microsoft.Sql/servers/administratorOperationResults",
+                "Microsoft.Sql/locations/serverAdministratorAzureAsyncOperation",
+                "Microsoft.Sql/locations/serverAdministratorOperationResults",
+                "Microsoft.Sql/servers/restorableDroppedDatabases",
+                "Microsoft.Sql/servers/recoverableDatabases",
+                "Microsoft.Sql/servers/databases/geoBackupPolicies",
+                "Microsoft.Sql/servers/import",
+                "Microsoft.Sql/servers/importExportOperationResults",
+                "Microsoft.Sql/servers/operationResults",
+                "Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies",
+                "Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies",
+                "Microsoft.Sql/servers/databaseSecurityPolicies",
+                "Microsoft.Sql/servers/automaticTuning",
+                "Microsoft.Sql/servers/databases/automaticTuning",
+                "Microsoft.Sql/servers/databases/transparentDataEncryption",
+                "Microsoft.Sql/servers/databases/ledgerDigestUploads",
+                "Microsoft.Sql/locations/ledgerDigestUploadsAzureAsyncOperation",
+                "Microsoft.Sql/locations/ledgerDigestUploadsOperationResults",
+                "Microsoft.Sql/servers/recommendedElasticPools",
+                "Microsoft.Sql/servers/databases/dataMaskingPolicies",
+                "Microsoft.Sql/servers/databases/dataMaskingPolicies/rules",
+                "Microsoft.Sql/servers/databases/securityAlertPolicies",
+                "Microsoft.Sql/servers/securityAlertPolicies",
+                "Microsoft.Sql/servers/databases/advancedThreatProtectionSettings",
+                "Microsoft.Sql/servers/advancedThreatProtectionSettings",
+                "Microsoft.Sql/managedInstances/databases/advancedThreatProtectionSettings",
+                "Microsoft.Sql/managedInstances/advancedThreatProtectionSettings",
+                "Microsoft.Sql/servers/databases/auditingSettings",
+                "Microsoft.Sql/servers/auditingSettings",
+                "Microsoft.Sql/servers/extendedAuditingSettings",
+                "Microsoft.Sql/servers/devOpsAuditingSettings",
+                "Microsoft.Sql/locations/auditingSettingsAzureAsyncOperation",
+                "Microsoft.Sql/locations/auditingSettingsOperationResults",
+                "Microsoft.Sql/locations/extendedAuditingSettingsAzureAsyncOperation",
+                "Microsoft.Sql/locations/extendedAuditingSettingsOperationResults",
+                "Microsoft.Sql/locations/devOpsAuditingSettingsOperationResults",
+                "Microsoft.Sql/locations/devOpsAuditingSettingsAzureAsyncOperation",
+                "Microsoft.Sql/locations/elasticPoolAzureAsyncOperation",
+                "Microsoft.Sql/locations/elasticPoolOperationResults",
+                "Microsoft.Sql/servers/elasticpools",
+                "Microsoft.Sql/servers/jobAccounts",
+                "Microsoft.Sql/servers/jobAgents",
+                "Microsoft.Sql/locations/jobAgentOperationResults",
+                "Microsoft.Sql/locations/jobAgentAzureAsyncOperation",
+                "Microsoft.Sql/servers/jobAgents/jobs",
+                "Microsoft.Sql/servers/jobAgents/jobs/steps",
+                "Microsoft.Sql/servers/jobAgents/jobs/executions",
+                "Microsoft.Sql/servers/disasterRecoveryConfiguration",
+                "Microsoft.Sql/servers/dnsAliases",
+                "Microsoft.Sql/locations/dnsAliasAsyncOperation",
+                "Microsoft.Sql/locations/dnsAliasOperationResults",
+                "Microsoft.Sql/servers/failoverGroups",
+                "Microsoft.Sql/locations/failoverGroupAzureAsyncOperation",
+                "Microsoft.Sql/locations/failoverGroupOperationResults",
+                "Microsoft.Sql/locations/firewallRulesOperationResults",
+                "Microsoft.Sql/locations/firewallRulesAzureAsyncOperation",
+                "Microsoft.Sql/locations/deleteVirtualNetworkOrSubnets",
+                "Microsoft.Sql/servers/virtualNetworkRules",
+                "Microsoft.Sql/locations/virtualNetworkRulesOperationResults",
+                "Microsoft.Sql/locations/virtualNetworkRulesAzureAsyncOperation",
+                "Microsoft.Sql/locations/deleteVirtualNetworkOrSubnetsOperationResults",
+                "Microsoft.Sql/locations/deleteVirtualNetworkOrSubnetsAzureAsyncOperation",
+                "Microsoft.Sql/locations/databaseRestoreAzureAsyncOperation",
+                "Microsoft.Sql/servers/usages",
+                "Microsoft.Sql/servers/databases/metricDefinitions",
+                "Microsoft.Sql/servers/databases/metrics",
+                "Microsoft.Sql/servers/aggregatedDatabaseMetrics",
+                "Microsoft.Sql/servers/elasticpools/metrics",
+                "Microsoft.Sql/servers/elasticpools/metricdefinitions",
+                "Microsoft.Sql/servers/databases/topQueries",
+                "servers/databases/topQueries/queryText",
+                "Microsoft.Sql/servers/advisors",
+                "Microsoft.Sql/servers/elasticPools/advisors",
+                "Microsoft.Sql/servers/databases/advisors",
+                "Microsoft.Sql/servers/databases/extensions",
+                "Microsoft.Sql/servers/elasticPoolEstimates",
+                "Microsoft.Sql/servers/databases/auditRecords",
+                "Microsoft.Sql/servers/databases/VulnerabilityAssessmentScans",
+                "Microsoft.Sql/servers/databases/workloadGroups",
+                "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
+                "Microsoft.Sql/servers/vulnerabilityAssessments",
+                "Microsoft.Sql/managedInstances/databases/vulnerabilityAssessments",
+                "Microsoft.Sql/managedInstances/vulnerabilityAssessments",
+                "Microsoft.Sql/servers/databases/VulnerabilityAssessmentSettings",
+                "Microsoft.Sql/servers/databases/VulnerabilityAssessment",
+                "Microsoft.Sql/locations/vulnerabilityAssessmentScanAzureAsyncOperation",
+                "Microsoft.Sql/locations/vulnerabilityAssessmentScanOperationResults",
+                "Microsoft.Sql/servers/databases/sqlvulnerabilityassessments",
+                "Microsoft.Sql/servers/sqlvulnerabilityassessments",
+                "Microsoft.Sql/locations/sqlVulnerabilityAssessmentAzureAsyncOperation",
+                "Microsoft.Sql/locations/sqlVulnerabilityAssessmentOperationResults",
+                "Microsoft.Sql/servers/databases/recommendedSensitivityLabels",
+                "Microsoft.Sql/servers/databases/syncGroups",
+                "Microsoft.Sql/servers/databases/syncGroups/syncMembers",
+                "Microsoft.Sql/servers/syncAgents",
+                "Microsoft.Sql/instancePools",
+                "Microsoft.Sql/locations/importExportOperationResults",
+                "Microsoft.Sql/locations/importExportAzureAsyncOperation",
+                "Microsoft.Sql/locations/instancePoolOperationResults",
+                "Microsoft.Sql/locations/instancePoolAzureAsyncOperation",
+                "Microsoft.Sql/managedInstances",
+                "Microsoft.Sql/managedInstances/administrators",
+                "Microsoft.Sql/managedInstances/databases",
+                "Microsoft.Sql/managedInstances/recoverableDatabases",
+                "Microsoft.Sql/managedInstances/metrics",
+                "Microsoft.Sql/managedInstances/metricDefinitions",
+                "Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies",
+                "Microsoft.Sql/managedInstances/sqlAgent",
+                "Microsoft.Sql/managedInstances/startStopSchedules",
+                "Microsoft.Sql/locations/managedInstancePrivateEndpointConnectionProxyOperationResults",
+                "Microsoft.Sql/locations/managedInstancePrivateEndpointConnectionProxyAzureAsyncOperation",
+                "Microsoft.Sql/locations/managedInstancePrivateEndpointConnectionOperationResults",
+                "Microsoft.Sql/locations/managedInstancePrivateEndpointConnectionAzureAsyncOperation",
+                "Microsoft.Sql/locations/longTermRetentionManagedInstances",
+                "Microsoft.Sql/locations/longTermRetentionManagedInstanceBackups",
+                "Microsoft.Sql/locations/managedInstanceLongTermRetentionPolicyOperationResults",
+                "Microsoft.Sql/locations/managedInstanceLongTermRetentionPolicyAzureAsyncOperation",
+                "Microsoft.Sql/locations/longTermRetentionManagedInstanceBackupOperationResults",
+                "Microsoft.Sql/locations/longTermRetentionManagedInstanceBackupAzureAsyncOperation",
+                "Microsoft.Sql/locations/managedDatabaseAzureAsyncOperation",
+                "Microsoft.Sql/locations/managedDatabaseOperationResults",
+                "Microsoft.Sql/locations/managedDatabaseRestoreAzureAsyncOperation",
+                "Microsoft.Sql/locations/managedDatabaseRestoreOperationResults",
+                "Microsoft.Sql/locations/managedDatabaseCompleteRestoreAzureAsyncOperation",
+                "Microsoft.Sql/locations/managedDatabaseCompleteRestoreOperationResults",
+                "Microsoft.Sql/locations/managedServerSecurityAlertPoliciesAzureAsyncOperation",
+                "Microsoft.Sql/locations/stopManagedInstanceAzureAsyncOperation",
+                "Microsoft.Sql/locations/stopManagedInstanceOperationResults",
+                "Microsoft.Sql/locations/startManagedInstanceAzureAsyncOperation",
+                "Microsoft.Sql/locations/startManagedInstanceOperationResults",
+                "Microsoft.Sql/managedInstances/tdeCertificates",
+                "Microsoft.Sql/locations/managedInstanceTdeCertAzureAsyncOperation",
+                "Microsoft.Sql/locations/managedInstanceTdeCertOperationResults",
+                "Microsoft.Sql/locations/managedServerSecurityAlertPoliciesOperationResults",
+                "Microsoft.Sql/locations/securityAlertPoliciesAzureAsyncOperation",
+                "Microsoft.Sql/locations/securityAlertPoliciesOperationResults",
+                "Microsoft.Sql/locations/advancedThreatProtectionAzureAsyncOperation",
+                "Microsoft.Sql/locations/advancedThreatProtectionOperationResults",
+                "Microsoft.Sql/locations/managedInstanceAdvancedThreatProtectionAzureAsyncOperation",
+                "Microsoft.Sql/locations/managedInstanceAdvancedThreatProtectionOperationResults",
+                "Microsoft.Sql/managedInstances/dnsAliases",
+                "Microsoft.Sql/locations/managedDnsAliasAsyncOperation",
+                "Microsoft.Sql/locations/managedDnsAliasOperationResults",
+                "Microsoft.Sql/virtualClusters",
+                "Microsoft.Sql/locations/virtualClusterAzureAsyncOperation",
+                "Microsoft.Sql/locations/virtualClusterOperationResults",
+                "Microsoft.Sql/locations/updateManagedInstanceDnsServersAzureAsyncOperation",
+                "Microsoft.Sql/locations/updateManagedInstanceDnsServersOperationResults",
+                "Microsoft.Sql/locations/managedInstanceAzureAsyncOperation",
+                "Microsoft.Sql/locations/managedInstanceOperationResults",
+                "Microsoft.Sql/locations/distributedAvailabilityGroupsOperationResults",
+                "Microsoft.Sql/locations/distributedAvailabilityGroupsAzureAsyncOperation",
+                "Microsoft.Sql/locations/serverTrustCertificatesOperationResults",
+                "Microsoft.Sql/locations/serverTrustCertificatesAzureAsyncOperation",
+                "Microsoft.Sql/locations/administratorAzureAsyncOperation",
+                "Microsoft.Sql/locations/administratorOperationResults",
+                "Microsoft.Sql/locations/syncGroupOperationResults",
+                "Microsoft.Sql/locations/syncMemberOperationResults",
+                "Microsoft.Sql/locations/syncAgentOperationResults",
+                "Microsoft.Sql/locations/syncDatabaseIds",
+                "Microsoft.Sql/locations/longTermRetentionServers",
+                "Microsoft.Sql/locations/longTermRetentionBackups",
+                "Microsoft.Sql/locations/longTermRetentionPolicyOperationResults",
+                "Microsoft.Sql/locations/longTermRetentionPolicyAzureAsyncOperation",
+                "Microsoft.Sql/locations/longTermRetentionBackupOperationResults",
+                "Microsoft.Sql/locations/longTermRetentionBackupAzureAsyncOperation",
+                "Microsoft.Sql/locations/shortTermRetentionPolicyOperationResults",
+                "Microsoft.Sql/locations/shortTermRetentionPolicyAzureAsyncOperation",
+                "Microsoft.Sql/locations/managedShortTermRetentionPolicyOperationResults",
+                "Microsoft.Sql/locations/managedShortTermRetentionPolicyAzureAsyncOperation",
+                "Microsoft.Sql/locations/instanceFailoverGroups",
+                "Microsoft.Sql/locations/instanceFailoverGroupAzureAsyncOperation",
+                "Microsoft.Sql/locations/instanceFailoverGroupOperationResults",
+                "Microsoft.Sql/locations/privateEndpointConnectionProxyOperationResults",
+                "Microsoft.Sql/locations/privateEndpointConnectionProxyAzureAsyncOperation",
+                "Microsoft.Sql/locations/privateEndpointConnectionOperationResults",
+                "Microsoft.Sql/locations/outboundFirewallRulesAzureAsyncOperation",
+                "Microsoft.Sql/locations/outboundFirewallRulesOperationResults",
+                "Microsoft.Sql/locations/privateEndpointConnectionAzureAsyncOperation",
+                "Microsoft.Sql/locations/notifyAzureAsyncOperation",
+                "Microsoft.Sql/locations/serverTrustGroups",
+                "Microsoft.Sql/locations/serverTrustGroupOperationResults",
+                "Microsoft.Sql/locations/serverTrustGroupAzureAsyncOperation",
+                "Microsoft.Sql/locations/managedDatabaseMoveOperationResults",
+                "Microsoft.Sql/locations/managedDatabaseMoveAzureAsyncOperation",
+                "Microsoft.Sql/servers/connectionPolicies",
+                "Microsoft.Sql/locations/connectionPoliciesAzureAsyncOperation",
+                "Microsoft.Sql/locations/connectionPoliciesOperationResults",
+                "Microsoft.Sql/locations/notifyNetworkSecurityPerimeterUpdatesAvailable",
+                "Microsoft.Sql/locations/replicationLinksAzureAsyncOperation",
+                "Microsoft.Sql/locations/replicationLinksOperationResults",
+                "Microsoft.Sql/locations/managedInstanceDtcAzureAsyncOperation",
+                "Microsoft.Sql/managedInstances/databases/ledgerDigestUploads",
+                "Microsoft.Sql/locations/managedLedgerDigestUploadsOperationResults",
+                "Microsoft.Sql/locations/managedLedgerDigestUploadsAzureAsyncOperation",
+                "Microsoft.Sql/locations/serverConfigurationOptionAzureAsyncOperation"
+            ],
+            "storage": [
+                "Microsoft.Storage/storageAccounts/storageTaskAssignments",
+                "Microsoft.Storage/storageAccounts/encryptionScopes",
+                "Microsoft.Storage/deletedAccounts",
+                "Microsoft.Storage/locations/deletedAccounts",
+                "Microsoft.Storage/storageAccounts",
+                "Microsoft.Storage/storageTasks",
+                "Microsoft.Storage/operations",
+                "Microsoft.Storage/locations/asyncoperations",
+                "Microsoft.Storage/storageAccounts/listAccountSas",
+                "Microsoft.Storage/storageAccounts/listServiceSas",
+                "Microsoft.Storage/storageAccounts/blobServices",
+                "Microsoft.Storage/storageAccounts/tableServices",
+                "Microsoft.Storage/storageAccounts/queueServices",
+                "Microsoft.Storage/storageAccounts/fileServices",
+                "Microsoft.Storage/locations",
+                "Microsoft.Storage/locations/usages",
+                "Microsoft.Storage/locations/deleteVirtualNetworkOrSubnets",
+                "Microsoft.Storage/usages",
+                "Microsoft.Storage/checkNameAvailability",
+                "Microsoft.Storage/locations/checkNameAvailability",
+                "Microsoft.Storage/storageAccounts/services",
+                "Microsoft.Storage/storageAccounts/services/metricDefinitions",
+                "Microsoft.Storage/locations/notifyNetworkSecurityPerimeterUpdatesAvailable"
+            ],
+            "synapse": [
+                "Microsoft.Synapse/workspaces",
+                "Microsoft.Synapse/workspaces/bigDataPools",
+                "Microsoft.Synapse/workspaces/sqlPools",
+                "Microsoft.Synapse/workspaces/sqlDatabases",
+                "Microsoft.Synapse/locations/sqlDatabaseAzureAsyncOperation",
+                "Microsoft.Synapse/locations/sqlDatabaseOperationResults",
+                "Microsoft.Synapse/workspaces/kustoPools",
+                "Microsoft.Synapse/locations/kustoPoolOperationResults",
+                "Microsoft.Synapse/locations/kustoPoolCheckNameAvailability",
+                "Microsoft.Synapse/workspaces/kustoPools/databases",
+                "Microsoft.Synapse/workspaces/kustoPools/attacheddatabaseconfigurations",
+                "Microsoft.Synapse/workspaces/kustoPools/databases/dataconnections",
+                "Microsoft.Synapse/locations/sqlPoolAzureAsyncOperation",
+                "Microsoft.Synapse/locations/sqlPoolOperationResults",
+                "Microsoft.Synapse/workspaces/operationStatuses",
+                "Microsoft.Synapse/workspaces/operationResults",
+                "Microsoft.Synapse/checkNameAvailability",
+                "Microsoft.Synapse/operations",
+                "Microsoft.Synapse/kustoOperations",
+                "Microsoft.Synapse/privateLinkHubs",
+                "Microsoft.Synapse/locations",
+                "Microsoft.Synapse/locations/operationResults",
+                "Microsoft.Synapse/locations/operationStatuses"
+            ],
+            "vdi": [
+                "Microsoft.DesktopVirtualization/hostPools",
+                "Microsoft.DesktopVirtualization/workspaces",
+                "Microsoft.DesktopVirtualization/applicationGroups",
+                "Microsoft.DesktopVirtualization/applicationGroups/applications",
+                "Microsoft.DesktopVirtualization/applicationGroups/desktops",
+                "Microsoft.DesktopVirtualization/applicationgroups/startmenuitems",
+                "Microsoft.DesktopVirtualization/hostpools/msixpackages",
+                "Microsoft.DesktopVirtualization/hostpools/sessionhosts",
+                "Microsoft.DesktopVirtualization/hostpools/sessionhosts/usersessions",
+                "Microsoft.DesktopVirtualization/hostpools/usersessions",
+                "Microsoft.DesktopVirtualization/scalingplans",
+                "Microsoft.DesktopVirtualization/operations"
+            ],
+            "platform": [
+                "Microsoft.Authorization/roleAssignmentScheduleRequests",
+                "Microsoft.Authorization/roleEligibilityScheduleRequests",
+                "Microsoft.Authorization/roleAssignmentSchedules",
+                "Microsoft.Authorization/roleEligibilitySchedules",
+                "Microsoft.Authorization/roleAssignmentScheduleInstances",
+                "Microsoft.Authorization/roleEligibilityScheduleInstances",
+                "Microsoft.Authorization/roleManagementPolicies",
+                "Microsoft.Authorization/roleManagementPolicyAssignments",
+                "Microsoft.Authorization/eligibleChildResources",
+                "Microsoft.Authorization/roleManagementAlerts",
+                "Microsoft.Authorization/roleManagementAlertConfigurations",
+                "Microsoft.Authorization/roleManagementAlertDefinitions",
+                "Microsoft.Authorization/roleAssignments",
+                "Microsoft.Authorization/roleDefinitions",
+                "Microsoft.Authorization/permissions",
+                "Microsoft.Authorization/denyAssignments",
+                "Microsoft.Authorization/locks",
+                "Microsoft.Authorization/operations",
+                "Microsoft.Authorization/policyDefinitions",
+                "Microsoft.Authorization/policySetDefinitions",
+                "Microsoft.Authorization/policyAssignments",
+                "Microsoft.Authorization/policyExemptions",
+                "Microsoft.Authorization/dataAliases",
+                "Microsoft.Authorization/dataPolicyManifests",
+                "Microsoft.Authorization/providerOperations",
+                "Microsoft.Authorization/elevateAccess",
+                "Microsoft.Authorization/checkAccess",
+                "Microsoft.Authorization/batchResourceCheckAccess",
+                "Microsoft.Authorization/findOrphanRoleAssignments",
+                "Microsoft.Authorization/roleAssignmentsUsageMetrics",
+                "Microsoft.Authorization/accessReviewScheduleDefinitions",
+                "Microsoft.Authorization/accessReviewScheduleSettings",
+                "Microsoft.Authorization/accessReviewHistoryDefinitions",
+                "Microsoft.Authorization/roleAssignmentApprovals",
+                "Microsoft.Authorization/privateLinkAssociations",
+                "Microsoft.Authorization/resourceManagementPrivateLinks",
+                "Microsoft.Authorization/operationStatus",
+                "Microsoft.Authorization/diagnosticSettings",
+                "Microsoft.Authorization/diagnosticSettingsCategories",
+                "Microsoft.OperationalInsights/workspaces",
+                "Microsoft.OperationalInsights/querypacks",
+                "Microsoft.OperationalInsights/locations",
+                "Microsoft.OperationalInsights/locations/operationStatuses",
+                "Microsoft.OperationalInsights/workspaces/scopedPrivateLinkProxies",
+                "Microsoft.OperationalInsights/workspaces/query",
+                "Microsoft.OperationalInsights/workspaces/metadata",
+                "Microsoft.OperationalInsights/workspaces/dataSources",
+                "Microsoft.OperationalInsights/workspaces/linkedStorageAccounts",
+                "Microsoft.OperationalInsights/workspaces/tables",
+                "Microsoft.OperationalInsights/workspaces/storageInsightConfigs",
+                "Microsoft.OperationalInsights/storageInsightConfigs",
+                "Microsoft.OperationalInsights/workspaces/linkedServices",
+                "Microsoft.OperationalInsights/linkTargets",
+                "Microsoft.OperationalInsights/deletedWorkspaces",
+                "Microsoft.OperationalInsights/operations",
+                "Microsoft.OperationalInsights/clusters",
+                "Microsoft.OperationalInsights/workspaces/dataExports",
+                "Microsoft.insights/components",
+                "Microsoft.insights/components/query",
+                "Microsoft.insights/components/metadata",
+                "Microsoft.insights/components/metrics",
+                "Microsoft.insights/components/events",
+                "Microsoft.insights/components/syntheticmonitorlocations",
+                "Microsoft.insights/components/analyticsItems",
+                "Microsoft.insights/components/webtests",
+                "Microsoft.insights/components/workItemConfigs",
+                "Microsoft.insights/components/myFavorites",
+                "Microsoft.insights/components/operations",
+                "Microsoft.insights/components/exportConfiguration",
+                "Microsoft.insights/components/purge",
+                "Microsoft.insights/components/api",
+                "Microsoft.insights/components/aggregate",
+                "Microsoft.insights/components/metricDefinitions",
+                "Microsoft.insights/components/extendQueries",
+                "Microsoft.insights/components/apiKeys",
+                "Microsoft.insights/components/myAnalyticsItems",
+                "Microsoft.insights/components/favorites",
+                "Microsoft.insights/components/defaultWorkItemConfig",
+                "Microsoft.insights/components/annotations",
+                "Microsoft.insights/components/proactiveDetectionConfigs",
+                "Microsoft.insights/components/move",
+                "Microsoft.insights/components/currentBillingFeatures",
+                "Microsoft.insights/components/quotaStatus",
+                "Microsoft.insights/components/featureCapabilities",
+                "Microsoft.insights/components/getAvailableBillingFeatures",
+                "Microsoft.insights/webtests",
+                "Microsoft.insights/webtests/getTestResultFile",
+                "Microsoft.insights/scheduledqueryrules",
+                "Microsoft.insights/components/pricingPlans",
+                "Microsoft.insights/migrateToNewPricingModel",
+                "Microsoft.insights/rollbackToLegacyPricingModel",
+                "Microsoft.insights/listMigrationdate",
+                "Microsoft.insights/logprofiles",
+                "Microsoft.insights/migratealertrules",
+                "Microsoft.insights/metricalerts",
+                "Microsoft.insights/alertrules",
+                "Microsoft.insights/autoscalesettings",
+                "Microsoft.insights/eventtypes",
+                "Microsoft.insights/locations",
+                "Microsoft.insights/locations/operationResults",
+                "Microsoft.insights/vmInsightsOnboardingStatuses",
+                "Microsoft.insights/operations",
+                "Microsoft.insights/diagnosticSettings",
+                "Microsoft.insights/diagnosticSettingsCategories",
+                "Microsoft.insights/extendedDiagnosticSettings",
+                "Microsoft.insights/metricDefinitions",
+                "Microsoft.insights/logDefinitions",
+                "Microsoft.insights/eventCategories",
+                "Microsoft.insights/metrics",
+                "Microsoft.insights/metricbatch",
+                "Microsoft.insights/metricNamespaces",
+                "Microsoft.insights/notificationstatus",
+                "Microsoft.insights/createnotifications",
+                "Microsoft.insights/actiongroups",
+                "Microsoft.insights/activityLogAlerts",
+                "Microsoft.insights/metricbaselines",
+                "Microsoft.insights/workbooks",
+                "Microsoft.insights/workbooktemplates",
+                "Microsoft.insights/myWorkbooks",
+                "Microsoft.insights/logs",
+                "Microsoft.insights/transactions",
+                "Microsoft.insights/topology",
+                "Microsoft.insights/generateLiveToken",
+                "Microsoft.insights/monitoredObjects",
+                "Microsoft.insights/dataCollectionRules",
+                "Microsoft.insights/dataCollectionRuleAssociations",
+                "Microsoft.insights/dataCollectionEndpoints",
+                "Microsoft.insights/dataCollectionEndpoints/scopedPrivateLinkProxies",
+                "Microsoft.insights/privateLinkScopes",
+                "Microsoft.insights/privateLinkScopes/privateEndpointConnections",
+                "Microsoft.insights/privateLinkScopes/privateEndpointConnectionProxies",
+                "Microsoft.insights/privateLinkScopes/scopedResources",
+                "Microsoft.insights/components/linkedstorageaccounts",
+                "Microsoft.insights/privateLinkScopeOperationStatuses",
+                "Microsoft.Resources/deploymentScripts",
+                "Microsoft.Resources/deploymentScripts/logs",
+                "Microsoft.Resources/locations/deploymentScriptOperationResults",
+                "Microsoft.Resources/templateSpecs",
+                "Microsoft.Resources/templateSpecs/versions",
+                "Microsoft.Resources/builtInTemplateSpecs",
+                "Microsoft.Resources/builtInTemplateSpecs/versions",
+                "Microsoft.Resources/deploymentStacks",
+                "Microsoft.Resources/locations/deploymentStackOperationStatus",
+                "Microsoft.Resources/tenants",
+                "Microsoft.Resources/locations",
+                "Microsoft.Resources/operationresults",
+                "Microsoft.Resources/notifyResourceJobs",
+                "Microsoft.Resources/tags",
+                "Microsoft.Resources/checkPolicyCompliance",
+                "Microsoft.Resources/providers",
+                "Microsoft.Resources/checkresourcename",
+                "Microsoft.Resources/calculateTemplateHash",
+                "Microsoft.Resources/resources",
+                "Microsoft.Resources/subscriptions",
+                "Microsoft.Resources/subscriptions/resources",
+                "Microsoft.Resources/subscriptions/providers",
+                "Microsoft.Resources/subscriptions/operationresults",
+                "Microsoft.Resources/resourceGroups",
+                "Microsoft.Resources/subscriptions/resourceGroups",
+                "Microsoft.Resources/subscriptions/resourcegroups/resources",
+                "Microsoft.Resources/subscriptions/locations",
+                "Microsoft.Resources/subscriptions/tagnames",
+                "Microsoft.Resources/subscriptions/tagNames/tagValues",
+                "Microsoft.Resources/deployments",
+                "Microsoft.Resources/deployments/operations",
+                "Microsoft.Resources/validateResources",
+                "Microsoft.Resources/links",
+                "Microsoft.Resources/operations",
+                "Microsoft.Resources/bulkDelete",
+                "Microsoft.Resources/changes",
+                "Microsoft.Resources/snapshots",
+                "Microsoft.ManagedIdentity/Identities",
+                "Microsoft.ManagedIdentity/userAssignedIdentities",
+                "Microsoft.ManagedIdentity/operations",
+                "Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials",
+                "microsoft.resourcegraph/operations",
+                "microsoft.resourcegraph/queries",
+                "microsoft.resourcegraph/resourcechangedetails",
+                "microsoft.resourcegraph/resourcechanges",
+                "microsoft.resourcegraph/resources",
+                "microsoft.resourcegraph/resourceshistory",
+                "microsoft.resources/deploymentstacks/snapshots",
+                "microsoft.resources/bulkdelete",
+                "microsoft.resources/checkzonepeers",
+                "microsoft.resourcegraph/subscriptionsstatus",
+                "microsoft.resourcehealth/availabilitystatuses",
+                "microsoft.resourcehealth/childavailabilitystatuses",
+                "microsoft.resourcehealth/childresources",
+                "microsoft.resourcehealth/emergingissues",
+                "microsoft.resourcehealth/events",
+                "microsoft.resourcehealth/impactedresources",
+                "microsoft.resourcehealth/metadata",
+                "microsoft.resourcehealth/operations",
+                "microsoft.security/adaptivenetworkhardenings",
+                "microsoft.security/advancedthreatprotectionsettings",
+                "microsoft.security/alerts",
+                "microsoft.security/alertssuppressionrules",
+                "microsoft.security/allowedconnections",
+                "microsoft.security/antimalwaresettings",
+                "microsoft.security/apicollections",
+                "microsoft.security/applications",
+                "microsoft.security/applicationwhitelistings",
+                "microsoft.security/assessmentmetadata",
+                "microsoft.security/assessments",
+                "microsoft.security/assessments/governanceassignments",
+                "microsoft.security/assignments",
+                "microsoft.security/autodismissalertsrules",
+                "microsoft.security/automations",
+                "microsoft.security/complianceresults",
+                "microsoft.security/compliances",
+                "microsoft.security/connectedcontainerregistries",
+                "microsoft.security/connectors",
+                "microsoft.security/customassessmentautomations",
+                "microsoft.security/customentitystoreassignments",
+                "microsoft.security/datacollectionagents",
+                "microsoft.security/datascanners",
+                "microsoft.security/datasensitivitysettings",
+                "microsoft.security/defenderforstoragesettings",
+                "microsoft.security/devicesecuritygroups",
+                "microsoft.security/discoveredsecuritysolutions",
+                "microsoft.security/externalsecuritysolutions",
+                "microsoft.security/governancerules",
+                "microsoft.security/informationprotectionpolicies",
+                "microsoft.security/ingestionsettings",
+                "microsoft.security/iotsecuritysolutions",
+                "microsoft.security/iotsecuritysolutions/analyticsmodels",
+                "microsoft.security/iotsecuritysolutions/analyticsmodels/aggregatedalerts",
+                "microsoft.security/iotsecuritysolutions/analyticsmodels/aggregatedrecommendations",
+                "microsoft.security/iotsecuritysolutions/iotalerts",
+                "microsoft.security/iotsecuritysolutions/iotalerttypes",
+                "microsoft.security/iotsecuritysolutions/iotrecommendations",
+                "microsoft.security/iotsecuritysolutions/iotrecommendationtypes",
+                "microsoft.security/jitnetworkaccesspolicies",
+                "microsoft.security/jitpolicies",
+                "microsoft.security/locations",
+                "microsoft.security/locations/alerts",
+                "microsoft.security/locations/allowedconnections",
+                "microsoft.security/locations/applicationwhitelistings",
+                "microsoft.security/locations/discoveredsecuritysolutions",
+                "microsoft.security/locations/externalsecuritysolutions",
+                "microsoft.security/locations/jitnetworkaccesspolicies",
+                "microsoft.security/locations/securitysolutions",
+                "microsoft.security/locations/securitysolutionsreferencedata",
+                "microsoft.security/locations/tasks",
+                "microsoft.security/locations/topologies",
+                "microsoft.security/mdeonboardings",
+                "microsoft.security/operations",
+                "microsoft.security/policies",
+                "microsoft.security/pricings",
+                "microsoft.security/pricings/securityoperators",
+                "microsoft.security/query",
+                "microsoft.security/regulatorycompliancestandards",
+                "microsoft.security/regulatorycompliancestandards/regulatorycompliancecontrols",
+                "microsoft.security/regulatorycompliancestandards/regulatorycompliancecontrols/regulatorycomplianceassessments",
+                "microsoft.security/securescorecontroldefinitions",
+                "microsoft.security/securescorecontrols",
+                "microsoft.security/securescores",
+                "microsoft.security/securescores/securescorecontrols",
+                "microsoft.security/securityconnectors",
+                "microsoft.security/securitycontacts",
+                "microsoft.security/securitysolutions",
+                "microsoft.security/standards",
+                "microsoft.security/subassessments",
+                "microsoft.security/securitysolutionsreferencedata",
+                "microsoft.security/securitystatuses",
+                "microsoft.security/securitystatusessummaries",
+                "microsoft.security/servervulnerabilityassessments",
+                "microsoft.security/servervulnerabilityassessmentssettings",
+                "microsoft.security/settings",
+                "microsoft.security/sqlvulnerabilityassessments",
+                "microsoft.security/tasks",
+                "microsoft.security/topologies",
+                "microsoft.security/vmscanners",
+                "microsoft.security/workspacesettings",
+                "microsoft.securitygraph/diagnosticsettings",
+                "microsoft.securitygraph/diagnosticsettingscategories",
+                "microsoft.securitygraph/operations",
+                "microsoft.securityinsights/aggregations",
+                "microsoft.securityinsights/alertrules",
+                "microsoft.securityinsights/alertrules/actions",
+                "microsoft.securityinsights/alertruletemplates",
+                "microsoft.securityinsights/automationrules",
+                "microsoft.securityinsights/bookmarks",
+                "microsoft.securityinsights/bookmarks/relations",
+                "microsoft.securityinsights/cases",
+                "microsoft.securityinsights/cases/comments",
+                "microsoft.securityinsights/confidentialwatchlists",
+                "microsoft.securityinsights/contentpackages",
+                "microsoft.securityinsights/contenttemplates",
+                "microsoft.securityinsights/dataconnectordefinitions",
+                "microsoft.securityinsights/dataconnectors",
+                "microsoft.securityinsights/dataconnectorscheckrequirements",
+                "microsoft.securityinsights/dynamicsummaries",
+                "microsoft.securityinsights/enrichment",
+                "microsoft.securityinsights/entities",
+                "microsoft.securityinsights/entityqueries",
+                "microsoft.securityinsights/entityquerytemplates",
+                "microsoft.securityinsights/exportconnections",
+                "microsoft.securityinsights/fileimports",
+                "microsoft.securityinsights/hunts",
+                "microsoft.securityinsights/huntsessions",
+                "microsoft.securityinsights/incidents",
+                "microsoft.securityinsights/incidents/comments",
+                "microsoft.securityinsights/incidents/relations",
+                "microsoft.securityinsights/listrepositories",
+                "microsoft.securityinsights/metadata",
+                "microsoft.securityinsights/mitrecoveragerecords",
+                "microsoft.securityinsights/officeconsents",
+                "microsoft.securityinsights/onboardingstates",
+                "microsoft.securityinsights/operations",
+                "microsoft.securityinsights/overview",
+                "microsoft.securityinsights/recommendations",
+                "microsoft.securityinsights/securitymlanalyticssettings",
+                "microsoft.securityinsights/settings",
+                "microsoft.securityinsights/sourcecontrols",
+                "microsoft.securityinsights/threatintelligence",
+                "microsoft.securityinsights/threatintelligence/indicators",
+                "microsoft.securityinsights/triggeredanalyticsruleruns",
+                "microsoft.securityinsights/watchlists",
+                "microsoft.securityinsights/workspacemanagerassignments",
+                "microsoft.securityinsights/workspacemanagerconfigurations",
+                "microsoft.securityinsights/workspacemanagergroups",
+                "microsoft.securityinsights/workspacemanagermembers"
+            ]
+        },
+        "allowedResourcesMap": "[concat(if(contains(parameters('compliantAzureServices'), 'Apim'), variables('allowedResources').apiManagement, json('[]')), if(contains(parameters('compliantAzureServices'), 'Automation'), variables('allowedResources').automation, json('[]')),if(contains(parameters('compliantAzureServices'), 'Backup'), variables('allowedResources').backup, json('[]')),if(contains(parameters('compliantAzureServices'), 'Compute'), variables('allowedResources').compute, json('[]')),if(contains(parameters('compliantAzureServices'), 'ContainerApps'), variables('allowedResources').containerApps, json('[]')), if(contains(parameters('compliantAzureServices'), 'ContainerInstance'), variables('allowedResources').containerInstance, json('[]')), if(contains(parameters('compliantAzureServices'), 'ContainerRegistry'), variables('allowedResources').containerRegistry, json('[]')), if(contains(parameters('compliantAzureServices'), 'CosmosDb'), variables('allowedResources').cosmosDb, json('[]')), if(contains(parameters('compliantAzureServices'), 'DataExplorer'), variables('allowedResources').dataExplorer, json('[]')), if(contains(parameters('compliantAzureServices'), 'DataFactory'), variables('allowedResources').dataFactory, json('[]')), if(contains(parameters('compliantAzureServices'), 'EventGrid'), variables('allowedResources').eventGrid, json('[]')), if(contains(parameters('compliantAzureServices'), 'EventHub'), variables('allowedResources').eventHub, json('[]')), if(contains(parameters('compliantAzureServices'), 'KeyVault'), variables('allowedResources').keyVault, json('[]')), if(contains(parameters('compliantAzureServices'), 'Kubernetes'), variables('allowedResources').kubernetes, json('[]')), if(contains(parameters('compliantAzureServices'), 'MachineLearning'), variables('allowedResources').machineLearning, json('[]')), if(contains(parameters('compliantAzureServices'), 'Networking'), variables('allowedResources').network, json('[]')), if(contains(parameters('compliantAzureServices'), 'OpenAi'), variables('allowedResources').openAi, json('[]')), if(contains(parameters('compliantAzureServices'), 'PostgreSql'), variables('allowedResources').postgreSql, json('[]')), if(contains(parameters('compliantAzureServices'), 'ServiceBus'), variables('allowedResources').serviceBus, json('[]')), if(contains(parameters('compliantAzureServices'), 'Sql'), variables('allowedResources').sql, json('[]')), if(contains(parameters('compliantAzureServices'), 'StorageAccount'), variables('allowedResources').storage, json('[]')), if(contains(parameters('compliantAzureServices'), 'Synapse'), variables('allowedResources').synapse, json('[]')), if(contains(parameters('compliantAzureServices'), 'DesktopVirtualization'), variables('allowedResources').vdi, json('[]')), variables('allowedResources').platform)]"
     },
     "resources": [
         /*
@@ -1128,8 +2347,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1152,8 +2370,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1176,8 +2393,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1200,8 +2416,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1224,8 +2439,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1248,8 +2462,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1272,8 +2485,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1296,8 +2508,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1320,8 +2531,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1344,8 +2554,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1368,8 +2577,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1392,8 +2600,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1416,8 +2623,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1440,8 +2646,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1464,8 +2669,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1488,8 +2692,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1512,8 +2715,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1536,8 +2738,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1560,8 +2761,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1584,8 +2784,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1608,8 +2807,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1632,8 +2830,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1656,8 +2853,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1680,8 +2876,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1704,8 +2899,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1728,8 +2922,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -1753,7 +2946,6 @@
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantApimDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantAppServiceDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantAutomationDeploymentName)]",
@@ -1801,8 +2993,7 @@
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -2167,7 +3358,6 @@
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]"
             ],
             "properties": {
@@ -2248,7 +3438,6 @@
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]"
             ],
             "properties": {
@@ -2269,10 +3458,8 @@
             "scope": "[variables('scopes').platformManagementGroup]",
             "location": "[deployment().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLitedeploymentNames').platformLiteSubscriptionPlacement)]",                
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]",       
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]"
             ],
             "properties": {
@@ -2303,10 +3490,8 @@
             "scope": "[variables('scopes').playgroundManagementGroup]",
             "location": "[deployment().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLitedeploymentNames').platformLiteSubscriptionPlacement)]",                
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]",         
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]"
             ],
             "properties": {
@@ -2338,7 +3523,6 @@
             "location": "[deployment().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]"
             ],
             "properties": {
@@ -2370,7 +3554,6 @@
             "location": "[deployment().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]"
             ],
             "properties": {
@@ -2470,8 +3653,7 @@
             "scope": "[variables('scopes').industryRootManagementGroup]",
             "location": "[deployment().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -3063,11 +4245,9 @@
             "scope": "[variables('scopes').platformManagementGroup]",
             "dependsOn": [
                 "policyCompletion",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logStorageDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').logLiteStorageDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').nwDeploymentName)]"
             ],
             "properties": {
@@ -3119,10 +4299,8 @@
             "scope": "[variables('scopes').platformManagementGroup]",
             "dependsOn": [
                 "policyCompletion",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logStorageDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').logLiteStorageDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').nwDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').asbPolicyDeploymentName)]"
             ],
@@ -3148,11 +4326,9 @@
             "subscriptionId": "[parameters('connectivitySubscriptionId')]",
             "dependsOn": [
                 "policyCompletion",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logStorageDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').connectivitySubscriptionPlacement)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').logLiteStorageDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').connectivitySubscriptionPlacement)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -3211,7 +4387,8 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
-                "policyCompletion"
+                "policyCompletion",
+                "dnsZones"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -3228,6 +4405,32 @@
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
             }
+        },
+        {   // Creating Policy Assignment for allowed Azure Resources on Landing Zone management group
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').allowedResourcesDeploymentName]",
+            "scope": "[variables('scopes').lzsManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
+                "policyCompletion",
+                "dnsZones"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').allowedResourcesPolicyAssignment]"
+                },
+                "parameters": {
+                    "listOfResourceTypesAllowed": {
+                        "value": "[variables('allowedResourcesMap')]"
+                    }
+                    // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
+                }
+            }
         },       
         {   // Creating Policy Assignment for NSG Flow Logs Policy on Landing zone scope
             "condition": "[and(equals(parameters('enableNetworkWatcher'), 'Yes'), equals(parameters('enableNsgFlowLogs'), 'Yes'))]",
@@ -3238,12 +4441,10 @@
             "scope": "[variables('scopes').lzsManagementGroup]",
             "dependsOn": [
                 "policyCompletion",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').nwDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logStorageDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').logLiteStorageDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logStorageDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -3988,7 +5189,110 @@
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
             }
-        },         
+        },
+        {   // Creating Policy Assignment Compliant Network to Platform Management group scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'Networking')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantPlatformNetworkAssignmentDeploymentName]",
+            "scope": "[variables('scopes').platformManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantNetworkDeploymentName)]",
+                "dnsZones",
+                "policyCompletion",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantNetworkPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },                    
+                    "vnetModifyDdos": {
+                        "value": "[if(equals(parameters('enableDdos'), 'Yes'), 'Modify', 'Disabled')]"
+                    },
+                    "ddosPlanResourceId": {
+                        "value": "[if(equals(parameters('enableDdos'), 'Yes'), variables('platformResourceIds').ddosProtectionResourceId, '')]"
+                    },
+                    "nsgDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "nsgLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "lbDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "lbDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "fdDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "fdDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "tmDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "tmDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "vnetDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "vnetDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "erDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "erDiagnosticsLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "bastionDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "bastionLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "fdCdnDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "fdCdnLogAnalyticsWorkpaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "pipDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "pipLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "gwDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "gwLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "p2sDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "p2sLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
+                    // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
+                }
+            }
+        },           
         {   // Creating Policy Assignment Compliant Open Ai to Landing Zone scope
             "condition": "[contains(parameters('compliantAzureServices'), 'OpenAi')]",
             "type": "Microsoft.Resources/deployments",
@@ -4889,7 +6193,10 @@
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascPolicyDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascGovPolicyDeploymentName)]",                
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').centralizedPlatformLogsAssignmentDeploymentName)]"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').centralizedPlatformLogsAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').vnetConnectivityHubDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').vwanConnectivityHubDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').nvaConnectivityHubDeploymentName)]"
             ],
             "copy": {
                 "name": "corpConnectedMoveLzs",
@@ -4929,9 +6236,6 @@
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascPolicyDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascGovPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').vwanConnectivityHubLiteDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').vnetConnectivityHubLiteDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').nvaConnectivityHubLiteDeploymentName)]",
                 "corpConnectedMoveLzs"
             ],
             "copy": {
@@ -4963,835 +6267,6 @@
                     "azureFirewallResourceId": {
                         "value": "[if(equals(parameters('enableAzFwDnsProxy'), 'Yes'), variables('platformResourceIds').azFirewallResourceId, '')]"
                     }
-                }
-            }
-        },
-        /*{
-            // Peering corp connected lz vnet to connectivity sub (when vwan is selected)
-            "condition": "[and(equals(parameters('enableHub'), 'vwan'), not(empty(parameters('corpConnectedLzSubscriptionId'))))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
-            "name": "[concat(variables('deploymentNames').corpConnectedLzVwanSubs, copyIndex())]",
-            "subscriptionId": "[if(not(empty(parameters('corpConnectedLzSubscriptionId'))), parameters('corpConnectedLzSubscriptionId')[copyIndex()].subs, '')]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').vnetConnectivityHubDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').vwanConnectivityHubDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').nvaConnectivityHubDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ddosLzPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascGovPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').centralizedPlatformLogsAssignmentDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').vwanConnectivityHubLiteDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').vnetConnectivityHubLiteDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').nvaConnectivityHubLiteDeploymentName)]",
-                "corpConnectedMoveLzs"
-            ],
-            "copy": {
-                "name": "corpConnectedVwanPeering",
-                "count": "[length(parameters('corpConnectedLzSubscriptionId'))]",
-                "batchSize": 1,
-                "mode": "Serial"
-            },
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').corpVnetPeering]"
-                },
-                "parameters": {
-                    "vNetRgName": {
-                        "value": "[variables('platformRgNames').lzVnetRg]"
-                    },
-                    "vNetName": {
-                        "value": "[concat(parameters('corpConnectedLzSubscriptionId')[copyIndex()].subs, '-', variables('platformResourceNames').lzVnet)]"
-                    },
-                    "vNetLocation": {
-                        "value": "[parameters('location')]"
-                    },
-                    "vNetCidrRange": {
-                        "value": "[parameters('corpConnectedLzSubscriptionId')[copyIndex()].addresses]"
-                    },
-                    "hubResourceId": {
-                        "value": "[variables('platformResourceIds').vWanHubResourceId]"
-                    },
-                    "azureFirewallResourceId": {
-                        "value": "[if(equals(parameters('enableAzFwDnsProxy'), 'Yes'), variables('platformResourceIds').azFirewallResourceId, '')]"
-                    }
-                }
-            }
-        },*/     
-        /*
-            **FSI Lite Only!**
-            The following section represent optional deployments in case the user select to use a single dedicated subscription for platform resources.
-            This is not recommmended for production deployment, only for small enterprises, demo, POC, etc.
-
-            The following deployment will create the management group structure for FSI Lite
-        */
-        {
-            // Creating the FSI Lite management group structure
-            "condition": "[not(empty(parameters('singlePlatformSubscriptionId')))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2019-10-01",
-            "name": "[variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName]",
-            "location": "[deployment().location]",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').managementGroupsLite]"
-                },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
-            }
-        },
-        /*
-            Note: ES Lite only: the following deployments will organize the dedicated platform subscription into the dedicated management groups
-        */ 
-        {
-            // Placing Platform subscription into dedicated management group
-            "condition": "[not(empty(parameters('singlePlatformSubscriptionId')))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement]",
-            "location": "[deployment().location]",
-            "scope": "[variables('scopes').platformManagementGroup]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').mgmtGroupLiteDeploymentName)]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').subscriptionPlacement]"
-                },
-                "parameters": {
-                    "targetManagementGroupId": {
-                        "value": "[variables('mgmtGroups').platform]"
-                    },
-                    "subscriptionId": {
-                        "value": "[parameters('singlePlatformSubscriptionId')]"
-                    }
-                }
-            }
-        },
-        /*
-            Note: ES Lite only: the following deployment will create Log Analytics to the platform subscription
-        */         
-        {
-            // Deploy workspace to platform subscription if condition is true
-            "condition": "[and(equals(parameters('enableLogAnalytics'), 'Yes'), not(empty(parameters('singlePlatformSubscriptionId'))))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[variables('esLiteDeploymentNames').monitoringLiteDeploymentName]",
-            "location": "[deployment().location]",
-            "subscriptionId": "[parameters('singlePlatformSubscriptionId')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('esliteDeploymentNames').platformLiteSubscriptionPlacement)]",
-                "policyCompletion"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').monitoring]"
-                },
-                "parameters": {
-                    "rgName": {
-                        "value": "[variables('platformRgNames').mgmtRg]"
-                    },
-                    "workspaceName": {
-                        "value": "[variables('platformResourceNames').logAnalyticsWorkspace]"
-                    },
-                    "workspaceRegion": {
-                        "value": "[deployment().location]"
-                    },
-                    "automationAccountName": {
-                        "value": "[variables('platformResourceNames').automationAccount]"
-                    },
-                    "automationRegion": {
-                        "value": "[deployment().location]"
-                    },
-                    "retentionInDays": {
-                        "value": "[parameters('retentionInDays')]"
-                    },
-                    "enableChangeTracking": {
-                        "value": "[parameters('enableChangeTracking')]"
-                    },
-                    "enableUpdateMgmt": {
-                        "value": "[parameters('enableUpdateMgmt')]"
-                    }
-                }
-            }
-        },
-        /*
-            Note: ES Lite only: the following deployments will deploy Log Analytics solutions to the platform subscription
-        */
-        {
-            // Create storage account for NSG Flow Logs in the management subscription for networking observability
-            "condition": "[and(not(empty(parameters('singlePlatformSubscriptionId'))), equals(parameters('enableNsgFlowLogs'), 'Yes'))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[variables('esLiteDeploymentNames').logLiteStorageDeploymentName]",
-            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
-            "subscriptionId": "[parameters('singlePlatformSubscriptionId')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement)]",
-                "policyCompletion",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').logStorageAccount]"
-                },
-                "parameters": {
-                    "mgmtStorageRgName": {
-                        "value": "[variables('platformRgNames').logNwRg]"
-                    },
-                    "storageAccountName": {
-                        "value": "[variables('platformResourceNames').logNwStorageAccount]"
-                    },
-                    "storageLocation": {
-                        "value": "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
-                    }
-                }
-            }
-        },        
-        {
-            // Deploying Log Analytics solutions to Log Analytics workspace if condition is true
-            "condition": "[and(and(not(empty(parameters('singlePlatformSubscriptionId'))), equals(parameters('enableLogAnalytics'), 'Yes')),  equals(parameters('enableLogAnalytics'), 'Yes'), or(or(or(or(or(equals(parameters('enableSecuritySolution'), 'Yes'), equals(parameters('enableAgentHealth'), 'Yes')), equals(parameters('enableChangeTracking'), 'Yes')), equals(parameters('enableUpdateMgmt'), 'Yes'), equals(parameters('enableActivityLog'), 'Yes')), equals(parameters('enableVmInsights'), 'Yes')), equals(parameters('enableServiceMap'), 'Yes'), equals(parameters('enableSqlAssessment'), 'Yes')))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[variables('esLiteDeploymentNames').monitoringSolutionsLiteDeploymentName]",
-            "location": "[deployment().location]",
-            "subscriptionId": "[parameters('singlePlatformSubscriptionId')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
-                "policyCompletion"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').monitoringSolutions]"
-                },
-                "parameters": {
-                    "rgName": {
-                        "value": "[variables('platformRgNames').mgmtRg]"
-                    },
-                    "workspaceName": {
-                        "value": "[variables('platformResourceNames').logAnalyticsWorkspace]"
-                    },
-                    "workspaceRegion": {
-                        "value": "[deployment().location]"
-                    },
-                    "enableSecuritySolution": {
-                        "value": "[parameters('enableSecuritySolution')]"
-                    },
-                    "enableAgentHealth": {
-                        "value": "[parameters('enableAgentHealth')]"
-                    },
-                    "enableChangeTracking": {
-                        "value": "[parameters('enableChangeTracking')]"
-                    },
-                    "enableUpdateMgmt": {
-                        "value": "[parameters('enableUpdateMgmt')]"
-                    },
-                    "enableActivityLog": {
-                        "value": "[parameters('enableActivityLog')]"
-                    },
-                    "enableVmInsights": {
-                        "value": "[parameters('enableVmInsights')]"
-                    },
-                    "enableServiceMap": {
-                        "value": "[parameters('enableServiceMap')]"
-                    },
-                    "enableSqlAssessment": {
-                        "value": "[parameters('enableSqlAssessment')]"
-                    }
-                }
-            }
-        },
-        /*
-            Note: ES Lite only: deploy Log Analytics workspace policy to the platform management group
-        */                 
-        {
-            // Assigning Log Analytics workspace policy to platform management group if condition is true
-            "condition": "[and(equals(parameters('enableLogAnalytics'), 'Yes'), not(empty(parameters('singlePlatformSubscriptionId'))))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[variables('esLiteDeploymentNames').logAnalyticsLitePolicyDeploymentName]",
-            "scope": "[variables('scopes').platformManagementGroup]",
-            "location": "[deployment().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement)]",
-                "policyCompletion"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').logAnalyticsPolicyAssignment]"
-                },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    },
-                    "rgName": {
-                        "value": "[variables('platformRgNames').mgmtRg]"
-                    },
-                    "logAnalyticsWorkspaceName": {
-                        "value": "[variables('platformResourceNames').logAnalyticsWorkspace]"
-                    },
-                    "workspaceRegion": {
-                        "value": "[deployment().location]"
-                    },
-                    "automationAccountName": {
-                        "value": "[variables('platformResourceNames').automationAccount]"
-                    },
-                    "automationRegion": {
-                        "value": "[deployment().location]"
-                    },
-                    "retentionInDays": {
-                        "value": "[parameters('retentionInDays')]"
-                    }
-                }
-            }
-        },
-        /*
-            Note: ES Lite only: deploy RG for DDoS standard protection to platform subscription
-        */          
-        {
-            // Creating resource group for DDoS Standard Protection
-            "condition": "[and(equals(parameters('enableDdoS'), 'Yes'), not(empty(parameters('singlePlatformSubscriptionId'))))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[variables('esLiteDeploymentNames').ddosRgLiteDeploymentName]",
-            "subscriptionId": "[parameters('singlePlatformSubscriptionId')]",
-            "location": "[deployment().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').asbPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascPolicyDeploymentName)]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').resourceGroup]"
-                },
-                "parameters": {
-                    "rgName": {
-                        "value": "[variables('platformRgNames').ddosRg]"
-                    },
-                    "location": {
-                        "value": "[parameters('location')]"
-                    }
-                }
-            }
-        },
-        /*
-            Note: ES Lite only: deploy DDoS standard protection
-        */          
-        {
-            // Creating DDoS protection plan into the connectivity subscription
-            "condition": "[and(equals(parameters('enableDdoS'), 'Yes'), not(empty(parameters('singlePlatformSubscriptionId'))))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[variables('esLiteDeploymentNames').ddosLiteDeploymentName]",
-            "subscriptionId": "[parameters('singlePlatformSubscriptionId')]",
-            "resourceGroup": "[variables('platformRgNames').ddosRg]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').ddosRgLiteDeploymentName)]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').ddosProtection]"
-                },
-                "parameters": {
-                    "ddosName": {
-                        "value": "[variables('platformResourceNames').ddosName]"
-                    },
-                    "location": {
-                        "value": "[parameters('location')]"
-                    }
-                }
-            }
-        },        
-        /*
-            Note: ES Lite only: deploy RG for Private DNS zones to platform subscription
-        */
-        {
-            // Creating resource group for Private DNS Zones
-            "condition": "[and(equals(parameters('enablePrivateDnsZones'), 'Yes'), not(empty(parameters('singlePlatformSubscriptionId'))))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[variables('esLitedeploymentNames').privateDnsZoneRgLiteDeploymentName]",
-            "subscriptionId": "[parameters('singlePlatformSubscriptionId')]",
-            "location": "[deployment().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').asbPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascGovPolicyDeploymentName)]",                
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').centralizedPlatformLogsAssignmentDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLitedeploymentNames').vnetConnectivityHubLiteDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLitedeploymentNames').vwanConnectivityHubLiteDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLitedeploymentNames').nvaConnectivityHubLiteDeploymentName)]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').resourceGroup]"
-                },
-                "parameters": {
-                    "rgName": {
-                        "value": "[variables('platformRgNames').privateDnsRg]"
-                    },
-                    "location": {
-                        "value": "[parameters('location')]"
-                    }
-                }
-            }
-        },
-        /*
-            Note: ES Lite only: deploy private DNS zones
-        */
-        {
-            // Creating Private DNS Zones into the connectivity subscription
-            "condition": "[and(equals(parameters('enablePrivateDnsZones'), 'Yes'), not(empty(parameters('singlePlatformSubscriptionId'))))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[concat(variables('esLitedeploymentNames').privateDnsZonesLiteDeploymentName, copyIndex())]",
-            "subscriptionId": "[parameters('singlePlatformSubscriptionId')]",
-            "resourceGroup": "[variables('platformRgNames').privateDnsRg]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('esLitedeploymentNames').privateDnsZoneRgLiteDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').centralizedLoggingDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLitedeploymentNames').vnetConnectivityHubLiteDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLitedeploymentNames').vwanConnectivityHubLiteDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLitedeploymentNames').nvaConnectivityHubLiteDeploymentName)]"
-            ],
-            "copy": {
-                "name": "dnsZonesLite",
-                "count": "[length(variables('privateDnsZones'))]"
-            },
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').privateDnsZones]"
-                },
-                "parameters": {
-                    "privateDnsZoneName": {
-                        "value": "[concat(variables('privateDnsZones')[copyIndex()])]"
-                    },
-                    "connectivityHubResourceId": {
-                        "value": "[variables('platformResourceIds').vNetHubResourceId]"
-                    }
-                }
-            }
-        },
-        /*
-            Note: Lite only: Create Network Watcher into the single platform subscription
-        */
-        {   // Creating Network Watcher on Connectivity subscription
-            "condition": "[and(equals(parameters('enableNetworkWatcher'), 'Yes'), not(empty(parameters('singlePlatformSubscriptionId'))))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
-            "location": "[deployment().location]",
-            "name": "[variables('esLitedeploymentNames').nwLiteDeploymentName]",
-            "subscriptionId": "[parameters('singlePlatformSubscriptionId')]",
-            "dependsOn": [
-                "policyCompletion",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').monitoringLiteDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').logStorageDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').connectivitySubscriptionPlacement)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').logLiteStorageDeploymentName)]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').nwDeployment]"
-                },
-                "parameters": {
-                    "location": {
-                        "value": "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
-                    }
-                }
-            }
-        },
-        /*
-            Note: ES Lite only: assign DDoS policy for landing zones
-        */                        
-        {
-            // Assigning DDoS Policy to enforce DDoS on virtual networks if condition evaluates to true
-            "condition": "[and(and(equals(parameters('enableDdoS'), 'Yes'), equals(parameters('enableHub'), 'vhub')), not(empty(parameters('singlePlatformSubscriptionId'))), equals(parameters('enableHub'), 'Yes'))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[variables('esLiteDeploymentNames').ddosHubLitePolicyDeploymentName]",
-            "scope": "[variables('scopes').platformManagementGroup]",
-            "location": "[deployment().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').ddosLiteDeploymentName)]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('esLiteDeploymentNames').ddosHubLitePolicyDeploymentName]"
-                },
-                "parameters": {
-                    "ddosPlanResourceId": {
-                        "value": "[variables('platformResourceIds').ddosProtectionResourceId]"
-                    },
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[variables('deterministicRoleAssignmentGuids').ddosForConnectivity]"
-                    },
-                    "enforcementMode": {
-                        "value": "Default"
-                    }
-                }
-            }   
-        },
-        /*
-            Note: ES Lite only: deploys hub and spoke
-        */        
-        {
-            // Configuring and deploying the connectivity hub (hub and spoke)
-            "condition": "[and(not(empty(parameters('singlePlatformSubscriptionId'))),equals(parameters('enableHub'), 'vhub'))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2019-05-01",
-            "scope": "[variables('scopes').platformManagementGroup]",
-            "name": "[variables('esLitedeploymentNames').vnetConnectivityHubLiteDeploymentName]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').asbPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascGovPolicyDeploymentName)]",                
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').ddosHubLitePolicyDeploymentName)]"
-            ],
-            "location": "[deployment().location]",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').vnetConnectivityHub]"
-                },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    },
-                    "ddosPlanResourceId": {
-                        "value": "[variables('platformResourceIds').ddosProtectionResourceId]"
-                    },
-                    "enableHub": {
-                        "value": "[parameters('enableHub')]"
-                    },
-                    "enableAzFw": {
-                        "value": "[parameters('enableAzFw')]"
-                    },
-                    "addressPrefix": {
-                        "value": "[parameters('addressPrefix')]"
-                    },
-                    "enableVpnGw": {
-                        "value": "[parameters('enableVpnGw')]"
-                    },
-                    "enableErGw": {
-                        "value": "[parameters('enableErGw')]"
-                    },
-                    "enableDdoS": {
-                        "value": "[parameters('enableDdoS')]"
-                    },
-                    "location": {
-                        "value": "[parameters('location')]"
-                    },
-                    "connectivitySubscriptionId": {
-                        "value": "[parameters('singlePlatformSubscriptionId')]"
-                    },
-                    "subnetMaskForAzFw": {
-                        "value": "[parameters('subnetMaskForAzFw')]"
-                    },
-                    "subnetMaskForGw": {
-                        "value": "[parameters('subnetMaskForGw')]"
-                    },
-                    "firewallSku": {
-                        "value": "[parameters('firewallSku')]"
-                    },
-                    "firewallZones": {
-                        "value": "[parameters('firewallZones')]"
-                    },
-                    "enableAzFwDnsProxy": {
-                        "value": "[parameters('enableAzFwDnsProxy')]"
-                    },
-                    "gwRegionalOrAz": {
-                        "value": "[parameters('gwRegionalOrAz')]"
-                    },
-                    "gwAzSku": {
-                        "value": "[parameters('gwAzSku')]"
-                    },
-                    "gwRegionalSku": {
-                        "value": "[parameters('gwRegionalSku')]"
-                    },
-                    "erRegionalOrAz": {
-                        "value": "[parameters('erRegionalOrAz')]"
-                    },
-                    "erAzSku": {
-                        "value": "[parameters('erAzSku')]"
-                    },
-                    "erRegionalSku": {
-                        "value": "[parameters('erRegionalSku')]"
-                    },
-                    "enableAvnm": {
-                        "value": "[parameters('enableAvnm')]"
-                    }
-                }
-            }
-        },
-        /*
-            Note: ES Lite only: deploys virtual hub (NVA)
-        */
-        {
-            // Configuring and deploying the connectivity hub (NVA)
-            "condition": "[and(not(empty(parameters('singlePlatformSubscriptionId'))),equals(parameters('enableHub'), 'nva'))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2019-05-01",
-            "scope": "[variables('scopes').platformManagementGroup]",
-            "name": "[variables('esLitedeploymentNames').nvaConnectivityHubLiteDeploymentName]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').asbPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascGovPolicyDeploymentName)]",                
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').ddosHubLitePolicyDeploymentName)]"
-            ],
-            "location": "[deployment().location]",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').nvaConnectivityHub]"
-                },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    },
-                    "ddosPlanResourceId": {
-                        "value": "[variables('platformResourceIds').ddosProtectionResourceId]"
-                    },
-                    "enableHub": {
-                        "value": "[parameters('enableHub')]"
-                    },
-                    "addressPrefix": {
-                        "value": "[parameters('addressPrefix')]"
-                    },
-                    "enableVpnGw": {
-                        "value": "[parameters('enableVpnGw')]"
-                    },
-                    "enableErGw": {
-                        "value": "[parameters('enableErGw')]"
-                    },
-                    "enableDdoS": {
-                        "value": "[parameters('enableDdoS')]"
-                    },
-                    "location": {
-                        "value": "[parameters('location')]"
-                    },
-                    "connectivitySubscriptionId": {
-                        "value": "[parameters('singlePlatformSubscriptionId')]"
-                    },
-                    "subnetMaskForGw": {
-                        "value": "[parameters('subnetMaskForGw')]"
-                    },
-                    "gwRegionalOrAz": {
-                        "value": "[parameters('gwRegionalOrAz')]"
-                    },
-                    "gwAzSku": {
-                        "value": "[parameters('gwAzSku')]"
-                    },
-                    "gwRegionalSku": {
-                        "value": "[parameters('gwRegionalSku')]"
-                    },
-                    "erRegionalOrAz": {
-                        "value": "[parameters('erRegionalOrAz')]"
-                    },
-                    "erAzSku": {
-                        "value": "[parameters('erAzSku')]"
-                    },
-                    "erRegionalSku": {
-                        "value": "[parameters('erRegionalSku')]"
-                    }
-                }
-            }
-        },
-        /*
-            Note: ES Lite only: deploys VWAN hub (Microsoft Managed)
-        */
-        {
-            // Creating the VWAN network hub (Microsoft managed)
-            "condition": "[and(not(empty(parameters('singlePlatformSubscriptionId'))),equals(parameters('enableHub'), 'vwan'))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "scope": "[variables('scopes').platformManagementGroup]",
-            "name": "[variables('esLitedeploymentNames').vwanConnectivityHubLiteDeploymentName]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').asbPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascGovPolicyDeploymentName)]",                
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').ddosHubLitePolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').centralizedPlatformLogsAssignmentDeploymentName)]"
-            ],
-            "location": "[deployment().location]",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').vwanConnectivityHub]"
-                },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    },
-                    "enableHub": {
-                        "value": "[parameters('enableHub')]"
-                    },
-                    "enableAzFw": {
-                        "value": "[parameters('enableAzFw')]"
-                    },
-                    "firewallSku": {
-                        "value": "[parameters('firewallSku')]"
-                    },
-                    "addressPrefix": {
-                        "value": "[parameters('addressPrefix')]"
-                    },
-                    "enableVpnGw": {
-                        "value": "[parameters('enableVpnGw')]"
-                    },
-                    "enableErGw": {
-                        "value": "[parameters('enableErGw')]"
-                    },
-                    "location": {
-                        "value": "[parameters('location')]"
-                    },
-                    "connectivitySubscriptionId": {
-                        "value": "[parameters('singlePlatformSubscriptionId')]"
-                    },
-                    "expressRouteScaleUnit": {
-                        "value": "[parameters('expressRouteScaleUnit')]"
-                    },
-                    "vpnGateWayScaleUnit": {
-                        "value": "[parameters('vpnGateWayScaleUnit')]"
-                    }
-                }
-            }
-        },
-        /*
-            Note: ES Lite only: assigns policy for identity to enable Azure Backup
-        */
-        {
-            // Assigning Azure Backup policy to platform management group if condition is true
-            "condition": "[and(equals(parameters('enableVmBackupForIdentity'), 'Yes'), not(empty(parameters('singlePlatformSubscriptionId'))))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[variables('esLitedeploymentNames').azBackupIdentityLitePolicyDeploymentName]",
-            "scope": "[variables('scopes').platformManagementGroup]",
-            "location": "[deployment().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement)]"            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').azVmBackupPolicyAssignment]"
-                },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[variables('deterministicRoleAssignmentGuids').backupForIdentity]"
-                    },
-                    "enforcementMode": {
-                        "value": "Default"
-                    }                    
-                }
-            }
-        },
-        /*
-            Note: ES Lite only: assign policy for identity to deny subnet without NSG 
-        */
-        {
-            // Assigning deny subnet without nsg policy to identity management group if condition is true
-            "condition": "[and(equals(parameters('denySubnetWithoutNsgForIdentity'), 'Yes'), not(empty(parameters('singlePlatformSubscriptionId'))))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[variables('esLitedeploymentNames').subnetNsgIdentityLitePolicyDeploymentName]",
-            "scope": "[variables('scopes').platformManagementGroup]",
-            "location": "[deployment().location]",
-            "dependsOn": [
-                "policyCompletion",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement)]"  
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').subnetNsgPolicyAssignment]"
-                },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    },
-                    "enforcementMode": {
-                        "value": "Default"
-                    }                    
-                }
-            }
-        },
-        /*
-            Note: ES Lite only: assign policy to deny RDP from internet to platform MG 
-        */        
-        {
-            // Assigning deny rpd from internet policy landing zones management group if condition is true
-            "condition": "[and(equals(parameters('denyRdpForIdentity'), 'Yes'), not(empty(parameters('singlePlatformSubscriptionId'))))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[variables('esLitedeploymentNames').rdpFromInternetIdentityLitePolicyDeploymentName]",
-            "scope": "[variables('scopes').platformManagementGroup]",
-            "location": "[deployment().location]",
-            "dependsOn": [
-                "policyCompletion",
-                "[resourceId('Microsoft.Resources/deployments', variables('esLiteDeploymentNames').platformLiteSubscriptionPlacement)]"  
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').rdpFromInternetPolicyAssignment]"
-                },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    },
-                    "enforcementMode": {
-                        "value": "Default"
-                    }                    
                 }
             }
         }

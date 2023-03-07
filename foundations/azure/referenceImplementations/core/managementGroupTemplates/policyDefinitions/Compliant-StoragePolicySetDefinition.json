@@ -306,7 +306,14 @@
                                     "Logging, Metrics, AzureServices"
                                 ],
                                 "defaultValue": [
-                                    "None"
+                                    "Logging",
+                                    "Metrics",
+                                    "AzureServices",
+                                    "Logging, Metrics",
+                                    "Logging, AzureServices",
+                                    "Metrics, AzureServices",
+                                    "Logging, Metrics, AzureServices",
+                                    "Logging, Metrics, AzureServices"
                                 ]
                             }
                         },
@@ -861,10 +868,6 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "storageAccountsTrustedMsftServices": {
-                        "type": "string",
-                        "defaultValue": "Deny"
-                    },
                     "storageQueueCmk": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -1199,18 +1202,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('storageQueueCmk')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c9d007d0-c057-4772-b18c-01e546713bcd",
-                        "policyDefinitionReferenceId": "Deny-Storage-Account-Msft-Trusted",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('storageAccountsTrustedMsftServices')]"
                             }
                         }
                     },

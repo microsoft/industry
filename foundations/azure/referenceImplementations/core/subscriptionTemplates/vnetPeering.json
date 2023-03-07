@@ -54,7 +54,10 @@
         }
       }
     },
-    "variables": {},
+    "variables": {
+      "udrName": "[concat(parameters('vNetName'), '-udr')]",
+      "nsgName": "[concat(parameters('vNetName'), '-nsg')]"
+    },
     "resources": [
       {
         "type": "Microsoft.Resources/deployments",
@@ -106,11 +109,33 @@
             "variables": {},
             "resources": [
               {
+                  "type": "Microsoft.Network/networkSecurityGroups",
+                  "apiVersion": "2022-07-01",
+                  "name": "[variables('nsgName')]",
+                  "location": "[parameters('vNetlocation')]",
+                  "properties": {
+                      "securityRules": []
+                  }
+              },
+              {
+                  "type": "Microsoft.Network/routeTables",
+                  "apiVersion": "2020-11-01",
+                  "name": "[variables('udrName')]",
+                  "location": "[parameters('vNetlocation')]",
+                  "properties": {
+                      "disableBgpRoutePropagation": false,
+                      "routes": []
+                  }
+              },
+              {
                 "type": "Microsoft.Network/virtualNetworks",
                 "apiVersion": "2020-06-01",
                 "name": "[parameters('vNetName')]",
                 "location": "[parameters('vNetLocation')]",
-                "dependsOn": [],
+                "dependsOn": [
+                  "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsgName'))]",
+                  "[concat('Microsoft.Network/routeTables/', variables('udrName'))]"
+                ],
                 "properties": {
                   "addressSpace": {
                     "addressPrefixes": [
