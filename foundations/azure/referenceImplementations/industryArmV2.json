@@ -1533,7 +1533,7 @@
                 "Microsoft.Network/virtualNetworks/listDnsResolvers",
                 "Microsoft.Network/virtualNetworks/listDnsForwardingRulesets",
                 "Microsoft.Network/locations/dnsResolverOperationResults",
-                "Microsoft.Network/locations/dnsResolverOperationStatuses",           
+                "Microsoft.Network/locations/dnsResolverOperationStatuses",
                 "Microsoft.Network/trafficmanagerprofiles",
                 "Microsoft.Network/trafficmanagerprofiles/heatMaps",
                 "Microsoft.Network/trafficmanagerprofiles/azureendpoints",
