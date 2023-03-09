@@ -282,6 +282,14 @@
                         "type": "string",
                         "defaultValue": ""
                     },
+                    "cognitiveServicesOpenAiPrivateDnsZone": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "cognitiveServicesOpenAiPrivateDnsZoneId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
                     "serviceBusPrivateDnsZoneId": {
                         "type": "string",
                         "defaultValue": ""
@@ -402,6 +410,21 @@
                             },
                             "privateDnsZoneId": {
                                 "value": "[[parameters('cognitiveServicesPrivateDnsZoneId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c4bc6f10-cb41-49eb-b000-d5ab82e2a091",
+                        "policyDefinitionReferenceId": "Dine-OpenAi-Private-Dns",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveServicesOpenAiPrivateDnsZone')]"
+                            },
+                            "privateDnsZoneId": {
+                                "value": "[[parameters('cognitiveServicesOpenAiPrivateDnsZoneId')]"
                             }
                         }
                     },
