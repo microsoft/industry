@@ -52,11 +52,29 @@
         "metadata": {
           "description": "Provide full resourceId of Azure Firewall if used as DNS proxy"
         }
+      },
+      "enableDdoS": {
+          "type": "string",
+          "defaultValue": "No",
+          "allowedValues": [
+              "Yes",
+              "No"
+          ],
+          "metadata": {
+              "description": "Select whether the DDoS Standard protection plan should be enabled or not."
+          }
+      },
+      "ddosPlanResourceId": {
+          "type": "string",
+          "defaultValue": ""
       }
     },
     "variables": {
-      "udrName": "[concat(parameters('vNetName'), '-udr')]",
-      "nsgName": "[concat(parameters('vNetName'), '-nsg')]"
+      "udrName": "[concat(parameters('vNetName'), '-udr', parameters('vNetLocation'))]",
+      "nsgName": "[concat(parameters('vNetName'), '-nsg-', parameters('vNetLocation'))]",
+      "ddosProtectionPlanId": {
+            "id": "[parameters('ddosPlanResourceId')]"
+        }
     },
     "resources": [
       {
@@ -142,6 +160,8 @@
                       "[parameters('vNetCidrRange')]"
                     ]
                   },
+                  "enableDdosProtection": "[if(equals(parameters('enableDdoS'), 'Yes'), 'true', 'false')]",
+                  "ddosProtectionPlan": "[if(equals(parameters('enableDdoS'), 'Yes'), variables('ddosProtectionPlanId'), json('null'))]",
                   "dhcpOptions": {
                     "dnsServers": "[if(
                                        not(
