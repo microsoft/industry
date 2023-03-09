@@ -3944,7 +3944,7 @@
             }   
         },
         {
-            // Assigning Azure Activity Diagnostics Log policy to intermediate root management group if condition is true
+            // Registering PolicyInsights RP to intermediate root management group if condition is true
             "condition": "[and(or(not(empty(parameters('singlePlatformSubscriptionId'))), not(empty(parameters('managementSubscriptionId')))), equals(parameters('enableLogAnalytics'), 'Yes'))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
