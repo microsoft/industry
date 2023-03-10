@@ -15,17 +15,17 @@
                     "properties": {
                         "Description": "This policy prevents creation of subnets without a UDR attached to them.",
                         "DisplayName": "Prevent creation of subnets without Route Table",
+                        "mode": "All",
                         "Metadata": {
                             "category": "Network",
                             "version": "1.0.0"
                         },
-                        "Mode": "All",
-                        "Parameters": {
+                        "parameters": {
                             "effect": {
                                 "type": "String",
                                 "metadata": {
-                                    "description": "The effect of the policy",
-                                    "displayName": "Effect"
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
                                 },
                                 "allowedValues": [
                                     "Audit",
@@ -33,32 +33,24 @@
                                     "Disabled"
                                 ],
                                 "defaultValue": "Deny"
+                            },
+                            "excludedSubnets": {
+                                "type": "Array",
+                                "metadata": {
+                                    "displayName": "Excluded Subnets",
+                                    "description": "Array of subnet names that are excluded from this policy"
+                                },
+                                "defaultValue": [
+                                    "GatewaySubnet",
+                                    "AzureFirewallSubnet",
+                                    "AzureFirewallManagementSubnet",
+                                    "AzureBastionSubnet"
+                                ]
                             }
                         },
-                        "PolicyRule": {
+                        "policyRule": {
                             "if": {
                                 "anyOf": [
-                                    {
-                                        "allOf": [
-                                            {
-                                                "equals": "Microsoft.Network/virtualNetworks/subnets",
-                                                "field": "type"
-                                            },
-                                            {
-                                                "exists": "false",
-                                                "field": "Microsoft.Network/virtualNetworks/subnets/routeTable.id"
-                                            },
-                                            {
-                                                "field": "name",
-                                                "notIn": [
-                                                    "GatewaySubnet",
-                                                    "AzureFirewallSubnet",
-                                                    "AzureFirewallManagementSubnet",
-                                                    "AzureBastionSubnet"
-                                                ]
-                                            }
-                                        ]
-                                    },
                                     {
                                         "allOf": [
                                             {
@@ -76,17 +68,28 @@
                                                             },
                                                             {
                                                                 "field": "Microsoft.Network/virtualNetworks/subnets[*].name",
-                                                                "notIn": [
-                                                                    "GatewaySubnet",
-                                                                    "AzureFirewallSubnet",
-                                                                    "AzureFirewallManagementSubnet",
-                                                                    "AzureBastionSubnet"
-                                                                ]
+                                                                "notIn": "[[parameters('excludedSubnets')]"
                                                             }
                                                         ]
                                                     }
                                                 },
                                                 "notEquals": 0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "allOf": [
+                                            {
+                                                "field": "type",
+                                                "equals": "Microsoft.Network/virtualNetworks/subnets"
+                                            },
+                                            {
+                                                "field": "name",
+                                                "notIn": "[[parameters('excludedSubnets')]"
+                                            },
+                                            {
+                                                "field": "Microsoft.Network/virtualNetworks/subnets/routeTable.id",
+                                                "exists": "false"
                                             }
                                         ]
                                     }
@@ -101,55 +104,43 @@
                 },
                 {
                     "properties": {
-                        "Description": "This policy prevents creation of subnets without an NSG attached to them.",
-                        "DisplayName": "Prevent creation of subnets without NSG",
-                        "Metadata": {
-                            "category": "Network",
-                            "version": "1.0.0"
+                        "description": "This policy denies the creation of a subnet without a Network Security Group. NSG help to protect traffic across subnet-level.",
+                        "displayName": "Subnets should have a Network Security Group",
+                        "mode": "All",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Network"
                         },
-                        "Mode": "All",
-                        "Parameters": {
+                        "parameters": {
                             "effect": {
                                 "type": "String",
-                                "metadata": {
-                                    "description": "The effect of the policy",
-                                    "displayName": "Effect"
-                                },
                                 "allowedValues": [
                                     "Audit",
                                     "Deny",
                                     "Disabled"
                                 ],
-                                "defaultValue": "Deny"
+                                "defaultValue": "Deny",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                }
+                            },
+                            "excludedSubnets": {
+                                "type": "Array",
+                                "metadata": {
+                                    "displayName": "Excluded Subnets",
+                                    "description": "Array of subnet names that are excluded from this policy"
+                                },
+                                "defaultValue": [
+                                    "GatewaySubnet",
+                                    "AzureFirewallSubnet",
+                                    "AzureFirewallManagementSubnet"
+                                ]
                             }
                         },
-                        "PolicyRule": {
+                        "policyRule": {
                             "if": {
                                 "anyOf": [
-                                    {
-                                        "allOf": [
-                                            {
-                                                "equals": "Microsoft.Network/virtualNetworks/subnets",
-                                                "field": "type"
-                                            },
-                                            {
-                                                "exists": "false",
-                                                "field": "Microsoft.Network/virtualNetworks/subnets/networkSecurityGroup.id"
-                                            },
-                                            {
-                                                "field": "name",
-                                                "notIn": [
-                                                    "GatewaySubnet",
-                                                    "AzureFirewallSubnet",
-                                                    "AzureFirewallManagementSubnet"
-                                                ]
-                                            },
-                                            {
-                                                "equals": 0,
-                                                "value": "[[length(field('Microsoft.Network/virtualNetworks/subnets/privateEndpoints[*]'))]"
-                                            }
-                                        ]
-                                    },
                                     {
                                         "allOf": [
                                             {
@@ -167,20 +158,28 @@
                                                             },
                                                             {
                                                                 "field": "Microsoft.Network/virtualNetworks/subnets[*].name",
-                                                                "notIn": [
-                                                                    "GatewaySubnet",
-                                                                    "AzureFirewallSubnet",
-                                                                    "AzureFirewallManagementSubnet"
-                                                                ]
-                                                            },
-                                                            {
-                                                                "equals": 0,
-                                                                "value": "[[length(field('Microsoft.Network/virtualNetworks/subnets[*].privateEndpoints[*]'))]"
+                                                                "notIn": "[[parameters('excludedSubnets')]"
                                                             }
                                                         ]
                                                     }
                                                 },
                                                 "notEquals": 0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "allOf": [
+                                            {
+                                                "field": "type",
+                                                "equals": "Microsoft.Network/virtualNetworks/subnets"
+                                            },
+                                            {
+                                                "field": "name",
+                                                "notIn": "[[parameters('excludedSubnets')]"
+                                            },
+                                            {
+                                                "field": "Microsoft.Network/virtualNetworks/subnets/networkSecurityGroup.id",
+                                                "exists": "false"
                                             }
                                         ]
                                     }
@@ -191,7 +190,7 @@
                             }
                         }
                     },
-                    "name": "Deny-Subnet-Without-NSG"
+                    "name": "Deny-Subnet-Without-Nsg"
                 },
                 {
                     "properties": {
