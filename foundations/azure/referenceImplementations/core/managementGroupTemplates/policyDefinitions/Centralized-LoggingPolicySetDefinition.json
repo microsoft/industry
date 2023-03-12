@@ -200,24 +200,6 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/441af8bf-7c88-4efc-bd24-b7be28d4acce",
-                        "policyDefinitionReferenceId": "Dine-Diagnostics-EventHubNamespace",
-                        "groupNames": [
-                            "Logging"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('enableLogAnalytics')]"
-                            },
-                            "logAnalytics": {
-                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
-                            },
-                            "categoryGroup": {
-                                "value": "[[parameters('logCategories')]"
-                            }
-                        }
-                    },
-                    {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/46b2dd5d-3936-4347-8908-b298ea4466d3",
                         "policyDefinitionReferenceId": "Dine-Diagnostics-EventGridTopic",
                         "groupNames": [
