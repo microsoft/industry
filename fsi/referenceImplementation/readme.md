@@ -11,11 +11,10 @@ This user guide explains the FSI Landing Zones on Microsoft Azure reference impl
 - [What is FSI Landing Zones on Microsoft Azure reference implementation?](#what-is-fsi-landing-zones-on-microsoft-azure-reference-implementation)
 - [Pricing](#pricing)
 - [What if I already have an existing Azure footprint?](#what-if-i-already-have-an-existing-azure-footprint)
-- [How FSI Landing Zones reference implementation works](#how-FSI-landing-zones-reference-implementation-works)
+- [How FSI Landing Zones reference implementation works](#how-fsi-landing-zones-reference-implementation-works)
 - [Deployment instructions](#deployment-instructions)
   - [Pre-requisites](#pre-requisites)
   - [Step-by-step deployment guidance](#step-by-step-deployment-guidance)
-- [Next steps](#next-steps)
 
 ---
 
@@ -258,7 +257,7 @@ If you don't need - or plan to host domain controllers in Azure for your FSI  wo
 
 ### 7 - Landing Zones
 
-On the *Landing Zones* tab, you can bring in the subscriptions you want to use initially for *cloud-native*, and *corp* landing zones. Each landing zone type is represented by its own child management group of the *landing zones* management group in the hierarchy, and provides different characteristics regarding networking requirements, security, policy, and availability. 
+On the *Landing Zones* tab, you can bring in the subscriptions you want to use initially for *cloud-native*, and *corp* landing zones. Each landing zone type is represented by its own child management group of the *landing zones* management group in the hierarchy, and provides different characteristics regarding networking requirements, security, policy, and availability.
 
 Depending on your configuration on the *Network Connectivity and Topology* tab, you can optionally add corp-connected landing zones and create virtual networks that will be peered with the connectivity hub created earlier. Optionally, you can select to place subscriptions into corp and cloud-native, and Azure Policy will bring the subscriptions into their target compliance state during the deployment.
 
