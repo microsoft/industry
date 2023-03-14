@@ -944,7 +944,7 @@
                     },
                     "storageBlobPrivateDnsZone": {
                         "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "defaultValue": "Disabled"
                     },
                     "storageBlobPrivateDnsZoneId": {
                         "type": "string",
@@ -952,7 +952,7 @@
                     },
                     "storageSecondaryBlobPrivateDnsZone": {
                         "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "defaultValue": "Disabled"
                     },
                     "storageSecondaryBlobPrivateDnsZoneId": {
                         "type": "string",
@@ -960,7 +960,7 @@
                     },
                     "storageDfsPrivateDnsZone": {
                         "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "defaultValue": "Disabled"
                     },
                     "storageDfsPrivateDnsZoneId": {
                         "type": "string",
@@ -968,7 +968,7 @@
                     },
                     "storageSecondaryDfsPrivateDnsZone": {
                         "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "defaultValue": "Disabled"
                     },
                     "storageSecondaryDfsPrivateDnsZoneId": {
                         "type": "string",
@@ -976,7 +976,7 @@
                     },
                     "storageQueuePrivateDnsZone": {
                         "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "defaultValue": "Disabled"
                     },
                     "storageQueuePrivateDnsZoneId": {
                         "type": "string",
@@ -984,7 +984,7 @@
                     },
                     "storageSecondaryQueuePrivateDnsZone": {
                         "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "defaultValue": "Disabled"
                     },
                     "storageSecondaryQueuePrivateDnsZoneId": {
                         "type": "string",
@@ -992,7 +992,7 @@
                     },
                     "storageWebPrivateDnsZone": {
                         "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "defaultValue": "Disabled"
                     },
                     "storageWebPrivateDnsZoneId": {
                         "type": "string",
@@ -1000,7 +1000,7 @@
                     },
                     "storageSecondaryWebPrivateDnsZone": {
                         "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "defaultValue": "Disabled"
                     },
                     "storageSecondaryWebPrivateDnsZoneId": {
                         "type": "string",
