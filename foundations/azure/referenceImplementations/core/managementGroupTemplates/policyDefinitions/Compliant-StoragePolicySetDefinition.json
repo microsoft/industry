@@ -181,24 +181,24 @@
                                             {
                                                 "anyOf": [
                                                     {
-                                                        "field": "Microsoft.Storage/storageAccounts/encryption.services.queue.enabled",
+                                                        "field": "Microsoft.Storage/storageAccounts/encryption.services.queue.keyType",
                                                         "exists": "false"
                                                     },
                                                     {
-                                                        "field": "Microsoft.Storage/storageAccounts/encryption.services.queue.enabled",
-                                                        "notEquals": true
+                                                        "field": "Microsoft.Storage/storageAccounts/encryption.services.queue.keyType",
+                                                        "notEquals": "Account"
                                                     }
                                                 ]
                                             },
                                             {
                                                 "anyOf": [
                                                     {
-                                                        "field": "Microsoft.Storage/storageAccounts/encryption.services.table.enabled",
+                                                        "field": "Microsoft.Storage/storageAccounts/encryption.services.table.keyType",
                                                         "exists": "false"
                                                     },
                                                     {
-                                                        "field": "Microsoft.Storage/storageAccounts/encryption.services.table.enabled",
-                                                        "notEquals": true
+                                                        "field": "Microsoft.Storage/storageAccounts/encryption.services.table.keyType",
+                                                        "notEquals": "Account"
                                                     }
                                                 ]
                                             }
@@ -215,9 +215,9 @@
                 },
                 {
                     "properties": {
-                        "displayName": "Local users should be restricted for Storage Accounts",
+                        "displayName": "SFTP and local users should be restricted for Storage Accounts",
                         "mode": "Indexed",
-                        "description": "Azure Storage accounts should disable local users for features like SFTP. Enforce this for increased data exfiltration protection.",
+                        "description": "Azure Storage accounts should disable SFTP and local users for features like SFTP. Enforce this for increased data exfiltration protection.",
                         "metadata": {
                             "version": "1.0.0",
                             "category": "Storage"
@@ -247,11 +247,11 @@
                                     {
                                         "anyOf": [
                                             {
-                                                "field": "Microsoft.Storage/storageAccounts/isLocalUserEnabled",
+                                                "field": "Microsoft.Storage/storageAccounts/isSftpEnabled",
                                                 "exists": "false"
                                             },
                                             {
-                                                "field": "Microsoft.Storage/storageAccounts/isLocalUserEnabled",
+                                                "field": "Microsoft.Storage/storageAccounts/isSftpEnabled",
                                                 "notEquals": false
                                             }
                                         ]
@@ -263,7 +263,7 @@
                             }
                         }
                     },
-                    "name": "Deny-Storage-LocalUser"
+                    "name": "Deny-Storage-Sftp"
                 },
                 {
                     "properties": {
@@ -892,7 +892,7 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "storageLocalUser": {
+                    "storageSftp": {
                         "type": "string",
                         "defaultValue": "Deny"
                     },
@@ -1053,13 +1053,13 @@
                     },
                     {
                         "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[3].name)]",
-                        "policyDefinitionReferenceId": "Deny-Storage-LocalUser",
+                        "policyDefinitionReferenceId": "Deny-Storage-Sftp",
                         "groupNames": [
                             "Identity"
                         ],
                         "parameters": {
                             "effect": {
-                                "value": "[[parameters('storageLocalUser')]"
+                                "value": "[[parameters('storageSftp')]"
                             }
                         }
                     },
