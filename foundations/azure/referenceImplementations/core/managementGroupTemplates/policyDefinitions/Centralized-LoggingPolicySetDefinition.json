@@ -50,7 +50,7 @@
                     {
                         "name": "Logging",
                         "category": "Logging and Threat Detection",
-                        "displayName": "Ensure centralized logging to Log Analytics",
+                        "displayName": "Enforce centralized logging to Log Analytics",
                         "description": "Policy to ensure logging is enforced to centralized Log Analytics workspace"
                     }
                 ],
@@ -70,6 +70,26 @@
                     "logCategories": {
                         "type": "string",
                         "defaultValue": "allLogs"
+                    },
+                    "diagFileMetrics": {
+                        "type": "boolean",
+                        "defaultValue": false
+                    },
+                    "diagBlobMetrics": {
+                        "type": "boolean",
+                        "defaultValue": false
+                    },
+                    "diagQueueMetrics": {
+                        "type": "boolean",
+                        "defaultValue": false
+                    },
+                    "diagTableMetrics": {
+                        "type": "boolean",
+                        "defaultValue": false
+                    },
+                    "diagEventHubMetrics": {
+                        "type": "string",
+                        "defaultValue": "False"
                     }
                 },
                 "policyDefinitions": [
@@ -604,6 +624,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagQueueMetrics')]"
                             }
                         }
                     },
@@ -619,6 +642,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagBlobMetrics')]"
                             }
                         }
                     },
@@ -634,6 +660,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagTableMetrics')]"
                             }
                         }
                     },
@@ -649,6 +678,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagFileMetrics')]"
                             }
                         }
                     },
@@ -709,6 +741,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagEventHubMetrics')]"
                             }
                         }
                     },

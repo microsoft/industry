@@ -1009,6 +1009,22 @@
                     "modifyStorageAccountPublicEndpoint": {
                         "type": "string",
                         "defaultValue": "Modify"
+                    },
+                    "diagFileMetrics": {
+                        "type": "boolean",
+                        "defaultValue": false
+                    },
+                    "diagBlobMetrics": {
+                        "type": "boolean",
+                        "defaultValue": false
+                    },
+                    "diagQueueMetrics": {
+                        "type": "boolean",
+                        "defaultValue": false
+                    },
+                    "diagTableMetrics": {
+                        "type": "boolean",
+                        "defaultValue": false
                     }
                 },
                 "policyDefinitions": [
@@ -1291,6 +1307,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('storageQueueLogAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagQueueMetrics')]"
                             }
                         }
                     },
@@ -1426,6 +1445,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('storageAccountsLogAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagBlobMetrics')]"
                             }
                         }
                     },
@@ -1513,6 +1535,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('storageTableLogAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagTableMetrics')]"
                             }
                         }
                     },
@@ -1540,6 +1565,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('storageFileSyncLogAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagFileMetrics')]"
                             }
                         }
                     },
