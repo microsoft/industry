@@ -5739,6 +5739,12 @@
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
                     },
+                    "cognitiveServicesDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "cognitiveServicesLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
                     }

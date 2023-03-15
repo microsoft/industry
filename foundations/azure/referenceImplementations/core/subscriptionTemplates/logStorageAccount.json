@@ -165,7 +165,7 @@
                                 "metrics": [
                                     {
                                         "category": "AllMetrics",
-                                        "enabled": true
+                                        "enabled": false
                                     }
                                 ],
                                 "logs": [
@@ -197,7 +197,7 @@
                                 "metrics": [
                                     {
                                         "category": "AllMetrics",
-                                        "enabled": true
+                                        "enabled": false
                                     }
                                 ],
                                 "logs": [
