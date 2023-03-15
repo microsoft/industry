@@ -68,6 +68,14 @@
                             "visible": true
                         },
                         {
+                            "name": "rpRegistrationApi",
+                            "type": "Microsoft.Solutions.ArmApiControl",
+                            "request": {
+                                "method": "POST",
+                                "path": "[concat('/providers/Microsoft.Management/managementGroups/',steps('basics').resourceScope.tenant.tenantId, '/providers/Microsoft.PolicyInsights/register?api-version=2021-04-01')]"
+                            }
+                        },
+                        {
                             "name": "subSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Subscription Organization",
