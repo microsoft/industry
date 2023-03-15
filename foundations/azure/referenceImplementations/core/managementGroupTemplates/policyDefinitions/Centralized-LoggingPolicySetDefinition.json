@@ -50,7 +50,7 @@
                     {
                         "name": "Logging",
                         "category": "Logging and Threat Detection",
-                        "displayName": "Ensure centralized logging to Log Analytics",
+                        "displayName": "Enforce centralized logging to Log Analytics",
                         "description": "Policy to ensure logging is enforced to centralized Log Analytics workspace"
                     }
                 ],
@@ -70,6 +70,26 @@
                     "logCategories": {
                         "type": "string",
                         "defaultValue": "allLogs"
+                    },
+                    "diagFileMetrics": {
+                        "type": "boolean",
+                        "defaultValue": false
+                    },
+                    "diagBlobMetrics": {
+                        "type": "boolean",
+                        "defaultValue": false
+                    },
+                    "diagQueueMetrics": {
+                        "type": "boolean",
+                        "defaultValue": false
+                    },
+                    "diagTableMetrics": {
+                        "type": "boolean",
+                        "defaultValue": false
+                    },
+                    "diagEventHubMetrics": {
+                        "type": "string",
+                        "defaultValue": "False"
                     }
                 },
                 "policyDefinitions": [
@@ -184,24 +204,6 @@
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/614d9fbd-68cd-4832-96db-3362069661b2",
                         "policyDefinitionReferenceId": "Dine-Diagnostics-IoTHub",
-                        "groupNames": [
-                            "Logging"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('enableLogAnalytics')]"
-                            },
-                            "logAnalytics": {
-                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
-                            },
-                            "categoryGroup": {
-                                "value": "[[parameters('logCategories')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/441af8bf-7c88-4efc-bd24-b7be28d4acce",
-                        "policyDefinitionReferenceId": "Dine-Diagnostics-EventHubNamespace",
                         "groupNames": [
                             "Logging"
                         ],
@@ -622,6 +624,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagQueueMetrics')]"
                             }
                         }
                     },
@@ -637,6 +642,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagBlobMetrics')]"
                             }
                         }
                     },
@@ -652,6 +660,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagTableMetrics')]"
                             }
                         }
                     },
@@ -667,6 +678,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagFileMetrics')]"
                             }
                         }
                     },
@@ -727,6 +741,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('logAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagEventHubMetrics')]"
                             }
                         }
                     },

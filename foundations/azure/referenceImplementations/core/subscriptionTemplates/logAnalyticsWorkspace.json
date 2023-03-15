@@ -201,7 +201,7 @@
                           "condition": "[not(empty(parameters('dataExports')))]",
                           "type": "Microsoft.EventHub/namespaces/providers/diagnosticSettings",
                           "apiVersion": "2021-05-01-preview",
-                          "name": "[concat(parameters('eventHubNamespaceName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                          "name": "[concat(parameters('eventHubNamespaceName'), '/', 'Microsoft.Insights/setbypolicy_logAnalytics')]",
                           "location": "[deployment().location]",
                           "dependsOn": [
                               "[concat('Microsoft.EventHub/namespaces/', parameters('eventHubNamespaceName'))]",
@@ -212,7 +212,7 @@
                               "metrics": [
                                   {
                                       "category": "AllMetrics",
-                                      "enabled": true,
+                                      "enabled": false,
                                       "retentionPolicy": {
                                           "days": 0,
                                           "enabled": false
@@ -359,7 +359,7 @@
                               "minimumTlsVersion": "1.2",
                               "publicNetworkAccess": "Enabled",
                               "disableLocalAuth": true,
-                              "zoneRedundant": true,
+                              "zoneRedundant": false,
                               "isAutoInflateEnabled": true,
                               "maximumThroughputUnits": 5,
                               "kafkaEnabled": true
@@ -369,7 +369,7 @@
                           "condition": "[not(empty(parameters('dataExports')))]",
                           "type": "Microsoft.EventHub/namespaces/providers/diagnosticSettings",
                           "apiVersion": "2021-05-01-preview",
-                          "name": "[concat(parameters('eventHubNamespaceName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                          "name": "[concat(parameters('eventHubNamespaceName'), '/', 'Microsoft.Insights/setbypolicy_logAnalytics')]",
                           "location": "[deployment().location]",
                           "dependsOn": [
                               "[concat('Microsoft.EventHub/namespaces/', parameters('eventHubNamespaceName'))]",
@@ -380,7 +380,7 @@
                               "metrics": [
                                   {
                                       "category": "AllMetrics",
-                                      "enabled": true,
+                                      "enabled": false,
                                       "retentionPolicy": {
                                           "days": 0,
                                           "enabled": false

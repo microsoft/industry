@@ -306,7 +306,14 @@
                                     "Logging, Metrics, AzureServices"
                                 ],
                                 "defaultValue": [
-                                    "None"
+                                    "Logging",
+                                    "Metrics",
+                                    "AzureServices",
+                                    "Logging, Metrics",
+                                    "Logging, AzureServices",
+                                    "Metrics, AzureServices",
+                                    "Logging, Metrics, AzureServices",
+                                    "Logging, Metrics, AzureServices"
                                 ]
                             }
                         },
@@ -861,10 +868,6 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "storageAccountsTrustedMsftServices": {
-                        "type": "string",
-                        "defaultValue": "Deny"
-                    },
                     "storageQueueCmk": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -941,7 +944,7 @@
                     },
                     "storageBlobPrivateDnsZone": {
                         "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "defaultValue": "Disabled"
                     },
                     "storageBlobPrivateDnsZoneId": {
                         "type": "string",
@@ -949,7 +952,7 @@
                     },
                     "storageSecondaryBlobPrivateDnsZone": {
                         "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "defaultValue": "Disabled"
                     },
                     "storageSecondaryBlobPrivateDnsZoneId": {
                         "type": "string",
@@ -957,7 +960,7 @@
                     },
                     "storageDfsPrivateDnsZone": {
                         "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "defaultValue": "Disabled"
                     },
                     "storageDfsPrivateDnsZoneId": {
                         "type": "string",
@@ -965,7 +968,7 @@
                     },
                     "storageSecondaryDfsPrivateDnsZone": {
                         "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "defaultValue": "Disabled"
                     },
                     "storageSecondaryDfsPrivateDnsZoneId": {
                         "type": "string",
@@ -973,7 +976,7 @@
                     },
                     "storageQueuePrivateDnsZone": {
                         "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "defaultValue": "Disabled"
                     },
                     "storageQueuePrivateDnsZoneId": {
                         "type": "string",
@@ -981,7 +984,7 @@
                     },
                     "storageSecondaryQueuePrivateDnsZone": {
                         "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "defaultValue": "Disabled"
                     },
                     "storageSecondaryQueuePrivateDnsZoneId": {
                         "type": "string",
@@ -989,7 +992,7 @@
                     },
                     "storageWebPrivateDnsZone": {
                         "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "defaultValue": "Disabled"
                     },
                     "storageWebPrivateDnsZoneId": {
                         "type": "string",
@@ -997,7 +1000,7 @@
                     },
                     "storageSecondaryWebPrivateDnsZone": {
                         "type": "string",
-                        "defaultValue": "DeployIfNotExists"
+                        "defaultValue": "Disabled"
                     },
                     "storageSecondaryWebPrivateDnsZoneId": {
                         "type": "string",
@@ -1006,6 +1009,22 @@
                     "modifyStorageAccountPublicEndpoint": {
                         "type": "string",
                         "defaultValue": "Modify"
+                    },
+                    "diagFileMetrics": {
+                        "type": "boolean",
+                        "defaultValue": false
+                    },
+                    "diagBlobMetrics": {
+                        "type": "boolean",
+                        "defaultValue": false
+                    },
+                    "diagQueueMetrics": {
+                        "type": "boolean",
+                        "defaultValue": false
+                    },
+                    "diagTableMetrics": {
+                        "type": "boolean",
+                        "defaultValue": false
                     }
                 },
                 "policyDefinitions": [
@@ -1203,18 +1222,6 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c9d007d0-c057-4772-b18c-01e546713bcd",
-                        "policyDefinitionReferenceId": "Deny-Storage-Account-Msft-Trusted",
-                        "groupNames": [
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('storageAccountsTrustedMsftServices')]"
-                            }
-                        }
-                    },
-                    {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/bfecdea6-31c4-4045-ad42-71b9dc87247d",
                         "policyDefinitionReferenceId": "Deny-Storage-Account-Encryption",
                         "groupNames": [
@@ -1300,6 +1307,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('storageQueueLogAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagQueueMetrics')]"
                             }
                         }
                     },
@@ -1435,6 +1445,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('storageAccountsLogAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagBlobMetrics')]"
                             }
                         }
                     },
@@ -1522,6 +1535,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('storageTableLogAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagTableMetrics')]"
                             }
                         }
                     },
@@ -1549,6 +1565,9 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('storageFileSyncLogAnalyticsWorkspaceId')]"
+                            },
+                            "metricsEnabled": {
+                                "value": "[[parameters('diagFileMetrics')]"
                             }
                         }
                     },
