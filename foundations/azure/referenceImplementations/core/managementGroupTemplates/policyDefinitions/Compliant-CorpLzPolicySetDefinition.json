@@ -176,26 +176,14 @@
                     {
                         "name": "Encryption",
                         "category": "Data Protection",
-                        "displayName": "Ensure Storage Account is using secure encryption",
-                        "description": "Policy to ensure Storage Account is using secure encryption"
+                        "displayName": "Ensure Corp connected resources are using secure encryption",
+                        "description": "Policy to ensure Corp connected resources are using secure encryption"
                     },
                     {
                         "name": "Network",
                         "category": "Network Security",
-                        "displayName": "Ensure Storage Account is not accessible over the public internet",
-                        "description": "Policy to ensure Storage Account is not accessible over the public internet"
-                    },
-                    {
-                        "name": "Identity",
-                        "category": "Identity Management",
-                        "displayName": "Ensure usage of centralized identity and auhtorization system for Storage Account",
-                        "description": "Policy to ensure Storage Account is not using local authorization"
-                    },
-                    {
-                        "name": "Logging",
-                        "category": "Logging and Threat Detection",
-                        "displayName": "Ensure Storage Account is logging all events to Log Analytics",
-                        "description": "Policy to ensure Storage Account is logging all events to Log Analytics workspace"
+                        "displayName": "Ensure Corp connected landing zones are not accessible over the public internet",
+                        "description": "Policy to ensure Corp connected landing zones are not accessible over the public internet"
                     }
                 ],
                 "parameters": {
@@ -419,6 +407,14 @@
                         "type": "string",
                         "defaultValue": ""
                     },
+                    "cognitiveServicesOpenAiPrivateDnsZone": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "cognitiveServicesOpenAiPrivateDnsZoneId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
                     "serviceBusPrivateDnsZoneId": {
                         "type": "string",
                         "defaultValue": ""
@@ -562,6 +558,21 @@
                             },
                             "privateDnsZoneId": {
                                 "value": "[[parameters('cognitiveServicesPrivateDnsZoneId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c4bc6f10-cb41-49eb-b000-d5ab82e2a091",
+                        "policyDefinitionReferenceId": "Dine-OpenAi-Private-Dns",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveServicesOpenAiPrivateDnsZone')]"
+                            },
+                            "privateDnsZoneId": {
+                                "value": "[[parameters('cognitiveServicesOpenAiPrivateDnsZoneId')]"
                             }
                         }
                     },

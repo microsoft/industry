@@ -233,6 +233,14 @@
             "type": "string",
             "defaultValue": ""
         },
+        "cognitiveServicesOpenAiPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "cognitiveServicesOpenAiPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
         "serviceBusPrivateDnsZoneId": {
             "type": "string",
             "defaultValue": ""
@@ -493,6 +501,12 @@
                     },
                     "cognitiveServicesPrivateDnsZoneId": {
                         "value": "[parameters('cognitiveServicesPrivateDnsZoneId')]"
+                    },
+                    "cognitiveServicesOpenAiPrivateDnsZone": {
+                        "value": "[parameters('cognitiveServicesOpenAIPrivateDnsZone')]"
+                    },
+                    "cognitiveServicesOpenAiPrivateDnsZoneId": {
+                        "value": "[parameters('cognitiveServicesOpenAIPrivateDnsZoneId')]"
                     },
                     "serviceBusDinePrivateDnsZone": {
                         "value": "[parameters('serviceBusDinePrivateDnsZone')]"
