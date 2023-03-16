@@ -172,10 +172,6 @@
                                     "existenceCondition": {
                                         "allOf": [
                                             {
-                                                "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                                                "equals": "true"
-                                            },
-                                            {
                                                 "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
                                                 "equals": "[[parameters('logAnalytics')]"
                                             }
