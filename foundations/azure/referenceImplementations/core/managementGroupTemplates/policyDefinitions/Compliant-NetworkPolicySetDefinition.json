@@ -2,13 +2,13 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "topLevelManagementGroupPrefix": {
+        "scope": {
             "type": "string",
-            "defaultValue": ""
+            "defaultValue": "[managementGroup().id]"
         }
     },
     "variables": {
-        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
+        "scope": "[concat(parameters('scope'), '/providers/Microsoft.Authorization/policyDefinitions/')]",
         "policies": {
             "policyDefinitions": [
                 {
@@ -1374,6 +1374,7 @@
             "type": "Microsoft.Authorization/policyDefinitions",
             "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
             "apiVersion": "2019-09-01",
+            "scope": "[parameters('scope')]",
             "copy": {
                 "name": "policyDefinitionCopy",
                 "count": "[length(variables('policies').policyDefinitions)]"
@@ -1392,6 +1393,7 @@
             "type": "Microsoft.Authorization/policySetDefinitions",
             "apiVersion": "2021-06-01",
             "name": "Compliant-Network",
+            "scope": "[parameters('scope')]",
             "dependsOn": [
                 "policyDefinitionCopy"
             ],
@@ -1910,7 +1912,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
+                        "policyDefinitionId": "[concat(variables('scope'), variables('policies').policyDefinitions[0].name)]",
                         "policyDefinitionReferenceId": "Deny-Subnet-Without-UDR",
                         "groupNames": [
                             "Encryption",
@@ -1923,7 +1925,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[1].name)]",
+                        "policyDefinitionId": "[concat(variables('scope'), variables('policies').policyDefinitions[1].name)]",
                         "policyDefinitionReferenceId": "Deny-Subnet-Without-NSG",
                         "groupNames": [
                             "Encryption",
@@ -1936,7 +1938,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[2].name)]",
+                        "policyDefinitionId": "[concat(variables('scope'), variables('policies').policyDefinitions[2].name)]",
                         "policyDefinitionReferenceId": "Deny-Inbound-Internet-All",
                         "groupNames": [
                             "Encryption",
@@ -1949,7 +1951,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[3].name)]",
+                        "policyDefinitionId": "[concat(variables('scope'), variables('policies').policyDefinitions[3].name)]",
                         "policyDefinitionReferenceId": "Deny-Subnet-with-Service-Endpoints",
                         "groupNames": [
                             "Encryption",
@@ -1962,7 +1964,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[4].name)]",
+                        "policyDefinitionId": "[concat(variables('scope'), variables('policies').policyDefinitions[4].name)]",
                         "policyDefinitionReferenceId": "Dine-Diagnostics-LoadBalancer",
                         "groupNames": [
                             "Logging"
@@ -1977,7 +1979,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[5].name)]",
+                        "policyDefinitionId": "[concat(variables('scope'), variables('policies').policyDefinitions[5].name)]",
                         "policyDefinitionReferenceId": "Dine-Diagnostics-FrontDoor",
                         "groupNames": [
                             "Logging"
@@ -1992,7 +1994,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[6].name)]",
+                        "policyDefinitionId": "[concat(variables('scope'), variables('policies').policyDefinitions[6].name)]",
                         "policyDefinitionReferenceId": "Dine-Diagnostics-TrafficManager",
                         "groupNames": [
                             "Logging"
@@ -2007,7 +2009,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[7].name)]",
+                        "policyDefinitionId": "[concat(variables('scope'), variables('policies').policyDefinitions[7].name)]",
                         "policyDefinitionReferenceId": "Dine-Diagnostics-Vnet",
                         "groupNames": [
                             "Logging"
@@ -2022,7 +2024,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[8].name)]",
+                        "policyDefinitionId": "[concat(variables('scope'), variables('policies').policyDefinitions[8].name)]",
                         "policyDefinitionReferenceId": "Deny-Rdp-From-Internet",
                         "groupNames": [
                             "Network"
@@ -2034,7 +2036,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[9].name)]",
+                        "policyDefinitionId": "[concat(variables('scope'), variables('policies').policyDefinitions[9].name)]",
                         "policyDefinitionReferenceId": "Deny-Ssh-From-Internet",
                         "groupNames": [
                             "Network"
@@ -2046,7 +2048,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[10].name)]",
+                        "policyDefinitionId": "[concat(variables('scope'), variables('policies').policyDefinitions[10].name)]",
                         "policyDefinitionReferenceId": "Dine-Diagnostics-ExpressRoute",
                         "groupNames": [
                             "Logging"

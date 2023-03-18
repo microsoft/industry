@@ -2,13 +2,13 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "topLevelManagementGroupPrefix": {
+        "scope": {
             "type": "string",
-            "defaultValue": ""
+            "defaultValue": "[managementGroup().id]"
         }
     },
     "variables": {
-        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
+        "scope": "[concat(parameters('scope'), '/providers/Microsoft.Authorization/policyDefinitions/')]",
         "policies": {
             "policyDefinitions": [
                 {
@@ -272,6 +272,7 @@
             "type": "Microsoft.Authorization/policyDefinitions",
             "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
             "apiVersion": "2019-09-01",
+            "scope": "[parameters('scope')]",
             "copy": {
                 "name": "policyDefinitionCopy",
                 "count": "[length(variables('policies').policyDefinitions)]"
@@ -290,6 +291,7 @@
             "type": "Microsoft.Authorization/policySetDefinitions",
             "apiVersion": "2021-06-01",
             "name": "Compliant-PostgreSQL",
+            "scope": "[parameters('scope')]",
             "dependsOn": [
                 "policyDefinitionCopy"
             ],
@@ -367,7 +369,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
+                        "policyDefinitionId": "[concat(variables('scope'), variables('policies').policyDefinitions[0].name)]",
                         "policyDefinitionReferenceId": "Deny-PostgreSql-Ssl",
                         "groupNames": [
                             "Network"
@@ -379,7 +381,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[1].name)]",
+                        "policyDefinitionId": "[concat(variables('scope'), variables('policies').policyDefinitions[1].name)]",
                         "policyDefinitionReferenceId": "Dine-Diagnostics-Postgre",
                         "groupNames": [
                             "Logging"

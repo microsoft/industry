@@ -2,17 +2,13 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "topLevelManagementGroupPrefix": {
-            "type": "String",
-            "defaultValue": "FSIDemo",
-            "maxLength": 10,
-            "metadata": {
-                "description": "Provide a prefix (max 10 characters, unique at tenant-scope) for the Management Group hierarchy and other resources created as part of Enterprise-scale."
-            }
+        "scope": {
+            "type": "string",
+            "defaultValue": "[managementGroup().id]"
         }
     },
     "variables": {
-        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
+        "scope": "[concat(parameters('scope'), '/providers/Microsoft.Authorization/policyDefinitions/')]",
         "policies": {
             "policyDefinitions": [
                 {
@@ -12015,7 +12011,7 @@
                                 }
                             },
                             {
-                                "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/Deploy-ASC-SecurityContacts')]",
+                                "policyDefinitionId": "[concat(variables('scope'), 'Deploy-ASC-SecurityContacts')]",
                                 "policyDefinitionReferenceId": "securityEmailContact",
                                 "parameters": {
                                     "emailSecurityContact": {
@@ -12050,6 +12046,7 @@
             "type": "Microsoft.Authorization/policyDefinitions",
             "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
             "apiVersion": "2019-09-01",
+            "scope": "[parameters('scope')]",
             "copy": {
                 "name": "policyDefinitionCopy",
                 "count": "[length(variables('policies').policyDefinitions)]"
@@ -12068,6 +12065,7 @@
             "type": "Microsoft.Authorization/policySetDefinitions",
             "name": "[variables('initiatives').policySetDefinitions[copyIndex()].name]",
             "apiVersion": "2019-09-01",
+            "scope": "[parameters('scope')]",
             "dependsOn": [
                 "policyDefinitionCopy"
             ],

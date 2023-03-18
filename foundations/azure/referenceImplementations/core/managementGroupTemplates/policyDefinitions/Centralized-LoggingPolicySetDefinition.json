@@ -2,13 +2,13 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "topLevelManagementGroupPrefix": {
+        "scope": {
             "type": "string",
-            "defaultValue": ""
+            "defaultValue": "[managementGroup().id]"
         }
     },
     "variables": {
-        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policyDefinitions/')]",
+        "scope": "[concat(parameters('scope'), '/providers/Microsoft.Authorization/policyDefinitions/')]",
         "policies": {
             "policyDefinitions": []
         }
@@ -18,6 +18,7 @@
             "type": "Microsoft.Authorization/policyDefinitions",
             "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
             "apiVersion": "2019-09-01",
+            "scope": "[parameters('scope')]",
             "copy": {
                 "name": "policyDefinitionCopy",
                 "count": "[length(variables('policies').policyDefinitions)]"
@@ -36,6 +37,7 @@
             "type": "Microsoft.Authorization/policySetDefinitions",
             "apiVersion": "2021-06-01",
             "name": "Centralized-Logging",
+            "scope": "[parameters('scope')]",
             "dependsOn": [
                 "policyDefinitionCopy"
             ],
