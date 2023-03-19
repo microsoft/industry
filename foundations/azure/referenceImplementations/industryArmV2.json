@@ -715,12 +715,7 @@
             "activityDiagnosticsPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-ActivityLogPolicyAssignment.json')]",
             "ascConfigPolicyInitiative": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-ASCConfigPolicyAssignment.json')]",
             "defenderEndpointPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-DefenderForVms.json')]",
-            "azVmBackupPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-VMBackupPolicyAssignment.json')]",
-            "azPolicyForKubernetesPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-AksPolicyPolicyAssignment.json')]",
-            "aksPrivEscalationPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-AksPrivEscalationPolicyAssignment.json')]",
-            "aksPrivilegedPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-AksPrivilegedPolicyAssignment.json')]",
-            "tlsSslPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-DINE-APPEND-TLS-SSL-PolicyAssignment.json')]",
-            "aksHttpsPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-AksWithoutHttpsPolicyAssignment.json')]",            
+            "azVmBackupPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-VMBackupPolicyAssignment.json')]",           
             "ipFwdPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-IPForwardingPolicyAssignment.json')]",
             "publicEndpointPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, variables('azPublicEndpointArmTemplate'))]",
             "publicEndpointPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-PublicEndpointPolicyAssignment.json')]",
@@ -728,18 +723,11 @@
             "privateDnsZonePolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-PrivateDNSZonesPolicyAssignment.json')]",
             "pipPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-PublicIpAddressPolicyAssignment.json')]",
             "rdpFromInternetPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-RDPFromInternetPolicyAssignment.json')]",
-            "storageHttpsPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-StorageWithoutHttpsPolicyAssignment.json')]",
             "subnetNsgPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-SubnetWithoutNsgPolicyAssignment.json')]",
-            "sqlAuditPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-SQLAuditingPolicyAssignment.json')]",
-            "sqlEncryptionPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-SQLEncryptionPolicyAssignment.json')]",
-            "ddosPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/MODIFY-DDoSPolicyAssignment.json')]",
             "corpVnetPeering": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/vnetPeering.json')]",
             "corpVwanPeering": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/vnetPeeringVwan.json')]",
             "privateDnsZones": "[uri(deployment().properties.templateLink.uri, 'core/resourceGroupTemplates/privateDnsZones.json')]",
             "roleAssignments": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/roleAssignments/roleAssignment.json')]",
-            "databricksSku": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-DatabricksSkuPolicyAssignment.json')]",
-            "databricksPip": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-DatabricksPipPolicyAssignment.json')]",
-            "databricksCluster": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-DatabricksClusterPolicyAssignment.json')]",
             "govAscPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/gov/fairfaxDINE-ASCConfigPolicyAssignment.json')]",
             "logStorageAccount": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/logStorageAccount.json')]",
             "nwDeployment": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/networkWatcher.json')]",
@@ -808,10 +796,6 @@
             "dataPolicyDeploymentName": "[take(concat(parameters('industry'),'-Data-Policy', variables('deploymentSuffix')), 64)]",
             "ddosRgDeploymentName": "[take(concat(parameters('industry'), '-DDoSRg', variables('deploymentSuffix')), 64)]",
             "ddosDeploymentName": "[take(concat(parameters('industry'), '-DDoS', variables('deploymentSuffix')), 64)]",
-            "ddosHubPolicyDeploymentName": "[take(concat(parameters('industry'), '-DDoSHubPolicy', variables('deploymentSuffix')), 64)]",
-            "cmkPolicyDeploymentName": "[take(concat(parameters('industry'), '-CMKPolicy', variables('deploymentSuffix')), 64)]",
-            "cmkPolicyAssignmentDeploymentName": "[take(concat(parameters('industry'), '-CMKPolicyAssignment', variables('deploymentSuffix')), 64)]",
-            "ddosLzPolicyDeploymentName": "[take(concat(parameters('industry'), '-DDoSLZPolicy', variables('deploymentSuffix')), 64)]",
             "monitoringDeploymentName": "[take(concat(parameters('industry'), '-Monitoring', variables('deploymentSuffix')), 64)]",
             "logAnalyticsPolicyDeploymentName": "[take(concat(parameters('industry'), '-LAPolicy', variables('deploymentSuffix')), 64)]",
             "monitoringSolutionsDeploymentName": "[take(concat(parameters('industry'), '-Solutions', variables('deploymentSuffix')), 64)]",
@@ -2777,11 +2761,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantCorpLzPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },       
         {
@@ -2800,11 +2780,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantApiMPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -2823,11 +2799,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantAppServicePolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -2846,11 +2818,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantAutomationPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -2869,11 +2837,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantBackupPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -2892,11 +2856,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantComputePolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -2915,11 +2875,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantContainerAppsPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -2938,11 +2894,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantContainerInstancePolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -2961,11 +2913,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantContainerRegistryPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -2984,11 +2932,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantCosmosDbPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -3007,11 +2951,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantDataExplorerPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -3030,11 +2970,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantDataFactoryPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -3053,11 +2989,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantEventGridPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -3076,11 +3008,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantEventHubPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -3099,11 +3027,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantKeyVaultPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -3122,11 +3046,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantKubernetesPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -3145,11 +3065,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantMachineLearningPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -3168,11 +3084,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantNetworkPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -3191,11 +3103,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantOpenAIPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -3214,11 +3122,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantPostgrePolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -3237,11 +3141,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantServiceBusPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -3260,11 +3160,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantSqlPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -3283,11 +3179,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantStoragePolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -3306,11 +3198,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantSynapsePolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -3329,11 +3217,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantVirtualDesktopPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -3377,11 +3261,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').centralizedLogsPolicySetDefinition]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },
         {
@@ -3400,11 +3280,7 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').policyDefinitions]"
                 },
-                "parameters": {
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[parameters('industryPrefix')]"
-                    }
-                }
+                "parameters": {}
             }
         },                      
         {
@@ -4183,36 +4059,6 @@
                     }
                 }
             }
-        },
-        {
-            // Assigning DDoS Policy to enforce DDoS on virtual networks if condition evaluates to true
-            "condition": "[and(or(equals(parameters('enableDdoS'), 'Yes'), equals(parameters('enableDdoS'), 'Audit')), not(empty(parameters('connectivitySubscriptionId'))))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[variables('deploymentNames').ddosHubPolicyDeploymentName]",
-            "scope": "[variables('scopes').connectivityManagementGroup]",
-            "location": "[deployment().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ddosDeploymentName)]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').ddosPolicyAssignment]"
-                },
-                "parameters": {
-                    "ddosPlanResourceId": {
-                        "value": "[variables('platformResourceIds').ddosProtectionResourceId]"
-                    },
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[variables('deterministicRoleAssignmentGuids').ddosForConnectivity]"
-                    },
-                    "enforcementMode": {
-                        "value": "[if(equals(parameters('enableDdoS'), 'Yes'), 'Default', 'DoNotEnforce')]"
-                    }
-                }
-            }   
         },
         {
             // Creating the virtual network hub (hub and spoke)
