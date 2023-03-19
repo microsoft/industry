@@ -3677,6 +3677,9 @@
                     "uri": "[variables('deploymentUris').logAnalyticsPolicyAssignment]"
                 },
                 "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
                     "rgName": {
                         "value": "[variables('platformRgNames').mgmtRg]"
                     },
@@ -3721,7 +3724,11 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').asbPolicyInitiative]"
                 },
-                "parameters": {}
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    }
+                }
             }
         },
         {
@@ -3820,7 +3827,7 @@
             }   
         },
         {
-            // Registering PolicyInsights RP to intermediate root management group if condition is true
+            // Scheduling remediation jobs
             "condition": "[and(or(not(empty(parameters('singlePlatformSubscriptionId'))), not(empty(parameters('managementSubscriptionId')))), equals(parameters('enableLogAnalytics'), 'Yes'))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
@@ -3939,6 +3946,9 @@
                     "uri": "[variables('deploymentUris').defenderEndpointPolicyAssignment]"
                 },
                 "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
                     "enforcementMode": {
                         "value": "[if(equals(parameters('enableDefenderEndpoint'), 'Yes'), 'Default', 'DoNotEnforce')]"
                     },

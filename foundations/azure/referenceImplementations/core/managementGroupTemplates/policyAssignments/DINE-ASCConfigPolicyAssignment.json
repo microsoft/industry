@@ -137,7 +137,7 @@
         },
         "scope": {
             "type": "string",
-            "defaultValue": "[managementGroup().id]"
+            "defaultValue": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]"
         }
     },
     "variables": {

@@ -2,6 +2,12 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
+            }
+        },
         "enforcementMode": {
             "type": "string",
             "allowedValues": [
@@ -15,7 +21,7 @@
         },
         "scope": {
             "type": "string",
-            "defaultValue": "[managementGroup().id]"
+            "defaultValue": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]"
         }
     },
     "variables": {
