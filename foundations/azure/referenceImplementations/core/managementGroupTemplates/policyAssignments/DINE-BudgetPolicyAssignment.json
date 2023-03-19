@@ -28,6 +28,10 @@
                 "DoNotEnforce"
             ],
             "defaultValue": "Default"
+        },
+        "scope": {
+            "type": "string",
+            "defaultValue": "[managementGroup().id]"
         }
     },
     "variables": {
@@ -50,6 +54,7 @@
             "apiVersion": "2019-09-01",
             "name": "[variables('policyAssignmentNames').budget]",
             "location": "[deployment().location]",
+            "scope": "[parameters('scope')]",
             "identity": {
                 "type": "SystemAssigned"
             },

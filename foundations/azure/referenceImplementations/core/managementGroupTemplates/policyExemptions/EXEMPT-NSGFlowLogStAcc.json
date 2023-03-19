@@ -6,6 +6,10 @@
             "type": "string",
             "defaultValue": ""
         },
+        "scope": {
+            "type": "string",
+            "defaultValue": "[managementGroup().id]"
+        },
         "policyDefinitionReferenceIds": {
             "type": "array",
             "defaultValue": [
@@ -26,6 +30,7 @@
             "type": "Microsoft.Authorization/policyExemptions",
             "apiVersion": "2022-07-01-preview",
             "name": "[variables('policyExemptionResourceName')]",
+            "scope": "[parameters('scope')]",
             "properties": {
                 "policyAssignmentId": "[variables('policyAssignmentId')]",
                 "policyDefinitionReferenceIds": "[parameters('policyDefinitionReferenceIds')]",

@@ -284,6 +284,10 @@
         "userAssignedIdentityResourceId": {
             "type": "string",
             "defaultValue": ""
+        },
+        "scope": {
+            "type": "string",
+            "defaultValue": "[managementGroup().id]"
         }
     },
     "variables": {
@@ -302,6 +306,7 @@
             "apiVersion": "2022-06-01",
             "name": "[variables('policyAssignmentNames').corpLz]",
             "location": "[deployment().location]",
+            "scope": "[parameters('scope')]",
             "identity": {
                 "type": "UserAssigned",
                 "userAssignedIdentities": {

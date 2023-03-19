@@ -30,6 +30,10 @@
         },
         "userAssignedIdentityResourceId": {
             "type": "string"
+        },
+        "scope": {
+            "type": "string",
+            "defaultValue": "[managementGroup().id]"
         }
     },
     "variables": {
@@ -47,6 +51,7 @@
             "type": "Microsoft.Authorization/policyAssignments",
             "apiVersion": "2022-06-01",
             "name": "[variables('policyAssignmentNames').apim]",
+            "scope": "[parameters('scope')]",
             "location": "[deployment().location]",
             "identity": {
                 "type": "UserAssigned",

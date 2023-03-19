@@ -16,6 +16,13 @@
                 "DoNotEnforce"
             ],
             "defaultValue": "Default"
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string"
+        },
+        "scope": {
+            "type": "string",
+            "defaultValue": "[managementGroup().id]"
         }
     },
     "variables": {
@@ -38,6 +45,7 @@
             "apiVersion": "2019-09-01",
             "name": "[variables('policyAssignmentNames').deployVmBackup]",
             "location": "[deployment().location]",
+            "scope": "[parameters('scope')]",
             "identity": {
                 "type": "SystemAssigned"
             },
