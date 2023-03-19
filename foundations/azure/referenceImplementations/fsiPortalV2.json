@@ -2960,7 +2960,6 @@
         },
         "outputs": {
             "parameters": {
-                "industry": "fsi",
                 "subnetMaskForGw": "[steps('esConnectivityGoalState').esAddressVpnOrEr]",
                 "subnetMaskForAzFw": "[steps('esConnectivityGoalState').esAddressFw]",
                 "enableErGw": "[steps('esConnectivityGoalState').esErGw]",

@@ -8,7 +8,7 @@
         }
     },
     "variables": {
-        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policyDefinitions/')]",
+        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
         "policies": {
             "policyDefinitions": []
         }
@@ -18,6 +18,7 @@
             "type": "Microsoft.Authorization/policyDefinitions",
             "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
             "apiVersion": "2019-09-01",
+            "scope": "[variables('scope')]",
             "copy": {
                 "name": "policyDefinitionCopy",
                 "count": "[length(variables('policies').policyDefinitions)]"
@@ -36,6 +37,7 @@
             "type": "Microsoft.Authorization/policySetDefinitions",
             "apiVersion": "2021-06-01",
             "name": "Centralized-Logging",
+            "scope": "[variables('scope')]",
             "dependsOn": [
                 "policyDefinitionCopy"
             ],
@@ -850,7 +852,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), 'Dine-Diagnostics-ExpressRouteCircuit')]",
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', 'Dine-Diagnostics-ExpressRouteCircuit')]",
                         "policyDefinitionReferenceId": "Dine-Diagnostics-Er",
                         "groupNames": [
                             "Logging"
@@ -865,7 +867,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), 'Dine-Diagnostics-Vnet')]",
+                        "policyDefinitionId": "[concat(variables('scope'),'/providers/Microsoft.Authorization/policyDefinitions/', 'Dine-Diagnostics-Vnet')]",
                         "policyDefinitionReferenceId": "Dine-Diagnostics-Vnet",
                         "groupNames": [
                             "Logging"
@@ -880,7 +882,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), 'Dine-Diagnostics-TrafficManager')]",
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', 'Dine-Diagnostics-TrafficManager')]",
                         "policyDefinitionReferenceId": "Dine-Diagnostics-Tm",
                         "groupNames": [
                             "Logging"
@@ -895,7 +897,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), 'Dine-Diagnostics-LoadBalancer')]",
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', 'Dine-Diagnostics-LoadBalancer')]",
                         "policyDefinitionReferenceId": "Dine-Diagnostics-Lb",
                         "groupNames": [
                             "Logging"
@@ -910,7 +912,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), 'Dine-Diagnostics-FrontDoor')]",
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', 'Dine-Diagnostics-FrontDoor')]",
                         "policyDefinitionReferenceId": "Dine-Diagnostics-Fd",
                         "groupNames": [
                             "Logging"

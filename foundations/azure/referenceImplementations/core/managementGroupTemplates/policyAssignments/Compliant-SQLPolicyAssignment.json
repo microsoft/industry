@@ -62,6 +62,9 @@
         },
         "userAssignedIdentityResourceId": {
             "type": "string"
+        },
+        "scope": {
+            "type": "string"
         }
     },
     "variables": {
@@ -80,6 +83,7 @@
             "apiVersion": "2022-06-01",
             "name": "[variables('policyAssignmentNames').sql]",
             "location": "[deployment().location]",
+            "scope": "[parameters('scope')]",
             "identity": {
                 "type": "UserAssigned",
                 "userAssignedIdentities": {

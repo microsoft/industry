@@ -2,16 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "industry": {
-            "type": "string",
-            "allowedValues": [
-                "fsi",
-                "telco"
-            ],
-            "metadata": {
-                "description": "Azure Portal UX to determine which industry cloud foundation to be deployed"
-            }
-        },
         "industryPrefix": {
             "type": "string",
             "maxLength": 10,
@@ -716,30 +706,13 @@
             "ascConfigPolicyInitiative": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-ASCConfigPolicyAssignment.json')]",
             "defenderEndpointPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-DefenderForVms.json')]",
             "azVmBackupPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-VMBackupPolicyAssignment.json')]",
-            "azPolicyForKubernetesPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-AksPolicyPolicyAssignment.json')]",
-            "aksPrivEscalationPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-AksPrivEscalationPolicyAssignment.json')]",
-            "aksPrivilegedPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-AksPrivilegedPolicyAssignment.json')]",
-            "tlsSslPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-DINE-APPEND-TLS-SSL-PolicyAssignment.json')]",
-            "aksHttpsPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-AksWithoutHttpsPolicyAssignment.json')]",            
-            "ipFwdPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-IPForwardingPolicyAssignment.json')]",
-            "publicEndpointPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, variables('azPublicEndpointArmTemplate'))]",
-            "publicEndpointPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-PublicEndpointPolicyAssignment.json')]",
-            "privateDnsZonePolicySetDefinition": "[uri(deployment().properties.templateLink.uri, variables('azPrivateDnsArmTemplate'))]",
-            "privateDnsZonePolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-PrivateDNSZonesPolicyAssignment.json')]",
             "pipPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-PublicIpAddressPolicyAssignment.json')]",
             "rdpFromInternetPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-RDPFromInternetPolicyAssignment.json')]",
-            "storageHttpsPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-StorageWithoutHttpsPolicyAssignment.json')]",
             "subnetNsgPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-SubnetWithoutNsgPolicyAssignment.json')]",
-            "sqlAuditPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-SQLAuditingPolicyAssignment.json')]",
-            "sqlEncryptionPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-SQLEncryptionPolicyAssignment.json')]",
-            "ddosPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/MODIFY-DDoSPolicyAssignment.json')]",
             "corpVnetPeering": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/vnetPeering.json')]",
             "corpVwanPeering": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/vnetPeeringVwan.json')]",
             "privateDnsZones": "[uri(deployment().properties.templateLink.uri, 'core/resourceGroupTemplates/privateDnsZones.json')]",
             "roleAssignments": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/roleAssignments/roleAssignment.json')]",
-            "databricksSku": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-DatabricksSkuPolicyAssignment.json')]",
-            "databricksPip": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-DatabricksPipPolicyAssignment.json')]",
-            "databricksCluster": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-DatabricksClusterPolicyAssignment.json')]",
             "govAscPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/gov/fairfaxDINE-ASCConfigPolicyAssignment.json')]",
             "logStorageAccount": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/logStorageAccount.json')]",
             "nwDeployment": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/networkWatcher.json')]",
@@ -748,159 +721,150 @@
             "sshFromInternetPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-SSHFromInternetPolicyAssignment.json')]",
             "denyVnetPeeringPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-VNetPeeringPolicyAssignment.json')]",
             "budgetPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-BudgetPolicyAssignment.json')]",
-            "appGwWithoutWafPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-AppGwWithoutWAFPolicyAssignment.json')]",
-            "appGwWithouthFwPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-AppGwWithoutFwRulesPolicyAssignment.json')]",
-            "wafWithoutFdPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-WafWithoutFrontDoorEntryPointPolicyAssignment.json')]",
-            "fdWithoutWafPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-FdWithoutManagedWafPolicyAssignment.json')]",
-            "openAiLocalAuthPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-OpenAiWithLocalAuthPolicyAssignment.json')]",
-            "openAiMiPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-OpenAiWithoutMiPolicyAssignment.json')]",
             // Telco industry
             "erHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'telco/managementGroupTemplates/policyAssignments/DENY-non-ha-expressRoutes-policyAssignment.json')]",
             "pipHaPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'telco/managementGroupTemplates/policyAssignments/DENY-non-ha-publicIps-policyAssignment.json')]"
         },
         // Declaring deterministic deployment names
         "deploymentSuffix": "[concat('-', deployment().location, guid(parameters('industryPrefix')))]",
+        "industry": "fsi",
         "deploymentNames": {
-            "mgmtGroupDeploymentName": "[take(concat(parameters('industry'), '-Mgs', variables('deploymentSuffix')), 64)]",
-            "policyRpRegDeploymentName": "[take(concat(parameters('industry'), '-PolicyInsights', variables('deploymentSuffix')), 64)]",
-            "customRbacDeploymentName": "[take(concat(parameters('industry'), '-RoleDefinitions', variables('deploymentSuffix')), 64)]",
-            "allowedRegionsDeploymentName": "[take(concat(parameters('industry'), '-Azure-Regions', variables('deploymentSuffix')), 64)]",
-            "allowedRgRegionsDeploymentName": "[take(concat(parameters('industry'), '-Azure-RG-Regions', variables('deploymentSuffix')), 64)]",
-            "allowedResourcesDeploymentName": "[take(concat(parameters('industry'), '-Azure-Resources', variables('deploymentSuffix')), 64)]",
-            "centralizedLoggingDeploymentName": "[take(concat(parameters('industry'), '-Centralized-Logs', variables('deploymentSuffix')), 64)]",
-            "compliantCorpLzDeploymentName": "[take(concat(parameters('industry'), '-Compliant-CorpLz', variables('deploymentSuffix')), 64)]",
-            "compliantApimDeploymentName": "[take(concat(parameters('industry'), '-Compliant-Apim', variables('deploymentSuffix')), 64)]",
-            "compliantAppServiceDeploymentName": "[take(concat(parameters('industry'), '-Compliant-AppService', variables('deploymentSuffix')), 64)]",
-            "compliantAutomationDeploymentName": "[take(concat(parameters('industry'), '-Compliant-Automation', variables('deploymentSuffix')), 64)]",
-            "compliantBackupDeploymentName": "[take(concat(parameters('industry'), '-Compliant-Backup', variables('deploymentSuffix')), 64)]",
-            "compliantComputeDeploymentName": "[take(concat(parameters('industry'), '-Compliant-Compute', variables('deploymentSuffix')), 64)]",
-            "compliantContainerAppsDeploymentName": "[take(concat(parameters('industry'), '-Compliant-ContainerApps', variables('deploymentSuffix')), 64)]",
-            "compliantContainerInstanceDeploymentName": "[take(concat(parameters('industry'), '-Compliant-ContainerInstance', variables('deploymentSuffix')), 64)]",
-            "compliantContainerRegistryDeploymentName": "[take(concat(parameters('industry'), '-Compliant-ContainerRegistry', variables('deploymentSuffix')), 64)]",
-            "compliantCosmosDbDeploymentName": "[take(concat(parameters('industry'), '-Compliant-CosmosDb', variables('deploymentSuffix')), 64)]",
-            "compliantDataExplorerDeploymentName": "[take(concat(parameters('industry'), '-Compliant-DataExplorer', variables('deploymentSuffix')), 64)]",
-            "compliantDataFactoryDeploymentName": "[take(concat(parameters('industry'), '-Compliant-DataFactory', variables('deploymentSuffix')), 64)]",
-            "compliantEventGridDeploymentName": "[take(concat(parameters('industry'), '-Compliant-EventGrid', variables('deploymentSuffix')), 64)]",
-            "compliantEventHubDeploymentName": "[take(concat(parameters('industry'), '-Compliant-EventHub', variables('deploymentSuffix')), 64)]",
-            "compliantKeyVaultDeploymentName": "[take(concat(parameters('industry'), '-Compliant-KeyVault', variables('deploymentSuffix')), 64)]",
-            "compliantKubernetesDeploymentName": "[take(concat(parameters('industry'), '-Compliant-Kubernetes', variables('deploymentSuffix')), 64)]",
-            "compliantMachineLearningDeploymentName": "[take(concat(parameters('industry'), '-Compliant-MachineLearning', variables('deploymentSuffix')), 64)]",
-            "compliantNetworkDeploymentName": "[take(concat(parameters('industry'), '-Compliant-Network', variables('deploymentSuffix')), 64)]",
-            "compliantOpenAiDeploymentName": "[take(concat(parameters('industry'), '-Compliant-OpenAi', variables('deploymentSuffix')), 64)]",
-            "compliantPostgreDeploymentName": "[take(concat(parameters('industry'), '-Compliant-Postgre', variables('deploymentSuffix')), 64)]",
-            "compliantServiceBusDeploymentName": "[take(concat(parameters('industry'), '-Compliant-ServiceBus', variables('deploymentSuffix')), 64)]",
-            "compliantSqlDeploymentName": "[take(concat(parameters('industry'), '-Compliant-Sql', variables('deploymentSuffix')), 64)]",
-            "compliantStorageDeploymentName": "[take(concat(parameters('industry'), '-Compliant-Storage', variables('deploymentSuffix')), 64)]",
-            "compliantSynapseDeploymentName": "[take(concat(parameters('industry'), '-Compliant-Synapse', variables('deploymentSuffix')), 64)]",
-            "compliantVirtualDesktopDeploymentName": "[take(concat(parameters('industry'), '-Compliant-AVD', variables('deploymentSuffix')), 64)]",
-            "mgmtSubscriptionPlacement": "[take(concat(parameters('industry'), '-MgmtSub', variables('deploymentSuffix')), 64)]",
-            "policyIdentityDeploymentName": "[take(concat(parameters('industry'), '-PolicyIdentity', variables('deploymentSuffix')), 64)]",
-            "policyIdentityRoleAssignmentDeploymentName": "[take(concat(parameters('industry'), '-PolicyIdentityRoleAssignment', variables('deploymentSuffix')), 64)]",
-            "databricksSkuDeploymentName": "[take(concat(parameters('industry'), '-DBSku', variables('deploymentSuffix')), 64)]",
-            "databricksPipDeploymentName": "[take(concat(parameters('industry'), '-DBPip', variables('deploymentSuffix')), 64)]",
-            "databricksClusterDeploymentName": "[take(concat(parameters('industry'), '-DBCluster', variables('deploymentSuffix')), 64)]",
-            "corpPeeringDeploymentName": "[take(concat(parameters('industry'), '-CorpPeering', variables('deploymentSuffix')), 60)]",
-            "connectivitySubscriptionPlacement": "[take(concat(parameters('industry'), '-ConnectivitySub', variables('deploymentSuffix')), 64)]",
-            "ingressSubscriptionPlacement": "[take(concat(parameters('industry'), '-IngressSub', variables('deploymentSuffix')), 64)]",
-            "egressSubscriptionPlacement": "[take(concat(parameters('industry'), '-EgressSub', variables('deploymentSuffix')), 64)]",
-            "identitySubscriptionPlacement": "[take(concat(parameters('industry'), '-IdentitySub', variables('deploymentSuffix')), 64)]",
-            "policyDeploymentName": "[take(concat(parameters('industry'), '-Policy', variables('deploymentSuffix')), 64)]",
-            "dataPolicyDeploymentName": "[take(concat(parameters('industry'),'-Data-Policy', variables('deploymentSuffix')), 64)]",
-            "ddosRgDeploymentName": "[take(concat(parameters('industry'), '-DDoSRg', variables('deploymentSuffix')), 64)]",
-            "ddosDeploymentName": "[take(concat(parameters('industry'), '-DDoS', variables('deploymentSuffix')), 64)]",
-            "ddosHubPolicyDeploymentName": "[take(concat(parameters('industry'), '-DDoSHubPolicy', variables('deploymentSuffix')), 64)]",
-            "cmkPolicyDeploymentName": "[take(concat(parameters('industry'), '-CMKPolicy', variables('deploymentSuffix')), 64)]",
-            "cmkPolicyAssignmentDeploymentName": "[take(concat(parameters('industry'), '-CMKPolicyAssignment', variables('deploymentSuffix')), 64)]",
-            "ddosLzPolicyDeploymentName": "[take(concat(parameters('industry'), '-DDoSLZPolicy', variables('deploymentSuffix')), 64)]",
-            "monitoringDeploymentName": "[take(concat(parameters('industry'), '-Monitoring', variables('deploymentSuffix')), 64)]",
-            "logAnalyticsPolicyDeploymentName": "[take(concat(parameters('industry'), '-LAPolicy', variables('deploymentSuffix')), 64)]",
-            "monitoringSolutionsDeploymentName": "[take(concat(parameters('industry'), '-Solutions', variables('deploymentSuffix')), 64)]",
-            "asbPolicyDeploymentName": "[take(concat(parameters('industry'), '-ASB', variables('deploymentSuffix')), 64)]",
-            "resourceDiagnosticsPolicyDeploymentName": "[take(concat(parameters('industry'), '-ResourceDiagnostics', variables('deploymentSuffix')), 64)]",
-            "activityDiagnosticsPolicyDeploymentName": "[take(concat(parameters('industry'), '-ActivityDiagnostics', variables('deploymentSuffix')), 64)]",
-            "ascPolicyDeploymentName": "[take(concat(parameters('industry'), '-ASC', variables('deploymentSuffix')), 64)]",
-            "ascGovPolicyDeploymentName": "[take(concat(parameters('industry'), '-Gov-ASC', variables('deploymentSuffix')), 64)]",
-            "vnetConnectivityHubDeploymentName": "[take(concat(parameters('industry'), '-HubSpoke', variables('deploymentSuffix')), 64)]",
-            "ingressDeploymentName": "[take(concat(parameters('industry'), '-Ingress', variables('deploymentSuffix')), 64)]",
-            "egressDeploymentName": "[take(concat(parameters('industry'), '-Egress', variables('deploymentSuffix')), 64)]",
-            "vwanConnectivityHubDeploymentName": "[take(concat(parameters('industry'), '-VWanHub', variables('deploymentSuffix')), 64)]",
-            "nvaConnectivityHubDeploymentName": "[take(concat(parameters('industry'), '-NVAHub', variables('deploymentSuffix')), 64)]",
-            "azVmMonitorPolicyDeploymentName": "[take(concat(parameters('industry'), '-AzVmMonitor', variables('deploymentSuffix')), 64)]",
-            "defenderEndpointPolicyDeploymentName": "[take(concat(parameters('industry'), '-DefenderEndpoint', variables('deploymentSuffix')), 64)]",
-            "azVmssMonitorPolicyDeploymentName": "[take(concat(parameters('industry'),'-AzVmssMonitor', variables('deploymentSuffix')), 64)]",
-            "azBackupLzPolicyDeploymentName": "[take(concat(parameters('industry'),'-AzBackupLz', variables('deploymentSuffix')), 64)]",
-            "azBackupIdentityPolicyDeploymentName": "[take(concat(parameters('industry'), '-AzBackupIdentity', variables('deploymentSuffix')), 64)]",
-            "azPolicyForAksPolicyDeploymentName": "[take(concat(parameters('industry'), '-AksPolicy', variables('deploymentSuffix')), 64)]",
-            "aksPrivEscalationPolicyDeploymentName": "[take(concat(parameters('industry'), '-AksPrivEsc', variables('deploymentSuffix')), 64)]",
-            "aksHttpsPolicyDeploymentName": "[take(concat(parameters('industry'), '-AksHttps', variables('deploymentSuffix')), 64)]",
-            "aksPrivilegedPolicyDeploymentName": "[take(concat(parameters('industry'), '-AksPrivileged', variables('deploymentSuffix')), 64)]",
-            "tlsSslPolicyDeploymentName": "[take(concat(parameters('industry'), '-TLSSSL', variables('deploymentSuffix')), 64)]",
-            "ipFwPolicyDeploymentName": "[take(concat(parameters('industry'), '-IPFwd', variables('deploymentSuffix')), 64)]",
-            "publicEndpointPolicyDeploymentName": "[take(concat(parameters('industry'), '-PEndpoint', variables('deploymentSuffix')), 64)]",
-            "publicEndpointPolicyDefinitionName": "[take(concat(parameters('industry'), '-Policy-PEndpoints', variables('deploymentSuffix')), 64)]",
-            "privateDnsPolicyDefinitionName": "[take(concat(parameters('industry'), '-Policy-PrivateDns', variables('deploymentSuffix')), 64)]",
-            "privateDnsPolicyDeploymentName": "[take(concat(parameters('industry'), '-PrivDNSAssignment', variables('deploymentSuffix')), 64)]",
-            "pipPolicyDeploymentName": "[take(concat(parameters('industry'), '-PIP', variables('deploymentSuffix')), 64)]",
-            "rdpFromInternetPolicyDeploymentName": "[take(concat(parameters('industry'), '-RDP', variables('deploymentSuffix')), 64)]",
-            "sshFromInternetPolicyDeploymentName": "[take(concat(parameters('industry'), '-SSH', variables('deploymentSuffix')), 64)]",
-            "rdpFromInternetIdentityPolicyDeploymentName": "[take(concat(parameters('industry'), '-RDPIdentity', variables('deploymentSuffix')), 64)]",
-            "storageHttpsPolicyDeploymentName": "[take(concat(parameters('industry'), '-StorageHttps', variables('deploymentSuffix')), 64)]",
-            "subnetNsgPolicyDeploymentName": "[take(concat(parameters('industry'), '-SubnetNsg', variables('deploymentSuffix')), 64)]",
-            "subnetNsgIdentityPolicyDeploymentName": "[take(concat(parameters('industry'), '-SubnetNsgIdentity', variables('deploymentSuffix')), 64)]",
-            "playgroundSubs": "[take(concat(parameters('industry'), '-Playground', variables('deploymentSuffix')), 60)]",
-            "onlineLzSubs": "[take(concat(parameters('industry'), '-OnlineLzs', variables('deploymentSuffix')), 60)]",
-            "corpLzSubs": "[take(concat(parameters('industry'), '-CorpLzs', variables('deploymentSuffix')), 60)]",
-            "corpConnectedMoveLzSubs": "[take(concat(parameters('industry'), '-CorpConnLzs', variables('deploymentSuffix')), 50)]",
-            "corpConnectedLzSubs": "[take(concat(parameters('industry'), '-CorpPeering', variables('deploymentSuffix')), 50)]",
-            "privateDnsZoneRgDeploymentName": "[take(concat(parameters('industry'), '-PrivDNSRG', variables('deploymentSuffix')), 64)]",
-            "privateDnsZonesDeploymentName": "[take(concat(parameters('industry'), '-PrivDNSZones', variables('deploymentSuffix')), 35)]",
-            "dnsZoneRoleAssignmentDeploymentName": "[take(concat(parameters('industry'), '-DNSZoneRole', variables('deploymentSuffix')), 64)]",
-            "dnsZoneOperatorRoleAssignmentDeploymentName": "[take(concat(parameters('industry'), '-DNSZoneOperatorRole', variables('deploymentSuffix')), 64)]",
-            "nsgFLowLogRoleAssignmentDeploymentName": "[take(concat(parameters('industry'), '-NSGFlowRole', variables('deploymentSuffix')), 64)]",
-            "identityPeeringDeploymentName": "[take(concat(parameters('industry'), '-IDPeering', variables('deploymentSuffix')), 64)]",
-            "identityVwanPeeringDeploymentName": "[take(concat(parameters('industry'), '-IDVwanPeering', variables('deploymentSuffix')), 64)]",
-            "corpConnectedLzVwanSubs": "[take(concat(parameters('industry'), '-CorpConnLzsVwan', variables('deploymentSuffix')), 50)]",
-            "logStorageDeploymentName": "[take(concat(parameters('industry'), '-LogStorage', variables('deploymentSuffix')), 64)]",
-            "nwDeploymentName": "[take(concat(parameters('industry'), '-NwPlatform', variables('deploymentSuffix')), 64)]",
-            "nwRgLzPolicyAssignment": "[take(concat(parameters('industry'), '-NwRgLz', variables('deploymentSuffix')), 64)]",
-            "nsgFlowLogsPlatformPolicyAssignment": "[take(concat(parameters('industry'), '-NSGFlowPlatform', variables('deploymentSuffix')), 64)]",
-            "nsgFLowLogsLzPolicyAssignment": "[take(concat(parameters('industry'), '-NSGFlowLz', variables('deploymentSuffix')), 64)]",
-            "nsgFlowLogPolicyExemption": "[take(concat(parameters('industry'), '-NSGExempt', variables('deploymentSuffix')), 64)]",
-            "denyVnetPeeringDeploymentName": "[take(concat(parameters('industry'), '-VNetPeering', variables('deploymentSuffix')), 64)]",
-            "budgetDeploymentName": "[take(concat(parameters('industry'), '-Budget', variables('deploymentSuffix')), 64)]",
+            "mgmtGroupDeploymentName": "[take(concat(variables('industry'), '-Mgs', variables('deploymentSuffix')), 64)]",
+            "policyRpRegDeploymentName": "[take(concat(variables('industry'), '-PolicyInsights', variables('deploymentSuffix')), 64)]",
+            "customRbacDeploymentName": "[take(concat(variables('industry'), '-RoleDefinitions', variables('deploymentSuffix')), 64)]",
+            "allowedRegionsDeploymentName": "[take(concat(variables('industry'), '-Azure-Regions', variables('deploymentSuffix')), 64)]",
+            "allowedRgRegionsDeploymentName": "[take(concat(variables('industry'), '-Azure-RG-Regions', variables('deploymentSuffix')), 64)]",
+            "allowedResourcesDeploymentName": "[take(concat(variables('industry'), '-Azure-Resources', variables('deploymentSuffix')), 64)]",
+            "centralizedLoggingDeploymentName": "[take(concat(variables('industry'), '-Centralized-Logs', variables('deploymentSuffix')), 64)]",
+            "compliantCorpLzDeploymentName": "[take(concat(variables('industry'), '-Compliant-CorpLz', variables('deploymentSuffix')), 64)]",
+            "compliantApimDeploymentName": "[take(concat(variables('industry'), '-Compliant-Apim', variables('deploymentSuffix')), 64)]",
+            "compliantAppServiceDeploymentName": "[take(concat(variables('industry'), '-Compliant-AppService', variables('deploymentSuffix')), 64)]",
+            "compliantAutomationDeploymentName": "[take(concat(variables('industry'), '-Compliant-Automation', variables('deploymentSuffix')), 64)]",
+            "compliantBackupDeploymentName": "[take(concat(variables('industry'), '-Compliant-Backup', variables('deploymentSuffix')), 64)]",
+            "compliantComputeDeploymentName": "[take(concat(variables('industry'), '-Compliant-Compute', variables('deploymentSuffix')), 64)]",
+            "compliantContainerAppsDeploymentName": "[take(concat(variables('industry'), '-Compliant-ContainerApps', variables('deploymentSuffix')), 64)]",
+            "compliantContainerInstanceDeploymentName": "[take(concat(variables('industry'), '-Compliant-ContainerInstance', variables('deploymentSuffix')), 64)]",
+            "compliantContainerRegistryDeploymentName": "[take(concat(variables('industry'), '-Compliant-ContainerRegistry', variables('deploymentSuffix')), 64)]",
+            "compliantCosmosDbDeploymentName": "[take(concat(variables('industry'), '-Compliant-CosmosDb', variables('deploymentSuffix')), 64)]",
+            "compliantDataExplorerDeploymentName": "[take(concat(variables('industry'), '-Compliant-DataExplorer', variables('deploymentSuffix')), 64)]",
+            "compliantDataFactoryDeploymentName": "[take(concat(variables('industry'), '-Compliant-DataFactory', variables('deploymentSuffix')), 64)]",
+            "compliantEventGridDeploymentName": "[take(concat(variables('industry'), '-Compliant-EventGrid', variables('deploymentSuffix')), 64)]",
+            "compliantEventHubDeploymentName": "[take(concat(variables('industry'), '-Compliant-EventHub', variables('deploymentSuffix')), 64)]",
+            "compliantKeyVaultDeploymentName": "[take(concat(variables('industry'), '-Compliant-KeyVault', variables('deploymentSuffix')), 64)]",
+            "compliantKubernetesDeploymentName": "[take(concat(variables('industry'), '-Compliant-Kubernetes', variables('deploymentSuffix')), 64)]",
+            "compliantMachineLearningDeploymentName": "[take(concat(variables('industry'), '-Compliant-MachineLearning', variables('deploymentSuffix')), 64)]",
+            "compliantNetworkDeploymentName": "[take(concat(variables('industry'), '-Compliant-Network', variables('deploymentSuffix')), 64)]",
+            "compliantOpenAiDeploymentName": "[take(concat(variables('industry'), '-Compliant-OpenAi', variables('deploymentSuffix')), 64)]",
+            "compliantPostgreDeploymentName": "[take(concat(variables('industry'), '-Compliant-Postgre', variables('deploymentSuffix')), 64)]",
+            "compliantServiceBusDeploymentName": "[take(concat(variables('industry'), '-Compliant-ServiceBus', variables('deploymentSuffix')), 64)]",
+            "compliantSqlDeploymentName": "[take(concat(variables('industry'), '-Compliant-Sql', variables('deploymentSuffix')), 64)]",
+            "compliantStorageDeploymentName": "[take(concat(variables('industry'), '-Compliant-Storage', variables('deploymentSuffix')), 64)]",
+            "compliantSynapseDeploymentName": "[take(concat(variables('industry'), '-Compliant-Synapse', variables('deploymentSuffix')), 64)]",
+            "compliantVirtualDesktopDeploymentName": "[take(concat(variables('industry'), '-Compliant-AVD', variables('deploymentSuffix')), 64)]",
+            "mgmtSubscriptionPlacement": "[take(concat(variables('industry'), '-MgmtSub', variables('deploymentSuffix')), 64)]",
+            "policyIdentityDeploymentName": "[take(concat(variables('industry'), '-PolicyIdentity', variables('deploymentSuffix')), 64)]",
+            "policyIdentityRoleAssignmentDeploymentName": "[take(concat(variables('industry'), '-PolicyIdentityRoleAssignment', variables('deploymentSuffix')), 64)]",
+            "databricksSkuDeploymentName": "[take(concat(variables('industry'), '-DBSku', variables('deploymentSuffix')), 64)]",
+            "databricksPipDeploymentName": "[take(concat(variables('industry'), '-DBPip', variables('deploymentSuffix')), 64)]",
+            "databricksClusterDeploymentName": "[take(concat(variables('industry'), '-DBCluster', variables('deploymentSuffix')), 64)]",
+            "corpPeeringDeploymentName": "[take(concat(variables('industry'), '-CorpPeering', variables('deploymentSuffix')), 60)]",
+            "connectivitySubscriptionPlacement": "[take(concat(variables('industry'), '-ConnectivitySub', variables('deploymentSuffix')), 64)]",
+            "ingressSubscriptionPlacement": "[take(concat(variables('industry'), '-IngressSub', variables('deploymentSuffix')), 64)]",
+            "egressSubscriptionPlacement": "[take(concat(variables('industry'), '-EgressSub', variables('deploymentSuffix')), 64)]",
+            "identitySubscriptionPlacement": "[take(concat(variables('industry'), '-IdentitySub', variables('deploymentSuffix')), 64)]",
+            "policyDeploymentName": "[take(concat(variables('industry'), '-Policy', variables('deploymentSuffix')), 64)]",
+            "dataPolicyDeploymentName": "[take(concat(variables('industry'),'-Data-Policy', variables('deploymentSuffix')), 64)]",
+            "ddosRgDeploymentName": "[take(concat(variables('industry'), '-DDoSRg', variables('deploymentSuffix')), 64)]",
+            "ddosDeploymentName": "[take(concat(variables('industry'), '-DDoS', variables('deploymentSuffix')), 64)]",
+            "monitoringDeploymentName": "[take(concat(variables('industry'), '-Monitoring', variables('deploymentSuffix')), 64)]",
+            "logAnalyticsPolicyDeploymentName": "[take(concat(variables('industry'), '-LAPolicy', variables('deploymentSuffix')), 64)]",
+            "monitoringSolutionsDeploymentName": "[take(concat(variables('industry'), '-Solutions', variables('deploymentSuffix')), 64)]",
+            "asbPolicyDeploymentName": "[take(concat(variables('industry'), '-ASB', variables('deploymentSuffix')), 64)]",
+            "resourceDiagnosticsPolicyDeploymentName": "[take(concat(variables('industry'), '-ResourceDiagnostics', variables('deploymentSuffix')), 64)]",
+            "activityDiagnosticsPolicyDeploymentName": "[take(concat(variables('industry'), '-ActivityDiagnostics', variables('deploymentSuffix')), 64)]",
+            "ascPolicyDeploymentName": "[take(concat(variables('industry'), '-ASC', variables('deploymentSuffix')), 64)]",
+            "ascGovPolicyDeploymentName": "[take(concat(variables('industry'), '-Gov-ASC', variables('deploymentSuffix')), 64)]",
+            "vnetConnectivityHubDeploymentName": "[take(concat(variables('industry'), '-HubSpoke', variables('deploymentSuffix')), 64)]",
+            "ingressDeploymentName": "[take(concat(variables('industry'), '-Ingress', variables('deploymentSuffix')), 64)]",
+            "egressDeploymentName": "[take(concat(variables('industry'), '-Egress', variables('deploymentSuffix')), 64)]",
+            "vwanConnectivityHubDeploymentName": "[take(concat(variables('industry'), '-VWanHub', variables('deploymentSuffix')), 64)]",
+            "nvaConnectivityHubDeploymentName": "[take(concat(variables('industry'), '-NVAHub', variables('deploymentSuffix')), 64)]",
+            "azVmMonitorPolicyDeploymentName": "[take(concat(variables('industry'), '-AzVmMonitor', variables('deploymentSuffix')), 64)]",
+            "defenderEndpointPolicyDeploymentName": "[take(concat(variables('industry'), '-DefenderEndpoint', variables('deploymentSuffix')), 64)]",
+            "azVmssMonitorPolicyDeploymentName": "[take(concat(variables('industry'),'-AzVmssMonitor', variables('deploymentSuffix')), 64)]",
+            "azBackupLzPolicyDeploymentName": "[take(concat(variables('industry'),'-AzBackupLz', variables('deploymentSuffix')), 64)]",
+            "azBackupIdentityPolicyDeploymentName": "[take(concat(variables('industry'), '-AzBackupIdentity', variables('deploymentSuffix')), 64)]",
+            "azPolicyForAksPolicyDeploymentName": "[take(concat(variables('industry'), '-AksPolicy', variables('deploymentSuffix')), 64)]",
+            "aksPrivEscalationPolicyDeploymentName": "[take(concat(variables('industry'), '-AksPrivEsc', variables('deploymentSuffix')), 64)]",
+            "aksHttpsPolicyDeploymentName": "[take(concat(variables('industry'), '-AksHttps', variables('deploymentSuffix')), 64)]",
+            "aksPrivilegedPolicyDeploymentName": "[take(concat(variables('industry'), '-AksPrivileged', variables('deploymentSuffix')), 64)]",
+            "tlsSslPolicyDeploymentName": "[take(concat(variables('industry'), '-TLSSSL', variables('deploymentSuffix')), 64)]",
+            "ipFwPolicyDeploymentName": "[take(concat(variables('industry'), '-IPFwd', variables('deploymentSuffix')), 64)]",
+            "publicEndpointPolicyDeploymentName": "[take(concat(variables('industry'), '-PEndpoint', variables('deploymentSuffix')), 64)]",
+            "publicEndpointPolicyDefinitionName": "[take(concat(variables('industry'), '-Policy-PEndpoints', variables('deploymentSuffix')), 64)]",
+            "privateDnsPolicyDefinitionName": "[take(concat(variables('industry'), '-Policy-PrivateDns', variables('deploymentSuffix')), 64)]",
+            "privateDnsPolicyDeploymentName": "[take(concat(variables('industry'), '-PrivDNSAssignment', variables('deploymentSuffix')), 64)]",
+            "pipPolicyDeploymentName": "[take(concat(variables('industry'), '-PIP', variables('deploymentSuffix')), 64)]",
+            "rdpFromInternetPolicyDeploymentName": "[take(concat(variables('industry'), '-RDP', variables('deploymentSuffix')), 64)]",
+            "sshFromInternetPolicyDeploymentName": "[take(concat(variables('industry'), '-SSH', variables('deploymentSuffix')), 64)]",
+            "rdpFromInternetIdentityPolicyDeploymentName": "[take(concat(variables('industry'), '-RDPIdentity', variables('deploymentSuffix')), 64)]",
+            "storageHttpsPolicyDeploymentName": "[take(concat(variables('industry'), '-StorageHttps', variables('deploymentSuffix')), 64)]",
+            "subnetNsgPolicyDeploymentName": "[take(concat(variables('industry'), '-SubnetNsg', variables('deploymentSuffix')), 64)]",
+            "subnetNsgIdentityPolicyDeploymentName": "[take(concat(variables('industry'), '-SubnetNsgIdentity', variables('deploymentSuffix')), 64)]",
+            "playgroundSubs": "[take(concat(variables('industry'), '-Playground', variables('deploymentSuffix')), 60)]",
+            "onlineLzSubs": "[take(concat(variables('industry'), '-OnlineLzs', variables('deploymentSuffix')), 60)]",
+            "corpLzSubs": "[take(concat(variables('industry'), '-CorpLzs', variables('deploymentSuffix')), 60)]",
+            "corpConnectedMoveLzSubs": "[take(concat(variables('industry'), '-CorpConnLzs', variables('deploymentSuffix')), 50)]",
+            "corpConnectedLzSubs": "[take(concat(variables('industry'), '-CorpPeering', variables('deploymentSuffix')), 50)]",
+            "privateDnsZoneRgDeploymentName": "[take(concat(variables('industry'), '-PrivDNSRG', variables('deploymentSuffix')), 64)]",
+            "privateDnsZonesDeploymentName": "[take(concat(variables('industry'), '-PrivDNSZones', variables('deploymentSuffix')), 35)]",
+            "dnsZoneRoleAssignmentDeploymentName": "[take(concat(variables('industry'), '-DNSZoneRole', variables('deploymentSuffix')), 64)]",
+            "dnsZoneOperatorRoleAssignmentDeploymentName": "[take(concat(variables('industry'), '-DNSZoneOperatorRole', variables('deploymentSuffix')), 64)]",
+            "nsgFLowLogRoleAssignmentDeploymentName": "[take(concat(variables('industry'), '-NSGFlowRole', variables('deploymentSuffix')), 64)]",
+            "identityPeeringDeploymentName": "[take(concat(variables('industry'), '-IDPeering', variables('deploymentSuffix')), 64)]",
+            "identityVwanPeeringDeploymentName": "[take(concat(variables('industry'), '-IDVwanPeering', variables('deploymentSuffix')), 64)]",
+            "corpConnectedLzVwanSubs": "[take(concat(variables('industry'), '-CorpConnLzsVwan', variables('deploymentSuffix')), 50)]",
+            "logStorageDeploymentName": "[take(concat(variables('industry'), '-LogStorage', variables('deploymentSuffix')), 64)]",
+            "nwDeploymentName": "[take(concat(variables('industry'), '-NwPlatform', variables('deploymentSuffix')), 64)]",
+            "nwRgLzPolicyAssignment": "[take(concat(variables('industry'), '-NwRgLz', variables('deploymentSuffix')), 64)]",
+            "nsgFlowLogsPlatformPolicyAssignment": "[take(concat(variables('industry'), '-NSGFlowPlatform', variables('deploymentSuffix')), 64)]",
+            "nsgFLowLogsLzPolicyAssignment": "[take(concat(variables('industry'), '-NSGFlowLz', variables('deploymentSuffix')), 64)]",
+            "nsgFlowLogPolicyExemption": "[take(concat(variables('industry'), '-NSGExempt', variables('deploymentSuffix')), 64)]",
+            "denyVnetPeeringDeploymentName": "[take(concat(variables('industry'), '-VNetPeering', variables('deploymentSuffix')), 64)]",
+            "budgetDeploymentName": "[take(concat(variables('industry'), '-Budget', variables('deploymentSuffix')), 64)]",
             // Compliant Azure Service Policy Assignment deployment names
-            "centralizedPlaygroundLogsAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Logging-Playground', variables('deploymentSuffix')), 64)]",
-            "centralizedPlatformLogsAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Logging-Platform', variables('deploymentSuffix')), 64)]",
-            "compliantCorpLzAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-CorpLz', variables('deploymentSuffix')), 64)]",
-            "compliantAutomationAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Auto', variables('deploymentSuffix')), 64)]",
-            "compliantBackupAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Backup', variables('deploymentSuffix')), 64)]",
-            "compliantCosmosDbAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-CosmosDb', variables('deploymentSuffix')), 64)]",
-            "compliantComputeAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Compute', variables('deploymentSuffix')), 64)]",
-            "compliantDataExplorerAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ADE', variables('deploymentSuffix')), 64)]",
-            "compliantDataFactoryAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ADF', variables('deploymentSuffix')), 64)]",
-            "compliantEventGridAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-EG', variables('deploymentSuffix')), 64)]",
-            "compliantEventHubAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-EH', variables('deploymentSuffix')), 64)]",
-            "compliantKeyVaultAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-KeyVault', variables('deploymentSuffix')), 64)]",
-            "compliantOpenAiAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-OpenAi', variables('deploymentSuffix')), 64)]",
-            "compliantPostgreAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Postgre', variables('deploymentSuffix')), 64)]",
-            "compliantSqlAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-SQL', variables('deploymentSuffix')), 64)]",
-            "compliantSynapseAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Synapse', variables('deploymentSuffix')), 64)]",
-            "compliantMachineLearningAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-MachineLearning', variables('deploymentSuffix')), 64)]",
-            "compliantNetworkAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Network', variables('deploymentSuffix')), 64)]",
-            "compliantPlatformNetworkAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-PlatformNetwork', variables('deploymentSuffix')), 64)]",
-            "compliantContainerAppsAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerApps', variables('deploymentSuffix')), 64)]",            
-            "compliantContainerInstanceAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerInstance', variables('deploymentSuffix')), 64)]",            
-            "compliantContainerRegistryAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ContainerRegistry', variables('deploymentSuffix')), 64)]",            
-            "compliantServiceBusAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-ServiceBus', variables('deploymentSuffix')), 64)]",            
-            "compliantKubernetesAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Kubernetes', variables('deploymentSuffix')), 64)]",            
-            "compliantStorageAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Storage', variables('deploymentSuffix')), 64)]",            
-            "compliantApimAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-Apim', variables('deploymentSuffix')), 64)]",
-            "compliantAppServiceAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-AppService', variables('deploymentSuffix')), 64)]",
-            "compliantVirtualDesktopAssignmentDeploymentName": "[take(concat(parameters('industry'), '-Enforce-Compliant-AVD', variables('deploymentSuffix')), 64)]",
+            "centralizedPlaygroundLogsAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Logging-Playground', variables('deploymentSuffix')), 64)]",
+            "centralizedPlatformLogsAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Logging-Platform', variables('deploymentSuffix')), 64)]",
+            "compliantCorpLzAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-CorpLz', variables('deploymentSuffix')), 64)]",
+            "compliantAutomationAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-Auto', variables('deploymentSuffix')), 64)]",
+            "compliantBackupAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-Backup', variables('deploymentSuffix')), 64)]",
+            "compliantCosmosDbAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-CosmosDb', variables('deploymentSuffix')), 64)]",
+            "compliantComputeAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-Compute', variables('deploymentSuffix')), 64)]",
+            "compliantDataExplorerAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-ADE', variables('deploymentSuffix')), 64)]",
+            "compliantDataFactoryAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-ADF', variables('deploymentSuffix')), 64)]",
+            "compliantEventGridAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-EG', variables('deploymentSuffix')), 64)]",
+            "compliantEventHubAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-EH', variables('deploymentSuffix')), 64)]",
+            "compliantKeyVaultAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-KeyVault', variables('deploymentSuffix')), 64)]",
+            "compliantOpenAiAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-OpenAi', variables('deploymentSuffix')), 64)]",
+            "compliantPostgreAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-Postgre', variables('deploymentSuffix')), 64)]",
+            "compliantSqlAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-SQL', variables('deploymentSuffix')), 64)]",
+            "compliantSynapseAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-Synapse', variables('deploymentSuffix')), 64)]",
+            "compliantMachineLearningAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-MachineLearning', variables('deploymentSuffix')), 64)]",
+            "compliantNetworkAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-Network', variables('deploymentSuffix')), 64)]",
+            "compliantPlatformNetworkAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-PlatformNetwork', variables('deploymentSuffix')), 64)]",
+            "compliantContainerAppsAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-ContainerApps', variables('deploymentSuffix')), 64)]",            
+            "compliantContainerInstanceAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-ContainerInstance', variables('deploymentSuffix')), 64)]",            
+            "compliantContainerRegistryAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-ContainerRegistry', variables('deploymentSuffix')), 64)]",            
+            "compliantServiceBusAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-ServiceBus', variables('deploymentSuffix')), 64)]",            
+            "compliantKubernetesAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-Kubernetes', variables('deploymentSuffix')), 64)]",            
+            "compliantStorageAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-Storage', variables('deploymentSuffix')), 64)]",            
+            "compliantApimAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-Apim', variables('deploymentSuffix')), 64)]",
+            "compliantAppServiceAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-AppService', variables('deploymentSuffix')), 64)]",
+            "compliantVirtualDesktopAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-AVD', variables('deploymentSuffix')), 64)]",
             // Telco specific policies assignment deployments
-            "erHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaEr', variables('deploymentSuffix')), 64)]",
-            "pipHaPolicyAssignment": "[take(concat(parameters('industry'), '-DenyNonHaPip', variables('deploymentSuffix')), 64)]",
-            "privateDnsOperatorPolicyDeploymentName": "[take(concat(parameters('industry'), '-PrivateDNSOperator',variables('deploymentSuffix')), 64)]"
+            "erHaPolicyAssignment": "[take(concat(variables('industry'), '-DenyNonHaEr', variables('deploymentSuffix')), 64)]",
+            "pipHaPolicyAssignment": "[take(concat(variables('industry'), '-DenyNonHaPip', variables('deploymentSuffix')), 64)]",
+            "privateDnsOperatorPolicyDeploymentName": "[take(concat(variables('industry'), '-PrivateDNSOperator',variables('deploymentSuffix')), 64)]"
         },
         // Declaring deterministic names for Resource Groups that will be created for platform resources
         "platformRgNames": {
@@ -2757,6 +2721,9 @@
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').industryRootManagementGroup]"
                     }
                 }
             }
@@ -3821,6 +3788,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').managementManagementGroup]"
                     }
                 }
             }
@@ -3845,7 +3815,11 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').asbPolicyInitiative]"
                 },
-                "parameters": {}
+                "parameters": {
+                    "scope": {
+                        "value": "[variables('scopes').industryRootManagementGroup]"
+                    }
+                }
             }
         },
         {
@@ -3876,6 +3850,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').platformManagementGroup]"
                     }
                 }
             }   
@@ -3908,6 +3885,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').playgroundManagementGroup]"
                     }
                 }
             }   
@@ -3939,6 +3919,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').industryRootManagementGroup]"
                     }
                 }
             }   
@@ -4041,6 +4024,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').industryRootManagementGroup]"
                     }
                 }
             }   
@@ -4068,6 +4054,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').industryRootManagementGroup]"
                     }
                 }
             }   
@@ -4183,36 +4172,6 @@
                     }
                 }
             }
-        },
-        {
-            // Assigning DDoS Policy to enforce DDoS on virtual networks if condition evaluates to true
-            "condition": "[and(or(equals(parameters('enableDdoS'), 'Yes'), equals(parameters('enableDdoS'), 'Audit')), not(empty(parameters('connectivitySubscriptionId'))))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[variables('deploymentNames').ddosHubPolicyDeploymentName]",
-            "scope": "[variables('scopes').connectivityManagementGroup]",
-            "location": "[deployment().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ddosDeploymentName)]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').ddosPolicyAssignment]"
-                },
-                "parameters": {
-                    "ddosPlanResourceId": {
-                        "value": "[variables('platformResourceIds').ddosProtectionResourceId]"
-                    },
-                    "topLevelManagementGroupPrefix": {
-                        "value": "[variables('deterministicRoleAssignmentGuids').ddosForConnectivity]"
-                    },
-                    "enforcementMode": {
-                        "value": "[if(equals(parameters('enableDdoS'), 'Yes'), 'Default', 'DoNotEnforce')]"
-                    }
-                }
-            }   
         },
         {
             // Creating the virtual network hub (hub and spoke)
@@ -4711,6 +4670,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').platformManagementGroup]"
                     }
                 }
             }
@@ -4738,6 +4700,9 @@
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').platformManagementGroup]"
                     }
                 }
             }
@@ -4798,6 +4763,9 @@
                             "Global",
                             "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
                         ]
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -4826,7 +4794,9 @@
                         "value": [
                             "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
                         ]
-                    }
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"}
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
             }
@@ -4852,6 +4822,9 @@
                 "parameters": {
                     "listOfResourceTypesAllowed": {
                         "value": "[variables('allowedResourcesMap')]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -4904,6 +4877,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                 }
             }
@@ -4940,6 +4916,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -4983,6 +4962,9 @@
                     },                    
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5020,6 +5002,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5054,6 +5039,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5085,6 +5073,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5116,6 +5107,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5147,6 +5141,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5184,6 +5181,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5221,6 +5221,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5258,6 +5261,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5295,6 +5301,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5338,6 +5347,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5387,6 +5399,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5424,6 +5439,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5467,6 +5485,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5504,6 +5525,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5607,6 +5631,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5710,6 +5737,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').platformManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5747,6 +5777,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5784,6 +5817,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                 }
             }
@@ -5820,6 +5856,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                 }
             }
@@ -5871,6 +5910,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                 }
             }
@@ -5931,6 +5973,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -6154,6 +6199,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').corpManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -6194,6 +6242,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                 }
             }
@@ -6242,6 +6293,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                 }
             }
@@ -6272,7 +6326,7 @@
                     },
                     "enforcementMode": {
                         "value": "Default"
-                    }                    
+                    }                 
                 }
             }
         },
@@ -6300,7 +6354,10 @@
                     },
                     "enforcementMode": {
                         "value": "Default"
-                    }                    
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').identityManagementGroup]"
+                    }                
                 }
             }
         },
@@ -6328,7 +6385,10 @@
                     },
                     "enforcementMode": {
                         "value": "Default"
-                    }                    
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').identityManagementGroup]"
+                    }             
                 }
             }
         },
@@ -6356,7 +6416,10 @@
                     },
                     "enforcementMode": {
                         "value": "Default"
-                    }                    
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').identityManagementGroup]"
+                    }                 
                 }
             }
         },
@@ -6507,7 +6570,10 @@
                 "parameters": {
                     "enforcementMode": {
                         "value": "Default"
-                    }    
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').playgroundManagementGroup]"
+                    }
                 }
             }
         }, 
@@ -6537,6 +6603,12 @@
                     },
                     "amount": {
                         "value": "[parameters('budgetAmount')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').playgroundManagementGroup]"
                     }
                 }
             }

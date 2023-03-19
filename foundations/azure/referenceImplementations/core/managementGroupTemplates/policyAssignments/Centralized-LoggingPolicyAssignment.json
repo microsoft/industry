@@ -54,6 +54,9 @@
         },
         "userAssignedIdentityResourceId": {
             "type": "string"
+        },
+        "scope": {
+            "type": "string"
         }
     },
     "variables": {
@@ -71,6 +74,7 @@
             "type": "Microsoft.Authorization/policyAssignments",
             "apiVersion": "2022-06-01",
             "name": "[variables('policyAssignmentNames').logging]",
+            "scope": "[parameters('scope')]",
             "location": "[deployment().location]",
             "identity": {
                 "type": "UserAssigned",

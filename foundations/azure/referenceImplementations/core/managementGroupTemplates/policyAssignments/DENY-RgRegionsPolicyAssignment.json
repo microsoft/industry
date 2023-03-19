@@ -13,6 +13,9 @@
         "listOfAllowedLocations": {
             "type": "array",
             "defaultValue": []
+        },
+        "scope": {
+            "type": "string"
         }
     },
     "variables": {
@@ -30,7 +33,8 @@
             "type": "Microsoft.Authorization/policyAssignments",
             "apiVersion": "2022-06-01",
             "name": "[variables('policyAssignmentNames').regions]",
-            "location": "[deployment().location]",            
+            "location": "[deployment().location]",
+            "scope": "[parameters('scope')]",          
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
                 "displayName": "[variables('policyAssignmentNames').displayName]",
