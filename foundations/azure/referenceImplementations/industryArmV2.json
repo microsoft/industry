@@ -697,7 +697,7 @@
             "subscriptionPlacement": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/subscriptionOrganization/subscriptionOrganization.json')]",
             "monitoring": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/logAnalyticsWorkspace.json')]",
             "resourceGroup": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/resourceGroup.json')]",
-            "ddosProtection": "[uri(deployment().properties.templateLink.uri, 'core/resourceGroupTemplates/ddosProtection.json')]",
+            "ddosProtection": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/ddosProtection.json')]",
             "logAnalyticsPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-LogAnalyticsPolicyAssignment.json')]",
             "monitoringSolutions": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/logAnalyticsSolutions.json')]",
             "asbPolicyInitiative": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-ASBPolicyAssignment.json')]",
@@ -711,7 +711,7 @@
             "subnetNsgPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DENY-SubnetWithoutNsgPolicyAssignment.json')]",
             "corpVnetPeering": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/vnetPeering.json')]",
             "corpVwanPeering": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/vnetPeeringVwan.json')]",
-            "privateDnsZones": "[uri(deployment().properties.templateLink.uri, 'core/resourceGroupTemplates/privateDnsZones.json')]",
+            "privateDnsZones": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/privateDnsZoneWithLink.json')]",
             "roleAssignments": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/roleAssignments/roleAssignment.json')]",
             "govAscPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/gov/fairfaxDINE-ASCConfigPolicyAssignment.json')]",
             "logStorageAccount": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/logStorageAccount.json')]",
@@ -3621,9 +3621,6 @@
                     },
                     "location": {
                         "value": "[deployment().location]"
-                    },
-                    "managementSubscriptionId": {
-                        "value": "[parameters('managementSubscriptionId')]"
                     }
                 }
             }
@@ -4113,47 +4110,14 @@
             The following optional deployment will configure virtual network hub into the connectivity subscription
         */
         {
-            // Creating resource group for DDoS Standard Protection
-            "condition": "[and(equals(parameters('enableDdoS'), 'Yes'), not(empty(parameters('connectivitySubscriptionId'))))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[variables('deploymentNames').ddosRgDeploymentName]",
-            "subscriptionId": "[parameters('connectivitySubscriptionId')]",
-            "location": "[deployment().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').connectivitySubscriptionPlacement)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').asbPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascGovPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').centralizedPlatformLogsAssignmentDeploymentName)]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').resourceGroup]"
-                },
-                "parameters": {
-                    "rgName": {
-                        "value": "[variables('platformRgNames').ddosRg]"
-                    },
-                    "location": {
-                        "value": "[parameters('location')]"
-                    }
-                }
-            }
-        },
-        {
             // Creating DDoS protection plan into the connectivity subscription
             "condition": "[and(equals(parameters('enableDdoS'), 'Yes'), not(empty(parameters('connectivitySubscriptionId'))))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "name": "[variables('deploymentNames').ddosDeploymentName]",
             "subscriptionId": "[parameters('connectivitySubscriptionId')]",
-            "resourceGroup": "[variables('platformRgNames').ddosRg]",
+            "location": "[deployment().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ddosRgDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').centralizedPlatformLogsAssignmentDeploymentName)]"
             ],
@@ -4164,6 +4128,9 @@
                     "uri": "[variables('deploymentUris').ddosProtection]"
                 },
                 "parameters": {
+                    "rgName": {
+                        "value": "[variables('platformRgNames').ddosRg]"
+                    },
                     "ddosName": {
                         "value": "[variables('platformResourceNames').ddosName]"
                     },
@@ -4553,60 +4520,20 @@
             }
         },
         {
-            // Creating resource group for Private DNS Zones
-            "condition": "[and(equals(parameters('enablePrivateDnsZones'), 'Yes'), not(empty(parameters('connectivitySubscriptionId'))))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "[variables('deploymentNames').privateDnsZoneRgDeploymentName]",
-            "subscriptionId": "[parameters('connectivitySubscriptionId')]",
-            "location": "[deployment().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').connectivitySubscriptionPlacement)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').asbPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascPolicyDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').ascGovPolicyDeploymentName)]",                
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').centralizedPlatformLogsAssignmentDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').vnetConnectivityHubDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').vwanConnectivityHubDeploymentName)]",
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').nvaConnectivityHubDeploymentName)]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').resourceGroup]"
-                },
-                "parameters": {
-                    "rgName": {
-                        "value": "[variables('platformRgNames').privateDnsRg]"
-                    },
-                    "location": {
-                        "value": "[parameters('location')]"
-                    }
-                }
-            }
-        },
-        {
             // Creating Private DNS Zones into the connectivity subscription
             "condition": "[and(equals(parameters('enablePrivateDnsZones'), 'Yes'), not(empty(parameters('connectivitySubscriptionId'))))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
-            "name": "[concat(variables('deploymentNames').privateDnsZonesDeploymentName, copyIndex())]",
+            "name": "[variables('deploymentNames').privateDnsZonesDeploymentName]",
+            "location": "[deployment().location]",
             "subscriptionId": "[parameters('connectivitySubscriptionId')]",
-            "resourceGroup": "[variables('platformRgNames').privateDnsRg]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZoneRgDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').activityDiagnosticsPolicyDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').centralizedPlatformLogsAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').vnetConnectivityHubDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').vwanConnectivityHubDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').nvaConnectivityHubDeploymentName)]"
             ],
-            "copy": {
-                "name": "dnsZones",
-                "count": "[length(variables('privateDnsZones'))]"
-            },
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -4614,8 +4541,14 @@
                     "uri": "[variables('deploymentUris').privateDnsZones]"
                 },
                 "parameters": {
+                    "rgName": {
+                        "value": "[variables('platformRgNames').privateDnsRg]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
                     "privateDnsZoneName": {
-                        "value": "[concat(variables('privateDnsZones')[copyIndex()])]"
+                        "value": "[variables('privateDnsZones')]"
                     },
                     "connectivityHubResourceId": {
                         "value": "[variables('platformResourceIds').vNetHubResourceId]"
@@ -4746,7 +4679,7 @@
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
                 "policyCompletion",
-                "dnsZones"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -4781,7 +4714,7 @@
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
                 "policyCompletion",
-                "dnsZones"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -4811,7 +4744,7 @@
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
                 "policyCompletion",
-                "dnsZones"
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -4895,7 +4828,7 @@
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantApimDeploymentName)]",
                 "policyCompletion",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
             "properties": {
@@ -4934,7 +4867,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantAppServiceDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -4980,7 +4913,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantAutomationDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5020,7 +4953,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantBackupDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5057,7 +4990,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantComputeDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5091,7 +5024,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantContainerAppsDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5125,7 +5058,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantContainerInstanceDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5159,7 +5092,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantContainerRegistryDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5199,7 +5132,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantCosmosDbDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5239,7 +5172,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantDataExplorerDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5279,7 +5212,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantDataFactoryDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5319,7 +5252,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantKeyVaultDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5365,7 +5298,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantEventGridDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5417,7 +5350,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantEventHubDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5457,7 +5390,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantKubernetesDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5503,7 +5436,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantMachineLearningDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5543,7 +5476,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantNetworkDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5649,7 +5582,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantNetworkDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5755,7 +5688,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantOpenAiDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5795,7 +5728,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantPostgreDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5834,7 +5767,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantServiceBusDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5873,7 +5806,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantSqlDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5927,7 +5860,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantStorageDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -5981,7 +5914,7 @@
                 }
             }
         },
-        {   // Creating Policy Assignment Compliant Corp Connected to Corp Landing Zone scope
+        {   // Creating Policy Assignment Compliant  Connected to Corp Landing Zone scope
             "condition": "[equals(parameters('enablePrivateDnsZones'), 'Yes')]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -5991,7 +5924,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantCorpLzDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -6217,7 +6150,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantSynapseDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
@@ -6259,7 +6192,7 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantVirtualDesktopDeploymentName)]",
-                "dnsZones",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
             ],
