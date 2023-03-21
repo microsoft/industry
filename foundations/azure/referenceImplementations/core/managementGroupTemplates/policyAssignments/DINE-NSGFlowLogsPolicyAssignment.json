@@ -32,6 +32,10 @@
             "type": "string",
             "defaultValue": "NetworkWatcherRg"
         },
+        "retentionDays": {
+            "type": "string",
+            "defaultValue": "365"
+        },
         "userAssignedIdentityResourceId": {
             "type": "string"
         }
@@ -84,6 +88,9 @@
                     },
                     "networkWatcherRg": {
                         "value": "[parameters('networkWatcherRg')]"
+                    },
+                    "retentionDays": {
+                        "value": "[parameters('retentionDays')]"
                     }
                 }
             }
