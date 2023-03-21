@@ -39,17 +39,13 @@
     "variables": {
         "policyDefinitions": {
             "deployBudget": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policyDefinitions/Deploy-Budget')]"
-            },
+        },
         "policyAssignmentNames": {
             "budget": "Deploy-Budget",
             "description": "Ensure there is a budget on all subscriptions under the assigned scope to control cost and spending.",
             "displayName": "Ensure there is a budget associated with the subscription"
-            },
-        "rbacOwner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
-        "roleAssignmentNames": {
-            "deployBudget": "[guid(concat(parameters('topLevelManagementGroupPrefix'), variables('policyAssignmentNames').budget))]"
-            }
-        },
+        }
+    },
     "resources": [
         {
             "type": "Microsoft.Authorization/policyAssignments",
