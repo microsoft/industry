@@ -774,6 +774,7 @@
             "identitySubscriptionPlacement": "[take(concat(variables('industry'), '-IdentitySub', variables('deploymentSuffix')), 64)]",
             "policyDeploymentName": "[take(concat(variables('industry'), '-Policy', variables('deploymentSuffix')), 64)]",
             "dataPolicyDeploymentName": "[take(concat(variables('industry'),'-Data-Policy', variables('deploymentSuffix')), 64)]",
+            "ddosRgDeploymentName": "[take(concat(variables('industry'), '-DDoSRg', variables('deploymentSuffix')), 64)]",
             "ddosDeploymentName": "[take(concat(variables('industry'), '-DDoS', variables('deploymentSuffix')), 64)]",
             "monitoringDeploymentName": "[take(concat(variables('industry'), '-Monitoring', variables('deploymentSuffix')), 64)]",
             "logAnalyticsPolicyDeploymentName": "[take(concat(variables('industry'), '-LAPolicy', variables('deploymentSuffix')), 64)]",
@@ -801,6 +802,8 @@
             "ipFwPolicyDeploymentName": "[take(concat(variables('industry'), '-IPFwd', variables('deploymentSuffix')), 64)]",
             "publicEndpointPolicyDeploymentName": "[take(concat(variables('industry'), '-PEndpoint', variables('deploymentSuffix')), 64)]",
             "publicEndpointPolicyDefinitionName": "[take(concat(variables('industry'), '-Policy-PEndpoints', variables('deploymentSuffix')), 64)]",
+            "privateDnsPolicyDefinitionName": "[take(concat(variables('industry'), '-Policy-PrivateDns', variables('deploymentSuffix')), 64)]",
+            "privateDnsPolicyDeploymentName": "[take(concat(variables('industry'), '-PrivDNSAssignment', variables('deploymentSuffix')), 64)]",
             "pipPolicyDeploymentName": "[take(concat(variables('industry'), '-PIP', variables('deploymentSuffix')), 64)]",
             "rdpFromInternetPolicyDeploymentName": "[take(concat(variables('industry'), '-RDP', variables('deploymentSuffix')), 64)]",
             "sshFromInternetPolicyDeploymentName": "[take(concat(variables('industry'), '-SSH', variables('deploymentSuffix')), 64)]",
@@ -813,6 +816,7 @@
             "corpLzSubs": "[take(concat(variables('industry'), '-CorpLzs', variables('deploymentSuffix')), 60)]",
             "corpConnectedMoveLzSubs": "[take(concat(variables('industry'), '-CorpConnLzs', variables('deploymentSuffix')), 50)]",
             "corpConnectedLzSubs": "[take(concat(variables('industry'), '-CorpPeering', variables('deploymentSuffix')), 50)]",
+            "privateDnsZoneRgDeploymentName": "[take(concat(variables('industry'), '-PrivDNSRG', variables('deploymentSuffix')), 64)]",
             "privateDnsZonesDeploymentName": "[take(concat(variables('industry'), '-PrivDNSZones', variables('deploymentSuffix')), 35)]",
             "dnsZoneRoleAssignmentDeploymentName": "[take(concat(variables('industry'), '-DNSZoneRole', variables('deploymentSuffix')), 64)]",
             "dnsZoneOperatorRoleAssignmentDeploymentName": "[take(concat(variables('industry'), '-DNSZoneOperatorRole', variables('deploymentSuffix')), 64)]",
@@ -2717,6 +2721,9 @@
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').industryRootManagementGroup]"
                     }
                 }
             }
@@ -3778,6 +3785,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').managementManagementGroup]"
                     }
                 }
             }
@@ -3802,7 +3812,11 @@
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').asbPolicyInitiative]"
                 },
-                "parameters": {}
+                "parameters": {
+                    "scope": {
+                        "value": "[variables('scopes').industryRootManagementGroup]"
+                    }
+                }
             }
         },
         {
@@ -3833,6 +3847,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').platformManagementGroup]"
                     }
                 }
             }   
@@ -3865,6 +3882,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').playgroundManagementGroup]"
                     }
                 }
             }   
@@ -3896,6 +3916,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').industryRootManagementGroup]"
                     }
                 }
             }   
@@ -3998,6 +4021,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').industryRootManagementGroup]"
                     }
                 }
             }   
@@ -4025,6 +4051,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').industryRootManagementGroup]"
                     }
                 }
             }   
@@ -4574,6 +4603,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').platformManagementGroup]"
                     }
                 }
             }
@@ -4601,6 +4633,9 @@
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('industryPrefix')]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').platformManagementGroup]"
                     }
                 }
             }
@@ -4661,6 +4696,9 @@
                             "Global",
                             "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
                         ]
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -4689,7 +4727,9 @@
                         "value": [
                             "[if(empty(parameters('location')), deployment().location, parameters('location'))]"
                         ]
-                    }
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"}
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
             }
@@ -4715,6 +4755,9 @@
                 "parameters": {
                     "listOfResourceTypesAllowed": {
                         "value": "[variables('allowedResourcesMap')]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -4767,6 +4810,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                 }
             }
@@ -4803,6 +4849,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -4846,6 +4895,9 @@
                     },                    
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -4883,6 +4935,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -4917,6 +4972,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -4948,6 +5006,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -4979,6 +5040,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5010,6 +5074,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5047,6 +5114,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5084,6 +5154,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5121,6 +5194,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5158,6 +5234,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5201,6 +5280,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5250,6 +5332,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5287,6 +5372,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5330,6 +5418,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5367,6 +5458,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5470,6 +5564,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5573,6 +5670,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').platformManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5610,6 +5710,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5647,6 +5750,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                 }
             }
@@ -5683,6 +5789,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                 }
             }
@@ -5734,6 +5843,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                 }
             }
@@ -5794,6 +5906,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -6017,6 +6132,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').corpManagementGroup]"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -6057,6 +6175,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                 }
             }
@@ -6105,6 +6226,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').lzsManagementGroup]"
                     }
                 }
             }
@@ -6163,7 +6287,10 @@
                     },
                     "enforcementMode": {
                         "value": "Default"
-                    }             
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').identityManagementGroup]"
+                    }                
                 }
             }
         },
@@ -6191,7 +6318,10 @@
                     },
                     "enforcementMode": {
                         "value": "Default"
-                    }       
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').identityManagementGroup]"
+                    }             
                 }
             }
         },
@@ -6219,7 +6349,10 @@
                     },
                     "enforcementMode": {
                         "value": "Default"
-                    }               
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').identityManagementGroup]"
+                    }                 
                 }
             }
         },
@@ -6370,6 +6503,9 @@
                 "parameters": {
                     "enforcementMode": {
                         "value": "Default"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').playgroundManagementGroup]"
                     }
                 }
             }
@@ -6403,6 +6539,9 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "scope": {
+                        "value": "[variables('scopes').playgroundManagementGroup]"
                     }
                 }
             }

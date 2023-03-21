@@ -9,6 +9,9 @@
                 "DoNotEnforce"
             ],
             "defaultValue": "Default"
+        },
+        "scope": {
+            "type": "string"
         }
     },
     "variables": {
@@ -27,6 +30,7 @@
             "apiVersion": "2019-09-01",
             "name": "[variables('policyAssignmentNames').ascMonitoring]",
             "location": "[deployment().location]",
+            "scope": "[parameters('scope')]",
             "identity": {
                 "type": "SystemAssigned"
             },

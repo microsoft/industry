@@ -8,37 +8,15 @@
         }
     },
     "variables": {
-        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policyDefinitions/')]",
-        "policies": {
-            "policyDefinitions": []
-        }
+        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]"
     },
     "resources": [
-        {
-            "type": "Microsoft.Authorization/policyDefinitions",
-            "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
-            "apiVersion": "2019-09-01",
-            "copy": {
-                "name": "policyDefinitionCopy",
-                "count": "[length(variables('policies').policyDefinitions)]"
-            },
-            "properties": {
-                "displayName": "[variables('policies').policyDefinitions[copyIndex()].properties.displayName]",
-                "description": "[variables('policies').policyDefinitions[copyIndex()].properties.description]",
-                "mode": "[variables('policies').policyDefinitions[copyIndex()].properties.mode]",
-                "policyType": "Custom",
-                "parameters": "[variables('policies').policyDefinitions[copyIndex()].properties.parameters]",
-                "policyRule": "[variables('policies').policyDefinitions[copyIndex()].properties.policyRule]",
-                "metadata": "[variables('policies').policyDefinitions[copyIndex()].properties.metadata]"
-            }
-        },
         {
             "type": "Microsoft.Authorization/policySetDefinitions",
             "apiVersion": "2021-06-01",
             "name": "Centralized-Logging",
-            "dependsOn": [
-                "policyDefinitionCopy"
-            ],
+            "scope": "[variables('scope')]",
+            "dependsOn": [],
             "properties": {
                 "metadata": {
                     "version": "1.0.0",
@@ -846,81 +824,6 @@
                             },
                             "categoryGroup": {
                                 "value": "[[parameters('logCategories')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "[concat(variables('scope'), 'Dine-Diagnostics-ExpressRouteCircuit')]",
-                        "policyDefinitionReferenceId": "Dine-Diagnostics-Er",
-                        "groupNames": [
-                            "Logging"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('enableLogAnalytics')]"
-                            },
-                            "logAnalytics": {
-                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "[concat(variables('scope'), 'Dine-Diagnostics-Vnet')]",
-                        "policyDefinitionReferenceId": "Dine-Diagnostics-Vnet",
-                        "groupNames": [
-                            "Logging"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('enableLogAnalytics')]"
-                            },
-                            "logAnalytics": {
-                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "[concat(variables('scope'), 'Dine-Diagnostics-TrafficManager')]",
-                        "policyDefinitionReferenceId": "Dine-Diagnostics-Tm",
-                        "groupNames": [
-                            "Logging"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('enableLogAnalytics')]"
-                            },
-                            "logAnalytics": {
-                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "[concat(variables('scope'), 'Dine-Diagnostics-LoadBalancer')]",
-                        "policyDefinitionReferenceId": "Dine-Diagnostics-Lb",
-                        "groupNames": [
-                            "Logging"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('enableLogAnalytics')]"
-                            },
-                            "logAnalytics": {
-                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "[concat(variables('scope'), 'Dine-Diagnostics-FrontDoor')]",
-                        "policyDefinitionReferenceId": "Dine-Diagnostics-Fd",
-                        "groupNames": [
-                            "Logging"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('enableLogAnalytics')]"
-                            },
-                            "logAnalytics": {
-                                "value": "[[parameters('logAnalyticsWorkspaceId')]"
                             }
                         }
                     }

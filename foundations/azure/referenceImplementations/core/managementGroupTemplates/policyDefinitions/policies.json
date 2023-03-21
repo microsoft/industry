@@ -3,12 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "topLevelManagementGroupPrefix": {
-            "type": "String",
-            "defaultValue": "FSIDemo",
-            "maxLength": 10,
-            "metadata": {
-                "description": "Provide a prefix (max 10 characters, unique at tenant-scope) for the Management Group hierarchy and other resources created as part of Enterprise-scale."
-            }
+            "type": "string"
         }
     },
     "variables": {
@@ -12050,6 +12045,7 @@
             "type": "Microsoft.Authorization/policyDefinitions",
             "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
             "apiVersion": "2019-09-01",
+            "scope": "[variables('scope')]",
             "copy": {
                 "name": "policyDefinitionCopy",
                 "count": "[length(variables('policies').policyDefinitions)]"
@@ -12068,6 +12064,7 @@
             "type": "Microsoft.Authorization/policySetDefinitions",
             "name": "[variables('initiatives').policySetDefinitions[copyIndex()].name]",
             "apiVersion": "2019-09-01",
+            "scope": "[variables('scope')]",
             "dependsOn": [
                 "policyDefinitionCopy"
             ],

@@ -28,30 +28,36 @@
                 "DoNotEnforce"
             ],
             "defaultValue": "Default"
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string"
+        },
+        "scope": {
+            "type": "string"
         }
     },
     "variables": {
         "policyDefinitions": {
             "deployBudget": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'), '/providers/Microsoft.Authorization/policyDefinitions/Deploy-Budget')]"
-            },
+        },
         "policyAssignmentNames": {
             "budget": "Deploy-Budget",
             "description": "Ensure there is a budget on all subscriptions under the assigned scope to control cost and spending.",
             "displayName": "Ensure there is a budget associated with the subscription"
-            },
-        "rbacOwner": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
-        "roleAssignmentNames": {
-            "deployBudget": "[guid(concat(parameters('topLevelManagementGroupPrefix'), variables('policyAssignmentNames').budget))]"
-            }
-        },
+        }
+    },
     "resources": [
         {
             "type": "Microsoft.Authorization/policyAssignments",
-            "apiVersion": "2019-09-01",
+            "apiVersion": "2022-06-01",
             "name": "[variables('policyAssignmentNames').budget]",
             "location": "[deployment().location]",
+            "scope": "[parameters('scope')]",
             "identity": {
-                "type": "SystemAssigned"
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[parameters('userAssignedIdentityResourceId')]": {}
+                }
             },
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
@@ -66,19 +72,6 @@
                         "value": "[parameters('amount')]"
                     }
                 }
-            }
-        },
-        {
-            "type": "Microsoft.Authorization/roleAssignments",
-            "apiVersion": "2019-04-01-preview",
-            "name": "[variables('roleAssignmentNames').deployBudget]",
-            "dependsOn": [
-                "[variables('policyAssignmentNames').budget]"
-            ],
-            "properties": {
-                "principalType": "ServicePrincipal",
-                "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', variables('rbacOwner'))]",
-                "principalId": "[toLower(reference(concat('/providers/Microsoft.Authorization/policyAssignments/', variables('policyAssignmentNames').budget), '2019-09-01', 'Full' ).identity.principalId)]"
             }
         }
     ],

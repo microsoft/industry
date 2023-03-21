@@ -13,6 +13,9 @@
                 "storageAccountsShouldUseCustomerManagedKeyForEncryptionMonitoringEffect",
                 "storageAccountShouldUseAPrivateLinkConnectionMonitoringEffect"
             ]
+        },
+        "scope": {
+            "type": "string"
         }
     },
     "variables": {
@@ -26,6 +29,7 @@
             "type": "Microsoft.Authorization/policyExemptions",
             "apiVersion": "2022-07-01-preview",
             "name": "[variables('policyExemptionResourceName')]",
+            "scope": "[parameters('scope')]",
             "properties": {
                 "policyAssignmentId": "[variables('policyAssignmentId')]",
                 "policyDefinitionReferenceIds": "[parameters('policyDefinitionReferenceIds')]",

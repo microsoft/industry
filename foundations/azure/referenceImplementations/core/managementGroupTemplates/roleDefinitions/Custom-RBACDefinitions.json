@@ -5,6 +5,9 @@
         "topLevelManagementGroupPrefix": {
             "type": "string",
             "defaultValue": ""
+        },
+        "scope": {
+            "type": "string"
         }
     },
     "variables": {
@@ -105,6 +108,7 @@
             "type": "Microsoft.Authorization/roleDefinitions",
             "name": "[guid(tenantResourceId('Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix')), variables('roles').roleDefinitions[copyIndex()].properties.roleName)]",
             "apiVersion": "2018-01-01-preview",
+            "scope": "[parameters('scope')]",
             "copy": {
                 "name": "roleDefinitionCopy",
                 "count": "[length(variables('roles').roleDefinitions)]"

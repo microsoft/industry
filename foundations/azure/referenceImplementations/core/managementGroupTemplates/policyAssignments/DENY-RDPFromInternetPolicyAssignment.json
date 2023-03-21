@@ -15,6 +15,9 @@
                 "DoNotEnforce"
             ],
             "defaultValue": "Default"
+        },
+        "scope": {
+            "type": "string"
         }
     },
     "variables": {
@@ -32,6 +35,7 @@
             "type": "Microsoft.Authorization/policyAssignments",
             "apiVersion": "2019-09-01",
             "name": "[variables('policyAssignmentNames').denyRdp]",
+            "scope": "[parameters('scope')]",
             "properties": {
                 "description": "[variables('policyAssignmentNames').description]",
                 "displayName": "[variables('policyAssignmentNames').displayName]",
