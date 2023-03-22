@@ -3,8 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "topLevelManagementGroupPrefix": {
-            "type": "string",
-            "defaultValue": "FSIDemo"
+            "type": "string"
         }
     },
     "variables": {
