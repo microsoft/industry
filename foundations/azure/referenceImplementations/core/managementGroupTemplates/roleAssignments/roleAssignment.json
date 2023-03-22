@@ -9,7 +9,8 @@
             "type": "string"
         },
         "roleDefinitionId": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "b24988ac-6180-42a0-ab88-20f7382dd24c"
         },
         "principalType": {
             "type": "string",
