@@ -83,7 +83,94 @@
                             }
                         }
                     },
-                    "name": "Deny-APIM-WithOutVnet"
+                    "name": "Deny-Apim-without-Vnet"
+                },
+                {
+                    "properties": {
+                        "displayName": "API Management should restrict virtual network type",
+                        "mode": "Indexed",
+                        "description": "Azure API Management should use internal virtual network type for enhanced security, isolation and prohibiting public network traffic. The API service then only allows connections via the connected network.",
+                        "metadata": {
+                            "version": "1.0.1",
+                            "category": "API Management"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Deny",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Deny"
+                            },
+                            "evaluatedSkuNames": {
+                                "type": "Array",
+                                "metadata": {
+                                    "displayName": "API Management SKU Names",
+                                    "description": "List of API Management SKUs against which this policy will be evaluated."
+                                },
+                                "allowedValues": [
+                                    "Developer",
+                                    "Basic",
+                                    "Standard",
+                                    "Premium",
+                                    "Consumption"
+                                ],
+                                "defaultValue": [
+                                    "Developer",
+                                    "Premium"
+                                ]
+                            },
+                            "virtualNetworkType": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Virtual Network Type",
+                                    "description": "Specifies the desired virtual network type that should be enforced."
+                                },
+                                "allowedValues": [
+                                    "None",
+                                    "Internal",
+                                    "External"
+                                ],
+                                "defaultValue": "Internal"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.ApiManagement/service"
+                                    },
+                                    {
+                                        "field": "Microsoft.ApiManagement/service/sku.name",
+                                        "in": "[[parameters('evaluatedSkuNames')]"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "field": "Microsoft.ApiManagement/service/virtualNetworkType",
+                                                "exists": "false"
+                                            },
+                                            {
+                                                "field": "Microsoft.ApiManagement/service/virtualNetworkType",
+                                                "notEquals": "[[parameters('virtualNetworkType')]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-APIM-VirtualNetworkType"
                 }
             ]
         }
@@ -180,9 +267,17 @@
                         "type": "string",
                         "defaultValue": "Deny"
                     },
-                    "apimVnetUsage": {
+                    "apimPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Audit"
+                    },
+                    "apimVirtualNetworkTypeEffect": {
                         "type": "string",
                         "defaultValue": "Deny"
+                    },
+                    "apimVirtualNetworkType": {
+                        "type": "string",
+                        "defaultValue": "Internal"
                     },
                     "apimSecrets": {
                         "type": "string",
@@ -202,6 +297,33 @@
                     }
                 },
                 "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
+                        "policyDefinitionReferenceId": "Deny-Apim-without-Vnet",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('apimPublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[1].name)]",
+                        "policyDefinitionReferenceId": "Deny-APIM-VirtualNetworkType",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('apimVirtualNetworkTypeEffect')]"
+                            },
+                            "virtualNetworkType": {
+                                "value": "[[parameters('apimVirtualNetworkType')]"
+                            }
+                        }
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/567c93f7-3661-494f-a30f-0a94d9bfebf8",
                         "policyDefinitionReferenceId": "Dine-Apim-Diagnostics",
@@ -229,19 +351,6 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('apimSecrets')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
-                        "policyDefinitionReferenceId": "Deny-Apim-without-Vnet",
-                        "groupNames": [
-                            "Encryption",
-                            "Network"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('apimVnetUsage')]"
                             }
                         }
                     },
