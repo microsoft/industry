@@ -233,7 +233,7 @@
                           "type": "Microsoft.EventHub/namespaces/authorizationrules",
                           "apiVersion": "2022-10-01-preview",
                           "name": "[concat(parameters('eventHubNamespaceName'), '/RootManageSharedAccessKey')]",
-                          "location": "westeurope",
+                          "location": "[deployment().location]",
                           "dependsOn": [
                               "[concat('Microsoft.EventHub/namespaces/', parameters('eventHubNamespaceName'))]"
                           ],
@@ -250,7 +250,7 @@
                           "type": "Microsoft.EventHub/namespaces/networkRuleSets",
                           "apiVersion": "2022-10-01-preview",
                           "name": "[concat(parameters('eventHubNamespaceName'), '/default')]",
-                          "location": "West Europe",
+                          "location": "[deployment().location]",
                           "dependsOn": [
                               "[concat('Microsoft.EventHub/namespaces/', parameters('eventHubNamespaceName'))]"
                           ],
@@ -266,7 +266,7 @@
                           "type": "Microsoft.OperationalInsights/workspaces/dataexports",
                           "apiVersion": "2020-08-01",
                           "name": "[concat(parameters('workspaceName'), '/Exports')]",
-                          "location": "westeurope",
+                          "location": "[deployment().location]",
                           "dependsOn": [
                               "[concat('Microsoft.OperationalInsights/workspaces/', parameters('workspaceName'))]",
                               "[concat('Microsoft.EventHub/namespaces/', parameters('eventHubNamespaceName'))]"
@@ -401,7 +401,7 @@
                           "type": "Microsoft.EventHub/namespaces/authorizationrules",
                           "apiVersion": "2022-10-01-preview",
                           "name": "[concat(parameters('eventHubNamespaceName'), '/RootManageSharedAccessKey')]",
-                          "location": "westeurope",
+                          "location": "[deployment().location]",
                           "dependsOn": [
                               "[concat('Microsoft.EventHub/namespaces/', parameters('eventHubNamespaceName'))]"
                           ],
@@ -418,7 +418,7 @@
                           "type": "Microsoft.EventHub/namespaces/networkRuleSets",
                           "apiVersion": "2022-10-01-preview",
                           "name": "[concat(parameters('eventHubNamespaceName'), '/default')]",
-                          "location": "West Europe",
+                          "location": "[deployment().location]",
                           "dependsOn": [
                               "[concat('Microsoft.EventHub/namespaces/', parameters('eventHubNamespaceName'))]"
                           ],
@@ -434,7 +434,7 @@
                           "type": "Microsoft.OperationalInsights/workspaces/dataexports",
                           "apiVersion": "2020-08-01",
                           "name": "[concat(parameters('workspaceName'), '/Exports')]",
-                          "location": "westeurope",
+                          "location": "[deployment().location]",
                           "dependsOn": [
                               "[concat('Microsoft.OperationalInsights/workspaces/', parameters('workspaceName'))]",
                               "[concat('Microsoft.EventHub/namespaces/', parameters('eventHubNamespaceName'))]"
