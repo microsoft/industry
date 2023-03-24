@@ -121,6 +121,14 @@
                                             {
                                                 "value": "[[indexof(toLower(string(field('Microsoft.ApiManagement/service/customProperties'))), '\"microsoft.windowsazure.apimanagement.gateway.security.protocols.tls10\":true')]",
                                                 "greater": 0
+                                            },
+                                            {
+                                                "value": "[[indexof(toLower(string(field('Microsoft.ApiManagement/service/customProperties'))), '\"microsoft.windowsazure.apimanagement.gateway.security.protocols.tls11\":\"true\"')]",
+                                                "greater": 0
+                                            },
+                                            {
+                                                "value": "[[indexof(toLower(string(field('Microsoft.ApiManagement/service/customProperties'))), '\"microsoft.windowsazure.apimanagement.gateway.security.protocols.tls11\":true')]",
+                                                "greater": 0
                                             }
                                         ]
                                     }
