@@ -217,39 +217,39 @@
                     },
                     "keyVaultCertificateLifeTimeAction": {
                         "type": "string",
-                        "defaultValue": "Deny"
+                        "defaultValue": "Disabled"
                     },
                     "keyVaultCertificateMaximumPercentageLife": {
                         "type": "integer",
-                        "defaultValue": ""
+                        "defaultValue": 80
                     },
                     "keyVaultCertificateMinimumDaysBeforeExpiry": {
                         "type": "integer",
-                        "defaultValue": ""
+                        "defaultValue": 20
                     },
                     "keyVaultCheckMinimumRSAKeySize": {
                         "type": "string",
-                        "defaultValue": "Deny"
+                        "defaultValue": "Disabled"
                     },
                     "keyVaultMinimumRSAKeySizeValue": {
                         "type": "integer",
-                        "defaultValue": ""
+                        "defaultValue": 1024
                     },
                     "keyVaultManagedHsmCheckMinimumRSAKeySize": {
                         "type": "string",
-                        "defaultValue": "Deny"
+                        "defaultValue": "Disabled"
                     },
                     "keyVaultManagedHsmMinimumRSAKeySizeValue": {
                         "type": "integer",
-                        "defaultValue": ""
+                        "defaultValue": 1024
                     },
                     "keyVaultCheckMinimumRSACertificateSize": {
                         "type": "string",
-                        "defaultValue": "Deny"
+                        "defaultValue": "Disabled"
                     },
                     "keyVaultMinimumRSACertificateSizeValue": {
                         "type": "integer",
-                        "defaultValue": ""
+                        "defaultValue": 2048
                     }
                 },
                 "policyDefinitions": [
