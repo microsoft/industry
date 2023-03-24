@@ -214,6 +214,42 @@
                     "hsmLogCategories": {
                         "type": "string",
                         "defaultValue": "allLogs"
+                    },
+                    "keyVaultCertificateLifeTimeAction": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultCertificateMaximumPercentageLife" : {
+                        "type": "integer",
+                        "defaultValue": ""
+                    },
+                    "keyVaultCertificateMinimumDaysBeforeExpiry" : {
+                        "type": "integer",
+                        "defaultValue": ""
+                    },
+                    "keyVaultCheckMinimumRSAKeySize" : {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultMinimumRSAKeySizeValue" : {
+                        "type": "integer",
+                        "defaultValue": ""
+                    },
+                    "keyVaultManagedHsmCheckMinimumRSAKeySize" : {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultManagedHsmMinimumRSAKeySizeValue" : {
+                        "type": "integer",
+                        "defaultValue": ""
+                    },
+                    "keyVaultCheckMinimumRSACertificateSize" : {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultMinimumRSACertificateSizeValue" : {
+                        "type": "integer",
+                        "defaultValue": ""
                     }
                 },
                 "policyDefinitions": [                   
@@ -544,6 +580,69 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('keyVaultPurgeProtection')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/12ef42cb-9903-4e39-9c26-422d29570417",
+                        "policyDefinitionReferenceId": "Deny-KV-Cert-without-LifeTimeActionTrigger",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultCertificateLifeTimeAction')]"
+                            },
+                            "minimumDaysBeforeExpiry" : {
+                                "value": "[[parameters('keyVaultCertificateMinimumDaysBeforeExpiry')]"
+                            },
+                            "maximumPercentageLife" : {
+                                "value": "[[parameters('keyVaultCertificateMaximumPercentageLife')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/82067dbb-e53b-4e06-b631-546d197452d9",
+                        "policyDefinitionReferenceId": "Deny-KV-RSA-Keys-without-MinKeySize",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultCheckMinimumRSAKeySize')]"
+                            },
+                            "minimumRSAKeySizeValue" : {
+                                "value": "[[parameters('keyVaultMinimumRSAKeySizeValue')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/86810a98-8e91-4a44-8386-ec66d0de5d57",
+                        "policyDefinitionReferenceId": "Deny-keyVaultManagedHsm-RSA-Keys-without-MinKeySize",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultManagedHsmCheckMinimumRSAKeySize')]"
+                            },
+                            "minimumRSAKeySizeValue" : {
+                                "value": "[[parameters('keyVaultManagedHsmMinimumRSAKeySizeValue')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/cee51871-e572-4576-855c-047c820360f0",
+                        "policyDefinitionReferenceId": "Deny-KV-RSA-Keys-without-MinCertSize",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultCheckMinimumRSACertificateSize')]"
+                            },
+                            "minimumRSAKeySizeValue" : {
+                                "value": "[[parameters('keyVaultMinimumRSACertificateSizeValue')]"
                             }
                         }
                     }
