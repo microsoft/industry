@@ -10,9 +10,6 @@
         },
         "managedIdentityName": {
             "type": "string"
-        },
-        "managementSubscriptionId": {
-            "type": "string"
         }
     },
     "variables": {
@@ -40,33 +37,21 @@
                     "scope": "inner"
                 },
                 "parameters": {
-                    "rgName": {
-                        "value": "[parameters('resourceGroupName')]"
-                    },
                     "uaIdentityName": {
                         "value": "[parameters('managedIdentityName')]"
                     },
                     "azureLocation": {
                         "value": "[parameters('location')]"
-                    },
-                    "mgmtSubId": {
-                        "value": "[parameters('managementSubscriptionId')]"
                     }
                 },
                 "template": {
                     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
                     "contentVersion": "1.0.0.0",
                     "parameters": {
-                        "rgName": {
-                            "type": "string"
-                        },
                         "uaIdentityName": {
                             "type": "string"
                         },
                         "azureLocation": {
-                            "type": "string"
-                        },
-                        "mgmtSubId": {
                             "type": "string"
                         }
                     },

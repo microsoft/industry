@@ -32,6 +32,26 @@
             "type": "string",
             "defaultValue": "allLogs"
         },
+        "diagFileMetrics": {
+            "type": "bool",
+            "defaultvalue": false
+        },
+        "diagBlobMetrics": {
+            "type": "bool",
+            "defaultValue": false
+        },
+        "diagQueueMetrics": {
+            "type": "bool",
+            "defaultValue": false
+        },
+        "diagTableMetrics": {
+            "type": "bool",
+            "defaultValue": false
+        },
+        "diagEventHubMetrics": {
+            "type": "string",
+            "defaultValue": "False"
+        },
         "userAssignedIdentityResourceId": {
             "type": "string"
         }
@@ -72,6 +92,21 @@
                     },
                     "logCategories": {
                         "value": "[parameters('logCategories')]"
+                    },
+                    "diagFileMetrics": {
+                        "value": "[parameters('diagFileMetrics')]"
+                    },
+                    "diagBlobMetrics": {
+                        "value": "[parameters('diagBlobMetrics')]"
+                    },
+                    "diagQueueMetrics": {
+                        "value": "[parameters('diagQueueMetrics')]"
+                    },
+                    "diagTableMetrics": {
+                        "value": "[parameters('diagTableMetrics')]"
+                    },
+                    "diagEventHubMetrics": {
+                        "value": "[parameters('diagEventHubMetrics')]"
                     }
                 }
             }
