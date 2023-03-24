@@ -263,7 +263,7 @@
                             }
                         }
                     },
-                    "name": "Deny-Storage-Sftp"
+                    "name": "Deny-Storage-LocalUser"
                 },
                 {
                     "properties": {
@@ -1053,7 +1053,7 @@
                     },
                     {
                         "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[3].name)]",
-                        "policyDefinitionReferenceId": "Deny-Storage-Sftp",
+                        "policyDefinitionReferenceId": "Deny-Storage-LocalUser",
                         "groupNames": [
                             "Identity"
                         ],
