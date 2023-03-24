@@ -84,6 +84,62 @@
                         }
                     },
                     "name": "Deny-APIM-WithOutVnet"
+                },
+                {
+                    "properties": {
+                        "displayName": "API Management services should use TLS version 1.2",
+                        "mode": "Indexed",
+                        "description": "Azure API Management service should use TLS version 1.2",
+                        "metadata": {
+                            "version": "1.0.1",
+                            "category": "API Management"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "defaultValue": "Deny",
+                                "allowedValues": [
+                                    "Deny",
+                                    "Audit",
+                                    "Disabled"
+                                ]
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.ApiManagement/service"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "value": "[[indexof(toLower(string(field('Microsoft.ApiManagement/service/customProperties'))), '\"microsoft.windowsazure.apimanagement.gateway.security.protocols.tls10\":\"true\"')]",
+                                                "greater": 0
+                                            },
+                                            {
+                                                "value": "[[indexof(toLower(string(field('Microsoft.ApiManagement/service/customProperties'))), '\"microsoft.windowsazure.apimanagement.gateway.security.protocols.tls10\":true')]",
+                                                "greater": 0
+                                            },
+                                            {
+                                                "value": "[[indexof(toLower(string(field('Microsoft.ApiManagement/service/customProperties'))), '\"microsoft.windowsazure.apimanagement.gateway.security.protocols.tls11\":\"true\"')]",
+                                                "greater": 0
+                                            },
+                                            {
+                                                "value": "[[indexof(toLower(string(field('Microsoft.ApiManagement/service/customProperties'))), '\"microsoft.windowsazure.apimanagement.gateway.security.protocols.tls11\":true')]",
+                                                "greater": 0
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-APIM-TLS"
                 }
             ]
         }
@@ -199,6 +255,10 @@
                     "apimLogsCategory": {
                         "type": "string",
                         "defaultValue": "allLogs"
+                    },
+                    "apimTls": {
+                        "type": "string",
+                        "defaultValue": "Deny"
                     }
                 },
                 "policyDefinitions": [
@@ -242,6 +302,19 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('apimVnetUsage')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[1].name)]",
+                        "policyDefinitionReferenceId": "Deny-APIM-TLS",
+                        "groupNames": [
+                            "Encryption",
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('apimTls')]"
                             }
                         }
                     },
