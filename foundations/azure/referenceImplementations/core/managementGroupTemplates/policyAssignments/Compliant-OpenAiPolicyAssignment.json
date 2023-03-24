@@ -16,6 +16,14 @@
             ],
             "defaultValue": "Default"
         },
+        "cognitiveServicesDiagnostics": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "cognitiveServicesLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
         "userAssignedIdentityResourceId": {
             "type": "string"
         }
@@ -47,7 +55,14 @@
                 "displayName": "[variables('policyAssignmentNames').displayName]",
                 "policyDefinitionId": "[variables('policyDefinitions').compliantOpenAi]",
                 "enforcementMode": "[parameters('enforcementMode')]",
-                "parameters": {}
+                "parameters": {
+                    "cognitiveServicesDiagnostics": {
+                        "value": "[parameters('cognitiveServicesDiagnostics')]"
+                    },
+                    "cognitiveServicesLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('cognitiveServicesLogAnalyticsWorkspaceId')]"
+                    }
+                }
             }
         }
     ],

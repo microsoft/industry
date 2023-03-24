@@ -212,7 +212,7 @@
                               "metrics": [
                                   {
                                       "category": "AllMetrics",
-                                      "enabled": true,
+                                      "enabled": false,
                                       "retentionPolicy": {
                                           "days": 0,
                                           "enabled": false
@@ -380,7 +380,7 @@
                               "metrics": [
                                   {
                                       "category": "AllMetrics",
-                                      "enabled": true,
+                                      "enabled": false,
                                       "retentionPolicy": {
                                           "days": 0,
                                           "enabled": false
