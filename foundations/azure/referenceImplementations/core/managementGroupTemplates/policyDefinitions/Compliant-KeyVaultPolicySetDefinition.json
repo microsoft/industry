@@ -611,7 +611,7 @@
                             "effect": {
                                 "value": "[[parameters('keyVaultCheckMinimumRSAKeySize')]"
                             },
-                            "minimumRSAKeySizeValue": {
+                            "minimumRSAKeySize": {
                                 "value": "[[parameters('keyVaultMinimumRSAKeySizeValue')]"
                             }
                         }
@@ -626,7 +626,7 @@
                             "effect": {
                                 "value": "[[parameters('keyVaultManagedHsmCheckMinimumRSAKeySize')]"
                             },
-                            "minimumRSAKeySizeValue": {
+                            "minimumRSAKeySize": {
                                 "value": "[[parameters('keyVaultManagedHsmMinimumRSAKeySizeValue')]"
                             }
                         }
@@ -641,7 +641,7 @@
                             "effect": {
                                 "value": "[[parameters('keyVaultCheckMinimumRSACertificateSize')]"
                             },
-                            "minimumRSAKeySizeValue": {
+                            "minimumRSAKeySize": {
                                 "value": "[[parameters('keyVaultMinimumRSACertificateSizeValue')]"
                             }
                         }
