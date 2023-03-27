@@ -215,9 +215,61 @@
                 },
                 {
                     "properties": {
-                        "displayName": "SFTP and local users should be restricted for Storage Accounts",
+                        "displayName": "Local users should be restricted for Storage Accounts",
                         "mode": "Indexed",
-                        "description": "Azure Storage accounts should disable SFTP and local users for features like SFTP. Enforce this for increased data exfiltration protection.",
+                        "description": "Azure Storage accounts should disable local users for features like SFTP. Enforce this for increased data exfiltration protection.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Storage"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Deny",
+                                    "Audit",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Deny"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Storage/storageAccounts"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "field": "Microsoft.Storage/storageAccounts/isLocalUserEnabled",
+                                                "exists": "false"
+                                            },
+                                            {
+                                                "field": "Microsoft.Storage/storageAccounts/isLocalUserEnabled",
+                                                "notEquals": false
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-Storage-LocalUser"
+                },
+                {
+                    "properties": {
+                        "displayName": "SFTP should be restricted for Storage Accounts",
+                        "mode": "Indexed",
+                        "description": "Azure Storage accounts should disable SFTP. Enforce this for increased data exfiltration protection.",
                         "metadata": {
                             "version": "1.0.0",
                             "category": "Storage"
@@ -263,7 +315,7 @@
                             }
                         }
                     },
-                    "name": "Deny-Storage-LocalUser"
+                    "name": "Deny-Storage-Sftp"
                 },
                 {
                     "properties": {
