@@ -1052,7 +1052,7 @@
         ],
         "baseId": "[concat(variables('platformResourceIds').privateDnsRgResourceId, '/providers/Microsoft.Network/privateDnsZones/')]",
         "privateDnsPolicyParameterMapping": {
-            "azureSynapsePrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.sql.azuresynapse.ne')]",
+            "azureSynapsePrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.sql.azuresynapse.net')]",
             "azureAutomationPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.azure-automation.net')]",
             "azureCosmosTablePrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.table.cosmos.azure.com')]",
             "azureMlPrivateDnsZoneId": "[concat(variables('baseId'), 'privatelink.api.azureml.ms')]",
