@@ -588,17 +588,84 @@
         }
     },
     "variables": {
-        // Declaring the prescriptive structure for FSI Landing Zones
+                // Logic to map selected location (or deployment().location) to map to geographical management group under LZ
+        "geoMap": {
+            "eastus": "North-America",
+            "eastus2": "North-America",
+            "southcentralus": "North-America",
+            "westus2": "North-America",
+            "westus3": "North-America",
+            "australiaeast": "APAC",
+            "southeastasia": "APAC",
+            "northeurope": "EMEA",
+            "swedencentral": "EMEA",
+            "uksouth": "EMEA",
+            "westeurope": "EMEA",
+            "centralus": "North-America",
+            "southafricanorth": "EMEA",
+            "centralindia": "APAC",
+            "eastasia": "APAC",
+            "japaneast": "APAC",
+            "koreacentral": "APAC",
+            "canadacentral": "North-America",
+            "francecentral": "EMEA",
+            "germanywestcentral": "EMEA",
+            "norwayeast": "EMEA",
+            "switzerlandnorth": "EMEA",
+            "uaenorth": "EMEA",
+            "brazilsouth": "South-America",
+            "eastus2euap": "North-America",
+            "qatarcentral": "EMEA",
+            "asia": "APAC",
+            "asiapacific": "APAC",
+            "australia": "APAC",
+            "brazil": "South-America",
+            "canada": "North-America",
+            "europe": "EMEA",
+            "france": "EMEA",
+            "germany": "EMEA",
+            "india": "APAC",
+            "japan": "APAC",
+            "korea": "APAC",
+            "norway": "EMEA",
+            "singapore": "APAC",
+            "southafrica": "EMEA",
+            "switzerland": "EMEA",
+            "unitedstates": "North-America",
+            "northcentralus": "North-America",
+            "westus": "North-America",
+            "centraluseuap": "North-America",
+            "westcentralus": "North-America",
+            "southafricawest": "EMEA",
+            "australiacentral": "APAC",
+            "australiacentral2": "APAC",
+            "australiasoutheast": "APAC",
+            "japanwest": "APAC",
+            "koreasouth": "APAC",
+            "southindia": "APAC",
+            "westindia": "APAC",
+            "canadaeast": "North-America",
+            "francesouth": "EMEA",
+            "germanynorth": "EMEA",
+            "norwaywest": "EMEA",
+            "switzerlandwest": "EMEA",
+            "ukwest": "EMEA",
+            "uaecentral": "EMEA",
+            "brazilsoutheast": "South-America"
+        },
+        "mgmtGeo": "[variables('geoMap')[parameters('location')]]",
         "mgmtGroups": {
-            "industryRoot": "[parameters('industryPrefix')]",
-            "platform": "[concat(parameters('industryPrefix'), '-', 'platform')]",
-            "management": "[concat(parameters('industryPrefix'), '-', 'management')]",
-            "connectivity": "[concat(parameters('industryPrefix'), '-', 'connectivity')]",
-            "identity": "[concat(parameters('industryPrefix'), '-', 'identity')]",
-            "playground": "[concat(parameters('industryPrefix'), '-', 'playground')]",
-            "lzs": "[concat(parameters('industryPrefix'), '-', 'landingzones')]",
-            "corp": "[concat(parameters('industryPrefix'), '-', 'corp')]",
-            "online": "[concat(parameters('industryPrefix'), '-', 'cloud-native')]"
+            "platform": "[concat(parameters('industryPrefix'), '-', 'Platform')]",
+            "lzs": "[concat(parameters('industryPrefix'), '-', 'Landing-Zones')]",
+            "geo": "[concat(parameters('industryPrefix'), '-', variables('mgmtGeo'))]",
+            "decommissioned": "[concat(parameters('industryPrefix'), '-', 'Decommissioned')]",
+            "playground": "[concat(parameters('industryPrefix'), '-', 'Playground')]",
+            "corp": "[concat(parameters('industryPrefix'), '-', 'Corp')]",
+            "online": "[concat(parameters('industryPrefix'), '-', 'Cloud-Native')]",
+            "identity": "[concat(parameters('industryPrefix'), '-', 'Identity')]",
+            "management": "[concat(parameters('industryPrefix'), '-', 'Management')]",
+            "connectivity": "[concat(parameters('industryPrefix'), '-', 'Connectivity')]",
+            "industryRoot": "[parameters('industryPrefix')]"
         },
         // Declaring scopes that will be used for ARM deployments
         "scopes": {
@@ -609,6 +676,7 @@
             "identityManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').identity)]",
             "playgroundManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').playground)]",
             "lzsManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').lzs)]",
+            "geoManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').geo)]",
             "corpManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').corp)]",
             "onlineManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').online)]"
         },
@@ -696,7 +764,6 @@
             "ingressAndEgress": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/ingress-egress.json')]",
             "subscriptionPlacement": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/subscriptionOrganization/subscriptionOrganization.json')]",
             "monitoring": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/logAnalyticsWorkspace.json')]",
-            "resourceGroup": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/resourceGroup.json')]",
             "ddosProtection": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/ddosProtection.json')]",
             "logAnalyticsPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/DINE-LogAnalyticsPolicyAssignment.json')]",
             "monitoringSolutions": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/logAnalyticsSolutions.json')]",
@@ -4641,7 +4708,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').allowedRegionsDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
@@ -4673,7 +4740,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').allowedRgRegionsDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]",
@@ -4728,7 +4795,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').nsgFlowLogsLzPolicyAssignment]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "policyCompletion",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').nwDeploymentName)]",
@@ -4779,7 +4846,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantApimAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantApimDeploymentName)]",
@@ -4816,7 +4883,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantAppServiceAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantAppServiceDeploymentName)]",
@@ -4859,7 +4926,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantAutomationAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantAutomationDeploymentName)]",
@@ -4896,7 +4963,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantBackupAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantBackupDeploymentName)]",
@@ -4930,7 +4997,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantComputeAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantComputeDeploymentName)]",
@@ -4961,7 +5028,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantContainerAppsAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantContainerAppsDeploymentName)]",
@@ -4992,7 +5059,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantContainerInstanceAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantContainerInstanceDeploymentName)]",
@@ -5023,7 +5090,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantContainerRegistryAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantContainerRegistryDeploymentName)]",
@@ -5060,7 +5127,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantCosmosDbAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantCosmosDbDeploymentName)]",
@@ -5097,7 +5164,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantDataExplorerAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantDataExplorerDeploymentName)]",
@@ -5134,7 +5201,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantDataFactoryAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantDataFactoryDeploymentName)]",
@@ -5171,7 +5238,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantKeyVaultAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantKeyVaultDeploymentName)]",
@@ -5214,7 +5281,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantEventGridAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantEventGridDeploymentName)]",
@@ -5263,7 +5330,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantEventHubAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantEventHubDeploymentName)]",
@@ -5300,7 +5367,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantKubernetesAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantKubernetesDeploymentName)]",
@@ -5343,7 +5410,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantMachineLearningAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantMachineLearningDeploymentName)]",
@@ -5380,7 +5447,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantNetworkAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantNetworkDeploymentName)]",
@@ -5586,7 +5653,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantOpenAiAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantOpenAiDeploymentName)]",
@@ -5623,7 +5690,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantPostgreAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantPostgreDeploymentName)]",
@@ -5659,7 +5726,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantServiceBusAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantServiceBusDeploymentName)]",
@@ -5695,7 +5762,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantSqlAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantSqlDeploymentName)]",
@@ -5746,7 +5813,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantStorageAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantStorageDeploymentName)]",
@@ -5801,7 +5868,7 @@
                 }
             }
         },
-        {   // Creating Policy Assignment Compliant  Connected to Corp Landing Zone scope
+        {   // Creating Policy Assignment Compliant Connected to Corp Landing Zone scope
             "condition": "[equals(parameters('enablePrivateDnsZones'), 'Yes')]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -6030,7 +6097,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantSynapseAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantSynapseDeploymentName)]",
@@ -6069,7 +6136,7 @@
             "apiVersion": "2021-04-01",
             "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
             "name": "[variables('deploymentNames').compliantVirtualDesktopAssignmentDeploymentName]",
-            "scope": "[variables('scopes').lzsManagementGroup]",
+            "scope": "[variables('scopes').geoManagementGroup]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantVirtualDesktopDeploymentName)]",
