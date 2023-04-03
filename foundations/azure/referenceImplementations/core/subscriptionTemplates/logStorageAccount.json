@@ -83,7 +83,7 @@
                                 "metrics": [
                                     {
                                         "category": "AllMetrics",
-                                        "enabled": false
+                                        "enabled": true
                                     }
                                 ]
                             }
