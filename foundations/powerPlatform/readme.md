@@ -94,7 +94,7 @@ The Power Platform Landing Zones approach advocates using Power Platform's nativ
 
 ## Critical design areas for Power Platform
 
-Together with the design principles, the core of Power PLatform Landing Zones architecture also contains a critical design path comprised of fundamental design areas with heavily interrelated and dependent design decisions. This repository provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the Power Platform Landing Zones architecture. For each of the key design areas listed below, review the considerations and recommendations provided and use them to structure and drive design decisions within each area.
+Together with the design principles, the core of Power Platform Landing Zones architecture also contains a critical design path comprised of fundamental design areas with heavily interrelated and dependent design decisions. This repository provides design guidance across these architecturally significant technical domains to support the critical design decisions that must occur to define the Power Platform Landing Zones architecture. For each of the key design areas listed below, review the considerations and recommendations provided and use them to structure and drive design decisions within each area.
 
 - [Licensing and AD tenants](#licensing-and-azure-ad-tenants)
 - [Identity and access management](#identity-and-access-management)
@@ -122,12 +122,12 @@ Organizations can obtain licenses by either licensing Microsoft Power Apps or Mi
 
 ### Design recommendations
 
-- If Dev/Test/Prod are going to be completely isolated from each other from an identity perspective, separate them at a tenant level (i.e. use multiple Azure AD tenants)
+- If Dev/Test/Prod are going to be completely isolated from each other from an identity perspective, separate them at a tenant level (i.e. use multiple Azure AD tenants).
 - Avoid creating multiple Azure AD tenants unless there is a strong IAM justification and processes are already in place.
 - In case organization does not have existing identity infrastructure, then it is recommended to start by implementing Azure AD only identity deployment. Together with Enterprise mobility suite it provides en-to-end protection for SaaS and enterprise applications, as well as devices.
-- Dev/test/prod environments can be isolated and controlled natively in the Power Platform, without needing separation at the identity control plane (AD tenant). For secure usage of connectors related to Microsoft Graph - such as Office 365, SharePoint etc., ensure a well-defined RBAC model is implemented to meet the security and data classification requirements.
-- Use the pay-as-you-go plan for apps that need to be shared with a large user base with infrequent and/or unpredictable use
-- Use an Azure Subscription for Power Apps to reduce license procurement overhead and consolidate with other service purchases
+- Dev/Test/Prod environments can be isolated and controlled natively in the Power Platform, without needing separation at the identity control plane (AD tenant). For secure usage of connectors related to Microsoft Graph - such as Office 365, SharePoint etc., ensure a well-defined RBAC model is implemented to meet the security and data classification requirements.
+- Use the pay-as-you-go plan for apps that need to be shared with a large user base with infrequent and/or unpredictable use.
+- Use an Azure Subscription for Power Apps to reduce license procurement overhead and consolidate with other service purchases.
 
 ## Identity and access management
 
@@ -216,9 +216,9 @@ The following section describes the design considerations and the design recomme
 ### Design recommendations
 
 - Treat environments as a democratized unit of management aligned with business needs and priorities, and use the following principles when identifying requirements for new environments:
-  - Scale limits. Environments serve as scale unit for components/apps/database to scale within the platform limits
-  - Management boundary: Environments provide a management boundary for governance and isolation, which allows for a clear separation of concerns. For example, different environments such as dev, test, and production are often isolated from a management perspective
-  - Policy boundary: Environments serve as a boundary for the assignment of Data Loss Prevention (DLP) policies. For example, apps that are subject to regulatory compliance such as PCI and HITRUST typically require additional DLP policy enforcement to achieve compliance
+  - Scale limits. Environments serve as scale unit for components/apps/database to scale within the platform limits.
+  - Management boundary: Environments provide a management boundary for governance and isolation, which allows for a clear separation of concerns. For example, different environments such as dev, test, and production are often isolated from a management perspective.
+  - Policy boundary: Environments serve as a boundary for the assignment of Data Loss Prevention (DLP) policies. For example, apps that are subject to regulatory compliance such as PCI and HITRUST typically require additional DLP policy enforcement to achieve compliance.
 - Rename the Default environment to clarify the intent, e.g., "personal productivity" as all licensed users will have access by default.
 - Disable self-service of Environment creation, both for Production and Sandbox as well as Trials, and limit this to selected Power Platform admins as this can potentially cause [capacity constraints](https://docs.microsoft.com/power-platform/admin/capacity-add-on) in the tenant.
 - Enable a process for the organization to request new environments aligned to the principles above. Either establish and implement the process yourself or leverage the [Center of Excellence starter kit](https://docs.microsoft.com/power-platform/guidance/coe/starter-kit) as an enabler and starting point which provides a solution that can be imported to a dedicated environment to facilitate this, together with other core capabilities.
@@ -245,9 +245,9 @@ Further overall management, including observability and auditing is crucial to e
 
 ### Design considerations
 
-- Only Environments with Dataverse provide auditing capabilities (access logs) at the environment and database layer, and the logs can be viewed and consumed from Office 365 Security & Compliance center
+- Only Environments with Dataverse provide auditing capabilities (access logs) at the environment and database layer, and the logs can be viewed and consumed from Office 365 Security & Compliance center.
 - Auditing for Environments with Dataverse is set to off by default and cannot be enabled on Environments during provisioning. To enable auditing, you must explicitly opt-in within the Environment settings once it has been created.
-- Power Platform admin center provides out-of-the box analytics capabilities of the various Power Platform components, such as Dataverse, Power Apps, and Power Automate
+- Power Platform admin center provides out-of-the box analytics capabilities of the various Power Platform components, such as Dataverse, Power Apps, and Power Automate.
 - The Power Platform admins can configure Data export for all Power Apps in the tenant, and export to an Azure Data Lake Storage (Gen2) account to get an overview of the adoption, usage, inventory, and application metadata.
 - For each environment with Dataverse, the Power Platform admins can export Dataverse diagnostics, such as usage of APIs, form load diagnostics, and performance metrics to an Azure Application Insights instance.
 - Activity logs for Power Apps is integrated with Office 365 Security & Compliance center which provides an API to query the data.
@@ -304,8 +304,8 @@ There are different network options to allow connectivity to the Power Platform 
 ### Design considerations
 
 - The Power Platform provides two types of data gateways:
-  - On-premises data gateway
-  - VNet data gateway (currently in public preview)
+  - On-premises data gateway.
+  - VNet data gateway (currently in public preview).
 - On-premises data gateway is designed to provide secure data transfers between on-premises data and Microsoft clouds services.
 - VNet data gateway is designed to allow connections from Power Platform Cloud services (Power BI Datasets and Power Platform Dataflows) to Azure data services.
 
@@ -343,8 +343,8 @@ Most organizations starting with the cloud do not have an operating model that i
 ### Design considerations
 
 - Where central teams are concerned, you should use pipelines for continuous integration and deployment. Use pipelines to manage environment lifecycle, including DLP, security groups, RBAC, and auditing from a compliance perspective.
-- The blanket application of a DevOps model won’t instantly establish capable DevOps teams
-- Investing in engineering capabilities and resources is critical to ensure sustainable engineering and development of the platform alongside with the roadmap
+- The blanket application of a DevOps model won’t instantly establish capable DevOps teams.
+- Investing in engineering capabilities and resources is critical to ensure sustainable engineering and development of the platform alongside with the roadmap.
 
 ### Design recommendations
 
@@ -366,10 +366,10 @@ Most organizations starting with the cloud do not have an operating model that i
 - Allow application owners to create and manage application resources through a DevOps model.
 - In some instances, customers may wish to break AppDevOps into more granular roles such as AppDataOps for database management like traditional DBA roles, or AppSecOps where more security sensitive applications are concerned; this is to be expected.
 - Leverage a policy-driven approach with clear RBAC boundaries to centrally enforce consistency and security across application teams.
-- To accelerate adoption, the central platform function should establish and provide common set of guidance, templates, and libraries within the organization
-- Don’t restrict developers (both pro and citizen) to use central artifacts or approaches because it hinders their agility
-- This includes enforcing the use of specific tooling for development and IaC, either directly or indirectly
-- You can enforce consistent baseline configuration through policy driven governance (DLP)
+- To accelerate adoption, the central platform function should establish and provide common set of guidance, templates, and libraries within the organization.
+- Don’t restrict developers (both pro and citizen) to use central artifacts or approaches because it hinders their agility.
+- This includes enforcing the use of specific tooling for development and IaC, either directly or indirectly.
+- You can enforce consistent baseline configuration through policy driven governance (DLP).
 
  ---
 
