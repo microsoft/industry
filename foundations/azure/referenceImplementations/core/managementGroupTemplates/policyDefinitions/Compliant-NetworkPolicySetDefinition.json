@@ -1366,7 +1366,7 @@
                     },
                     "name": "Dine-Diagnostics-ExpressRouteCircuit"
                 },
-                                {
+                {
                     "properties": {
                         "displayName": "Deploy Diagnostic Settings for Application Gateway to Log Analytics workspace",
                         "policyType": "Custom",
@@ -1553,6 +1553,74 @@
                         }
                     },
                     "name": "Dine-Diagnostics-ApplicationGateway"
+                },
+                {
+                    "properties": {
+                        "DisplayName": "Application Gateway should be deployed with proper sslPolicy",
+                        "Description": "This policy enables you to restrict that Application Gateways is always deployed with the proper sslPolicy",
+                        "mode": "All",
+                        "Metadata": {
+                            "category": "Network",
+                            "version": "1.0.0"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Deny",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Deny"
+                            },
+                            "predefinedPolicyName": {
+                                "type": "array",
+                                "metadata": {
+                                    "displayName": "Predefined policy name",
+                                    "description": "Predefined policy name"
+                                },
+                                "defaultValue": [
+                                    "AppGwSslPolicy20220101",
+                                    "AppGwSslPolicy20170401S",
+                                    "AppGwSslPolicy20220101S"
+                                ]
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Network/applicationGateways"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "field": "Microsoft.Network/applicationGateways/sslPolicy.policyType",
+                                                "notEquals": "Predefined"
+                                            },
+                                            {
+                                                "field": "Microsoft.Network/applicationGateways/sslPolicy.policyType",
+                                                "exists": "false"
+                                            },
+                                            {
+                                                "field": "Microsoft.Network/applicationGateways/sslPolicy.policyName",
+                                                "notIn": "[[parameters('predefinedPolicyName')]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-AppGw-Without-Tls"
                 }
             ]
         }
@@ -1816,6 +1884,10 @@
                     "appGwLogAnalyticsWorkspaceId": {
                         "type": "string",
                         "defaultValue": ""
+                    },
+                    "appGwTlsVersion": {
+                        "type": "string",
+                        "defaultValue": "Deny"
                     }
                 },
                 "policyDefinitions": [
@@ -2268,6 +2340,19 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('appGwLogAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[12].name)]",
+                        "policyDefinitionReferenceId": "Deny-AppGw-Without-Tls",
+                        "groupNames": [
+                            "Encryption",
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('appGwTlsVersion')]"
                             }
                         }
                     }
