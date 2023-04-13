@@ -152,6 +152,18 @@
             "type": "string",
             "defaultValue": ""
         },
+        "appGwDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "appGwLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
         "userAssignedIdentityResourceId": {
             "type": "string"
         }
@@ -186,6 +198,12 @@
                 "parameters": {
                     "vnetModifyDdos": {
                         "value": "[parameters('vnetModifyDdos')]"
+                    },
+                    "appGwDiagnostics": {
+                        "value": "[parameters('appGwDiagnostics')]"
+                    },
+                    "appGwLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('appGwLogAnalyticsWorkspaceId')]"
                     },
                     "ddosPlanResourceId": {
                         "value": "[parameters('ddosPlanResourceId')]"
