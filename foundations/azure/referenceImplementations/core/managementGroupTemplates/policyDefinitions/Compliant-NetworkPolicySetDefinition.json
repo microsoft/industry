@@ -1556,8 +1556,8 @@
                 },
                 {
                     "properties": {
-                        "DisplayName": "Application Gateway should be deployed with proper sslPolicy",
-                        "Description": "This policy enables you to restrict that Application Gateways is always deployed with the proper sslPolicy",
+                        "DisplayName": "Application Gateway should be deployed with predefined Microsoft policy that is using TLS version 1.2",
+                        "Description": "This policy enables you to restrict that Application Gateways is always deployed with predefined Microsoft policy that is using TLS version 1.2",
                         "mode": "All",
                         "Metadata": {
                             "category": "Network",
