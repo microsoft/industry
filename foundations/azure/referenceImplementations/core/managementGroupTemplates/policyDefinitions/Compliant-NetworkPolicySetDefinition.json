@@ -1679,6 +1679,12 @@
                                     {
                                         "field": "type",
                                         "equals": "Microsoft.Network/routeTables"
+                                    },
+                                    {
+                                        "count": {
+                                            "field": "Microsoft.Network/routeTables/routes[*]"
+                                        },
+                                        "equals": 0
                                     }
                                 ]
                             },
@@ -1691,19 +1697,16 @@
                                     "conflictEffect": "audit",
                                     "operations": [
                                         {
-                                            "operation": "addOrReplace",
-                                            "field": "Microsoft.Network/routeTables/routes[*].addressPrefix",
-                                            "value": "[[parameters('addressPrefix')]"
-                                        },
-                                        {
-                                            "operation": "addOrReplace",
-                                            "field": "Microsoft.Network/routeTables/routes[*].nextHopType",
-                                            "value": "[[parameters('nextHopType')]"
-                                        },
-                                        {
-                                            "operation": "addOrReplace",
-                                            "field": "Microsoft.Network/routeTables/routes[*].nextHopIpAddress",
-                                            "value": "[[parameters('nextHopIpAddress')]"
+                                            "operation": "add",
+                                            "field": "Microsoft.Network/routeTables/routes[*]",
+                                            "value": {
+                                                "name": "default",
+                                                "properties": {
+                                                    "addressPrefix": "[[parameters('addressPrefix')]",
+                                                    "nextHopType": "[[parameters('nextHopType')]",
+                                                    "nextHopIpAddress": "[[parameters('nextHopIpAddress')]"
+                                                }
+                                            }
                                         }
                                     ]
                                 }
@@ -1981,7 +1984,7 @@
                     },
                     "modifyUdr": {
                         "type": "string",
-                        "defaultValue": "Disabled"
+                        "defaultValue": "Modify"
                     },
                     "modifyUdrNextHopIpAddress": {
                         "type": "string",
@@ -1989,13 +1992,13 @@
                     },
                     "modifyUdrNextHopType": {
                         "type": "string",
-                        "defaultValue": ""
+                        "defaultValue": "None"
                     },
                     "modifyUdrAddressPrefix": {
                         "type": "string",
-                        "defaultValue": ""
+                        "defaultValue": "0.0.0.0/0"
                     }
-                }, 
+                },
                 "policyDefinitions": [
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/35f9c03a-cc27-418e-9c0c-539ff999d010",
@@ -2479,7 +2482,7 @@
                                 "value": "[[parameters('modifyUdrNextHopType')]"
                             },
                             "addressPrefix": {
-                                "value": "[[parameters('modifyUdAddressPrefix')]"
+                                "value": "[[parameters('modifyUdrAddressPrefix')]"
                             }
                         }
                     }
