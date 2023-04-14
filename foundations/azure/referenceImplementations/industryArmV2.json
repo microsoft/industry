@@ -5471,6 +5471,12 @@
                     "ddosPlanResourceId": {
                         "value": "[if(equals(parameters('enableDdos'), 'Yes'), variables('platformResourceIds').ddosProtectionResourceId, '')]"
                     },
+                    "appGwDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "appGwLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
                     "nsgDiagnostics": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
@@ -5832,25 +5838,25 @@
                         "value": "[parameters('industryPrefix')]"
                     },
                     "storageFileSyncDiagnostics": {
-                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "Disabled"
                     },
                     "storageFileSyncLogAnalyticsWorkspaceId": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
                     },
                     "storageTableDiagnostics": {
-                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "Disabled"
                     },
                     "storageTableLogAnalyticsWorkspaceId": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
                     },
                     "storageAccountsDiagnostics": {
-                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "Disabled"
                     },
                     "storageAccountsLogAnalyticsWorkspaceId": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
                     },
                     "storageQueueDiagnostics": {
-                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "Disabled"
                     },
                     "storageQueueLogAnalyticsWorkspaceId": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"

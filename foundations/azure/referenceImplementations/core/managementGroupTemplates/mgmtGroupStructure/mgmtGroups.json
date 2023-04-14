@@ -259,7 +259,6 @@
         },
         {
             // One of Azure's untold stories.....
-            "condition": "[contains(deployment().name, 'marketplace')]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "name": "[concat('Consistency-', copyIndex())]",

@@ -67,12 +67,18 @@ The following structure is being created when deploying FSI Landing Zones on Mic
 - **Identity:** This Management Group contains the dedicated subscription for identity, which is a placeholder for Windows Server Active Directory Domain Services (AD DS) VMs, or Azure Active Directory Domain Services to enable AuthN/AuthZ for workloads within the landing zones. Specific Azure policies are assigned to harden and manage the resources in the identity subscription.
 
 - **Landing Zones:** This is the parent Management Group for all the landing zone subscriptions and will have workload agnostic Azure Policies assigned to ensure workloads are secure and compliant.
+>Note: No subscription will be located directly in this management group.
 
-- **** This is the dedicated Management Group for landing zones, which are optimized and governed aligned with migration scenarios, net-new development using PaaS services, as well as mission-critical banking workloads. An application team request as many subscriptions as they want into the various landing zones, and will be responsible for development, testing, and production. From a platform perspective, each subscription is treated equally (i.e., everything is treated as production) to reduce friction in deployment, operations, and overall continuous compliance.
+- **Geo - e.g., North-America, EMEA etc.** This is the dedicated Management Group for geographical landing zones, which are optimized and governed per the geo requirements to provide specific regulated industry requirements, separation of connectivity, logging, and security.
+>Note: No subscription will be located directly in this management group.
 
 - **Cloud-Native:** This is the dedicated Management Group for cloud-native landing zones, meaning workloads that may require direct internet inbound/outbound connectivity and will not require connectivity to on-premises. Access to these applications is done either via the internet or via Azure Private Link.
 
+Workloads should go into “Cloud-Native” for those workloads that don't need connectivity to on-premises but also, for workloads that need connectivity to/from on-premises which will be provided via private link and private endpoints.
+
 - **Corp:** This is the dedicated Management Group for Corp landing zones, meaning workloads that requires connectivity/hybrid connectivity with the corporate network through the hub VNet in the connectivity subscription.
+
+Workloads should go into “Corp connected” when NAT cannot be used and workload requires native address space from the customer.
 
 - **Playground:** This is the dedicated Management Group for subscriptions that will solely be used for testing and exploration by anyone in the organization that want to explore Azure services. Further, subscriptions placed in this management group can be leveraged to expedite service enablement for an FSI organization, to assess and validate Azure services with best practices such as Microsoft Cloud Security Benchmark before allowing new services to be deployed to landing zone subscriptions.
 
