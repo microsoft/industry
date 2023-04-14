@@ -229,7 +229,7 @@
                     },
                     "keyVaultCheckMinimumRSAKeySize": {
                         "type": "string",
-                        "defaultValue": "Disabled"
+                        "defaultValue": "Deny"
                     },
                     "keyVaultMinimumRSAKeySizeValue": {
                         "type": "integer",
@@ -237,7 +237,7 @@
                     },
                     "keyVaultManagedHsmCheckMinimumRSAKeySize": {
                         "type": "string",
-                        "defaultValue": "Disabled"
+                        "defaultValue": "Deny"
                     },
                     "keyVaultManagedHsmMinimumRSAKeySizeValue": {
                         "type": "integer",
@@ -245,7 +245,7 @@
                     },
                     "keyVaultCheckMinimumRSACertificateSize": {
                         "type": "string",
-                        "defaultValue": "Disabled"
+                        "defaultValue": "Deny"
                     },
                     "keyVaultMinimumRSACertificateSizeValue": {
                         "type": "integer",
