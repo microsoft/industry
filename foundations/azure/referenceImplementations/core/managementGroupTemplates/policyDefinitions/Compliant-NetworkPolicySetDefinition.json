@@ -1621,6 +1621,96 @@
                         }
                     },
                     "name": "Deny-AppGw-Without-Tls"
+                },
+                {
+                    "properties": {
+                        "DisplayName": "Enforce specific configuration of User-Defined Routes (UDR)",
+                        "Description": "This policy enforces the configuration of User-Defined Routes (UDR) within a subnet.",
+                        "mode": "All",
+                        "Metadata": {
+                            "category": "Network",
+                            "version": "1.0.0"
+                        },
+                        "parameters": {
+                            "addressPrefix": {
+                                "type": "string",
+                                "metadata": {
+                                    "description": "The destination IP address range in CIDR notation that this Policy checks for within the UDR. Example: 0.0.0.0/0 to check for the presence of a default route.",
+                                    "displayName": "Address Prefix"
+                                }
+                            },
+                            "nextHopType": {
+                                "type": "string",
+                                "metadata": {
+                                    "description": "The next hope type that the policy checks for within the inspected route. The value can be Virtual Network, Virtual Network Gateway, Internet, Virtual Appliance, or None.",
+                                    "displayName": "Next Hop Type"
+                                },
+                                "allowedValues": [
+                                    "VnetLocal",
+                                    "VirtualNetworkGateway",
+                                    "Internet",
+                                    "VirtualAppliance",
+                                    "None"
+                                ]
+                            },
+                            "nextHopIpAddress": {
+                                "type": "string",
+                                "metadata": {
+                                    "description": "The IP address packets should be forwarded to.",
+                                    "displayName": "Next Hop IP Address"
+                                }
+                            },
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Disabled",
+                                    "Modify"
+                                ],
+                                "defaultValue": "Modify"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Network/routeTables"
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]",
+                                "details": {
+                                    "roleDefinitionIds": [
+                                        "/providers/microsoft.authorization/roleDefinitions/4d97b98b-1d4f-4787-a291-c67834d212e7"
+                                    ],
+                                    "conflictEffect": "audit",
+                                    "operations": [
+                                        {
+                                            "operation": "addOrReplace",
+                                            "field": "Microsoft.Network/routeTables/routes[*].addressPrefix",
+                                            "value": "[[parameters('addressPrefix')]"
+                                        },
+                                        {
+                                            "operation": "addOrReplace",
+                                            "field": "Microsoft.Network/routeTables/routes[*].nextHopType",
+                                            "value": "[[parameters('nextHopType')]"
+                                        },
+                                        {
+                                            "operation": "addOrReplace",
+                                            "field": "Microsoft.Network/routeTables/routes[*].nextHopIpAddress",
+                                            "value": "[[parameters('nextHopIpAddress')]"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "name": "Modify-UDR"
                 }
             ]
         }
@@ -1888,8 +1978,24 @@
                     "appGwTlsVersion": {
                         "type": "string",
                         "defaultValue": "Deny"
+                    },
+                    "modifyUdr": {
+                        "type": "string",
+                        "defaultValue": "Disabled"
+                    },
+                    "modifyUdrNextHopIpAddress": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "modifyUdrNextHopType": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "modifyUdrAddressPrefix": {
+                        "type": "string",
+                        "defaultValue": ""
                     }
-                },
+                }, 
                 "policyDefinitions": [
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/35f9c03a-cc27-418e-9c0c-539ff999d010",
@@ -2353,6 +2459,27 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('appGwTlsVersion')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[13].name)]",
+                        "policyDefinitionReferenceId": "Modify-Udr",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('modifyUdr')]"
+                            },
+                            "nextHopIpAddress": {
+                                "value": "[[parameters('modifyUdrNextHopIpAddress')]"
+                            },
+                            "nextHopType": {
+                                "value": "[[parameters('modifyUdrNextHopType')]"
+                            },
+                            "addressPrefix": {
+                                "value": "[[parameters('modifyUdAddressPrefix')]"
                             }
                         }
                     }
