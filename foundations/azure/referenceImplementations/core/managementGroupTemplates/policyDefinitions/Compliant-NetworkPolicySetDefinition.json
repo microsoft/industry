@@ -370,7 +370,7 @@
                             },
                             "metricsEnabled": {
                                 "type": "String",
-                                "defaultValue": "True",
+                                "defaultValue": "False",
                                 "allowedValues": [
                                     "True",
                                     "False"
@@ -378,6 +378,18 @@
                                 "metadata": {
                                     "displayName": "Enable metrics",
                                     "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
+                                }
+                            },
+                            "logsEnabled": {
+                                "type": "String",
+                                "defaultValue": "True",
+                                "allowedValues": [
+                                    "True",
+                                    "False"
+                                ],
+                                "metadata": {
+                                    "displayName": "Enable logs",
+                                    "description": "Whether to enable log stream to the Log Analytics workspace - True or False"
                                 }
                             }
                         },
@@ -395,11 +407,11 @@
                                         "allOf": [
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('logsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('metricsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
@@ -432,6 +444,9 @@
                                                     },
                                                     "metricsEnabled": {
                                                         "type": "String"
+                                                    },
+                                                    "logsEnabled": {
+                                                        "type": "String"
                                                     }
                                                 },
                                                 "variables": {},
@@ -458,7 +473,7 @@
                                                             "logs": [
                                                                 {
                                                                     "categoryGroup": "allLogs",
-                                                                    "enabled": true
+                                                                    "enabled": "[[parameters('logsEnabled')]"
                                                                 }
                                                             ]
                                                         }
@@ -481,6 +496,9 @@
                                                 },
                                                 "metricsEnabled": {
                                                     "value": "[[parameters('metricsEnabled')]"
+                                                },
+                                                "logsEnabled": {
+                                                    "value": "[[parameters('logsEnabled')]"
                                                 }
                                             }
                                         }
@@ -541,6 +559,18 @@
                                     "displayName": "Enable metrics",
                                     "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
                                 }
+                            },
+                            "logsEnabled": {
+                                "type": "String",
+                                "defaultValue": "True",
+                                "allowedValues": [
+                                    "True",
+                                    "False"
+                                ],
+                                "metadata": {
+                                    "displayName": "Enable logs",
+                                    "description": "Whether to enable log stream to the Log Analytics workspace - True or False"
+                                }
                             }
                         },
                         "policyRule": {
@@ -557,11 +587,11 @@
                                         "allOf": [
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('logsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('metricsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
@@ -594,6 +624,9 @@
                                                     },
                                                     "metricsEnabled": {
                                                         "type": "String"
+                                                    },
+                                                    "logsEnabled": {
+                                                        "type": "String"
                                                     }
                                                 },
                                                 "variables": {},
@@ -620,7 +653,7 @@
                                                             "logs": [
                                                                 {
                                                                     "categoryGroup": "allLogs",
-                                                                    "enabled": true
+                                                                    "enabled": "[[parameters('logsEnabled')]"
                                                                 }
                                                             ]
                                                         }
@@ -643,6 +676,9 @@
                                                 },
                                                 "metricsEnabled": {
                                                     "value": "[[parameters('metricsEnabled')]"
+                                                },
+                                                "logsEnabled": {
+                                                    "value": "[[parameters('logsEnabled')]"
                                                 }
                                             }
                                         }
@@ -703,6 +739,18 @@
                                     "displayName": "Enable metrics",
                                     "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
                                 }
+                            },
+                            "logsEnabled": {
+                                "type": "String",
+                                "defaultValue": "True",
+                                "allowedValues": [
+                                    "True",
+                                    "False"
+                                ],
+                                "metadata": {
+                                    "displayName": "Enable logs",
+                                    "description": "Whether to enable log stream to the Log Analytics workspace - True or False"
+                                }
                             }
                         },
                         "policyRule": {
@@ -719,11 +767,11 @@
                                         "allOf": [
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('logsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('metricsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
@@ -756,6 +804,9 @@
                                                     },
                                                     "metricsEnabled": {
                                                         "type": "String"
+                                                    },
+                                                    "logsEnabled": {
+                                                        "type": "string"
                                                     }
                                                 },
                                                 "variables": {},
@@ -782,7 +833,7 @@
                                                             "logs": [
                                                                 {
                                                                     "categoryGroup": "allLogs",
-                                                                    "enabled": true
+                                                                    "enabled": "[[parameters('logsEnabled')]"
                                                                 }
                                                             ]
                                                         }
@@ -805,6 +856,9 @@
                                                 },
                                                 "metricsEnabled": {
                                                     "value": "[[parameters('metricsEnabled')]"
+                                                },
+                                                "logsEnabled": {
+                                                    "value": "[[parameters('logsEnabled')]"
                                                 }
                                             }
                                         }
@@ -865,6 +919,18 @@
                                     "displayName": "Enable metrics",
                                     "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
                                 }
+                            },
+                            "logsEnabled": {
+                                "type": "String",
+                                "defaultValue": "True",
+                                "allowedValues": [
+                                    "True",
+                                    "False"
+                                ],
+                                "metadata": {
+                                    "displayName": "Enable logs",
+                                    "description": "Whether to enable log stream to the Log Analytics workspace - True or False"
+                                }
                             }
                         },
                         "policyRule": {
@@ -881,11 +947,11 @@
                                         "allOf": [
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('logsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('metricsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
@@ -918,6 +984,9 @@
                                                     },
                                                     "metricsEnabled": {
                                                         "type": "String"
+                                                    },
+                                                    "logsEnabled": {
+                                                        "type": "string"
                                                     }
                                                 },
                                                 "variables": {},
@@ -943,7 +1012,7 @@
                                                             "logs": [
                                                                 {
                                                                     "categoryGroup": "allLogs",
-                                                                    "enabled": true
+                                                                    "enabled": "[[parameters('logsEnabled')]"
                                                                 }
                                                             ]
                                                         }
@@ -966,6 +1035,9 @@
                                                 },
                                                 "metricsEnabled": {
                                                     "value": "[[parameters('metricsEnabled')]"
+                                                },
+                                                "logsEnabled": {
+                                                    "value": "[[parameters('logsEnabled')]"
                                                 }
                                             }
                                         }
@@ -1444,11 +1516,11 @@
                                         "allOf": [
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('logsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('metricsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
@@ -2097,7 +2169,7 @@
                     },
                     "modifyUdr": {
                         "type": "string",
-                        "defaultValue": "Modify"
+                        "defaultValue": "Disabled"
                     },
                     "modifyUdrNextHopIpAddress": {
                         "type": "string",
@@ -2113,7 +2185,47 @@
                     },
                     "modifyNsg": {
                         "type": "string",
-                        "defaultValue": "Modify"
+                        "defaultValue": "Disabled"
+                    },
+                    "modifyNsgRuleName": {
+                        "type": "string",
+                        "defaultValue": "DenyAnyInternetOutbound"
+                    },
+                    "modifyNsgRulePriority": {
+                        "type": "integer",
+                        "defaultValue": 1000
+                    },
+                    "modifyNsgRuleDirection": {
+                        "type": "string",
+                        "defaultValue": "Outbound"
+                    },
+                    "modifyNsgRuleAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "modifyNsgRuleProtocol": {
+                        "type": "string",
+                        "defaultValue": "*"
+                    },
+                    "modifyNsgRuleSourceAddressPrefix": {
+                        "type": "string",
+                        "defaultValue": "*"
+                    },
+                    "modifyNsgRuleSourcePortRange": {
+                        "type": "string",
+                        "defaultValue": "*"
+                    },
+                    "modifyNsgRuleDestinationAddressPrefix": {
+                        "type": "string",
+                        "defaultValue": "Internet"
+                    },
+                    "modifyNsgRuleDestinationPortRange": {
+                        "type": "string",
+                        "defaultValue": "*"
+                    },
+                    "modifyNsgRuleDescription": {
+                        "type": "string",
+                        "defaultValue": "Deny any outbound traffic to the Internet"
                     }
                 },
                 "policyDefinitions": [
@@ -2612,6 +2724,36 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('modifyNsg')]"
+                            },
+                            "nsgRuleName": {
+                                "value": "[[parameters('modifyNsgRuleName')]"
+                            },
+                            "nsgRulePriority": {
+                                "value": "[[parameters('modifyNsgRulePriority')]"
+                            },
+                            "nsgRuleDirection": {
+                                "value": "[[parameters('modifyNsgRuleDirection')]"
+                            },
+                            "nsgRuleAccess": {
+                                "value": "[[parameters('modifyNsgRuleAccess')]"
+                            },
+                            "nsgRuleProtocol": {
+                                "value": "[[parameters('modifyNsgRuleProtocol')]"
+                            },
+                            "nsgRuleSourceAddressPrefix": {
+                                "value": "[[parameters('modifyNsgRuleSourceAddressPrefix')]"
+                            },
+                            "nsgRuleSourcePortRange": {
+                                "value": "[[parameters('modifyNsgRuleSourcePortRange')]"
+                            },
+                            "nsgRuleDestinationAddressPrefix": {
+                                "value": "[[parameters('modifyNsgRuleDestinationAddressPrefix')]"
+                            },
+                            "nsgRuleDestinationPortRange": {
+                                "value": "[[parameters('modifyNsgRuleDestinationPortRange')]"
+                            },
+                            "nsgRuleDescription": {
+                                "value": "[[parameters('modifyNsgRuleDescription')]"
                             }
                         }
                     }
