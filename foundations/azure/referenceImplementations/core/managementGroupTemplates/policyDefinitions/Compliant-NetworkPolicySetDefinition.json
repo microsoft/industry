@@ -370,7 +370,7 @@
                             },
                             "metricsEnabled": {
                                 "type": "String",
-                                "defaultValue": "True",
+                                "defaultValue": "False",
                                 "allowedValues": [
                                     "True",
                                     "False"
@@ -378,6 +378,18 @@
                                 "metadata": {
                                     "displayName": "Enable metrics",
                                     "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
+                                }
+                            },
+                            "logsEnabled": {
+                                "type": "String",
+                                "defaultValue": "True",
+                                "allowedValues": [
+                                    "True",
+                                    "False"
+                                ],
+                                "metadata": {
+                                    "displayName": "Enable logs",
+                                    "description": "Whether to enable log stream to the Log Analytics workspace - True or False"
                                 }
                             }
                         },
@@ -395,11 +407,11 @@
                                         "allOf": [
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('logsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('metricsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
@@ -432,6 +444,9 @@
                                                     },
                                                     "metricsEnabled": {
                                                         "type": "String"
+                                                    },
+                                                    "logsEnabled": {
+                                                        "type": "String"
                                                     }
                                                 },
                                                 "variables": {},
@@ -458,7 +473,7 @@
                                                             "logs": [
                                                                 {
                                                                     "categoryGroup": "allLogs",
-                                                                    "enabled": true
+                                                                    "enabled": "[[parameters('logsEnabled')]"
                                                                 }
                                                             ]
                                                         }
@@ -481,6 +496,9 @@
                                                 },
                                                 "metricsEnabled": {
                                                     "value": "[[parameters('metricsEnabled')]"
+                                                },
+                                                "logsEnabled": {
+                                                    "value": "[[parameters('logsEnabled')]"
                                                 }
                                             }
                                         }
@@ -541,6 +559,18 @@
                                     "displayName": "Enable metrics",
                                     "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
                                 }
+                            },
+                            "logsEnabled": {
+                                "type": "String",
+                                "defaultValue": "True",
+                                "allowedValues": [
+                                    "True",
+                                    "False"
+                                ],
+                                "metadata": {
+                                    "displayName": "Enable logs",
+                                    "description": "Whether to enable log stream to the Log Analytics workspace - True or False"
+                                }
                             }
                         },
                         "policyRule": {
@@ -557,11 +587,11 @@
                                         "allOf": [
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('logsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('metricsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
@@ -594,6 +624,9 @@
                                                     },
                                                     "metricsEnabled": {
                                                         "type": "String"
+                                                    },
+                                                    "logsEnabled": {
+                                                        "type": "String"
                                                     }
                                                 },
                                                 "variables": {},
@@ -620,7 +653,7 @@
                                                             "logs": [
                                                                 {
                                                                     "categoryGroup": "allLogs",
-                                                                    "enabled": true
+                                                                    "enabled": "[[parameters('logsEnabled')]"
                                                                 }
                                                             ]
                                                         }
@@ -643,6 +676,9 @@
                                                 },
                                                 "metricsEnabled": {
                                                     "value": "[[parameters('metricsEnabled')]"
+                                                },
+                                                "logsEnabled": {
+                                                    "value": "[[parameters('logsEnabled')]"
                                                 }
                                             }
                                         }
@@ -703,6 +739,18 @@
                                     "displayName": "Enable metrics",
                                     "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
                                 }
+                            },
+                            "logsEnabled": {
+                                "type": "String",
+                                "defaultValue": "True",
+                                "allowedValues": [
+                                    "True",
+                                    "False"
+                                ],
+                                "metadata": {
+                                    "displayName": "Enable logs",
+                                    "description": "Whether to enable log stream to the Log Analytics workspace - True or False"
+                                }
                             }
                         },
                         "policyRule": {
@@ -719,11 +767,11 @@
                                         "allOf": [
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('logsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('metricsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
@@ -756,6 +804,9 @@
                                                     },
                                                     "metricsEnabled": {
                                                         "type": "String"
+                                                    },
+                                                    "logsEnabled": {
+                                                        "type": "string"
                                                     }
                                                 },
                                                 "variables": {},
@@ -782,7 +833,7 @@
                                                             "logs": [
                                                                 {
                                                                     "categoryGroup": "allLogs",
-                                                                    "enabled": true
+                                                                    "enabled": "[[parameters('logsEnabled')]"
                                                                 }
                                                             ]
                                                         }
@@ -805,6 +856,9 @@
                                                 },
                                                 "metricsEnabled": {
                                                     "value": "[[parameters('metricsEnabled')]"
+                                                },
+                                                "logsEnabled": {
+                                                    "value": "[[parameters('logsEnabled')]"
                                                 }
                                             }
                                         }
@@ -865,6 +919,18 @@
                                     "displayName": "Enable metrics",
                                     "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
                                 }
+                            },
+                            "logsEnabled": {
+                                "type": "String",
+                                "defaultValue": "True",
+                                "allowedValues": [
+                                    "True",
+                                    "False"
+                                ],
+                                "metadata": {
+                                    "displayName": "Enable logs",
+                                    "description": "Whether to enable log stream to the Log Analytics workspace - True or False"
+                                }
                             }
                         },
                         "policyRule": {
@@ -881,11 +947,11 @@
                                         "allOf": [
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('logsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('metricsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
@@ -918,6 +984,9 @@
                                                     },
                                                     "metricsEnabled": {
                                                         "type": "String"
+                                                    },
+                                                    "logsEnabled": {
+                                                        "type": "string"
                                                     }
                                                 },
                                                 "variables": {},
@@ -943,7 +1012,7 @@
                                                             "logs": [
                                                                 {
                                                                     "categoryGroup": "allLogs",
-                                                                    "enabled": true
+                                                                    "enabled": "[[parameters('logsEnabled')]"
                                                                 }
                                                             ]
                                                         }
@@ -966,6 +1035,9 @@
                                                 },
                                                 "metricsEnabled": {
                                                     "value": "[[parameters('metricsEnabled')]"
+                                                },
+                                                "logsEnabled": {
+                                                    "value": "[[parameters('logsEnabled')]"
                                                 }
                                             }
                                         }
@@ -1444,11 +1516,11 @@
                                         "allOf": [
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('logsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('metricsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
@@ -1621,6 +1693,218 @@
                         }
                     },
                     "name": "Deny-AppGw-Without-Tls"
+                },
+                {
+                    "properties": {
+                        "DisplayName": "Enforce specific configuration of User-Defined Routes (UDR)",
+                        "Description": "This policy enforces the configuration of User-Defined Routes (UDR) within a subnet.",
+                        "mode": "All",
+                        "Metadata": {
+                            "category": "Network",
+                            "version": "1.0.0"
+                        },
+                        "parameters": {
+                            "addressPrefix": {
+                                "type": "string",
+                                "metadata": {
+                                    "description": "The destination IP address range in CIDR notation that this Policy checks for within the UDR. Example: 0.0.0.0/0 to check for the presence of a default route.",
+                                    "displayName": "Address Prefix"
+                                }
+                            },
+                            "nextHopType": {
+                                "type": "string",
+                                "metadata": {
+                                    "description": "The next hope type that the policy checks for within the inspected route. The value can be Virtual Network, Virtual Network Gateway, Internet, Virtual Appliance, or None.",
+                                    "displayName": "Next Hop Type"
+                                },
+                                "allowedValues": [
+                                    "VnetLocal",
+                                    "VirtualNetworkGateway",
+                                    "Internet",
+                                    "VirtualAppliance",
+                                    "None"
+                                ]
+                            },
+                            "nextHopIpAddress": {
+                                "type": "string",
+                                "metadata": {
+                                    "description": "The IP address packets should be forwarded to.",
+                                    "displayName": "Next Hop IP Address"
+                                }
+                            },
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Disabled",
+                                    "Modify"
+                                ],
+                                "defaultValue": "Modify"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Network/routeTables"
+                                    },
+                                    {
+                                        "count": {
+                                            "field": "Microsoft.Network/routeTables/routes[*]"
+                                        },
+                                        "equals": 0
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]",
+                                "details": {
+                                    "roleDefinitionIds": [
+                                        "/providers/microsoft.authorization/roleDefinitions/4d97b98b-1d4f-4787-a291-c67834d212e7"
+                                    ],
+                                    "conflictEffect": "audit",
+                                    "operations": [
+                                        {
+                                            "operation": "add",
+                                            "field": "Microsoft.Network/routeTables/routes[*]",
+                                            "value": {
+                                                "name": "default",
+                                                "properties": {
+                                                    "addressPrefix": "[[parameters('addressPrefix')]",
+                                                    "nextHopType": "[[parameters('nextHopType')]",
+                                                    "nextHopIpAddress": "[[parameters('nextHopIpAddress')]"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "name": "Modify-UDR"
+                },
+                {
+                    "properties": {
+                        "DisplayName": "Enforce specific configuration of Network Security Groups (NSG)",
+                        "Description": "This policy enforces the configuration of Network Security Groups (NSG).",
+                        "mode": "All",
+                        "Metadata": {
+                            "category": "Network",
+                            "version": "1.0.0"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Disabled",
+                                    "Modify"
+                                ],
+                                "defaultValue": "Modify"
+                            },
+                            "nsgRuleName": {
+                                "type": "string",
+                                "defaultValue": "DenyAnyInternetOutbound"
+                            },
+                            "nsgRulePriority": {
+                                "type": "integer",
+                                "defaultValue": 1000
+                            },
+                            "nsgRuleDirection": {
+                                "type": "string",
+                                "allowedValues": [
+                                    "Inbound",
+                                    "Outbound"
+                                ],
+                                "defaultValue": "Outbound"
+                            },
+                            "nsgRuleAccess": {
+                                "type": "string",
+                                "allowedValues": [
+                                    "Allow",
+                                    "Deny"
+                                ],
+                                "defaultValue": "Deny"
+                            },
+                            "nsgRuleProtocol": {
+                                "type": "string",
+                                "defaultValue": "*"
+                            },
+                            "nsgRuleSourceAddressPrefix": {
+                                "type": "string",
+                                "defaultValue": "*"
+                            },
+                            "nsgRuleSourcePortRange": {
+                                "type": "string",
+                                "defaultValue": "*"
+                            },
+                            "nsgRuleDestinationAddressPrefix": {
+                                "type": "string",
+                                "defaultValue": "Internet"
+                            },
+                            "nsgRuleDestinationPortRange": {
+                                "type": "string",
+                                "defaultValue": "*"
+                            },
+                            "nsgRuleDescription": {
+                                "type": "string",
+                                "defaultValue": "Deny any outbound traffic to the Internet"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Network/networkSecurityGroups"
+                                    },
+                                    {
+                                        "count": {
+                                            "field": "Microsoft.Network/networkSecurityGroups/securityRules[*]"
+                                        },
+                                        "equals": 0
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]",
+                                "details": {
+                                    "roleDefinitionIds": [
+                                        "/providers/microsoft.authorization/roleDefinitions/4d97b98b-1d4f-4787-a291-c67834d212e7"
+                                    ],
+                                    "conflictEffect": "audit",
+                                    "operations": [
+                                        {
+                                            "operation": "add",
+                                            "field": "Microsoft.Network/networkSecurityGroups/securityRules[*]",
+                                            "value": {
+                                                "name": "[[parameters('nsgRuleName')]",
+                                                "properties": {
+                                                    "description": "[[parameters('nsgRuleDescription')]",
+                                                    "protocol": "[[parameters('nsgRuleProtocol')]",
+                                                    "sourcePortRange": "[[parameters('nsgRuleSourcePortRange')]",
+                                                    "destinationPortRange": "[[parameters('nsgRuleDestinationPortRange')]",
+                                                    "sourceAddressPrefix": "[[parameters('nsgRuleSourceAddressPrefix')]",
+                                                    "destinationAddressPrefix": "[[parameters('nsgRuleDestinationAddressPrefix')]",
+                                                    "access": "[[parameters('nsgRuleAccess')]",
+                                                    "priority": "[[parameters('nsgRulePriority')]",
+                                                    "direction": "[[parameters('nsgRuleDirection')]"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "name": "Modify-NSG"
                 }
             ]
         }
@@ -1663,19 +1947,13 @@
                         "name": "Encryption",
                         "category": "Data Protection",
                         "displayName": "Ensure Network is using secure encryption",
-                        "description": "Policy to ensure API Network is using secure protocols"
+                        "description": "Policy to ensure Network is using secure protocols"
                     },
                     {
                         "name": "Network",
                         "category": "Network Security",
-                        "displayName": "Ensure Network is not accessible over the public internet",
+                        "displayName": "Ensure Network is securely configured and accessed",
                         "description": "Policy to ensure Network is not accessible over the public internet"
-                    },
-                    {
-                        "name": "Identity",
-                        "category": "Identity Management",
-                        "displayName": "Ensure usage of centralized identity and auhtorization system for API Network",
-                        "description": "Policy to ensure Network is not using local authorization"
                     },
                     {
                         "name": "Logging",
@@ -1888,6 +2166,66 @@
                     "appGwTlsVersion": {
                         "type": "string",
                         "defaultValue": "Deny"
+                    },
+                    "modifyUdr": {
+                        "type": "string",
+                        "defaultValue": "Disabled"
+                    },
+                    "modifyUdrNextHopIpAddress": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "modifyUdrNextHopType": {
+                        "type": "string",
+                        "defaultValue": "None"
+                    },
+                    "modifyUdrAddressPrefix": {
+                        "type": "string",
+                        "defaultValue": "0.0.0.0/0"
+                    },
+                    "modifyNsg": {
+                        "type": "string",
+                        "defaultValue": "Disabled"
+                    },
+                    "modifyNsgRuleName": {
+                        "type": "string",
+                        "defaultValue": "DenyAnyInternetOutbound"
+                    },
+                    "modifyNsgRulePriority": {
+                        "type": "integer",
+                        "defaultValue": 1000
+                    },
+                    "modifyNsgRuleDirection": {
+                        "type": "string",
+                        "defaultValue": "Outbound"
+                    },
+                    "modifyNsgRuleAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "modifyNsgRuleProtocol": {
+                        "type": "string",
+                        "defaultValue": "*"
+                    },
+                    "modifyNsgRuleSourceAddressPrefix": {
+                        "type": "string",
+                        "defaultValue": "*"
+                    },
+                    "modifyNsgRuleSourcePortRange": {
+                        "type": "string",
+                        "defaultValue": "*"
+                    },
+                    "modifyNsgRuleDestinationAddressPrefix": {
+                        "type": "string",
+                        "defaultValue": "Internet"
+                    },
+                    "modifyNsgRuleDestinationPortRange": {
+                        "type": "string",
+                        "defaultValue": "*"
+                    },
+                    "modifyNsgRuleDescription": {
+                        "type": "string",
+                        "defaultValue": "Deny any outbound traffic to the Internet"
                     }
                 },
                 "policyDefinitions": [
@@ -2353,6 +2691,69 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('appGwTlsVersion')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[13].name)]",
+                        "policyDefinitionReferenceId": "Modify-Udr",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('modifyUdr')]"
+                            },
+                            "nextHopIpAddress": {
+                                "value": "[[parameters('modifyUdrNextHopIpAddress')]"
+                            },
+                            "nextHopType": {
+                                "value": "[[parameters('modifyUdrNextHopType')]"
+                            },
+                            "addressPrefix": {
+                                "value": "[[parameters('modifyUdrAddressPrefix')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[14].name)]",
+                        "policyDefinitionReferenceId": "Modify-Nsg",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('modifyNsg')]"
+                            },
+                            "nsgRuleName": {
+                                "value": "[[parameters('modifyNsgRuleName')]"
+                            },
+                            "nsgRulePriority": {
+                                "value": "[[parameters('modifyNsgRulePriority')]"
+                            },
+                            "nsgRuleDirection": {
+                                "value": "[[parameters('modifyNsgRuleDirection')]"
+                            },
+                            "nsgRuleAccess": {
+                                "value": "[[parameters('modifyNsgRuleAccess')]"
+                            },
+                            "nsgRuleProtocol": {
+                                "value": "[[parameters('modifyNsgRuleProtocol')]"
+                            },
+                            "nsgRuleSourceAddressPrefix": {
+                                "value": "[[parameters('modifyNsgRuleSourceAddressPrefix')]"
+                            },
+                            "nsgRuleSourcePortRange": {
+                                "value": "[[parameters('modifyNsgRuleSourcePortRange')]"
+                            },
+                            "nsgRuleDestinationAddressPrefix": {
+                                "value": "[[parameters('modifyNsgRuleDestinationAddressPrefix')]"
+                            },
+                            "nsgRuleDestinationPortRange": {
+                                "value": "[[parameters('modifyNsgRuleDestinationPortRange')]"
+                            },
+                            "nsgRuleDescription": {
+                                "value": "[[parameters('modifyNsgRuleDescription')]"
                             }
                         }
                     }

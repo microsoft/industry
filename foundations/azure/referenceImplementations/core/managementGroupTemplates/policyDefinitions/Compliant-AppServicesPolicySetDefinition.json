@@ -64,8 +64,8 @@
                     "properties": {
                         "policyType": "Custom",
                         "mode": "Indexed",
-                        "displayName": "Deploy Diagnostic Settings for Azure Function App to Log Analytics workspace",
-                        "description": "Deploys the diagnostic settings for Azure Function App to stream to a Log Analytics workspace when any function app which is missing this diagnostic settings is created or updated. The Policy will set the diagnostic with all metrics and category enabled",
+                        "displayName": "Deploy Diagnostic Settings for Azure Function App and Logic App to Log Analytics workspace",
+                        "description": "Deploys the diagnostic settings for Azure Function App and Logic App to stream to a Log Analytics workspace when any function app which is missing this diagnostic settings is created or updated. The Policy will set the diagnostic with all metrics and category enabled",
                         "metadata": {
                             "version": "1.1.0",
                             "category": "App Service"
@@ -101,7 +101,7 @@
                             },
                             "metricsEnabled": {
                                 "type": "String",
-                                "defaultValue": "True",
+                                "defaultValue": "False",
                                 "allowedValues": [
                                     "True",
                                     "False"
@@ -132,8 +132,16 @@
                                         "equals": "Microsoft.Web/sites"
                                     },
                                     {
-                                        "value": "[[field('kind')]",
-                                        "contains": "functionapp"
+                                        "anyOf": [
+                                            {
+                                                "value": "[[field('kind')]",
+                                                "contains": "functionapp"
+                                            },
+                                            {
+                                                "value": "[[field('kind')]",
+                                                "contains": "workflowapp"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -146,11 +154,11 @@
                                         "allOf": [
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('logsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('metricsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
@@ -212,6 +220,10 @@
                                                             "logs": [
                                                                 {
                                                                     "category": "FunctionAppLogs",
+                                                                    "enabled": "[[parameters('logsEnabled')]"
+                                                                },
+                                                                {
+                                                                    "category": "WorkflowRuntime",
                                                                     "enabled": "[[parameters('logsEnabled')]"
                                                                 }
                                                             ]
@@ -504,6 +516,203 @@
                         }
                     },
                     "name": "Dine-AppService-Diagnostics"
+                },
+                {
+                    "properties": {
+                        "displayName": "Logic apps should disable public network access",
+                        "mode": "Indexed",
+                        "description": "Disabling public network access improves security by ensuring that the Logic App is not exposed on the public internet. Creating private endpoints can limit exposure of a Logic App. Learn more at: https://aka.ms/app-service-private-endpoint.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "App Service"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Disabled",
+                                    "Deny"
+                                ],
+                                "defaultValue": "Audit"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Web/sites"
+                                    },
+                                    {
+                                        "field": "kind",
+                                        "contains": "workflowapp"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "field": "Microsoft.Web/sites/publicNetworkAccess",
+                                                "exists": "false"
+                                            },
+                                            {
+                                                "field": "Microsoft.Web/sites/publicNetworkAccess",
+                                                "notEquals": "Disabled"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-LogicApp-Public-Network"
+                },
+                {
+                    "properties": {
+                        "displayName": "Logic app should only be accessible over HTTPS",
+                        "mode": "Indexed",
+                        "description": "Use of HTTPS ensures server/service authentication and protects data in transit from network layer eavesdropping attacks.",
+                        "metadata": {
+                            "version": "2.0.0",
+                            "category": "App Service"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Disabled",
+                                    "Deny"
+                                ],
+                                "defaultValue": "Audit"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Web/sites"
+                                    },
+                                    {
+                                        "field": "kind",
+                                        "contains": "workflowapp"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "field": "Microsoft.Web/sites/httpsOnly",
+                                                "exists": "false"
+                                            },
+                                            {
+                                                "field": "Microsoft.Web/sites/httpsOnly",
+                                                "equals": "false"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-LogicApps-Without-Https"
+                },
+                {
+                    "properties": {
+                        "displayName": "Configure Logic apps to use the latest TLS version",
+                        "mode": "Indexed",
+                        "description": "Periodically, newer versions are released for TLS either due to security flaws, include additional functionality, and enhance speed. Upgrade to the latest TLS version for Function apps to take advantage of security fixes, if any, and/or new functionalities of the latest version.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "App Service"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "DeployIfNotExists",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "DeployIfNotExists"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Web/sites"
+                                    },
+                                    {
+                                        "field": "kind",
+                                        "contains": "workflowapp"
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]",
+                                "details": {
+                                    "type": "Microsoft.Web/sites/config",
+                                    "name": "web",
+                                    "existenceCondition": {
+                                        "field": "Microsoft.Web/sites/config/minTlsVersion",
+                                        "equals": "1.2"
+                                    },
+                                    "roleDefinitionIds": [
+                                        "/providers/microsoft.authorization/roleDefinitions/de139f84-1756-47ae-9be6-808fbbe84772"
+                                    ],
+                                    "deployment": {
+                                        "properties": {
+                                            "mode": "incremental",
+                                            "parameters": {
+                                                "siteName": {
+                                                    "value": "[[field('name')]"
+                                                }
+                                            },
+                                            "template": {
+                                                "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                                                "contentVersion": "1.0.0.0",
+                                                "parameters": {
+                                                    "siteName": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "variables": {},
+                                                "resources": [
+                                                    {
+                                                        "type": "Microsoft.Web/sites/config",
+                                                        "apiVersion": "2021-02-01",
+                                                        "name": "[[concat(parameters('siteName'), '/web')]",
+                                                        "properties": {
+                                                            "minTlsVersion": "1.2"
+                                                        }
+                                                    }
+                                                ],
+                                                "outputs": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "name": "Dine-LogicApp-TLS"
                 }
             ]
         }
@@ -721,6 +930,18 @@
                     "appServiceLogAnalyticsWorkspaceId": {
                         "type": "string",
                         "defaultValue": ""
+                    },
+                    "logicAppPublicNetworkAccess": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "logicAppHttps": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "logicAppTls": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
                     }
                 },
                 "policyDefinitions": [
@@ -763,6 +984,43 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('apiAppHttps')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[3].name)]",
+                        "policyDefinitionReferenceId": "Deny-LogicApp-Public-Network-Access",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('logicAppPublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[4].name)]",
+                        "policyDefinitionReferenceId": "Deny-LogicApp-Without-Https",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('logicAppHttps')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[5].name)]",
+                        "policyDefinitionReferenceId": "Dine-LogicApp-Tls",
+                        "groupNames": [
+                            "Network",
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('logicAppTls')]"
                             }
                         }
                     },
