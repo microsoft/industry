@@ -64,8 +64,8 @@
                     "properties": {
                         "policyType": "Custom",
                         "mode": "Indexed",
-                        "displayName": "Deploy Diagnostic Settings for Azure Function App to Log Analytics workspace",
-                        "description": "Deploys the diagnostic settings for Azure Function App to stream to a Log Analytics workspace when any function app which is missing this diagnostic settings is created or updated. The Policy will set the diagnostic with all metrics and category enabled",
+                        "displayName": "Deploy Diagnostic Settings for Azure Function App and Logic App to Log Analytics workspace",
+                        "description": "Deploys the diagnostic settings for Azure Function App and Logic App to stream to a Log Analytics workspace when any function app which is missing this diagnostic settings is created or updated. The Policy will set the diagnostic with all metrics and category enabled",
                         "metadata": {
                             "version": "1.1.0",
                             "category": "App Service"
@@ -132,8 +132,16 @@
                                         "equals": "Microsoft.Web/sites"
                                     },
                                     {
-                                        "value": "[[field('kind')]",
-                                        "contains": "functionapp"
+                                        "anyOf": [
+                                            {
+                                                "value": "[[field('kind')]",
+                                                "contains": "functionapp"
+                                            },
+                                            {
+                                                "value": "[[field('kind')]",
+                                                "contains": "workflowapp"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -146,11 +154,11 @@
                                         "allOf": [
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('logsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
-                                                "equals": "true"
+                                                "equals": "[[parameters('metricsEnabled')]"
                                             },
                                             {
                                                 "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
@@ -212,6 +220,10 @@
                                                             "logs": [
                                                                 {
                                                                     "category": "FunctionAppLogs",
+                                                                    "enabled": "[[parameters('logsEnabled')]"
+                                                                },
+                                                                {
+                                                                    "category": "WorkflowRuntime",
                                                                     "enabled": "[[parameters('logsEnabled')]"
                                                                 }
                                                             ]
@@ -504,194 +516,6 @@
                         }
                     },
                     "name": "Dine-AppService-Diagnostics"
-                },
-                {
-                    "properties": {
-                        "displayName": "Deploy Diagnostic Settings for Logic App workflows to Log Analytics workspace",
-                        "policyType": "Custom",
-                        "mode": "Indexed",
-                        "description": "Deploys the diagnostic settings for Logic App workflows to stream to a Log Analytics workspace when any workflow app which is missing this diagnostic settings is created or updated. The Policy will set the diagnostic with all metrics and category enabled",
-                        "metadata": {
-                            "version": "1.0.0",
-                            "category": "App Service"
-                        },
-                        "parameters": {
-                            "logAnalytics": {
-                                "type": "String",
-                                "metadata": {
-                                    "displayName": "Log Analytics workspace",
-                                    "description": "Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant 'Log Analytics Contributor' permissions (or similar) to the policy assignment's principal ID.",
-                                    "strongType": "omsWorkspace"
-                                }
-                            },
-                            "effect": {
-                                "type": "String",
-                                "metadata": {
-                                    "displayName": "Effect",
-                                    "description": "Enable or disable the execution of the policy"
-                                },
-                                "allowedValues": [
-                                    "DeployIfNotExists",
-                                    "Disabled"
-                                ],
-                                "defaultValue": "DeployIfNotExists"
-                            },
-                            "profileName": {
-                                "type": "String",
-                                "metadata": {
-                                    "displayName": "Profile name",
-                                    "description": "The diagnostic settings profile name"
-                                },
-                                "defaultValue": "wfsetbypolicy"
-                            },
-                            "metricsEnabled": {
-                                "type": "String",
-                                "metadata": {
-                                    "displayName": "Enable metrics",
-                                    "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
-                                },
-                                "allowedValues": [
-                                    "True",
-                                    "False"
-                                ],
-                                "defaultValue": "False"
-                            },
-                            "logsEnabled": {
-                                "type": "String",
-                                "metadata": {
-                                    "displayName": "Enable logs",
-                                    "description": "Whether to enable logs stream to the Log Analytics workspace - True or False"
-                                },
-                                "allowedValues": [
-                                    "True",
-                                    "False"
-                                ],
-                                "defaultValue": "True"
-                            }
-                        },
-                        "policyRule": {
-                            "if": {
-                                "allOf": [
-                                    {
-                                        "field": "type",
-                                        "equals": "Microsoft.Web/sites"
-                                    },
-                                    {
-                                        "value": "[[field('kind')]",
-                                        "contains": "workflowapp"
-                                    }
-                                ]
-                            },
-                            "then": {
-                                "effect": "[[parameters('effect')]",
-                                "details": {
-                                    "type": "Microsoft.Insights/diagnosticSettings",
-                                    "name": "[[parameters('profileName')]",
-                                    "existenceCondition": {
-                                        "allOf": [
-                                            {
-                                                "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                                                "equals": "true"
-                                            },
-                                            {
-                                                "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
-                                                "equals": "true"
-                                            },
-                                            {
-                                                "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
-                                                "equals": "[[parameters('logAnalytics')]"
-                                            }
-                                        ]
-                                    },
-                                    "roleDefinitionIds": [
-                                        "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
-                                        "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
-                                    ],
-                                    "deployment": {
-                                        "properties": {
-                                            "mode": "Incremental",
-                                            "template": {
-                                                "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-                                                "contentVersion": "1.0.0.0",
-                                                "parameters": {
-                                                    "resourceName": {
-                                                        "type": "String"
-                                                    },
-                                                    "logAnalytics": {
-                                                        "type": "String"
-                                                    },
-                                                    "location": {
-                                                        "type": "String"
-                                                    },
-                                                    "profileName": {
-                                                        "type": "String"
-                                                    },
-                                                    "metricsEnabled": {
-                                                        "type": "String"
-                                                    },
-                                                    "logsEnabled": {
-                                                        "type": "String"
-                                                    }
-                                                },
-                                                "variables": {},
-                                                "resources": [
-                                                    {
-                                                        "type": "Microsoft.Web/sites/providers/diagnosticSettings",
-                                                        "apiVersion": "2017-05-01-preview",
-                                                        "name": "[[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
-                                                        "location": "[[parameters('location')]",
-                                                        "dependsOn": [],
-                                                        "properties": {
-                                                            "workspaceId": "[[parameters('logAnalytics')]",
-                                                            "metrics": [
-                                                                {
-                                                                    "category": "AllMetrics",
-                                                                    "enabled": "[[parameters('metricsEnabled')]",
-                                                                    "retentionPolicy": {
-                                                                        "days": 0,
-                                                                        "enabled": false
-                                                                    },
-                                                                    "timeGrain": null
-                                                                }
-                                                            ],
-                                                            "logs": [
-                                                                {
-                                                                    "category": "WorkflowRuntime",
-                                                                    "enabled": "[[parameters('logsEnabled')]"
-                                                                }
-                                                            ]
-                                                        }
-                                                    }
-                                                ],
-                                                "outputs": {}
-                                            },
-                                            "parameters": {
-                                                "logAnalytics": {
-                                                    "value": "[[parameters('logAnalytics')]"
-                                                },
-                                                "location": {
-                                                    "value": "[[field('location')]"
-                                                },
-                                                "resourceName": {
-                                                    "value": "[[field('name')]"
-                                                },
-                                                "profileName": {
-                                                    "value": "[[parameters('profileName')]"
-                                                },
-                                                "metricsEnabled": {
-                                                    "value": "[[parameters('metricsEnabled')]"
-                                                },
-                                                "logsEnabled": {
-                                                    "value": "[[parameters('logsEnabled')]"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "name": "Dine-LA-Diagnostics"
                 },
                 {
                     "properties": {
@@ -1107,14 +931,6 @@
                         "type": "string",
                         "defaultValue": ""
                     },
-                    "logicAppDiagnostics": {
-                        "type": "string",
-                        "defaultValue": "DeployIfNotExists"
-                    },
-                    "logicAppLogAnalyticsWorkspaceId": {
-                        "type": "string",
-                        "defaultValue": ""
-                    },
                     "logicAppPublicNetworkAccess": {
                         "type": "string",
                         "defaultValue": "Deny"
@@ -1173,21 +989,6 @@
                     },
                     {
                         "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[3].name)]",
-                        "policyDefinitionReferenceId": "Dine-LogicApp-Diagnostics",
-                        "groupNames": [
-                            "Logging"
-                        ],
-                        "parameters": {
-                            "effect": {
-                                "value": "[[parameters('logicAppDiagnostics')]"
-                            },
-                            "logAnalytics": {
-                                "value": "[[parameters('logicAppLogAnalyticsWorkspaceId')]"
-                            }
-                        }
-                    },
-                    {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[4].name)]",
                         "policyDefinitionReferenceId": "Deny-LogicApp-Public-Network-Access",
                         "groupNames": [
                             "Network"
@@ -1199,7 +1000,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[5].name)]",
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[4].name)]",
                         "policyDefinitionReferenceId": "Deny-LogicApp-Without-Https",
                         "groupNames": [
                             "Network"
@@ -1211,7 +1012,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[6].name)]",
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[5].name)]",
                         "policyDefinitionReferenceId": "Dine-LogicApp-Tls",
                         "groupNames": [
                             "Network",
