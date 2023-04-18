@@ -2735,6 +2735,7 @@
                 "microsoft.securityinsights/workspacemanagergroups",
                 "microsoft.securityinsights/workspacemanagermembers",
                 "microsoft.managedidentity/userassignedidentities",
+                "microsoft.portal/dashboards",
                 "microsoft.managedidentity/userassignedidentities/federatedidentitycredentials"
             ]
         },
