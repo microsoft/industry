@@ -604,7 +604,7 @@
                 {
                     "properties": {
                         "displayName": "Storage Accounts should use a container delete retention policy",
-                        "mode": "Indexed",
+                        "mode": "All",
                         "description": "Enforce container delete retention policies larger than seven days for storage account. Enable this for increased data loss protection",
                         "metadata": {
                             "version": "1.0.0",
@@ -668,7 +668,7 @@
                 {
                     "properties": {
                         "displayName": "Storage Accounts should restrict CORS rules",
-                        "mode": "Indexed",
+                        "mode": "All",
                         "description": "Deny cors rules for storage account for increased data exfiltration protection and endpoint protection.",
                         "metadata": {
                             "version": "1.0.0",
