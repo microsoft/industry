@@ -13,11 +13,11 @@
             "policyDefinitions": [
                 {
                     "properties": {
-                        "displayName": "Event Hub namespaces should use a customer-managed key for encryption",
+                        "displayName": "Event Hub Cluster namespaces should use a customer-managed key for encryption",
                         "mode": "Indexed",
-                        "description": "Azure Event Hubs supports the option of encrypting data at rest with either Microsoft-managed keys (default) or customer-managed keys. Choosing to encrypt data using customer-managed keys enables you to assign, rotate, disable, and revoke access to the keys that Event Hub will use to encrypt data in your namespace. Note that Event Hub only supports encryption with customer-managed keys for namespaces in dedicated clusters.",
+                        "description": "Azure Event Hub Cluster supports the option of encrypting data at rest with either Microsoft-managed keys (default) or customer-managed keys. Choosing to encrypt data using customer-managed keys enables you to assign, rotate, disable, and revoke access to the keys that Event Hub will use to encrypt data in your namespace. Note that Event Hub only supports encryption with customer-managed keys for namespaces in dedicated clusters.",
                         "metadata": {
-                            "version": "1.0.0",
+                            "version": "1.0.1",
                             "category": "Event Hub"
                         },
                         "parameters": {
