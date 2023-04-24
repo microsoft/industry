@@ -1,0 +1,49 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "enforcementMode": {
+            "type": "string",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        },
+        "listOfResourceTypesAllowed": {
+            "type": "array",
+            "defaultValue": []
+        }
+    },
+    "variables": {
+        "policyDefinitions": {
+            "azureResources": "/providers/Microsoft.Authorization/policyDefinitions/a08ec900-254a-4555-9bf5-e42af04b5c5c"
+        },
+        "policyAssignmentNames": {
+            "resources": "Deny-Azure-Resources",
+            "description": "This policy enables the Azure services your organization can deploy into the landing zones.",
+            "displayName": "Azure Service Enablement - Allowed Azure services to be used in the FSI Landing Zones"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2022-06-01",
+            "name": "[variables('policyAssignmentNames').resources]",
+            "location": "[deployment().location]",            
+            "properties": {
+                "description": "[variables('policyAssignmentNames').description]",
+                "displayName": "[variables('policyAssignmentNames').displayName]",
+                "policyDefinitionId": "[variables('policyDefinitions').azureResources]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "listOfResourceTypesAllowed": {
+                        "value": "[parameters('listOfResourceTypesAllowed')]"
+                    }
+                }
+            }
+        }
+        
+    ],
+    "outputs": {}
+}

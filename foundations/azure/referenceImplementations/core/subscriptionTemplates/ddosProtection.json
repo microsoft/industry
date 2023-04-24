@@ -1,0 +1,65 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rgName": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide name for resource group"
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide location for the resource group"
+            }
+        },
+        "ddosName": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a name for the DDoS protection plan"
+            }
+        }
+    },
+    "variables": {
+        "ddosDeploymentName": "[take(concat(deployment().name, '-ddos', parameters('location')), 60)]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2020-10-01",
+            "name": "[parameters('rgName')]",
+            "location": "[parameters('location')]"
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('ddosDeploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+
+                    },
+                    "resources": [
+                        {
+                            "type": "Microsoft.Network/ddosProtectionPlans",
+                            "apiVersion": "2019-02-01",
+                            "name": "[parameters('ddosName')]",
+                            "location": "[parameters('location')]",
+                            "properties": {}
+                        }
+                    ],
+                    "outputs": {}
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

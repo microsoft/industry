@@ -68,6 +68,14 @@
                             "visible": true
                         },
                         {
+                            "name": "rpRegistrationApi",
+                            "type": "Microsoft.Solutions.ArmApiControl",
+                            "request": {
+                                "method": "POST",
+                                "path": "[concat('/providers/Microsoft.Management/managementGroups/',steps('basics').resourceScope.tenant.tenantId, '/providers/Microsoft.PolicyInsights/register?api-version=2021-04-01')]"
+                            }
+                        },
+                        {
                             "name": "subSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Subscription Organization",
@@ -2025,8 +2033,8 @@
                                 "required": true,
                                 "validations": [
                                     {
-                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(1[0-9]|2[0-4]))$",
-                                        "message": "Invalid CIDR range. The address prefix must be in the range [10,24]."
+                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(2[0-6]))$",
+                                        "message": "Invalid CIDR range. The address prefix must be in the range [20,26]."
                                     }
                                 ]
                             }
@@ -2181,8 +2189,8 @@
                                 "required": true,
                                 "validations": [
                                     {
-                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(1[0-9]|2[0-4]))$",
-                                        "message": "Invalid CIDR range. The address prefix must be in the range [10,24]."
+                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(2[0-6]))$",
+                                        "message": "Invalid CIDR range. The address prefix must be in the range [20,26]."
                                     }
                                 ]
                             }

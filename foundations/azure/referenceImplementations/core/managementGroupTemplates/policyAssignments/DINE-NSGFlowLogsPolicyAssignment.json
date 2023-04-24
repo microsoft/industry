@@ -2,13 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "topLevelManagementGroupPrefix": {
-            "type": "string",
-            "maxLength": 10,
-            "metadata": {
-                "description": "Provide a prefix (max 10 characters, unique at tenant-scope) for the Management Group hierarchy and other resources created as part of Afo."
-            }
-        },
         "enforcementMode": {
             "type": "string",
             "allowedValues": [
@@ -38,6 +31,10 @@
         "networkWatcherRg": {
             "type": "string",
             "defaultValue": "NetworkWatcherRg"
+        },
+        "retentionDays": {
+            "type": "string",
+            "defaultValue": "365"
         },
         "userAssignedIdentityResourceId": {
             "type": "string"
@@ -91,6 +88,9 @@
                     },
                     "networkWatcherRg": {
                         "value": "[parameters('networkWatcherRg')]"
+                    },
+                    "retentionDays": {
+                        "value": "[parameters('retentionDays')]"
                     }
                 }
             }

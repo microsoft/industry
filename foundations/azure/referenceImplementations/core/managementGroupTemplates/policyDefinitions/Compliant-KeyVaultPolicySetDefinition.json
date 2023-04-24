@@ -9,10 +9,8 @@
     },
     "variables": {
         "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
-        // Use the following array to add custom policy property bags and resource names which will be required for secure-by-default initiatives
         "policies": {
-            "policyDefinitions": [
-            ]
+            "policyDefinitions": []
         }
     },
     "resources": [
@@ -113,7 +111,7 @@
                     },
                     "keyVaultCertificatesPeriod": {
                         "type": "string",
-                        "defaultValue": "Deny"
+                        "defaultValue": "Disabled"
                     },
                     "keyVaultCertValidPeriod": {
                         "type": "integer",
@@ -133,7 +131,7 @@
                     },
                     "keysValidPeriod": {
                         "type": "string",
-                        "defaultValue": "Deny"
+                        "defaultValue": "Disabled"
                     },
                     "keysValidityInDays": {
                         "type": "integer",
@@ -214,9 +212,184 @@
                     "hsmLogCategories": {
                         "type": "string",
                         "defaultValue": "allLogs"
+                    },
+                    "keyVaultCertificateLifeTimeAction": {
+                        "type": "string",
+                        "defaultValue": "Disabled"
+                    },
+                    "keyVaultCertificateMaximumPercentageLife": {
+                        "type": "integer",
+                        "defaultValue": 80
+                    },
+                    "keyVaultCertificateMinimumDaysBeforeExpiry": {
+                        "type": "integer",
+                        "defaultValue": 20
+                    },
+                    "keyVaultCheckMinimumRSAKeySize": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultMinimumRSAKeySizeValue": {
+                        "type": "integer",
+                        "defaultValue": 2048
+                    },
+                    "keyVaultManagedHsmCheckMinimumRSAKeySize": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultManagedHsmMinimumRSAKeySizeValue": {
+                        "type": "integer",
+                        "defaultValue": 2048
+                    },
+                    "keyVaultCheckMinimumRSACertificateSize": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultMinimumRSACertificateSizeValue": {
+                        "type": "integer",
+                        "defaultValue": 2048
+                    },
+                    "keyVaultIntegratedCa": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultIntegratedCaValue": {
+                        "type": "array",
+                        "defaultValue": [
+                            "DigiCert",
+                            "GlobalSign"
+                        ]
+                    },
+                    "keyVaultNonIntegratedCa": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultNonIntegratedCaValue": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "keyVaultSecretContentType": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultHsmMinimumDaysBeforeExpiration": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultHsmMinimumDaysBeforeExpirationValue": {
+                        "type": "integer",
+                        "defaultValue": 90
+                    },
+                    "keyVaultHmsCurveNames": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultHmsCurveNamesValue": {
+                        "type": "array",
+                        "defaultValue": [
+                            "P-256",
+                            "P-256K",
+                            "P-384",
+                            "P-521"
+                        ]
+                    },
+                    "keyVaultCertificateNotExpireWithinSpecifiedNumberOfDays": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "keyVaultCertificateNotExpireWithinSpecifiedNumberOfDaysValue": {
+                        "type": "integer",
+                        "defaultValue": 90
                     }
                 },
-                "policyDefinitions": [                   
+                "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/f772fb64-8e40-40ad-87bc-7706e1949427",
+                        "policyDefinitionReferenceId": "Deny-Kv-Cert-Expiration-Within-Specific-Number-Days",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultCertificateNotExpireWithinSpecifiedNumberOfDays')]"
+                            },
+                            "daysToExpire": {
+                                "value": "[[parameters('keyVaultCertificateNotExpireWithinSpecifiedNumberOfDaysValue')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e58fd0c1-feac-4d12-92db-0a7e9421f53e",
+                        "policyDefinitionReferenceId": "Deny-Kv-Hsm-Curve-Names",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultHmsCurveNames')]"
+                            },
+                            "allowedECNames": {
+                                "value": "[[parameters('keyVaultHmsCurveNamesValue')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ad27588c-0198-4c84-81ef-08efd0274653",
+                        "policyDefinitionReferenceId": "Deny-Kv-Hsm-MinimumDays-Before-Expiration",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultHsmMinimumDaysBeforeExpiration')]"
+                            },
+                            "minimumDaysBeforeExpiration": {
+                                "value": "[[parameters('keyVaultHsmMinimumDaysBeforeExpirationValue')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/8e826246-c976-48f6-b03e-619bb92b3d82",
+                        "policyDefinitionReferenceId": "Deny-Kv-Integrated-Ca",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultIntegratedCa')]"
+                            },
+                            "allowedCAs": {
+                                "value": "[[parameters('keyVaultIntegratedCaValue')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/a22f4a40-01d3-4c7d-8071-da157eeff341",
+                        "policyDefinitionReferenceId": "Deny-Kv-Non-Integrated-Ca",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultNonIntegratedCa')]"
+                            },
+                            "caCommonName": {
+                                "value": "[[parameters('keyVaultNonIntegratedCaValue')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/75262d3e-ba4a-4f43-85f8-9f72c090e5e3",
+                        "policyDefinitionReferenceId": "Deny-Kv-Secret-Content-Type",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultSecretContentType')]"
+                            }
+                        }
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b88bfd90-4da5-43eb-936f-ae1481924291",
                         "policyDefinitionReferenceId": "Dine-Diagnostics-Hsm",
@@ -249,7 +422,7 @@
                                 "value": "[[parameters('secretsActiveInDays')]"
                             }
                         }
-                    },                                                                                
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b0eb591a-5e70-4534-a8bf-04b9c489584a",
                         "policyDefinitionReferenceId": "Deny-KV-Secret-MinDays",
@@ -264,7 +437,7 @@
                                 "value": "[[parameters('secretsMoreInDays')]"
                             }
                         }
-                    },                                        
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ff25f3c8-b739-4538-9d07-3d6d25cfb255",
                         "policyDefinitionReferenceId": "Deny-KV-Curve-Names",
@@ -276,7 +449,7 @@
                                 "value": "[[parameters('keysCurveNames')]"
                             }
                         }
-                    },                                        
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c26e4b24-cf98-4c67-b48b-5a25c4c69eb9",
                         "policyDefinitionReferenceId": "Deny-KV-Key-Active",
@@ -291,7 +464,7 @@
                                 "value": "[[parameters('keysActiveInDays')]"
                             }
                         }
-                    },                                        
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/5ff38825-c5d8-47c5-b70e-069a21955146",
                         "policyDefinitionReferenceId": "Deny-KV-Key-Expiration",
@@ -306,7 +479,7 @@
                                 "value": "[[parameters('keysExpirationInDays')]"
                             }
                         }
-                    },                                        
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/75c4f823-d65c-4f29-a733-01d0077fdbcb",
                         "policyDefinitionReferenceId": "Deny-KV-Cryptographic-Type",
@@ -318,7 +491,7 @@
                                 "value": "[[parameters('keyVaultCryptographicType')]"
                             }
                         }
-                    },                                        
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ac673a9a-f77d-4846-b2d8-a57f8e1c01dc",
                         "policyDefinitionReferenceId": "Modify-KV-Fw",
@@ -330,7 +503,7 @@
                                 "value": "[[parameters('keyVaultModifyFw')]"
                             }
                         }
-                    },                                        
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/bd78111f-4953-4367-9fd5-7e08808b54bf",
                         "policyDefinitionReferenceId": "Deny-KV-Elliptic-Curve",
@@ -342,7 +515,7 @@
                                 "value": "[[parameters('keyVaultEllipticCurve')]"
                             }
                         }
-                    },                    
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/1151cede-290b-4ba0-8b38-0ad145ac888f",
                         "policyDefinitionReferenceId": "Deny-KV-Key-Types",
@@ -354,7 +527,7 @@
                                 "value": "[[parameters('keyVaultCertKeyTypes')]"
                             }
                         }
-                    },                    
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/55615ac9-af46-4a59-874e-391cc3dfb490",
                         "policyDefinitionReferenceId": "Deny-KV-Fws",
@@ -447,7 +620,7 @@
                                 "value": "[[parameters('keyVaultCertValidPeriod')]"
                             }
                         }
-                    },                     
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/c39ba22d-4428-4149-b981-70acb31fc383",
                         "policyDefinitionReferenceId": "Deny-KV-Hms-PurgeProtection",
@@ -459,7 +632,7 @@
                                 "value": "[[parameters('keyVaultHmsPurgeProtection')]"
                             }
                         }
-                    },                                    
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/951af2fa-529b-416e-ab6e-066fd85ac459",
                         "policyDefinitionReferenceId": "DINE-KV-Logs",
@@ -474,7 +647,7 @@
                                 "value": "[[parameters('keyVaultLogAnalyticsWorkspaceId')]"
                             }
                         }
-                    },                    
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/84d327c3-164a-4685-b453-900478614456",
                         "policyDefinitionReferenceId": "Modify-KV-PublicNetworkAccess",
@@ -522,7 +695,7 @@
                                 "value": "[[parameters('keyVaultManagedHsmDisablePublicNetwork')]"
                             }
                         }
-                    },                    
+                    },
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/12d4fa5e-1f9f-4c21-97a9-b99b3c6611b5",
                         "policyDefinitionReferenceId": "Deny-KV-without-ArmRbac",
@@ -544,6 +717,69 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('keyVaultPurgeProtection')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/12ef42cb-9903-4e39-9c26-422d29570417",
+                        "policyDefinitionReferenceId": "Deny-KV-Cert-without-LifeTimeActionTrigger",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultCertificateLifeTimeAction')]"
+                            },
+                            "minimumDaysBeforeExpiry": {
+                                "value": "[[parameters('keyVaultCertificateMinimumDaysBeforeExpiry')]"
+                            },
+                            "maximumPercentageLife": {
+                                "value": "[[parameters('keyVaultCertificateMaximumPercentageLife')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/82067dbb-e53b-4e06-b631-546d197452d9",
+                        "policyDefinitionReferenceId": "Deny-KV-RSA-Keys-without-MinKeySize",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultCheckMinimumRSAKeySize')]"
+                            },
+                            "minimumRSAKeySize": {
+                                "value": "[[parameters('keyVaultMinimumRSAKeySizeValue')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/86810a98-8e91-4a44-8386-ec66d0de5d57",
+                        "policyDefinitionReferenceId": "Deny-keyVaultManagedHsm-RSA-Keys-without-MinKeySize",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultManagedHsmCheckMinimumRSAKeySize')]"
+                            },
+                            "minimumRSAKeySize": {
+                                "value": "[[parameters('keyVaultManagedHsmMinimumRSAKeySizeValue')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/cee51871-e572-4576-855c-047c820360f0",
+                        "policyDefinitionReferenceId": "Deny-KV-RSA-Keys-without-MinCertSize",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('keyVaultCheckMinimumRSACertificateSize')]"
+                            },
+                            "minimumRSAKeySize": {
+                                "value": "[[parameters('keyVaultMinimumRSACertificateSizeValue')]"
                             }
                         }
                     }

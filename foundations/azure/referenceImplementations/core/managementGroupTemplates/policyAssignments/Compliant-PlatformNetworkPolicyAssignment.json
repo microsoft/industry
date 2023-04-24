@@ -152,30 +152,6 @@
             "type": "string",
             "defaultValue": ""
         },
-        "appGwDiagnostics": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "appGwLogAnalyticsWorkspaceId": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "fwDiagnostics": {
-            "type": "string",
-            "defaultValue": "Disabled",
-            "allowedValues": [
-                "DeployIfNotExists",
-                "Disabled"
-            ]
-        },
-        "fwLogAnalyticsWorkspaceId": {
-            "type": "string",
-            "defaultValue": ""
-        },
         "userAssignedIdentityResourceId": {
             "type": "string"
         }
@@ -208,20 +184,8 @@
                 "policyDefinitionId": "[variables('policyDefinitions').compliantNw]",
                 "enforcementMode": "[parameters('enforcementMode')]",
                 "parameters": {
-                    "fwDiagnostics": {
-                        "value": "[parameters('fwDiagnostics')]"
-                    },
-                    "fwLogAnalyticsWorkspaceId": {
-                        "value": "[parameters('fwLogAnalyticsWorkspaceId')]"
-                    },
                     "vnetModifyDdos": {
                         "value": "[parameters('vnetModifyDdos')]"
-                    },
-                    "appGwDiagnostics": {
-                        "value": "[parameters('appGwDiagnostics')]"
-                    },
-                    "appGwLogAnalyticsWorkspaceId": {
-                        "value": "[parameters('appGwLogAnalyticsWorkspaceId')]"
                     },
                     "ddosPlanResourceId": {
                         "value": "[parameters('ddosPlanResourceId')]"
