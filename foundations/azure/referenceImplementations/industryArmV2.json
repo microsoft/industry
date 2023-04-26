@@ -189,6 +189,14 @@
                 "Disabled"
             ]
         },
+        "enableAscForApim": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
         "enableAscForAppServices": {
             "type": "string",
             "allowedValues": [
@@ -4038,6 +4046,9 @@
                     "enableAscForSynapse": {
                         "value": "[parameters('enableAscForSynapse')]"
                     },
+                    "enableAscForApim": {
+                        "value": "[parameters('enableAscForApim')]"
+                    },
                     "enableAscForCSPM": {
                         "value": "[parameters('enableAscForCSPM')]"
                     },
@@ -4912,7 +4923,13 @@
                     },
                     "functionLogAnalyticsWorkspaceId": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
-                    },                    
+                    },
+                    "logicAppDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "logicAppLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },                
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
                     }

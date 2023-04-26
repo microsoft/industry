@@ -859,6 +859,26 @@
                             }
                         },
                         {
+                            "name": "esAscApim",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Microsoft Defender for API Management",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "If 'Yes' is selected, Azure Defender will be enabled for APIM.",
+                            "visible": "[equals(steps('esGovState').esAsc,'Yes')]",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "DeployIfNotExists"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "Disabled"
+                                    }
+                                ]
+                            }
+                        },
+                        {
                             "name": "esAscCosmosDb",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Enable Microsoft Defender for Cosmos DB",
@@ -2987,6 +3007,7 @@
                 "emailContactAsc": "[steps('esGovState').esAscEmail]",
                 "enableAscForServers": "[steps('esGovState').esAscVms]",
                 "enableAscForCSPM": "[steps('esGovState').esAscCSPM]",
+                "enableAscForApim": "[steps('esGovState').esAscApim]",
                 "enableAscForCosmosDb": "[steps('esGovState').esAscCosmosDb]",
                 "enableAscForSynapse": "[steps('esGovState').esAscSynapse]",
                 "enableAscForOssDb": "[steps('esGovState').esAscOssDb]",

@@ -40,6 +40,18 @@
             "type": "string",
             "defaultValue": ""
         },
+         "logicAppDiagnostics": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
+        "logicAppLogAnalyticsWorkspaceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
         "userAssignedIdentityResourceId": {
             "type": "string"
         }
@@ -83,6 +95,12 @@
                     },
                     "appServiceLogAnalyticsWorkspaceId": {
                         "value": "[parameters('appServiceLogAnalyticsWorkspaceId')]"
+                    },
+                    "logicAppDiagnostics": {
+                        "value": "[parameters('logicAppDiagnostics')]"
+                    },
+                    "logicAppLogAnalyticsWorkspaceId": {
+                        "value": "[parameters('logicAppLogAnalyticsWorkspaceId')]"
                     }
                 }
             }
