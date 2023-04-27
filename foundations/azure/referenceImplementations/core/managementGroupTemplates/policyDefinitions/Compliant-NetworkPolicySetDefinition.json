@@ -2132,6 +2132,54 @@
                         }
                     },
                     "name": "Deploy-Diagnostics-Firewall"
+                },
+                                {
+                    "properties": {
+                        "DisplayName": "Application Gateway should be using customer managed key stored in Azure Key Vault",
+                        "Description": "Application Gateway should be using customer managed key stored in Azure Key Vault",
+                        "mode": "All",
+                        "Metadata": {
+                            "category": "Network",
+                            "version": "1.0.0"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Deny",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Deny"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.Network/applicationGateways"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "field": "Microsoft.Network/applicationGateways/sslCertificates[*].keyVaultSecretId",
+                                                "exists": "False"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-AppGw-Without-Cmk"
                 }
             ]
         }
@@ -2461,6 +2509,10 @@
                     "fwLogAnalyticsWorkspaceId": {
                         "type": "string",
                         "defaultValue": ""
+                    },
+                    "appGwCmk": {
+                        "type": "string",
+                        "defaultValue": "Deny"
                     }
                 },
                 "policyDefinitions": [
@@ -3004,6 +3056,18 @@
                             },
                             "logAnalytics": {
                                 "value": "[[parameters('fwLogAnalyticsWorkspaceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[16].name)]",
+                        "policyDefinitionReferenceId": "Deny-AppGw-Without-Cmk",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('appGwCmk')]"
                             }
                         }
                     }
