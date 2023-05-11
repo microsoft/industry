@@ -68,6 +68,14 @@
                 "Disabled"
             ]
         },
+        "enableAscForApim": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "DeployIfNotExists",
+                "Disabled"
+            ]
+        },
         "enableAscForCosmosDb": {
             "type": "string",
             "defaultValue": "Disabled",
@@ -187,6 +195,9 @@
                     },
                     "enableAscForCosmosDb": {
                         "value": "[parameters('enableAscForCosmosDb')]"
+                    },
+                    "enableAscForApim": {
+                        "value": "[parameters('enableAscForApim')]"
                     },
                     "enableAscForSynapse": {
                         "value": "[parameters('enableAscForSynapse')]"
