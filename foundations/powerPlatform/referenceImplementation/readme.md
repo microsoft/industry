@@ -213,7 +213,7 @@ Additional configuration for the citizen developer landing zones can be made, by
 
 Similar to the landing zones for citizen developers, you can create landing zones for professional developers which will provide them with an on-ramp path to Power Platform, secured by recommended DLP policies that enables co-existence and synergy with Azure, Microsoft 365, and Power Platform.
 
-Similar as the landing zones for citizen developers, you can either create N environments in batches, or customize each environment, assign recommended DLP policies, and optimize for ALM by ensuring there's dedicated ENvironments for each for development, testing, and production usage.
+Similar as the landing zones for citizen developers, you can either create N environments in batches, or customize each environment, assign recommended DLP policies, and optimize for ALM by ensuring there's dedicated Environments for each for development, testing, and production usage.
 
 ![LZ for professionals](../images/13lzpro.PNG)
 
