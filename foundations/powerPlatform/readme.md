@@ -264,7 +264,7 @@ Further overall management, including observability and auditing is crucial to e
 
 ## Business Continuity and Disaster Recovery
 
-Protecting your data in Power Platform is primarily at the Environment level, and allows you to protect data in customer engagement apps (Dynamics 365 Sales, Dynamics 365 Customer Service, Dynamics 365 Field Service, Dynamics 365 Marketing, and Dynamics 365 Project Service Automation), and providing continuous availability of service are important. You have multiple options for backing up and restoring your environments.
+Protecting your data in Power Platform is primarily at the Environment level, and allows you to protect data in customer engagement apps (Dynamics 365 Sales, Dynamics 365 Customer Service, Dynamics 365 Field Service, Dynamics 365 Marketing, Dynamics 365 Project Service Automation, and Dynamics 365 Project Operations), and providing continuous availability of service are important. You have multiple options for backing up and restoring your environments.
 
 ### Design considerations
 
