@@ -254,6 +254,25 @@
         },
         "azFirewallDnsSettings": {
             "enableProxy": true
+        },
+        "azFwPolicyInsights": {
+            "insights": {
+            "isEnabled": true,
+            "logAnalyticsResources": {
+                "defaultWorkspaceId": {
+                    "id": "[parameters('logAnalyticsWorkspaceId')]"
+                },
+                "workspaces": [
+                    {
+                        "region": "[parameters('location')]",
+                        "workspaceId": {
+                            "id": "[parameters('logAnalyticsWorkspaceId')]"
+                        }
+                    }
+                ]
+            },
+            "retentionDays": 30
+            }
         }
     },
     "resources": [    
@@ -682,7 +701,11 @@
                                             "name": "[variables('azFwPolicyName')]",
                                             "location": "[parameters('location')]",
                                             "properties": {
-                                                "dnsSettings": "[if(equals(parameters('enableAzFwDnsProxy'), 'Yes'), variables('azFirewallDnsSettings'), json('null'))]"
+                                                "dnsSettings": "[if(equals(parameters('enableAzFwDnsProxy'), 'Yes'), variables('azFirewallDnsSettings'), json('null'))]",
+                                                "insights": "[if(not(empty(parameters('logAnalyticsWorkspaceId'))), variables('azFwPolicyInsights'), json('null'))]",
+                                                "sku": {
+                                                    "tier": "[parameters('firewallSku')]"
+                                                }
                                             }
                                         },
                                         {
