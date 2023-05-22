@@ -13,11 +13,11 @@
             "policyDefinitions": [
                 {
                     "properties": {
-                        "displayName": "Event Hub namespaces should use a customer-managed key for encryption",
+                        "displayName": "Event Hub Cluster namespaces should use a customer-managed key for encryption",
                         "mode": "Indexed",
-                        "description": "Azure Event Hubs supports the option of encrypting data at rest with either Microsoft-managed keys (default) or customer-managed keys. Choosing to encrypt data using customer-managed keys enables you to assign, rotate, disable, and revoke access to the keys that Event Hub will use to encrypt data in your namespace. Note that Event Hub only supports encryption with customer-managed keys for namespaces in dedicated clusters.",
+                        "description": "Azure Event Hub Cluster supports the option of encrypting data at rest with either Microsoft-managed keys (default) or customer-managed keys. Choosing to encrypt data using customer-managed keys enables you to assign, rotate, disable, and revoke access to the keys that Event Hub will use to encrypt data in your namespace. Note that Event Hub only supports encryption with customer-managed keys for namespaces in dedicated clusters.",
                         "metadata": {
-                            "version": "1.0.0",
+                            "version": "1.0.1",
                             "category": "Event Hub"
                         },
                         "parameters": {
@@ -60,6 +60,116 @@
                         }
                     },
                     "name": "Deny-EH-Cmk"
+                },
+                {
+                    "properties": {
+                        "displayName": "Event Hub namespaces should use a valid TLS version",
+                        "mode": "Indexed",
+                        "description": "Event Hub namespaces should use a valid TLS version.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Event Hub"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Deny",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Audit"
+                            },
+                            "minTlsVersion": {
+                                "type": "string",
+                                "metadata": {
+                                    "displayName": "Minimum TLS Version",
+                                    "description": "Minimum TLS version to be used by Event Hub"
+                                },
+                                "defaultValue": "1.2"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.EventHub/namespaces"
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "field": "Microsoft.EventHub/namespaces/minimumTlsVersion",
+                                                "notEquals": "[[parameters('minTlsVersion')]"
+                                            },
+                                            {
+                                                "field": "Microsoft.EventHub/namespaces/minimumTlsVersion",
+                                                "exists": "false"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-EH-MINTLS"
+                },
+                                {
+                    "properties": {
+                        "displayName": "Event Hub namespaces (Premium) should use a customer-managed key for encryption",
+                        "mode": "Indexed",
+                        "description": "Event Hub namespaces (Premium) should use a customer-managed key for encryption.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Event Hub"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Audit",
+                                    "Deny",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Audit"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.EventHub/namespaces"
+                                    },
+                                    {
+                                        "field": "Microsoft.EventHub/namespaces/sku.name",
+                                        "equals": "Premium"
+                                    },
+                                    {
+                                        "not": {
+                                            "field": "Microsoft.EventHub/namespaces/encryption.keySource",
+                                            "equals": "Microsoft.Keyvault"
+                                        }
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-EH-Premium-CMK"
                 }
             ]
         }
@@ -155,6 +265,14 @@
                     "eventHubLogAnalyticsWorkspaceId": {
                         "type": "string",
                         "defaultValue": ""
+                    },
+                    "eventHubMinTls": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "eventHubPremiumCmk": {
+                        "type": "string",
+                        "defaultValue": "Deny"
                     }
                 },
                 "policyDefinitions": [
@@ -182,6 +300,30 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('eventHubNamespacesCmk')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[1].name)]",
+                        "policyDefinitionReferenceId": "Deny-EH-MINTLS",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('eventHubMinTls')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[2].name)]",
+                        "policyDefinitionReferenceId": "Deny-EH-Premium-CMK",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('eventHubPremiumCmk')]"
                             }
                         }
                     },

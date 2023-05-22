@@ -243,6 +243,91 @@
                         }
                     },
                     "name": "Dine-Diagnostics-OpenAi"
+                },
+                {
+                    "properties": {
+                        "displayName": "Only explicit kinds for Cognitive Services should be allowed ",
+                        "mode": "Indexed",
+                        "description": "Azure Cognitive Services should only create explicit allowed kinds.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Cognitive Services"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Deny",
+                                    "Audit",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Deny"
+                            },
+                            "allowedKinds": {
+                                "type": "array",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Select the allowed resource kinds to be used with Cognitive Services"
+                                },
+                                "allowedValues": [
+                                    "AnomalyDetector",
+                                    "ComputerVision",
+                                    "CognitiveServices",
+                                    "ContentModerator",
+                                    "CustomVision.Training",
+                                    "CustomVision.Prediction",
+                                    "Face",
+                                    "FormRecognizer",
+                                    "ImmersiveReader",
+                                    "LUIS",
+                                    "Personalizer",
+                                    "SpeechServices",
+                                    "TextAnalytics",
+                                    "TextTranslation",
+                                    "OpenAI"
+                                ],
+                                "defaultValue": [
+                                    "AnomalyDetector",
+                                    "ComputerVision",
+                                    "CognitiveServices",
+                                    "ContentModerator",
+                                    "CustomVision.Training",
+                                    "CustomVision.Prediction",
+                                    "Face",
+                                    "FormRecognizer",
+                                    "ImmersiveReader",
+                                    "LUIS",
+                                    "Personalizer",
+                                    "SpeechServices",
+                                    "TextAnalytics",
+                                    "TextTranslation",
+                                    "OpenAI"
+                                ]
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.CognitiveServices/accounts"
+                                    },
+                                    {
+                                        "field": "kind",
+                                        "notIn": "[[parameters('allowedKinds')]"
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-CognitiveServices-Resource-Kinds"
                 }
             ]
         }
