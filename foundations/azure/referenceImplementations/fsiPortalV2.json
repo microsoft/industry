@@ -1315,6 +1315,14 @@
                                         "value": "Yes"
                                     },
                                     {
+                                        "label": "Yes (Inbound only)",
+                                        "value": "Inbound"
+                                    },
+                                    {
+                                        "label": "Yes (Outbound only)",
+                                        "value": "Outbound"
+                                    },
+                                    {
                                         "label": "No",
                                         "value": "No"
                                     }
@@ -1327,7 +1335,7 @@
                             "label": "Subnet for DNS Resolver (inbound)",
                             "toolTip": "Provide address prefix in CIDR notation (e.g 10.100.3.0/24)",
                             "defaultValue": "10.100.2.0/24",
-                            "visible": "[equals(steps('esConnectivityGoalState').esPrivateDnsResolver, 'Yes')]",
+                            "visible": "[or(equals(steps('esConnectivityGoalState').esPrivateDnsResolver, 'Yes'), equals(steps('esConnectivityGoalState').esPrivateDnsResolver, 'Inbound'))]",
                             "constraints": {
                                 "required": true,
                                 "validations": [
@@ -1360,7 +1368,7 @@
                             "label": "Subnet for DNS Resolver (outbound)",
                             "toolTip": "Provide address prefix in CIDR notation (e.g 10.100.3.0/24)",
                             "defaultValue": "10.100.3.0/24",
-                            "visible": "[equals(steps('esConnectivityGoalState').esPrivateDnsResolver, 'Yes')]",
+                            "visible": "[or(equals(steps('esConnectivityGoalState').esPrivateDnsResolver, 'Yes'), equals(steps('esConnectivityGoalState').esPrivateDnsResolver, 'Outbound'))]",
                             "constraints": {
                                 "required": true,
                                 "validations": [
