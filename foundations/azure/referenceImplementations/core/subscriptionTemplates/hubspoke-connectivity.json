@@ -256,18 +256,6 @@
         "azFirewallDnsSettings": {
             "enableProxy": true
         },
-        "azFwPolicyInsights": {
-            "insights": {
-                "isEnabled": true,
-                "retentionDays": 30,
-                "logAnalyticsResources": {
-                    "workspaces": [],
-                    "defaultWorkspaceId": {
-                        "id": "[parameters('logAnalyticsWorkspaceId')]"
-                    }
-                }
-            }
-        },
         "ddosPip": {
             "protectionMode": "Enabled"
         }
@@ -702,7 +690,6 @@
                                             "location": "[parameters('location')]",
                                             "properties": {
                                                 "dnsSettings": "[if(equals(parameters('enableAzFwDnsProxy'), 'Yes'), variables('azFirewallDnsSettings'), json('null'))]",
-                                                "insights": "[if(not(empty(parameters('logAnalyticsWorkspaceId'))), variables('azFwPolicyInsights'), json('null'))]",
                                                 "sku": {
                                                     "tier": "[parameters('firewallSku')]"
                                                 }
