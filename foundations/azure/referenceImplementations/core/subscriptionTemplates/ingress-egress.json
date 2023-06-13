@@ -51,6 +51,7 @@
             "defaultValue": "No",
             "allowedValues": [
                 "Yes",
+                "Pip",
                 "No"
             ],
             "metadata": {
@@ -134,6 +135,9 @@
         },
         "azFirewallDnsSettings": {
             "enableProxy": true
+        },
+        "ddosPip": {
+            "protectionMode": "Enabled"
         }
     },
     "resources": [    
@@ -234,7 +238,8 @@
                                                 "name": "Standard"
                                             },
                                             "properties": {
-                                                "publicIPAllocationMethod": "Static"
+                                                "publicIPAllocationMethod": "Static",
+                                                "ddosSettings": "[if(equals(parameters('enableDdoS'), 'Pip'), variables('ddosPip'), json('null'))]"
                                             }
                                         },
                                         {

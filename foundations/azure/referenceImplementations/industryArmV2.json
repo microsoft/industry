@@ -423,6 +423,7 @@
             "defaultValue": "No",
             "allowedValues": [
                 "Yes",
+                "Pip",
                 "Audit",
                 "No"
             ]

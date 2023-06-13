@@ -2341,15 +2341,19 @@
                                 {
                                     "name": "esDdoS",
                                     "type": "Microsoft.Common.OptionsGroup",
-                                    "label": "Enable DDoS Protection Standard",
+                                    "label": "Enable DDoS Protection",
                                     "defaultValue": "Yes (recommended)",
                                     "visible": "[not(equals(steps('esConnectivityGoalState').esHub, 'No'))]",
                                     "toolTip": "If 'Yes' is selected when also adding a connectivity subscription, DDoS Protection Standard will be enabled and protect your Azure resources from denial of service threats.",
                                     "constraints": {
                                         "allowedValues": [
                                             {
-                                                "label": "Yes (recommended)",
+                                                "label": "Yes, DDoS Network Protection (recommended)",
                                                 "value": "Yes"
+                                            },
+                                            {
+                                                "label": "Yes, DDoS Network Protection per individual public IP address",
+                                                "value": "Pip"
                                             },
                                             {
                                                 "label": "No",
