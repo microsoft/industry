@@ -2360,7 +2360,7 @@
                                                 "value": "Yes"
                                             },
                                             {
-                                                "label": "Yes, DDoS Network Protection per individual public IP address",
+                                                "label": "Yes, DDoS Network Protection per individual public IP addresses",
                                                 "value": "Pip"
                                             },
                                             {
