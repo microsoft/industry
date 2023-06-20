@@ -1315,6 +1315,14 @@
                                         "value": "Yes"
                                     },
                                     {
+                                        "label": "Yes (Inbound only)",
+                                        "value": "Inbound"
+                                    },
+                                    {
+                                        "label": "Yes (Outbound only)",
+                                        "value": "Outbound"
+                                    },
+                                    {
                                         "label": "No",
                                         "value": "No"
                                     }
@@ -1327,7 +1335,7 @@
                             "label": "Subnet for DNS Resolver (inbound)",
                             "toolTip": "Provide address prefix in CIDR notation (e.g 10.100.3.0/24)",
                             "defaultValue": "10.100.2.0/24",
-                            "visible": "[equals(steps('esConnectivityGoalState').esPrivateDnsResolver, 'Yes')]",
+                            "visible": "[or(equals(steps('esConnectivityGoalState').esPrivateDnsResolver, 'Yes'), equals(steps('esConnectivityGoalState').esPrivateDnsResolver, 'Inbound'))]",
                             "constraints": {
                                 "required": true,
                                 "validations": [
@@ -1360,7 +1368,7 @@
                             "label": "Subnet for DNS Resolver (outbound)",
                             "toolTip": "Provide address prefix in CIDR notation (e.g 10.100.3.0/24)",
                             "defaultValue": "10.100.3.0/24",
-                            "visible": "[equals(steps('esConnectivityGoalState').esPrivateDnsResolver, 'Yes')]",
+                            "visible": "[or(equals(steps('esConnectivityGoalState').esPrivateDnsResolver, 'Yes'), equals(steps('esConnectivityGoalState').esPrivateDnsResolver, 'Outbound'))]",
                             "constraints": {
                                 "required": true,
                                 "validations": [
@@ -2341,15 +2349,19 @@
                                 {
                                     "name": "esDdoS",
                                     "type": "Microsoft.Common.OptionsGroup",
-                                    "label": "Enable DDoS Protection Standard",
+                                    "label": "Enable DDoS Protection",
                                     "defaultValue": "Yes (recommended)",
                                     "visible": "[not(equals(steps('esConnectivityGoalState').esHub, 'No'))]",
                                     "toolTip": "If 'Yes' is selected when also adding a connectivity subscription, DDoS Protection Standard will be enabled and protect your Azure resources from denial of service threats.",
                                     "constraints": {
                                         "allowedValues": [
                                             {
-                                                "label": "Yes (recommended)",
+                                                "label": "Yes, DDoS Network Protection (recommended)",
                                                 "value": "Yes"
+                                            },
+                                            {
+                                                "label": "Yes, DDoS Network Protection per individual public IP addresses",
+                                                "value": "Pip"
                                             },
                                             {
                                                 "label": "No",
