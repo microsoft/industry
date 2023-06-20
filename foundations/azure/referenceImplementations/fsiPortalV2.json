@@ -2350,9 +2350,9 @@
                                     "name": "esDdoS",
                                     "type": "Microsoft.Common.OptionsGroup",
                                     "label": "Enable DDoS Protection",
-                                    "defaultValue": "Yes (recommended)",
+                                    "defaultValue": "Yes, DDoS Network Protection (recommended)",
                                     "visible": "[not(equals(steps('esConnectivityGoalState').esHub, 'No'))]",
-                                    "toolTip": "If 'Yes' is selected when also adding a connectivity subscription, DDoS Protection Standard will be enabled and protect your Azure resources from denial of service threats.",
+                                    "toolTip": "If 'Yes' is selected when also adding a connectivity subscription, DDoS Network Protection will be enabled and protect your Azure resources from denial of service threats.",
                                     "constraints": {
                                         "allowedValues": [
                                             {
@@ -2922,8 +2922,8 @@
                                                         "required": true,
                                                         "validations": [
                                                             {
-                                                                "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(1[0-9]|2[0-4]))$",
-                                                                "message": "Invalid CIDR range. The address prefix must be in the range [10,24]."
+                                                                "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(1[0-9]|2[0-7]))$",
+                                                                "message": "Invalid CIDR range. The address prefix must be in the range [10,27]."
                                                             }
                                                         ]
                                                     }
