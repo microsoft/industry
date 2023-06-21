@@ -58,6 +58,7 @@
           "defaultValue": "No",
           "allowedValues": [
               "Yes",
+              "Pip",
               "No"
           ],
           "metadata": {
