@@ -353,7 +353,62 @@
                                             "name": "[variables('nsgDnsResolverName')]",
                                             "location": "[parameters('location')]",
                                             "properties": {
-                                                "securityRules": []
+                                                "securityRules": [
+                                                                    {
+                                                                        "name": "AllowTagDNS-TCPInbound",
+                                                                        "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+                                                                        "properties": {
+                                                                            "protocol": "TCP",
+                                                                            "sourcePortRange": "*",
+                                                                            "destinationPortRange": "53",
+                                                                            "sourceAddressPrefix": "VirtualNetwork",
+                                                                            "destinationAddressPrefix": "*",
+                                                                            "access": "Allow",
+                                                                            "priority": 1000,
+                                                                            "direction": "Inbound",
+                                                                            "sourcePortRanges": [],
+                                                                            "destinationPortRanges": [],
+                                                                            "sourceAddressPrefixes": [],
+                                                                            "destinationAddressPrefixes": []
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "name": "AllowTagDNS-UDPInbound",
+                                                                        "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+                                                                        "properties": {
+                                                                            "protocol": "UDP",
+                                                                            "sourcePortRange": "*",
+                                                                            "destinationPortRange": "53",
+                                                                            "sourceAddressPrefix": "VirtualNetwork",
+                                                                            "destinationAddressPrefix": "*",
+                                                                            "access": "Allow",
+                                                                            "priority": 1010,
+                                                                            "direction": "Inbound",
+                                                                            "sourcePortRanges": [],
+                                                                            "destinationPortRanges": [],
+                                                                            "sourceAddressPrefixes": [],
+                                                                            "destinationAddressPrefixes": []
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "name": "AllowAzureLoadBalancerAnyInbound",
+                                                                        "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+                                                                        "properties": {
+                                                                            "protocol": "*",
+                                                                            "sourcePortRange": "*",
+                                                                            "destinationPortRange": "*",
+                                                                            "sourceAddressPrefix": "AzureLoadBalancer",
+                                                                            "destinationAddressPrefix": "*",
+                                                                            "access": "Allow",
+                                                                            "priority": 1020,
+                                                                            "direction": "Inbound",
+                                                                            "sourcePortRanges": [],
+                                                                            "destinationPortRanges": [],
+                                                                            "sourceAddressPrefixes": [],
+                                                                            "destinationAddressPrefixes": []
+                                                        }
+                                                    }
+                                                ]
                                             }
                                         },
                                         {
