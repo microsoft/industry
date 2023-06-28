@@ -407,6 +407,42 @@
                                                             "sourceAddressPrefixes": [],
                                                             "destinationAddressPrefixes": []
                                                         }
+                                                    },
+                                                    {
+                                                        "name": "DenyAllInbound",
+                                                        "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+                                                        "properties": {
+                                                            "protocol": "*",
+                                                            "sourcePortRange": "*",
+                                                            "destinationPortRange": "*",
+                                                            "sourceAddressPrefix": "*",
+                                                            "destinationAddressPrefix": "*",
+                                                            "access": "Deny",
+                                                            "priority": 1030,
+                                                            "direction": "Inbound",
+                                                            "sourcePortRanges": [],
+                                                            "destinationPortRanges": [],
+                                                            "sourceAddressPrefixes": [],
+                                                            "destinationAddressPrefixes": []
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "DenyAllOutboundTraffic",
+                                                        "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+                                                        "properties": {
+                                                            "protocol": "*",
+                                                            "sourcePortRange": "*",
+                                                            "destinationPortRange": "*",
+                                                            "sourceAddressPrefix": "*",
+                                                            "destinationAddressPrefix": "*",
+                                                            "access": "Deny",
+                                                            "priority": 1000,
+                                                            "direction": "Outbound",
+                                                            "sourcePortRanges": [],
+                                                            "destinationPortRanges": [],
+                                                            "sourceAddressPrefixes": [],
+                                                            "destinationAddressPrefixes": []
+                                                        }
                                                     }
                                                 ]
                                             }
