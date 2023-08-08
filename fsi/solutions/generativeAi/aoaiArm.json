@@ -1,7 +1,7 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-"parameters": {
+    "parameters": {
         "rgName": {
             "type": "string",
             "metadata": {
@@ -85,7 +85,6 @@
             "storageDeploymentName": "[take(concat(parameters('prefix'), '-sa', variables('deploymentSuffix')), 64)]",
             "azureOpenAiDeploymentName": "[take(concat(parameters('prefix'), '-aoa', variables('deploymentSuffix')), 64)]"
         }
-            
     },
     "resources": [
         {
@@ -93,8 +92,7 @@
             "apiVersion": "2022-09-01",
             "name": "[variables('deploymentNames').managedIdentityDeploymentName]",
             "location": "[parameters('location')]",
-            "dependsOn": [
-            ],
+            "dependsOn": [],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
