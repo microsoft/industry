@@ -34,6 +34,10 @@
             "metadata": {
                 "description": "Provide the subnet id where the Azure Open AI instance that will be connected"
             }
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string",
+            "defaultValue": ""
         }
     },
     "variables": {
@@ -69,7 +73,10 @@
                             "name": "[variables('name-compliant-azureOpenAi')]",
                             "location": "[parameters('location')]",
                             "identity": {
-                                "type": "SystemAssigned"
+                                "type": "UserAssigned",
+                                "userAssignedIdentities": {
+                                    "[parameters('userAssignedIdentityResourceId')]": {}
+                                }
                             },
                             "sku": {
                                 "name": "S0"
