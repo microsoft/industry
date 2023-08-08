@@ -1,0 +1,229 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+"parameters": {
+        "rgName": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a name for the Resource Group that will contain the Azure Open AI workload composition"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "eastus2",
+            "metadata": {
+                "description": "Select the Azure Region where the workload will be created. This should be the same as the deployment location"
+            }
+        },
+        "prefix": {
+            "type": "string",
+            "defaultValue": "compliant-kv44",
+            "metadata": {
+                "description": "Provide a prefix that will be used for naming convention for the resources that will be created"
+            }
+        },
+        "userIdentity": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide the user identity (object ID) that will be assigned to the Azure Open AI instance that will be created"
+            }
+        },
+        "subnetId": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the resource Id of the existing subnet that will be used for the Azure Open AI instance that will be created"
+            }
+        },
+        "cmkKeyName": {
+            "type": "string",
+            "defaultValue": "cmk-key",
+            "metadata": {
+                "description": "Provide a name for the customer-managed key that will be used for storage encryption."
+            }
+        },
+        "keyExpiration": {
+            "type": "int",
+            "defaultValue": "[dateTimeToEpoch(dateTimeAdd(utcNow(), 'P30D'))]",
+            "metadata": {
+                "description": "Expiration time of the key [dateTimeToEpoch(dateTimeAdd(utcNow(), 'P30D'))]"
+            }
+        },
+        "expiryTime": {
+            "type": "int",
+            "defaultValue": "[dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))]",
+            "metadata": {
+                "description": "Expiration time of the key [dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))]"
+            }
+        },
+        "timeAfterCreate": {
+            "type": "int",
+            "defaultValue": "[dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))]",
+            "metadata": {
+                "description": "Expiration time of the key [dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))]"
+            }
+        },
+        "timeBeforeExpiry": {
+            "type": "int",
+            "defaultValue": "[dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))]",
+            "metadata": {
+                "description": "Expiration time of the key [dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))]"
+            }
+        }
+    },
+    "variables": {
+        "templateUris": {
+            "managedIdentityUri": "[uri(deployment().properties.templateLink.uri, 'managedIdentity.json')]",
+            "keyVaultTemplateUri": "[uri(deployment().properties.templateLink.uri, 'keyVault.json')]",
+            "storageTemplateUri": "[uri(deployment().properties.templateLink.uri, 'storageAccount.json')]",
+            "azureOpenAiTemplateUri": "[uri(deployment().properties.templateLink.uri, 'azureOpenAi.json')]"
+        },
+        "deploymentSuffix": "[concat('-', deployment().location, guid(parameters('prefix')))]",
+        "deploymentNames": {
+            "managedIdentityDeploymentName": "[take(concat(parameters('prefix'), '-mi', variables('deploymentSuffix')), 64)]",
+            "keyVaultDeploymentName": "[take(concat(parameters('prefix'), '-kv', variables('deploymentSuffix')), 64)]",
+            "storageDeploymentName": "[take(concat(parameters('prefix'), '-sa', variables('deploymentSuffix')), 64)]",
+            "azureOpenAiDeploymentName": "[take(concat(parameters('prefix'), '-aoa', variables('deploymentSuffix')), 64)]"
+        }
+            
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2022-09-01",
+            "name": "[variables('deploymentNames').managedIdentityDeploymentName]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('templateUris').storageTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[parameters('rgName')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "prefix": {
+                        "value": "[parameters('prefix')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2022-09-01",
+            "name": "[variables('deploymentNames').keyVaultDeploymentName]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').managedIdentityDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('templateUris').keyVaultTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[parameters('rgName')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "userAssignedIdentity": {
+                        "value": "[reference(variables('deploymentNames').managedIdentityDeploymentName).outputs.identityObjectId.value]"
+                    },
+                    "subnetId": {
+                        "value": "[parameters('subnetId')]"
+                    },
+                    "prefix": {
+                        "value": "[parameters('prefix')]"
+                    },
+                    "cmkName": {
+                        "value": "[parameters('cmkKeyName')]"
+                    },
+                    "keyExpiration": {
+                        "value": "[parameters('keyExpiration')]"
+                    },
+                    "expiryTime": {
+                        "value": "[parameters('expiryTime')]"
+                    },
+                    "timeAfterCreate": {
+                        "value": "[parameters('timeAfterCreate')]"
+                    },
+                    "timeBeforeExpiry": {
+                        "value": "[parameters('timeBeforeExpiry')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2022-09-01",
+            "name": "[variables('deploymentNames').storageDeploymentName]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').keyVaultDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('templateUris').storageTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[parameters('rgName')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[reference(variables('deploymentNames').managedIdentityDeploymentName).outputs.identityResourceId.value]"
+                    },
+                    "subnetId": {
+                        "value": "[parameters('subnetId')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2022-09-01",
+            "name": "[variables('deploymentNames').azureOpenAiDeploymentName]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').keyVaultDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('templateUris').azureOpenAiTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[parameters('rgName')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "userIdentity": {
+                        "value": "[parameters('userIdentity')]"
+                    },
+                    "subnetId": {
+                        "value": "[parameters('subnetId')]"
+                    },
+                    "prefix": {
+                        "value": "[parameters('prefix')]"
+                    }
+                }
+            }
+        }
+    ]
+}
