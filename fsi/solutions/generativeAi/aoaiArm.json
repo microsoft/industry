@@ -142,7 +142,7 @@
                     "prefix": {
                         "value": "[parameters('prefix')]"
                     },
-                    "cmkName": {
+                    "cmkKeyName": {
                         "value": "[parameters('cmkKeyName')]"
                     },
                     "keyExpiration": {
