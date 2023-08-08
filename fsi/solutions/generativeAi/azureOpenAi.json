@@ -25,22 +25,20 @@
         },
         "userIdentity": {
             "type": "string",
-            "defaultValue": "e0feba08-9d19-42dc-b2f6-3037e88860b5",
             "metadata": {
-                "description": "Provide the user identity that will be assigned to the Azure Open AI instance that will be created"
+                "description": "Provide the user identity (objectId) that will be assigned to the Azure Open AI instance that will be created"
             }
         },
         "subnetId": {
             "type": "string",
-            "defaultValue": "/subscriptions/8acd66a0-739e-4c34-88d3-acb78559fdf8/resourceGroups/vnet/providers/Microsoft.Network/virtualNetworks/knvnet-eastus/subnets/knsubnet-eastus",
             "metadata": {
                 "description": "Provide the subnet id where the Azure Open AI instance that will be connected"
             }
         }
     },
     "variables": {
-        "name-compliant-azureOpenAi": "[concat(parameters('prefix'), '-AzOpenAI')]",
-        "name-compliant-openAi-pe": "[concat(parameters('prefix'),'-AzOpenAi-pe')]"
+        "name-compliant-azureOpenAi": "[concat(parameters('prefix'), '-', parameters('location'), '-AzOpenAI')]",
+        "name-compliant-openAi-pe": "[concat(parameters('prefix'), '-', parameters('location'), '-AzOpenAi-pe')]"
     },
     "resources": [
         {
