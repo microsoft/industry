@@ -4,20 +4,20 @@
     "parameters": {
         "rgName": {
             "type": "string",
-            "defaultValue": "app"
+            "metadata": {
+                "description": "Select the naming convertion for the resource group that will be created"
+            }
         },
         "location": {
             "type": "string",
-            "defaultValue": "eastus2",
             "metadata": {
-                "description": "description"
+                "description": "Provide the Azure region for the storage accont"
             }
         },
         "prefix": {
             "type": "string",
-            "defaultValue": "compliant-kv44",
             "metadata": {
-                "description": "description"
+                "description": "Provide a prefix for the resources that will be created as part of the storage account"
             }
         },
         "userAssignedIdentityResourceId": {
@@ -25,7 +25,10 @@
             "defaultValue": ""
         },
         "subnetId": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "Provide the subnet id where the private endpoint will be created"
+            }
         },
         "cmkKeyName": {
             "type": "string",
@@ -70,14 +73,14 @@
     "resources": [
         {
             "type": "Microsoft.Resources/resourceGroups",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2022-09-01",
             "location": "[parameters('location')]",
             "name": "[parameters('rgName')]",
             "properties": {}
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2022-09-01",
             "name": "storage-deployment",
             "resourceGroup": "[parameters('rgName')]",
             "dependsOn": [
