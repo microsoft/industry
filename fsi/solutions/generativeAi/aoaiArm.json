@@ -97,7 +97,7 @@
                 "mode": "Incremental",
                 "templateLink": {
                     "contentVersion": "1.0.0.0",
-                    "uri": "[variables('templateUris').storageTemplateUri]"
+                    "uri": "[variables('templateUris').managedIdentityUri]"
                 },
                 "parameters": {
                     "rgName": {
