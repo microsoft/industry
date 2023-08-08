@@ -20,17 +20,11 @@
                 "description": "description"
             }
         },
-        "userAssignedIdentity": {
-            "type": "string",
-            "defaultValue": "5a8b6a51-55ef-46fd-8c55-97b66c92fd40"
-        },
         "userAssignedIdentityResourceId": {
-            "type": "string",
-            "defaultValue": "/subscriptions/8acd66a0-739e-4c34-88d3-acb78559fdf8/resourceGroups/app/providers/Microsoft.ManagedIdentity/userAssignedIdentities/app-identity"
+            "type": "string"
         },
         "subnetId": {
-            "type": "string",
-            "defaultValue": "/subscriptions/8acd66a0-739e-4c34-88d3-acb78559fdf8/resourceGroups/vnet/providers/Microsoft.Network/virtualNetworks/knvnet-eastus/subnets/knsubnet-eastus"
+            "type": "string"
         },
         "cmkKeyName": {
             "type": "string",
@@ -70,7 +64,7 @@
     },
     "variables": {
         "name-compliant-storage": "[toLower(take(concat(replace(replace(parameters('prefix'), '-', ''), '_', ''), parameters('location'), uniqueString(deployment().name)), 23))]",
-        "name-compliant-storage-pe": "[concat(parameters('prefix'),'-storage-pe')]"
+        "name-compliant-storage-pe": "[concat(parameters('prefix'), '-', parameters('location'), '-storage-pe')]"
     },
     "resources": [
         {
