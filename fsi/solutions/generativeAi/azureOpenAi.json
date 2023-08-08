@@ -92,12 +92,12 @@
                                     "bypass": "AzureServices",
                                     "ipRules": [],
                                     "virtualNetworkRules": []
-                                },
+                                }/*,
                                 "userOwnedStorage": [
                                     {
                                         "resourceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.Storage/storageAccounts/', variables('name-compliant-storage'))]"
                                     }
-                                ]
+                                ]*/
                             }
                         },
                         {
