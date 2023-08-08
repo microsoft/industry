@@ -59,6 +59,9 @@
             "metadata": {
                 "description": "Expiration time of the key [dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))]"
             }
+        },
+        "nwLocation": {
+            "type": "string"
         }
     },
     "variables": {
@@ -133,7 +136,7 @@
                             "type": "Microsoft.Network/privateEndpoints",
                             "apiVersion": "2020-04-01",
                             "name": "[variables('name-compliant-keyvault-pe')]",
-                            "location": "[parameters('location')]",
+                            "location": "[parameters('nwLocation')]",
                             "dependsOn": [
                                 "[concat('Microsoft.KeyVault/vaults/', variables('name-compliant-keyvault'))]"
                             ],

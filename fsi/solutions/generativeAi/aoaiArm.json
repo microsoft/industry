@@ -29,6 +29,13 @@
                 "description": "Provide the user identity (object ID) that will be assigned to the Azure Open AI instance that will be created"
             }
         },
+        "nwLocation": {
+            "type": "string",
+            "defaultValue": "eastus",
+            "metadata": {
+                "description": "Provide region for networking resources (private endpoints)"
+            }
+        },
         "subnetId": {
             "type": "string",
             "metadata": {
@@ -156,6 +163,9 @@
                     },
                     "timeBeforeExpiry": {
                         "value": "[parameters('timeBeforeExpiry')]"
+                    },
+                    "nwLocation": {
+                        "value": "[parameters('nwLocation')]"
                     }
                 }
             }
@@ -192,6 +202,9 @@
                     },
                     "cmkKeyName": {
                         "value": "[parameters('cmkKeyName')]"
+                    },
+                    "nwLocation": {
+                        "value": "[parameters('nwLocation')]"
                     }
                 }
             }
@@ -229,6 +242,9 @@
                     },
                     "prefix": {
                         "value": "[parameters('prefix')]"
+                    },
+                    "nwLocation": {
+                        "value": "[parameters('nwLocation')]"
                     }
                 }
             }
