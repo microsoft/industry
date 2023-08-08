@@ -17,7 +17,7 @@
         },
         "prefix": {
             "type": "string",
-            "defaultValue": "compliant-kv44",
+            "defaultValue": "",
             "metadata": {
                 "description": "Provide a prefix that will be used for naming convention for the resources that will be created"
             }
