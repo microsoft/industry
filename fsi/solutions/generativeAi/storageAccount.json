@@ -32,9 +32,8 @@
         },
         "cmkKeyName": {
             "type": "string",
-            "defaultValue": "cmk-key",
             "metadata": {
-                "description": "description"
+                "description": "Provide name for the customer managed key"
             }
         },
         "keyExpiration": {
@@ -68,6 +67,7 @@
     },
     "variables": {
         "name-compliant-storage": "[toLower(take(concat(replace(replace(parameters('prefix'), '-', ''), '_', ''), parameters('location'), uniqueString(deployment().name)), 23))]",
+        "name-compliant-keyvault": "[concat(parameters('prefix'), '-', parameters('location'), '-kv')]",
         "name-compliant-storage-pe": "[concat(parameters('prefix'), '-', parameters('location'), '-storage-pe')]"
     },
     "resources": [
@@ -149,7 +149,7 @@
                                     "keySource": "Microsoft.Keyvault",
                                     "keyvaultproperties": {
                                         "keyname": "[parameters('cmkKeyName')]",
-                                        "keyvaulturi": "[concat('https://', parameters('prefix'), '.vault.azure.net')]"
+                                        "keyvaulturi": "[concat('https://', variables('name-compliant-keyvault'), '.vault.azure.net')]"
                                     }
                                 }
                             }

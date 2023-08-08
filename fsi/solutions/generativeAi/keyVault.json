@@ -28,7 +28,6 @@
         },
         "cmkKeyName": {
             "type": "string",
-            "defaultValue": "cmk-key",
             "metadata": {
                 "description": "description"
             }
