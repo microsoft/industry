@@ -63,6 +63,9 @@
             "metadata": {
                 "description": "Expiration time of the key [dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))]"
             }
+        },
+        "nwLocation": {
+            "type": "string"
         }
     },
     "variables": {
@@ -184,7 +187,7 @@
                             "type": "Microsoft.Network/privateEndpoints",
                             "apiVersion": "2020-04-01",
                             "name": "[variables('name-compliant-storage-pe')]",
-                            "location": "[parameters('location')]",
+                            "location": "[parameters('nwLocation')]",
                             "dependsOn": [
                                 "[concat('Microsoft.Storage/storageAccounts/', variables('name-compliant-storage'))]"
                             ],
