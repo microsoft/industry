@@ -34,11 +34,16 @@
             "metadata": {
                 "description": "Provide the subnet id where the Azure Open AI instance that will be connected"
             }
+        },
+        "userAssignedIdentityResourceId": {
+            "type": "string",
+            "defaultValue": ""
         }
     },
     "variables": {
         "name-compliant-azureOpenAi": "[concat(parameters('prefix'), '-', parameters('location'), '-AzOpenAI')]",
-        "name-compliant-openAi-pe": "[concat(parameters('prefix'), '-', parameters('location'), '-AzOpenAi-pe')]"
+        "name-compliant-openAi-pe": "[concat(parameters('prefix'), '-', parameters('location'), '-AzOpenAi-pe')]",
+                "name-compliant-storage": "[toLower(take(concat(replace(replace(parameters('prefix'), '-', ''), '_', ''), parameters('location'), uniqueString(deployment().name)), 23))]"
     },
     "resources": [
         {
@@ -67,13 +72,32 @@
                             "apiVersion": "2022-03-01",
                             "name": "[variables('name-compliant-azureOpenAi')]",
                             "location": "[parameters('location')]",
+                            "identity": {
+                                "type": "UserAssigned",
+                                "userAssignedIdentities": {
+                                    "[parameters('userAssignedIdentityResourceId')]": {}
+                                }
+                            },
                             "sku": {
                                 "name": "S0"
                             },
                             "kind": "OpenAI",
                             "properties": {
                                 "customSubDomainName": "[toLower(variables('name-compliant-azureOpenAi'))]",
-                                "publicNetworkAccess": "Disabled"
+                                "publicNetworkAccess": "Disabled",
+                                "disableLocalAuth": true,
+                                "restrictOutboundNetworkAccess": true,
+                                "networkAcls": {
+                                    "defaultAction": "Deny",
+                                    "bypass": "AzureServices",
+                                    "ipRules": [],
+                                    "virtualNetworkRules": []
+                                },
+                                "userOwnedStorage": [
+                                    {
+                                        "resourceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.Storage/storageAccounts/', variables('name-compliant-storage'))]"
+                                    }
+                                ]
                             }
                         },
                         {
