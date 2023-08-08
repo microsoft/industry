@@ -21,7 +21,8 @@
             }
         },
         "userAssignedIdentityResourceId": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": ""
         },
         "subnetId": {
             "type": "string"
