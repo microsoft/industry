@@ -186,6 +186,9 @@
                     },
                     "subnetId": {
                         "value": "[parameters('subnetId')]"
+                    },
+                    "prefix": {
+                        "value": "[parameters('prefix')]"
                     }
                 }
             }
