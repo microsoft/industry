@@ -37,7 +37,7 @@
         },
         "cmkKeyName": {
             "type": "string",
-            "defaultValue": "cmk-key",
+            "defaultValue": "key1",
             "metadata": {
                 "description": "Provide a name for the customer-managed key that will be used for storage encryption."
             }
@@ -189,6 +189,9 @@
                     },
                     "prefix": {
                         "value": "[parameters('prefix')]"
+                    },
+                    "cmkKeyName": {
+                        "value": "[parameters('cmkKeyName')]"
                     }
                 }
             }
