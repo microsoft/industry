@@ -1,0 +1,94 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rgName": {
+            "type": "string",
+            "defaultValue": "app"
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "eastus2"
+        },
+        "prefix": {
+            "type": "string",
+            "defaultValue": "app-identity"
+        }
+    },
+    "variables": {
+        "name-compliant-identity":"[concat(parameters('prefix'), '-', parameters('location'), '-UAI')]",
+        "deploymentName": "[concat(parameters('rgName'), '-ua-identity-', parameters('location'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2022-09-01",
+            "name": "[parameters('rgName')]",
+            "location": "[parameters('location')]",
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('deploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "expressionEvaluationOptions": {
+                    "scope": "inner"
+                },
+                "parameters": {
+                    "uaIdentityName": {
+                        "value": "[variables('name-compliant-identity')]"
+                    },
+                    "azureLocation": {
+                        "value": "[parameters('location')]"
+                    }
+                },
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "uaIdentityName": {
+                            "type": "string"
+                        },
+                        "azureLocation": {
+                            "type": "string"
+                        }
+                    },
+                    "resources": [
+                        {
+                            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+                            "apiVersion": "2023-01-31",
+                            "name": "[parameters('uaIdentityName')]",
+                            "location": "[parameters('azureLocation')]"
+                        }
+                    ],
+                    "outputs": {
+                        "innerObjectId": {
+                            "type": "string",
+                            "value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('uaIdentityName')), '2023-01-31').principalId]"
+                        },
+                        "innerResourceId": {
+                            "type": "string",
+                            "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('uaIdentityName'))]"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "identityObjectId": {
+            "type": "string",
+            "value": "[reference(variables('deploymentName')).outputs.innerObjectId.value]"
+        },
+        "identityResourceId": {
+            "type": "string",
+            "value": "[reference(variables('deploymentName')).outputs.innerResourceId.value]"
+        }
+    }
+}
