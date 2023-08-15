@@ -594,6 +594,10 @@
             "metadata": {
                 "description": "Select the Log Analytics tables that should be exported to event hub."
             }
+        },
+        "bgpString": {
+            "type": "string",
+            "defaultValue": ""
         }
     },
     "variables": {
@@ -1717,7 +1721,6 @@
                 "Microsoft.Network/virtualNetworks",
                 "Microsoft.Network/virtualNetworks/taggedTrafficConsumers",
                 "Microsoft.Network/natGateways",
-                "Microsoft.Network/internalPublicIpAddresses",
                 "Microsoft.Network/customIpPrefixes",
                 "Microsoft.Network/networkInterfaces",
                 "Microsoft.Network/dscpConfigurations",
@@ -1730,7 +1733,6 @@
                 "Microsoft.Network/serviceEndpointPolicies",
                 "Microsoft.Network/networkIntentPolicies",
                 "Microsoft.Network/routeTables",
-                "Microsoft.Network/publicIPPrefixes",
                 "Microsoft.Network/networkWatchers",
                 "Microsoft.Network/networkWatchers/connectionMonitors",
                 "Microsoft.Network/networkWatchers/flowLogs",
@@ -1826,25 +1828,12 @@
                 "Microsoft.Network/applicationGatewayAvailableResponseHeaders",
                 "Microsoft.Network/routeFilters",
                 "Microsoft.Network/bgpServiceCommunities",
-                "Microsoft.Network/virtualWans",
                 "Microsoft.Network/vpnSites",
-                "Microsoft.Network/vpnServerConfigurations",
-                "Microsoft.Network/virtualHubs",
-                "Microsoft.Network/vpnGateways",
-                "Microsoft.Network/p2sVpnGateways",
-                "Microsoft.Network/expressRouteGateways",
-                "Microsoft.Network/locations/hybridEdgeZone",
-                "Microsoft.Network/expressRoutePortsLocations",
-                "Microsoft.Network/expressRoutePorts",
-                "Microsoft.Network/firewallPolicies",
                 "Microsoft.Network/ipGroups",
                 "Microsoft.Network/azureWebCategories",
                 "Microsoft.Network/locations/nfvOperations",
                 "Microsoft.Network/locations/nfvOperationResults",
                 "Microsoft.Network/securityPartnerProviders",
-                "Microsoft.Network/azureFirewalls",
-                "Microsoft.Network/azureFirewallFqdnTags",
-                "Microsoft.Network/virtualNetworkTaps",
                 "Microsoft.Network/privateLinkServices",
                 "Microsoft.Network/locations/privateLinkServices",
                 "Microsoft.Network/ddosProtectionPlans",
@@ -1859,8 +1848,6 @@
                 "Microsoft.Network/networkExperimentProfiles",
                 "Microsoft.Network/locations/bareMetalTenants",
                 "Microsoft.Network/bastionHosts",
-                "Microsoft.Network/virtualRouters",
-                "Microsoft.Network/networkVirtualAppliances",
                 "Microsoft.Network/ipAllocations",
                 "Microsoft.Network/networkManagers",
                 "Microsoft.Network/networkManagerConnections",
@@ -4290,6 +4277,9 @@
                     },
                     "enableAvnm": {
                         "value": "[parameters('enableAvnm')]"
+                    },
+                    "bgpString": {
+                        "value": "[parameters('bgpString')]"
                     }
                 }
             }
@@ -6671,6 +6661,9 @@
                     },
                     "enableDdoS": {
                         "value": "[parameters('enableDdoS')]"
+                    },
+                    "bgpString": {
+                        "value": "[parameters('bgpString')]"
                     }
                 }
             }

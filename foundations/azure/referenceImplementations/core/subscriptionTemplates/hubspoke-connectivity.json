@@ -171,6 +171,9 @@
         "logAnalyticsWorkspaceId": {
             "type": "string",
             "defaultValue": ""
+        },
+        "bgpString": {
+            "type": "string"
         }
     },
     "variables": {
@@ -258,7 +261,10 @@
         },
         "ddosPip": {
             "protectionMode": "Enabled"
-        }
+        },
+        "bgp": {
+            "virtualNetworkCommunity": "[parameters('bgpString')]"
+            }
     },
     "resources": [    
         {
@@ -480,7 +486,7 @@
                                         {
                                             "name": "[variables('hubName')]",
                                             "type": "Microsoft.Network/virtualNetworks",
-                                            "apiVersion": "2022-01-01",
+                                            "apiVersion": "2023-04-01",
                                             "location": "[parameters('location')]",
                                             "dependsOn": [
                                                 "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsgDnsResolverName'))]",
@@ -492,6 +498,8 @@
                                                         "[parameters('addressPrefix')]"
                                                     ]
                                                 },
+                                                "bgpCommunities": "[if(
+                                                                        not(empty(parameters('bgpString'))), variables('bgp'), json('null'))]",
                                                 "subnets": "[
                                                     union(
                                                         if(
