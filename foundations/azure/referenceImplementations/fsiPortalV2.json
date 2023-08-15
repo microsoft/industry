@@ -2353,8 +2353,8 @@
                             "name": "esBgpString",
                             "type": "Microsoft.Common.TextBox",
                             "label": "Provide the BGP Community string",
-                            "toolTip": "Provide the BGP Community string that will be used for the virtual network",
-                            "defaultValue": "",
+                            "toolTip": "The community string must start with '12076:'. You can set a community value between 20000 and 49999",
+                            "defaultValue": "12076:20000",
                             "visible": "[equals(steps('esConnectivityGoalState').esBgpCommunity, 'Yes')]",
                             "constraints": {
                                 "required": true,
