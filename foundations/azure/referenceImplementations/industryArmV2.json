@@ -6081,7 +6081,7 @@
                         "value": "[if(contains(parameters('compliantAzureServices'), 'MachineLearning'), variables('privateDnsPolicyParameterMapping').azureMlSecondaryPrivateDnsZoneId, '')]"
                     },
                     "cognitiveServicesPrivateDnsZone": {
-                        "value": "[if(contains(parameters('compliantAzureServices'), 'OpenAi'), 'DeployIfNotExists', 'Disabled')]"
+                        "value": "Disabled"
                     },
                     "cognitiveServicesPrivateDnsZoneId": {
                         "value": "[if(contains(parameters('compliantAzureServices'), 'OpenAi'), variables('privateDnsPolicyParameterMapping').azureCognitiveServicesPrivateDnsZoneId, '')]"
