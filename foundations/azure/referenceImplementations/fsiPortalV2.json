@@ -1243,7 +1243,7 @@
                         {
                             "name": "anmSection",
                             "type": "Microsoft.Common.Section",
-                            "label": "Enable VNet connectivity with Azure Virtual Network Manager (PREVIEW)",
+                            "label": "Enable VNet connectivity with Azure Virtual Network Manager",
                             "visible": "[and(equals(steps('esConnectivityGoalState').esHub, 'vhub'), contains(split('northcentrals,westus2,eastus,eastus2,northeurope,westeurope,francecentral', ','), steps('esConnectivityGoalState').esNwLocation))]",
                             "elements": [
                                 {
@@ -2330,6 +2330,38 @@
                             }
                         },
                         {
+                            "name": "esBgpCommunity",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable BGP Community for the virtual network",
+                            "defaultValue": "No",
+                            "visible": "[equals(steps('esConnectivityGoalState').esHub, 'vhub')]",
+                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, BGP Community will be enabled for the virtual network.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esBgpString",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Provide the BGP Community string",
+                            "toolTip": "The community string must start with '12076:'. You can set a community value between 20000 and 49999",
+                            "defaultValue": "12076:20000",
+                            "visible": "[equals(steps('esConnectivityGoalState').esBgpCommunity, 'Yes')]",
+                            "constraints": {
+                                "required": true,
+                                "validations": []
+                            }
+                        },
+                        {
                             "name": "nwSecurity",
                             "type": "Microsoft.Common.Section",
                             "label": "Network Security and Monitoring",
@@ -3079,6 +3111,7 @@
                 "firewallSkuEgress": "[steps('esConnectivityGoalState').esAzFwSkuEgress]",
                 "firewallZonesIngress": "[steps('esConnectivityGoalState').esFwAzIngress]",
                 "firewallZonesEgress": "[steps('esConnectivityGoalState').esFwAzEgress]",
+                "bgpString": "[steps('esConnectivityGoalState').esBgpString]",
                 "corpConnectedLzSubscriptionId": "[if(or(not(contains(steps('lzGoalState').corpLz.esCorpLzSub,steps('esGoalState').esMgmtSubSection.esMgmtSub.subscriptionId)),not(contains(steps('lzGoalState').corpLz.esCorpLzSub,steps('esConnectivityGoalState').esNwSubSection.esNwSub.subscriptionId))),steps('lzGoalState').corpLz.lzConnectedSubs,'')]"
             },
             "kind": "Tenant",
