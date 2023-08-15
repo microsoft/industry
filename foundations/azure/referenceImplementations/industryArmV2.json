@@ -440,6 +440,10 @@
             "type": "string",
             "defaultValue": ""
         },
+        "subnetMaskForAzFwMgmt": {
+            "type": "string",
+            "defaultValue": ""
+        },
         "subnetMaskForAzFwIngress": {
             "type": "string",
             "defaultValue": ""
@@ -4235,6 +4239,9 @@
                     },
                     "subnetMaskForAzFw": {
                         "value": "[parameters('subnetMaskForAzFw')]"
+                    },
+                    "subnetMaskForAzFwMgmt": {
+                        "value": "[parameters('subnetMaskForAzFwMgmt')]"
                     },
                     "subnetMaskForGw": {
                         "value": "[parameters('subnetMaskForGw')]"

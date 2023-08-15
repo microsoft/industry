@@ -2018,6 +2018,59 @@
                             }
                         },
                         {
+                            "name": "esForcedTunneling",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Forced Tunneling",
+                            "defaultValue": "No",
+                            "visible": "[or(equals(steps('esConnectivityGoalState').esHub, 'vhub'), equals(steps('esConnectivityGoalState').esHub, 'vwan'))]",
+                            "toolTip": "If 'Yes' is selected when also adding a subscription for connectivity, you can optionally add dedicated subscription for ingess and egress",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "esAddressFwMgmt",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Subnet for Azure Firewall Management",
+                            "toolTip": "Provide address prefix in CIDR notation (e.g 10.100.0.0/24)",
+                            "defaultValue": "10.100.10.0/24",
+                            "visible": "[and(equals(steps('esConnectivityGoalState').esAzFw, 'Yes'), not(equals(steps('esConnectivityGoalState').esForcedTunneling, 'No')))]",
+                            "constraints": {
+                                "required": true,
+                                "validations": [
+                                    {
+                                        "regex": "^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:/(2[0-6]))$",
+                                        "message": "Invalid CIDR range. The address prefix must be in the range [20,26]."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('esConnectivityGoalState').esAddressHubHS, '/')), 8), equals(last(take(split(first(split(steps('esConnectivityGoalState').esAddressHubHS, '/')), '.'), 1)), last(take(split(first(split(steps('esConnectivityGoalState').esAddressFwMgmt, '/')), '.'), 1))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (first octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('esConnectivityGoalState').esAddressHubHS, '/')), 16), equals(last(take(split(first(split(steps('esConnectivityGoalState').esAddressHubHS, '/')), '.'), 2)), last(take(split(first(split(steps('esConnectivityGoalState').esAddressFwMgmt, '/')), '.'), 2))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (second octet)."
+                                    },
+                                    {
+                                        "isValid": "[if(greaterOrEquals(last(split(steps('esConnectivityGoalState').esAddressHubHS, '/')), 24), equals(last(take(split(first(split(steps('esConnectivityGoalState').esAddressHubHS, '/')), '.'), 3)), last(take(split(first(split(steps('esConnectivityGoalState').esAddressFwMgmt, '/')), '.'), 3))), true)]",
+                                        "message": "CIDR range not within virtual network CIDR range (third octet)."
+                                    },
+                                    {
+                                        "isValid": "[lessOrEquals(last(split(steps('esConnectivityGoalState').esAddressHubHS, '/')), last(split(steps('esConnectivityGoalState').esAddressFwMgmt, '/')))]",
+                                        "message": "CIDR range not within virtual network CIDR range (subnet mask)."
+                                    }
+                                ]
+                            }
+                        },
+                        {
                             "name": "esDedicatedInboundSub",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Use a dedicated subscription for Internet ingress",
@@ -3027,6 +3080,7 @@
                 "industry": "fsi",
                 "subnetMaskForGw": "[steps('esConnectivityGoalState').esAddressVpnOrEr]",
                 "subnetMaskForAzFw": "[steps('esConnectivityGoalState').esAddressFw]",
+                "subnetMaskForAzFwMgmt": "[steps('esConnectivityGoalState').esAddressFwMgmt]",
                 "enableErGw": "[steps('esConnectivityGoalState').esErGw]",
                 "enableVpnGw": "[steps('esConnectivityGoalState').esVpnGw]",
                 "enableHub": "[steps('esConnectivityGoalState').esHub]",
