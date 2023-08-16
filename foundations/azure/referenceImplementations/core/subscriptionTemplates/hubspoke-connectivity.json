@@ -304,17 +304,17 @@
                                 }
                             }
                         ],
-                        "managementIpConfiguration": {
-                            "name": "AzureFirewallManagement",
-                            "properties": {
-                                "publicIPAddress": {
-                                    "id": "[variables('azFwPipId')]"
-                                },
-                                "subnet": {
-                                    "id": "[variables('azFwMgmtSubnetId')]"
-                                }
-                            }
-                        }
+            "managementIpConfiguration": {
+                "name": "AzureFirewallManagement",
+                "properties": {
+                    "publicIPAddress": {
+                        "id": "[variables('azFwPipId')]"
+                    },
+                    "subnet": {
+                        "id": "[variables('azFwMgmtSubnetId')]"
+                    }
+                }
+            }
     },
     "resources": [    
         {
@@ -643,6 +643,10 @@
                                                     {
                                                         "categoryGroup": "allLogs",
                                                         "enabled": true
+                                                    },
+                                                    {
+                                                        "categoryGroup": "audit",
+                                                        "enabled": true
                                                     }
                                                 ]
                                             }
@@ -737,6 +741,10 @@
                                                     {
                                                         "categoryGroup": "allLogs",
                                                         "enabled": true
+                                                    },
+                                                    {
+                                                        "categoryGroup": "audit",
+                                                        "enabled": true
                                                     }
                                                 ]
                                             }
@@ -829,6 +837,10 @@
                                             "logs": [
                                                     {
                                                         "categoryGroup": "allLogs",
+                                                        "enabled": true
+                                                    },
+                                                    {
+                                                        "categoryGroup": "audit",
                                                         "enabled": true
                                                     }
                                                 ]

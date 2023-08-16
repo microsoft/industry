@@ -176,6 +176,22 @@
             "type": "string",
             "defaultValue": ""
         },
+        "modifyUdr": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "Disabled",
+                "Modify"
+            ]
+        },
+        "modifyNsg": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "Disabled",
+                "Modify"
+            ]
+        },
         "userAssignedIdentityResourceId": {
             "type": "string"
         }
@@ -291,6 +307,12 @@
                     },
                     "p2sLogAnalyticsWorkspaceId": {
                         "value": "[parameters('p2sLogAnalyticsWorkspaceId')]"
+                    },
+                    "modifyUdr": {
+                        "value": "[parameters('modifyUdr')]"
+                    },
+                    "modifyNsg": {
+                        "value": "[parameters('modifyNsg')]"
                     }
                 }
             }
