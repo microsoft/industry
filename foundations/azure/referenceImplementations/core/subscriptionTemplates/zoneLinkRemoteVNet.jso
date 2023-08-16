@@ -1,0 +1,143 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rgName": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide name for resource group"
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide location for the resource group"
+            }
+        },
+        "privateDnsZoneName": {
+            "type": "array",
+            "defaultValue": [
+                "privatelink.azure-automation.net",
+                "privatelink.database.windows.net",
+                "privatelink.sql.azuresynapse.net",
+                "privatelink.blob.core.windows.net",
+                "privatelink.table.core.windows.net",
+                "privatelink.queue.core.windows.net",
+                "privatelink.file.core.windows.net",
+                "privatelink.web.core.windows.net",
+                "privatelink.dfs.core.windows.net",
+                "privatelink.documents.azure.com",
+                "privatelink.mongo.cosmos.azure.com",
+                "privatelink.cassandra.cosmos.azure.com",
+                "privatelink.gremlin.cosmos.azure.com",
+                "privatelink.postgres.database.azure.com",
+                "privatelink.mysql.database.azure.com",
+                "privatelink.mariadb.database.azure.com",
+                "privatelink.vaultcore.azure.net",
+                "privatelink.datafactory.azure.net",
+                "[concat('privatelink.', parameters('location'), '.azmk8s.io')]",
+                "privatelink.search.windows.net",
+                "privatelink.azurecr.io",
+                "privatelink.azconfig.io",
+                "[concat('privatelink.', parameters('location'), '.backup.windowsazure.com')]",
+                "privatelink.siterecovery.windowsazure.com",
+                "privatelink.servicebus.windows.net",
+                "privatelink.azure-devices.net",
+                "privatelink.eventgrid.azure.net",
+                "privatelink.azurewebsites.net",
+                "privatelink.api.azureml.ms",
+                "privatelink.notebooks.azure.net",
+                "privatelink.service.signalr.net",
+                "privatelink.cognitiveservices.azure.com",
+                "privatelink.openai.azure.com",
+                "[concat(parameters('location'), '.privatelink.afs.azure.net')]",
+                "privatelink.adf.azure.com",
+                "privatelink.redis.cache.windows.net",
+                "privatelink.dev.azuresynapse.net",
+                "privatelink.azuresynapse.net",
+                "privatelink.table.cosmos.azure.com",
+                "privatelink.batch.azure.com",
+                "privatelink.managedhsm.azure.net",
+                "[concat(parameters('location'), '.privatelink.azurecr.io')]",
+                "privatelink.azure-devices-provisioning.net",
+                "scm.privatelink.azurewebsites.net",
+                "privatelink.redisenterprise.cache.azure.net",
+                "privatelink.purview.azure.com",
+                "privatelink.purviewstudio.azure.com",
+                "privatelink.digitaltwins.azure.net",
+                "privatelink.azurehdinsight.net",
+                "privatelink.his.arc.azure.com",
+                "privatelink.guestconfiguration.azure.com",
+                "privatelink.kubernetesconfiguration.azure.com",
+                "privatelink.media.azure.net",
+                "[concat('privatelink.', parameters('location'), '.kusto.windows.net')]",
+                "privatelink.azurestaticapps.net",
+                "privatelink.prod.migration.windowsazure.com",
+                "privatelink.azure-api.net",
+                "privatelink.developer.azure-api.net",
+                "privatelink.analysis.windows.net",
+                "privatelink.pbidedicated.windows.net",
+                "privatelink.tip1.powerquery.microsoft.com",
+                "privatelink.directline.botframework.com",
+                "privatelink.token.botframework.com",
+                "privatelink.workspace.azurehealthcareapis.com",
+                "privatelink.fhir.azurehealthcareapis.com",
+                "privatelink.dicom.azurehealthcareapis.com",
+                "privatelink.azuredatabricks.net",
+                "privatelink.wvd.microsoft.com"
+            ]
+        },
+        "connectivityHubResourceId": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "linksDeploymentName": "[take(concat(deployment().name, '-Links', parameters('location')), 60)]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2020-10-01",
+            "name": "[parameters('rgName')]",
+            "location": "[parameters('location')]"
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(variables('linksDeploymentName'), copyIndex())]",
+            "resourceGroup": "[parameters('rgName')]",
+            "copy": {
+                "name": "linksDeploymentCopy",
+                "count": "[length(parameters('privateDnsZoneName'))]"
+            },
+            "dependsOn": [
+                "dnsDeploymentCopy"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+                            "apiVersion": "2020-06-01",
+                            "name": "[concat(parameters('privateDnsZoneName')[copyIndex()], '/links', copyIndex())]",
+                            "location": "global",
+                            "dependsOn": [],
+                            "properties": {
+                                "registrationEnabled": false,
+                                "virtualNetwork": {
+                                    "id": "[parameters('connectivityHubResourceId')]"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
