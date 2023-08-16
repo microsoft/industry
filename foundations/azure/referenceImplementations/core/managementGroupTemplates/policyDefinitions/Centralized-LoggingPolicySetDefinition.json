@@ -71,22 +71,6 @@
                         "type": "string",
                         "defaultValue": "allLogs"
                     },
-                    "diagFileMetrics": {
-                        "type": "boolean",
-                        "defaultValue": false
-                    },
-                    "diagBlobMetrics": {
-                        "type": "boolean",
-                        "defaultValue": false
-                    },
-                    "diagQueueMetrics": {
-                        "type": "boolean",
-                        "defaultValue": false
-                    },
-                    "diagTableMetrics": {
-                        "type": "boolean",
-                        "defaultValue": false
-                    },
                     "diagEventHubMetrics": {
                         "type": "string",
                         "defaultValue": "False"

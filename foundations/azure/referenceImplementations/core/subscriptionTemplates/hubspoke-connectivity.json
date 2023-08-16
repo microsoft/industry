@@ -318,7 +318,6 @@
     },
     "resources": [    
         {
-            // Conditionally deploy virtual network hub
             "condition": "[and(equals(parameters('enableHub'), 'vhub'), not(empty(parameters('connectivitySubscriptionId'))))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-10-01",
