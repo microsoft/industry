@@ -640,10 +640,6 @@
                                             ],
                                             "logs": [
                                                     {
-                                                        "categoryGroup": "allLogs",
-                                                        "enabled": true
-                                                    },
-                                                    {
                                                         "categoryGroup": "audit",
                                                         "enabled": true
                                                     }
@@ -738,10 +734,6 @@
                                             ],
                                             "logs": [
                                                     {
-                                                        "categoryGroup": "allLogs",
-                                                        "enabled": true
-                                                    },
-                                                    {
                                                         "categoryGroup": "audit",
                                                         "enabled": true
                                                     }
@@ -834,10 +826,6 @@
                                                 }
                                             ],
                                             "logs": [
-                                                    {
-                                                        "categoryGroup": "allLogs",
-                                                        "enabled": true
-                                                    },
                                                     {
                                                         "categoryGroup": "audit",
                                                         "enabled": true
