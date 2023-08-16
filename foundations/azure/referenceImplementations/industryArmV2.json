@@ -5566,6 +5566,12 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "modifyUdr": {
+                        "value": "Modify"
+                    },
+                    "modifyNsg": {
+                        "value": "Modify"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
@@ -5669,6 +5675,12 @@
                     },
                     "userAssignedIdentityResourceId": {
                         "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    },
+                    "modifyUdr": {
+                        "value": "Disabled"
+                    },
+                    "modifyNsg": {
+                        "value": "Disabled"
                     }
                     // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
                 }
