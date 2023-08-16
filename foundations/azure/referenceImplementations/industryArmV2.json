@@ -960,7 +960,7 @@
         // Declaring deterministic names for platform resources that will be created
         "platformResourceNames": {
             "logAnalyticsWorkspace": "[concat(parameters('industryPrefix'), '-law')]",
-            "eventHubNamespace": "[concat(parameters('industryPrefix'), '-ehn-', parameters('location'))]",
+            "eventHubNamespace": "[toLower(take(concat(replace(replace(parameters('industryPrefix'), '-', ''), '_', ''), parameters('location'), uniqueString(deployment().name)), 23))]",
             "userAssignedIdentityName": "[concat(parameters('industryPrefix'), '-policy-identity')]",
             "logNwStorageAccount": "[toLower(take(concat(replace(replace(parameters('industryPrefix'), '-', ''), '_', ''), parameters('location'), uniqueString(deployment().name)), 23))]",
             "automationAccount": "[concat(parameters('industryPrefix'), '-aauto')]",
