@@ -135,7 +135,7 @@
                                 "customSubDomainName": "[toLower(variables('name-compliant-azureOpenAi'))]",
                                 "publicNetworkAccess": "[if(equals(parameters('aiDisableNetworkAccess'), 'Yes'), 'Disabled', 'Enabled')]",
                                 "disableLocalAuth": "[if(equals(parameters('aiRbacAuthz'), 'Yes'), bool('true'), bool('false'))]",
-                                "restrictOutboundNetworkAccess": "[if(equals(parameters('aiRestrictOutboundNetworkAccess'), 'Yes'), variables('denyFwAcl'), json('null'))]",
+                                "restrictOutboundNetworkAccess": "[if(equals(parameters('aiRestrictOutboundNetworkAccess'), 'Yes'), bool('true'), bool('false'))]",
                                 "networkAcls": "[if(equals(parameters('aiDisableNetworkAccess'), 'Yes'), variables('denyFwAcl'), json('null'))]",
                                 "encryption": "[if(not(empty(parameters('aiCmkKeyName'))), variables('cmk'), json('null'))]"
                             }
