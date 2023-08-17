@@ -305,7 +305,6 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2022-09-01",
             "name": "[variables('deploymentNames').rgKeyVersionDeploymentName]",
-            "location": "[parameters('location')]",
             "resourceGroup": "[variables('resourceNames').rgName]",
             "dependsOn": [
                 "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').keyVaultDeploymentName)]"
