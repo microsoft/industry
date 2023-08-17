@@ -192,7 +192,9 @@
             "keyVaultTemplateUri": "[uri(deployment().properties.templateLink.uri, 'keyVault.json')]",
             "storageTemplateUri": "[uri(deployment().properties.templateLink.uri, 'storageAccount.json')]",
             "azureOpenAiTemplateUri": "[uri(deployment().properties.templateLink.uri, 'azureOpenAi.json')]",
-            "rgKeyVersionTemplateUri": "[uri(deployment().properties.templateLink.uri, 'rgKey.json')]"
+            "rgKeyVersionTemplateUri": "[uri(deployment().properties.templateLink.uri, 'rgKey.json')]",
+            "rgAzureOpenAiObjectIdTemplateUri": "[uri(deployment().properties.templateLink.uri, 'rgAzureAiObjectId.json')]",
+            "rgRbacTemplateUri": "[uri(deployment().properties.templateLink.uri, 'rgRbac.json')]"
         },
         "deploymentSuffix": "[concat('-', deployment().location, guid(parameters('prefix')))]",
         "deploymentNames": {
@@ -200,7 +202,10 @@
             "keyVaultDeploymentName": "[take(concat(parameters('prefix'), '-kv', variables('deploymentSuffix')), 64)]",
             "storageDeploymentName": "[take(concat(parameters('prefix'), '-sa', variables('deploymentSuffix')), 64)]",
             "azureOpenAiDeploymentName": "[take(concat(parameters('prefix'), '-aoa', variables('deploymentSuffix')), 64)]",
-            "rgKeyVersionDeploymentName": "[take(concat(parameters('prefix'), '-key', variables('deploymentSuffix')), 64)]"
+            "rgKeyVersionDeploymentName": "[take(concat(parameters('prefix'), '-key', variables('deploymentSuffix')), 64)]",
+            "rgAzureAiObjectIdDeploymentName": "[take(concat(parameters('prefix'), '-objectId', variables('deploymentSuffix')), 64)]",
+            "rgRbac1DeploymentName": "[take(concat(parameters('prefix'), '-rbac1', variables('deploymentSuffix')), 64)]",
+            "rgRbac2DeploymentName": "[take(concat(parameters('prefix'), '-rbac2', variables('deploymentSuffix')), 64)]"
         },
         "resourceNames": {
             "rgName": "[concat(parameters('prefix'), '-rg', parameters('location'))]"
@@ -427,6 +432,84 @@
                     },
                     "aiRestrictOutboundNetworkAccess": {
                         "value": "[parameters('aiRestrictOutboundNetworkAccess')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2022-09-01",
+            "name": "[variables('deploymentNames').rgAzureAiObjectIdDeploymentName]",
+            "resourceGroup": "[variables('resourceNames').rgName]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').azureOpenAiDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('templateUris').rgAzureOpenAiObjectIdTemplateUri]"
+                },
+                "parameters": {
+                    "prefix": {
+                        "value": "[parameters('prefix')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2022-09-01",
+            "name": "[variables('deploymentNames').rgRbac1DeploymentName]",
+            "resourceGroup": "[variables('resourceNames').rgName]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').rgAzureAiObjectIdDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('templateUris').rgRbacTemplateUri]"
+                },
+                "parameters": {
+                    "roleDefinitionId": {
+                        "value": "21090545-7ca7-4776-b22c-e363652d74d2"
+                    },
+                    "principalType": {
+                        "value": "ServicePrincipal"
+                    },
+                    "principalId": {
+                        "value": "[reference(variables('deploymentNames').rgAzureAiObjectIdDeploymentName).outputs.systemIdentityId.value]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2022-09-01",
+            "name": "[variables('deploymentNames').rgRbac2DeploymentName]",
+            "resourceGroup": "[variables('resourceNames').rgName]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').rgAzureAiObjectIdDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('templateUris').rgRbacTemplateUri]"
+                },
+                "parameters": {
+                    "roleDefinitionId": {
+                        "value": "e147488a-f6f5-4113-8e2d-b22465e65bf6"
+                    },
+                    "principalType": {
+                        "value": "ServicePrincipal"
+                    },
+                    "principalId": {
+                        "value": "[reference(variables('deploymentNames').rgAzureAiObjectIdDeploymentName).outputs.systemIdentityId.value]"
                     }
                 }
             }

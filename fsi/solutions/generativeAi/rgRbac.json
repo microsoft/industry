@@ -1,0 +1,31 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "principalId": {
+            "type": "string"
+        },
+        "roleDefinitionId": {
+            "type": "string"
+        },
+        "principalType": {
+            "type": "string",
+            "defaultValue": "ServicePrincipal"
+        }
+    },
+    "variables": {
+        "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', parameters('roleDefinitionId'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2022-04-01",
+            "name": "[guid(concat(parameters('principalId'), parameters('roleDefinitionId')))]",
+            "properties": {
+                "principalType": "[parameters('principalType')]",
+                "roleDefinitionId": "[variables('roleDefinitionId')]",
+                "principalId": "[parameters('principalId')]"
+            }
+        }
+    ]
+}

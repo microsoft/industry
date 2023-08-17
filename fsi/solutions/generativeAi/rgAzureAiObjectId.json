@@ -1,0 +1,22 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "prefix": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "name-compliant-azureOpenAi": "[concat(parameters('prefix'), '-', parameters('location'), '-AzOpenAI')]"
+    },
+    "resources": [],
+    "outputs": {
+        "systemIdentityId": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.CognitiveServices/accounts', variables('name-compliant-azureOpenAi')), '2021-10-01', 'Full').identity.principalId]"
+        }
+    }
+}
