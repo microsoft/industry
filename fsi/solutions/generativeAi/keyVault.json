@@ -10,14 +10,14 @@
         },
         "location": {
             "type": "string",
-            "defaultValue": "eastus2",
+            "defaultValue": "",
             "metadata": {
                 "description": "Select the location for the resources in this deployment."
             }
         },
         "prefix": {
             "type": "string",
-            "defaultValue": "monday",
+            "defaultValue": "",
             "metadata": {
                 "description": "Provide a prefix for the resources in this deployment."
             }
@@ -31,7 +31,7 @@
         },
         "kvNwLocation": {
             "type": "string",
-            "defaultValue": "eastus",
+            "defaultValue": "[parameters('location')]",
             "metadata": {
                 "description": "Provide region for networking resources (private endpoints)"
             }
@@ -52,7 +52,7 @@
         },
         "aiCmkKeyName": {
             "type": "string",
-            "defaultValue": "key1",
+            "defaultValue": "key2",
             "metadata": {
                 "description": "Provide a name for the customer-managed key that will be used for storage encryption."
             }
@@ -288,6 +288,5 @@
             }
         }
     ],
-    "outputs": {
-    }
+    "outputs": {}
 }
