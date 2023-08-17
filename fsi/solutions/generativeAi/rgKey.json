@@ -19,7 +19,7 @@
     "outputs": {
         "keyVersion": {
             "type": "string",
-            "value": "[last(split(reference(resourceId('Microsoft.KeyVault/vaults/', variables('name-compliant-keyvault'), '/keys/', parameters('aiCmkKeyName')),'2021-10-01').keyUriWithVersion, '/'))]"
+            "value": "[last(split(reference(resourceId('Microsoft.KeyVault/vaults/keys', variables('name-compliant-keyvault'), parameters('aiCmkKeyName')),'2021-10-01').keyUriWithVersion, '/'))]"
         }
     }
 }
