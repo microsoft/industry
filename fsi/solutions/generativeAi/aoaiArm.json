@@ -37,16 +37,16 @@
         },
         "stCmkKeyName": {
             "type": "string",
-            "defaultValue": "key1",
+            "defaultValue": "key-storage",
             "metadata": {
                 "description": "Provide a name for the customer-managed key that will be used for storage encryption."
             }
         },
         "aiCmkKeyName": {
             "type": "string",
-            "defaultValue": "key1",
+            "defaultValue": "key-ai",
             "metadata": {
-                "description": "Provide a name for the customer-managed key that will be used for storage encryption."
+                "description": "Provide a name for the customer-managed key that will be used for Azure Open AI."
             }
         },
         "kvKeyExpiration": {
@@ -56,7 +56,7 @@
                 "description": "Expiration time of the key [dateTimeToEpoch(dateTimeAdd(utcNow(), 'P30D'))]"
             }
         },
-        "kvNetworkAccess": {
+        "kvDisableNetworkAccess": {
             "type": "string",
             "allowedValues": [
                 "Yes",
@@ -125,7 +125,7 @@
             "type": "string",
             "defaultValue": ""
         },
-        "stNetworkAccess": {
+        "stDisableNetworkAccess": {
             "type": "string",
             "defaultValue": "No",
             "allowedValues": [
@@ -157,7 +157,7 @@
             "type": "string",
             "defaultValue": ""
         },
-        "aiNetworkAccess": {
+        "aiDisableNetworkAccess": {
             "type": "string",
             "defaultValue": "No",
             "allowedValues": [
@@ -293,8 +293,8 @@
                     "kvRbacAuthZ": {
                         "value": "[parameters('kvRbacAuthZ')]"
                     },
-                    "kvNetworkAccess": {
-                        "value": "[parameters('kvNetworkAccess')]"
+                    "kvDisableNetworkAccess": {
+                        "value": "[parameters('kvDisableNetworkAccess')]"
                     }
                 }
             }
@@ -338,8 +338,8 @@
                     "stRbacAuthz": {
                         "value": "[parameters('stRbacAuthz')]"
                     },
-                    "stNetworkAccess": {
-                        "value": "[parameters('stNetworkAccess')]"
+                    "stDisableNetworkAccess": {
+                        "value": "[parameters('stDisableNetworkAccess')]"
                     },
                     "stHttpsOnly": {
                         "value": "[parameters('stHttpsOnly')]"
@@ -375,9 +375,6 @@
                     "aiRbacAuthz": {
                         "value": "[parameters('aiRbacAuthz')]"
                     },
-                    "userAssignedIdentityResourceId": {
-                        "value": "[reference(variables('deploymentNames').managedIdentityDeploymentName).outputs.identityResourceId.value]"
-                    },
                     "aiSubnetId": {
                         "value": "[parameters('aiSubnetId')]"
                     },
@@ -387,8 +384,8 @@
                     "aiNwLocation": {
                         "value": "[parameters('aiNwLocation')]"
                     },
-                    "aiNetworkAccess": {
-                        "value": "[parameters('aiNetworkAccess')]"
+                    "aiDisableNetworkAccess": {
+                        "value": "[parameters('aiDisableNetworkAccess')]"
                     },
                     "aiCmkKeyName": {
                         "value": "[parameters('aiCmkKeyName')]"

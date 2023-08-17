@@ -65,8 +65,7 @@
                             "name": "deleteSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Deletion and Purge Protection Settings",
-                            "elements": [
-                            ],
+                            "elements": [],
                             "visible": true
                         },
                         {
@@ -130,8 +129,7 @@
                             "name": "authzSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Authorization Settings",
-                            "elements": [
-                            ],
+                            "elements": [],
                             "visible": true
                         },
                         {
@@ -148,7 +146,7 @@
                                     },
                                     {
                                         "label": "No",
-                                        "value": "Yes"
+                                        "value": "No"
                                     }
                                 ],
                                 "required": true
@@ -159,12 +157,11 @@
                             "name": "nwSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Network Settings",
-                            "elements": [
-                            ],
+                            "elements": [],
                             "visible": true
                         },
                         {
-                            "name": "kvNetworkAccess",
+                            "name": "kvDisableNetworkAccess",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Disable Public Network Access",
                             "defaultValue": "Yes (recommended)",
@@ -191,16 +188,14 @@
                             "placeholder": "",
                             "defaultValue": "",
                             "toolTip": "Use only allowed characters",
-                            "constraints": {
-                                },
-                            "visible": "[equals(steps('kvSettings').kvNetworkAccess, 'Yes')]"
+                            "constraints": {},
+                            "visible": "[equals(steps('kvSettings').kvDisableNetworkAccess, 'Yes')]"
                         },
                         {
                             "name": "kvCmkSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Customer-Managed Key Settings",
-                            "elements": [
-                            ],
+                            "elements": [],
                             "visible": true
                         },
                         {
@@ -249,8 +244,7 @@
                             "name": "stEncryptionSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Encryption in transit and at rest Settings",
-                            "elements": [
-                            ],
+                            "elements": [],
                             "visible": true
                         },
                         {
@@ -292,12 +286,11 @@
                             "name": "networkSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Network Settings",
-                            "elements": [
-                            ],
+                            "elements": [],
                             "visible": true
                         },
                         {
-                            "name": "stNetworkAccess",
+                            "name": "stDisableNetworkAccess",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Disable Public Network Access",
                             "defaultValue": "Yes (recommended)",
@@ -324,16 +317,14 @@
                             "placeholder": "",
                             "defaultValue": "",
                             "toolTip": "Use only allowed characters",
-                            "constraints": {
-                                },
-                            "visible": "[equals(steps('kvSettings').stNetworkAccess, 'Yes')]"
+                            "constraints": {},
+                            "visible": "[equals(steps('stSettings').stDisableNetworkAccess, 'Yes')]"
                         },
                         {
                             "name": "authzSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Authorization Settings",
-                            "elements": [
-                            ],
+                            "elements": [],
                             "visible": true
                         },
                         {
@@ -382,29 +373,7 @@
                             "name": "aiEncryptionSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Encryption in transit and at rest Settings",
-                            "elements": [
-                            ],
-                            "visible": true
-                        },
-                        {
-                            "name": "aiRestrictOutbound",
-                            "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Restrict Outbound Network Access",
-                            "defaultValue": "Yes (recommended)",
-                            "toolTip": "",
-                            "constraints": {
-                                "allowedValues": [
-                                    {
-                                        "label": "Yes (recommended)",
-                                        "value": "Yes"
-                                    },
-                                    {
-                                        "label": "No",
-                                        "value": "No"
-                                    }
-                                ],
-                                "required": true
-                            },
+                            "elements": [],
                             "visible": true
                         },
                         {
@@ -425,12 +394,32 @@
                             "name": "networkSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Network Settings",
-                            "elements": [
-                            ],
+                            "elements": [],
                             "visible": true
                         },
                         {
-                            "name": "aiNetworkAccess",
+                            "name": "aiRestrictOutboundNetworkAccess",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Restric Outbound Network Access for Azure Open AI",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": true
+                        },
+                        {
+                            "name": "aiDisableNetworkAccess",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Disable Public Network Access",
                             "defaultValue": "Yes (recommended)",
@@ -457,22 +446,41 @@
                             "placeholder": "",
                             "defaultValue": "",
                             "toolTip": "Use only allowed characters",
-                            "constraints": {
-                                },
-                            "visible": "[equals(steps('kvSettings').stNetworkAccess, 'Yes')]"
+                            "constraints": {},
+                            "visible": "[equals(steps('aiSettings').aiDisableNetworkAccess, 'Yes')]"
                         },
                         {
                             "name": "authzSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Authorization Settings",
-                            "elements": [
-                            ],
+                            "elements": [],
                             "visible": true
                         },
                         {
                             "name": "aiRbacAuthz",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Enable Azure RBAC authorization",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": true
+                        },
+                        {
+                            "name": "aiSystemIdentity",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable System Identity for Azure Open AI",
                             "defaultValue": "Yes (recommended)",
                             "toolTip": "",
                             "constraints": {
@@ -522,14 +530,19 @@
                 "kvSoftDeleteRetention": "[steps('kvSettings').kvSoftDeleteRetention]",
                 "kvPurgeProtection": "[steps('kvSettings').kvPurgeProtection]",
                 "kvRbacAuthz": "[steps('kvSettings').kvRbacAuthz]",
-                "kvNetworkAccess": "[steps('kvSettings').kvNetworkAccess]",
+                "kvDisableNetworkAccess": "[steps('kvSettings').kvDisableNetworkAccess]",
                 "kvSubnetId": "[steps('kvSettings').kvSubnetId]",
                 "stCmkName": "[steps('stSettings').stCmkKeyName]",
                 "stHttpsOnly": "[steps('stSettings').stHttpsOnly]",
-                "stNetworkAccess": "[steps('stSettings').stNetworkAccess]",
+                "stDisableNetworkAccess": "[steps('stSettings').stDisableNetworkAccess]",
                 "stSubnetId": "[steps('stSettings').stSubnetId]",
-                "stRbacAuthz": "[steps('stSettings').stRbacAuthz]"
-
+                "stRbacAuthz": "[steps('stSettings').stRbacAuthz]",
+                "aiRbacAuthz": "[steps('aiSettings').aiRbacAuthz]",
+                "aiDisableNetworkAccess": "[steps('aiSettings').aiDisableNetworkAccess]",
+                "aiSubnetId": "[steps('aiSettings').aiSubnetId]",
+                "aiCmkName": "[steps('aiSettings').aiCmkKeyName]",
+                "aiRestrictOutboundNetworkAccess": "[steps('aiSettings').aiRestrictOutboundNetworkAccess]",
+                "aiSystemIdentity": "[steps('aiSettings').aiSystemIdentity]"
             },
             "kind": "Subscription",
             "location": "[steps('basics').resourceScope.location.name]"
