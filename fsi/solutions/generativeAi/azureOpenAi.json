@@ -192,7 +192,7 @@
                                 "[concat('Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureOpenAi'))]"
                             ],
                             "properties": {
-                                "roleDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/roleDefinitions/', 'e147488a-f6f5-4113-8e2d-b22465e65bf6')]",
+                                "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'e147488a-f6f5-4113-8e2d-b22465e65bf6')]",
                                 "principalType": "ServicePrincipal",
                                 "principalId": "[toLower(reference(concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureOpenAi')), '2022-03-01', 'Full' ).identity.principalId)]"
                             }
@@ -205,7 +205,7 @@
                                 "[concat('Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureOpenAi'))]"
                             ],
                             "properties": {
-                                "roleDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/roleDefinitions/', '21090545-7ca7-4776-b22c-e363652d74d2')]",
+                                "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '21090545-7ca7-4776-b22c-e363652d74d2')]",
                                 "principalType": "ServicePrincipal",
                                 "principalId": "[toLower(reference(concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureOpenAi')), '2022-03-01', 'Full' ).identity.principalId)]"
                             }
