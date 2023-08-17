@@ -4,49 +4,92 @@
     "parameters": {
         "rgName": {
             "type": "string",
-            "defaultValue": "app",
+            "defaultValue": "",
             "metadata": {
                 "description": "Provide the name of the resource group where the Azure Open AI instance that will be created"
             }
         },
         "location": {
             "type": "string",
-            "defaultValue": "eastus2",
+            "defaultValue": "",
             "metadata": {
                 "description": "Select the location for the Azure Open AI instance that will be created"
             }
         },
         "prefix": {
             "type": "string",
-            "defaultValue": "compliant-aoai",
+            "defaultValue": "",
             "metadata": {
                 "description": "Provide name for the Azure Open AI instance that will be created"
             }
         },
         "userIdentity": {
             "type": "string",
+            "defaultValue": "",
             "metadata": {
                 "description": "Provide the user identity (objectId) that will be assigned to the Azure Open AI instance that will be created"
             }
         },
-        "subnetId": {
+        "aiSubnetId": {
             "type": "string",
             "metadata": {
                 "description": "Provide the subnet id where the Azure Open AI instance that will be connected"
             }
         },
-        "userAssignedIdentityResourceId": {
+        "aiSystemIdentity": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "aiNwLocation": {
+            "type": "string",
+            "defaultValue": "[parameters('location')]"
+        },
+        "aiNetworkAccess": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "aiRbacAuthz": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "aiCmkKeyName": {
             "type": "string",
             "defaultValue": ""
-        },
-        "nwLocation": {
-            "type": "string"
         }
     },
     "variables": {
         "name-compliant-azureOpenAi": "[concat(parameters('prefix'), '-', parameters('location'), '-AzOpenAI')]",
         "name-compliant-openAi-pe": "[concat(parameters('prefix'), '-', parameters('location'), '-AzOpenAi-pe')]",
-        "name-compliant-storage": "[toLower(take(concat(replace(replace(parameters('prefix'), '-', ''), '_', ''), parameters('location'), uniqueString(deployment().name)), 23))]"
+        "name-compliant-keyvault": "[concat(parameters('prefix'), '-', parameters('location'), '-kv')]",
+        "name-compliant-storage": "[toLower(take(concat(replace(replace(parameters('prefix'), '-', ''), '_', ''), parameters('location'), uniqueString(deployment().name)), 23))]",
+        "aiIdentity": {
+                "type": "SystemAssigned"
+            },
+        "denyFwAcl": {
+            "defaultAction": "Deny",
+            "bypass": "AzureServices",
+            "ipRules": [],
+            "virtualNetworkRules": []
+        },
+        "cmk": {
+            "keySource": "Microsoft.Keyvault",
+            "keyvaultproperties": {
+                "keyname": "[parameters('aiCmkKeyName')]",
+                "keyvaulturi": "[concat('https://', variables('name-compliant-keyvault'), '.vault.azure.net')]"
+            }
+        }
     },
     "resources": [
         {
@@ -75,39 +118,26 @@
                             "apiVersion": "2022-03-01",
                             "name": "[variables('name-compliant-azureOpenAi')]",
                             "location": "[parameters('location')]",
-                            "identity": {
-                                "type": "UserAssigned",
-                                "userAssignedIdentities": {
-                                    "[parameters('userAssignedIdentityResourceId')]": {}
-                                }
-                            },
+                            "identity": "[if(equals(parameters('aiSystemIdentity'), 'Yes'), variables('aiIdentity'), json('null'))]",
                             "sku": {
                                 "name": "S0"
                             },
                             "kind": "OpenAI",
                             "properties": {
                                 "customSubDomainName": "[toLower(variables('name-compliant-azureOpenAi'))]",
-                                "publicNetworkAccess": "Disabled",
-                                "disableLocalAuth": true,
+                                "publicNetworkAccess": "[if(equals(parameters('aiNetworkAccess'), 'Yes'), 'Disabled', 'Enabled')]",
+                                "disableLocalAuth": "[if(equals(parameters('aiRbacAuthz'), 'Yes'), bool('true'), bool('false'))]",
                                 "restrictOutboundNetworkAccess": true,
-                                "networkAcls": {
-                                    "defaultAction": "Deny",
-                                    "bypass": "AzureServices",
-                                    "ipRules": [],
-                                    "virtualNetworkRules": []
-                                }/*,
-                                "userOwnedStorage": [
-                                    {
-                                        "resourceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.Storage/storageAccounts/', variables('name-compliant-storage'))]"
-                                    }
-                                ]*/
+                                "networkAcls": "[if(equals(parameters('aiNetworkAccess'), 'Yes'), variables('denyFwAcl'), json('null'))]",
+                                "encryption": "[if(not(empty(parameters('aiCmkKeyName'))), variables('cmk'), json('null'))]"
                             }
                         },
                         {
+                            "condition": "[and(equals(parameters('aiNetworkAccess'), 'Yes'), not(empty(parameters('aiSubnetId'))))]",
                             "type": "Microsoft.Network/privateEndpoints",
                             "apiVersion": "2020-04-01",
                             "name": "[variables('name-compliant-openAi-pe')]",
-                            "location": "[parameters('nwLocation')]",
+                            "location": "[parameters('aiNwLocation')]",
                             "dependsOn": [
                                 "[concat('Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureOpenAi'))]"
                             ],
@@ -124,7 +154,7 @@
                                     }
                                 ],
                                 "subnet": {
-                                    "id": "[parameters('subnetId')]"
+                                    "id": "[parameters('aiSubnetId')]"
                                 }
                             }
                         },
