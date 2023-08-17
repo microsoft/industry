@@ -24,54 +24,89 @@
             "type": "string",
             "defaultValue": ""
         },
-        "subnetId": {
+        "stCmkKeyName": {
             "type": "string",
-            "metadata": {
-                "description": "Provide the subnet id where the private endpoint will be created"
-            }
-        },
-        "cmkKeyName": {
-            "type": "string",
+            "defaultValue": "",
             "metadata": {
                 "description": "Provide name for the customer managed key"
             }
         },
-        "keyExpiration": {
-            "type": "int",
-            "defaultValue": "[dateTimeToEpoch(dateTimeAdd(utcNow(), 'P30D'))]",
-            "metadata": {
-                "description": "Expiration time of the key [dateTimeToEpoch(dateTimeAdd(utcNow(), 'P30D'))]"
-            }
+        "stHttpsOnly": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
         },
-        "expiryTime": {
-            "type": "int",
-            "defaultValue": "[dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))]",
-            "metadata": {
-                "description": "Expiration time of the key [dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))]"
-            }
+        "stSubnetId": {
+            "type": "string",
+            "defaultValue": ""
         },
-        "timeAfterCreate": {
-            "type": "int",
-            "defaultValue": "[dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))]",
-            "metadata": {
-                "description": "Expiration time of the key [dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))]"
-            }
+        "stNetworkAccess": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
         },
-        "timeBeforeExpiry": {
-            "type": "int",
-            "defaultValue": "[dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))]",
-            "metadata": {
-                "description": "Expiration time of the key [dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))]"
-            }
+        "stNwlocation": {
+            "type": "string",
+            "defaultValue": "[parameters('location')]"
         },
-        "nwLocation": {
-            "type": "string"
+        "stRbacAuthz": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
         }
     },
     "variables": {
         "name-compliant-storage": "[toLower(take(concat(replace(replace(parameters('prefix'), '-', ''), '_', ''), parameters('location'), uniqueString(deployment().name)), 23))]",
         "name-compliant-keyvault": "[concat(parameters('prefix'), '-', parameters('location'), '-kv')]",
-        "name-compliant-storage-pe": "[concat(parameters('prefix'), '-', parameters('location'), '-storage-pe')]"
+        "name-compliant-storage-pe": "[concat(parameters('prefix'), '-', parameters('location'), '-storage-pe')]",
+        "cmk": {
+                "requireInfrastructureEncryption": true,
+                "identity": {
+                    "userAssignedIdentity": "[parameters('userAssignedIdentityResourceId')]"
+                },
+                "services": {
+                    "blob": {
+                        "enabled": true
+                    },
+                    "file": {
+                        "enabled": true
+                    },
+                    "table": {
+                        "enabled": true,
+                        "keyType": "Account"
+                    },
+                    "queue": {
+                        "enabled": true,
+                        "keyType": "Account"
+                    }
+                },
+                "keySource": "Microsoft.Keyvault",
+                "keyvaultproperties": {
+                    "keyname": "[parameters('stCmkKeyName')]",
+                    "keyvaulturi": "[concat('https://', variables('name-compliant-keyvault'), '.vault.azure.net')]"
+                }
+            },
+            "userAssignedIdentity": {
+                                "type": "UserAssigned",
+                                "userAssignedIdentities": {
+                                    "[parameters('userAssignedIdentityResourceId')]": {}
+                                }
+                            },
+            "denyFwAcl": {
+                                    "bypass": "None",
+                                    "defaultAction": "deny",
+                                    "ipRules": []
+                                }
+                    
     },
     "resources": [
         {
@@ -105,56 +140,21 @@
                                 "name": "Standard_LRS"
                             },
                             "kind": "StorageV2",
-                            "identity": {
-                                "type": "UserAssigned",
-                                "userAssignedIdentities": {
-                                    "[parameters('userAssignedIdentityResourceId')]": {}
-                                }
-                            },
+                            "identity": "[if(not(empty(parameters('userAssignedIdentityResourceId'))), variables('userAssignedIdentity'), json('null'))]",
                             "properties": {
                                 "accessTier": "Hot",
-                                "supportsHttpsTrafficOnly": true,
+                                "supportsHttpsTrafficOnly": "[if(equals(parameters('stHttpsOnly'), 'Yes'), bool('true'), bool('false'))]",
                                 "minimumTlsVersion": "TLS1_2",
                                 "allowBlobPublicAccess": false,
                                 "allowSharedKeyAccess": false,
                                 "allowCrossTenantReplication": false,
-                                "defaultToOAuthAuthentication": false,
+                                "defaultToOAuthAuthentication": "[if(equals(parameters('stRbacAuthz'), 'Yes'), bool('true'), bool('false'))]",
                                 "allowedCopyScope": "AAD",
-                                "publicNetworkAccess": "Disabled",
+                                "publicNetworkAccess": "[if(equals(parameters('stNetworkAccess'), 'Yes'), 'Disabled', 'Enabled')]",
                                 "isLocalUserEnabled": false,
                                 "isSftpEnabled": false,
-                                "networkAcls": {
-                                    "bypass": "None",
-                                    "defaultAction": "deny",
-                                    "ipRules": []
-                                },
-                                "encryption": {
-                                    "requireInfrastructureEncryption": true,
-                                    "identity": {
-                                        "userAssignedIdentity": "[parameters('userAssignedIdentityResourceId')]"
-                                    },
-                                    "services": {
-                                        "blob": {
-                                            "enabled": true
-                                        },
-                                        "file": {
-                                            "enabled": true
-                                        },
-                                        "table": {
-                                            "enabled": true,
-                                            "keyType": "Account"
-                                        },
-                                        "queue": {
-                                            "enabled": true,
-                                            "keyType": "Account"
-                                        }
-                                    },
-                                    "keySource": "Microsoft.Keyvault",
-                                    "keyvaultproperties": {
-                                        "keyname": "[parameters('cmkKeyName')]",
-                                        "keyvaulturi": "[concat('https://', variables('name-compliant-keyvault'), '.vault.azure.net')]"
-                                    }
-                                }
+                                "networkAcls": "[if(equals(parameters('stNetworkAccess'), 'Yes'), variables('denyFwAcl'), json('null'))]",
+                                "encryption": "[if(not(empty(parameters('stCmkKeyName'))), variables('cmk'), json('null'))]"
                             }
                         },
                         {
@@ -184,10 +184,11 @@
                             }
                         },
                         {
+                            "condition": "[and(equals(parameters('stNetworkAccess'), 'Yes'), not(empty(parameters('stSubnetId'))))]",
                             "type": "Microsoft.Network/privateEndpoints",
                             "apiVersion": "2020-04-01",
                             "name": "[variables('name-compliant-storage-pe')]",
-                            "location": "[parameters('nwLocation')]",
+                            "location": "[parameters('stNwLocation')]",
                             "dependsOn": [
                                 "[concat('Microsoft.Storage/storageAccounts/', variables('name-compliant-storage'))]"
                             ],
@@ -204,7 +205,7 @@
                                     }
                                 ],
                                 "subnet": {
-                                    "id": "[parameters('subnetId')]"
+                                    "id": "[parameters('stSubnetId')]"
                                 }
                             }
                         }
