@@ -75,6 +75,10 @@
                 "Yes",
                 "No"
             ]
+        },
+        "aiCmkKeyVersion": {
+            "type": "string",
+            "defaultValue": ""
         }
     },
     "variables": {
@@ -95,6 +99,7 @@
             "keySource": "Microsoft.Keyvault",
             "keyvaultproperties": {
                 "keyname": "[parameters('aiCmkKeyName')]",
+                "keyVersion": "[parameters('aiCmkKeyVersion')]",
                 "keyvaulturi": "[concat('https://', variables('name-compliant-keyvault'), '.vault.azure.net')]"
             }
         }

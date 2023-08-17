@@ -1,0 +1,25 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "prefix": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "aiCmkKeyName": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "name-compliant-keyvault": "[concat(parameters('prefix'), '-', parameters('location'), '-kv')]"
+    },
+    "resources": [],
+    "outputs": {
+        "keyVersion": {
+            "type": "string",
+            "value": "[last(split(reference(resourceId('Microsoft.KeyVault/vaults/', variables('name-compliant-keyvault'), '/keys/', parameters('aiCmkKeyName')),'2021-10-01').keyUriWithVersion, '/'))]"
+        }
+    }
+}
