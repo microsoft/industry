@@ -48,7 +48,7 @@
             "type": "string",
             "defaultValue": "[parameters('location')]"
         },
-        "aiDisableNetworkAccesss": {
+        "aiDisableNetworkAccess": {
             "type": "string",
             "defaultValue": "No",
             "allowedValues": [
@@ -133,15 +133,15 @@
                             "kind": "OpenAI",
                             "properties": {
                                 "customSubDomainName": "[toLower(variables('name-compliant-azureOpenAi'))]",
-                                "publicNetworkAccess": "[if(equals(parameters('aiDisableNetworkAccesss'), 'Yes'), 'Disabled', 'Enabled')]",
+                                "publicNetworkAccess": "[if(equals(parameters('aiDisableNetworkAccess'), 'Yes'), 'Disabled', 'Enabled')]",
                                 "disableLocalAuth": "[if(equals(parameters('aiRbacAuthz'), 'Yes'), bool('true'), bool('false'))]",
                                 "restrictOutboundNetworkAccess": "[if(equals(parameters('aiRestrictOutboundNetworkAccess'), 'Yes'), variables('denyFwAcl'), json('null'))]",
-                                "networkAcls": "[if(equals(parameters('aiDisableNetworkAccesss'), 'Yes'), variables('denyFwAcl'), json('null'))]",
+                                "networkAcls": "[if(equals(parameters('aiDisableNetworkAccess'), 'Yes'), variables('denyFwAcl'), json('null'))]",
                                 "encryption": "[if(not(empty(parameters('aiCmkKeyName'))), variables('cmk'), json('null'))]"
                             }
                         },
                         {
-                            "condition": "[and(equals(parameters('aiDisableNetworkAccesss'), 'Yes'), not(empty(parameters('aiSubnetId'))))]",
+                            "condition": "[and(equals(parameters('aiDisableNetworkAccess'), 'Yes'), not(empty(parameters('aiSubnetId'))))]",
                             "type": "Microsoft.Network/privateEndpoints",
                             "apiVersion": "2020-04-01",
                             "name": "[variables('name-compliant-openAi-pe')]",

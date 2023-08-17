@@ -532,9 +532,11 @@
                 "kvRbacAuthz": "[steps('kvSettings').kvRbacAuthz]",
                 "kvDisableNetworkAccess": "[steps('kvSettings').kvDisableNetworkAccess]",
                 "kvSubnetId": "[steps('kvSettings').kvSubnetId]",
+                "kvNwLocation": "[steps('basics').resourceScope.location.name]",
                 "stCmkName": "[steps('stSettings').stCmkKeyName]",
                 "stHttpsOnly": "[steps('stSettings').stHttpsOnly]",
                 "stDisableNetworkAccess": "[steps('stSettings').stDisableNetworkAccess]",
+                "stNwLocation": "[steps('basics').resourceScope.location.name]",
                 "stSubnetId": "[steps('stSettings').stSubnetId]",
                 "stRbacAuthz": "[steps('stSettings').stRbacAuthz]",
                 "aiRbacAuthz": "[steps('aiSettings').aiRbacAuthz]",
@@ -542,7 +544,9 @@
                 "aiSubnetId": "[steps('aiSettings').aiSubnetId]",
                 "aiCmkName": "[steps('aiSettings').aiCmkKeyName]",
                 "aiRestrictOutboundNetworkAccess": "[steps('aiSettings').aiRestrictOutboundNetworkAccess]",
-                "aiSystemIdentity": "[steps('aiSettings').aiSystemIdentity]"
+                "aiSystemIdentity": "[steps('aiSettings').aiSystemIdentity]",
+                "aiNwLocation": "[steps('basics').resourceScope.location.name]",
+                "location": "[steps('basics').resourceScope.location.name]"
             },
             "kind": "Subscription",
             "location": "[steps('basics').resourceScope.location.name]"
