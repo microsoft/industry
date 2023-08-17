@@ -48,7 +48,7 @@
             "type": "string",
             "defaultValue": "[parameters('location')]"
         },
-        "aiNetworkAccess": {
+        "aiDisableNetworkAccesss": {
             "type": "string",
             "defaultValue": "No",
             "allowedValues": [
@@ -67,6 +67,14 @@
         "aiCmkKeyName": {
             "type": "string",
             "defaultValue": ""
+        },
+        "aiRestrictOutboundNetworkAccess": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
         }
     },
     "variables": {
@@ -75,8 +83,8 @@
         "name-compliant-keyvault": "[concat(parameters('prefix'), '-', parameters('location'), '-kv')]",
         "name-compliant-storage": "[toLower(take(concat(replace(replace(parameters('prefix'), '-', ''), '_', ''), parameters('location'), uniqueString(deployment().name)), 23))]",
         "aiIdentity": {
-                "type": "SystemAssigned"
-            },
+            "type": "SystemAssigned"
+        },
         "denyFwAcl": {
             "defaultAction": "Deny",
             "bypass": "AzureServices",
@@ -125,15 +133,15 @@
                             "kind": "OpenAI",
                             "properties": {
                                 "customSubDomainName": "[toLower(variables('name-compliant-azureOpenAi'))]",
-                                "publicNetworkAccess": "[if(equals(parameters('aiNetworkAccess'), 'Yes'), 'Disabled', 'Enabled')]",
+                                "publicNetworkAccess": "[if(equals(parameters('aiDisableNetworkAccesss'), 'Yes'), 'Disabled', 'Enabled')]",
                                 "disableLocalAuth": "[if(equals(parameters('aiRbacAuthz'), 'Yes'), bool('true'), bool('false'))]",
-                                "restrictOutboundNetworkAccess": true,
-                                "networkAcls": "[if(equals(parameters('aiNetworkAccess'), 'Yes'), variables('denyFwAcl'), json('null'))]",
+                                "restrictOutboundNetworkAccess": "[if(equals(parameters('aiRestrictOutboundNetworkAccess'), 'Yes'), variables('denyFwAcl'), json('null'))]",
+                                "networkAcls": "[if(equals(parameters('aiDisableNetworkAccesss'), 'Yes'), variables('denyFwAcl'), json('null'))]",
                                 "encryption": "[if(not(empty(parameters('aiCmkKeyName'))), variables('cmk'), json('null'))]"
                             }
                         },
                         {
-                            "condition": "[and(equals(parameters('aiNetworkAccess'), 'Yes'), not(empty(parameters('aiSubnetId'))))]",
+                            "condition": "[and(equals(parameters('aiDisableNetworkAccesss'), 'Yes'), not(empty(parameters('aiSubnetId'))))]",
                             "type": "Microsoft.Network/privateEndpoints",
                             "apiVersion": "2020-04-01",
                             "name": "[variables('name-compliant-openAi-pe')]",

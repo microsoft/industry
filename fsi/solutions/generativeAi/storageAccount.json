@@ -43,7 +43,7 @@
             "type": "string",
             "defaultValue": ""
         },
-        "stNetworkAccess": {
+        "stDisableNetworkAccess": {
             "type": "string",
             "defaultValue": "No",
             "allowedValues": [
@@ -69,44 +69,43 @@
         "name-compliant-keyvault": "[concat(parameters('prefix'), '-', parameters('location'), '-kv')]",
         "name-compliant-storage-pe": "[concat(parameters('prefix'), '-', parameters('location'), '-storage-pe')]",
         "cmk": {
-                "requireInfrastructureEncryption": true,
-                "identity": {
-                    "userAssignedIdentity": "[parameters('userAssignedIdentityResourceId')]"
+            "requireInfrastructureEncryption": true,
+            "identity": {
+                "userAssignedIdentity": "[parameters('userAssignedIdentityResourceId')]"
+            },
+            "services": {
+                "blob": {
+                    "enabled": true
                 },
-                "services": {
-                    "blob": {
-                        "enabled": true
-                    },
-                    "file": {
-                        "enabled": true
-                    },
-                    "table": {
-                        "enabled": true,
-                        "keyType": "Account"
-                    },
-                    "queue": {
-                        "enabled": true,
-                        "keyType": "Account"
-                    }
+                "file": {
+                    "enabled": true
                 },
-                "keySource": "Microsoft.Keyvault",
-                "keyvaultproperties": {
-                    "keyname": "[parameters('stCmkKeyName')]",
-                    "keyvaulturi": "[concat('https://', variables('name-compliant-keyvault'), '.vault.azure.net')]"
+                "table": {
+                    "enabled": true,
+                    "keyType": "Account"
+                },
+                "queue": {
+                    "enabled": true,
+                    "keyType": "Account"
                 }
             },
-            "userAssignedIdentity": {
-                                "type": "UserAssigned",
-                                "userAssignedIdentities": {
-                                    "[parameters('userAssignedIdentityResourceId')]": {}
-                                }
-                            },
-            "denyFwAcl": {
-                                    "bypass": "None",
-                                    "defaultAction": "deny",
-                                    "ipRules": []
-                                }
-                    
+            "keySource": "Microsoft.Keyvault",
+            "keyvaultproperties": {
+                "keyname": "[parameters('stCmkKeyName')]",
+                "keyvaulturi": "[concat('https://', variables('name-compliant-keyvault'), '.vault.azure.net')]"
+            }
+        },
+        "userAssignedIdentity": {
+            "type": "UserAssigned",
+            "userAssignedIdentities": {
+                "[parameters('userAssignedIdentityResourceId')]": {}
+            }
+        },
+        "denyFwAcl": {
+            "bypass": "None",
+            "defaultAction": "deny",
+            "ipRules": []
+        }
     },
     "resources": [
         {
@@ -150,10 +149,10 @@
                                 "allowCrossTenantReplication": false,
                                 "defaultToOAuthAuthentication": "[if(equals(parameters('stRbacAuthz'), 'Yes'), bool('true'), bool('false'))]",
                                 "allowedCopyScope": "AAD",
-                                "publicNetworkAccess": "[if(equals(parameters('stNetworkAccess'), 'Yes'), 'Disabled', 'Enabled')]",
+                                "publicNetworkAccess": "[if(equals(parameters('stDisableNetworkAccess'), 'Yes'), 'Disabled', 'Enabled')]",
                                 "isLocalUserEnabled": false,
                                 "isSftpEnabled": false,
-                                "networkAcls": "[if(equals(parameters('stNetworkAccess'), 'Yes'), variables('denyFwAcl'), json('null'))]",
+                                "networkAcls": "[if(equals(parameters('stDisableNetworkAccess'), 'Yes'), variables('denyFwAcl'), json('null'))]",
                                 "encryption": "[if(not(empty(parameters('stCmkKeyName'))), variables('cmk'), json('null'))]"
                             }
                         },
@@ -184,7 +183,7 @@
                             }
                         },
                         {
-                            "condition": "[and(equals(parameters('stNetworkAccess'), 'Yes'), not(empty(parameters('stSubnetId'))))]",
+                            "condition": "[and(equals(parameters('stDisableNetworkAccess'), 'Yes'), not(empty(parameters('stSubnetId'))))]",
                             "type": "Microsoft.Network/privateEndpoints",
                             "apiVersion": "2020-04-01",
                             "name": "[variables('name-compliant-storage-pe')]",

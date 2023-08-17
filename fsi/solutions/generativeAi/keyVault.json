@@ -64,7 +64,7 @@
                 "description": "Expiration time of the key [dateTimeToEpoch(dateTimeAdd(utcNow(), 'P30D'))]"
             }
         },
-        "kvNetworkAccess": {
+        "kvDisableNetworkAccess": {
             "type": "string",
             "allowedValues": [
                 "Yes",
@@ -168,7 +168,7 @@
                                     "name": "Premium"
                                 },
                                 "tenantId": "[subscription().tenantId]",
-                                "networkAcls": "[if(equals(parameters('kvNetworkAccess'), 'Yes'), variables('denyFwAcls'), json('null'))]",
+                                "networkAcls": "[if(equals(parameters('kvDisableNetworkAccess'), 'Yes'), variables('denyFwAcls'), json('null'))]",
                                 "enabledForDeployment": false,
                                 "enabledForDiskEncryption": false,
                                 "enabledForTemplateDeployment": false,
@@ -176,7 +176,7 @@
                                 "softDeleteRetentionInDays": "[parameters('kvSoftDeleteRetention')]",
                                 "enableRbacAuthorization": "[if(equals(parameters('kvRbacAuthZ'), 'Yes'), bool('true'), bool('false'))]",
                                 "enablePurgeProtection": "[if(equals(parameters('kvPurgeProtection'), 'Yes'), bool('true'), bool('false'))]",
-                                "publicNetworkAccess": "[if(equals(parameters('kvNetworkAccess'), 'Yes'), 'Disabled', 'Enabled')]"
+                                "publicNetworkAccess": "[if(equals(parameters('kvDisableNetworkAccess'), 'Yes'), 'Disabled', 'Enabled')]"
                             }
                         },
                         {
@@ -194,7 +194,7 @@
                             }
                         },
                         {
-                            "condition": "[and(equals(parameters('kvNetworkAccess'), 'Yes'), not(empty(parameters('kvSubnetId'))))]",
+                            "condition": "[and(equals(parameters('kvDisableNetworkAccess'), 'Yes'), not(empty(parameters('kvSubnetId'))))]",
                             "type": "Microsoft.Network/privateEndpoints",
                             "apiVersion": "2020-04-01",
                             "name": "[variables('name-compliant-keyvault-pe')]",
