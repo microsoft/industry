@@ -194,7 +194,8 @@
             "azureOpenAiTemplateUri": "[uri(deployment().properties.templateLink.uri, 'azureOpenAi.json')]",
             "rgKeyVersionTemplateUri": "[uri(deployment().properties.templateLink.uri, 'rgKey.json')]",
             "rgAzureOpenAiObjectIdTemplateUri": "[uri(deployment().properties.templateLink.uri, 'rgAzureAiObjectId.json')]",
-            "rgRbacTemplateUri": "[uri(deployment().properties.templateLink.uri, 'rgRbac.json')]"
+            "rgRbacTemplateUri": "[uri(deployment().properties.templateLink.uri, 'rgRbac.json')]",
+            "azureOpenAiCmkTemplateUri": "[uri(deployment().properties.templateLink.uri, 'cmkAzureOpenAi.json')]"
         },
         "deploymentSuffix": "[concat('-', deployment().location, guid(parameters('prefix')))]",
         "deploymentNames": {
@@ -205,7 +206,8 @@
             "rgKeyVersionDeploymentName": "[take(concat(parameters('prefix'), '-key', variables('deploymentSuffix')), 64)]",
             "rgAzureAiObjectIdDeploymentName": "[take(concat(parameters('prefix'), '-objectId', variables('deploymentSuffix')), 64)]",
             "rgRbac1DeploymentName": "[take(concat(parameters('prefix'), '-rbac1', variables('deploymentSuffix')), 64)]",
-            "rgRbac2DeploymentName": "[take(concat(parameters('prefix'), '-rbac2', variables('deploymentSuffix')), 64)]"
+            "rgRbac2DeploymentName": "[take(concat(parameters('prefix'), '-rbac2', variables('deploymentSuffix')), 64)]",
+            "azureOpenAiFinalDeploymentName": "[take(concat(parameters('prefix'), '-aoacmk', variables('deploymentSuffix')), 64)]"
         },
         "resourceNames": {
             "rgName": "[concat(parameters('prefix'), '-rg', parameters('location'))]"
@@ -403,9 +405,6 @@
                     "location": {
                         "value": "[parameters('location')]"
                     },
-                    "aiCmkKeyVersion": {
-                        "value": "[reference(variables('deploymentNames').rgKeyVersionDeploymentName).outputs.keyVersion.value]"
-                    },
                     "userIdentity": {
                         "value": "[parameters('userIdentity')]"
                     },
@@ -423,9 +422,6 @@
                     },
                     "aiDisableNetworkAccess": {
                         "value": "[parameters('aiDisableNetworkAccess')]"
-                    },
-                    "aiCmkKeyName": {
-                        "value": "[parameters('aiCmkKeyName')]"
                     },
                     "aiSystemIdentity": {
                         "value": "[parameters('aiSystemIdentity')]"
@@ -510,6 +506,61 @@
                     },
                     "principalId": {
                         "value": "[reference(variables('deploymentNames').rgAzureAiObjectIdDeploymentName).outputs.systemIdentityId.value]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2022-09-01",
+            "name": "[variables('deploymentNames').azureOpenAiFinalDeploymentName]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').rgRbac1DeploymentName)]",
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').rgRbac2DeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('templateUris').azureOpenAiCmkTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('resourceNames').rgName]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "aiCmkKeyVersion": {
+                        "value": "[reference(variables('deploymentNames').rgKeyVersionDeploymentName).outputs.keyVersion.value]"
+                    },
+                    "userIdentity": {
+                        "value": "[parameters('userIdentity')]"
+                    },
+                    "aiRbacAuthz": {
+                        "value": "[parameters('aiRbacAuthz')]"
+                    },
+                    "aiSubnetId": {
+                        "value": "[parameters('aiSubnetId')]"
+                    },
+                    "prefix": {
+                        "value": "[parameters('prefix')]"
+                    },
+                    "aiNwLocation": {
+                        "value": "[parameters('aiNwLocation')]"
+                    },
+                    "aiDisableNetworkAccess": {
+                        "value": "[parameters('aiDisableNetworkAccess')]"
+                    },
+                    "aiCmkKeyName": {
+                        "value": "[parameters('aiCmkKeyName')]"
+                    },
+                    "aiSystemIdentity": {
+                        "value": "[parameters('aiSystemIdentity')]"
+                    },
+                    "aiRestrictOutboundNetworkAccess": {
+                        "value": "[parameters('aiRestrictOutboundNetworkAccess')]"
                     }
                 }
             }
