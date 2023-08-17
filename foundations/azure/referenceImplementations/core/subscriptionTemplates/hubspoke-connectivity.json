@@ -338,7 +338,7 @@
                             "location": "[parameters('location')]",
                             "name": "[variables('avnmRgName')]",
                             "properties": {}
-                        },/*
+                        },
                         {
                             "condition": "[equals(parameters('enableAvnm'), 'Yes')]",
                             "type": "Microsoft.Resources/deployments",
@@ -378,7 +378,7 @@
                                     ]
                                 }
                             }
-                        },*/
+                        },
                         {
                             "type": "Microsoft.Resources/resourceGroups",
                             "apiVersion": "2019-10-01",
@@ -620,7 +620,7 @@
                                             "condition": "[and(equals(parameters('enableVpnGw'), 'Yes'), not(empty(parameters('logAnalyticsWorkspaceId'))))]",
                                             "type": "Microsoft.Network/publicIpAddresses/providers/diagnosticSettings",
                                             "apiVersion": "2021-05-01-preview",
-                                            "name": "[concat(variables('azVpnGwIpName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                                            "name": "[concat(variables('azVpnGwIpName'), '/', 'Microsoft.Insights/setByPolicy-LogAnalytics')]",
                                             "location": "[parameters('location')]",
                                             "dependsOn": [
                                                 "[concat('Microsoft.Network/publicIpAddresses/', variables('azVpnGwIpName'))]"
@@ -630,7 +630,7 @@
                                             "metrics": [
                                                 {
                                                 "category": "AllMetrics",
-                                                "enabled": true,
+                                                "enabled": false,
                                                 "retentionPolicy": {
                                                     "days": 0,
                                                     "enabled": false
@@ -641,10 +641,6 @@
                                             "logs": [
                                                     {
                                                         "categoryGroup": "allLogs",
-                                                        "enabled": true
-                                                    },
-                                                    {
-                                                        "categoryGroup": "audit",
                                                         "enabled": true
                                                     }
                                                 ]
@@ -718,7 +714,7 @@
                                             "condition": "[and(equals(parameters('enableErGw'), 'Yes'), not(empty(parameters('logAnalyticsWorkspaceId'))))]",
                                             "type": "Microsoft.Network/publicIpAddresses/providers/diagnosticSettings",
                                             "apiVersion": "2021-05-01-preview",
-                                            "name": "[concat(variables('azErGwIpName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                                            "name": "[concat(variables('azErGwIpName'), '/', 'Microsoft.Insights/setByPolicy-LogAnalytics')]",
                                             "location": "[parameters('location')]",
                                             "dependsOn": [
                                                 "[concat('Microsoft.Network/publicIpAddresses/', variables('azErGwIpName'))]"
@@ -728,7 +724,7 @@
                                             "metrics": [
                                                 {
                                                 "category": "AllMetrics",
-                                                "enabled": true,
+                                                "enabled": false,
                                                 "retentionPolicy": {
                                                     "days": 0,
                                                     "enabled": false
@@ -739,10 +735,6 @@
                                             "logs": [
                                                     {
                                                         "categoryGroup": "allLogs",
-                                                        "enabled": true
-                                                    },
-                                                    {
-                                                        "categoryGroup": "audit",
                                                         "enabled": true
                                                     }
                                                 ]
@@ -815,7 +807,7 @@
                                             "condition": "[and(equals(parameters('enableAzFw'), 'Yes'), not(empty(parameters('logAnalyticsWorkspaceId'))))]",
                                             "type": "Microsoft.Network/publicIpAddresses/providers/diagnosticSettings",
                                             "apiVersion": "2021-05-01-preview",
-                                            "name": "[concat(variables('azFwIpName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                                            "name": "[concat(variables('azFwIpName'), '/', 'Microsoft.Insights/setByPolicy-LogAnalytics')]",
                                             "location": "[parameters('location')]",
                                             "dependsOn": [
                                                 "[concat('Microsoft.Network/publicIpAddresses/', variables('azFwIpName'))]"
@@ -825,7 +817,7 @@
                                             "metrics": [
                                                 {
                                                 "category": "AllMetrics",
-                                                "enabled": true,
+                                                "enabled": false,
                                                 "retentionPolicy": {
                                                     "days": 0,
                                                     "enabled": false
@@ -836,10 +828,6 @@
                                             "logs": [
                                                     {
                                                         "categoryGroup": "allLogs",
-                                                        "enabled": true
-                                                    },
-                                                    {
-                                                        "categoryGroup": "audit",
                                                         "enabled": true
                                                     }
                                                 ]
