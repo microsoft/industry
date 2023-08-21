@@ -220,7 +220,7 @@
                                 "allowedValues": "[map(steps('kvSettings').kvLocationsApi.value,(item) => parse(concat('{\"label\":\"',item.displayName,'\",\"value\":\"',item.name,'\"}')))]",
                                 "required": true
                             },
-                            "visible": "[not(equals(steps('kvSettings').kvNwLocationOption, 'Yes'))]"
+                            "visible": "[and(not(equals(steps('kvSettings').kvNwLocationOption, 'Yes')), equals(steps('kvSettings').kvDisableNetworkAccess, 'Yes'))]"
                         },
                         {
                             "name": "kvSubnetId",
@@ -390,7 +390,7 @@
                                 "allowedValues": "[map(steps('stSettings').stLocationsApi.value,(item) => parse(concat('{\"label\":\"',item.displayName,'\",\"value\":\"',item.name,'\"}')))]",
                                 "required": true
                             },
-                            "visible": "[not(equals(steps('stSettings').stNwLocationOption, 'Yes'))]"
+                            "visible": "[and(not(equals(steps('stSettings').stNwLocationOption, 'Yes')), equals(steps('stSettings').stDisableNetworkAccess, 'Yes'))]"
                         },
                         {
                             "name": "stSubnetId",
@@ -560,7 +560,7 @@
                                 "allowedValues": "[map(steps('aiSettings').aiLocationsApi.value,(item) => parse(concat('{\"label\":\"',item.displayName,'\",\"value\":\"',item.name,'\"}')))]",
                                 "required": true
                             },
-                            "visible": "[not(equals(steps('aiSettings').aiNwLocationOption, 'Yes'))]"
+                            "visible": "[and(not(equals(steps('aiSettings').aiNwLocationOption, 'Yes')), equals(steps('aiSettings').aiDisableNetworkAccess, 'Yes'))]"
                         },
                         {
                             "name": "aiSubnetId",
@@ -603,9 +603,9 @@
                         {
                             "name": "aiSystemIdentity",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Enable System Identity for Azure Open AI",
+                            "label": "Enable Managed Identity (System-assigned) for Azure Open AI",
                             "defaultValue": "Yes (recommended)",
-                            "toolTip": "",
+                            "toolTip": "When enabling Managed Identity and usage of Customer-Managed keys, this identity will have RBAC permission to retrieve the associated Key Vault secret.",
                             "constraints": {
                                 "allowedValues": [
                                     {
