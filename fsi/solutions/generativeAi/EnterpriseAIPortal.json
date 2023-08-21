@@ -184,7 +184,7 @@
                         {
                             "name": "kvNwLocationOption",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Deploy the Private Endpoint for Key Vault into the same region as the Virtual Network location",
+                            "label": "Deploy the Private Endpoint for Key Vault into the same region as the Key Vault",
                             "defaultValue": "Yes",
                             "toolTip": "",
                             "constraints": {
@@ -354,7 +354,7 @@
                         {
                             "name": "stNwLocationOption",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Deploy the Private Endpoint for Storage Account into the same region as the Virtual Network location",
+                            "label": "Deploy the Private Endpoint for Storage Account into the same region as the Storage Account",
                             "defaultValue": "Yes",
                             "toolTip": "",
                             "constraints": {
@@ -524,7 +524,7 @@
                         {
                             "name": "aiNwLocationOption",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Deploy the Private Endpoint for Azure Open AI into the same region as the Virtual Network location",
+                            "label": "Deploy the Private Endpoint for Azure Open AI into the same region as the Azure Open AI service",
                             "defaultValue": "Yes",
                             "toolTip": "",
                             "constraints": {
@@ -655,11 +655,11 @@
                 "kvRbacAuthz": "[steps('kvSettings').kvRbacAuthz]",
                 "kvDisableNetworkAccess": "[steps('kvSettings').kvDisableNetworkAccess]",
                 "kvSubnetId": "[steps('kvSettings').kvSubnetId]",
-                "kvNwLocation": "[if(equals(steps('kvSettings').kvNwLocationOption, 'Yes'), steps('basics').resourceScope.location.name, steps('kvSettings').kvNwLocationOption)]",
+                "kvNwLocation": "[if(equals(steps('kvSettings').kvNwLocationOption, 'Yes'), steps('basics').resourceScope.location.name, steps('kvSettings').kvNwLocation)]",
                 "stCmkName": "[steps('stSettings').stCmkKeyName]",
                 "stHttpsOnly": "[steps('stSettings').stHttpsOnly]",
                 "stDisableNetworkAccess": "[steps('stSettings').stDisableNetworkAccess]",
-                "stNwLocation": "[if(equals(steps('stSettings').stNwLocationOption, 'Yes'), steps('basics').resourceScope.location.name, steps('stSettings').stNwLocationOption)]",
+                "stNwLocation": "[if(equals(steps('stSettings').stNwLocationOption, 'Yes'), steps('basics').resourceScope.location.name, steps('stSettings').stNwLocation)]",
                 "stSubnetId": "[steps('stSettings').stSubnetId]",
                 "stRbacAuthz": "[steps('stSettings').stRbacAuthz]",
                 "aiRbacAuthz": "[steps('aiSettings').aiRbacAuthz]",
@@ -668,7 +668,7 @@
                 "aiCmkName": "[steps('aiSettings').aiCmkKeyName]",
                 "aiRestrictOutboundNetworkAccess": "[steps('aiSettings').aiRestrictOutboundNetworkAccess]",
                 "aiSystemIdentity": "[steps('aiSettings').aiSystemIdentity]",
-                "aiNwLocation": "[if(equals(steps('aiSettings').aiNwLocationOption, 'Yes'), steps('basics').resourceScope.location.name, steps('aiSettings').aiNwLocationOption)]",
+                "aiNwLocation": "[if(equals(steps('aiSettings').aiNwLocationOption, 'Yes'), steps('basics').resourceScope.location.name, steps('aiSettings').aiNwLocation)]",
                 "location": "[steps('basics').resourceScope.location.name]"
             },
             "kind": "Subscription",
