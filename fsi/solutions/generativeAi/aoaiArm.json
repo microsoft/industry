@@ -210,7 +210,7 @@
             "azureOpenAiFinalDeploymentName": "[take(concat(parameters('prefix'), '-aoacmk', variables('deploymentSuffix')), 64)]"
         },
         "resourceNames": {
-            "rgName": "[concat(parameters('prefix'), '-rg', parameters('location'))]"
+            "rgName": "[concat(parameters('prefix'), '-rg-', parameters('location'))]"
         }
     },
     "resources": [
