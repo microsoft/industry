@@ -535,20 +535,11 @@
                     "aiCmkKeyVersion": {
                         "value": "[reference(variables('deploymentNames').rgKeyVersionDeploymentName).outputs.keyVersion.value]"
                     },
-                    "userIdentity": {
-                        "value": "[parameters('userIdentity')]"
-                    },
                     "aiRbacAuthz": {
                         "value": "[parameters('aiRbacAuthz')]"
                     },
-                    "aiSubnetId": {
-                        "value": "[parameters('aiSubnetId')]"
-                    },
                     "prefix": {
                         "value": "[parameters('prefix')]"
-                    },
-                    "aiNwLocation": {
-                        "value": "[parameters('aiNwLocation')]"
                     },
                     "aiDisableNetworkAccess": {
                         "value": "[parameters('aiDisableNetworkAccess')]"
