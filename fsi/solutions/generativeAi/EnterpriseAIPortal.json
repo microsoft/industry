@@ -182,9 +182,50 @@
                             "visible": true
                         },
                         {
+                            "name": "kvNwLocationOption",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy the Private Endpoint for Key Vault into the same region as the Virtual Network location",
+                            "defaultValue": "Yes",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('kvSettings').kvDisableNetworkAccess, 'Yes')]"
+                        },
+                        {
+                            "name": "kvLocationsApi",
+                            "type": "Microsoft.Solutions.ArmApiControl",
+                            "request": {
+                                "method": "GET",
+                                "path": "locations?api-version=2019-11-01"
+                            }
+                        },
+                        {
+                            "name": "kvNwLocation",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select region for the Private Endpoint",
+                            "filter": true,
+                            "toolTip": "Select the target region for the Private Endpoint",
+                            "constraints": {
+                                "allowedValues": "[map(steps('kvSettings').kvLocationsApi.value,(item) => parse(concat('{\"label\":\"',item.displayName,'\",\"value\":\"',item.name,'\"}')))]",
+                                "required": true
+                            },
+                            "visible": "[not(equals(steps('kvSettings').kvNwLocationOption, 'Yes'))]"
+                        },
+                        {
                             "name": "kvSubnetId",
                             "type": "Microsoft.Common.TextBox",
-                            "label": "ResourceId of existing subnet for connecting Private Endpoints",
+                            "label": "ResourceId of existing subnet for connecting Private Endpoint",
                             "placeholder": "",
                             "defaultValue": "",
                             "toolTip": "Use only allowed characters",
@@ -311,9 +352,50 @@
                             "visible": true
                         },
                         {
+                            "name": "stNwLocationOption",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy the Private Endpoint for Storage Account into the same region as the Virtual Network location",
+                            "defaultValue": "Yes",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('stSettings').stDisableNetworkAccess, 'Yes')]"
+                        },
+                        {
+                            "name": "stLocationsApi",
+                            "type": "Microsoft.Solutions.ArmApiControl",
+                            "request": {
+                                "method": "GET",
+                                "path": "locations?api-version=2019-11-01"
+                            }
+                        },
+                        {
+                            "name": "stNwLocation",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select region for the Private Endpoint",
+                            "filter": true,
+                            "toolTip": "Select the target region for the Private Endpoint",
+                            "constraints": {
+                                "allowedValues": "[map(steps('stSettings').stLocationsApi.value,(item) => parse(concat('{\"label\":\"',item.displayName,'\",\"value\":\"',item.name,'\"}')))]",
+                                "required": true
+                            },
+                            "visible": "[not(equals(steps('stSettings').stNwLocationOption, 'Yes'))]"
+                        },
+                        {
                             "name": "stSubnetId",
                             "type": "Microsoft.Common.TextBox",
-                            "label": "ResourceId of existing subnet for connecting Private Endpoints",
+                            "label": "ResourceId of existing subnet for connecting Private Endpoint",
                             "placeholder": "",
                             "defaultValue": "",
                             "toolTip": "Use only allowed characters",
@@ -440,9 +522,50 @@
                             "visible": true
                         },
                         {
+                            "name": "aiNwLocationOption",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy the Private Endpoint for Azure Open AI into the same region as the Virtual Network location",
+                            "defaultValue": "Yes",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiSettings').aiDisableNetworkAccess, 'Yes')]"
+                        },
+                        {
+                            "name": "aiLocationsApi",
+                            "type": "Microsoft.Solutions.ArmApiControl",
+                            "request": {
+                                "method": "GET",
+                                "path": "locations?api-version=2019-11-01"
+                            }
+                        },
+                        {
+                            "name": "aiNwLocation",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select region for the Private Endpoint",
+                            "filter": true,
+                            "toolTip": "Select the target region for the Private Endpoint",
+                            "constraints": {
+                                "allowedValues": "[map(steps('aiSettings').aiLocationsApi.value,(item) => parse(concat('{\"label\":\"',item.displayName,'\",\"value\":\"',item.name,'\"}')))]",
+                                "required": true
+                            },
+                            "visible": "[not(equals(steps('aiSettings').aiNwLocationOption, 'Yes'))]"
+                        },
+                        {
                             "name": "aiSubnetId",
                             "type": "Microsoft.Common.TextBox",
-                            "label": "ResourceId of existing subnet for connecting Private Endpoints",
+                            "label": "ResourceId of existing subnet for connecting Private Endpoint",
                             "placeholder": "",
                             "defaultValue": "",
                             "toolTip": "Use only allowed characters",
@@ -532,11 +655,11 @@
                 "kvRbacAuthz": "[steps('kvSettings').kvRbacAuthz]",
                 "kvDisableNetworkAccess": "[steps('kvSettings').kvDisableNetworkAccess]",
                 "kvSubnetId": "[steps('kvSettings').kvSubnetId]",
-                "kvNwLocation": "[steps('basics').resourceScope.location.name]",
+                "kvNwLocation": "[if(equals(steps('kvSettings').kvNwLocationOption, 'Yes'), steps('basics').resourceScope.location.name, steps('kvSettings').kvNwLocationOption)]",
                 "stCmkName": "[steps('stSettings').stCmkKeyName]",
                 "stHttpsOnly": "[steps('stSettings').stHttpsOnly]",
                 "stDisableNetworkAccess": "[steps('stSettings').stDisableNetworkAccess]",
-                "stNwLocation": "[steps('basics').resourceScope.location.name]",
+                "stNwLocation": "[if(equals(steps('stSettings').stNwLocationOption, 'Yes'), steps('basics').resourceScope.location.name, steps('stSettings').stNwLocationOption)]",
                 "stSubnetId": "[steps('stSettings').stSubnetId]",
                 "stRbacAuthz": "[steps('stSettings').stRbacAuthz]",
                 "aiRbacAuthz": "[steps('aiSettings').aiRbacAuthz]",
@@ -545,7 +668,7 @@
                 "aiCmkName": "[steps('aiSettings').aiCmkKeyName]",
                 "aiRestrictOutboundNetworkAccess": "[steps('aiSettings').aiRestrictOutboundNetworkAccess]",
                 "aiSystemIdentity": "[steps('aiSettings').aiSystemIdentity]",
-                "aiNwLocation": "[steps('basics').resourceScope.location.name]",
+                "aiNwLocation": "[if(equals(steps('aiSettings').aiNwLocationOption, 'Yes'), steps('basics').resourceScope.location.name, steps('aiSettings').aiNwLocationOption)]",
                 "location": "[steps('basics').resourceScope.location.name]"
             },
             "kind": "Subscription",
