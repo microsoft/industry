@@ -133,7 +133,7 @@
                 "No"
             ]
         },
-        "stNwlocation": {
+        "stNwLocation": {
             "type": "string",
             "defaultValue": "[parameters('location')]"
         },
@@ -165,7 +165,7 @@
                 "No"
             ]
         },
-        "aiNwlocation": {
+        "aiNwLocation": {
             "type": "string",
             "defaultValue": "[parameters('location')]"
         },
@@ -369,7 +369,7 @@
                         "value": "[parameters('stCmkKeyName')]"
                     },
                     "stNwLocation": {
-                        "value": "[parameters('stNwlocation')]"
+                        "value": "[parameters('stNwLocation')]"
                     },
                     "stRbacAuthz": {
                         "value": "[parameters('stRbacAuthz')]"

@@ -51,7 +51,7 @@
                 "No"
             ]
         },
-        "stNwlocation": {
+        "stNwLocation": {
             "type": "string",
             "defaultValue": "[parameters('location')]"
         },
@@ -67,7 +67,7 @@
     "variables": {
         "name-compliant-storage": "[toLower(take(concat(replace(replace(parameters('prefix'), '-', ''), '_', ''), parameters('location'), uniqueString(deployment().name)), 23))]",
         "name-compliant-keyvault": "[concat(parameters('prefix'), '-', parameters('location'), '-kv')]",
-        "name-compliant-storage-pe": "[concat(parameters('prefix'), '-', parameters('location'), '-storage-pe')]",
+        "name-compliant-storage-pe": "[concat(parameters('prefix'), '-storage-pe')]",
         "cmk": {
             "requireInfrastructureEncryption": true,
             "identity": {
