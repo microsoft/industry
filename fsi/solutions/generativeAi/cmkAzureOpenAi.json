@@ -23,19 +23,6 @@
                 "description": "Provide name for the Azure Open AI instance that will be created"
             }
         },
-        "userIdentity": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "Provide the user identity (objectId) that will be assigned to the Azure Open AI instance that will be created"
-            }
-        },
-        "aiSubnetId": {
-            "type": "string",
-            "metadata": {
-                "description": "Provide the subnet id where the Azure Open AI instance that will be connected"
-            }
-        },
         "aiSystemIdentity": {
             "type": "string",
             "defaultValue": "No",
@@ -43,10 +30,6 @@
                 "Yes",
                 "No"
             ]
-        },
-        "aiNwLocation": {
-            "type": "string",
-            "defaultValue": "[parameters('location')]"
         },
         "aiDisableNetworkAccess": {
             "type": "string",

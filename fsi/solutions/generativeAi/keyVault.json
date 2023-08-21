@@ -124,7 +124,7 @@
     },
     "variables": {
         "name-compliant-keyvault": "[concat(parameters('prefix'), '-', parameters('location'), '-kv')]",
-        "name-compliant-keyvault-pe": "[concat(parameters('prefix'), '-', parameters('location'), '-keyvault-pe')]",
+        "name-compliant-keyvault-pe": "[concat(parameters('prefix'), '-keyvault-pe')]",
         "name-compliant-keyvault-st-cmk-name": "[format('{0}/{1}', variables('name-compliant-keyvault'), parameters('stCmkKeyName'))]",
         "name-compliant-keyvault-ai-cmk-name": "[format('{0}/{1}', variables('name-compliant-keyvault'), parameters('aiCmkKeyName'))]",
         "denyFwAcls": {
