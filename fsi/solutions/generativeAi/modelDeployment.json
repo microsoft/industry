@@ -32,7 +32,7 @@
             "condition": "[equals(parameters('aiModelVersion'), 'gpt-4')]",
             "type": "Microsoft.CognitiveServices/accounts/deployments",
             "apiVersion": "2023-05-01",
-            "name": "[concat(variables('name-compliant-azureOpenAi'), '/', parameters('aiModelDeploymentName'))]",
+            "name": "[concat(variables('name-compliant-azureOpenAi'), '/', parameters('aiModelDeploymentName'), '-', parameters('aiModelVersion'))]",
             "sku": {
                 "name": "Standard",
                 "capacity": 1
@@ -51,7 +51,7 @@
             "condition": "[equals(parameters('aiModelVersion'), 'gpt-35-turbo')]",
             "type": "Microsoft.CognitiveServices/accounts/deployments",
             "apiVersion": "2023-05-01",
-            "name": "[concat(variables('name-compliant-azureOpenAi'), '/', parameters('aiModelDeploymentName'))]",
+            "name": "[concat(variables('name-compliant-azureOpenAi'), '/', parameters('aiModelDeploymentName'), '-', parameters('aiModelVersion'))]",
             "sku": {
                 "name": "Standard",
                 "capacity": 120
@@ -67,10 +67,10 @@
             }
         },
         {
-            "condition": "[equals(parameters('aiModelVersion'), 'gpt-35-turbo-16k')]",
+            //"condition": "[equals(parameters('aiModelVersion'), 'gpt-35-turbo-16k')]",
             "type": "Microsoft.CognitiveServices/accounts/deployments",
             "apiVersion": "2023-05-01",
-            "name": "[concat(variables('name-compliant-azureOpenAi'), '/', parameters('aiModelDeploymentName'))]",
+            "name": "[concat(variables('name-compliant-azureOpenAi'), '/', parameters('aiModelDeploymentName'), '-', parameters('aiModelVersion'))]",
             "sku": {
                 "name": "Standard",
                 "capacity": 120
