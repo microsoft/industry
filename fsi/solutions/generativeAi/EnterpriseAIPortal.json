@@ -62,7 +62,7 @@
                             }
                         },
                         {
-                            "name": "deleteSection",
+                            "name": "kvDeleteSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Deletion and Purge Protection Settings",
                             "elements": [],
@@ -102,7 +102,7 @@
                             "constraints": {
                                 "required": false
                             },
-                            "visible": "[equals(steps('kvSettings').kvSoftDelete, true)]"
+                            "visible": "[equals(steps('kvSettings').kvSoftDelete, 'Yes')]"
                         },
                         {
                             "name": "kvPurgeProtection",
@@ -318,8 +318,8 @@
                             "toolTip": "Use only allowed characters",
                             "constraints": {
                                 "required": true,
-                                "regex": "^[a-z0-9A-Z]{1,30}$",
-                                "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+                                "regex": "^[a-z0-9A-Z-]{1,10}$",
+                                "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-10 characters long."
                             },
                             "visible": "[equals(steps('kvSettings').kvKeyCreation, 'Yes')]"
                         },
@@ -422,7 +422,7 @@
                                         "value": "Yes"
                                     },
                                     {
-                                        "label": "No",
+                                        "label": "No, use Shared Key authorization/SAS",
                                         "value": "No"
                                     }
                                 ],
@@ -467,8 +467,8 @@
                             "toolTip": "Use only allowed characters",
                             "constraints": {
                                 "required": true,
-                                "regex": "^[a-z0-9A-Z]{1,30}$",
-                                "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+                                "regex": "^[a-z0-9A-Z-]{1,10}$",
+                                "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-10 characters long."
                             },
                             "visible": "[equals(steps('kvSettings').kvKeyCreation, 'Yes')]"
                         },
@@ -592,7 +592,7 @@
                                         "value": "Yes"
                                     },
                                     {
-                                        "label": "No",
+                                        "label": "No, use local authorization with API key",
                                         "value": "No"
                                     }
                                 ],
@@ -686,13 +686,13 @@
                             "name": "aiModelDeploymentName",
                             "type": "Microsoft.Common.TextBox",
                             "label": "Deployment Name",
-                            "placeholder": "GPT-4",
+                            "placeholder": "",
                             "defaultValue": "",
                             "toolTip": "Use only allowed characters",
                             "constraints": {
                                 "required": true,
-                                "regex": "^[a-z0-9A-Z]{1,30}$",
-                                "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+                                "regex": "^[a-z0-9A-Z-]{1,10}$",
+                                "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-10 characters long."
                             },
                             "visible": "[equals(steps('aiModelSettings').aiModelDeployment, 'Yes')]"
                         },
