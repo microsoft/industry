@@ -186,7 +186,7 @@
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Deploy the Private Endpoint for Key Vault into the same region as the Key Vault",
                             "defaultValue": "Yes",
-                            "toolTip": "",
+                            "toolTip": "This will deploy the Private Endpoint in the provided subnet and will also associate an Application Security Group",
                             "constraints": {
                                 "allowedValues": [
                                     {
@@ -356,7 +356,7 @@
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Deploy the Private Endpoint for Storage Account into the same region as the Storage Account",
                             "defaultValue": "Yes",
-                            "toolTip": "",
+                            "toolTip": "This will deploy the Private Endpoint in the provided subnet and will also associate an Application Security Group",
                             "constraints": {
                                 "allowedValues": [
                                     {
@@ -526,7 +526,7 @@
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Deploy the Private Endpoint for Azure Open AI into the same region as the Azure Open AI service",
                             "defaultValue": "Yes",
-                            "toolTip": "",
+                            "toolTip": "This will deploy the Private Endpoint in the provided subnet and will also associate an Application Security Group",
                             "constraints": {
                                 "allowedValues": [
                                     {
@@ -624,7 +624,7 @@
                     ]
                 },
                 {
-                    "name": "modelSettings",
+                    "name": "aiModelSettings",
                     "label": "Model Deployment",
                     "subLabel": {
                         "preValidation": "",
@@ -638,9 +638,102 @@
                             "visible": true,
                             "options": {
                                 "icon": "None",
-                                "text": "Coming soon!",
+                                "text": "Deployments provide endpoints to the Azure OpenAI base models, or your fine-tuned models, configured with settings to meet your needs, including the content moderation model, version handling, and deployment size. From this page, you can create new deployments.",
                                 "uri": "https://www.microsoft.com"
                             }
+                        },
+                        {
+                            "name": "aiModelSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Model Settings",
+                            "elements": [],
+                            "visible": true
+                        },
+                        {
+                            "name": "aiModelText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": true,
+                            "options": {
+                                "text": "Azure OpenAI Service is powered by a diverse set of models with different capabilities and price points. Model availability varies by region.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://learn.microsoft.com/azure/ai-services/openai/concepts/legacy-models"
+                                }
+                            }
+                        },
+                        {
+                            "name": "aiModelDeployment",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Create Model Deployments",
+                            "defaultValue": "Yes",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": true
+                        },
+                        {
+                            "name": "aiModelDeploymentName",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Deployment Name",
+                            "placeholder": "GPT-4",
+                            "defaultValue": "",
+                            "toolTip": "Use only allowed characters",
+                            "constraints": {
+                                "required": true,
+                                "regex": "^[a-z0-9A-Z]{1,30}$",
+                                "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+                            },
+                            "visible": "[equals(steps('aiModelSettings').aiModelDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiModelVersion",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select the Model you want to deploy",
+                            "placeholder": "",
+                            "defaultValue": "GPT-35-Turbo",
+                            "toolTip": "",
+                            "multiselect": true,
+                            "multiLine": true,
+                            "selectAll": true,
+                            "defaultDescription": "Select the models you want to deploy to you Azure Open AI service",
+                            "filter": true,
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "GPT-4 (only available by request)",
+                                        "description": "GPT-4 can solve difficult problems with greater accuracy than any of OpenAI's previous models. Like GPT-3.5 Turbo, GPT-4 is optimized for chat and works well for traditional completions tasks. Use the Chat Completions API to use GPT-4.",
+                                        "value": "gpt-4"
+                                    },
+                                    {
+                                        "label": "GPT-4-32k (only available by request)",
+                                        "description": "GPT-4 can solve difficult problems with greater accuracy than any of OpenAI's previous models. Like GPT-3.5 Turbo, GPT-4 is optimized for chat and works well for traditional completions tasks. Use the Chat Completions API to use GPT-4.",
+                                        "value": "gpt-4-32k"
+                                    },
+                                    {
+                                        "label": "GPT-35-Turbo",
+                                        "description": "GPT-3.5 models can understand and generate natural language or code. The most capable and cost effective model in the GPT-3.5 family is GPT-3.5 Turbo, which has been optimized for chat and works well for traditional completions tasks as well.",
+                                        "value": "gpt-35-turbo"
+                                    },
+                                    {
+                                        "label": "GPT-35-Turbo-16k",
+                                        "description": "GPT-3.5 models can understand and generate natural language or code. The most capable and cost effective model in the GPT-3.5 family is GPT-3.5 Turbo, which has been optimized for chat and works well for traditional completions tasks as well.",
+                                        "value": "gpt-35-turbo-16k"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiModelSettings').aiModelDeployment, 'Yes')]"
                         }
                     ]
                 }
@@ -669,7 +762,10 @@
                 "aiRestrictOutboundNetworkAccess": "[steps('aiSettings').aiRestrictOutboundNetworkAccess]",
                 "aiSystemIdentity": "[steps('aiSettings').aiSystemIdentity]",
                 "aiNwLocation": "[if(equals(steps('aiSettings').aiNwLocationOption, 'Yes'), steps('basics').resourceScope.location.name, steps('aiSettings').aiNwLocation)]",
-                "location": "[steps('basics').resourceScope.location.name]"
+                "location": "[steps('basics').resourceScope.location.name]",
+                "aiModelDeployment": "[steps('aiModelSettings').aiModelDeployment]",
+                "aiModelDeploymentName": "[steps('aiModelSettings').aiModelDeploymentName]",
+                "aiModelVersion": "[steps('aiModelSettings').aiModelVersion]"
             },
             "kind": "Subscription",
             "location": "[steps('basics').resourceScope.location.name]",
