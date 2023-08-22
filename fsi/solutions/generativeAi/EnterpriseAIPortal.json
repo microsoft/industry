@@ -145,7 +145,7 @@
                                         "value": "Yes"
                                     },
                                     {
-                                        "label": "No",
+                                        "label": "No, use local authorization with Vault access policies",
                                         "value": "No"
                                     }
                                 ],
