@@ -184,6 +184,22 @@
                 "Yes",
                 "No"
             ]
+        },
+        "aiModelDeployment": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "aiModelDeploymentName": {
+            "type": "string",
+            "defaultValue": ""
+        },       
+        "aiModelVersion": {
+            "type": "string",
+            "defaultValue": ""
         }
     },
     "variables": {
@@ -195,7 +211,8 @@
             "rgKeyVersionTemplateUri": "[uri(deployment().properties.templateLink.uri, 'rgKey.json')]",
             "rgAzureOpenAiObjectIdTemplateUri": "[uri(deployment().properties.templateLink.uri, 'rgAzureAiObjectId.json')]",
             "rgRbacTemplateUri": "[uri(deployment().properties.templateLink.uri, 'rgRbac.json')]",
-            "azureOpenAiCmkTemplateUri": "[uri(deployment().properties.templateLink.uri, 'cmkAzureOpenAi.json')]"
+            "azureOpenAiCmkTemplateUri": "[uri(deployment().properties.templateLink.uri, 'cmkAzureOpenAi.json')]",
+            "azureOpenAiModelTemplateUri": "[uri(deployment().properties.templateLink.uri, 'modelDeployment.json')]"
         },
         "deploymentSuffix": "[concat('-', deployment().location, guid(parameters('prefix')))]",
         "deploymentNames": {
@@ -207,7 +224,8 @@
             "rgAzureAiObjectIdDeploymentName": "[take(concat(parameters('prefix'), '-objectId', variables('deploymentSuffix')), 64)]",
             "rgRbac1DeploymentName": "[take(concat(parameters('prefix'), '-rbac1', variables('deploymentSuffix')), 64)]",
             "rgRbac2DeploymentName": "[take(concat(parameters('prefix'), '-rbac2', variables('deploymentSuffix')), 64)]",
-            "azureOpenAiFinalDeploymentName": "[take(concat(parameters('prefix'), '-aoacmk', variables('deploymentSuffix')), 64)]"
+            "azureOpenAiFinalDeploymentName": "[take(concat(parameters('prefix'), '-aoacmk', variables('deploymentSuffix')), 64)]",
+            "azureOpenAiModelDeploymentName": "[take(concat(parameters('prefix'), '-aoaModel', variables('deploymentSuffix')), 64)]"
         },
         "resourceNames": {
             "rgName": "[concat(parameters('prefix'), '-rg-', parameters('location'))]"
@@ -552,6 +570,39 @@
                     },
                     "aiRestrictOutboundNetworkAccess": {
                         "value": "[parameters('aiRestrictOutboundNetworkAccess')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('aiModelDeployment'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2022-09-01",
+            "name": "[variables('deploymentNames').azureOpenAiModelDeploymentName]",
+            "resourceGroup": "[variables('resourceNames').rgName]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').azureOpenAiFinalDeploymentName)]",
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').azureOpenAiDeploymentName)]"
+
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('templateUris').azureOpenAiModelTemplateUri]"
+                },
+                "parameters": {
+                    "prefix": {
+                        "value": "[parameters('prefix')]"
+                    },
+                    "aiModelDeploymentName": {
+                        "value": "[parameters('aiModelDeploymentName')]"
+                    },
+                    "aiModelVersion": {
+                        "value": "[parameters('aiModelVersion')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
                     }
                 }
             }

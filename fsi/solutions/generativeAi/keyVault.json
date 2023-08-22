@@ -125,14 +125,15 @@
     "variables": {
         "name-compliant-keyvault": "[concat(parameters('prefix'), '-', parameters('location'), '-kv')]",
         "name-compliant-keyvault-pe": "[concat(parameters('prefix'), '-keyvault-pe')]",
+        "name-compliant-keyvault-asg": "[concat(parameters('prefix'), '-keyvault-asg')]",
         "name-compliant-keyvault-st-cmk-name": "[format('{0}/{1}', variables('name-compliant-keyvault'), parameters('stCmkKeyName'))]",
         "name-compliant-keyvault-ai-cmk-name": "[format('{0}/{1}', variables('name-compliant-keyvault'), parameters('aiCmkKeyName'))]",
         "denyFwAcls": {
-                    "bypass": "AzureServices",
-                    "defaultAction": "Deny",
-                    "ipRules": [],
-                    "virtualNetworkRules": []
-                }
+            "bypass": "AzureServices",
+            "defaultAction": "Deny",
+            "ipRules": [],
+            "virtualNetworkRules": []
+        }
     },
     "resources": [
         {
@@ -195,11 +196,23 @@
                         },
                         {
                             "condition": "[and(equals(parameters('kvDisableNetworkAccess'), 'Yes'), not(empty(parameters('kvSubnetId'))))]",
+                            "type": "Microsoft.Network/applicationSecurityGroups",
+                            "apiVersion": "2023-04-01",
+                            "name": "[variables('name-compliant-keyvault-asg')]",
+                            "location": "[parameters('kvNwLocation')]",
+                            "dependsOn": [
+                                "[concat('Microsoft.KeyVault/vaults/', variables('name-compliant-keyvault'))]"
+                            ],
+                            "properties": {}
+                        },
+                        {
+                            "condition": "[and(equals(parameters('kvDisableNetworkAccess'), 'Yes'), not(empty(parameters('kvSubnetId'))))]",
                             "type": "Microsoft.Network/privateEndpoints",
-                            "apiVersion": "2020-04-01",
+                            "apiVersion": "2021-03-01",
                             "name": "[variables('name-compliant-keyvault-pe')]",
                             "location": "[parameters('kvNwLocation')]",
                             "dependsOn": [
+                                "[concat('Microsoft.Network/applicationSecurityGroups/', variables('name-compliant-keyvault-asg'))]",
                                 "[concat('Microsoft.KeyVault/vaults/', variables('name-compliant-keyvault'))]"
                             ],
                             "properties": {
@@ -216,7 +229,12 @@
                                 ],
                                 "subnet": {
                                     "id": "[parameters('kvSubnetId')]"
-                                }
+                                },
+                                "applicationSecurityGroups": [
+                                    {
+                                        "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.Network/applicationSecurityGroups/', variables('name-compliant-keyvault-asg'))]"
+                                    }
+                                ]
                             }
                         },
                         {
