@@ -147,7 +147,7 @@
                             "location": "[parameters('aiNwLocation')]",
                             "dependsOn": [
                                 "[concat('Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureOpenAi'))]",
-                                "[resourceId('Microsoft.Network/applicationSecurityGroups', variables('name-compliant-openAi-asg'))]"
+                                "[concat('Microsoft.Network/applicationSecurityGroups/', variables('name-compliant-openAi-asg'))]"
 
                             ],
                             "properties": {
