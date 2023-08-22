@@ -703,9 +703,9 @@
                             "placeholder": "",
                             "defaultValue": "GPT-35-Turbo",
                             "toolTip": "",
-                            "multiselect": true,
+                            "multiselect": false,
                             "multiLine": true,
-                            "selectAll": true,
+                            "selectAll": false,
                             "defaultDescription": "Select the models you want to deploy to you Azure Open AI service",
                             "filter": true,
                             "constraints": {
