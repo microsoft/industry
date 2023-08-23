@@ -376,7 +376,7 @@
                         "value": "[parameters('location')]"
                     },
                     "userAssignedIdentityResourceId": {
-                        "value": "[reference(variables('deploymentNames').managedIdentityDeploymentName).outputs.identityResourceId.value]"
+                        "value": "[if(equals(parameters('aiSystemIdentity'), 'Yes'), reference(variables('deploymentNames').managedIdentityDeploymentName).outputs.identityResourceId.value, json(''))]"
                     },
                     "stSubnetId": {
                         "value": "[parameters('stSubnetId')]"
@@ -499,7 +499,7 @@
                         "value": "ServicePrincipal"
                     },
                     "principalId": {
-                        "value": "[reference(variables('deploymentNames').rgAzureAiObjectIdDeploymentName).outputs.systemIdentityId.value]"
+                        "value": "[if(equals(parameters('aiSystemIdentity'), 'Yes'), reference(variables('deploymentNames').rgAzureAiObjectIdDeploymentName).outputs.systemIdentityId.value, json(''))]"
                     }
                 }
             }
@@ -527,7 +527,7 @@
                         "value": "ServicePrincipal"
                     },
                     "principalId": {
-                        "value": "[reference(variables('deploymentNames').rgAzureAiObjectIdDeploymentName).outputs.systemIdentityId.value]"
+                        "value": "[if(equals(parameters('aiSystemIdentity'), 'Yes'), reference(variables('deploymentNames').rgAzureAiObjectIdDeploymentName).outputs.systemIdentityId.value, json(''))]"
                     }
                 }
             }
@@ -556,7 +556,7 @@
                         "value": "[parameters('location')]"
                     },
                     "aiCmkKeyVersion": {
-                        "value": "[reference(variables('deploymentNames').rgKeyVersionDeploymentName).outputs.keyVersion.value]"
+                        "value": "[if(not(empty(parameters('aiCmkKeyName'))), reference(variables('deploymentNames').rgKeyVersionDeploymentName).outputs.keyVersion.value, json(''))]"
                     },
                     "aiRbacAuthz": {
                         "value": "[parameters('aiRbacAuthz')]"
