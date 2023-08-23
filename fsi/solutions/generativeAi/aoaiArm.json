@@ -376,7 +376,7 @@
                         "value": "[parameters('location')]"
                     },
                     "userAssignedIdentityResourceId": {
-                        "value": "[if(equals(parameters('aiSystemIdentity'), 'Yes'), reference(variables('deploymentNames').managedIdentityDeploymentName).outputs.identityResourceId.value, json(''))]"
+                        "value": "[if(equals(parameters('aiSystemIdentity'), 'Yes'), reference(variables('deploymentNames').managedIdentityDeploymentName).outputs.identityResourceId.value, '')]"
                     },
                     "stSubnetId": {
                         "value": "[parameters('stSubnetId')]"
@@ -499,7 +499,7 @@
                         "value": "ServicePrincipal"
                     },
                     "principalId": {
-                        "value": "[if(equals(parameters('aiSystemIdentity'), 'Yes'), reference(variables('deploymentNames').rgAzureAiObjectIdDeploymentName).outputs.systemIdentityId.value, json(''))]"
+                        "value": "[if(equals(parameters('aiSystemIdentity'), 'Yes'), reference(variables('deploymentNames').rgAzureAiObjectIdDeploymentName).outputs.systemIdentityId.value, '')]"
                     }
                 }
             }
@@ -527,7 +527,7 @@
                         "value": "ServicePrincipal"
                     },
                     "principalId": {
-                        "value": "[if(equals(parameters('aiSystemIdentity'), 'Yes'), reference(variables('deploymentNames').rgAzureAiObjectIdDeploymentName).outputs.systemIdentityId.value, json(''))]"
+                        "value": "[if(equals(parameters('aiSystemIdentity'), 'Yes'), reference(variables('deploymentNames').rgAzureAiObjectIdDeploymentName).outputs.systemIdentityId.value, '')]"
                     }
                 }
             }
@@ -556,7 +556,7 @@
                         "value": "[parameters('location')]"
                     },
                     "aiCmkKeyVersion": {
-                        "value": "[if(not(empty(parameters('aiCmkKeyName'))), reference(variables('deploymentNames').rgKeyVersionDeploymentName).outputs.keyVersion.value, json(''))]"
+                        "value": "[if(not(empty(parameters('aiCmkKeyName'))), reference(variables('deploymentNames').rgKeyVersionDeploymentName).outputs.keyVersion.value, '')]"
                     },
                     "aiRbacAuthz": {
                         "value": "[parameters('aiRbacAuthz')]"

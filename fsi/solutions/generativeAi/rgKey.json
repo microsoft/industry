@@ -3,13 +3,15 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "prefix": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": ""
         },
         "location": {
             "type": "string"
         },
         "aiCmkKeyName": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": ""
         }
     },
     "variables": {
@@ -19,7 +21,7 @@
     "outputs": {
         "keyVersion": {
             "type": "string",
-            "value": "[last(split(reference(resourceId('Microsoft.KeyVault/vaults/keys', variables('name-compliant-keyvault'), parameters('aiCmkKeyName')),'2021-10-01').keyUriWithVersion, '/'))]"
+            "value": "[if(not(empty(parameters('aiCmkKeyName'))), last(split(reference(resourceId('Microsoft.KeyVault/vaults/keys', variables('name-compliant-keyvault'), parameters('aiCmkKeyName')),'2021-10-01').keyUriWithVersion, '/')), '')]"
         }
     }
 }
