@@ -127,7 +127,9 @@
         "name-compliant-keyvault-pe": "[concat(parameters('prefix'), '-keyvault-pe')]",
         "name-compliant-keyvault-asg": "[concat(parameters('prefix'), '-keyvault-asg')]",
         "name-compliant-keyvault-st-cmk-name": "[format('{0}/{1}', variables('name-compliant-keyvault'), parameters('stCmkKeyName'))]",
+        "no-st-cmk-name": "[format('{0}/{1}', variables('name-compliant-keyvault'), 'nostcmk')]",
         "name-compliant-keyvault-ai-cmk-name": "[format('{0}/{1}', variables('name-compliant-keyvault'), parameters('aiCmkKeyName'))]",
+        "no-ai-cmk-name": "[format('{0}/{1}', variables('name-compliant-keyvault'), 'nostcmk')]",
         "denyFwAcls": {
             "bypass": "AzureServices",
             "defaultAction": "Deny",
@@ -241,7 +243,7 @@
                             "condition": "[not(empty(parameters('stCmkKeyName')))]",
                             "type": "Microsoft.KeyVault/vaults/keys",
                             "apiVersion": "2021-10-01",
-                            "name": "[variables('name-compliant-keyvault-st-cmk-name')]",
+                            "name": "[if(not(empty(parameters('stCmkKeyName'))), variables('name-compliant-keyvault-st-cmk-name'), variables('no-st-cmk-name'))]",
                             "dependsOn": [
                                 "[concat('Microsoft.KeyVault/vaults/', variables('name-compliant-keyvault'))]",
                                 "[concat('Microsoft.Network/privateEndpoints/', variables('name-compliant-keyvault-pe'))]"
@@ -273,7 +275,7 @@
                             "condition": "[not(empty(parameters('aiCmkKeyName')))]",
                             "type": "Microsoft.KeyVault/vaults/keys",
                             "apiVersion": "2021-10-01",
-                            "name": "[variables('name-compliant-keyvault-ai-cmk-name')]",
+                            "name": "[if(not(empty(parameters('aiCmkKeyName'))), variables('name-compliant-keyvault-ai-cmk-name'), variables('no-ai-cmk-name'))]",
                             "dependsOn": [
                                 "[concat('Microsoft.KeyVault/vaults/', variables('name-compliant-keyvault'))]",
                                 "[concat('Microsoft.Network/privateEndpoints/', variables('name-compliant-keyvault-pe'))]"
