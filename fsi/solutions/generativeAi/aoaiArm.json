@@ -38,14 +38,14 @@
         },
         "stCmkKeyName": {
             "type": "string",
-            "defaultValue": "key-storage",
+            "defaultValue": "",
             "metadata": {
                 "description": "Provide a name for the customer-managed key that will be used for storage encryption."
             }
         },
         "aiCmkKeyName": {
             "type": "string",
-            "defaultValue": "key-ai",
+            "defaultValue": "",
             "metadata": {
                 "description": "Provide a name for the customer-managed key that will be used for Azure Open AI."
             }
@@ -452,6 +452,7 @@
             }
         },
         {
+            "condition": "[equals(parameters('aiSystemIdentity'), 'Yes')]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2022-09-01",
             "name": "[variables('deploymentNames').rgAzureAiObjectIdDeploymentName]",
@@ -476,6 +477,7 @@
             }
         },
         {
+            "condition": "[equals(parameters('aiSystemIdentity'), 'Yes')]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2022-09-01",
             "name": "[variables('deploymentNames').rgRbac1DeploymentName]",
@@ -503,6 +505,7 @@
             }
         },
         {
+            "condition": "[equals(parameters('aiSystemIdentity'), 'Yes')]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2022-09-01",
             "name": "[variables('deploymentNames').rgRbac2DeploymentName]",
@@ -530,6 +533,7 @@
             }
         },
         {
+            "condition": "[not(empty(parameters('aiCmkKeyName')))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2022-09-01",
             "name": "[variables('deploymentNames').azureOpenAiFinalDeploymentName]",

@@ -257,7 +257,9 @@
                             "placeholder": "",
                             "defaultValue": "",
                             "toolTip": "Use only allowed characters",
-                            "constraints": {},
+                            "constraints": {
+                                "required": true
+                            },
                             "visible": "[equals(steps('kvSettings').kvDisableNetworkAccess, 'Yes')]"
                         },
                         {
@@ -427,7 +429,9 @@
                             "placeholder": "",
                             "defaultValue": "",
                             "toolTip": "Use only allowed characters",
-                            "constraints": {},
+                            "constraints": {
+                                "required": true
+                            },
                             "visible": "[equals(steps('stSettings').stDisableNetworkAccess, 'Yes')]"
                         },
                         {
@@ -597,7 +601,9 @@
                             "placeholder": "",
                             "defaultValue": "",
                             "toolTip": "Use only allowed characters",
-                            "constraints": {},
+                            "constraints": {
+                                "required": true
+                            },
                             "visible": "[equals(steps('aiSettings').aiDisableNetworkAccess, 'Yes')]"
                         },
                         {
