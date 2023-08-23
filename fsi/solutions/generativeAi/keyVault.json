@@ -45,14 +45,14 @@
         },
         "stCmkKeyName": {
             "type": "string",
-            "defaultValue": "key1",
+            "defaultValue": "",
             "metadata": {
                 "description": "Provide a name for the customer-managed key that will be used for storage encryption."
             }
         },
         "aiCmkKeyName": {
             "type": "string",
-            "defaultValue": "key2",
+            "defaultValue": "",
             "metadata": {
                 "description": "Provide a name for the customer-managed key that will be used for storage encryption."
             }
