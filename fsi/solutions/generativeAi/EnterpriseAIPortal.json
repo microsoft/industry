@@ -10,13 +10,41 @@
                     "label": "Deployment location",
                     "elements": [
                         {
-                            "name": "deploymentInfo",
-                            "type": "Microsoft.Common.InfoBox",
+                            "name": "overviewSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Overview",
+                            "elements": [],
+                            "visible": true
+                        },
+                        {
+                            "name": "aiDeploymentText",
+                            "type": "Microsoft.Common.TextBlock",
                             "visible": true,
                             "options": {
-                                "icon": "Info",
-                                "text": "Select the location for the deployment.",
-                                "uri": "https://www.microsoft.com"
+                                "text": "The 'Secure and Compliant Generative Azure Open AI' accelerator helps organizations to expedite the composition and deployment of a well-architected Azure Open AI workload, with the required pre-requisites to ensure encryption in transit and at rest, secure network connectivity, central authorization, and to comply with regulated industries at scale.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://learn.microsoft.com/azure/ai-services/openai/overview"
+                                }
+                            }
+                        },
+                        {
+                            "name": "deploymentSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Deployment Instructions",
+                            "elements": [],
+                            "visible": true
+                        },
+                        {
+                            "name": "aiDeploymentInfo",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": true,
+                            "options": {
+                                "text": "Select an Azure subscription that has been enabled for Azure Open AI and required features such as Customer-Managed Keys, Bring-your-own-Storage, and eventually ChatGPT4. Ensure you are selecting an Azure region where Azure Open AI is available before proceeding with the deployment.",
+                                "link": {
+                                    "label": "Request Access to Azure OpenAI Service",
+                                    "uri": "https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR7en2Ais5pxKtso_Pz4b1_xUOFA5Qk1UWDRBMjg0WFhPMkIzTzhKQ1dWNyQlQCN0PWcu"
+                                }
                             }
                         },
                         {
