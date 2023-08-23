@@ -31,6 +31,7 @@
         },
         "kvSubnetId": {
             "type": "string",
+            "defaultValue": "",
             "metadata": {
                 "description": "Provide the resource Id of the existing subnet that will be used for the Azure Open AI instance that will be created"
             }
@@ -78,7 +79,7 @@
                 "Yes",
                 "No"
             ],
-            "defaultValue": "No"
+            "defaultValue": "Yes"
         },
         "kvSoftDelete": {
             "type": "string",
