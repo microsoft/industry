@@ -248,7 +248,7 @@
                                         "value": "outbound"
                                     },
                                     {
-                                        "label": "Block both indbound and outbound",
+                                        "label": "Block both inbound and outbound",
                                         "value": "both"
                                     },
                                     {
