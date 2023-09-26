@@ -4,13 +4,13 @@ Azure Policy provides comprehensive guardrails capabilities directly embedded in
 
 This article documents all the policies included in the FSI Landing Zones on Microsoft Azure, their intent, and assignment scopes.
 
-> **NOTE**: Which policies are being assigned will depend on some of the selections you make when deploying FSI Landing Zones on Microsoft Azure, especially on the tab for selecting which services should be enabled within the landing zones.
+> **NOTE**: Which policies are being assigned will depend on some of the selections you make when deploying FSI Landing Zones on Microsoft Azure, especially on the tab for selecting which services should be enabled within the landing zones. Nevertheless, all the policy definitions will always be created at the intermediate root management group, and can be assigned at any time, at any scope, subject to the Azure Service Enablement within each organization.
 
 ![Policies](./fsipolicies.png)
 
-The subsequent sections will provide a summary of all the **policy assignments** at each level of the Management Group hierarchy.
+The subsequent sections will provide a summary of all the **policy assignments** at each level of the Management Group hierarchy, and by design, each child node will inherit the policy assignments from its parent nodes.
 
-### Intermediate Root management group
+### Intermediate Root management group (e.g., FSI)
 
 This management group is a parent to all the other management groups created when deploying FSI Landing Zones on Microsoft Azure.
 
@@ -276,7 +276,7 @@ Defender for Azure Cosmos DB detects potential SQL injections, known bad actors 
 | Microsoft cloud security benchmark | Azure SQL Managed Instances should disable public network access | Disabling public network access (public endpoint) on Azure SQL Managed Instances improves security by ensuring that they can only be accessed from inside their virtual networks or via Private Endpoints. To learn more about public network access, visit https://aka.ms/mi-public-endpoint. |
 | Microsoft cloud security benchmark | Storage accounts should prevent shared key access | Audit requirement of Azure Active Directory (Azure AD) to authorize requests for your storage account. By default, requests can be authorized with either Azure Active Directory credentials, or by using the account access key for Shared Key authorization. Of these two types of authorization, Azure AD provides superior security and ease of use over Shared Key, and is recommended by Microsoft. |
 
-### Platform management group
+### Platform management group (e.g., FSI-Platform)
 
 | PolicySetDefinition | PolicyDefinition DisplayName | PolicyDefinition Description |
 |-----------------------|-----------------------------|-----------------------------|
@@ -365,13 +365,13 @@ Defender for Azure Cosmos DB detects potential SQL injections, known bad actors 
 | Enforce secure-by-default Network and Networking services for Financial Services Industry | Enforce specific configuration of Network Security Groups (NSG) | This policy enforces the configuration of Network Security Groups (NSG). |
 | Enforce secure-by-default Network and Networking services for Financial Services Industry | Deploy Diagnostic Settings for Azure Firewall to Log Analytics workspace | Deploys the diagnostic settings for Azure Firewall to stream to a Log Analytics workspace when any Firewall which is missing this diagnostic settings is created or updated. The Policy will set the diagnostic with all metrics and category enabled |
 
-### Management management group
+### Management management group (e.g., FSI-Management)
 
 | PolicySetDefinition | PolicyDefinition DisplayName | PolicyDefinition Description |
 |-----------------------|-----------------------------|-----------------------------|
 |  | Configure Log Analytics workspace and automation account to centralize logs and monitoring| Deploy resource group containing Log Analytics workspace and linked automation account to centralize logs and monitoring. The automation account is aprerequisite for solutions like Updates and Change Tracking. |
 
-### Playground management group
+### Playground management group (e.g., FSI-Playground)
 
 | PolicySetDefinition | PolicyDefinition DisplayName | PolicyDefinition Description |
 |-----------------------|-----------------------------|-----------------------------|
@@ -425,7 +425,7 @@ Defender for Azure Cosmos DB detects potential SQL injections, known bad actors 
 | | Ensure there is a budget associated with the subscription | Ensure there is a budget on all subscriptions under the assigned scope to control cost and spending. | 
 || Deny vNet peering cross subscription. | This policy denies the creation of vNet Peerings outside of the same subscriptions under the assigned scope.|
 
-### Landing Zones management group
+### Landing Zones management group (e.g., FSI-Landing-Zones)
 
 | PolicySetDefinition | PolicyDefinition DisplayName | PolicyDefinition Description |
 |-----------------------|-----------------------------|-----------------------------|
