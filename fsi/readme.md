@@ -19,7 +19,7 @@ This article provides a reference architecture with prescriptive guidance and re
   * [Compliant and Secure by-default FSI Landing Zones](#letter-b)
   * [Service Enablement Framework for FSI Landing Zones](#letter-c)
   * [Operational Excellence for FSI Landing Zones](#letter-d)
-  * [Compliant workload accelerators for FSI](#letter-e)
+  * [Azure policies included in FSI Landing Zones](#letter-e)
 * [Next Steps](#next-steps)
 
 ## FSI Landing Zones on Microsoft Azure
@@ -54,9 +54,9 @@ Microsoft Azure is a cloud platform that is rapidly evolving, meaning new servic
 
 This section focuses on how organizations in the financial services industry can operationalize and democratize Microsoft Azure within their organizations, and conform to safe deployment practices both for the platform deployments, as well as application deployments into the landing zones. To solve for this in a scalable way for the financial services industry, we have developed [AzOps](https://github.com/Azure/AzOps-Accelerator) which can be used together with Azure DevOps, Github, and GitLab.
 
-<a id="letter-e"></a>![The letter e](./docs/e.png) [Compliant workload accelerators for FSI](./docs/operationalExcellence.md)
+<a id="letter-e"></a>![The letter e](./docs/e.png) [Azure policies included in FSI Landing Zones](./docs/fsiPolicies.md)
 
-A gallery of ready-to-use artifacts that can be consumed as-is and deployed by application teams into the landing zones created by FSI Landing Zones on Microsoft Azure, where they will comply with the security and governance requirements, and will be able to focus on the business requirements and the application code.
+A complete list of all the policy assignments included in the FSI Landing Zones when deploying to your Azure tenant. This article provides the display name, description, as well as the assignment scope for each of the individual policies and the policy initiatives that are created per Azure service.
 
 ## Next steps
 
