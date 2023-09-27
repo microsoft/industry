@@ -4,7 +4,28 @@ Azure Policy provides comprehensive guardrails capabilities directly embedded in
 
 This article documents all the policies included in the FSI Landing Zones on Microsoft Azure, their intent, and assignment scopes.
 
-> **NOTE**: Which policies are being assigned will depend on some of the selections you make when deploying FSI Landing Zones on Microsoft Azure, especially on the tab for selecting which services should be enabled within the landing zones. Nevertheless, all the policy definitions will always be created at the intermediate root management group, and can be assigned at any time, at any scope, subject to the Azure Service Enablement within each organization.
+## Table of contents
+
+* [FSI Landing Zones policy overview](#fsi-landing-zones-policy-overview)
+  * [Intermediate root management group](#intermediate-root-management-group-eg-fsi)
+  * [Platform management group](#platform-management-group-eg-fsi-platform)
+  * [Management management group](#management-management-group-eg-fsi-management)
+  * [Landing zones management group](#landing-zones-management-group-eg-fsi-landing-zones)
+  * [Corp management group](#corp-management-group-eg-fsi-corp)
+  * [Playground management group](#playground-management-group-eg-fsi-playground)
+* [Next Steps](#next-steps)
+
+## FSI Landing Zones policy overview
+
+The FSI Landing Zones reference implementation contains over 1000 Azure policies across 24+ Azure services, which we have developed and implemented as part of many years of experience working with FSI customers. These policies are designed to help customers meet their compliance requirements, and to provide a secure and compliant by-default environment for their workloads.
+
+The approach we have taken is as follows:
+- We provide horizontal policies where it make sense, such as ensuring Private DNS Zones are being created and registered when deploying any of the Azure services into the corp connected landing zones.
+- For each Azure service, we have taken a vertical approach as we know that service enablement is done by service by service, which is where it's critical to look at each service and its technical dimensions and domains, such as encryption, network security, authorization, logging, and more. 
+- Since all workloads will be deployed into subscriptions in the child management groups of the landing zones, the assignment of the policies will be done at the Geo management group, and the policies will be inherited by the subscriptions, regardless whether the application characteristics are cloud native or corp connected. 
+- We do not distinguish between dev, test, and prod from a policy perspective, meaning that all workloads regardless of the intent of the subscription (which may be dev, test, or prod) will be treated equally. This is important to reduce risk, and friction to the developers as they are transitioning through the various life-cycles of their development.
+
+Which policies are being assigned will depend on some of the selections you make when deploying FSI Landing Zones on Microsoft Azure, especially on the tab for selecting which services should be enabled within the landing zones. Nevertheless, all the policy definitions will always be created at the intermediate root management group, and can be assigned at any time, at any scope, subject to the Azure Service Enablement within each organization.
 
 ![Policies](./fsipolicies.png)
 
@@ -12,7 +33,7 @@ The subsequent sections will provide a summary of all the **policy assignments**
 
 ### Intermediate Root management group (e.g., FSI)
 
-This management group is a parent to all the other management groups created when deploying FSI Landing Zones on Microsoft Azure.
+This management group is a parent to all the other management groups created when deploying FSI Landing Zones on Microsoft Azure. Only the non-negotionable policies will be assigned at this scope, such as enforcing Defender for Cloud on every subscription, enablement of Activity Logs to Log Analytics for every subscription, as well as the Microsoft Cloud Security Benchmark initiative for reporting purposes.
 
 >Note: All policies assigned by FSI Landing Zones on Microsoft Azure is using the policy effect of **deny**, **deployIfNotExists**, and **modify** with only one exception, and that is the Microsoft Cloud Security Benchmark initiative which is assigned at the intermediate root management group for reporting purposes only.
 
@@ -278,6 +299,8 @@ Defender for Azure Cosmos DB detects potential SQL injections, known bad actors 
 
 ### Platform management group (e.g., FSI-Platform)
 
+The platform management group is the parent for the connectivity, management, and identity management groups which is designed to contain one or more subscription for each of the intent. The policies assigned at this scope will apply to all of them in addition to what is being inherited from the intermediate root management group created by FSI Landing Zones on Microsoft Azure.
+
 | PolicySetDefinition | PolicyDefinition DisplayName | PolicyDefinition Description |
 |-----------------------|-----------------------------|-----------------------------|
 | | Enforce centralized logging for Financial Services Industry | Enable logging by category group for Virtual network gateways (microsoft.network/virtualnetworkgateways) to Log Analytics | Resource logs should be enabled to track activities and events that take place on your resources and give you visibility and insights into any changes that occur. This policy deploys a diagnostic setting using a category group to route logs to a Log Analytics workspace for Virtual network gateways (microsoft.network/virtualnetworkgateways). |
@@ -367,11 +390,15 @@ Defender for Azure Cosmos DB detects potential SQL injections, known bad actors 
 
 ### Management management group (e.g., FSI-Management)
 
+The management mananagement group contains dedicated subscriptions per geo political boundary per the various regulatory requirements depending on the global presence of the FSI organization. 
+
 | PolicySetDefinition | PolicyDefinition DisplayName | PolicyDefinition Description |
 |-----------------------|-----------------------------|-----------------------------|
 |  | Configure Log Analytics workspace and automation account to centralize logs and monitoring| Deploy resource group containing Log Analytics workspace and linked automation account to centralize logs and monitoring. The automation account is aprerequisite for solutions like Updates and Change Tracking. |
 
 ### Playground management group (e.g., FSI-Playground)
+
+The playground management group is intended to provide a safe and secure space for the FSI organization to learn and experiment with Azure services, where the subscriptions are less restrictive from a policy perspective, yet still managed from a security perspective and cannot be used for production workloads nor reach any of the other subscriptions in the hierarchy.
 
 | PolicySetDefinition | PolicyDefinition DisplayName | PolicyDefinition Description |
 |-----------------------|-----------------------------|-----------------------------|
@@ -427,11 +454,15 @@ Defender for Azure Cosmos DB detects potential SQL injections, known bad actors 
 
 ### Landing Zones management group (e.g., FSI-Landing-Zones)
 
+The landing zones management group is the overall management group for the initial geo management group that is being created, subject to the region that is selected for deployment. For Azure service enablement, once a new Azure service is approved and must be enabled by the FSI organization, the policy assignment at this scope must be updated to allow the related resource types for that service. When deploying FSI Landing Zones on Microsoft Azure, each of the services that are selected on the **Security, Governance, and Compliance** page of the [**FSI Landing Zones**](https://aka.ms/fsilz) wizard will be enabled by default.
+
 | PolicySetDefinition | PolicyDefinition DisplayName | PolicyDefinition Description |
 |-----------------------|-----------------------------|-----------------------------|
 |  | Allowed resource types | This policy enables you to specify the resource types that your organization can deploy. Only resource types that support 'tags' and 'location' will be affected by this policy. To restrict all resources please duplicate this policy and change the 'mode' to 'All'. |
 
 ### Geo management group (e.g., FSI-North-America)
+
+The geo management group is where all the Azure policies for each service is assigned, such as Key Vault, Storage Accounts, Networking Services, Azure Open AI etc. Should there be a need to expand to another geo in the future, the recommendation will be to assign the same policy initiatives to the new geo management group as it would require different input to the parameters for the policies that has dependencies, such as new connectivity hub, Log Analytics workspace etc., in order for the organization to remain compliant while expanding.
 
 | PolicySetDefinition | PolicyDefinition DisplayName | PolicyDefinition Description |
 |-----------------------|-----------------------------|-----------------------------|
@@ -786,6 +817,8 @@ Defender for Azure Cosmos DB detects potential SQL injections, known bad actors 
 
 ### Corp management group (e.g., FSI-Corp)
 
+The corp management group has the controls specifically for the workloads that requires corp connectivity, and the policies are primarily centered on networking and connectivity.
+
 | PolicySetDefinition | PolicyDefinition DisplayName | PolicyDefinition Description |
 |-----------------------|-----------------------------|-----------------------------|
 | Enforce secure-by-default Corp Connected Landing Zones for Financial Services Industry | Configure Azure Virtual Desktop workspace resources to use private DNS zones | Use private DNS zones to override the DNS resolution for a private endpoint. A private DNS zone links to your virtual network to resolve to Azure Virtual Desktop resources. Learn more at: https://aka.ms/privatednszone. |
@@ -819,3 +852,10 @@ Defender for Azure Cosmos DB detects potential SQL injections, known bad actors 
 | Enforce secure-by-default Corp Connected Landing Zones for Financial Services Industry | Configure a private DNS Zone ID for table_secondary groupID | Configure private DNS zone group to override the DNS resolution for a table_secondary groupID private endpoint. |
 | Enforce secure-by-default Corp Connected Landing Zones for Financial Services Industry | Configure Azure File Sync to use private DNS zones | To access the private endpoint(s) for Storage Sync Service resource interfaces from a registered server, you need to configure your DNS to resolve the correct names to your private endpoint's private IP addresses. This policy creates the requisite Azure Private DNS Zone and A records for the interfaces of your Storage Sync Service private endpoint(s). |
 
+## Next Steps
+
+Deploy the FSI Landing Zones on Microsoft Azure reference implementation. Explore the user guide and the deployment experience by following the links below:
+
+| Reference Implementation | Description | Deploy | Documentation
+|:----------------------|:------------|--------|--------------|
+| FSI Landing Zones | FSI Landing Zones foundation that provides a full, rich, compliant architecture with scale-out pattern for secure-by default regions and landing zones, with a robust and customizable service enablement framework to accelerate adoption of Azure service and enables digital transformation |[![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/fsilz) | [User Guide](../referenceImplementation/readme.md)
