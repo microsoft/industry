@@ -10,9 +10,10 @@ This article documents all the policies included in the FSI Landing Zones on Mic
   * [Intermediate root management group](#intermediate-root-management-group-eg-fsi)
   * [Platform management group](#platform-management-group-eg-fsi-platform)
   * [Management management group](#management-management-group-eg-fsi-management)
-  * [Landing zones management group](#landing-zones-management-group-eg-fsi-landing-zones)
-  * [Corp management group](#corp-management-group-eg-fsi-corp)
   * [Playground management group](#playground-management-group-eg-fsi-playground)
+  * [Landing zones management group](#landing-zones-management-group-eg-fsi-landing-zones)
+  * [Geo management grouo](#geo-management-group-eg-fsi-north-america)
+  * [Corp management group](#corp-management-group-eg-fsi-corp)
 * [Next Steps](#next-steps)
 
 ## FSI Landing Zones policy overview
