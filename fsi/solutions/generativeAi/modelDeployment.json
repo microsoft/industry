@@ -19,6 +19,7 @@
             "defaultValue": "gpt-35-turbo",
             "allowedValues": [
                 "gpt-4",
+                "gpt-4-32k",
                 "gpt-35-turbo",
                 "gpt-35-turbo-16k"
             ]
@@ -28,6 +29,25 @@
         "name-compliant-azureOpenAi": "[concat(parameters('prefix'), '-', parameters('location'), '-AzOpenAI')]"
     },
     "resources": [
+        {
+            "condition": "[equals(parameters('aiModelVersion'), 'gpt-4-32k')]",
+            "type": "Microsoft.CognitiveServices/accounts/deployments",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(variables('name-compliant-azureOpenAi'), '/', parameters('aiModelDeploymentName'), '-', 'gpt4-32k')]",
+            "sku": {
+                "name": "Standard",
+                "capacity": 1
+            },
+            "properties": {
+                "model": {
+                    "format": "OpenAI",
+                    "name": "gpt-4-32k",
+                    "version": "0613"
+                },
+                "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
+                "raiPolicyName": "Microsoft.Default"
+            }
+        },
         {
             "condition": "[equals(parameters('aiModelVersion'), 'gpt-4')]",
             "type": "Microsoft.CognitiveServices/accounts/deployments",
