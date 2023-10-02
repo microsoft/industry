@@ -1,0 +1,327 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "scope": "[concat('/providers/Microsoft.Management/managementGroups/', parameters('topLevelManagementGroupPrefix'))]",
+        "policies": {
+            "policyDefinitions": [
+                {
+                    "properties": {
+                        "policyType": "Custom",
+                        "mode": "Indexed",
+                        "displayName": "Deploy Diagnostic Settings for Cognitive Search to Log Analytics workspace",
+                        "description": "Deploys the diagnostic settings for Cognitive Search to stream to a Log Analytics workspace when any Open Ai which is missing this diagnostic settings is created or updated. The Policy will set the diagnostic with all and categorys enabled.",
+                        "metadata": {
+                            "version": "1.0.0",
+                            "category": "Cognitive Search"
+                        },
+                        "parameters": {
+                            "logAnalytics": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Log Analytics workspace",
+                                    "description": "Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant 'Log Analytics Contributor' permissions (or similar) to the policy assignment's principal ID.",
+                                    "strongType": "omsWorkspace"
+                                }
+                            },
+                            "effect": {
+                                "type": "String",
+                                "defaultValue": "DeployIfNotExists",
+                                "allowedValues": [
+                                    "DeployIfNotExists",
+                                    "Disabled"
+                                ],
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                }
+                            },
+                            "profileName": {
+                                "type": "String",
+                                "defaultValue": "setbypolicy",
+                                "metadata": {
+                                    "displayName": "Profile name",
+                                    "description": "The diagnostic settings profile name"
+                                }
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "field": "type",
+                                "equals": "Microsoft.Search/searchServices"
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]",
+                                "details": {
+                                    "type": "Microsoft.Insights/diagnosticSettings",
+                                    "name": "[[parameters('profileName')]",
+                                    "existenceCondition": {
+                                        "allOf": [
+                                            {
+                                                "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
+                                                "equals": "[[parameters('logAnalytics')]"
+                                            }
+                                        ]
+                                    },
+                                    "roleDefinitionIds": [
+                                        "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+                                        "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
+                                    ],
+                                    "deployment": {
+                                        "properties": {
+                                            "mode": "Incremental",
+                                            "template": {
+                                                "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                                                "contentVersion": "1.0.0.0",
+                                                "parameters": {
+                                                    "resourceName": {
+                                                        "type": "String"
+                                                    },
+                                                    "logAnalytics": {
+                                                        "type": "String"
+                                                    },
+                                                    "location": {
+                                                        "type": "String"
+                                                    },
+                                                    "profileName": {
+                                                        "type": "String"
+                                                    }
+                                                },
+                                                "variables": {},
+                                                "resources": [
+                                                    {
+                                                        "type": "Microsoft.Search/searchServices/providers/diagnosticSettings",
+                                                        "apiVersion": "2021-05-01-preview",
+                                                        "name": "[[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
+                                                        "location": "[[parameters('location')]",
+                                                        "dependsOn": [],
+                                                        "properties": {
+                                                            "workspaceId": "[[parameters('logAnalytics')]",
+                                                            "logs": [
+                                                                {
+                                                                    "categoryGroup": "allLogs",
+                                                                    "enabled": true
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                ],
+                                                "outputs": {}
+                                            },
+                                            "parameters": {
+                                                "logAnalytics": {
+                                                    "value": "[[parameters('logAnalytics')]"
+                                                },
+                                                "location": {
+                                                    "value": "[[field('location')]"
+                                                },
+                                                "resourceName": {
+                                                    "value": "[[field('name')]"
+                                                },
+                                                "profileName": {
+                                                    "value": "[[parameters('profileName')]"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "name": "Dine-Diagnostics-CognitiveSearch"
+                }
+            ]
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "[variables('policies').policyDefinitions[copyIndex()].name]",
+            "apiVersion": "2019-09-01",
+            "copy": {
+                "name": "policyDefinitionCopy",
+                "count": "[length(variables('policies').policyDefinitions)]"
+            },
+            "properties": {
+                "displayName": "[variables('policies').policyDefinitions[copyIndex()].properties.displayName]",
+                "description": "[variables('policies').policyDefinitions[copyIndex()].properties.description]",
+                "mode": "[variables('policies').policyDefinitions[copyIndex()].properties.mode]",
+                "policyType": "Custom",
+                "parameters": "[variables('policies').policyDefinitions[copyIndex()].properties.parameters]",
+                "policyRule": "[variables('policies').policyDefinitions[copyIndex()].properties.policyRule]",
+                "metadata": "[variables('policies').policyDefinitions[copyIndex()].properties.metadata]"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2021-06-01",
+            "name": "Compliant-CognitiveSearch",
+            "dependsOn": [
+                "policyDefinitionCopy"
+            ],
+            "properties": {
+                "metadata": {
+                    "version": "1.0.0",
+                    "category": "Cognitive Search"
+                },
+                "displayName": "Enforce secure-by-default Cognitive Search for Financial Services Industry",
+                "description": "This policy initiative is a group of policies that ensures Cognitive Search is compliant per FSI Landing Zones",
+                "policyDefinitionGroups": [
+                    {
+                        "name": "Encryption",
+                        "category": "Data Protection",
+                        "displayName": "Ensure compliance for data encryption, protection, and recovery for Cognitive Search",
+                        "description": "Policy to ensure data protection for Cognitive Search"
+                    },
+                    {
+                        "name": "Network",
+                        "category": "Network Security",
+                        "displayName": "Ensure Cognitive Search is not accessible over the public internet",
+                        "description": "Policy to ensure Cognitive Search not accessible over the public internet"
+                    },
+                    {
+                        "name": "Identity",
+                        "category": "Identity Management",
+                        "displayName": "Ensure usage of centralized identity and auhtorization system for Cognitive Search",
+                        "description": "Policy to ensure Cognitive Search is not using local authorization"
+                    },
+                    {
+                        "name": "Logging",
+                        "category": "Logging and Threat Detection",
+                        "displayName": "Ensure Cognitive Search is logging all events to Log Analytics",
+                        "description": "Policy to ensure Cognitive Search is logging all events to Log Analytics workspace"
+                    }
+                ],
+                "parameters": {
+                    "cognitiveSearchDiagnostics": {
+                        "type": "string",
+                        "defaultValue": "DeployIfNotExists"
+                    },
+                    "cognitiveSearchLogAnalyticsResourceId": {
+                        "type": "string",
+                        "defaultValue": ""
+                    },
+                    "cognitiveSearchSku": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "cognitiveSearchPublicEndpoint": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "cognitiveSearchLocalAuth": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "cognitiveSearchCmk": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "modifyCognitiveSearchLocalAuth": {
+                        "type": "string",
+                        "defaultValue": "Modify"
+                    },
+                    "modifyCognitiveSearchPublicEndpoint": {
+                        "type": "string",
+                        "defaultValue": "Modify"
+                    }
+                },
+                "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[0].name)]",
+                        "policyDefinitionReferenceId": "Dine-CognitiveSearch-Diagnostics",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveSearchDiagnostics')]"
+                            },
+                            "logAnalytics": {
+                                "value": "[[parameters('cognitiveSearchLogAnalyticsResourceId')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/a049bf77-880b-470f-ba6d-9f21c530cf83",
+                        "policyDefinitionReferenceId": "Deny-CognitiveSearch-SKU",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveSearchSku')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ee980b6d-0eca-4501-8d54-f6290fd512c3",
+                        "policyDefinitionReferenceId": "Deny-CognitiveSearch-PublicEndpoint",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveSearchPublicEndpoint')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/6300012e-e9a4-4649-b41f-a85f5c43be91",
+                        "policyDefinitionReferenceId": "Deny-CongitiveSearch-LocalAuth",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveSearchLocalAuth')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/76a56461-9dc0-40f0-82f5-2453283afa2f",
+                        "policyDefinitionReferenceId": "Deny-CognitiveSearch-Cmk",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('cognitiveSearchCmk')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/4eb216f2-9dba-4979-86e6-5d7e63ce3b75",
+                        "policyDefinitionReferenceId": "Modify-CogntiveSearch-LocalAuth",
+                        "groupNames": [
+                            "Identity"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('modifyCognitiveSearchLocalAuth')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/9cee519f-d9c1-4fd9-9f79-24ec3449ed30",
+                        "policyDefinitionReferenceId": "Modify-CogntiveSearch-PublicEndpoint",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('modifyCognitiveSearchPublicEndpoint')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
