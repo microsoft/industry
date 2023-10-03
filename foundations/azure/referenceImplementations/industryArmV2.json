@@ -605,7 +605,7 @@
         }
     },
     "variables": {
-                // Logic to map selected location (or deployment().location) to map to geographical management group under LZ
+    // Logic to map selected location (or deployment().location) to map to geographical management group under LZ
         "geoMap": {
             "eastus": "North-America",
             "eastus2": "North-America",
@@ -743,7 +743,9 @@
             "compliantContainerRegistryPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-ContainerRegistryPolicySetDefinition.json')]",            
             "compliantContainerRegistryPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-ContainerRegistryPolicyAssignment.json')]",
             "compliantCosmosDbPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-CosmosDbPolicySetDefinition.json')]",            
-            "compliantCosmosDbPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-CosmosDbPolicyAssignment.json')]",            
+            "compliantCosmosDbPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-CosmosDbPolicyAssignment.json')]",
+            "compliantCognitiveSearchPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-CognitiveSearchPolicySetDefinition.json')]",
+            "compliantCognitiveSearchPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-CognitiveSearchPolicyAssignment.json')]",        
             "compliantDataExplorerPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-DataExplorerPolicySetDefinition.json')]",            
             "compliantDataExplorerPolicyAssignment": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyAssignments/Compliant-DataExplorerPolicyAssignment.json')]",            
             "compliantDataFactoryPolicySetDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/policyDefinitions/Compliant-DataFactoryPolicySetDefinition.json')]",
@@ -825,6 +827,7 @@
             "compliantAppServiceDeploymentName": "[take(concat(variables('industry'), '-Compliant-AppService', variables('deploymentSuffix')), 64)]",
             "compliantAutomationDeploymentName": "[take(concat(variables('industry'), '-Compliant-Automation', variables('deploymentSuffix')), 64)]",
             "compliantBackupDeploymentName": "[take(concat(variables('industry'), '-Compliant-Backup', variables('deploymentSuffix')), 64)]",
+            "compliantCognitiveSearchDeploymentName": "[take(concat(variables('industry'), '-Compliant-CognitiveSearch', variables('deploymentSuffix')), 64)]",
             "compliantComputeDeploymentName": "[take(concat(variables('industry'), '-Compliant-Compute', variables('deploymentSuffix')), 64)]",
             "compliantContainerAppsDeploymentName": "[take(concat(variables('industry'), '-Compliant-ContainerApps', variables('deploymentSuffix')), 64)]",
             "compliantContainerInstanceDeploymentName": "[take(concat(variables('industry'), '-Compliant-ContainerInstance', variables('deploymentSuffix')), 64)]",
@@ -919,6 +922,7 @@
             "compliantAutomationAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-Auto', variables('deploymentSuffix')), 64)]",
             "compliantBackupAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-Backup', variables('deploymentSuffix')), 64)]",
             "compliantCosmosDbAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-CosmosDb', variables('deploymentSuffix')), 64)]",
+            "compliantCognitiveSearchAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-Search', variables('deploymentSuffix')), 64)]",
             "compliantComputeAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-Compute', variables('deploymentSuffix')), 64)]",
             "compliantDataExplorerAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-ADE', variables('deploymentSuffix')), 64)]",
             "compliantDataFactoryAssignmentDeploymentName": "[take(concat(variables('industry'), '-Enforce-Compliant-ADF', variables('deploymentSuffix')), 64)]",
@@ -1384,6 +1388,11 @@
                 "microsoft.recoveryservices/vaults/replicationprotectionintents",
                 "microsoft.recoveryservices/vaults/replicationrecoveryplans",
                 "microsoft.recoveryservices/vaults/replicationvaultsettings"
+            ],
+            "cognitiveSearch": [
+                "microsoft.search/searchServices",
+                "microsoft.search/searchServices/privateEndpointConnections",
+                "microsoft.search/searchServices/sharedPrivateLinkServices"
             ],
             "containerApps": [
                 "microsoft.app/connectedenvironments",
@@ -2738,7 +2747,7 @@
                 "microsoft.managedidentity/userassignedidentities/federatedidentitycredentials"
             ]
         },
-        "allowedResourcesMap": "[concat(if(contains(parameters('compliantAzureServices'), 'Apim'), variables('allowedResources').apiManagement, json('[]')), if(contains(parameters('compliantAzureServices'), 'Automation'), variables('allowedResources').automation, json('[]')),if(contains(parameters('compliantAzureServices'), 'Backup'), variables('allowedResources').backup, json('[]')),if(contains(parameters('compliantAzureServices'), 'Compute'), variables('allowedResources').compute, json('[]')),if(contains(parameters('compliantAzureServices'), 'ContainerApps'), variables('allowedResources').containerApps, json('[]')), if(contains(parameters('compliantAzureServices'), 'ContainerInstance'), variables('allowedResources').containerInstance, json('[]')), if(contains(parameters('compliantAzureServices'), 'ContainerRegistry'), variables('allowedResources').containerRegistry, json('[]')), if(contains(parameters('compliantAzureServices'), 'CosmosDb'), variables('allowedResources').cosmosDb, json('[]')), if(contains(parameters('compliantAzureServices'), 'DataExplorer'), variables('allowedResources').dataExplorer, json('[]')), if(contains(parameters('compliantAzureServices'), 'DataFactory'), variables('allowedResources').dataFactory, json('[]')), if(contains(parameters('compliantAzureServices'), 'EventGrid'), variables('allowedResources').eventGrid, json('[]')), if(contains(parameters('compliantAzureServices'), 'EventHub'), variables('allowedResources').eventHub, json('[]')), if(contains(parameters('compliantAzureServices'), 'KeyVault'), variables('allowedResources').keyVault, json('[]')), if(contains(parameters('compliantAzureServices'), 'Kubernetes'), variables('allowedResources').kubernetes, json('[]')), if(contains(parameters('compliantAzureServices'), 'MachineLearning'), variables('allowedResources').machineLearning, json('[]')), if(contains(parameters('compliantAzureServices'), 'Networking'), variables('allowedResources').network, json('[]')), if(contains(parameters('compliantAzureServices'), 'OpenAi'), variables('allowedResources').openAi, json('[]')), if(contains(parameters('compliantAzureServices'), 'PostgreSql'), variables('allowedResources').postgreSql, json('[]')), if(contains(parameters('compliantAzureServices'), 'ServiceBus'), variables('allowedResources').serviceBus, json('[]')), if(contains(parameters('compliantAzureServices'), 'Sql'), variables('allowedResources').sql, json('[]')), if(contains(parameters('compliantAzureServices'), 'StorageAccount'), variables('allowedResources').storage, json('[]')), if(contains(parameters('compliantAzureServices'), 'Synapse'), variables('allowedResources').synapse, json('[]')), if(contains(parameters('compliantAzureServices'), 'DesktopVirtualization'), variables('allowedResources').vdi, json('[]')), variables('allowedResources').platform)]"
+        "allowedResourcesMap": "[concat(if(contains(parameters('compliantAzureServices'), 'Apim'), variables('allowedResources').apiManagement, json('[]')), if(contains(parameters('compliantAzureServices'), 'Automation'), variables('allowedResources').automation, json('[]')),if(contains(parameters('compliantAzureServices'), 'Backup'), variables('allowedResources').backup, json('[]')),if(contains(parameters('complaintAzureServices'), 'CognitiveSearch'), variables('allowedResources').cognitiveSearch, json('[]')),if(contains(parameters('compliantAzureServices'), 'Compute'), variables('allowedResources').compute, json('[]')),if(contains(parameters('compliantAzureServices'), 'ContainerApps'), variables('allowedResources').containerApps, json('[]')), if(contains(parameters('compliantAzureServices'), 'ContainerInstance'), variables('allowedResources').containerInstance, json('[]')), if(contains(parameters('compliantAzureServices'), 'ContainerRegistry'), variables('allowedResources').containerRegistry, json('[]')), if(contains(parameters('compliantAzureServices'), 'CosmosDb'), variables('allowedResources').cosmosDb, json('[]')), if(contains(parameters('compliantAzureServices'), 'DataExplorer'), variables('allowedResources').dataExplorer, json('[]')), if(contains(parameters('compliantAzureServices'), 'DataFactory'), variables('allowedResources').dataFactory, json('[]')), if(contains(parameters('compliantAzureServices'), 'EventGrid'), variables('allowedResources').eventGrid, json('[]')), if(contains(parameters('compliantAzureServices'), 'EventHub'), variables('allowedResources').eventHub, json('[]')), if(contains(parameters('compliantAzureServices'), 'KeyVault'), variables('allowedResources').keyVault, json('[]')), if(contains(parameters('compliantAzureServices'), 'Kubernetes'), variables('allowedResources').kubernetes, json('[]')), if(contains(parameters('compliantAzureServices'), 'MachineLearning'), variables('allowedResources').machineLearning, json('[]')), if(contains(parameters('compliantAzureServices'), 'Networking'), variables('allowedResources').network, json('[]')), if(contains(parameters('compliantAzureServices'), 'OpenAi'), variables('allowedResources').openAi, json('[]')), if(contains(parameters('compliantAzureServices'), 'PostgreSql'), variables('allowedResources').postgreSql, json('[]')), if(contains(parameters('compliantAzureServices'), 'ServiceBus'), variables('allowedResources').serviceBus, json('[]')), if(contains(parameters('compliantAzureServices'), 'Sql'), variables('allowedResources').sql, json('[]')), if(contains(parameters('compliantAzureServices'), 'StorageAccount'), variables('allowedResources').storage, json('[]')), if(contains(parameters('compliantAzureServices'), 'Synapse'), variables('allowedResources').synapse, json('[]')), if(contains(parameters('compliantAzureServices'), 'DesktopVirtualization'), variables('allowedResources').vdi, json('[]')), variables('allowedResources').platform)]"
     },
     "resources": [
         /*
@@ -2897,6 +2906,29 @@
                 "templateLink": {
                     "contentVersion": "1.0.0.0",
                     "uri": "[variables('deploymentUris').compliantBackupPolicySetDefinition]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    }
+                }
+            }
+        },
+        {
+            // Deploying Compliant Cognitive Search PolicySetDefinition
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "name": "[variables('deploymentNames').compliantCognitiveSearchDeploymentName]",
+            "location": "[deployment().location]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantCognitiveSearchPolicySetDefinition]"
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
@@ -4997,6 +5029,43 @@
                         "value": "[parameters('industryPrefix')]"
                     },
                     "asrLogAnalyticsWorkspaceId": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
+                    },
+                    "userAssignedIdentityResourceId": {
+                        "value": "[variables('platformResourceIds').userAssignedIdentityResourceId]"
+                    }
+                    // Add parameter to toggle DINE to 'disabled' of condition is not met so the policy does not show up as non-compliant
+                }
+            }
+        },
+        {   // Creating Policy Assignment Compliant Cognitive Search to Landing Zone scope
+            "condition": "[contains(parameters('compliantAzureServices'), 'CognitiveSearch')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "location": "[if(empty(parameters('location')), deployment().location, parameters('location'))]",
+            "name": "[variables('deploymentNames').compliantCognitiveSearchAssignmentDeploymentName]",
+            "scope": "[variables('scopes').geoManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').policyIdentityRoleAssignmentDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').compliantCognitiveSearchDeploymentName)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').privateDnsZonesDeploymentName)]",
+                "policyCompletion",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').monitoringDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').compliantCognitiveSearchPolicyAssignment]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    },
+                    "cognitiveSearchDiagnostics": {
+                        "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
+                    },
+                    "cognitiveServicesLogAnalyticsWorkspaceId": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
                     },
                     "userAssignedIdentityResourceId": {
