@@ -570,6 +570,7 @@
                                 "App Service",
                                 "Automation",
                                 "Backup",
+                                "Cognitive Search",
                                 "Compute",
                                 "Container Apps",
                                 "Container Instance",
@@ -619,6 +620,11 @@
                                         "label": "Backup",
                                         "description": "Azure policies will ensure secure by-default compliance for Backup and Recovery Services vaults, enforce immutable backups, encryption, and private over private endpoint.",
                                         "value": "Backup"
+                                    },
+                                    {
+                                        "label": "Cognitive Search",
+                                        "description": "Azure policies will ensure secure by-default compliance for Cognitive Search, enforce access via private endpoints, encyrption of variables and centralized authorization.",
+                                        "value": "CognitiveSearch"
                                     },
                                     {
                                         "label": "Compute",
