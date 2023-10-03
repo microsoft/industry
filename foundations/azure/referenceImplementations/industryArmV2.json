@@ -5065,7 +5065,7 @@
                     "cognitiveSearchDiagnostics": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), 'DeployIfNotExists', 'Disabled')]"
                     },
-                    "cognitiveServicesLogAnalyticsWorkspaceId": {
+                    "cognitiveSearchLogAnalyticsResourceId": {
                         "value": "[if(equals(parameters('enableLogAnalytics'), 'Yes'), variables('platformResourceIds').logAnalyticsResourceId, '')]"
                     },
                     "userAssignedIdentityResourceId": {
