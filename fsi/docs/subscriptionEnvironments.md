@@ -6,7 +6,6 @@ This article goes into the details how separation of concerns and environments -
 
 * [Understanding the platform primitives](#understanding-the-platform-primitives)
 * [Separation at the subscription level](#separation-at-the-subscription-level)
-* [FAQ](#faq)
 * [Next Steps](#next-steps)
 
 ## Understanding the platform primitives
@@ -49,16 +48,6 @@ With a well-defined approach for subscription usage that aligns with the princip
     * Example: if one subscription would be subject to audit policies (e.g., not enforcing customer-managed keys and private endpoint) in test, while the prod subscription would enforce that, it would require significant changes to the code base and the sequence of deployment and dependencies when moving from test to prod.
 
 For more information and details about the overall management group structure and its intent in FSI Landing Zones, please read the following article: [FSI Landing Zones architecture and design](./architectureAndDesign.md)
-
-## FAQ
-
-Q. What is the difference between a landing zone and a subscription?
-
-A. The subscription is the scale-unit, management boundary, and isolation boundary. The landing zone is a *definition* when everything that must be **true** in order for workload deployments to commence into the subscription, is provided by the platform team, such as shared networking capabilities, identity and access management, governance, and security.
-
-Q. Can we start with a single subscription, and later add a new subscription?
-
-A. Trust us - you do not want to start with a single subscription. In the scenario where you combine both *platform* resources and *application* resources in a single subscription, and then later adds a new subscription, you are up for a tedious exercise to move or/and redeploy resources which will cause interruption. Further, it violates known best practices and design principles for overall landing zones. Lastly, there's no additional cost associated with the subscriptions themselves, hence it will not cost more for the subscriptions, just that the resource composition and distribution is better aligned for scale.
 
 ## Next Steps
 
