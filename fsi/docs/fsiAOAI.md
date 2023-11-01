@@ -45,11 +45,11 @@ The Secure and Compliant Generative Azure Open AI includes the following Azure s
 
 FSI Landing Zones on Microsoft Azure provides a secure-by-default architecture and deployment guidance for Azure services, and the Secure and Compliant Generative Azure Open AI reference implementation is aligned with the recommended Azure policies provided by FSI Landing Zones for the Azure services in this workload composition.
 
-All Azure policies in FSI Landing Zones is [documented in this article](/docs/fsiPolicies.md) which provides a detailed view for all the policies per Azure service. You can assess them per Azure Service and map to the services included in the Secure and Compliant Generative Azure Open AI reference implementation.
+All Azure policies in FSI Landing Zones is [documented in this article](./fsiPolicies.md) which provides a detailed view for all the policies per Azure service. You can assess them per Azure Service and map to the services included in the Secure and Compliant Generative Azure Open AI reference implementation.
 
 A few examples:
 
-1. It is recommended to deploy Azure Open AI using a private endpoint, and not expose the service over the public internet. This is enforced by the Azure Policy "Cognitive Services accounts should disable public network access" documented in this section [Azure Open AI - Private Endpoint](/docs/fsiPolicies.md#azure-open-ai---private-endpoint).
+1. It is recommended to deploy Azure Open AI using a private endpoint, and not expose the service over the public internet. This is enforced by the Azure Policy "Cognitive Services accounts should disable public network access" documented in this section [Azure Open AI - Private Endpoint](./fsiPolicies.md#azure-open-ai---private-endpoint).
 2. It is also recommended to enable Azure RBAC for Azure Open AI, so both the level of access, and what type of access is granted to the service can be controlled centrally. This is enforced by the Azure Policy "Configure Cognitive Services accounts to disable local authentication methods".
 3. Lastly, it is recommended to use a customer-managed key to encrypt the data, hence an Azure Key Vault is required, as well as several additional Azure policies to ensure the correct configuration of the Key Vault. This is enforced by the Azure Policy "Cognitive Services accounts should enable data encryption with a customer-managed key".
 
