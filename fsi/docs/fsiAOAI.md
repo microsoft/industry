@@ -1,6 +1,6 @@
 # Secure and Compliant Generative Azure Open AI - User Guide
 
-![Benefits](/docs/ai-overview.png)
+![Benefits](./ai-overview.png)
 
 This user guide explains the setup and deployment of "Secure and Compliant Generative Azure Open AI".
 The reference implementation has been developed, validated, and proven with several of Microsoft's largest FSI customers, and represent the best practices for the FSI industry to accelerate a safe and secure by-default deployment of Generative Azure Open AI on Microsoft Azure. We will continue to enhance and develop the reference implementation alongside with the overall Azure roadmap, based on proven and validated design patterns with FSI customers at scale.
@@ -18,7 +18,7 @@ The reference implementation has been developed, validated, and proven with seve
 
 | Reference Implementation | Description | Deploy | Documentation
 |:----------------------|:------------|--------|--------------|
-| Secure and Compliant Generative Azure Open AI | Secure and Compliant Generative Azure Open AI, aligned with the prescriptive guidance for FSI Landing Zones, ensuring a secure and compliant Azure Open AI workload composition into the landing zones |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/fsiazureai) | [User Guide](/docs/fsiAOAI.md)
+| Secure and Compliant Generative Azure Open AI | Secure and Compliant Generative Azure Open AI, aligned with the prescriptive guidance for FSI Landing Zones, ensuring a secure and compliant Azure Open AI workload composition into the landing zones |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/fsiazureai) | [User Guide](./fsiAOAI.md)
 
 ## What is Secure and Compliant Generative Azure Open AI?
 
@@ -59,7 +59,7 @@ A few examples:
 
 The Secure and Compliant Generative Azure Open AI reference implementation is designed to be deployed in a single Azure region, in a subscription where the virtual network with a dedicated subnet has been created upfront, to be used for the Private Endpoint. 
 
-![Azure Open AI workload composition in a compliant corp connected landing zone](/docs/aoai.png)
+![Azure Open AI workload composition in a compliant corp connected landing zone](./aoai.png)
 
 The diagram above shows an example where the Secure and Compliant Generative Azure Open AI is being deployed to a compliant, corp connected landing zone, where all services are connected via private endpoint to the virtual network. The virtual network is connected to the hub virtual network via VNet peering, and the hub virtual network is connected to on-premises network via ExpressRoute.
 
@@ -121,18 +121,18 @@ Once the pre-requisites have been completed, you can deploy the reference implem
 On the first page, select the *Region*. This region will primarily be used to place the deployment resources in an Azure region, but also used as the initial region for the resources that are created, unless you explicitly select a different region for the Private Endpoints (covered later). Provide a prefix for the naming convention that will be used for the resources.
 > Note: the naming convention will primarily consist of 'prefix'-'region'-'resourcetype' where possible.
 
-![Deployment location](/docs/ai-step1.png)
+![Deployment location](./ai-step1.png)
 
 ### 2 - Key Vault Configuration
 
 Configure the Key Vault that will be used to store the keys used by the storage account for encryption at rest, as well as the Azure Open AI service. It is recommended to leave with the default recommendations as it relates to the security and compliance recommendations. If needed, you can opt out of the recommendations, assuming you are aware of the implications.
 
-![Key Vault](/docs/ai-step2.png)
+![Key Vault](./ai-step2.png)
 
 In the networking section when deploying using a Private Endpoint, you must provide the resourceId of an existing subnet in the same region where you are deploying into. 
 If you want to deploy the Azure Open AI workloads into a different region vs where you have your virtual network, select the region for the Private Endpoint (i.e., "Deploy the Private Endpoint for Key Vault into the same region as the Key Vault" option must be set to "No", and the regional parameter will appear in the portal)
 
-![Key Vault config](/docs/ai-step23.png)
+![Key Vault config](./ai-step23.png)
 
 ### 3 - Storage Configuration
 
@@ -140,19 +140,19 @@ This page will create and configure the storage account that will be used in con
 
 Provide a key name, and the resourceId for an existing subnet when deploying with Private Endpoint. Same as with the Key Vault configuration, if you are deploying to a different region vs where the virtual network is created, select a different region for the private endpoint.
 
-![Storage Account](/docs/ai-step3.png)
+![Storage Account](./ai-step3.png)
 
 ### 4 - Azure Open AI Configuration
 
 Configure the Azure Open AI instance that will be created, by providing a name for the customer-managed key, and the resourceId to the subnet where the Private Endpoint will be deployed. Same as with the Key Vault and Storage Account configuration, if you are deploying to a different region vs where the virtual network is created, select a different region for the private endpoint.
 
-![Azure Open AI](/docs/ai-step4.png)
+![Azure Open AI](./ai-step4.png)
 
 ### 5 - Model Deployment
 
 On this page, you can optionally select to deploy an available model to your Azure Open AI instance, subject to the available models in the region you have selected. Should there be any capacity constraints with the selected model, the validation API will catch that and inform you before you can submit the deployment.
 
-![Model Deployment](/docs/ai-step5.png)
+![Model Deployment](./ai-step5.png)
 
 ### Review + create
 
