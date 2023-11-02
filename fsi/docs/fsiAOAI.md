@@ -18,7 +18,7 @@ The reference implementation has been developed, validated, and proven with seve
 
 | Reference Implementation | Description | Deploy | Documentation
 |:----------------------|:------------|--------|--------------|
-| Secure and Compliant Generative Azure Open AI | Secure and Compliant Generative Azure Open AI, aligned with the prescriptive guidance for FSI Landing Zones, ensuring a secure and compliant Azure Open AI workload composition into the landing zones |[![Deploy To Microsoft Cloud](../docs/deploytomicrosoftcloud.svg)](https://aka.ms/fsiazureai) | [User Guide](./fsiAOAI.md)
+| Secure and Compliant Generative Azure Open AI | Secure and Compliant Generative Azure Open AI, aligned with the prescriptive guidance for FSI Landing Zones, ensuring a secure and compliant Azure Open AI workload composition into the landing zones |[![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/fsiazureai) | [User Guide](./fsiAOAI.md)
 
 ## What is Secure and Compliant Generative Azure Open AI?
 
