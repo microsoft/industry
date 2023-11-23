@@ -9,6 +9,13 @@
                 "description": "Provide a prefix (max 10 characters, unique at tenant-scope) for the Management Group hierarchy and other resources created as part of Enterprise-scale."
             }
         },
+        "industry": {
+            "type": "string",
+            "allowedValues": [
+                "fsi",
+                "telco"
+            ]
+        },
         "managementSubscriptionId": {
             "type": "string",
             "defaultValue": "",
@@ -813,7 +820,7 @@
         },
         // Declaring deterministic deployment names
         "deploymentSuffix": "[concat('-', deployment().location, guid(parameters('industryPrefix')))]",
-        "industry": "fsi",
+        "industry": "[parameters('industry')]",
         "deploymentNames": {
             "mgmtGroupDeploymentName": "[take(concat(variables('industry'), '-Mgs', variables('deploymentSuffix')), 64)]",
             "policyRpRegDeploymentName": "[take(concat(variables('industry'), '-PolicyInsights', variables('deploymentSuffix')), 64)]",
