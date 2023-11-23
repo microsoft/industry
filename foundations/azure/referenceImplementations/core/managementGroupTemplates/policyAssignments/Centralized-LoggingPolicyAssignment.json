@@ -46,8 +46,8 @@
         },
         "policyAssignmentNames": {
             "logging": "[concat(parameters('topLevelManagementGroupPrefix'), '-log')]",
-            "description": "This policy initiative is a group of policies that ensures centralized logging is compliant per FSI Landing Zones",
-            "displayName": "Enforce centralized logging for Financial Services Industry"
+            "description": "This policy initiative is a group of policies that ensures centralized logging is compliant per regulated Landing Zones",
+            "displayName": "Enforce centralized logging for regulated industries"
         }
     },
     "resources": [

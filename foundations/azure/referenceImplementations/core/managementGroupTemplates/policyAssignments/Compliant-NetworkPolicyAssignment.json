@@ -202,8 +202,8 @@
         },
         "policyAssignmentNames": {
             "nw": "Compliant-Network",
-            "description": "This policy initiative is a group of policies that ensures Network and Networking Services are compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default Network and Networking Services for Financial Services Industry"
+            "description": "This policy initiative is a group of policies that ensures Network and Networking Services are compliant per regulated Landing Zones",
+            "displayName": "Enforce secure-by-default Network and Networking Services for regulated industries"
         }
     },
     "resources": [

@@ -62,8 +62,8 @@
         },
         "policyAssignmentNames": {
             "appService": "Compliant-AppService",
-            "description": "This policy initiative is a group of policies that ensures App Service is compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default App Service for Financial Services Industry"
+            "description": "This policy initiative is a group of policies that ensures App Service is compliant per regulated Landing Zones",
+            "displayName": "Enforce secure-by-default App Service for regulated industries"
         }
     },
     "resources": [

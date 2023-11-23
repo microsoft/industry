@@ -38,8 +38,8 @@
         },
         "policyAssignmentNames": {
             "apim": "Compliant-Apim",
-            "description": "This policy initiative is a group of policies that ensures API Management is compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default API Management for Financial Services Industry"
+            "description": "This policy initiative is a group of policies that ensures API Management is compliant per regulated Landing Zones",
+            "displayName": "Enforce secure-by-default API Management for regulated industries"
         }
     },
     "resources": [

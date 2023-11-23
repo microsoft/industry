@@ -44,8 +44,8 @@
                     "version": "1.0.0",
                     "category": "Monitoring"
                 },
-                "displayName": "Enforce centralized logging for Financial Services Industry",
-                "description": "This policy initiative is a group of policies that ensures centralized logging is enabled and compliant per FSI Landing Zones",
+                "displayName": "Enforce centralized logging for regulated industries",
+                "description": "This policy initiative is a group of policies that ensures centralized logging is enabled and compliant per regulated Landing Zones",
                 "policyDefinitionGroups": [
                     {
                         "name": "Logging",

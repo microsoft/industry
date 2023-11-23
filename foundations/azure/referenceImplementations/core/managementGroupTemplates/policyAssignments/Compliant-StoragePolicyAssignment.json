@@ -78,8 +78,8 @@
         },
         "policyAssignmentNames": {
             "storage": "Compliant-Storage",
-            "description": "This policy initiative is a group of policies that ensures Storage is compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default Storage for Financial Services Industry"
+            "description": "This policy initiative is a group of policies that ensures Storage is compliant per regulated Landing Zones",
+            "displayName": "Enforce secure-by-default Storage for regulated industries"
         }
     },
     "resources": [

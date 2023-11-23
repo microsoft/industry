@@ -26,8 +26,8 @@
         },
         "policyAssignmentNames": {
             "compute": "Compliant-Compute",
-            "description": "This policy initiative is a group of policies that ensures Compute is compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default Compute for Financial Services Industry"
+            "description": "This policy initiative is a group of policies that ensures Compute is compliant per regulated Landing Zones",
+            "displayName": "Enforce secure-by-default Compute for regulated industries"
         }
     },
     "resources": [

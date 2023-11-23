@@ -4,7 +4,7 @@
     "parameters": {
         "topLevelManagementGroupPrefix": {
             "type": "string",
-            "defaultValue": "FSIDemo",
+            "defaultValue": "regulatedDemo",
             "metadata": {
                 "description": "Provide a company prefix to the intermediate root management group containing the policy definitions."
             }
@@ -292,8 +292,8 @@
         },
         "policyAssignmentNames": {
             "corpLz": "Compliant-Corp-Lz",
-            "description": "This policy initiative is a group of policies that ensures Corp Connected Landing Zones are compliant per Financial Services Industry requirements",
-            "displayName": "Enforce secure-by-default Corp Connected Landing Zones for Financial Services Industry"
+            "description": "This policy initiative is a group of policies that ensures Corp Connected Landing Zones are compliant per regulated industries requirements",
+            "displayName": "Enforce secure-by-default Corp Connected Landing Zones for regulated industries"
         }
     },
     "resources": [

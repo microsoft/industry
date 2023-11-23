@@ -205,8 +205,8 @@
                     "version": "1.0.0",
                     "category": "Event Hub"
                 },
-                "displayName": "Enforce secure-by-default Event Hub for Financial Services Industry",
-                "description": "This policy initiative is a group of policies that ensures Event Hub is compliant per FSI Landing Zones",
+                "displayName": "Enforce secure-by-default Event Hub for regulated industries",
+                "description": "This policy initiative is a group of policies that ensures Event Hub is compliant per regulated Landing Zones",
                 "policyDefinitionGroups": [
                     {
                         "name": "Encryption",
