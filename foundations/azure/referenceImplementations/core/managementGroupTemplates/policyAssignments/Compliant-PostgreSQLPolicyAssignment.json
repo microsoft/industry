@@ -38,8 +38,8 @@
         },
         "policyAssignmentNames": {
             "postgre": "Compliant-PostgreSQL",
-            "description": "This policy initiative is a group of policies that ensures Postgre SQL is compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default Postgre SQL for Financial Services Industry"
+            "description": "This policy initiative is a group of policies that ensures Postgre SQL is compliant per regulated Landing Zones",
+            "displayName": "Enforce secure-by-default Postgre SQL for regulated industries"
         }
     },
     "resources": [

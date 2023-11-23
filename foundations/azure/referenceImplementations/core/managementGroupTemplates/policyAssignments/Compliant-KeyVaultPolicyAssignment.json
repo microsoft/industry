@@ -51,8 +51,8 @@
         },
         "policyAssignmentNames": {
             "keyVault": "Compliant-Key-Vault",
-            "description": "This policy initiative is a group of policies that ensures Key Vault is compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default Key Vault for Financial Services Industry"
+            "description": "This policy initiative is a group of policies that ensures Key Vault is compliant per regulated Landing Zones",
+            "displayName": "Enforce secure-by-default Key Vault for regulated industries"
         }
     },
     "resources": [

@@ -4,7 +4,7 @@
     "parameters": {
         "topLevelManagementGroupPrefix": {
             "type": "string",
-            "defaultValue": "FSIDemo"
+            "defaultValue": ""
         },
         "category": {
             "type": "string",
@@ -55,8 +55,8 @@
                     "version": "1.0.0",
                     "category": "[parameters('category')]"
                 },
-                "displayName": "[concat('Enforce secure-by-default ', parameters('category'), ' for Financial Services Industry')]",
-                "description": "[concat('This policy initiative is a group of policies that ensures ', parameters('category'), 'is compliant per FSI Landing Zones')]",
+                "displayName": "[concat('Enforce secure-by-default ', parameters('category'), ' for regulated industries')]",
+                "description": "[concat('This policy initiative is a group of policies that ensures ', parameters('category'), 'is compliant per regulated Landing Zones')]",
                 "policyDefinitionGroups": [
                     {
                         "name": "Encryption",

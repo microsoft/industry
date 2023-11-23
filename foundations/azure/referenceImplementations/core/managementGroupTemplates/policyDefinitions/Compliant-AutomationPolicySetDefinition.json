@@ -97,8 +97,8 @@
                     "version": "1.0.0",
                     "category": "Automation"
                 },
-                "displayName": "Enforce secure-by-default Automation Account for Financial Services Industry",
-                "description": "This policy initiative is a group of policies that ensures Automation Account is compliant per FSI Landing Zones",
+                "displayName": "Enforce secure-by-default Automation Account for regulated industries",
+                "description": "This policy initiative is a group of policies that ensures Automation Account is compliant per regulated Landing Zones",
                 "policyDefinitionGroups": [
                     {
                         "name": "Encryption",

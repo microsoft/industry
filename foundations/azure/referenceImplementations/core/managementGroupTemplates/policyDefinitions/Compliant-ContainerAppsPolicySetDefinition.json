@@ -46,8 +46,8 @@
                     "version": "1.0.0",
                     "category": "Container Apps"
                 },
-                "displayName": "Enforce secure-by-default Container Apps for Financial Services Industry",
-                "description": "This policy initiative is a group of policies that ensures Container Apps is compliant per FSI Landing Zones",
+                "displayName": "Enforce secure-by-default Container Apps for regulated industries",
+                "description": "This policy initiative is a group of policies that ensures Container Apps is compliant per regulated Landing Zones",
                 "policyDefinitionGroups": [
                     {
                         "name": "Encryption",

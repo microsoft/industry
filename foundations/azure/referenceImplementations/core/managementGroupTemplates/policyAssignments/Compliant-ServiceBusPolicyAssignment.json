@@ -38,8 +38,8 @@
         },
         "policyAssignmentNames": {
             "sb": "Compliant-Service-Bus",
-            "description": "This policy initiative is a group of policies that ensures Service Bus is compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default Service Bus for Financial Services Industry"
+            "description": "This policy initiative is a group of policies that ensures Service Bus is compliant per regulated Landing Zones",
+            "displayName": "Enforce secure-by-default Service Bus for regulated industries"
         }
     },
     "resources": [

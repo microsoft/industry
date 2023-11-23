@@ -45,8 +45,8 @@
                     "version": "1.0.0",
                     "category": "Corp Connected Landing Zones"
                 },
-                "displayName": "Enforce secure-by-default Corp Connected Landing Zones for Financial Services Industry",
-                "description": "This policy initiative is a group of policies that ensures Corp Connected Landing Zones are compliant per FSI Landing Zones",
+                "displayName": "Enforce secure-by-default Corp Connected Landing Zones for regulated industries",
+                "description": "This policy initiative is a group of policies that ensures Corp Connected Landing Zones are compliant per regulated Landing Zones",
                 "policyDefinitionGroups": [
                     {
                         "name": "Encryption",

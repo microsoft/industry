@@ -26,8 +26,8 @@
         },
         "policyAssignmentNames": {
             "con": "Compliant-ConInstance",
-            "description": "This policy initiative is a group of policies that ensures Container Instance is compliant per FSI Landing Zones",
-            "displayName": "Enforce secure-by-default Container Instance for Financial Services Industry"
+            "description": "This policy initiative is a group of policies that ensures Container Instance is compliant per regulated Landing Zones",
+            "displayName": "Enforce secure-by-default Container Instance for regulated industries"
         }
     },
     "resources": [

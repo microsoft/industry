@@ -95,8 +95,8 @@
                     "version": "1.0.0",
                     "category": "Service Bus"
                 },
-                "displayName": "Enforce secure-by-default Service Bus for Financial Services Industry",
-                "description": "This policy initiative is a group of policies that ensures Service Bus is compliant per FSI Landing Zones",
+                "displayName": "Enforce secure-by-default Service Bus for regulated industries",
+                "description": "This policy initiative is a group of policies that ensures Service Bus is compliant per regulated Landing Zones",
                 "policyDefinitionGroups": [
                     {
                         "name": "Encryption",
