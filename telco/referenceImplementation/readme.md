@@ -115,8 +115,7 @@ The Management Group structure implemented with AfO Landing Zones is as follows:
   - **Identity:** This Management Group contains the dedicated subscription for identity, which is a placeholder for Windows Server Active Directory Domain Services (AD DS) VMs, or Azure Active Directory Domain Services to enable AuthN/AuthZ for workloads within the landing zones. Specific Azure policies are assigned to harden and manage the resources in the identity subscription.
 
 - **Landing Zones:** This is the parent Management Group for all the landing zone subscriptions and will have workload agnostic Azure Policies assigned to ensure workloads are secure and compliant.
-
-  - **Operator** This is the dedicated Management Group for Operator landing zones, which are optimized and governed aligned with mission-critical, carrier-grade telco workloads.
+  
   - **Online:** This is the dedicated Management Group for Online landing zones, meaning workloads that may require direct internet inbound/outbound connectivity or also for workloads that may not require a VNet..
   - **Corp:** This is the dedicated Management Group for Corp landing zones, meaning workloads that requires connectivity/hybrid connectivity with the corporate network thru the hub in the connectivity subscription.
 
@@ -145,6 +144,7 @@ By default, all recommended settings and resources recommendations are enabled a
   - ExpressRoute Gateway
   - VPN Gateway
   - Azure Private DNS Zones for Private Link
+  - Azure DNS Private Resolver
 
 - In addition, network security monitoring can be enabled which includes:
 
@@ -155,9 +155,6 @@ By default, all recommended settings and resources recommendations are enabled a
 
 - (Optionally) An Azure subscription dedicated for **Identity** in case your organization requires to have Active Directory Domain Controllers to provide authorization and authentication for workloads deployed into the landing zones.
 
-- Landing Zone Management Group for **Operator** , mission-critical applications that has unique requirements for availability, performance, connectivity, latency, reliability, and security.
-  - This is where you will create your subscriptions that will host your operator workloads.
-
 - Landing Zone Management Group for **Corp** connected applications that require connectivity to on-premises, to other landing zones or to the internet via shared services provided in the hub virtual network.
   - This is where you will create your subscriptions that will host your corp-connected workloads.
 
@@ -166,25 +163,7 @@ By default, all recommended settings and resources recommendations are enabled a
 
 - Landing zone subscriptions for Azure native, internet-facing **Online** applications and resources.
 
-- Landing zone subscriptions for **Operator** , mission-critical applications and resources.
-- Azure Policies for online and corp-connected landing zones, which include:
-  - Enforce highly-available Public IP addresses
-  - Enforce highly-available ExpressRoute gateways
-
 - Landing zone subscriptions for **Corp** connected applications and resources, including a virtual network that will be connected to the hub via VNet peering.
-- Azure Policies for online and corp-connected landing zones, which include:
-  - Enforce VM monitoring (Windows & Linux)
-  - Enforce VMSS monitoring (Windows & Linux)
-  - Enforce Azure Arc VM monitoring (Windows & Linux)
-  - Enforce DDoS on Virtual Networks
-  - Enforce VM backup (Windows & Linux)
-  - Enforce secure access (HTTPS) to storage accounts
-  - Enforce auditing for Azure SQL
-  - Enforce encryption for Azure SQL
-  - Prevent IP forwarding
-  - Prevent inbound RDP from internet
-  - Ensure subnets are associated with Network Security Groups
-  - Ensure subnets are associated with User-Defined routes
 
 ## Deployment instructions
 
@@ -257,36 +236,50 @@ When you click on [*Deploy to Microsoft Cloud*](https://aka.ms/afoRi), it will s
 
 ### Deployment location
 
-On the first page, select the *Region*. This region will primarily be used to place the deployment resources in an Azure region, but also used as the initial region for some of the resources that are deployed, such as Azure Monitoring resources.
+On the *Deployment location* tab, select the *Region*. This region will primarily be used to place the deployment resources in an Azure region, but also used as the initial region for some of the resources that are deployed, such as Azure Monitoring resources.
 
 ![Deployment location](./media/location.PNG)
 
-### AfO Landing Zones Architecture setup
+### Management Group and Subscription Organization
 
-Provide a prefix that will be used to create the management group hierarchy and platform resources, and select if you would use dedicated subscriptions or a single subscription for platform resources (please note that dedicates subscriptions are recommended, and single platform subscription is only for PoC and testing purposes). For this scenario, select **Dedicated**.
+Provide a prefix that will be used to create the management group hierarchy and platform resources.
 
 ![Arch setup](./media/archsetup.PNG)
 
-### Security, Governance, and Compliance
+### Management and Monitoring
 
-On the *Security, Governance, and Compliance* tab, you will configure the core infrastructure required for all-up platform observability and security, which will be enabled at scale via Azure Policy for the entire Azure architecture as well as the operator landing zones to ensure continuously compliance for the Azure resources. A dedicated (and empty) subscription is required to host this infrastructure, which will be separated from other platform resources, such as networking and identity that you will configure later.
+On the *Management and Monitoring* tab, you will configure the core infrastructure required for all-up platform observability, which will be enabled at scale via Azure Policy for the entire Azure architecture as well as the operator landing zones to ensure continuously compliance for the Azure resources. A dedicated (and empty) subscription is required to host this infrastructure, which will be separated from other platform resources, such as networking and identity that you will configure later.
 
-![Security and governance](./media/security.PNG)
+![Security and governance](./media/mgmt-monitoring.PNG)
 
-For the Microsoft Defender for Cloud settings, you must also provide an email address in order to receive critical security notifications from Microsoft Defender for Cloud service.
+If you *Enable Log Analytics Data Export to Event Hub for SIEM integration*, you need to select the tables that you want to export.
+
+![Defender](./media/la-data-export.PNG)
+
+### Management and Monitoring
+
+On the *Security, Governance, and Compliance* tab, in the *Microsoft Cloud Security Benchmark* section, you need to indicate if you want to assign the *Microsoft Cloud Security Benchmark Policy Initiative* for security benchmarks, such as CIS, NIST or PCI-DSS.
+
+![Benchmark](./media/cloud-security-benchmark.PNG)
+
+In the *Compliant and Secure by-default* section, select the Azure services that you would like to enable as secure-by-default on your landing zones. These settings will be enforced via Azure policies.
+
+![SecureByDefault](./media/secure-by-default.PNG)
+
+In the *Microsoft Defender for Cloud* section specify the services and solutions that you would like to enable with Microsoft Defender for Cloud. Please that that if you enable Microsoft Defender for Cloud, you need to provide an email address to receive critical security notifications from Microsoft Defender for Cloud service.
 
 ![Defender](./media/defender.PNG)
 
-### Connectivity for Azure and Distributed Edge
+### Network Connectivity and Topology
 
-On the *Connectivity for Azure and Distributed Edge* tab, you will configure the core networking platform resources, such as hub virtual network, gateways (VPN and/or ExpressRoute), Azure Firewall, Private DNS Zones for Azure PaaS services, and depending on the options you selected on the *Security, Governance, and Compliance* tab, additional networking security and monitoring options will be presented, such as DDoS Protection Standard, Network Watcher, NSG Flow Logs, and Traffic Analytics.
+On the *Network Connectivity and Topology* tab, you will configure the core networking platform resources, such as hub virtual network, gateways (VPN and/or ExpressRoute), Azure Firewall, Private DNS Zones for Azure PaaS services, and depending on the options you selected on the *Security, Governance, and Compliance* tab, additional networking security and monitoring options will be presented, such as DDoS Protection Standard, Network Watcher, NSG Flow Logs, and Traffic Analytics.
 
 To deploy and configure a "hub and spoke" topology, you must:
 
-- In the *Deploy networking topology for Azure and Distributed Edge* option, select either "Hub and spoke with Azure Firewall" or "Virtual VWAN (Microsoft managed). In this guidance we will select the "Hub and spoke with Azure Firewall".
+- In the *Deploy networking topology for Azure and on-premises* option, select "Hub and spoke (customer managed)" or "Virtual VWAN (Microsoft managed)". In this guidance we will select the "Hub and spoke (customer managed) option".
 - Provide a dedicated (empty) subscription that will be used to host the requisite networking infrastructure.
-- Provide the address space to be assigned to the hub virtual network
-- Select an Azure region where the hub virtual network will be created
+- Provide the address space to be assigned to the hub virtual network.
+- Select an Azure region where the hub virtual network will be created.
 - Depending on the Azure region, you can optionally use Azure Virtual Network Manager to manage your virtual networks at scale and also enable full mesh.
 
  ![img](./media/hubandspoke.PNG)
@@ -294,59 +287,50 @@ To deploy and configure a "hub and spoke" topology, you must:
 In addition, you can configure:
 
 - Azure Private DNS Zones for Azure PaaS services
+- Enable AZure DNS Private Resolver and the option to select inbound endpoint only or outbound endpoint only.
 - VPN and ExpressRoute Gateways
   - If you choose to deploy either or both of these gateways, you will have the option to select the subnet to be dedicated for these resources, if you decide to deploy them as regional or zone-redundant gateways, as well as choose the right SKU based on your requirements
 - If you choose to deploy Azure Firewall, you will have the option to
   - Select the subnet
   - Select to deploy Azure Firewall as regional or zone redundant (recommended)
   - Select the Firewall SKU (Standard or Premium). It is recommended to choose the Azure Firewall [Premium](https://docs.microsoft.com/azure/firewall/premium-features) SKU if your organization requires next generation firewall capabilities such as TLS inspection or network intrusion detection and prevention system (IDPS).
+  - Indicate if you want to enable Azure Firewall in Forced Tunneling mode.
   - Indicate if you want to enable DNS Proxy in Azure Firewall.
+  - Indicate if you want to use dedicated Azure subscriptions for internet ingress and internet egress.
+- Enable custom BGP communities for Azure VNets.
 
 For Networking security and monitoring solutions:
 
-- DDoS Protection Standard to be enabled for the Azure platform. Enabling this will provide an option to assign requisite Azure Policy on the *Operator landing zones* tab later.
+- DDoS Protection Standard or per individual public IP addresses.
 - Network Watcher observability for the virtual networks that will be created. Enabling this will assign Azure Policy to ensure that Network Watcher will be created into all subscriptions containing a virtual network.
-- NSG Flow Logs can be enabled for all Network Security Groups, and will be stored into a storage account in the dedicated subscription for *Security, Governance, and Compliance* subscription, and also in the Azure Log Analytics workspace.
-- Traffic Analytics which provides a curated view of networking traffic for Azure and Distributed Edge.
+- NSG Flow Logs and Traffic Analytics can be enabled for all Network Security Groups, and will be stored into a storage account in the dedicated subscription for *Management and Monitoring* subscription, and also in the Log Analytics workspace.
 
  ![img](./media/nwlogs.PNG)
 
-### Authentication & Authorization
+### Identity and Access
 
-On the *Authentication & Authorization* tab you can specify if you want to assign recommended policies to primarily secure and govern domain controllers in Azure, which will have its dedicated subscription to ensure clear separation of concerns, and to provide AuthN/AuthZ to workloads into the landing zones. You can then select which policies you want to get assigned, and you will need to provide the address space for the virtual network that will be deployed on this subscription. Please note that this virtual network will be connected to the hub virtual network via VNet peering.
+On the *Identity and Access* tab you can specify if you want to assign recommended policies to primarily secure and govern domain controllers in Azure, which will have its dedicated subscription to ensure clear separation of concerns, and to provide AuthN/AuthZ to workloads into the landing zones. You can then select which policies you want to get assigned, and you will need to provide the address space for the virtual network that will be deployed on this subscription. Please note that this virtual network will be connected to the hub virtual network via VNet peering.
 
 If you don't need - or plan to host domain controllers in Azure for your telco workloads, you can select *No*. If you later want to add dedicated subscription for these purposes, you can move it manually to the 'identity' management group in the hierarchy created by AfO Landing Zones.
 
- ![img](./media/auth.PNG)
+ ![identity](./media/auth.PNG)
 
-### Operator Landing Zones
+### Playground
+On the *Playground* tab you have the option to indicate if you want to move certain subscriptions under the Playground management group, which is completely separated from everything else, where developers can explore Azure services and innovate quicker in a safe and reliable environment. Besides indicating which subscriptions you would like to use as playground, you have the option to specify additional policies to assign to this management group.
 
-On the *Operator Landing Zones* tab, you can bring in the subscriptions you want to use initially for *operator*, *online*, and *corp* landing zones. Each landing zone type is represented by its own child management group of the *landing zones* management group in the hierarchy, and provides different characteristics regarding networking requirements, security, policy, and availability. For each of the landing zone types, you can select the recommended Azure policies you want to assign, as well as the policies recommended for *all* landing zone types.
+![identity](./media/playground.PNG)
 
-- Operator landing zones
+### Landing Zones
 
-Subscriptions can be moved into the *operator* management group, and bootstrapped with Azure policies that are assigned directly to this management group, as well as the overarching policies assigned to the intermediate root management group, and the landing zones management group.
-The specific policies for the operator landing zones will - in addition to compliance and security, ensure that carrier grade workloads are configured with resiliency, performance, and availability in mind.
+On the *Landing Zones* tab, you can bring in the subscriptions you want to use initially for *corp* or *online* landing zones. Each landing zone type is represented by its own child management group of the *landing zones* management group in the hierarchy, and provides different characteristics regarding networking requirements, security, policy, and availability. For each of the landing zone types, you can select the recommended Azure policies you want to assign, as well as the policies recommended for *all* landing zone types.
 
-![Operatorlz](./media/operatorlz.PNG)
-
-- Corp landing zones
-
+Corp landing zones
 For workloads that require corp connectivity, and hybrid connectivity through the central connectivity subscription for the Azure platform and Distributed Edge, can be moved/created into the *corp* management group.
 
-![corplz](./media/corplz.PNG)
+Online landing zones
+For workloads that do not require corp connectivity, subscriptions can be moved/created into the *online* management group.
 
-- Online landing zones
-
-For workloads that does not require corp connectivity, subscriptions can be moved/created into the *online* management group.
-
-![onlinelz](./media/onlinelz.PNG)
-
-- Recommended Azure policies for all landing zones
-
-By default, every recommendation is enabled, and you must explicitly opt out if you do not want to assign the recommended policies. The list of available policies will depend on configuration made earlier in the deployment experience.
-
-![lzpolicies](./media/lzpolicies.PNG)
+![landingzones](./media/landingzones.PNG)
 
 ### Review + create
 
