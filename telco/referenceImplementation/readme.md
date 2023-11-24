@@ -165,20 +165,6 @@ By default, all recommended settings and resources recommendations are enabled a
 
 - Landing zone subscriptions for **Corp** connected applications and resources, including a virtual network that will be connected to the hub via VNet peering.
 
-- Azure Policies for online and corp-connected landing zones, which include:
-  - Enforce VM monitoring (Windows & Linux)
-  - Enforce VMSS monitoring (Windows & Linux)
-  - Enforce Azure Arc VM monitoring (Windows & Linux)
-  - Enforce DDoS on Virtual Networks
-  - Enforce VM backup (Windows & Linux)
-  - Enforce secure access (HTTPS) to storage accounts
-  - Enforce auditing for Azure SQL
-  - Enforce encryption for Azure SQL
-  - Prevent IP forwarding
-  - Prevent inbound RDP from internet
-  - Ensure subnets are associated with Network Security Groups
-  - Ensure subnets are associated with User-Defined routes
-
 ## Deployment instructions
 
 This section will describe how to deploy AfO Landing Zones reference implementation with traditional "hub and spoke" networking topology in Azure connected to the Distributed Edge and to on-premises datacenters and branch offices.
