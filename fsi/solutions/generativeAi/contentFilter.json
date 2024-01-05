@@ -1,0 +1,205 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "prefix": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "aiContentFilterName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "aiContentHateFilterPrompt": {
+            "type": "string",
+            "defaultValue": "medium",
+            "allowedValues": [
+                "low",
+                "medium",
+                "high"
+            ]
+        },
+        "aiContentSexualFilterPrompt": {
+            "type": "string",
+            "defaultValue": "medium",
+            "allowedValues": [
+                "low",
+                "medium",
+                "high"
+            ]
+        },
+        "aiContentViolenceFilterPrompt": {
+            "type": "string",
+            "defaultValue": "medium",
+            "allowedValues": [
+                "low",
+                "medium",
+                "high"
+            ]
+        },
+        "aiContentHarmFilterPrompt": {
+            "type": "string",
+            "defaultValue": "medium",
+            "allowedValues": [
+                "low",
+                "medium",
+                "high"
+            ]
+        },
+        "aiContentHateFilterCompletion": {
+            "type": "string",
+            "defaultValue": "medium",
+            "allowedValues": [
+                "low",
+                "medium",
+                "high"
+            ]
+        },
+        "aiContentHarmFilterCompletion": {
+            "type": "string",
+            "defaultValue": "medium",
+            "allowedValues": [
+                "low",
+                "medium",
+                "high"
+            ]
+        },
+        "aiContentSexualFilterCompletion": {
+            "type": "string",
+            "defaultValue": "medium",
+            "allowedValues": [
+                "low",
+                "medium",
+                "high"
+            ]
+        },
+        "aiContentViolenceFilterCompletion": {
+            "type": "string",
+            "defaultValue": "medium",
+            "allowedValues": [
+                "low",
+                "medium",
+                "high"
+            ]
+        },
+        "aiProtectedMaterialText": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
+        },
+        "aiProtectedMaterialCode": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
+        },
+        "aiProtectedJailbreak": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
+        }
+    },
+    "variables": {
+        "name-compliant-azureOpenAi": "[concat(parameters('prefix'), '-', parameters('location'), '-AzOpenAI')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.CognitiveServices/accounts/raiPolicies",
+            "apiVersion": "2023-10-01-preview",
+            "name": "[concat(variables('name-compliant-azureOpenAi'), '/', parameters('aiContentFilterName'))]",
+            "properties": {
+                "basePolicyName": "Microsoft.Default",
+                "type": "UserManaged",
+                "contentFilters": [
+                    {
+                        "name": "hate",
+                        "blocking": true,
+                        "enabled": true,
+                        "allowedContentLevel": "[parameters('aiContentHateFilterPrompt')]",
+                        "source": "prompt"
+                    },
+                    {
+                        "name": "sexual",
+                        "blocking": true,
+                        "enabled": true,
+                        "allowedContentLevel": "[parameters('aiContentSexualFilterPrompt')]",
+                        "source": "prompt"
+                    },
+                    {
+                        "name": "selfharm",
+                        "blocking": true,
+                        "enabled": true,
+                        "allowedContentLevel": "[parameters('aiContentHarmFilterPrompt')]",
+                        "source": "prompt"
+                    },
+                    {
+                        "name": "violence",
+                        "blocking": true,
+                        "enabled": true,
+                        "allowedContentLevel": "[parameters('aiContentViolenceFilterPrompt')]",
+                        "source": "prompt"
+                    },
+                    {
+                        "name": "hate",
+                        "blocking": true,
+                        "enabled": true,
+                        "allowedContentLevel": "[parameters('aiContentHateFilterCompletion')]",
+                        "source": "completion"
+                    },
+                    {
+                        "name": "sexual",
+                        "blocking": true,
+                        "enabled": true,
+                        "allowedContentLevel": "[parameters('aiContentSexualFilterCompletion')]",
+                        "source": "completion"
+                    },
+                    {
+                        "name": "selfharm",
+                        "blocking": true,
+                        "enabled": true,
+                        "allowedContentLevel": "[parameters('aiContentHarmFilterCompletion')]",
+                        "source": "completion"
+                    },
+                    {
+                        "name": "violence",
+                        "blocking": true,
+                        "enabled": true,
+                        "allowedContentLevel": "[parameters('aiContentViolenceFilterCompletion')]",
+                        "source": "completion"
+                    },
+                    {
+                        "name": "jailbreak",
+                        "blocking": "[if(equals(parameters('aiProtectedJailbreak'), 'Yes'), bool('true'), bool('false'))]",
+                        "source": "prompt",
+                        "enabled": "[if(equals(parameters('aiProtectedJailbreak'), 'Yes'), bool('true'), bool('false'))]"
+                    },
+                    {
+                        "name": "protected_material_text",
+                        "blocking": "[if(equals(parameters('aiProtectedMaterialText'), 'Yes'), bool('true'), bool('false'))]",
+                        "source": "completion",
+                        "enabled": "[if(equals(parameters('aiProtectedMaterialText'), 'Yes'), bool('true'), bool('false'))]"
+                    },
+                    {
+                        "name": "protected_material_code",
+                        "blocking": "[if(equals(parameters('aiProtectedMaterialCode'), 'Yes'), bool('true'), bool('false'))]",
+                        "source": "completion",
+                        "enabled": "[if(equals(parameters('aiProtectedMaterialCode'), 'Yes'), bool('true'), bool('false'))]"
+                    }
+                ],
+                "mode": "default"
+            }
+        }
+    ]
+}
