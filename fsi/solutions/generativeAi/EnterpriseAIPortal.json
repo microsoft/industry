@@ -659,7 +659,7 @@
                 },
                 {
                     "name": "aiModelSettings",
-                    "label": "Model Deployment",
+                    "label": "Model Deployment and Content Filters",
                     "subLabel": {
                         "preValidation": "",
                         "postValidation": "Done"
@@ -745,12 +745,12 @@
                             "constraints": {
                                 "allowedValues": [
                                     {
-                                        "label": "GPT-4 (only available by request)",
+                                        "label": "GPT-4",
                                         "description": "GPT-4 can solve difficult problems with greater accuracy than any of OpenAI's previous models. Like GPT-3.5 Turbo, GPT-4 is optimized for chat and works well for traditional completions tasks. Use the Chat Completions API to use GPT-4.",
                                         "value": "gpt-4"
                                     },
                                     {
-                                        "label": "GPT-4-32k (only available by request)",
+                                        "label": "GPT-4-32k",
                                         "description": "GPT-4 can solve difficult problems with greater accuracy than any of OpenAI's previous models. Like GPT-3.5 Turbo, GPT-4 is optimized for chat and works well for traditional completions tasks. Use the Chat Completions API to use GPT-4.",
                                         "value": "gpt-4-32k"
                                     },
@@ -768,6 +768,473 @@
                                 "required": true
                             },
                             "visible": "[equals(steps('aiModelSettings').aiModelDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiContentSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Content Filter Settings",
+                            "elements": [],
+                            "visible": true
+                        },
+                        {
+                            "name": "aiContentText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": true,
+                            "options": {
+                                "text": "The default content filtering configuration is set to filter at the medium severity threshold for all four content harms categories for both, prompts and completions. This means that content that is detected at severity level medium or high is filtered, while content detected at severity level low is not filtered by the content filters. Customers are responsible for ensuring that applications integrating Azure OpenAI comply with the Code of Conduct.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://learn.microsoft.com/azure/ai-services/openai/concepts/content-filter?tabs=warning%2Cpython"
+                                }
+                            }
+                        },
+                        {
+                            "name": "aiContentFilter",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Create Content Filter",
+                            "defaultValue": "Yes",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": true
+                        },
+                        {
+                            "name": "aiContentFilterName",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Content Filter Name",
+                            "placeholder": "",
+                            "defaultValue": "",
+                            "toolTip": "Use only allowed characters",
+                            "constraints": {
+                                "required": true,
+                                "regex": "^[a-z0-9A-Z-]{1,10}$",
+                                "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-10 characters long."
+                            },
+                            "visible": "[equals(steps('aiModelSettings').aiContentFilter, 'Yes')]"
+                        },
+                        {
+                            "name": "aiContentPromptThreshold",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Prompt",
+                            "elements": [],
+                            "visible": "[equals(steps('aiModelSettings').aiContentFilter, 'Yes')]"
+                        },
+                        {
+                            "name": "aiContentHateFilterPrompt",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Hate Severity Threshold",
+                            "placeholder": "",
+                            "defaultValue": "Medium",
+                            "toolTip": "",
+                            "multiselect": false,
+                            "multiLine": true,
+                            "selectAll": false,
+                            "defaultDescription": "Select the severity threshold",
+                            "filter": true,
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Low",
+                                        "description": "Block Low, Medium and High",
+                                        "value": "low"
+                                    },
+                                    {
+                                        "label": "Medium",
+                                        "description": "Allow Low / Block Medium and High.",
+                                        "value": "medium"
+                                    },
+                                    {
+                                        "label": "High",
+                                        "description": "Allow Low, Medium / Block High",
+                                        "value": "high"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiModelSettings').aiContentFilter, 'Yes')]"
+                        },
+                        {
+                            "name": "aiContentSexualFilterPrompt",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Sexual Severity Threshold",
+                            "placeholder": "",
+                            "defaultValue": "Medium",
+                            "toolTip": "",
+                            "multiselect": false,
+                            "multiLine": true,
+                            "selectAll": false,
+                            "defaultDescription": "Select the severity threshold",
+                            "filter": true,
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Low",
+                                        "description": "Block Low, Medium and High",
+                                        "value": "low"
+                                    },
+                                    {
+                                        "label": "Medium",
+                                        "description": "Allow Low / Block Medium and High.",
+                                        "value": "medium"
+                                    },
+                                    {
+                                        "label": "High",
+                                        "description": "Allow Low, Medium / Block High",
+                                        "value": "high"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiModelSettings').aiContentFilter, 'Yes')]"
+                        },
+                        {
+                            "name": "aiContentHarmFilterPrompt",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Self-harm Severity Threshold",
+                            "placeholder": "",
+                            "defaultValue": "Medium",
+                            "toolTip": "",
+                            "multiselect": false,
+                            "multiLine": true,
+                            "selectAll": false,
+                            "defaultDescription": "Select the severity threshold",
+                            "filter": true,
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Low",
+                                        "description": "Block Low, Medium and High",
+                                        "value": "low"
+                                    },
+                                    {
+                                        "label": "Medium",
+                                        "description": "Allow Low / Block Medium and High.",
+                                        "value": "medium"
+                                    },
+                                    {
+                                        "label": "High",
+                                        "description": "Allow Low, Medium / Block High",
+                                        "value": "high"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiModelSettings').aiContentFilter, 'Yes')]"
+                        },
+                        {
+                            "name": "aiContentViolenceFilterPrompt",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Violence Severity Threshold",
+                            "placeholder": "",
+                            "defaultValue": "Medium",
+                            "toolTip": "",
+                            "multiselect": false,
+                            "multiLine": true,
+                            "selectAll": false,
+                            "defaultDescription": "Select the severity threshold",
+                            "filter": true,
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Low",
+                                        "description": "Block Low, Medium and High",
+                                        "value": "low"
+                                    },
+                                    {
+                                        "label": "Medium",
+                                        "description": "Allow Low / Block Medium and High.",
+                                        "value": "medium"
+                                    },
+                                    {
+                                        "label": "High",
+                                        "description": "Allow Low, Medium / Block High",
+                                        "value": "high"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiModelSettings').aiContentFilter, 'Yes')]"
+                        },
+                        {
+                            "name": "aiContentCompletionThreshold",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Completion",
+                            "elements": [],
+                            "visible": "[equals(steps('aiModelSettings').aiContentFilter, 'Yes')]"
+                        },
+                        {
+                            "name": "aiContentHateFilterCompletion",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Hate Severity Threshold",
+                            "placeholder": "",
+                            "defaultValue": "Medium",
+                            "toolTip": "",
+                            "multiselect": false,
+                            "multiLine": true,
+                            "selectAll": false,
+                            "defaultDescription": "Select the severity threshold",
+                            "filter": true,
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Low",
+                                        "description": "Block Low, Medium and High",
+                                        "value": "low"
+                                    },
+                                    {
+                                        "label": "Medium",
+                                        "description": "Allow Low / Block Medium and High.",
+                                        "value": "medium"
+                                    },
+                                    {
+                                        "label": "High",
+                                        "description": "Allow Low, Medium / Block High",
+                                        "value": "high"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiModelSettings').aiContentFilter, 'Yes')]"
+                        },
+                        {
+                            "name": "aiContentSexualFilterCompletion",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Sexual Severity Threshold",
+                            "placeholder": "",
+                            "defaultValue": "Medium",
+                            "toolTip": "",
+                            "multiselect": false,
+                            "multiLine": true,
+                            "selectAll": false,
+                            "defaultDescription": "Select the severity threshold",
+                            "filter": true,
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Low",
+                                        "description": "Block Low, Medium and High",
+                                        "value": "low"
+                                    },
+                                    {
+                                        "label": "Medium",
+                                        "description": "Allow Low / Block Medium and High.",
+                                        "value": "medium"
+                                    },
+                                    {
+                                        "label": "High",
+                                        "description": "Allow Low, Medium / Block High",
+                                        "value": "high"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiModelSettings').aiContentFilter, 'Yes')]"
+                        },
+                        {
+                            "name": "aiContentHarmFilterCompletion",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Self-harm Severity Threshold",
+                            "placeholder": "",
+                            "defaultValue": "Medium",
+                            "toolTip": "",
+                            "multiselect": false,
+                            "multiLine": true,
+                            "selectAll": false,
+                            "defaultDescription": "Select the severity threshold",
+                            "filter": true,
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Low",
+                                        "description": "Block Low, Medium and High",
+                                        "value": "low"
+                                    },
+                                    {
+                                        "label": "Medium",
+                                        "description": "Allow Low / Block Medium and High.",
+                                        "value": "medium"
+                                    },
+                                    {
+                                        "label": "High",
+                                        "description": "Allow Low, Medium / Block High",
+                                        "value": "high"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiModelSettings').aiContentFilter, 'Yes')]"
+                        },
+                        {
+                            "name": "aiContentViolenceFilterCompletion",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Violence Severity Threshold",
+                            "placeholder": "",
+                            "defaultValue": "Medium",
+                            "toolTip": "",
+                            "multiselect": false,
+                            "multiLine": true,
+                            "selectAll": false,
+                            "defaultDescription": "Select the severity threshold",
+                            "filter": true,
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Low",
+                                        "description": "Block Low, Medium and High",
+                                        "value": "low"
+                                    },
+                                    {
+                                        "label": "Medium",
+                                        "description": "Allow Low / Block Medium and High.",
+                                        "value": "medium"
+                                    },
+                                    {
+                                        "label": "High",
+                                        "description": "Allow Low, Medium / Block High",
+                                        "value": "high"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiModelSettings').aiContentFilter, 'Yes')]"
+                        },
+                        {
+                            "name": "aiAddContentSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Additional Content Filter Settings (Preview)",
+                            "elements": [],
+                            "visible": "[equals(steps('aiModelSettings').aiContentFilter, 'Yes')]"
+                        },
+                        {
+                            "name": "aiAddContentText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": "[equals(steps('aiModelSettings').aiContentFilter, 'Yes')]",
+                            "options": {
+                                "text": "Enable additional content safety models that can be run on top of the main content filters. These models are optional.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://learn.microsoft.com/azure/ai-services/openai/concepts/content-filter?tabs=warning%2Cpython"
+                                }
+                            }
+                        },
+                        {
+                            "name": "aiAddContentFilter",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable additional content safety models",
+                            "defaultValue": "Yes",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiModelSettings').aiContentFilter, 'Yes')]"
+                        },
+                        {
+                            "name": "aiProtectedJailbreak",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Jailbreak",
+                            "placeholder": "",
+                            "defaultValue": "No",
+                            "toolTip": "",
+                            "multiselect": false,
+                            "multiLine": true,
+                            "selectAll": false,
+                            "defaultDescription": "Enable or disable the setting",
+                            "filter": true,
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "description": "An AI model that detects jailbreak attempts, a user interaction strategy that gets the model to bypass desired behavior that was set by the model developer in order to violate content policies or safety policies originally set. Runs on prompts.",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "description": "The model will not detect jailbreak attempts.",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('aiModelSettings').aiContentFilter, 'Yes'), equals(steps('aiModelSettings').aiAddContentFilter, 'Yes'))]"
+                        },
+                        {
+                            "name": "aiProtectedMaterialText",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Protected Material Text",
+                            "placeholder": "",
+                            "defaultValue": "No",
+                            "toolTip": "",
+                            "multiselect": false,
+                            "multiLine": true,
+                            "selectAll": false,
+                            "defaultDescription": "Enable or disable the setting",
+                            "filter": true,
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "description": "A model that helps detect and protect against regurgitation of language that matches known text content (e.g song lyrics, articles, recipes, selected web content). Runs on completions.",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "description": "The model will not detect and protect against regurgitation of language that matches known text content.",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('aiModelSettings').aiContentFilter, 'Yes'), equals(steps('aiModelSettings').aiAddContentFilter, 'Yes'))]"
+                        },
+                        {
+                            "name": "aiProtectedMaterialCode",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Protected Material Code",
+                            "placeholder": "",
+                            "defaultValue": "No",
+                            "toolTip": "",
+                            "multiselect": false,
+                            "multiLine": true,
+                            "selectAll": false,
+                            "defaultDescription": "Enable or disable the setting",
+                            "filter": true,
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "description": "A model that helps detect source code that matches a set of source code from public repositories, and provide example citation and license information in annotations. Runs on completions.",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "description": "The model will not detect ource code that matches a set of source code from public repositories, and provide example citation and license information in annotations.",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('aiModelSettings').aiContentFilter, 'Yes'), equals(steps('aiModelSettings').aiAddContentFilter, 'Yes'))]"
                         }
                     ]
                 }
@@ -799,7 +1266,20 @@
                 "location": "[steps('basics').resourceScope.location.name]",
                 "aiModelDeployment": "[steps('aiModelSettings').aiModelDeployment]",
                 "aiModelDeploymentName": "[steps('aiModelSettings').aiModelDeploymentName]",
-                "aiModelVersion": "[steps('aiModelSettings').aiModelVersion]"
+                "aiModelVersion": "[steps('aiModelSettings').aiModelVersion]",
+                "aiContentFilter": "[steps('aiModelSettings').aiContentFilter]",
+                "aiContentFilterName": "[steps('aiModelSettings').aiContentFilterName]",
+                "aiProtectedJailbreak": "[steps('aiModelSettings').aiProtectedJailbreak]",
+                "aiProtectedMaterialText": "[steps('aiModelSettings').aiProtectedMaterialText]",
+                "aiProtectedMaterialCode": "[steps('aiModelSettings').aiProtectedMaterialCode]",
+                "aiContentHarmFilterPrompt": "[steps('aiModelSettings').aiContentHarmFilterPrompt]",
+                "aiContentHateFilterPrompt": "[steps('aiModelSettings').aiContentHateFilterPrompt]",
+                "aiContentSexualFilterPrompt": "[steps('aiModelSettings').aiContentSexualFilterPrompt]",
+                "aiContentViolenceFilterPrompt": "[steps('aiModelSettings').aiContentViolenceFilterPrompt]",
+                "aiContentHarmFilterCompletion": "[steps('aiModelSettings').aiContentHarmFilterCompletion]",
+                "aiContentHateFilterCompletion": "[steps('aiModelSettings').aiContentHateFilterCompletion]",
+                "aiContentSexualFilterCompletion": "[steps('aiModelSettings').aiContentSexualFilterCompletion]",
+                "aiContentViolenceFilterCompletion": "[steps('aiModelSettings').aiContentViolenceFilterCompletion]"
             },
             "kind": "Subscription",
             "location": "[steps('basics').resourceScope.location.name]",
