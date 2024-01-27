@@ -3,7 +3,7 @@
     "view": {
         "kind": "Form",
         "properties": {
-            "title": "Secure and Compliant Generative Azure Open AI",
+            "title": "Secure and Compliant Generative AI on Azure",
             "steps": [
                 {
                     "name": "basics",
@@ -735,7 +735,7 @@
                             "type": "Microsoft.Common.DropDown",
                             "label": "Select the Model you want to deploy",
                             "placeholder": "",
-                            "defaultValue": "GPT-35-Turbo",
+                            "defaultValue": "GPT-4",
                             "toolTip": "",
                             "multiselect": false,
                             "multiLine": true,
@@ -753,6 +753,16 @@
                                         "label": "GPT-4-32k",
                                         "description": "GPT-4 can solve difficult problems with greater accuracy than any of OpenAI's previous models. Like GPT-3.5 Turbo, GPT-4 is optimized for chat and works well for traditional completions tasks. Use the Chat Completions API to use GPT-4.",
                                         "value": "gpt-4-32k"
+                                    },
+                                    {
+                                        "label": "GPT-4-Vision",
+                                        "description": "GPT-4 Turbo with Vision is a large multimodal model (LMM) developed by OpenAI that can analyze images and provide textual responses to questions about them. It incorporates both natural language processing and visual understanding.The GPT-4 Turbo with Vision model answers general questions about what's present in the images. You can also show it video if you use Vision enhancement.",
+                                        "value": "gpt-4-vision"
+                                    },
+                                    {
+                                        "label": "Embeddings",
+                                        "description": "OpenAI offers a powerful second-generation embedding model (denoted by -002 in the model ID). It’s better, cheaper, and simpler to use than previous embeddings models.",
+                                        "value": "text-embedding-ada-002"
                                     },
                                     {
                                         "label": "GPT-35-Turbo",
@@ -1235,6 +1245,116 @@
                                 "required": true
                             },
                             "visible": "[and(equals(steps('aiModelSettings').aiContentFilter, 'Yes'), equals(steps('aiModelSettings').aiAddContentFilter, 'Yes'))]"
+                        }
+                    ]
+                },
+                {
+                    "name": "aiAuxiliarySettings",
+                    "label": "Generative AI use-cases setup",
+                    "subLabel": {
+                        "preValidation": "",
+                        "postValidation": "Done"
+                    },
+                    "bladeTitle": "Auxiliary services",
+                    "elements": [
+                        {
+                            "name": "aiAuxiliaryText",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": true,
+                            "options": {
+                                "icon": "None",
+                                "text": "Subject to your initial use-cases, you can enable additional Azure services for the complete Generative AI architecture on Azure.",
+                                "uri": "https://www.microsoft.com"
+                            }
+                        },
+                        {
+                            "name": "aiUseCaseSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Use-cases",
+                            "elements": [],
+                            "visible": true
+                        },
+                        {
+                            "name": "aiUseCaseText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": true,
+                            "options": {
+                                "text": "Technology is advancing at an unprecedented pace, and businesses are seeking innovative ways to maintain a competitive edge. Nowhere is this truer than in the realms of generative AI. From generating realistic images and videos to enhancing customer experiences, generative AI has proven to be a versatile tool across various industries.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://azure.microsoft.com/en-us/blog/azure-openai-service-10-ways-generative-ai-is-transforming-businesses/"
+                                }
+                            }
+                        },
+                        {
+                            "name": "aiSearchDeployment",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Create Azure AI services for the initial use-cases",
+                            "defaultValue": "Yes",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": true
+                        },
+                        {
+                            "name": "aiUseCaseSelection",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select the initial use-case you want to deploy",
+                            "placeholder": "",
+                            "defaultValue": "Image and video recognition",
+                            "toolTip": "",
+                            "multiselect": false,
+                            "multiLine": true,
+                            "selectAll": false,
+                            "defaultDescription": "Select the initial use-case you want to start with.",
+                            "filter": true,
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Content creation and design",
+                                        "description": "Content creation and design: Effective content creation and design are crucial for attracting and engaging customers.",
+                                        "value": "content"
+                                    },
+                                    {
+                                        "label": "Accelerated automation",
+                                        "description": "Automating IT tasks improves employee experiences, enhances customer interactions, and drives more efficiency within a company’s developer community.",
+                                        "value": "automation"
+                                    },
+                                    {
+                                        "label": "Personalized marketing",
+                                        "description": "Personalization increases the chances of customer engagement and conversion and can significantly improve marketing ROI..",
+                                        "value": "marketing"
+                                    },
+                                    {
+                                        "label": "Chatbots and virtual agents",
+                                        "description": "Chatbots and virtual assistants powered by generative AI provide instant and accurate responses to customer queries.",
+                                        "value": "chatbots"
+                                    },
+                                    {
+                                        "label": "Language translation and natural language processing",
+                                        "description": "In a globalized world, language barriers can hinder communication and business growth.",
+                                        "value": "language"
+                                    },
+                                    {
+                                        "label": "Image and video recognition",
+                                        "description": "analyze images and provide textual responses to questions about them. It incorporates both natural language processing and visual understanding.",
+                                        "value": "vision"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiModelSettings').aiModelDeployment, 'Yes')]"
                         }
                     ]
                 }

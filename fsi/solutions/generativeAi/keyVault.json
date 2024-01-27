@@ -129,7 +129,7 @@
         "name-compliant-keyvault-st-cmk-name": "[format('{0}/{1}', variables('name-compliant-keyvault'), parameters('stCmkKeyName'))]",
         "no-st-cmk-name": "[format('{0}/{1}', variables('name-compliant-keyvault'), 'nostcmk')]",
         "name-compliant-keyvault-ai-cmk-name": "[format('{0}/{1}', variables('name-compliant-keyvault'), parameters('aiCmkKeyName'))]",
-        "no-ai-cmk-name": "[format('{0}/{1}', variables('name-compliant-keyvault'), 'nostcmk')]",
+        "no-ai-cmk-name": "[format('{0}/{1}', variables('name-compliant-keyvault'), 'noaicmk')]",
         "denyFwAcls": {
             "bypass": "AzureServices",
             "defaultAction": "Deny",
