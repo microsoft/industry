@@ -370,7 +370,7 @@
             "azureOpenAiTemplateUri": "[uri(deployment().properties.templateLink.uri, 'azureOpenAi.json')]",
             "rgKeyVersionTemplateUri": "[uri(deployment().properties.templateLink.uri, 'rgKey.json')]",
             "rgAzureOpenAiObjectIdTemplateUri": "[uri(deployment().properties.templateLink.uri, 'rgAzureAiObjectId.json')]",
-            "rgAzureAiSearchObjectIdTemplateUri": "[uri(deployment().properties.templateLink.uri, 'rgAzureAiObjectId.json')]",
+            "rgAzureAiSearchObjectIdTemplateUri": "[uri(deployment().properties.templateLink.uri, 'rgAzureAzureAiSearchObjectId.json')]",
             "rgRbacTemplateUri": "[uri(deployment().properties.templateLink.uri, 'rgRbac.json')]",
             "azureOpenAiCmkTemplateUri": "[uri(deployment().properties.templateLink.uri, 'cmkAzureOpenAi.json')]",
             "azureOpenAiModelTemplateUri": "[uri(deployment().properties.templateLink.uri, 'modelDeployment.json')]",
@@ -837,7 +837,7 @@
                         "value": "ServicePrincipal"
                     },
                     "principalId": {
-                        "value": "[if(and(equals(parameters('aiSearchSystemIdentity'), 'Yes'), equals(parameters('aiSystemIdentity'), 'Yes')), reference(variables('deploymentNames').rgAzureAiSearchObjectIdDeploymentName).outputs.systemIdentityId.value, '')]"
+                        "value": "[if(and(equals(parameters('aiSearchSystemIdentity'), 'Yes'), equals(parameters('aiSystemIdentity'), 'Yes')), reference(variables('deploymentNames').rgAzureAiObjectIdDeploymentName).outputs.systemIdentityId.value, '')]"
                     }
                 }
             }
