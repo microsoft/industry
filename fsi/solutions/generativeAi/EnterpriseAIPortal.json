@@ -1453,7 +1453,7 @@
                             "constraints": {
                                 "required": true
                             },
-                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'), equals(steps('aiSettings').aiDisableNetworkAccess, 'Yes'))]"
+                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'), equals(steps('aiSettings').aiSearchDisableNetworkAccess, 'Yes'))]"
                         },
                         {
                             "name": "authzSection",
