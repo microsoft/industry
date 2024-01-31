@@ -21,7 +21,7 @@
                             "type": "Microsoft.Common.TextBlock",
                             "visible": true,
                             "options": {
-                                "text": "The 'Secure and Compliant Generative Azure Open AI' accelerator helps organizations to expedite the composition and deployment of a well-architected Azure Open AI workload, with the required pre-requisites to ensure encryption in transit and at rest, secure network connectivity, central authorization, and to comply with regulated industries at scale.",
+                                "text": "The 'Secure and Compliant Generative AI on Azure' accelerator helps organizations to expedite the composition and deployment of a well-architected Azure Open AI workload, with the required pre-requisites to ensure encryption in transit and at rest, secure network connectivity, central authorization, and to comply with regulated industries at scale.",
                                 "link": {
                                     "label": "Learn more",
                                     "uri": "https://learn.microsoft.com/azure/ai-services/openai/overview"
