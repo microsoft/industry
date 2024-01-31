@@ -3,7 +3,7 @@
     "view": {
         "kind": "Form",
         "properties": {
-            "title": "Secure and Compliant Generative Azure Open AI",
+            "title": "Secure and Compliant Generative AI on Azure",
             "steps": [
                 {
                     "name": "basics",
@@ -735,7 +735,7 @@
                             "type": "Microsoft.Common.DropDown",
                             "label": "Select the Model you want to deploy",
                             "placeholder": "",
-                            "defaultValue": "GPT-35-Turbo",
+                            "defaultValue": "GPT-4",
                             "toolTip": "",
                             "multiselect": false,
                             "multiLine": true,
@@ -753,6 +753,16 @@
                                         "label": "GPT-4-32k",
                                         "description": "GPT-4 can solve difficult problems with greater accuracy than any of OpenAI's previous models. Like GPT-3.5 Turbo, GPT-4 is optimized for chat and works well for traditional completions tasks. Use the Chat Completions API to use GPT-4.",
                                         "value": "gpt-4-32k"
+                                    },
+                                    {
+                                        "label": "GPT-4-Vision",
+                                        "description": "GPT-4 Turbo with Vision is a large multimodal model (LMM) developed by OpenAI that can analyze images and provide textual responses to questions about them. It incorporates both natural language processing and visual understanding.The GPT-4 Turbo with Vision model answers general questions about what's present in the images. You can also show it video if you use Vision enhancement.",
+                                        "value": "gpt-4-vision"
+                                    },
+                                    {
+                                        "label": "Embeddings",
+                                        "description": "OpenAI offers a powerful second-generation embedding model (denoted by -002 in the model ID). It’s better, cheaper, and simpler to use than previous embeddings models.",
+                                        "value": "text-embedding-ada-002"
                                     },
                                     {
                                         "label": "GPT-35-Turbo",
@@ -1237,6 +1247,264 @@
                             "visible": "[and(equals(steps('aiModelSettings').aiContentFilter, 'Yes'), equals(steps('aiModelSettings').aiAddContentFilter, 'Yes'))]"
                         }
                     ]
+                },
+                {
+                    "name": "aiAuxiliarySettings",
+                    "label": "Generative AI use-cases setup",
+                    "subLabel": {
+                        "preValidation": "",
+                        "postValidation": "Done"
+                    },
+                    "bladeTitle": "Auxiliary services",
+                    "elements": [
+                        {
+                            "name": "aiAuxiliaryText",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": true,
+                            "options": {
+                                "icon": "None",
+                                "text": "Subject to your initial use-cases, you can enable additional Azure services for the complete Generative AI architecture on Azure.",
+                                "uri": "https://www.microsoft.com"
+                            }
+                        },
+                        {
+                            "name": "aiUseCaseSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Use-cases",
+                            "elements": [],
+                            "visible": true
+                        },
+                        {
+                            "name": "aiUseCaseText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": true,
+                            "options": {
+                                "text": "Technology is advancing at an unprecedented pace, and businesses are seeking innovative ways to maintain a competitive edge. Nowhere is this truer than in the realms of generative AI. From generating realistic images and videos to enhancing customer experiences, generative AI has proven to be a versatile tool across various industries.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://azure.microsoft.com/en-us/blog/azure-openai-service-10-ways-generative-ai-is-transforming-businesses/"
+                                }
+                            }
+                        },
+                        {
+                            "name": "aiUseCaseDeployment",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Create Azure AI services for the initial use-cases",
+                            "defaultValue": "Yes",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": true
+                        },
+                        {
+                            "name": "aiUseCaseSelection",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select the initial use-case you want to deploy",
+                            "placeholder": "",
+                            "defaultValue": "Image and video recognition",
+                            "toolTip": "",
+                            "multiselect": false,
+                            "multiLine": true,
+                            "selectAll": false,
+                            "defaultDescription": "Select the initial use-case you want to start with.",
+                            "filter": true,
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Content creation and design",
+                                        "description": "Content creation and design: Effective content creation and design are crucial for attracting and engaging customers.",
+                                        "value": "content"
+                                    },
+                                    {
+                                        "label": "Accelerated automation",
+                                        "description": "Automating IT tasks improves employee experiences, enhances customer interactions, and drives more efficiency within a company’s developer community.",
+                                        "value": "automation"
+                                    },
+                                    {
+                                        "label": "Personalized marketing",
+                                        "description": "Personalization increases the chances of customer engagement and conversion and can significantly improve marketing ROI..",
+                                        "value": "marketing"
+                                    },
+                                    {
+                                        "label": "Chatbots and virtual agents",
+                                        "description": "Chatbots and virtual assistants powered by generative AI provide instant and accurate responses to customer queries.",
+                                        "value": "chatbots"
+                                    },
+                                    {
+                                        "label": "Language translation and natural language processing",
+                                        "description": "In a globalized world, language barriers can hinder communication and business growth.",
+                                        "value": "language"
+                                    },
+                                    {
+                                        "label": "Image and video recognition",
+                                        "description": "analyze images and provide textual responses to questions about them. It incorporates both natural language processing and visual understanding.",
+                                        "value": "vision"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+
+                        {
+                            "name": "aiSearchInfo",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]",
+                            "options": {
+                                "icon": "None",
+                                "text": "Azure AI Search, an AI-powered information retrieval platform, helps developers build rich search experiences and generative AI apps that combine large language models with enterprise data. Implement search functionality for any mobile or search application within your organization or as part of software as a service (SaaS) apps.",
+                                "uri": "https://www.microsoft.com"
+                            }
+                        },
+                        {
+                            "name": "aiEncryptionSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Azure AI Search",
+                            "elements": [],
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiSearchNetworkSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Network Settings",
+                            "elements": [],
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiSearchDisableNetworkAccess",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Disable Public Network Access",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiSearchNwLocationOption",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy the Private Endpoint for Azure AI Search into the same region as the Azure AI Search service",
+                            "defaultValue": "Yes",
+                            "toolTip": "This will deploy the Private Endpoint in the provided subnet and will also associate an Application Security Group",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'), equals(steps('aiAuxiliarySettings').aiSearchDisableNetworkAccess, 'Yes'))]"
+                        },
+                        {
+                            "name": "aiSearchLocationsApi",
+                            "type": "Microsoft.Solutions.ArmApiControl",
+                            "request": {
+                                "method": "GET",
+                                "path": "locations?api-version=2019-11-01"
+                            }
+                        },
+                        {
+                            "name": "aiSearchNwLocation",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select region for the Private Endpoint",
+                            "filter": true,
+                            "toolTip": "Select the target region for the Private Endpoint",
+                            "constraints": {
+                                "allowedValues": "[map(steps('aiAuxiliarySettings').aiSearchLocationsApi.value,(item) => parse(concat('{\"label\":\"',item.displayName,'\",\"value\":\"',item.name,'\"}')))]",
+                                "required": true
+                            },
+                            "visible": "[and(not(equals(steps('aiAuxiliarySettings').aiSearchNwLocationOption, 'Yes')), equals(steps('aiAuxiliarySettings').aiSearchDisableNetworkAccess, 'Yes'))]"
+                        },
+                        {
+                            "name": "aiSearchSubnetId",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "ResourceId of existing subnet for connecting Private Endpoint",
+                            "placeholder": "",
+                            "defaultValue": "",
+                            "toolTip": "Use only allowed characters",
+                            "constraints": {
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'), equals(steps('aiSettings').aiDisableNetworkAccess, 'Yes'))]"
+                        },
+                        {
+                            "name": "authzSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Authorization Settings",
+                            "elements": [],
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiSearchRbacAuthz",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Azure RBAC authorization",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No, use local authorization with API key",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiSearchSystemIdentity",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Managed Identity (System-assigned) for Azure AI Search",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "When enabling Managed Identity and usage of Customer-Managed keys, this identity will have RBAC permission access the Azure Open AI instance.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        }
+                    ]
                 }
             ]
         },
@@ -1279,7 +1547,13 @@
                 "aiContentHarmFilterCompletion": "[steps('aiModelSettings').aiContentHarmFilterCompletion]",
                 "aiContentHateFilterCompletion": "[steps('aiModelSettings').aiContentHateFilterCompletion]",
                 "aiContentSexualFilterCompletion": "[steps('aiModelSettings').aiContentSexualFilterCompletion]",
-                "aiContentViolenceFilterCompletion": "[steps('aiModelSettings').aiContentViolenceFilterCompletion]"
+                "aiContentViolenceFilterCompletion": "[steps('aiModelSettings').aiContentViolenceFilterCompletion]",
+                "aiSearchDisableNetworkAccess": "[steps('aiAuxiliarySettings').aiSearchDisableNetworkAccess]",
+                "aiSearchNwLocation": "[if(equals(steps('aiAuxiliarySettings').aiSearchNwLocationOption, 'Yes'), steps('basics').resourceScope.location.name, steps('aiAuxiliarySettings').aiSearchNwLocation)]",
+                "aiSearchRbacAuthz": "[steps('aiAuxiliarySettings').aiSearchRbacAuthz]",
+                "aiSearchSubnetId": "[steps('aiAuxiliarySettings').aiSearchSubnetId]",
+                "aiSearchSystemIdentity": "[steps('aiAuxiliarySettings').aiSearchSystemIdentity]",
+                "aiUseCaseDeployment": "[steps('aiAuxiliarySettings').aiUseCaseDeployment]"
             },
             "kind": "Subscription",
             "location": "[steps('basics').resourceScope.location.name]",
