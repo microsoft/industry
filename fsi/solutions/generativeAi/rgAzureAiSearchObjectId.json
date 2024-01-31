@@ -16,7 +16,7 @@
     "outputs": {
         "systemIdentityId": {
             "type": "string",
-            "value": "[reference(resourceId('Microsoft.Search/searchServices', variables('name-compliant-azureAiSearch')), '2021-10-01', 'Full').identity.principalId]"
+            "value": "[reference(resourceId('Microsoft.Search/searchServices', variables('name-compliant-azureAiSearch')), '2022-09-01', 'Full').identity.principalId]"
         }
     }
 }
