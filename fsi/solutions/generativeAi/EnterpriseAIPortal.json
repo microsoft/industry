@@ -1287,7 +1287,7 @@
                             }
                         },
                         {
-                            "name": "aiSearchDeployment",
+                            "name": "aiUseCaseDeployment",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Create Azure AI services for the initial use-cases",
                             "defaultValue": "Yes",
@@ -1354,7 +1354,155 @@
                                 ],
                                 "required": true
                             },
-                            "visible": "[equals(steps('aiModelSettings').aiModelDeployment, 'Yes')]"
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+
+                        {
+                            "name": "aiSearchInfo",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]",
+                            "options": {
+                                "icon": "None",
+                                "text": "Azure AI Search, an AI-powered information retrieval platform, helps developers build rich search experiences and generative AI apps that combine large language models with enterprise data. Implement search functionality for any mobile or search application within your organization or as part of software as a service (SaaS) apps.",
+                                "uri": "https://www.microsoft.com"
+                            }
+                        },
+                        {
+                            "name": "aiEncryptionSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Azure AI Search",
+                            "elements": [],
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiSearchNetworkSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Network Settings",
+                            "elements": [],
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiSearchDisableNetworkAccess",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Disable Public Network Access",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiSearchNwLocationOption",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy the Private Endpoint for Azure AI Search into the same region as the Azure AI Search service",
+                            "defaultValue": "Yes",
+                            "toolTip": "This will deploy the Private Endpoint in the provided subnet and will also associate an Application Security Group",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'), equals(steps('aiAuxiliarySettings').aiSearchDisableNetworkAccess, 'Yes'))]"
+                        },
+                        {
+                            "name": "aiSearchLocationsApi",
+                            "type": "Microsoft.Solutions.ArmApiControl",
+                            "request": {
+                                "method": "GET",
+                                "path": "locations?api-version=2019-11-01"
+                            }
+                        },
+                        {
+                            "name": "aiSearchNwLocation",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select region for the Private Endpoint",
+                            "filter": true,
+                            "toolTip": "Select the target region for the Private Endpoint",
+                            "constraints": {
+                                "allowedValues": "[map(steps('aiAuxiliarySettings').aiSearchLocationsApi.value,(item) => parse(concat('{\"label\":\"',item.displayName,'\",\"value\":\"',item.name,'\"}')))]",
+                                "required": true
+                            },
+                            "visible": "[and(not(equals(steps('aiAuxiliarySettings').aiSearchNwLocationOption, 'Yes')), equals(steps('aiAuxiliarySettings').aiSearchDisableNetworkAccess, 'Yes'))]"
+                        },
+                        {
+                            "name": "aiSearchSubnetId",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "ResourceId of existing subnet for connecting Private Endpoint",
+                            "placeholder": "",
+                            "defaultValue": "",
+                            "toolTip": "Use only allowed characters",
+                            "constraints": {
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'), equals(steps('aiSettings').aiDisableNetworkAccess, 'Yes'))]"
+                        },
+                        {
+                            "name": "authzSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Authorization Settings",
+                            "elements": [],
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiSearchRbacAuthz",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Azure RBAC authorization",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No, use local authorization with API key",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiSearchSystemIdentity",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Managed Identity (System-assigned) for Azure AI Search",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "When enabling Managed Identity and usage of Customer-Managed keys, this identity will have RBAC permission access the Azure Open AI instance.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
                         }
                     ]
                 }
@@ -1399,7 +1547,13 @@
                 "aiContentHarmFilterCompletion": "[steps('aiModelSettings').aiContentHarmFilterCompletion]",
                 "aiContentHateFilterCompletion": "[steps('aiModelSettings').aiContentHateFilterCompletion]",
                 "aiContentSexualFilterCompletion": "[steps('aiModelSettings').aiContentSexualFilterCompletion]",
-                "aiContentViolenceFilterCompletion": "[steps('aiModelSettings').aiContentViolenceFilterCompletion]"
+                "aiContentViolenceFilterCompletion": "[steps('aiModelSettings').aiContentViolenceFilterCompletion]",
+                "aiSearchDisableNetworkAccess": "[steps('aiAuxiliarySettings').aiSearchDisableNetworkAccess]",
+                "aiSearchNwLocation": "[if(equals(steps('aiAuxiliarySettings').aiSearchNwLocationOption, 'Yes'), steps('basics').resourceScope.location.name, steps('aiAuxiliarySettings').aiSearchNwLocation)]",
+                "aiSearchRbacAuthz": "[steps('aiAuxiliarySettings').aiSearchRbacAuthz]",
+                "aiSearchSubnetId": "[steps('aiAuxiliarySettings').aiSearchSubnetId]",
+                "aiSearchSystemIdentity": "[steps('aiAuxiliarySettings').aiSearchSystemIdentity]",
+                "aiUseCaseDeployment": "[steps('aiAuxiliarySettings').aiUseCaseDeployment]"
             },
             "kind": "Subscription",
             "location": "[steps('basics').resourceScope.location.name]",
