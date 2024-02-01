@@ -62,6 +62,14 @@
                 "Yes",
                 "No"
             ]
+        },
+        "stMonCreate": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
         }
     },
     "variables": {
@@ -69,6 +77,7 @@
         "name-compliant-keyvault": "[concat(parameters('prefix'), '-', parameters('location'), '-kv')]",
         "name-compliant-storage-asg": "[concat(parameters('prefix'), '-storage-asg')]",
         "name-compliant-storage-pe": "[concat(parameters('prefix'), '-storage-pe')]",
+        "name-compliant-azMon": "[concat(parameters('prefix'), '-', parameters('location'), '-azmon')]",
         "cmk": {
             "requireInfrastructureEncryption": true,
             "identity": {
@@ -181,6 +190,39 @@
                                     "enabled": true,
                                     "days": 7
                                 }
+                            }
+                        },
+                        {
+                            "condition": "[equals(parameters('stMonCreate'), 'Yes')]",
+                            "type": "Microsoft.Storage/storageAccounts/blobServices/providers/diagnosticSettings",
+                            "apiVersion": "2021-05-01-preview",
+                            "name": "[concat(variables('name-compliant-storage'), '/default/', 'Microsoft.Insights/', 'diag')]",
+                            "location": "[parameters('location')]",
+                            "dependsOn": [
+                                "[concat('Microsoft.Storage/storageAccounts/', variables('name-compliant-storage'))]"
+                            ],
+                            "properties": {
+                                "workspaceId": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.OperationalInsights/workspaces/', variables('name-compliant-azMon'))]",
+                                "metrics": [
+                                    {
+                                        "category": "AllMetrics",
+                                        "enabled": true
+                                    }
+                                ],
+                                "logs": [
+                                    {
+                                        "category": "StorageRead",
+                                        "enabled": true
+                                    },
+                                    {
+                                        "category": "StorageWrite",
+                                        "enabled": true
+                                    },
+                                    {
+                                        "category": "StorageDelete",
+                                        "enabled": true
+                                    }
+                                ]
                             }
                         },
                         {
