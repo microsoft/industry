@@ -360,11 +360,44 @@
                 "Yes",
                 "No"
             ]
+        },
+        "kvMonCreation": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "stMonCreation": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "aiMonCreation": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "aiSearchMonCreation": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
         }
     },
     "variables": {
         "templateUris": {
             "managedIdentityUri": "[uri(deployment().properties.templateLink.uri, 'managedIdentity.json')]",
+            "azMonTemplateUri": "[uri(deployment().properties.templateLink.uri, 'azMon.json')]",
             "keyVaultTemplateUri": "[uri(deployment().properties.templateLink.uri, 'keyVault.json')]",
             "storageTemplateUri": "[uri(deployment().properties.templateLink.uri, 'storageAccount.json')]",
             "azureOpenAiTemplateUri": "[uri(deployment().properties.templateLink.uri, 'azureOpenAi.json')]",
@@ -380,6 +413,7 @@
         "deploymentSuffix": "[concat('-', deployment().location, guid(parameters('prefix')))]",
         "deploymentNames": {
             "managedIdentityDeploymentName": "[take(concat(parameters('prefix'), '-mi', variables('deploymentSuffix')), 64)]",
+            "azMonDeploymentName": "[take(concat(parameters('prefix'), '-azmon', variables('deploymentSuffix')), 64)]",
             "keyVaultDeploymentName": "[take(concat(parameters('prefix'), '-kv', variables('deploymentSuffix')), 64)]",
             "storageDeploymentName": "[take(concat(parameters('prefix'), '-sa', variables('deploymentSuffix')), 64)]",
             "azureOpenAiDeploymentName": "[take(concat(parameters('prefix'), '-aoai', variables('deploymentSuffix')), 64)]",
@@ -391,6 +425,8 @@
             "rgRbac3DeploymentName": "[take(concat(parameters('prefix'), '-rbac3', variables('deploymentSuffix')), 64)]",
             "rgRbac4DeploymentName": "[take(concat(parameters('prefix'), '-rbac4', variables('deploymentSuffix')), 64)]",
             "rgRbac5DeploymentName": "[take(concat(parameters('prefix'), '-rbac5', variables('deploymentSuffix')), 64)]",
+            "rgRbac6DeploymentName": "[take(concat(parameters('prefix'), '-rbac6', variables('deploymentSuffix')), 64)]",
+            "rgRbac7DeploymentName": "[take(concat(parameters('prefix'), '-rbac7', variables('deploymentSuffix')), 64)]",
             "azureOpenAiFinalDeploymentName": "[take(concat(parameters('prefix'), '-aoaicmk', variables('deploymentSuffix')), 64)]",
             "azureOpenAiModelDeploymentName": "[take(concat(parameters('prefix'), '-aoaiModel', variables('deploymentSuffix')), 64)]",
             "azureOpenAIContentFilterDeploymentName": "[take(concat(parameters('prefix'), '-aoaiContentFilter', variables('deploymentSuffix')), 64)]",
@@ -427,12 +463,41 @@
             }
         },
         {
+            "condition": "[or(equals(parameters('kvMonCreation'), 'Yes'), equals(parameters('stMonCreation'), 'Yes'), equals(parameters('aiMonCreation'), 'Yes'), equals(parameters('aiSearchMonCreation'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2022-09-01",
+            "name": "[variables('deploymentNames').azMonDeploymentName]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').managedIdentityDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('templateUris').azMonTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('resourceNames').rgName]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "prefix": {
+                        "value": "[parameters('prefix')]"
+                    }
+                }
+            }
+        },
+        {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2022-09-01",
             "name": "[variables('deploymentNames').keyVaultDeploymentName]",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').managedIdentityDeploymentName)]"
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').managedIdentityDeploymentName)]",
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').azMonDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -491,6 +556,9 @@
                     },
                     "kvDisableNetworkAccess": {
                         "value": "[parameters('kvDisableNetworkAccess')]"
+                    },
+                    "kvMonCreation": {
+                        "value": "[parameters('kvMonCreation')]"
                     }
                 }
             }
@@ -528,7 +596,8 @@
             "name": "[variables('deploymentNames').storageDeploymentName]",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').keyVaultDeploymentName)]"
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').keyVaultDeploymentName)]",
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').azMonDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -566,6 +635,9 @@
                     },
                     "stHttpsOnly": {
                         "value": "[parameters('stHttpsOnly')]"
+                    },
+                    "stMonCreation": {
+                        "value": "[parameters('stMonCreation')]"
                     }
                 }
             }
@@ -577,7 +649,8 @@
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').keyVaultDeploymentName)]",
-                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').storageDeploymentName)]"
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').storageDeploymentName)]",
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').azMonDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -615,6 +688,9 @@
                     },
                     "aiRestrictOutboundNetworkAccess": {
                         "value": "[parameters('aiRestrictOutboundNetworkAccess')]"
+                    },
+                    "aiMonCreation": {
+                        "value": "[parameters('aiMonCreation')]"
                     }
                 }
             }
@@ -629,7 +705,8 @@
             "dependsOn": [
                 "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').keyVaultDeploymentName)]",
                 "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').storageDeploymentName)]",
-                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').azureOpenAiDeploymentName)]"
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').azureOpenAiDeploymentName)]",
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').azMonDeploymentName)]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -667,6 +744,9 @@
                     },
                     "aiSearchEncryption": {
                         "value": "[parameters('aiSearchEncryption')]"
+                    },
+                    "aiSearchMonCreation": {
+                        "value": "[parameters('aiSearchMonCreation')]"
                     }
                 }
             }
@@ -868,6 +948,66 @@
                     },
                     "principalId": {
                         "value": "[if(and(equals(parameters('aiSystemIdentity'), 'Yes'), equals(parameters('aiSearchSystemIdentity'), 'Yes')), reference(variables('deploymentNames').rgAzureAiSearchObjectIdDeploymentName).outputs.systemIdentityId.value, '')]"
+                    }
+                }
+            }
+        },
+        // Creating Role Assignment for AOAI on Storage Account using Storage Blob Data Contributor role
+        {
+            "condition": "[equals(parameters('aiSystemIdentity'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2022-09-01",
+            "name": "[variables('deploymentNames').rgRbac6DeploymentName]",
+            "resourceGroup": "[variables('resourceNames').rgName]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').rgAzureAiObjectIdDeploymentName)]",
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').storageDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('templateUris').rgRbacTemplateUri]"
+                },
+                "parameters": {
+                    "roleDefinitionId": {
+                        "value": "ba92f5b4-2d11-453d-a403-e96b0029c9fe"
+                    },
+                    "principalType": {
+                        "value": "ServicePrincipal"
+                    },
+                    "principalId": {
+                        "value": "[if(equals(parameters('aiSystemIdentity'), 'Yes'), reference(variables('deploymentNames').rgAzureAiObjectIdDeploymentName).outputs.systemIdentityId.value, '')]"
+                    }
+                }
+            }
+        },
+        // Creating Role Assignment for AI Search on Storage Account using Storage Blob Data Contributor role
+        {
+            "condition": "[equals(parameters('aiSearchSystemIdentity'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2022-09-01",
+            "name": "[variables('deploymentNames').rgRbac7DeploymentName]",
+            "resourceGroup": "[variables('resourceNames').rgName]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').rgAzureAiSearchObjectIdDeploymentName)]",
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').storageDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('templateUris').rgRbacTemplateUri]"
+                },
+                "parameters": {
+                    "roleDefinitionId": {
+                        "value": "ba92f5b4-2d11-453d-a403-e96b0029c9fe"
+                    },
+                    "principalType": {
+                        "value": "ServicePrincipal"
+                    },
+                    "principalId": {
+                        "value": "[if(equals(parameters('aiSearchSystemIdentity'), 'Yes'), reference(variables('deploymentNames').rgAzureAiSearchObjectIdDeploymentName).outputs.systemIdentityId.value, '')]"
                     }
                 }
             }

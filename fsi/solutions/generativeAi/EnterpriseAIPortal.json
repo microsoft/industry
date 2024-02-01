@@ -182,6 +182,34 @@
                             "visible": true
                         },
                         {
+                            "name": "kvMonSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Azure Monitor Settings",
+                            "elements": [],
+                            "visible": true
+                        },
+                        {
+                            "name": "kvMonCreation",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Diagnostic Settings for logging and threat detection",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": true
+                        },
+                        {
                             "name": "nwSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Network Settings",
@@ -461,6 +489,34 @@
                                 "required": true
                             },
                             "visible": true
+                        },
+                        {
+                            "name": "stMonSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Azure Monitor Settings",
+                            "elements": [],
+                            "visible": true
+                        },
+                        {
+                            "name": "stMonCreation",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Diagnostic Settings for logging and threat detection",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": true
                         }
                     ]
                 },
@@ -640,6 +696,34 @@
                             "label": "Enable Managed Identity (System-assigned) for Azure Open AI",
                             "defaultValue": "Yes (recommended)",
                             "toolTip": "When enabling Managed Identity and usage of Customer-Managed keys, this identity will have RBAC permission to retrieve the associated Key Vault secret.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": true
+                        },
+                        {
+                            "name": "aiMonSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Azure Monitor Settings",
+                            "elements": [],
+                            "visible": true
+                        },
+                        {
+                            "name": "aiMonCreation",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Diagnostic Settings for logging and threat detection",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
                             "constraints": {
                                 "allowedValues": [
                                     {
@@ -1356,23 +1440,60 @@
                             },
                             "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
                         },
-
+                        {
+                            "name": "aiUseCaseSampleDeployment",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Start an ingestion job for the initial use-case",
+                            "defaultValue": "Yes",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiFileUpload",
+                            "type": "Microsoft.Common.FileUpload",
+                            "label": "Upload your own files for ingestion",
+                            "toolTip": "",
+                            "constraints": {
+                                "required": true,
+                                "accept": ".doc,.docx,.xml,application/msword"
+                            },
+                            "options": {
+                                "multiple": true,
+                                "uploadMode": "file",
+                                "openMode": "text",
+                                "encoding": "UTF-8"
+                            },
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseSampleDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aSearchSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Azure AI Search",
+                            "elements": [],
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
                         {
                             "name": "aiSearchInfo",
-                            "type": "Microsoft.Common.InfoBox",
+                            "type": "Microsoft.Common.TextBlock",
                             "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]",
                             "options": {
                                 "icon": "None",
                                 "text": "Azure AI Search, an AI-powered information retrieval platform, helps developers build rich search experiences and generative AI apps that combine large language models with enterprise data. Implement search functionality for any mobile or search application within your organization or as part of software as a service (SaaS) apps.",
                                 "uri": "https://www.microsoft.com"
                             }
-                        },
-                        {
-                            "name": "aiEncryptionSection",
-                            "type": "Microsoft.Common.Section",
-                            "label": "Azure AI Search",
-                            "elements": [],
-                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
                         },
                         {
                             "name": "aiSearchNetworkSection",
@@ -1453,7 +1574,7 @@
                             "constraints": {
                                 "required": true
                             },
-                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'), equals(steps('aiSettings').aiSearchDisableNetworkAccess, 'Yes'))]"
+                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'), equals(steps('aiAuxiliarySettings').aiSearchDisableNetworkAccess, 'Yes'))]"
                         },
                         {
                             "name": "authzSection",
@@ -1503,6 +1624,34 @@
                                 "required": true
                             },
                             "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiSearchMonSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Azure Monitor Settings",
+                            "elements": [],
+                            "visible": true
+                        },
+                        {
+                            "name": "aiSearchMonCreation",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Diagnostic Settings for logging and threat detection",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": true
                         }
                     ]
                 }
@@ -1553,7 +1702,11 @@
                 "aiSearchRbacAuthz": "[steps('aiAuxiliarySettings').aiSearchRbacAuthz]",
                 "aiSearchSubnetId": "[steps('aiAuxiliarySettings').aiSearchSubnetId]",
                 "aiSearchSystemIdentity": "[steps('aiAuxiliarySettings').aiSearchSystemIdentity]",
-                "aiUseCaseDeployment": "[steps('aiAuxiliarySettings').aiUseCaseDeployment]"
+                "aiUseCaseDeployment": "[steps('aiAuxiliarySettings').aiUseCaseDeployment]",
+                "kvMonCreation": "[steps('kvSettings').kvMonCreation]",
+                "stMonCreation": "[steps('stSettings').stMonCreation]",
+                "aiMonCreation": "[steps('aiSettings').aiMonCreation]",
+                "aiSearchMonCreation": "[steps('aiAuxiliarySettings').aiSearchMonCreation]"
             },
             "kind": "Subscription",
             "location": "[steps('basics').resourceScope.location.name]",

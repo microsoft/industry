@@ -120,6 +120,14 @@
             "metadata": {
                 "description": "Expiration time of the key [dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))]"
             }
+        },
+        "kvMonCreation": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
         }
     },
     "variables": {
@@ -130,6 +138,7 @@
         "no-st-cmk-name": "[format('{0}/{1}', variables('name-compliant-keyvault'), 'nostcmk')]",
         "name-compliant-keyvault-ai-cmk-name": "[format('{0}/{1}', variables('name-compliant-keyvault'), parameters('aiCmkKeyName'))]",
         "no-ai-cmk-name": "[format('{0}/{1}', variables('name-compliant-keyvault'), 'noaicmk')]",
+        "name-compliant-azMon": "[concat(parameters('prefix'), '-', parameters('location'), '-azmon')]",
         "denyFwAcls": {
             "bypass": "AzureServices",
             "defaultAction": "Deny",
@@ -180,6 +189,25 @@
                                 "enableRbacAuthorization": "[if(equals(parameters('kvRbacAuthZ'), 'Yes'), bool('true'), bool('false'))]",
                                 "enablePurgeProtection": "[if(equals(parameters('kvPurgeProtection'), 'Yes'), bool('true'), bool('false'))]",
                                 "publicNetworkAccess": "[if(equals(parameters('kvDisableNetworkAccess'), 'Yes'), 'Disabled', 'Enabled')]"
+                            }
+                        },
+                        {
+                            "condition": "[equals(parameters('kvMonCreation'), 'Yes')]",
+                            "type": "Microsoft.KeyVault/vaults/providers/diagnosticSettings",
+                            "apiVersion": "2021-05-01-preview",
+                            "name": "[concat(variables('name-compliant-keyvault'), '/', 'Microsoft.Insights/diag')]",
+                            "location": "[parameters('location')]",
+                            "dependsOn": [
+                                "[concat('Microsoft.KeyVault/vaults/', variables('name-compliant-keyvault'))]"
+                            ],
+                            "properties": {
+                                "workspaceId": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.OperationalInsights/workspaces/', variables('name-compliant-azMon'))]",
+                                "logs": [
+                                    {
+                                        "categoryGroup": "allLogs",
+                                        "enabled": true
+                                    }
+                                ]
                             }
                         },
                         {
