@@ -1441,44 +1441,6 @@
                             "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
                         },
                         {
-                            "name": "aiUseCaseSampleDeployment",
-                            "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Start an ingestion job for the initial use-case",
-                            "defaultValue": "Yes",
-                            "toolTip": "",
-                            "constraints": {
-                                "allowedValues": [
-                                    {
-                                        "label": "Yes",
-                                        "value": "Yes"
-                                    },
-                                    {
-                                        "label": "No",
-                                        "value": "No"
-                                    }
-                                ],
-                                "required": true
-                            },
-                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
-                        },
-                        {
-                            "name": "aiFileUpload",
-                            "type": "Microsoft.Common.FileUpload",
-                            "label": "Upload your own files for ingestion",
-                            "toolTip": "",
-                            "constraints": {
-                                "required": true,
-                                "accept": ".doc,.docx,.xml,application/msword"
-                            },
-                            "options": {
-                                "multiple": true,
-                                "uploadMode": "file",
-                                "openMode": "text",
-                                "encoding": "UTF-8"
-                            },
-                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseSampleDeployment, 'Yes')]"
-                        },
-                        {
                             "name": "aSearchSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Azure AI Search",
