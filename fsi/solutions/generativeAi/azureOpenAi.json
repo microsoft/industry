@@ -71,6 +71,14 @@
                 "Yes",
                 "No"
             ]
+        },
+        "aiMonCreation": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
         }
     },
     "variables": {
@@ -78,6 +86,7 @@
         "name-compliant-openAi-pe": "[concat(parameters('prefix'), '-AzOpenAi-pe')]",
         "name-compliant-openAi-asg": "[concat(parameters('prefix'), '-AzOpenAi-asg')]",
         "name-compliant-storage": "[toLower(take(concat(replace(replace(parameters('prefix'), '-', ''), '_', ''), parameters('location'), uniqueString(deployment().name)), 23))]",
+        "name-compliant-azMon": "[concat(parameters('prefix'), '-', parameters('location'), '-azmon')]",
         "aiIdentity": {
             "type": "SystemAssigned"
         },
@@ -129,6 +138,25 @@
                             }
                         },
                         {
+                            "condition": "[equals(parameters('aiMonCreation'), 'Yes')]",
+                            "type": "Microsoft.CognitiveServices/accounts/providers/diagnosticSettings",
+                            "apiVersion": "2021-05-01-preview",
+                            "name": "[concat(variables('name-compliant-azMon'), '/', 'Microsoft.Insights/diag')]",
+                            "location": "[parameters('location')]",
+                            "dependsOn": [
+                                "[concat('Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureOpenAi'))]"
+                            ],
+                            "properties": {
+                                "workspaceId": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.OperationalInsights/workspaces/', variables('name-compliant-azMon'))]",
+                                "logs": [
+                                    {
+                                        "categoryGroup": "allLogs",
+                                        "enabled": true
+                                    }
+                                ]
+                            }
+                        },
+                        {
                             "condition": "[and(equals(parameters('aiDisableNetworkAccess'), 'Yes'), not(empty(parameters('aiSubnetId'))))]",
                             "type": "Microsoft.Network/applicationSecurityGroups",
                             "apiVersion": "2023-04-01",
@@ -148,7 +176,6 @@
                             "dependsOn": [
                                 "[concat('Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureOpenAi'))]",
                                 "[concat('Microsoft.Network/applicationSecurityGroups/', variables('name-compliant-openAi-asg'))]"
-
                             ],
                             "properties": {
                                 "privateLinkServiceConnections": [

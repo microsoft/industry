@@ -72,6 +72,14 @@
                 "Yes",
                 "No"
             ]
+        },
+        "aiSearchMonCreation": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
         }
     },
     "variables": {
@@ -79,6 +87,7 @@
         "name-compliant-azureAiSearch-pe": "[toLower(concat(parameters('prefix'), '-AzAISearch-pe'))]",
         "name-compliant-azureAiSearch-asg": "[toLower(concat(parameters('prefix'), '-AzAISearch-asg'))]",
         "name-compliant-storage": "[toLower(take(concat(replace(replace(parameters('prefix'), '-', ''), '_', ''), parameters('location'), uniqueString(deployment().name)), 23))]",
+        "name-compliant-azMon": "[concat(parameters('prefix'), '-', parameters('location'), '-azmon')]",
         "aiSearchIdentity": {
             "type": "SystemAssigned"
         },
@@ -130,6 +139,25 @@
                                     "enforcement": "[if(equals(parameters('aiSearchEncryption'), 'Yes'), 'Enabled', 'Disabled')]"
 
                                 }
+                            }
+                        },
+                        {
+                            "condition": "[equals(parameters('aiSearchMonCreation'), 'Yes')]",
+                            "type": "Microsoft.Search/searchServices/providers/diagnosticSettings",
+                            "apiVersion": "2021-05-01-preview",
+                            "name": "[concat(variables('name-compliant-azMon'), '/', 'Microsoft.Insights/diag')]",
+                            "location": "[parameters('location')]",
+                            "dependsOn": [
+                                "[concat('Microsoft.Search/searchServices', variables('name-compliant-azureAiSearch'))]"
+                            ],
+                            "properties": {
+                                "workspaceId": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.OperationalInsights/workspaces/', variables('name-compliant-azMon'))]",
+                                "logs": [
+                                    {
+                                        "categoryGroup": "allLogs",
+                                        "enabled": true
+                                    }
+                                ]
                             }
                         },
                         {

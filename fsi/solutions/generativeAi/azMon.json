@@ -1,0 +1,107 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rgName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide the name of the resource group where the Azure Open AI instance that will be created"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Select the location for the Azure Open AI instance that will be created"
+            }
+        },
+        "prefix": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide name for the Azure Open AI instance that will be created"
+            }
+        }
+    },
+    "variables": {
+        "name-compliant-azMon": "[concat(parameters('prefix'), '-', parameters('location'), '-azmon')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2022-09-01",
+            "name": "[parameters('rgName')]",
+            "location": "[parameters('location')]"
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2022-09-01",
+            "name": "azMon",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.OperationalInsights/workspaces",
+                            "apiVersion": "2021-12-01-preview",
+                            "name": "[variables('name-compliant-azMon')]",
+                            "location": "[parameters('location')]",
+                            "sku": {
+                                "name": "PerGB2018"
+                            },
+                            "properties": {
+                                "retentionInDays": 30,
+                                "features": {
+                                    "enableLogAccessUsingOnlyResourcePermissions": true,
+                                    "disableLocalAuth": true
+                                }
+                            }
+                        },
+                        {
+                            "type": "Microsoft.OperationalInsights/workspaces/providers/diagnosticSettings",
+                            "apiVersion": "2021-05-01-preview",
+                            "name": "[concat(variables('name-compliant-azMon'), '/', 'Microsoft.Insights/diag')]",
+                            "location": "[parameters('location')]",
+                            "dependsOn": [
+                                "[concat('Microsoft.OperationalInsights/workspaces/', variables('name-compliant-azMon'))]"
+                            ],
+                            "properties": {
+                                "workspaceId": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.OperationalInsights/workspaces/', variables('name-compliant-azMon'))]",
+                                "metrics": [
+                                    {
+                                        "category": "AllMetrics",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        },
+                                        "timeGrain": null
+                                    }
+                                ],
+                                "logs": [
+                                    {
+                                        "categoryGroup": "allLogs",
+                                        "enabled": true
+                                    },
+                                    {
+                                        "categoryGroup": "audit",
+                                        "enabled": true
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
