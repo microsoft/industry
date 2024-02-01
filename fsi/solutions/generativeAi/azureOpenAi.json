@@ -141,7 +141,7 @@
                             "condition": "[equals(parameters('aiMonCreation'), 'Yes')]",
                             "type": "Microsoft.CognitiveServices/accounts/providers/diagnosticSettings",
                             "apiVersion": "2021-05-01-preview",
-                            "name": "[concat(variables('name-compliant-azMon'), '/', 'Microsoft.Insights/diag')]",
+                            "name": "[concat(variables('name-compliant-azureOpenAi'), '/', 'Microsoft.Insights/diag')]",
                             "location": "[parameters('location')]",
                             "dependsOn": [
                                 "[concat('Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureOpenAi'))]"

@@ -195,7 +195,7 @@
                             "condition": "[equals(parameters('kvMonCreation'), 'Yes')]",
                             "type": "Microsoft.KeyVault/vaults/providers/diagnosticSettings",
                             "apiVersion": "2021-05-01-preview",
-                            "name": "[concat(variables('name-compliant-azMon'), '/', 'Microsoft.Insights/diag')]",
+                            "name": "[concat(variables('name-compliant-keyvault'), '/', 'Microsoft.Insights/diag')]",
                             "location": "[parameters('location')]",
                             "dependsOn": [
                                 "[concat('Microsoft.KeyVault/vaults/', variables('name-compliant-keyvault'))]"
