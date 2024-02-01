@@ -1356,23 +1356,22 @@
                             },
                             "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
                         },
-
+                        {
+                            "name": "aSearchSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Azure AI Search",
+                            "elements": [],
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
                         {
                             "name": "aiSearchInfo",
-                            "type": "Microsoft.Common.InfoBox",
+                            "type": "Microsoft.Common.TextBlock",
                             "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]",
                             "options": {
                                 "icon": "None",
                                 "text": "Azure AI Search, an AI-powered information retrieval platform, helps developers build rich search experiences and generative AI apps that combine large language models with enterprise data. Implement search functionality for any mobile or search application within your organization or as part of software as a service (SaaS) apps.",
                                 "uri": "https://www.microsoft.com"
                             }
-                        },
-                        {
-                            "name": "aiEncryptionSection",
-                            "type": "Microsoft.Common.Section",
-                            "label": "Azure AI Search",
-                            "elements": [],
-                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
                         },
                         {
                             "name": "aiSearchNetworkSection",
@@ -1453,7 +1452,7 @@
                             "constraints": {
                                 "required": true
                             },
-                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'), equals(steps('aiSettings').aiSearchDisableNetworkAccess, 'Yes'))]"
+                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'), equals(steps('aiAuxiliarySettings').aiSearchDisableNetworkAccess, 'Yes'))]"
                         },
                         {
                             "name": "authzSection",
