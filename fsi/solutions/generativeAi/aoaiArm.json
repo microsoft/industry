@@ -382,7 +382,7 @@
             "managedIdentityDeploymentName": "[take(concat(parameters('prefix'), '-mi', variables('deploymentSuffix')), 64)]",
             "keyVaultDeploymentName": "[take(concat(parameters('prefix'), '-kv', variables('deploymentSuffix')), 64)]",
             "storageDeploymentName": "[take(concat(parameters('prefix'), '-sa', variables('deploymentSuffix')), 64)]",
-            "azureOpenAiDeploymentName": "[take(concat(parameters('prefix'), '-aoa', variables('deploymentSuffix')), 64)]",
+            "azureOpenAiDeploymentName": "[take(concat(parameters('prefix'), '-aoai', variables('deploymentSuffix')), 64)]",
             "rgKeyVersionDeploymentName": "[take(concat(parameters('prefix'), '-key', variables('deploymentSuffix')), 64)]",
             "rgAzureAiObjectIdDeploymentName": "[take(concat(parameters('prefix'), '-ai-objectId', variables('deploymentSuffix')), 64)]",
             "rgAzureAiSearchObjectIdDeploymentName": "[take(concat(parameters('prefix'), '-search-objectId', variables('deploymentSuffix')), 64)]",
@@ -391,9 +391,9 @@
             "rgRbac3DeploymentName": "[take(concat(parameters('prefix'), '-rbac3', variables('deploymentSuffix')), 64)]",
             "rgRbac4DeploymentName": "[take(concat(parameters('prefix'), '-rbac4', variables('deploymentSuffix')), 64)]",
             "rgRbac5DeploymentName": "[take(concat(parameters('prefix'), '-rbac5', variables('deploymentSuffix')), 64)]",
-            "azureOpenAiFinalDeploymentName": "[take(concat(parameters('prefix'), '-aoacmk', variables('deploymentSuffix')), 64)]",
-            "azureOpenAiModelDeploymentName": "[take(concat(parameters('prefix'), '-aoaModel', variables('deploymentSuffix')), 64)]",
-            "azureOpenAIContentFilterDeploymentName": "[take(concat(parameters('prefix'), '-aoaContentFilter', variables('deploymentSuffix')), 64)]",
+            "azureOpenAiFinalDeploymentName": "[take(concat(parameters('prefix'), '-aoaicmk', variables('deploymentSuffix')), 64)]",
+            "azureOpenAiModelDeploymentName": "[take(concat(parameters('prefix'), '-aoaiModel', variables('deploymentSuffix')), 64)]",
+            "azureOpenAIContentFilterDeploymentName": "[take(concat(parameters('prefix'), '-aoaiContentFilter', variables('deploymentSuffix')), 64)]",
             "azureAiSearchDeploymentName": "[take(concat(parameters('prefix'), 'aaisearch', variables('deploymentSuffix')), 64)]"
         },
         "resourceNames": {
