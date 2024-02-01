@@ -148,7 +148,7 @@
                             "name": "[concat(variables('name-compliant-azureAiSearch'), '/', 'Microsoft.Insights/diag')]",
                             "location": "[parameters('location')]",
                             "dependsOn": [
-                                "[concat('Microsoft.Search/searchServices', variables('name-compliant-azureAiSearch'))]"
+                                "[concat('Microsoft.Search/searchServices/', variables('name-compliant-azureAiSearch'))]"
                             ],
                             "properties": {
                                 "workspaceId": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.OperationalInsights/workspaces/', variables('name-compliant-azMon'))]",
