@@ -63,7 +63,7 @@
                 "No"
             ]
         },
-        "stMonCreate": {
+        "stMonCreation": {
             "type": "string",
             "defaultValue": "No",
             "allowedValues": [
@@ -193,7 +193,7 @@
                             }
                         },
                         {
-                            "condition": "[equals(parameters('stMonCreate'), 'Yes')]",
+                            "condition": "[equals(parameters('stMonCreation'), 'Yes')]",
                             "type": "Microsoft.Storage/storageAccounts/blobServices/providers/diagnosticSettings",
                             "apiVersion": "2021-05-01-preview",
                             "name": "[concat(variables('name-compliant-storage'), '/default/', 'Microsoft.Insights/', 'diag')]",
