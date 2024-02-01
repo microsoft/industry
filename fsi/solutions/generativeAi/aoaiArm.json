@@ -391,6 +391,8 @@
             "rgRbac3DeploymentName": "[take(concat(parameters('prefix'), '-rbac3', variables('deploymentSuffix')), 64)]",
             "rgRbac4DeploymentName": "[take(concat(parameters('prefix'), '-rbac4', variables('deploymentSuffix')), 64)]",
             "rgRbac5DeploymentName": "[take(concat(parameters('prefix'), '-rbac5', variables('deploymentSuffix')), 64)]",
+            "rgRbac6DeploymentName": "[take(concat(parameters('prefix'), '-rbac6', variables('deploymentSuffix')), 64)]",
+            "rgRbac7DeploymentName": "[take(concat(parameters('prefix'), '-rbac7', variables('deploymentSuffix')), 64)]",
             "azureOpenAiFinalDeploymentName": "[take(concat(parameters('prefix'), '-aoaicmk', variables('deploymentSuffix')), 64)]",
             "azureOpenAiModelDeploymentName": "[take(concat(parameters('prefix'), '-aoaiModel', variables('deploymentSuffix')), 64)]",
             "azureOpenAIContentFilterDeploymentName": "[take(concat(parameters('prefix'), '-aoaiContentFilter', variables('deploymentSuffix')), 64)]",
@@ -868,6 +870,66 @@
                     },
                     "principalId": {
                         "value": "[if(and(equals(parameters('aiSystemIdentity'), 'Yes'), equals(parameters('aiSearchSystemIdentity'), 'Yes')), reference(variables('deploymentNames').rgAzureAiSearchObjectIdDeploymentName).outputs.systemIdentityId.value, '')]"
+                    }
+                }
+            }
+        },
+        // Creating Role Assignment for AOAI on Storage Account using Storage Blob Data Contributor role
+        {
+            "condition": "[equals(parameters('aiSystemIdentity'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2022-09-01",
+            "name": "[variables('deploymentNames').rgRbac6DeploymentName]",
+            "resourceGroup": "[variables('resourceNames').rgName]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').rgAzureAiObjectIdDeploymentName)]",
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').storageDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('templateUris').rgRbacTemplateUri]"
+                },
+                "parameters": {
+                    "roleDefinitionId": {
+                        "value": "ba92f5b4-2d11-453d-a403-e96b0029c9fe"
+                    },
+                    "principalType": {
+                        "value": "ServicePrincipal"
+                    },
+                    "principalId": {
+                        "value": "[if(equals(parameters('aiSystemIdentity'), 'Yes'), reference(variables('deploymentNames').rgAzureAiObjectIdDeploymentName).outputs.systemIdentityId.value, '')]"
+                    }
+                }
+            }
+        },
+        // Creating Role Assignment for AI Search on Storage Account using Storage Blob Data Contributor role
+        {
+            "condition": "[equals(parameters('aiSearchSystemIdentity'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2022-09-01",
+            "name": "[variables('deploymentNames').rgRbac7DeploymentName]",
+            "resourceGroup": "[variables('resourceNames').rgName]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').rgAzureAiSearchObjectIdDeploymentName)]",
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').storageDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('templateUris').rgRbacTemplateUri]"
+                },
+                "parameters": {
+                    "roleDefinitionId": {
+                        "value": "ba92f5b4-2d11-453d-a403-e96b0029c9fe"
+                    },
+                    "principalType": {
+                        "value": "ServicePrincipal"
+                    },
+                    "principalId": {
+                        "value": "[if(equals(parameters('aiSearchSystemIdentity'), 'Yes'), reference(variables('deploymentNames').rgAzureAiSearchObjectIdDeploymentName).outputs.systemIdentityId.value, '')]"
                     }
                 }
             }
