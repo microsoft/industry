@@ -1334,7 +1334,7 @@
                 },
                 {
                     "name": "aiAuxiliarySettings",
-                    "label": "Generative AI use-cases setup",
+                    "label": "Use Cases and Additional Services",
                     "subLabel": {
                         "preValidation": "",
                         "postValidation": "Done"
@@ -1347,14 +1347,14 @@
                             "visible": true,
                             "options": {
                                 "icon": "None",
-                                "text": "Subject to your initial use-cases, you can enable additional Azure services for the complete Generative AI architecture on Azure.",
+                                "text": "Subject to your initial use cases, you can enable additional Azure services for the complete Generative AI architecture on Azure.",
                                 "uri": "https://www.microsoft.com"
                             }
                         },
                         {
                             "name": "aiUseCaseSection",
                             "type": "Microsoft.Common.Section",
-                            "label": "Use-cases",
+                            "label": "Use Cases",
                             "elements": [],
                             "visible": true
                         },
@@ -1373,7 +1373,7 @@
                         {
                             "name": "aiUseCaseDeployment",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Create Azure AI services for the initial use-cases",
+                            "label": "Create Azure AI services for the initial use cases",
                             "defaultValue": "Yes",
                             "toolTip": "",
                             "constraints": {
@@ -1394,14 +1394,14 @@
                         {
                             "name": "aiUseCaseSelection",
                             "type": "Microsoft.Common.DropDown",
-                            "label": "Select the initial use-case you want to deploy",
+                            "label": "Select the initial use case you want to deploy",
                             "placeholder": "",
                             "defaultValue": "Image and video recognition",
                             "toolTip": "",
                             "multiselect": false,
                             "multiLine": true,
                             "selectAll": false,
-                            "defaultDescription": "Select the initial use-case you want to start with.",
+                            "defaultDescription": "Select the initial use case you want to start with.",
                             "filter": true,
                             "constraints": {
                                 "allowedValues": [
@@ -1483,7 +1483,7 @@
                                 ],
                                 "required": true
                             },
-                            "visible": true
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
                         },
                         {
                             "name": "aiSearchPrivateEndpointInfo",
