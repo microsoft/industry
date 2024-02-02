@@ -55,6 +55,7 @@ Optionally, you can also get started with the initial Gen AI use case (e.g., Azu
   * GPT-35-turbo-16k
   * GPT-4-32k
   * GPT-4 with Vision
+  * Embeddings
 * Azure AI Search
 
 ## Alignment with FSI Landing Zones
@@ -75,9 +76,7 @@ Although the reference implementation is tailored for the FSI industry, it can b
 
 ## Architecture and scale-out considerations
 
-> Note: It is recommended to follow the best practices and overall recommendations when deploying the Secure and Compliang Generative Azure Open AI reference implementation, however, everything can be configured to meet the exact requirements of your organization. With that said, e.g., enablig Public Endpoint for one or more of the Azure services, the FSI Landing Zones provides additional controls to limit the scope of the public endpoint to a specific IP address range with firewall enabled.
-
-The Secure and Compliant Generative Azure Open AI reference implementation is designed to be deployed in a single Azure region, in a subscription where the virtual network with a dedicated subnet has been created upfront, to be used for the Private Endpoint. 
+The Secure and Compliant Generative AI on Azure reference implementation is designed to be deployed in a single Azure region, in a subscription where the virtual network with a dedicated subnet has been created upfront, to be used for the Private Endpoint. 
 
 ![Azure Open AI workload composition in a compliant corp connected landing zone](./aoai.png)
 
