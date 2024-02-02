@@ -14,6 +14,11 @@ The reference implementation has been developed, validated, and proven with seve
 - [Deployment instructions](#deployment-instructions)
   - [Pre-requisites](#pre-requisites)
   - [Step-by-step deployment guidance](#step-by-step-deployment-guidance)
+- [Getting started post deployment](#getting-started-post-deployment)
+  - [Azure native RAG on your own data](#azure-native-rag-on-your-own-data)
+    - [PowerShell script for RAG enablement](#powershell-script-for-rag-enablement)
+      - [Ingestion job using Azure Open AI, AI Search, and Storage Account](#ingestion-job-using-azure-open-ai-ai-search-and-storage-account)
+      - [Content generation using Azure Open AI API endpoint](#content-generation-using-azure-open-ai-api-endpoint)
 
 ---
 
@@ -50,6 +55,7 @@ Optionally, you can also get started with the initial Gen AI use case (e.g., Azu
   * GPT-35-turbo-16k
   * GPT-4-32k
   * GPT-4 with Vision
+  * Embeddings
 * Azure AI Search
 
 ## Alignment with FSI Landing Zones
@@ -70,9 +76,7 @@ Although the reference implementation is tailored for the FSI industry, it can b
 
 ## Architecture and scale-out considerations
 
-> Note: It is recommended to follow the best practices and overall recommendations when deploying the Secure and Compliang Generative Azure Open AI reference implementation, however, everything can be configured to meet the exact requirements of your organization. With that said, e.g., enablig Public Endpoint for one or more of the Azure services, the FSI Landing Zones provides additional controls to limit the scope of the public endpoint to a specific IP address range with firewall enabled.
-
-The Secure and Compliant Generative Azure Open AI reference implementation is designed to be deployed in a single Azure region, in a subscription where the virtual network with a dedicated subnet has been created upfront, to be used for the Private Endpoint. 
+The Secure and Compliant Generative AI on Azure reference implementation is designed to be deployed in a single Azure region, in a subscription where the virtual network with a dedicated subnet has been created upfront, to be used for the Private Endpoint. 
 
 ![Azure Open AI workload composition in a compliant corp connected landing zone](./aoai.png)
 
@@ -147,7 +151,7 @@ Configure the Key Vault that will be used to store the keys used by the storage 
 In the networking section when deploying using a Private Endpoint, you must provide the resourceId of an existing subnet in the same region where you are deploying into. 
 If you want to deploy the Azure Open AI workloads into a different region vs where you have your virtual network, select the region for the Private Endpoint (i.e., "Deploy the Private Endpoint for Key Vault into the same region as the Key Vault" option must be set to "No", and the regional parameter will appear in the portal)
 
-![Key Vault config](./ai-step23.png)
+![Key Vault](./ai-step2a.png)
 
 ### 3 - Storage Configuration
 
@@ -157,21 +161,195 @@ Provide a key name, and the resourceId for an existing subnet when deploying wit
 
 ![Storage Account](./ai-step3.png)
 
+![Storage Account](./ai-step4.png)
+
 ### 4 - Azure Open AI Configuration
 
 Configure the Azure Open AI instance that will be created, by providing a name for the customer-managed key, and the resourceId to the subnet where the Private Endpoint will be deployed. Same as with the Key Vault and Storage Account configuration, if you are deploying to a different region vs where the virtual network is created, select a different region for the private endpoint.
 
-![Azure Open AI](./ai-step4.png)
+![Azure Open AI](./ai-step5.png)
+
+![Azure Open AI](./ai-step6.png)
 
 ### 5 - Model Deployment
 
 On this page, you can optionally select to deploy an available model to your Azure Open AI instance, subject to the available models in the region you have selected. Should there be any capacity constraints with the selected model, the validation API will catch that and inform you before you can submit the deployment.
 
-![Model Deployment](./ai-step5.png)
+![Model Deployment](./ai-step7.png)
+
+Select the intial model deployment from the drop down list, and provide a name for the deployment.
+
+![Model Deployment](./ai-step8.png)
+
+Additionally, you can configure content filtering and advanced filtering settings, that are running on top of the general filtering settings. This is to ensure that the generated content is compliant with the organization's policies and guidelines.
+
+![Model Deployment](./ai-step9.png)
+
+![Model Deployment](./ai-step10.png)
+
+### 5 - Use Cases and Additional Services
+
+On this page, you can optionally select your initial use case, and additional services that you may want to deploy alongside the Azure Open AI instance. The list of services will dynamically appear based on the use case you have selected. Each Azure service will provide similar configuration options as the previous pages, and you can configure them as needed in order to meet your security and compliance needs for the overall architecture and setup.
+
+![Use Cases and Additional Services](./ai-step11.png)
+
+![Use Cases and Additional Services](./ai-step12.png)
 
 ### Review + create
 
 *Review + Create* page will validate your permission and configuration before you can click deploy. Once it has been validated successfully, you can click *Create*
+
+## Getting started post deployment
+
+Subject to the deployment options you have selected, you may need to do additional configuration in your environment, such as Private DNS Zones creation and conditional forwarding if used over private endpoints, as well as additional RBAC assignment for users/groups/SPNs to interact with the services.
+
+## Azure native RAG on your own data
+
+If you are interested in getting started with the initial Gen AI use case (e.g., Azure native RAG architecture and setup) to accelerate the adoption of Generative AI in your organization, the following instructions and script examples can be used to:
+
+1. Upload files, such as text, images, and videos, to the storage account that you have created as part of the deployment, subject to the configuration you have selected (e.g., the setup highly recommends using Azure RBAC, disabling SAS tokens, and using customer-managed keys for encryption at rest, but if you have selected anything differently, you need to cater for that while getting the data into your storage account).
+
+2. Use the Azure Open AI ingestion API to create one or more indexes in Azure AI Search, to start indexing the data that you have uploaded to the storage account, and make it available for the Azure Open AI instance to enable typical RAG use cases.
+
+3. Use the Azure Open AI API to interact with the Azure Open AI instance, and start generating content based on the data that you have uploaded to the storage account, and indexed in Azure AI Search.
+
+### PowerShell script for RAG enablement
+
+The following PowerShell scripts can be used to 1) start an ingestion job on Azure Open AI to ingest the data from the storage account into Azure AI Search, and 2) access the Azure Open AI API to start generating content based on the data that you have ingested.
+
+#### Ingestion job using Azure Open AI, AI Search, and Storage Account
+
+Modify this script to provide the necessary values for the Azure Open AI endpoint, the embedding deployment name, the ingestion job name, the storage account endpoint, the storage container name, the storage resource ID, and the Azure AI Search endpoint.
+
+```powershell
+
+# Ingestion job using Azure Open AI, AI Search, and Storage Account. The following snippet assumes Managed Identity is properly configured and has the necessary permissions to access the resources, and that the user has Open AI contributor role on the Azure Open AI resource.
+
+# Azure Open AI configuration
+
+$AzureOpenAIEndpoint = ""
+$EmbeddingDeploymentName = ""
+$IngestionJobName = ""
+
+# Storage Configuration
+
+$StorageAccountEndpoint = ""
+$StorageContainerName = ""
+$StorageResourceId = ""
+
+# Azure AI search configuraton
+
+$AzureAiSearchEndpoint = ""
+
+# Get Token
+
+$TokenRequest = Get-AzAccessToken -ResourceUrl "https://cognitiveservices.azure.com"
+$MyToken = $TokenRequest.token
+
+# Set Body (body must be present but empty for the request)
+$Body = @'  
+{  
+}  
+'@  
+
+# AI Ingestion Request
+$AzureOAIRequest = @{
+    Uri = "https://$($AzureOpenAIEndpoint)/openai/extensions/on-your-data/ingestion-jobs/$($IngestionJobName)?api-version=2023-10-01-preview"
+    Headers = @{
+        Authorization = "Bearer $($MyToken)"
+        'Content-Type' = 'application/json'
+        'storageEndpoint' = "https://$($StorageAccountEndpoint)"
+        'storageConnectionString' = "ResourceId=$($StorageResourceId)"
+        'storageContainer' = $StorageContainerName
+        'searchServiceEndpoint' = "https://$($AzureAiSearchEndpoint)"
+        'embeddingDeploymentName' = $EmbeddingDeploymentName
+        }
+    Body = $Body
+    Method = 'PUT'
+    }
+    
+$Response = Invoke-WebRequest @AzureOAIRequest
+[Newtonsoft.Json.Linq.JObject]::Parse($Response.Content).ToString()
+
+# Get Status on the ingestion job
+
+$GetStatusRequest = @{
+    Uri = "https://$($AzureOpenAIEndpoint)/openai/extensions/on-your-data/ingestion-jobs/$($IngestionJob)?api-version=2023-10-01-preview"
+    Headers = @{
+        Authorization = "Bearer $($MyToken)"
+        }
+    Method = 'GET'
+}
+$GetResponse = Invoke-WebRequest @GetStatusRequest
+[Newtonsoft.Json.Linq.JObject]::Parse($GetResponse.Content).ToString()
+
+```
+
+#### Content generation using Azure Open AI API endpoint
+
+Modify this script to provide the necessary values for the Azure Open AI endpoint, the embedding deployment name, and the model name.
+
+```powershell
+
+#T he following snippet assumes Managed Identity is properly configured and has the necessary permissions to access the resources, and that the user has Open AI reader role on the Azure Open AI resource.
+
+# Azure Open AI configuration
+
+$AzureOpenAIEndpoint = ""
+$DeploymentName = ""
+$EmbeddingDeploymentName = ""
+$Prompt = ""
+
+# Azure AI search configuraton
+
+$AzureAiSearchEndpoint = ""
+$IndexName = "" 
+
+# Get Token
+$TokenRequest = Get-AzAccessToken -ResourceUrl "https://cognitiveservices.azure.com"
+$MyToken = $TokenRequest.token
+
+# Form the request body towards the Azure Open AI API endpoint, with AzureCognitiveSearch added as dataSource for RAG
+$Body = @"
+{
+"dataSources": [
+    {
+        "type": "AzureCognitiveSearch",
+        "parameters": {
+            "endpoint": "https://$($AzureAiSearchEndpoint)",
+            "indexName": "$($IndexName)",
+            "embeddingDeploymentName": "$($EmbeddingDeploymentName)"
+        }
+    }
+],
+"messages": [
+    {
+        "role": "system",
+        "content": "You are an AI assistant that helps people find information."
+    },
+    {
+        "role": "user",
+        "content": "$($Prompt)"
+    }
+]
+}
+"@
+
+# AI Request
+$AzureOAIRequest = @{
+    Uri = "https://$($AzureOpenAIEndpoint)/openai/deployments/$($DeploymentName)/extensions/chat/completions?api-version=2023-10-01-preview"
+    Headers = @{
+        Authorization = "Bearer $($MyToken)"
+        'Content-Type' = 'application/json'
+        }
+    Method = 'POST'
+    Body = $Body
+    #UseBasicParsing = $true
+    }
+$Response = Invoke-WebRequest @AzureOAIRequest
+[Newtonsoft.Json.Linq.JObject]::Parse($Response.Content).ToString()
+
+```
 
 ## Next Steps
 
