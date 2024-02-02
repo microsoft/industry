@@ -1,4 +1,4 @@
-# Secure and Compliant Generative Azure Open AI - User Guide
+# Secure and Compliant Generative AI on Azure - User Guide
 
 ![Benefits](./ai-overview.png)
 
@@ -7,8 +7,9 @@ The reference implementation has been developed, validated, and proven with seve
 
 ## Table of Contents
 
-- [What is Secure and Compliant Generative Azure Open AI?](#what-is-secure-and-compliant-generative-azure-open-ai)
+- [What is Secure and Compliant Generative AI on Azure?](#what-is-secure-and-compliant-generative-ai-on-azure)
   - [Alignment with FSI Landing Zones](#alignment-with-fsi-landing-zones)
+  - [Deploy for PoC and testing purposes](#deploy-for-poc-and-testing-purposes)
   - [Architecture and scale-out considerations](#architecture-and-scale-out-considerations)
 - [Deployment instructions](#deployment-instructions)
   - [Pre-requisites](#pre-requisites)
@@ -18,9 +19,9 @@ The reference implementation has been developed, validated, and proven with seve
 
 | Reference Implementation | Description | Deploy | Documentation
 |:----------------------|:------------|--------|--------------|
-| Secure and Compliant Generative Azure Open AI | Secure and Compliant Generative Azure Open AI, aligned with the prescriptive guidance for FSI Landing Zones, ensuring a secure and compliant Azure Open AI workload composition into the landing zones |[![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/fsiazureai) | [User Guide](./fsiAOAI.md)
+| Secure and Compliant Generative AI on Azure | Secure and Compliant Generative AI, aligned with the prescriptive guidance for FSI Landing Zones, ensuring a secure and compliant Azure Open AI workload composition into the landing zones |[![Deploy To Microsoft Cloud](../../docs/deploytomicrosoftcloud.svg)](https://aka.ms/fsiazureai) | [User Guide](./fsiAOAI.md)
 
-## What is Secure and Compliant Generative Azure Open AI?
+## What is Secure and Compliant Generative AI on Azure?
 
 Azure Open AI provides powerful, generative AI capabilities that organizations can access securely over a private network, use their own customer-managed keys to encrypt the data, and enable sophisitcated monitoring and observability of their AI workloads, while managing authentication and authorization centrally. This reference implementation provides a secure and compliant deployment of Azure Open AI, and the recommended configuration is aligned with the recommended Azure policies provided by FSI Landing Zones for the Azure services in this workload composition.
 
@@ -30,16 +31,26 @@ The Secure and Compliant Generative Azure Open AI includes the following Azure s
 
 * Cognitive Services
   * Azure Open AI
-* Private Link
 * Private Endpoint
 * Network Security Groups
   * Application Security Groups
 * Storage Accounts
-* Key Vault
+* Key Vault for CMK
 * Azure Monitor
   * Log Analytics
 * Managed Identity
 * Role Assignments
+
+Optionally, you can also get started with the initial Gen AI use case (e.g., Azure native RAG architecture and setup) to accelerate the adoption of Generative AI in your organization.
+
+* Model deployments, such as:
+  * GPT-3
+  * GPT-4
+  * GPT-35-turbo
+  * GPT-35-turbo-16k
+  * GPT-4-32k
+  * GPT-4 with Vision
+* Azure AI Search
 
 ## Alignment with FSI Landing Zones
 
@@ -52,6 +63,10 @@ A few examples:
 1. It is recommended to deploy Azure Open AI using a private endpoint, and not expose the service over the public internet. This is enforced by the Azure Policy "Cognitive Services accounts should disable public network access" documented in this section [Azure Open AI - Private Endpoint](./fsiPolicies.md#azure-open-ai---private-endpoint).
 2. It is also recommended to enable Azure RBAC for Azure Open AI, so both the level of access, and what type of access is granted to the service can be controlled centrally. This is enforced by the Azure Policy "Configure Cognitive Services accounts to disable local authentication methods".
 3. Lastly, it is recommended to use a customer-managed key to encrypt the data, hence an Azure Key Vault is required, as well as several additional Azure policies to ensure the correct configuration of the Key Vault. This is enforced by the Azure Policy "Cognitive Services accounts should enable data encryption with a customer-managed key".
+
+## Deploy for PoC and testing purposes
+
+Although the reference implementation is tailored for the FSI industry, it can be used by any organization that requires a secure and compliant deployment of Azure Open AI. The reference implementation is designed to be deployed in a single Azure region, in a subscription where the virtual network with a dedicated subnet has been created upfront, to be used for the Private Endpoint. However, you can toggle any of the options to deploy the Azure Open AI instance(s) to the regions of your choice, and where capacity exists for the respective model deployments, while honoring the connectivity and networking requirements of the organization. For PoC and testing, you may want to quickly validate a use-case without requiring private connectivity, or monitoring enabled, and the reference implementation provides the flexibility to enable or disable these features as needed.
 
 ## Architecture and scale-out considerations
 

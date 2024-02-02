@@ -568,27 +568,6 @@
                             "visible": true
                         },
                         {
-                            "name": "aiRestrictOutboundNetworkAccess",
-                            "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Restric Outbound Network Access for Azure Open AI",
-                            "defaultValue": "Yes (recommended)",
-                            "toolTip": "",
-                            "constraints": {
-                                "allowedValues": [
-                                    {
-                                        "label": "Yes (recommended)",
-                                        "value": "Yes"
-                                    },
-                                    {
-                                        "label": "No",
-                                        "value": "No"
-                                    }
-                                ],
-                                "required": true
-                            },
-                            "visible": true
-                        },
-                        {
                             "name": "aiDisableNetworkAccess",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Disable Public Network Access",
@@ -608,6 +587,27 @@
                                 "required": true
                             },
                             "visible": true
+                        },
+                        {
+                            "name": "aiRestrictOutboundNetworkAccess",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Restric Outbound Network Access for Azure Open AI",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiSettings').aiDisableNetworkAccess, 'Yes')]"
                         },
                         {
                             "name": "aiNwLocationOption",
@@ -1334,7 +1334,7 @@
                 },
                 {
                     "name": "aiAuxiliarySettings",
-                    "label": "Generative AI use-cases setup",
+                    "label": "Use Cases and Additional Services",
                     "subLabel": {
                         "preValidation": "",
                         "postValidation": "Done"
@@ -1347,14 +1347,14 @@
                             "visible": true,
                             "options": {
                                 "icon": "None",
-                                "text": "Subject to your initial use-cases, you can enable additional Azure services for the complete Generative AI architecture on Azure.",
+                                "text": "Subject to your initial use cases, you can enable additional Azure services for the complete Generative AI architecture on Azure.",
                                 "uri": "https://www.microsoft.com"
                             }
                         },
                         {
                             "name": "aiUseCaseSection",
                             "type": "Microsoft.Common.Section",
-                            "label": "Use-cases",
+                            "label": "Use Cases",
                             "elements": [],
                             "visible": true
                         },
@@ -1373,7 +1373,7 @@
                         {
                             "name": "aiUseCaseDeployment",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Create Azure AI services for the initial use-cases",
+                            "label": "Create Azure AI services for the initial use cases",
                             "defaultValue": "Yes",
                             "toolTip": "",
                             "constraints": {
@@ -1394,14 +1394,14 @@
                         {
                             "name": "aiUseCaseSelection",
                             "type": "Microsoft.Common.DropDown",
-                            "label": "Select the initial use-case you want to deploy",
+                            "label": "Select the initial use case you want to deploy",
                             "placeholder": "",
                             "defaultValue": "Image and video recognition",
                             "toolTip": "",
                             "multiselect": false,
                             "multiLine": true,
                             "selectAll": false,
-                            "defaultDescription": "Select the initial use-case you want to start with.",
+                            "defaultDescription": "Select the initial use case you want to start with.",
                             "filter": true,
                             "constraints": {
                                 "allowedValues": [
@@ -1484,6 +1484,16 @@
                                 "required": true
                             },
                             "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiSearchPrivateEndpointInfo",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'), equals(steps('aiAuxiliarySettings').aiSearchDisableNetworkAccess, 'Yes'))]",
+                            "options": {
+                                "icon": "warning",
+                                "text": "To allow access to your Azure AI Search resource from Azure OpenAI resource, you need to submit an application form. The application will be reviewed in 10 business days and you will be contacted via email about the results. If you are eligible, we will provision the private endpoint in Microsoft managed virtual network, and send a private endpoint connection request to your search service, and you will need to approve the request.",
+                                "uri": "https://forms.office.com/pages/responsepage.aspx?id=v4j5cvGGr0GRqy180BHbRw_T3EIZ1KNCuv_1duLJBgpUMUcwV1Y5QjI3UTVTMkhSVUo3R09NNVQxSyQlQCN0PWcu"
+                            }
                         },
                         {
                             "name": "aiSearchNwLocationOption",
@@ -1592,7 +1602,7 @@
                             "type": "Microsoft.Common.Section",
                             "label": "Azure Monitor Settings",
                             "elements": [],
-                            "visible": true
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
                         },
                         {
                             "name": "aiSearchMonCreation",
@@ -1613,7 +1623,7 @@
                                 ],
                                 "required": true
                             },
-                            "visible": true
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
                         }
                     ]
                 }
