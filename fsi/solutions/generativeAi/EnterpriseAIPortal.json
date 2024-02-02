@@ -568,27 +568,6 @@
                             "visible": true
                         },
                         {
-                            "name": "aiRestrictOutboundNetworkAccess",
-                            "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Restric Outbound Network Access for Azure Open AI",
-                            "defaultValue": "Yes (recommended)",
-                            "toolTip": "",
-                            "constraints": {
-                                "allowedValues": [
-                                    {
-                                        "label": "Yes (recommended)",
-                                        "value": "Yes"
-                                    },
-                                    {
-                                        "label": "No",
-                                        "value": "No"
-                                    }
-                                ],
-                                "required": true
-                            },
-                            "visible": true
-                        },
-                        {
                             "name": "aiDisableNetworkAccess",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Disable Public Network Access",
@@ -608,6 +587,27 @@
                                 "required": true
                             },
                             "visible": true
+                        },
+                        {
+                            "name": "aiRestrictOutboundNetworkAccess",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Restric Outbound Network Access for Azure Open AI",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiSettings').aiDisableNetworkAccess, 'Yes')]"
                         },
                         {
                             "name": "aiNwLocationOption",
@@ -1483,7 +1483,17 @@
                                 ],
                                 "required": true
                             },
-                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                            "visible": true
+                        },
+                        {
+                            "name": "aiSearchPrivateEndpointInfo",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'), equals(steps('aiAuxiliarySettings').aiSearchDisableNetworkAccess, 'Yes'))]",
+                            "options": {
+                                "icon": "warning",
+                                "text": "To allow access to your Azure AI Search resource from Azure OpenAI resource, you need to submit an application form. The application will be reviewed in 10 business days and you will be contacted via email about the results. If you are eligible, we will provision the private endpoint in Microsoft managed virtual network, and send a private endpoint connection request to your search service, and you will need to approve the request.",
+                                "uri": "https://forms.office.com/pages/responsepage.aspx?id=v4j5cvGGr0GRqy180BHbRw_T3EIZ1KNCuv_1duLJBgpUMUcwV1Y5QjI3UTVTMkhSVUo3R09NNVQxSyQlQCN0PWcu"
+                            }
                         },
                         {
                             "name": "aiSearchNwLocationOption",
@@ -1592,7 +1602,7 @@
                             "type": "Microsoft.Common.Section",
                             "label": "Azure Monitor Settings",
                             "elements": [],
-                            "visible": true
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
                         },
                         {
                             "name": "aiSearchMonCreation",
@@ -1613,7 +1623,7 @@
                                 ],
                                 "required": true
                             },
-                            "visible": true
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
                         }
                     ]
                 }
