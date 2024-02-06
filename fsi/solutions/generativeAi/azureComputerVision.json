@@ -23,21 +23,14 @@
                 "description": "Provide name for the Azure Open AI instance that will be created"
             }
         },
-        "userIdentity": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "Provide the user identity (objectId) that will be assigned to the Azure Open AI instance that will be created"
-            }
-        },
-        "aiSubnetId": {
+        "visionSubnetId": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
                 "description": "Provide the subnet id where the Azure Open AI instance that will be connected"
             }
         },
-        "aiSystemIdentity": {
+        "visionSystemIdentity": {
             "type": "string",
             "defaultValue": "No",
             "allowedValues": [
@@ -45,11 +38,11 @@
                 "No"
             ]
         },
-        "aiNwLocation": {
+        "visionNwLocation": {
             "type": "string",
             "defaultValue": "[parameters('location')]"
         },
-        "aiDisableNetworkAccess": {
+        "visionDisableNetworkAccess": {
             "type": "string",
             "defaultValue": "No",
             "allowedValues": [
@@ -57,7 +50,7 @@
                 "No"
             ]
         },
-        "aiRbacAuthz": {
+        "visionRbacAuthz": {
             "type": "string",
             "defaultValue": "No",
             "allowedValues": [
@@ -65,7 +58,7 @@
                 "No"
             ]
         },
-        "aiRestrictOutboundNetworkAccess": {
+        "visionRestrictOutboundNetworkAccess": {
             "type": "string",
             "defaultValue": "No",
             "allowedValues": [
@@ -73,7 +66,7 @@
                 "No"
             ]
         },
-        "aiMonCreation": {
+        "visionMonCreation": {
             "type": "string",
             "defaultValue": "No",
             "allowedValues": [
@@ -83,12 +76,12 @@
         }
     },
     "variables": {
-        "name-compliant-azureOpenAi": "[concat(parameters('prefix'), '-', parameters('location'), '-AzOpenAI')]",
-        "name-compliant-openAi-pe": "[concat(parameters('prefix'), '-AzOpenAi-pe')]",
-        "name-compliant-openAi-asg": "[concat(parameters('prefix'), '-AzOpenAi-asg')]",
+        "name-compliant-azureComputerVision": "[concat(parameters('prefix'), '-', parameters('location'), '-aivision')]",
+        "name-compliant-vision-pe": "[concat(parameters('prefix'), '-AzVision-pe')]",
+        "name-compliant-vision-asg": "[concat(parameters('prefix'), '-AzVision-asg')]",
         "name-compliant-storage": "[toLower(take(concat(replace(replace(parameters('prefix'), '-', ''), '_', ''), parameters('location'), uniqueString(deployment().name)), 23))]",
         "name-compliant-azMon": "[concat(parameters('prefix'), '-', parameters('location'), '-azmon')]",
-        "aiIdentity": {
+        "visionIdentity": {
             "type": "SystemAssigned"
         },
         "denyFwAcl": {
@@ -123,29 +116,29 @@
                         {
                             "type": "Microsoft.CognitiveServices/accounts",
                             "apiVersion": "2022-03-01",
-                            "name": "[variables('name-compliant-azureOpenAi')]",
+                            "name": "[variables('name-compliant-azureComputerVision')]",
                             "location": "[parameters('location')]",
-                            "identity": "[if(equals(parameters('aiSystemIdentity'), 'Yes'), variables('aiIdentity'), json('null'))]",
+                            "identity": "[if(equals(parameters('visionSystemIdentity'), 'Yes'), variables('visionIdentity'), json('null'))]",
                             "sku": {
-                                "name": "S0"
+                                "name": "S1"
                             },
-                            "kind": "OpenAI",
+                            "kind": "ComputerVision",
                             "properties": {
-                                "customSubDomainName": "[toLower(variables('name-compliant-azureOpenAi'))]",
-                                "publicNetworkAccess": "[if(equals(parameters('aiDisableNetworkAccess'), 'Yes'), 'Disabled', 'Enabled')]",
-                                "disableLocalAuth": "[if(equals(parameters('aiRbacAuthz'), 'Yes'), bool('true'), bool('false'))]",
-                                "restrictOutboundNetworkAccess": "[if(equals(parameters('aiRestrictOutboundNetworkAccess'), 'Yes'), bool('true'), bool('false'))]",
-                                "networkAcls": "[if(equals(parameters('aiDisableNetworkAccess'), 'Yes'), variables('denyFwAcl'), json('null'))]"
+                                "customSubDomainName": "[toLower(variables('name-compliant-azureComputerVision'))]",
+                                "publicNetworkAccess": "[if(equals(parameters('visionDisableNetworkAccess'), 'Yes'), 'Disabled', 'Enabled')]",
+                                "disableLocalAuth": "[if(equals(parameters('visionRbacAuthz'), 'Yes'), bool('true'), bool('false'))]",
+                                "restrictOutboundNetworkAccess": "[if(equals(parameters('visionRestrictOutboundNetworkAccess'), 'Yes'), bool('true'), bool('false'))]",
+                                "networkAcls": "[if(equals(parameters('visionDisableNetworkAccess'), 'Yes'), variables('denyFwAcl'), json('null'))]"
                             }
                         },
                         {
-                            "condition": "[equals(parameters('aiMonCreation'), 'Yes')]",
+                            "condition": "[equals(parameters('visionMonCreation'), 'Yes')]",
                             "type": "Microsoft.CognitiveServices/accounts/providers/diagnosticSettings",
                             "apiVersion": "2021-05-01-preview",
-                            "name": "[concat(variables('name-compliant-azureOpenAi'), '/', 'Microsoft.Insights/diag')]",
+                            "name": "[concat(variables('name-compliant-azureComputerVision'), '/', 'Microsoft.Insights/diag')]",
                             "location": "[parameters('location')]",
                             "dependsOn": [
-                                "[concat('Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureOpenAi'))]"
+                                "[concat('Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureComputerVision'))]"
                             ],
                             "properties": {
                                 "workspaceId": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.OperationalInsights/workspaces/', variables('name-compliant-azMon'))]",
@@ -158,32 +151,32 @@
                             }
                         },
                         {
-                            "condition": "[and(equals(parameters('aiDisableNetworkAccess'), 'Yes'), not(empty(parameters('aiSubnetId'))))]",
+                            "condition": "[and(equals(parameters('visionDisableNetworkAccess'), 'Yes'), not(empty(parameters('visionSubnetId'))))]",
                             "type": "Microsoft.Network/applicationSecurityGroups",
                             "apiVersion": "2023-04-01",
-                            "name": "[variables('name-compliant-openAi-asg')]",
-                            "location": "[parameters('aiNwLocation')]",
+                            "name": "[variables('name-compliant-vision-asg')]",
+                            "location": "[parameters('visionNwLocation')]",
                             "dependsOn": [
-                                "[concat('Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureOpenAi'))]"
+                                "[concat('Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureComputerVision'))]"
                             ],
                             "properties": {}
                         },
                         {
-                            "condition": "[and(equals(parameters('aiDisableNetworkAccess'), 'Yes'), not(empty(parameters('aiSubnetId'))))]",
+                            "condition": "[and(equals(parameters('visionDisableNetworkAccess'), 'Yes'), not(empty(parameters('visionSubnetId'))))]",
                             "type": "Microsoft.Network/privateEndpoints",
                             "apiVersion": "2021-03-01",
-                            "name": "[variables('name-compliant-openAi-pe')]",
-                            "location": "[parameters('aiNwLocation')]",
+                            "name": "[variables('name-compliant-vision-pe')]",
+                            "location": "[parameters('visionNwLocation')]",
                             "dependsOn": [
-                                "[concat('Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureOpenAi'))]",
-                                "[concat('Microsoft.Network/applicationSecurityGroups/', variables('name-compliant-openAi-asg'))]"
+                                "[concat('Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureComputerVision'))]",
+                                "[concat('Microsoft.Network/applicationSecurityGroups/', variables('name-compliant-vision-asg'))]"
                             ],
                             "properties": {
                                 "privateLinkServiceConnections": [
                                     {
-                                        "name": "[variables('name-compliant-azureOpenAi')]",
+                                        "name": "[variables('name-compliant-azureComputerVision')]",
                                         "properties": {
-                                            "privateLinkServiceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureOpenAi'))]",
+                                            "privateLinkServiceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureComputerVision'))]",
                                             "groupIds": [
                                                 "account"
                                             ]
@@ -191,26 +184,13 @@
                                     }
                                 ],
                                 "subnet": {
-                                    "id": "[parameters('aiSubnetId')]"
+                                    "id": "[parameters('visionSubnetId')]"
                                 },
                                 "applicationSecurityGroups": [
                                     {
-                                        "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.Network/applicationSecurityGroups/', variables('name-compliant-openAi-asg'))]"
+                                        "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.Network/applicationSecurityGroups/', variables('name-compliant-vision-asg'))]"
                                     }
                                 ]
-                            }
-                        },
-                        {
-                            "condition": "[not(empty(parameters('userIdentity')))]",
-                            "type": "Microsoft.Authorization/roleAssignments",
-                            "apiVersion": "2022-04-01",
-                            "name": "[guid(deployment().name)]",
-                            "dependsOn": [
-                                "[concat('Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureOpenAi'))]"
-                            ],
-                            "properties": {
-                                "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'a001fd3d-188f-4b5d-821b-7da978bf7442')]",
-                                "principalId": "[parameters('userIdentity')]"
                             }
                         }
                     ]
