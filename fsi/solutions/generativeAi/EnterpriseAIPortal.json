@@ -1374,7 +1374,7 @@
                             "name": "aiUseCaseDeployment",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Create required Azure services for the initial use cases",
-                            "defaultValue": "Yes",
+                            "defaultValue": "No",
                             "toolTip": "",
                             "constraints": {
                                 "allowedValues": [
@@ -1441,7 +1441,14 @@
                             "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
                         },
                         {
-                            "name": "aSearchSection",
+                            "name": "aiAddServicesSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Required services for the selected use case",
+                            "elements": [],
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiSearchSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Azure AI Search",
                             "elements": [],
@@ -1626,6 +1633,13 @@
                             "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
                         },
                         {
+                            "name": "aiAddServicesSectionVision",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Required services for the selected use case",
+                            "elements": [],
+                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'), equals(steps('aiAuxiliarySettings').aiUseCaseSelection, 'vision'))]"
+                        },
+                        {
                             "name": "aiVisionSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Azure AI Vision",
@@ -1669,6 +1683,27 @@
                                 "required": true
                             },
                             "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'), equals(steps('aiAuxiliarySettings').aiUseCaseSelection, 'vision'))]"
+                        },
+                        {
+                            "name": "aiVisionRestrictOutboundNetworkAccess",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Restric Outbound Network Access for AI Vision",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiVisionDisableNetworkAccess, 'Yes')]"
                         },
                         {
                             "name": "aiVisionNwLocationOption",
@@ -1853,7 +1888,15 @@
                 "kvMonCreation": "[steps('kvSettings').kvMonCreation]",
                 "stMonCreation": "[steps('stSettings').stMonCreation]",
                 "aiMonCreation": "[steps('aiSettings').aiMonCreation]",
-                "aiSearchMonCreation": "[steps('aiAuxiliarySettings').aiSearchMonCreation]"
+                "aiSearchMonCreation": "[steps('aiAuxiliarySettings').aiSearchMonCreation]",
+                "aiVisionDisableNetworkAccess": "[steps('aiAuxiliarySettings').aiVisionDisableNetworkAccess]",
+                "aiVisionRbacAuthz": "[steps('aiAuxiliarySettings').aiVisionRbacAuthz]",
+                "aiVisionNwLocation": "[if(equals(steps('aiAuxiliarySettings').aiVisionNwLocationOption, 'Yes'), steps('basics').resourceScope.location.name, steps('aiAuxiliarySettings').aiVisionNwLocation)]",
+                "aiVisionSubnetId": "[steps('aiAuxiliarySettings').aiVisionSubnetId]",
+                "aiVisionSystemIdentity": "[steps('aiAuxiliarySettings').aiVisionSystemIdentity]",
+                "aiVisionMonCreation": "[steps('aiAuxiliarySettings').aiVisionMonCreation]",
+                "aiVisionRestrictOutboundNetworkAccess": "[steps('aiAuxiliarySettings').aiVisionRestrictOutboundNetworkAccess]",
+                "aiUseCaseSelection": "[steps('aiAuxiliarySettings').aiUseCaseSelection]"
             },
             "kind": "Subscription",
             "location": "[steps('basics').resourceScope.location.name]",

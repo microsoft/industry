@@ -392,6 +392,58 @@
                 "Yes",
                 "No"
             ]
+        },
+        "visionRbacAuthz": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "visionSubnetId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "visionDisableNetworkAccess": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "visionNwLocation": {
+            "type": "string",
+            "defaultValue": "[parameters('location')]"
+        },
+        "visionSystemIdentity": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "visionRestrictOutboundNetworkAccess": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "visionMonCreation": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "aiUseCaseSelection": {
+            "type": "string",
+            "defaultValue": ""
         }
     },
     "variables": {
@@ -408,7 +460,8 @@
             "azureOpenAiCmkTemplateUri": "[uri(deployment().properties.templateLink.uri, 'cmkAzureOpenAi.json')]",
             "azureOpenAiModelTemplateUri": "[uri(deployment().properties.templateLink.uri, 'modelDeployment.json')]",
             "azureOpenAiContentFilterTemplateUri": "[uri(deployment().properties.templateLink.uri, 'contentFilter.json')]",
-            "azureAiSearchTemplateUri": "[uri(deployment().properties.templateLink.uri, 'azureAiSearch.json')]"
+            "azureAiSearchTemplateUri": "[uri(deployment().properties.templateLink.uri, 'azureAiSearch.json')]",
+            "azureComputerVisionTemplateUri": "[uri(deployment().properties.templateLink.uri, 'azureComputerVision.json')]"
         },
         "deploymentSuffix": "[concat('-', deployment().location, guid(parameters('prefix')))]",
         "deploymentNames": {
@@ -430,7 +483,8 @@
             "azureOpenAiFinalDeploymentName": "[take(concat(parameters('prefix'), '-aoaicmk', variables('deploymentSuffix')), 64)]",
             "azureOpenAiModelDeploymentName": "[take(concat(parameters('prefix'), '-aoaiModel', variables('deploymentSuffix')), 64)]",
             "azureOpenAIContentFilterDeploymentName": "[take(concat(parameters('prefix'), '-aoaiContentFilter', variables('deploymentSuffix')), 64)]",
-            "azureAiSearchDeploymentName": "[take(concat(parameters('prefix'), 'aaisearch', variables('deploymentSuffix')), 64)]"
+            "azureAiSearchDeploymentName": "[take(concat(parameters('prefix'), 'aaisearch', variables('deploymentSuffix')), 64)]",
+            "azureComputerVisionDeploymentName": "[take(concat(parameters('prefix'), 'aicomputervision', variables('deploymentSuffix')), 64)]"
         },
         "resourceNames": {
             "rgName": "[concat(parameters('prefix'), '-rg-', parameters('location'))]"
@@ -721,9 +775,6 @@
                     "location": {
                         "value": "[parameters('location')]"
                     },
-                    "userIdentity": {
-                        "value": "[parameters('userIdentity')]"
-                    },
                     "aiSearchRbacAuthz": {
                         "value": "[parameters('aiSearchRbacAuthz')]"
                     },
@@ -734,7 +785,7 @@
                         "value": "[parameters('prefix')]"
                     },
                     "aiSearchNwLocation": {
-                        "value": "[parameters('aiNwLocation')]"
+                        "value": "[parameters('aiSearchNwLocation')]"
                     },
                     "aiSearchDisableNetworkAccess": {
                         "value": "[parameters('aiSearchDisableNetworkAccess')]"
@@ -747,6 +798,59 @@
                     },
                     "aiSearchMonCreation": {
                         "value": "[parameters('aiSearchMonCreation')]"
+                    }
+                }
+            }
+        },
+        // Deploying Azure AI Vision
+        {
+            "condition": "[equals(parameters('aiUseCaseSelection'), 'vision')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2022-09-01",
+            "name": "[variables('deploymentNames').azureComputerVisionDeploymentName]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').keyVaultDeploymentName)]",
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').storageDeploymentName)]",
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').azMonDeploymentName)]",
+                "[concat('Microsoft.Resources/deployments/', variables('deploymentNames').azureOpenAiDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('templateUris').azureComputerVisionTemplateUri]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('resourceNames').rgName]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "visionRbacAuthz": {
+                        "value": "[parameters('visionRbacAuthz')]"
+                    },
+                    "visionSubnetId": {
+                        "value": "[parameters('visionSubnetId')]"
+                    },
+                    "prefix": {
+                        "value": "[parameters('prefix')]"
+                    },
+                    "visionNwLocation": {
+                        "value": "[parameters('visionNwLocation')]"
+                    },
+                    "visionDisableNetworkAccess": {
+                        "value": "[parameters('visionDisableNetworkAccess')]"
+                    },
+                    "visionSystemIdentity": {
+                        "value": "[parameters('visionSystemIdentity')]"
+                    },
+                    "visionRestrictOutboundNetworkAccess": {
+                        "value": "[parameters('visionRestrictOutboundNetworkAccess')]"
+                    },
+                    "visionMonCreation": {
+                        "value": "[parameters('visionMonCreation')]"
                     }
                 }
             }
