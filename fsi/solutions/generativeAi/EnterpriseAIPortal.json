@@ -1373,8 +1373,8 @@
                         {
                             "name": "aiUseCaseDeployment",
                             "type": "Microsoft.Common.OptionsGroup",
-                            "label": "Create Azure AI services for the initial use cases",
-                            "defaultValue": "Yes",
+                            "label": "Create required Azure services for the initial use cases",
+                            "defaultValue": "No",
                             "toolTip": "",
                             "constraints": {
                                 "allowedValues": [
@@ -1432,7 +1432,7 @@
                                     },
                                     {
                                         "label": "Image and video recognition",
-                                        "description": "analyze images and provide textual responses to questions about them. It incorporates both natural language processing and visual understanding.",
+                                        "description": "Analyze images and provide textual responses to questions about them. It incorporates both natural language processing and visual understanding.",
                                         "value": "vision"
                                     }
                                 ],
@@ -1441,7 +1441,14 @@
                             "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
                         },
                         {
-                            "name": "aSearchSection",
+                            "name": "aiAddServicesSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Required services for the selected use case",
+                            "elements": [],
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiSearchSection",
                             "type": "Microsoft.Common.Section",
                             "label": "Azure AI Search",
                             "elements": [],
@@ -1624,6 +1631,209 @@
                                 "required": true
                             },
                             "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes')]"
+                        },
+                        {
+                            "name": "aiAddServicesSectionVision",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Required services for the selected use case",
+                            "elements": [],
+                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'), equals(steps('aiAuxiliarySettings').aiUseCaseSelection, 'vision'))]"
+                        },
+                        {
+                            "name": "aiVisionSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Azure AI Vision",
+                            "elements": [],
+                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'), equals(steps('aiAuxiliarySettings').aiUseCaseSelection, 'vision'))]"
+                        },
+                        {
+                            "name": "aiVisionInfo",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseSelection, 'vision'), equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'))]",
+                            "options": {
+                                "icon": "None",
+                                "text": "Azure AI Vision is a unified service that offers innovative computer vision capabilities. Give your apps the ability to analyze images, read text, and detect faces with prebuilt image tagging, text extraction with optical character recognition (OCR), and responsible facial recognition. Incorporate vision features into your projects with no machine learning experience required.",
+                                "uri": "https://www.microsoft.com"
+                            }
+                        },
+                        {
+                            "name": "aiVisionNetworkSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Network Settings",
+                            "elements": [],
+                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseSelection, 'vision'), equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'))]"
+                        },
+                        {
+                            "name": "aiVisionDisableNetworkAccess",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Disable Public Network Access",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseDeployment, 'Yes'), equals(steps('aiAuxiliarySettings').aiUseCaseSelection, 'vision'))]"
+                        },
+                        {
+                            "name": "aiVisionRestrictOutboundNetworkAccess",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Restric Outbound Network Access for AI Vision",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiVisionDisableNetworkAccess, 'Yes')]"
+                        },
+                        {
+                            "name": "aiVisionNwLocationOption",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Deploy the Private Endpoint for Azure AI Vision into the same region as the Azure AI Vision service",
+                            "defaultValue": "Yes",
+                            "toolTip": "This will deploy the Private Endpoint in the provided subnet and will also associate an Application Security Group",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseSelection, 'vision'), equals(steps('aiAuxiliarySettings').aiVisionDisableNetworkAccess, 'Yes'))]"
+                        },
+                        {
+                            "name": "aiVisionLocationsApi",
+                            "type": "Microsoft.Solutions.ArmApiControl",
+                            "request": {
+                                "method": "GET",
+                                "path": "locations?api-version=2019-11-01"
+                            }
+                        },
+                        {
+                            "name": "aiVisionNwLocation",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select region for the Private Endpoint",
+                            "filter": true,
+                            "toolTip": "Select the target region for the Private Endpoint",
+                            "constraints": {
+                                "allowedValues": "[map(steps('aiAuxiliarySettings').aiVisionLocationsApi.value,(item) => parse(concat('{\"label\":\"',item.displayName,'\",\"value\":\"',item.name,'\"}')))]",
+                                "required": true
+                            },
+                            "visible": "[and(not(equals(steps('aiAuxiliarySettings').aiVisionNwLocationOption, 'Yes')), equals(steps('aiAuxiliarySettings').aiVisionDisableNetworkAccess, 'Yes'))]"
+                        },
+                        {
+                            "name": "aiVisionSubnetId",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "ResourceId of existing subnet for connecting Private Endpoint",
+                            "placeholder": "",
+                            "defaultValue": "",
+                            "toolTip": "Use only allowed characters",
+                            "constraints": {
+                                "required": true
+                            },
+                            "visible": "[and(equals(steps('aiAuxiliarySettings').aiUseCaseSelection, 'vision'), equals(steps('aiAuxiliarySettings').aiVisionDisableNetworkAccess, 'Yes'))]"
+                        },
+                        {
+                            "name": "aiVisionauthzSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Authorization Settings",
+                            "elements": [],
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseSelection, 'vision')]"
+                        },
+                        {
+                            "name": "aiVisionRbacAuthz",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Azure RBAC authorization",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No, use local authorization with API key",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseSelection, 'vision')]"
+                        },
+                        {
+                            "name": "aiVisionSystemIdentity",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Managed Identity (System-assigned) for Azure AI Vision",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "When enabling Managed Identity and usage of Customer-Managed keys, this identity will have RBAC permission access the Azure Open AI instance.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseSelection, 'vision')]"
+                        },
+                        {
+                            "name": "aiVisionMonSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Azure Monitor Settings",
+                            "elements": [],
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseSelection, 'vision')]"
+                        },
+                        {
+                            "name": "aiVisionMonCreation",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Enable Diagnostic Settings for logging and threat detection",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "Yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "No"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": "[equals(steps('aiAuxiliarySettings').aiUseCaseSelection, 'vision')]"
                         }
                     ]
                 }
@@ -1678,7 +1888,15 @@
                 "kvMonCreation": "[steps('kvSettings').kvMonCreation]",
                 "stMonCreation": "[steps('stSettings').stMonCreation]",
                 "aiMonCreation": "[steps('aiSettings').aiMonCreation]",
-                "aiSearchMonCreation": "[steps('aiAuxiliarySettings').aiSearchMonCreation]"
+                "aiSearchMonCreation": "[steps('aiAuxiliarySettings').aiSearchMonCreation]",
+                "aiVisionDisableNetworkAccess": "[steps('aiAuxiliarySettings').aiVisionDisableNetworkAccess]",
+                "aiVisionRbacAuthz": "[steps('aiAuxiliarySettings').aiVisionRbacAuthz]",
+                "aiVisionNwLocation": "[if(equals(steps('aiAuxiliarySettings').aiVisionNwLocationOption, 'Yes'), steps('basics').resourceScope.location.name, steps('aiAuxiliarySettings').aiVisionNwLocation)]",
+                "aiVisionSubnetId": "[steps('aiAuxiliarySettings').aiVisionSubnetId]",
+                "aiVisionSystemIdentity": "[steps('aiAuxiliarySettings').aiVisionSystemIdentity]",
+                "aiVisionMonCreation": "[steps('aiAuxiliarySettings').aiVisionMonCreation]",
+                "aiVisionRestrictOutboundNetworkAccess": "[steps('aiAuxiliarySettings').aiVisionRestrictOutboundNetworkAccess]",
+                "aiUseCaseSelection": "[steps('aiAuxiliarySettings').aiUseCaseSelection]"
             },
             "kind": "Subscription",
             "location": "[steps('basics').resourceScope.location.name]",

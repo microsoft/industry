@@ -6,31 +6,31 @@
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "Provide the name of the resource group where the Azure AI Search instance that will be created"
+                "description": "Provide the name of the resource group where the Azure AI Vision instance that will be created"
             }
         },
         "location": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "Select the location for the Azure AI Search instance that will be created"
+                "description": "Select the location for the Azure AI Vision instance that will be created"
             }
         },
         "prefix": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "Provide name for the Azure AI Search instance that will be created"
+                "description": "Provide name for the Azure AI Vision instance that will be created"
             }
         },
-        "aiSearchSubnetId": {
+        "visionSubnetId": {
             "type": "string",
+            "defaultValue": "",
             "metadata": {
-                "description": "Provide the subnet id where the Azure AI Search instance that will be connected"
-            },
-            "defaultValue": ""
+                "description": "Provide the subnet id where the Azure AI Vision instance that will be connected"
+            }
         },
-        "aiSearchSystemIdentity": {
+        "visionSystemIdentity": {
             "type": "string",
             "defaultValue": "No",
             "allowedValues": [
@@ -38,11 +38,11 @@
                 "No"
             ]
         },
-        "aiSearchNwLocation": {
+        "visionNwLocation": {
             "type": "string",
             "defaultValue": "[parameters('location')]"
         },
-        "aiSearchDisableNetworkAccess": {
+        "visionDisableNetworkAccess": {
             "type": "string",
             "defaultValue": "No",
             "allowedValues": [
@@ -50,7 +50,7 @@
                 "No"
             ]
         },
-        "aiSearchRbacAuthz": {
+        "visionRbacAuthz": {
             "type": "string",
             "defaultValue": "No",
             "allowedValues": [
@@ -58,7 +58,7 @@
                 "No"
             ]
         },
-        "aiSearchEncryption": {
+        "visionRestrictOutboundNetworkAccess": {
             "type": "string",
             "defaultValue": "No",
             "allowedValues": [
@@ -66,7 +66,7 @@
                 "No"
             ]
         },
-        "aiSearchMonCreation": {
+        "visionMonCreation": {
             "type": "string",
             "defaultValue": "No",
             "allowedValues": [
@@ -76,12 +76,12 @@
         }
     },
     "variables": {
-        "name-compliant-azureAiSearch": "[toLower(concat(parameters('prefix'), '-', parameters('location'), '-AzAISearch'))]",
-        "name-compliant-azureAiSearch-pe": "[toLower(concat(parameters('prefix'), '-AzAISearch-pe'))]",
-        "name-compliant-azureAiSearch-asg": "[toLower(concat(parameters('prefix'), '-AzAISearch-asg'))]",
+        "name-compliant-azureComputerVision": "[concat(parameters('prefix'), '-', parameters('location'), '-aivision')]",
+        "name-compliant-vision-pe": "[concat(parameters('prefix'), '-AzVision-pe')]",
+        "name-compliant-vision-asg": "[concat(parameters('prefix'), '-AzVision-asg')]",
         "name-compliant-storage": "[toLower(take(concat(replace(replace(parameters('prefix'), '-', ''), '_', ''), parameters('location'), uniqueString(deployment().name)), 23))]",
         "name-compliant-azMon": "[concat(parameters('prefix'), '-', parameters('location'), '-azmon')]",
-        "aiSearchIdentity": {
+        "visionIdentity": {
             "type": "SystemAssigned"
         },
         "denyFwAcl": {
@@ -101,7 +101,7 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2022-09-01",
-            "name": "azureAiSearch",
+            "name": "azureOpenAi",
             "resourceGroup": "[parameters('rgName')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
@@ -114,34 +114,31 @@
                     "parameters": {},
                     "resources": [
                         {
-                            "type": "Microsoft.Search/searchServices",
-                            "apiVersion": "2022-09-01",
-                            "name": "[variables('name-compliant-azureAiSearch')]",
+                            "type": "Microsoft.CognitiveServices/accounts",
+                            "apiVersion": "2022-03-01",
+                            "name": "[variables('name-compliant-azureComputerVision')]",
                             "location": "[parameters('location')]",
-                            "identity": "[if(equals(parameters('aiSearchSystemIdentity'), 'Yes'), variables('aiSearchIdentity'), json('null'))]",
+                            "identity": "[if(equals(parameters('visionSystemIdentity'), 'Yes'), variables('visionIdentity'), json('null'))]",
                             "sku": {
-                                "name": "standard"
+                                "name": "S1"
                             },
+                            "kind": "ComputerVision",
                             "properties": {
-                                "replicaCount": 1,
-                                "partitionCount": 1,
-                                "hostingMode": "default",
-                                "publicNetworkAccess": "[if(equals(parameters('aiSearchDisableNetworkAccess'), 'Yes'), 'Disabled', 'Enabled')]",
-                                "disableLocalAuth": "[if(equals(parameters('aiSearchRbacAuthz'), 'Yes'), bool('true'), bool('false'))]",
-                                "encryptionWithCmk": {
-                                    "enforcement": "[if(equals(parameters('aiSearchEncryption'), 'Yes'), 'Enabled', 'Disabled')]"
-
-                                }
+                                "customSubDomainName": "[toLower(variables('name-compliant-azureComputerVision'))]",
+                                "publicNetworkAccess": "[if(equals(parameters('visionDisableNetworkAccess'), 'Yes'), 'Disabled', 'Enabled')]",
+                                "disableLocalAuth": "[if(equals(parameters('visionRbacAuthz'), 'Yes'), bool('true'), bool('false'))]",
+                                "restrictOutboundNetworkAccess": "[if(equals(parameters('visionRestrictOutboundNetworkAccess'), 'Yes'), bool('true'), bool('false'))]",
+                                "networkAcls": "[if(equals(parameters('visionDisableNetworkAccess'), 'Yes'), variables('denyFwAcl'), json('null'))]"
                             }
                         },
                         {
-                            "condition": "[equals(parameters('aiSearchMonCreation'), 'Yes')]",
-                            "type": "Microsoft.Search/searchServices/providers/diagnosticSettings",
+                            "condition": "[equals(parameters('visionMonCreation'), 'Yes')]",
+                            "type": "Microsoft.CognitiveServices/accounts/providers/diagnosticSettings",
                             "apiVersion": "2021-05-01-preview",
-                            "name": "[concat(variables('name-compliant-azureAiSearch'), '/', 'Microsoft.Insights/diag')]",
+                            "name": "[concat(variables('name-compliant-azureComputerVision'), '/', 'Microsoft.Insights/diag')]",
                             "location": "[parameters('location')]",
                             "dependsOn": [
-                                "[concat('Microsoft.Search/searchServices/', variables('name-compliant-azureAiSearch'))]"
+                                "[concat('Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureComputerVision'))]"
                             ],
                             "properties": {
                                 "workspaceId": "[concat(subscription().id, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.OperationalInsights/workspaces/', variables('name-compliant-azMon'))]",
@@ -154,45 +151,44 @@
                             }
                         },
                         {
-                            "condition": "[and(equals(parameters('aiSearchDisableNetworkAccess'), 'Yes'), not(empty(parameters('aiSearchSubnetId'))))]",
+                            "condition": "[and(equals(parameters('visionDisableNetworkAccess'), 'Yes'), not(empty(parameters('visionSubnetId'))))]",
                             "type": "Microsoft.Network/applicationSecurityGroups",
                             "apiVersion": "2023-04-01",
-                            "name": "[variables('name-compliant-azureAiSearch-asg')]",
-                            "location": "[parameters('aiSearchNwLocation')]",
+                            "name": "[variables('name-compliant-vision-asg')]",
+                            "location": "[parameters('visionNwLocation')]",
                             "dependsOn": [
-                                "[concat('Microsoft.Search/searchServices/', variables('name-compliant-azureAiSearch'))]"
+                                "[concat('Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureComputerVision'))]"
                             ],
                             "properties": {}
                         },
                         {
-                            "condition": "[and(equals(parameters('aiSearchDisableNetworkAccess'), 'Yes'), not(empty(parameters('aiSearchSubnetId'))))]",
+                            "condition": "[and(equals(parameters('visionDisableNetworkAccess'), 'Yes'), not(empty(parameters('visionSubnetId'))))]",
                             "type": "Microsoft.Network/privateEndpoints",
                             "apiVersion": "2021-03-01",
-                            "name": "[variables('name-compliant-azureAiSearch-pe')]",
-                            "location": "[parameters('aiSearchNwLocation')]",
+                            "name": "[variables('name-compliant-vision-pe')]",
+                            "location": "[parameters('visionNwLocation')]",
                             "dependsOn": [
-                                "[concat('Microsoft.Search/searchServices/', variables('name-compliant-azureAiSearch'))]",
-                                "[concat('Microsoft.Network/applicationSecurityGroups/', variables('name-compliant-azureAiSearch-asg'))]"
-
+                                "[concat('Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureComputerVision'))]",
+                                "[concat('Microsoft.Network/applicationSecurityGroups/', variables('name-compliant-vision-asg'))]"
                             ],
                             "properties": {
                                 "privateLinkServiceConnections": [
                                     {
-                                        "name": "[variables('name-compliant-azureAiSearch')]",
+                                        "name": "[variables('name-compliant-azureComputerVision')]",
                                         "properties": {
-                                            "privateLinkServiceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.Search/searchServices/', variables('name-compliant-azureAiSearch'))]",
+                                            "privateLinkServiceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.CognitiveServices/accounts/', variables('name-compliant-azureComputerVision'))]",
                                             "groupIds": [
-                                                "searchService"
+                                                "account"
                                             ]
                                         }
                                     }
                                 ],
                                 "subnet": {
-                                    "id": "[parameters('aiSearchSubnetId')]"
+                                    "id": "[parameters('visionSubnetId')]"
                                 },
                                 "applicationSecurityGroups": [
                                     {
-                                        "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.Network/applicationSecurityGroups/', variables('name-compliant-azureAiSearch-asg'))]"
+                                        "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('rgName'), '/providers/Microsoft.Network/applicationSecurityGroups/', variables('name-compliant-vision-asg'))]"
                                     }
                                 ]
                             }

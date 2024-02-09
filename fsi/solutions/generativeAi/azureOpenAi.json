@@ -32,6 +32,7 @@
         },
         "aiSubnetId": {
             "type": "string",
+            "defaultValue": "",
             "metadata": {
                 "description": "Provide the subnet id where the Azure Open AI instance that will be connected"
             }
