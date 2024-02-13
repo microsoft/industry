@@ -67,6 +67,85 @@
                                 "validationMessage": "The prefix must be 1-10 characters."
                             },
                             "visible": true
+                        },
+                        {
+                            "name": "aiIntentionText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": true,
+                            "options": {
+                                "text": "Select the architecture setup for the Azure Open AI workload. You can select if you want to deploy a single instance into a single region, or create multiple instances across multiple regions using API Management for load balancing and distribution of traffic.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://learn.microsoft.com/azure/ai-services/openai/overview"
+                                }
+                            }
+                        },
+						{
+                            "name": "aiIntention",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Architecture setup",
+                            "placeholder": "",
+                            "defaultValue": "Deploy Azure Open AI to a single Azure region into a single subscription.",
+                            "toolTip": "",
+                            "multiselect": false,
+                            "multiLine": true,
+                            "selectAll": false,
+                            "defaultDescription": "Select the architecture for this deployment.",
+                            "filter": true,
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Deploy Azure Open AI to a single Azure region into a single subscription.",
+                                        "description": "Deploy the Azure Open AI workload fondation with optional services into a single Azure region.",
+                                        "value": "Single"
+                                    },
+                                    {
+                                        "label": "Deploy Azure Open AI to multiple Azure regions using API Management.",
+                                        "description": "Deploy Azure Open AI workload foundation across multiple Azure region, and optionally across multple subscriptions, using APIM for load balancing and distribution of traffic.",
+                                        "value": "Multiple"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "visible": true
+                        },
+                        {
+                            "name": "aiMultiLocationsApi",
+                            "type": "Microsoft.Solutions.ArmApiControl",
+                            "request": {
+                                "method": "GET",
+                                "path": "locations?api-version=2019-11-01"
+                            }
+                        },
+                        {
+                            "name": "aiMultiLocation",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Select the additional Azure region for the Azure Open AI workload",
+                            "filter": true,
+                            "toolTip": "Select the additional Azure region for the Azure Open AI workload",
+                            "constraints": {
+                                "allowedValues": "[map(steps('basics').aiMultiLocationsApi.value,(item) => parse(concat('{\"label\":\"',item.displayName,'\",\"value\":\"',item.name,'\"}')))]",
+                                "required": true
+                            },
+                            "visible": "[equals(steps('basics').aiIntention, 'Multiple')]"
+                        },
+                        {
+                            "name": "aoAiMulti",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": "[equals(steps('basics').aiIntention, 'Multiple')]",
+                            "options": {
+                                "icon": "None",
+                                "text": "<b> </b><img src='https://raw.githubusercontent.com/krnese/ns/master/aoaimulti.svg'>"
+                            }
+                        },
+                        {
+                            "name": "aoAiSingle",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": "[equals(steps('basics').aiIntention, 'Single')]",
+                            "options": {
+                                "icon": "None",
+                                "text": "<b> </b><img src='https://raw.githubusercontent.com/krnese/ns/master/aoaisingle.svg'>"
+                            }
                         }
                     ]
                 },
@@ -1896,7 +1975,8 @@
                 "visionSystemIdentity": "[steps('aiAuxiliarySettings').aiVisionSystemIdentity]",
                 "visionMonCreation": "[steps('aiAuxiliarySettings').aiVisionMonCreation]",
                 "visionRestrictOutboundNetworkAccess": "[steps('aiAuxiliarySettings').aiVisionRestrictOutboundNetworkAccess]",
-                "aiUseCaseSelection": "[steps('aiAuxiliarySettings').aiUseCaseSelection]"
+                "aiUseCaseSelection": "[steps('aiAuxiliarySettings').aiUseCaseSelection]",
+                "aiMultiLocation": "[steps('aiSettings').aiMultiLocation]"
             },
             "kind": "Subscription",
             "location": "[steps('basics').resourceScope.location.name]",

@@ -444,6 +444,10 @@
         "aiUseCaseSelection": {
             "type": "string",
             "defaultValue": ""
+        },
+        "aiMultiLocation": {
+            "type": "string",
+            "defaultValue": ""
         }
     },
     "variables": {
