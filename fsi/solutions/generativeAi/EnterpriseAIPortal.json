@@ -135,7 +135,7 @@
                             "visible": "[equals(steps('basics').aiIntention, 'Multiple')]",
                             "options": {
                                 "icon": "None",
-                                "text": "<b> </b><img src='https://raw.githubusercontent.com/krnese/ns/master/aoaimulti.svg'>"
+                                "text": "<b> </b><img src='https://raw.githubusercontent.com/microsoft/industry/main/fsi/docs/aoai_multi_region.svg'>"
                             }
                         },
                         {
@@ -144,7 +144,7 @@
                             "visible": "[equals(steps('basics').aiIntention, 'Single')]",
                             "options": {
                                 "icon": "None",
-                                "text": "<b> </b><img src='https://raw.githubusercontent.com/krnese/ns/master/aoaisingle.svg'>"
+                                "text": "<b> </b><img src='https://raw.githubusercontent.com/microsoft/industry/main/fsi/docs/aoai_single_region.svg'>"
                             }
                         }
                     ]
@@ -1976,7 +1976,7 @@
                 "visionMonCreation": "[steps('aiAuxiliarySettings').aiVisionMonCreation]",
                 "visionRestrictOutboundNetworkAccess": "[steps('aiAuxiliarySettings').aiVisionRestrictOutboundNetworkAccess]",
                 "aiUseCaseSelection": "[steps('aiAuxiliarySettings').aiUseCaseSelection]",
-                "aiMultiLocation": "[steps('aiSettings').aiMultiLocation]"
+                "aiMultiLocation": "[steps('basics').aiMultiLocation]"
             },
             "kind": "Subscription",
             "location": "[steps('basics').resourceScope.location.name]",
