@@ -57,7 +57,7 @@
                             }
                         }
                     },
-                    "name": "Deny-PostgreSql-SSL-Connection"
+                    "name": "Deny-PostgreSql-Single-Server-SSL-Connection"
                 },
                 {
                     "properties": {
@@ -262,7 +262,122 @@
                             }
                         }
                     },
-                    "name": "Dine-Diagnostics-PostgreSQL"
+                    "name": "Dine-Diagnostics-PostgreSQL-Single-And-Flexible-Server"
+                },
+                {
+                    "properties": {
+                        "displayName": "Enforce specific minimum TLS version requirement for PostgreSQL database servers",
+                        "policyType": "Custom",
+                        "mode": "Indexed",
+                        "description": "Deploys the diagnostic settings for Database for PostgreSQL to stream to a Log Analytics workspace when any Database for PostgreSQL which is missing this diagnostic settings is created or updated. The Policy will set the diagnostic with all metrics and category enabled.",
+                        "metadata": {
+                            "version": "1.0.1",
+                            "category": "PostgreSQL"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Deny",
+                                    "Audit",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Deny"
+                            },
+                            "minimalTlsVersion": {
+                                "type": "String",
+                                "defaultValue": "TLS1_2",
+                                "allowedValues": [
+                                    "TLS1_2",
+                                    "TLS1_0",
+                                    "TLS1_1",
+                                    "TLSEnforcementDisabled"
+                                ],
+                                "metadata": {
+                                    "displayName": "Select minimum TLS version for PostgreSQL server",
+                                    "description": "Select version minimum TLS version Azure Database for PostgreSQL server to enforce"
+                                }
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": [
+                                    {
+                                        "field": "type",
+                                        "equals": "Microsoft.DBforPostgreSQL/servers"
+                                    },
+                                    {
+                                        "field": "Microsoft.DBforPostgreSQL/servers/minimalTlsVersion",
+                                        "exists": "true"
+                                    },
+                                    {
+                                        "field": "Microsoft.DBforPostgreSQL/servers/minimalTlsVersion",
+                                        "notEquals": "[[parameters('minimalTlsVersion')]"
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-PostgreSql-Single-Server-Minimal-TLS-Connection"
+                },
+                {
+                    "properties": {
+                        "displayName": "Enforce Customer Managed Keys for PostgreSQL Flexible database",
+                        "mode": "Indexed",
+                        "description": "Denies deployments of Azure Database Flexible Server for PostgreSQL without Customer Managed Keys on Azure Key Vault present. ",
+                        "metadata": {
+                            "version": "1.0.1",
+                            "category": "PostgreSQL"
+                        },
+                        "parameters": {
+                            "effect": {
+                                "type": "String",
+                                "metadata": {
+                                    "displayName": "Effect",
+                                    "description": "Enable or disable the execution of the policy"
+                                },
+                                "allowedValues": [
+                                    "Deny",
+                                    "Audit",
+                                    "Disabled"
+                                ],
+                                "defaultValue": "Deny"
+                            }
+                        },
+                        "policyRule": {
+                            "if": {
+                                "allOf": {
+                                    "field": "type",
+                                    "equals": "Microsoft.DBforPostgreSQL/flexibleServers"
+                                },
+                                "anyOf": [
+                                    {
+                                        "field": "Microsoft.DBForPostgreSql/flexibleServers/dataEncryption.type",
+                                        "notEquals": "AzureKeyVault"
+                                    },
+                                    {
+                                        "field": "Microsoft.DBForPostgreSql/flexibleServers/dataEncryption.primaryKeyURI",
+                                        "exists": "false"
+                                    },
+                                    {
+                                        "field": "Microsoft.DBForPostgreSql/flexibleServers/dataEncryption.primaryUserAssignedIdentityId",
+                                        "exists": "false"
+                                    }
+                                ]
+                            },
+                            "then": {
+                                "effect": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    "name": "Deny-PostgreSql-Flexible-Server-Customer-Managed-Keys"
                 }
             ]
         }
@@ -350,6 +465,18 @@
                     "postgreLogAnalyticsWorkspaceId": {
                         "type": "string",
                         "defaultValue": ""
+                    },
+                    "postgreSqlServerTlsMinimumVersion": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "postgreSqlFlexibleCustomerManagedKeys": {
+                        "type": "string",
+                        "defaultValue": "Deny"
+                    },
+                    "postgreSqlServerInfrastuctureEncryption": {
+                        "type": "string",
+                        "defaultValue": "Deny"
                     }
                 },
                 "policyDefinitions": [
@@ -414,6 +541,42 @@
                         "parameters": {
                             "effect": {
                                 "value": "[[parameters('postgreSqlFlexiblePublicNetworkAccess')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[2].name)]",
+                        "policyDefinitionReferenceId": "Deny-PostgreSql-Server-Tls-Minimum-Version",
+                        "groupNames": [
+                            "Network"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('postgreSqlServerTlsMinimumVersion')]"
+                            }
+                        }
+                    },
+                                        {
+                        "policyDefinitionId": "[concat(variables('scope'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policies').policyDefinitions[3].name)]",
+                        "policyDefinitionReferenceId": "Deny-PostgreSql-Flexible-Server-Customer-Managed-Keys",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('postgreSqlFlexibleCustomerManagedKeys')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/24fba194-95d6-48c0-aea7-f65bf859c598",
+                        "policyDefinitionReferenceId": "Deny-PostgreSql-Server-Infrastructure-Encryption",
+                        "groupNames": [
+                            "Encryption"
+                        ],
+                        "parameters": {
+                            "effect": {
+                                "value": "[[parameters('postgreSqlServerInfrastuctureEncryption')]"
                             }
                         }
                     }
