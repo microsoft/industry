@@ -17,7 +17,7 @@
                             "visible": true,
                             "options": {
                                 "icon": "Info",
-                                "text": "Power Platform Landing Zones will deploy and configure the foundation for your Power Platform tenant including all best practices and recommendations from Microsoft, and create the initial landing zones for citizen- and professional developers. The deployment requires that the user is a Global Admin or Power Platform Admin in the Azure Active Directory.",
+                                "text": "Power Platform Landing Zones referemce implementation will deploy and configure the foundation for your Power Platform tenant including all best practices and recommendations from Microsoft, and create the initial landing zones for citizen- and professional developers. The deployment requires that the user is a Global Admin or Power Platform Admin in the Azure Active Directory.",
                                 "uri": "https://aka.ms/NorthStarPowerPlatform"
                             }
                         },
@@ -273,6 +273,44 @@
                             "visible": "[not(equals(steps('gov').ppTenantIsolationSetting, 'none'))]"
                         },
                         {
+                            "name": "ppTenantConsent",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Trial licenses consent",
+                            "elements": [],
+                            "visible": true
+                        },
+                        {
+                            "name": "tenantConsentText",
+                            "type": "Microsoft.Common.TextBlock",
+                            "visible": true,
+                            "options": {
+                                "text": "Configure tenant consent for trial licenses. This setting will apply to all existing and new environments in your tenant.",
+                                "link": {
+                                    "label": "Learn more",
+                                    "uri": "https://docs.microsoft.com/power-platform/admin/wp-trial-licenses"
+                                }
+                            }
+                        },
+                        {
+                            "name": "ppTenantConsentSetting",
+                            "type": "Microsoft.Common.OptionsGroup",
+                            "label": "Disable trial licenses for all users",
+                            "defaultValue": "Yes (recommended)",
+                            "toolTip": "Select Yes to disable trial licenses for all users in the tenant.",
+                            "constraints": {
+                                "allowedValues": [
+                                    {
+                                        "label": "Yes (recommended)",
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": "No",
+                                        "value": "no"
+                                    }
+                                ]
+                            }
+                        },
+                        {
                             "name": "tenantGuestsAndSharing",
                             "type": "Microsoft.Common.Section",
                             "label": "Tenant Guest user and sharing settings",
@@ -295,13 +333,12 @@
                             "name": "ppGuestMakerSetting",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Prevent Azure AD guests accounts to make Power Apps",
-                            "defaultValue": "Yes",
-                            "multiSelect": true,
+                            "defaultValue": "Yes (recommended)",
                             "toolTip": "If 'Yes' is selected, the setup will configure this setting.",
                             "constraints": {
                                 "allowedValues": [
                                     {
-                                        "label": "Yes",
+                                        "label": "Yes (recommended)",
                                         "value": "yes"
                                     },
                                     {
@@ -316,13 +353,13 @@
                             "name": "ppAppSharingSetting",
                             "type": "Microsoft.Common.OptionsGroup",
                             "label": "Restrict sharing of PowerApps with the entire organization",
-                            "defaultValue": "Yes",
+                            "defaultValue": "Yes (recommended)",
                             "multiSelect": true,
                             "toolTip": "If 'Yes' is selected, the setup will configure this setting.",
                             "constraints": {
                                 "allowedValues": [
                                     {
-                                        "label": "Yes",
+                                        "label": "Yes (recommended)",
                                         "value": "yes"
                                     },
                                     {
