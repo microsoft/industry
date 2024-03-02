@@ -281,6 +281,14 @@
             "type": "string",
             "defaultValue": "feed"
         },
+        "sqlPrivateDnsZone": {
+            "type": "string",
+            "defaultValue": "DeployIfNotExists"
+        },
+        "sqlPrivateDnsZoneId": {
+            "type": "string",
+            "defaultValue": ""
+        },
         "userAssignedIdentityResourceId": {
             "type": "string",
             "defaultValue": ""
@@ -511,6 +519,12 @@
                     },
                     "synapsePrivateDnsZoneId": {
                         "value": "[parameters('synapsePrivateDnsZoneId')]"
+                    },
+                    "sqlPrivateDnsZone": {
+                        "value": "[parameters('sqlPrivateDnsZone')]"
+                    },
+                    "sqlPrivateDnsZoneId": {
+                        "value": "[parameters('sqlPrivateDnsZoneId')]"
                     }
                 }
             }
