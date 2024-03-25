@@ -49,6 +49,10 @@
             ],
             "defaultValue": "Standard"
         },
+        "firewallZones": {
+            "type": "array",
+            "defaultValue": []
+        },
         "enableVpnGw": {
             "type": "string",
             "allowedValues": [
@@ -200,6 +204,7 @@
                                             "type": "Microsoft.Network/azureFirewalls",
                                             "name": "[variables('azfwname')]",
                                             "location": "[parameters('location')]",
+                                            "zones": "[if(not(empty(parameters('firewallZones'))), parameters('firewallZones'), json('null'))]",
                                             "dependsOn": [
                                                 "[concat('Microsoft.Network/virtualHubs/',variables('vhubname'))]"
                                             ],
