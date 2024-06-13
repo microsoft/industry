@@ -655,6 +655,20 @@
                 "Audit",
                 "No"
             ]
+        },
+        "subnetMaskForDnsResolverInbound": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide subnet for DNS Resolver Inbound Endpoint."
+            }
+        },
+        "subnetMaskForDnsResolverOutbound": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Provide subnet for DNS Resolver Outbound Endpoint."
+            }
         }
     },
     "variables": {
@@ -1738,6 +1752,12 @@
                     },
                     "enableAvnm": {
                         "value": "[parameters('enableAvnm')]"
+                    },
+                    "subnetMaskForDnsResolverInbound": {
+                        "value": "[parameters('subnetMaskForDnsResolverInbound')]"
+                    },
+                    "subnetMaskForDnsResolverOutbound": {
+                        "value": "[parameters('subnetMaskForDnsResolverOutbound')]"
                     }
                 }
             }
