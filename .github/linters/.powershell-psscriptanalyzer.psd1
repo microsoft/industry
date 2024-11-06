@@ -14,6 +14,7 @@
        'PSAvoidUsingPlainTextForPassword'
        'PSAvoidUsingConvertToSecureStringWithPlainText'
        'PSPossibleIncorrectUsageOfAssignmentOperator'
+       'PSUseSingularNouns'
     )
     #IncludeRules = @( )
 }
